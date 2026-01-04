@@ -336,8 +336,9 @@ function outputItems(items, baseIndent = 2, parentLevel = 2) {
       output.push('');
     } else {
       // No children - render as regular indented item
-      const tabCount = (item.level - 1) * 2;
-      const indent = '\t'.repeat(tabCount);
+      // Use two spaces per nested level beyond topic (level 2)
+      const indentLevel = Math.max(0, item.level - 2);
+      const indent = '   '.repeat(indentLevel);
       output.push(`${indent}${item.line}`);
     }
   }
