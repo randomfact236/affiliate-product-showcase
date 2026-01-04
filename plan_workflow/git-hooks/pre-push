@@ -1,0 +1,27 @@
+#!/bin/sh
+# Copy of the repository pre-push hook. Place this file into .git/hooks/pre-push
+# to enable the interactive confirmation before pushing.
+
+remote_name="$1"
+remote_url="$2"
+if [ -n "$remote_name" ] || [ -n "$remote_url" ]; then
+  echo "About to push to ${remote_name:-(remote)} ${remote_url:-(url)}"
+fi
+
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -NonInteractive -Command "Write-Host 'Confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Write-Host ': Type 'yes' to confirm'; \$ans = Read-Host 'Confirm push (yes to proceed)'; if (\$ans -ne 'yes') { Write-Host 'Push aborted.'; exit 1 }; exit 0"
+  exit $?
+fi
+
+if command -v powershell >/dev/null 2>&1; then
+  powershell -NoProfile -NonInteractive -Command "Write-Host 'Confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Write-Host ': Type 'yes' to confirm'; \$ans = Read-Host 'Confirm push (yes to proceed)'; if (\$ans -ne 'yes') { Write-Host 'Push aborted.'; exit 1 }; exit 0"
+  exit $?
+fi
+
+printf "Confirm push to %s %s - type 'yes' to confirm: " "${remote_name:-origin}" "${remote_url:-}" 
+read ans
+if [ "$ans" != "yes" ]; then
+  echo "Push aborted."
+  exit 1
+fi
+exit 0

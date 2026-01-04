@@ -30,8 +30,6 @@
 # Step 1 — 🔴 Step 1 — Setup
 
 ## 1.1 Docker Environment — Docker compose setup to bring up local environment and services
-<details>
-
 				1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
 				1.1.2 MySQL 8.0 container with persistent volumes
 				1.1.3 Nginx container with SSL/TLS configuration
@@ -43,11 +41,8 @@
 				1.1.9 Docker Compose v3.8+ with environment variable substitution
 				1.1.10 Volume mounts for plugin development directory
 				1.1.11 Network isolation between services
-</details>
 
 ## 1.2 Folder Structure — create folder structure and repository layout
-<details>
-
 				1.2.1 `/admin` - Admin interface classes and controllers
 				1.2.2 `/admin/assets` - Admin CSS, JS, images
 				1.2.3 `/admin/partials` - Admin view templates
@@ -87,11 +82,8 @@
 				1.2.37 `/docs/api` - Generated API docs
 				1.2.38 `/docs/guides` - User guides
 				1.2.39 `/build` - Build scripts
-</details>
 
 ## 1.3 Git Repository — initialize Git repository and basic branches
-<details>
-
 				1.3.1 Initialize Git with main branch
 				1.3.2 Create develop branch for active development
 				1.3.3 Create feature/* branches for new features
@@ -103,11 +95,8 @@
 				1.3.9 Require status checks before merge
 				1.3.10 Require signed commits
 				1.3.11 Semantic commit messages (conventional commits)
-</details>
 
 ## 1.4 Composer Configuration — composer.json and related setup
-<details>
-
 				1.4.1 Package name: `vendor/affiliate-product-showcase`
 				1.4.2 Type: `wordpress-plugin`
 				1.4.3 PHP version requirement: `>=7.4 <8.4`
@@ -132,11 +121,8 @@
 				1.4.22 Config with optimize-autoloader enabled
 				1.4.23 Config with sort-packages enabled
 				1.4.24 Exclude vendor-dir from packaging
-</details>
 
 ## 1.5 NPM Configuration — package.json and lockfiles
-<details>
-
 				1.5.1 Package name matching plugin slug
 				1.5.2 Private: true
 				1.5.3 Engines: Node >=18.0.0, NPM >=9.0.0
@@ -169,11 +155,8 @@
 				1.5.30 DevDependencies: `husky ^9.0.0`
 				1.5.31 DevDependencies: `lint-staged ^15.0.0`
 				1.5.32 DevDependencies: `@heroicons/react`
-</details>
 
 ## 1.6 Configuration Files — `.gitignore`, `phpcs.xml`, `phpunit.xml`, `.editorconfig`, `.dockerignore`
-<details>
-
 				1.6.1 `.gitignore` with comprehensive exclusions
 				1.6.2 `.gitignore` excludes: `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`
 				1.6.3 `.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz`
@@ -213,11 +196,8 @@
 				1.6.37 `tsconfig.json` with strict mode
 				1.6.38 `tsconfig.json` with WordPress globals
 				1.6.39 `tsconfig.json` with path aliases
-</details>
 
 ## 1.7 Environment Variables — .env for dev, WP Options fallback
-<details>
-
 				1.7.1 `PLUGIN_DEV_MODE` - Enable/disable dev features
 				1.7.2 `PLUGIN_DEBUG` - Enable debug logging
 				1.7.3 `DB_HOST` - Database host (fallback to WP constant)
@@ -237,11 +217,8 @@
 				1.7.17 Documentation: 'Use .env for local dev only'
 				1.7.18 Documentation: 'Production uses WP Options API'
 				1.7.19 Security note: 'Never store API keys in .env on production'
-</details>
 
 ## 1.8 WordPress Path/URL Functions — canonical helpers for URLs and paths
-<details>
-
 				1.8.1 Use `plugins_url()` for all asset URLs
 				1.8.2 Use `plugin_dir_path(__FILE__)` for file paths
 				1.8.3 Use `plugin_dir_url(__FILE__)` for directory URLs
@@ -256,11 +233,8 @@
 				1.8.12 Support domain mapping
 				1.8.13 Support multisite network installations
 				1.8.14 Support custom wp-content directory names
-</details>
 
 ## 1.9 Database Table Prefix — configurable DB prefix and migration notes
-<details>
-
 				1.9.1 Use `$wpdb->prefix` for all table names
 				1.9.2 Custom tables: `{$wpdb->prefix}affiliate_products_meta`
 				1.9.4 Custom tables: `{$wpdb->prefix}affiliate_products_submissions`
@@ -274,11 +248,8 @@
 				1.9.12 Database version tracking for migrations
 				1.9.13 Rollback capability for failed migrations
 				1.9.14 Cleanup old migration data
-</details>
 
 ## 1.10 Standalone & Privacy Guarantees — standalone mode, data handling, privacy
-<details>
-
 				1.10.1 Zero external HTTP requests during normal operation
 				1.10.2 No CDNs (Cloudflare, jsDelivr, unpkg, etc.)
 				1.10.3 No Google Fonts or any web font service
@@ -298,11 +269,8 @@
 				1.10.17 CAPTCHA disabled by default (optional, no external service code)
 				1.10.18 README prominently states '100% Standalone - No External Dependencies'
 				1.10.19 README lists all bundled vs. excluded dependencies
-</details>
 
 ## 1.11 Code Quality Tools — PHPCS, PHPUnit, linters and config
-<details>
-
 				1.11.1 Husky pre-commit hooks installation
 				1.11.2 Lint-staged configuration for staged files only
 				1.11.3 Pre-commit: Run PHPCS on PHP files
@@ -322,11 +290,8 @@
 				1.11.17 Pre-push: Verify code coverage ≥95%
 				1.11.18 Pre-push: Run security scans
 				1.11.19 Commit-msg hook: Validate conventional commits format
-</details>
 
 ## 1.12 README Documentation — installation, local setup, and developer notes
-<details>
-
 				1.12.1 Plugin name and tagline
 				1.12.2 '100% Standalone' badge
 				1.12.3 'Zero External Dependencies' badge
@@ -352,13 +317,10 @@
 				1.12.23 Donation/sponsorship links
 				1.12.24 Security policy and reporting
 				1.12.25 Privacy policy template for users
-</details>
 
 # Step 2 — 🔴 Step 2 — Content Types & Taxonomies
 
 ## 2.1 Custom Post Type: affiliate_product
-<details>
-
 				2.1.1 Post type slug: `affiliate_product`
 				2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
 				2.1.3 Public: true
@@ -406,11 +368,8 @@
 				2.1.47 Autosave support
 				2.1.48 Trash support
 				2.1.49 Duplicate product functionality
-</details>
 
 ## 2.2 🛍️ Taxonomy: Product Categories
-<details>
-
 				2.2.1 Taxonomy slug: `product_category`
 				2.2.2 Labels: singular 'Category', plural 'Categories'
 				2.2.3 Hierarchical: true
@@ -455,11 +414,8 @@
 				2.2.42 Category widget for sidebar
 				2.2.43 Category shortcode
 				2.2.44 Category REST endpoints
-</details>
 
 ## 2.3 Taxonomy: Product Tags
-<details>
-
 				2.3.1 Taxonomy slug: `product_tag`
 				2.3.2 Labels: singular 'Tag', plural 'Tags'
 				2.3.3 Hierarchical: false
@@ -489,11 +445,8 @@
 				2.3.27 Tag shortcode
 				2.3.28 Tag REST endpoints
 				2.3.29 Tag import/export
-</details>
 
 ## 2.4 Taxonomy: Product Ribbons
-<details>
-
 				2.4.1 Taxonomy slug: `product_ribbon`
 				2.4.2 Labels: singular 'Ribbon', plural 'Ribbons'
 				2.4.3 Hierarchical: false
@@ -523,11 +476,8 @@
 				2.4.27 Ribbon import/export
 				2.4.28 Pre-defined ribbon templates
 				2.4.29 Custom ribbon CSS class support
-</details>
 
 ## 2.5 Type Hints & PHPDoc
-<details>
-
 				2.5.1 `declare(strict_types=1);` in every PHP file
 				2.5.2 Full PHPDoc block on every class
 				2.5.3 Full PHPDoc block on every method
@@ -568,13 +518,10 @@
 				2.5.38 Code generation from PHPDoc (API docs)
 				2.5.39 IDE autocomplete support
 				2.5.40 Static analysis integration
-</details>
 
 # Step 3 — 🔴 Step 3 — Admin UI & Meta
 
 ## 3.1 Product Data Meta Box
-<details>
-
 				3.1.1 Meta box title: 'Product Information'
 				3.1.2 Meta box context: normal
 				3.1.3 Meta box priority: high
@@ -594,17 +541,11 @@
 				3.1.17 Meta box help tooltips
 				3.1.18 Meta box field error display
 				3.1.19 Meta box bulk edit support
-</details>
 
 ## 3.2 🚫 Analytics / Tracking (Removed)
-<details>
-
 				3.2.1 This plugin does not include built-in analytics or tracking functionality.
-</details>
 
 ## 3.3 Submission Status Meta Box
-<details>
-
 				3.3.1 Meta box title: 'Submission Details'
 				3.3.2 Display only for submitted products
 				3.3.3 Submitter information (name, email, IP)
@@ -619,11 +560,8 @@
 				3.3.12 Submission history log
 				3.3.13 Duplicate check results
 				3.3.14 Auto-moderation flags
-</details>
 
 ## 3.4 🧭 Admin List Table Columns
-<details>
-
 				3.4.1 Checkbox (bulk actions)
 				3.4.2 Thumbnail (featured image, 50×50px)
 				3.4.3 Title (linked to edit)
@@ -640,11 +578,8 @@
 				3.4.17 Featured flag (star icon, clickable toggle)
 				3.4.18 Trending flag (fire icon)
 				3.4.19 Stock status (color-coded)
-</details>
 
 ## 3.5 🔎 Admin List Table Filters
-<details>
-
 				3.5.1 All / Published / Draft / Pending / Trash
 				3.5.2 Filter by category (dropdown)
 				3.5.3 Filter by tag (dropdown)
@@ -659,11 +594,8 @@
 				3.5.12 Filter by submission status
 				3.5.13 Advanced filters toggle
 				3.5.14 Save filter presets
-</details>
 
 ## 3.6 🧭 Admin List Table Sorting
-<details>
-
 				3.6.1 Sort by title (A-Z, Z-A)
 				3.6.2 Sort by brand
 				3.6.3 Sort by price (low to high, high to low)
@@ -672,11 +604,8 @@
 				3.6.9 Sort by last modified
 				3.6.10 Sort by random (for testing)
 				3.6.11 Multi-level sorting (primary + secondary)
-</details>
 
 ## 3.7 Quick Edit
-<details>
-
 				3.7.1 Title edit
 				3.7.2 Brand edit
 				3.7.3 Price edit
@@ -691,11 +620,8 @@
 				3.7.12 Save and continue editing
 				3.7.13 Cancel button
 				3.7.14 AJAX save with feedback
-</details>
 
 ## 3.8 Bulk Actions
-<details>
-
 				3.8.1 Delete permanently
 				3.8.2 Move to trash
 				3.8.3 Restore from trash
@@ -714,11 +640,8 @@
 				3.8.16 Duplicate selected products
 				3.8.17 Bulk action confirmation dialogs
 				3.8.19 Bulk action progress indicator
-</details>
 
 ## 3.9 🔎 Admin Search
-<details>
-
 				3.9.1 Search by title
 				3.9.2 Search by content
 				3.9.3 Search by excerpt
@@ -730,11 +653,8 @@
 				3.9.9 Search result highlighting
 				3.9.10 Advanced search form (modal)
 				3.9.11 Save search queries
-</details>
 
 ## 3.10 🧭 Admin Dashboard Widgets
-<details>
-
 				3.10.1 Widget: Overview Stats (total products, revenue)
 				3.10.2 Widget: Recent Products (last 5 added)
 				3.10.3 Widget: Pending Submissions (count + quick links)
@@ -749,13 +669,10 @@
 				3.10.13 Widget export data option
 				3.10.14 Widget date range selector
 				3.10.15 Widget full-screen view
-</details>
 
 # Step 4 — 🔴 Step 4 — Submission Flow & Security
 
 ## 4.1 Frontend Submission Form
-<details>
-
 				4.1.1 Form location: dedicated page template
 				4.1.2 Form shortcode: `[affiliate_submit_form]`
 				4.1.3 Form widget for sidebars
@@ -766,11 +683,8 @@
 				4.1.12 Form accessibility
 				4.1.13 Form styling
 				4.1.14 Form customization
-</details>
 
 ## 4.2 🔒 Security: File Upload
-<details>
-
 				4.2.1 Allowed file types: JPEG, PNG, WebP, GIF (configurable)
 				4.2.2 Blocked file types: PHP, JS, EXE, BAT, SH, etc.
 				4.2.3 MIME type validation (server-side)
@@ -800,11 +714,8 @@
 				4.2.27 Log failed upload attempts
 				4.2.28 Rate limit file uploads per IP
 				4.2.29 Temporary file cleanup
-</details>
 
 ## 4.3 🔒 Security: Input Sanitization
-<details>
-
 				4.3.1 Sanitize all text inputs with `sanitize_text_field()`
 				4.3.2 Sanitize textareas with `sanitize_textarea_field()`
 				4.3.3 Sanitize URLs with `esc_url_raw()`
@@ -829,11 +740,8 @@
 				4.3.22 Type casting for expected data types
 				4.3.23 Reject malformed JSON
 				4.3.24 Sanitize shortcode attributes
-</details>
 
 ## 4.4 🔒 Security: Output Escaping
-<details>
-
 				4.4.1 Escape HTML with `esc_html()`
 				4.4.2 Escape attributes with `esc_attr()`
 				4.4.3 Escape URLs with `esc_url()`
@@ -853,11 +761,8 @@
 				4.4.17 Escape in AJAX responses
 				4.4.18 Escape in REST API responses
 				4.4.19 Escape in admin pages
-</details>
 
 ## 4.5 🔒 Security: Validation
-<details>
-
 				4.5.1 Validate email format with `is_email()`
 				4.5.2 Validate URL format with `wp_http_validate_url()`
 				4.5.3 Validate numbers with `is_numeric()`, type checks
@@ -882,11 +787,8 @@
 				4.5.22 Business logic validation (price > 0, sale < regular)
 				4.5.23 Duplicate detection validation
 				4.5.24 Spam detection validation
-</details>
 
 ## 4.6 🔒 Security: Nonce Verification
-<details>
-
 				4.6.1 Generate nonce with `wp_create_nonce()`
 				4.6.2 Verify nonce with `wp_verify_nonce()`
 				4.6.3 Check AJAX referer with `check_ajax_referer()`
@@ -901,11 +803,8 @@
 				4.6.12 Never bypass nonce checks
 				4.6.13 Nonce regeneration on sensitive actions
 				4.6.14 Nonce tied to user session
-</details>
 
 ## 4.7 🔒 Security: Capability Checks
-<details>
-
 				4.7.1 Check `current_user_can()` before any write operation
 				4.7.2 Custom capability: `edit_affiliate_products`
 				4.7.3 Custom capability: `publish_affiliate_products`
@@ -924,11 +823,8 @@
 				4.7.17 Check capabilities before meta save
 				4.7.18 Check capabilities before bulk actions
 				4.7.19 Check capabilities before CSV export
-</details>
 
 ## 4.8 🔒 Security: Prepared Statements
-<details>
-
 				4.8.1 Use `$wpdb->prepare()` for all custom queries
 				4.8.2 Use `%s` placeholder for strings
 				4.8.3 Use `%d` placeholder for integers
@@ -943,11 +839,8 @@
 				4.8.12 Use `$wpdb->get_row()` for single rows
 				4.8.13 Check for SQL errors with `$wpdb->last_error`
 				4.8.14 Log SQL errors
-</details>
 
 ## 4.9 🔒 Security: Rate Limiting
-<details>
-
 				4.9.1 Limit submission form to 3 per hour per IP
 				4.9.2 Limit submission form to 10 per day per user
 				4.9.3 Limit AJAX requests to 60 per minute per IP
@@ -967,11 +860,8 @@
 				4.9.17 Different limits for authenticated vs anonymous users
 				4.9.18 Rate limit bypass for administrators
 				4.9.19 Rate limit statistics in admin dashboard
-</details>
 
 ## 4.10 🔒 Security: CAPTCHA
-<details>
-
 				4.10.1 CAPTCHA disabled by default
 				4.10.2 Optional CAPTCHA toggle in settings
 				4.10.3 Custom implementation (no external service)
@@ -991,11 +881,8 @@
 				4.10.17 No reCAPTCHA, hCaptcha, Cloudflare Turnstile
 				4.10.18 CAPTCHA settings documentation
 				4.10.19 CAPTCHA accessibility compliance
-</details>
 
 ## 4.11 🔒 Security: Dependency Injection
-<details>
-
 				4.11.1 Use DI container (PHP-DI or custom)
 				4.11.2 Inject database service
 				4.11.3 Inject validation service
@@ -1010,11 +897,8 @@
 				4.11.12 Service locator pattern (if needed)
 				4.11.13 Factory pattern for object creation
 				4.11.14 Lazy loading for heavy services
-</details>
 
 ## 4.12 🔒 Security: Logging
-<details>
-
 				4.12.1 Log all submission attempts
 				4.12.2 Log failed submissions (with reason)
 				4.12.3 Log successful submissions
@@ -1034,11 +918,8 @@
 				4.12.17 Log filtering by type, date, user, IP
 				4.12.18 Log dashboard widget
 				4.12.19 Never log sensitive data (passwords, payment info)
-</details>
 
 ## 4.13 🔒 Security: Spam Protection
-<details>
-
 				4.13.1 Honeypot field (hidden, should be empty)
 				4.13.2 Time-based check (min 3 seconds to submit)
 				4.13.3 Detect repeated submissions (same IP, same data)
@@ -1064,13 +945,10 @@
 				4.13.23 Learn from spam reports (improve filters)
 				4.13.24 Spam statistics dashboard
 				4.13.25 Bulk delete spam submissions
-</details>
 
 # Step 5 — 🟠 Step 5 — Frontend Components
 
 ## 5.1 Tailwind CSS & Vite Setup
-<details>
-
 				5.1.1 Install Tailwind CSS via NPM
 				5.1.2 Configure `tailwind.config.js` with custom theme
 				5.1.3 Theme: custom color palette (primary, secondary, accent, neutral, success, warning, error)
@@ -1110,11 +988,8 @@
 				5.1.37 Defer non-critical JS
 				5.1.38 Async CSS loading
 				5.1.39 Resource hints (preconnect, prefetch)
-</details>
 
 ## 5.2 Typography & Fonts
-<details>
-
 				5.2.1 System font stack: `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`
 				5.2.2 Monospace stack: `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace`
 				5.2.3 No Google Fonts or any external web font service
@@ -1134,11 +1009,8 @@
 				5.2.17 Accessibility: sufficient color contrast (WCAG AA)
 				5.2.18 Typography utilities in Tailwind
 				5.2.19 Text truncation utilities
-</details>
 
 ## 5.3 Icons
-<details>
-
 				5.3.1 Use bundled local SVG icons only
 				5.3.2 Use Tailwind Heroicons (bundled via NPM)
 				5.3.3 No Font Awesome or external icon libraries
@@ -1158,11 +1030,8 @@
 				5.3.17 Icon export/import
 				5.3.18 SVG optimization (SVGO)
 				5.3.19 Inline SVG for better control
-</details>
 
 ## 5.4 Images & Media
-<details>
-
 				5.4.1 All images stored locally (WordPress media library)
 				5.4.2 Reject external image URLs in product card
 				5.4.3 Reject external image URLs in admin meta box
@@ -1192,11 +1061,8 @@
 				5.4.27 Image CDN integration (optional, local fallback)
 				5.4.28 Image security: prevent hotlinking
 				5.4.29 Image security: serve with proper headers
-</details>
 
 ## 5.5 JavaScript & Asset Loading
-<details>
-
 				5.5.1 All JS/TS bundled via Vite
 				5.5.2 No external JS libraries from CDNs
 				5.5.3 No dynamic imports from external URLs
@@ -1226,11 +1092,8 @@
 				5.5.27 ES6+ features with Babel transpilation
 				5.5.28 Browser compatibility: last 2 versions, > 1% usage
 				5.5.29 No jQuery dependency (use vanilla JS or React)
-</details>
 
 ## 5.6 🎨 CSS & Styling
-<details>
-
 				5.6.1 All CSS bundled via Vite
 				5.6.2 Tailwind CSS as base framework
 				5.6.3 Custom CSS in separate file (loaded after Tailwind)
@@ -1260,11 +1123,8 @@
 				5.6.27 CSS autoprefixer for vendor prefixes
 				5.6.28 CSS purging (remove unused classes)
 				5.6.29 CSS file size budget (100KB)
-</details>
 
 ## 5.7 🛍️ Product Card Component
-<details>
-
 				5.7.1 Component file: `ProductCard.tsx`
 				5.7.2 Component props: product data object
 				5.7.3 Card layout: image + content
@@ -1274,11 +1134,8 @@
 				5.7.9 Card animations
 				5.7.10 Card accessibility
 				5.7.11 Card responsiveness
-</details>
 
 ## 5.8 Grid & Layout Components
-<details>
-
 				5.8.1 ProductGrid component (container for cards)
 				5.8.2 Grid columns: 1, 2, 3, 4, 5, 6 (configurable)
 				5.8.3 Grid gap: xs, sm, md, lg, xl (configurable)
@@ -1298,11 +1155,8 @@
 				5.8.17 Grid container padding
 				5.8.18 Grid full-width option
 				5.8.19 Grid sidebar support (filters + grid)
-</details>
 
 ## 5.9 🔎 Filter & Sort Components
-<details>
-
 				5.9.1 FilterBar component
 				5.9.2 Filter by category (dropdown or checkbox list)
 				5.9.3 Filter by tag (dropdown or checkbox list)
@@ -1341,11 +1195,8 @@
 				5.9.36 Debounce filter changes
 				5.9.37 Filter result count ('Showing X of Y products')
 				5.9.38 Filter presets (save filter combinations)
-</details>
 
 ## 5.10 Pagination Component
-<details>
-
 				5.10.1 Pagination component with numbered pages
 				5.10.2 Previous/Next buttons
 				5.10.3 First/Last buttons (optional)
@@ -1365,11 +1216,8 @@
 				5.10.17 Pagination position (top, bottom, both)
 				5.10.18 Infinite scroll option (alternative to pagination)
 				5.10.19 Load more button option (alternative to pagination)
-</details>
 
 ## 5.11 🔎 Search Component
-<details>
-
 				5.11.1 SearchBar component
 				5.11.2 Search input with icon
 				5.11.3 Search placeholder text (customizable)
@@ -1403,11 +1251,8 @@
 				5.11.32 Search keyboard shortcuts (Ctrl+K, Cmd+K)
 				5.11.33 Search modal/overlay (full-screen search)
 				5.11.34 Search accessibility (ARIA labels, keyboard nav)
-</details>
 
 ## 5.12 Modal & Lightbox Components
-<details>
-
 				5.12.1 Modal component (reusable)
 				5.12.2 Modal overlay (semi-transparent background)
 				5.12.3 Modal content area
@@ -1442,11 +1287,8 @@
 				5.12.32 Quick View: related products
 				5.12.33 Video modal (embed player)
 				5.12.34 Comparison modal (compare products)
-</details>
 
 ## 5.13 Loading & Error States
-<details>
-
 				5.13.1 Skeleton loader component (card placeholder)
 				5.13.2 Skeleton: image placeholder
 				5.13.3 Skeleton: text line placeholders
@@ -1476,11 +1318,8 @@
 				5.13.27 Empty state with icon/illustration
 				5.13.28 Empty state with CTA ('Add Products')
 				5.13.29 Empty state with suggestions
-</details>
 
 ## 5.14 TypeScript & React Patterns
-<details>
-
 				5.14.1 TypeScript mandatory for all components
 				5.14.2 Interface definitions for all props
 				5.14.3 Type definitions for all state
@@ -1520,11 +1359,8 @@
 				5.14.37 Event handling best practices
 				5.14.38 Side effect management (useEffect cleanup)
 				5.14.39 Avoid prop drilling (use Context)
-</details>
 
 ## 5.15 ESLint & Prettier
-<details>
-
 				5.15.1 ESLint configuration with WordPress preset
 				5.15.2 ESLint: TypeScript parser
 				5.15.3 ESLint: React plugin rules
@@ -1550,13 +1386,10 @@
 				5.15.23 Prettier: End of line (lf)
 				5.15.24 Prettier: JSX brackets on same line (false)
 				5.15.25 ESLint + Prettier integration (no conflicts)
-</details>
 
 # Step 6 — 🟠 Step 6 — Shortcodes, Filters & Sorting
 
 ## 6.1 Primary Shortcode: [affiliate_products]
-<details>
-
 				6.1.1 Shortcode name: affiliate_products
 				6.1.2 Attribute: category (slug or ID, comma-separated)
 				6.1.3 Attribute: tag (slug or ID, comma-separated)
@@ -1596,11 +1429,8 @@
 				6.1.37 Shortcode attribute sanitization
 				6.1.38 Shortcode error handling (invalid attributes)
 				6.1.39 Shortcode localization (i18n)
-</details>
 
 ## 6.2 Additional Shortcodes
-<details>
-
 				6.2.1 [affiliate_submit_form] - Frontend submission form
 				6.2.2 [affiliate_categories] - Category list or grid
 				6.2.3 [affiliate_tags] - Tag cloud
@@ -1615,11 +1445,8 @@
 				6.2.12 [affiliate_slider] - Product slider/carousel
 				6.2.13 [affiliate_grid] - Product grid (alias)
 				6.2.14 [affiliate_list] - Product list (alias)
-</details>
 
 ## 6.3 🔎 Filter UI Implementation
-<details>
-
 				6.3.1 FilterBar component (React)  6.3.2
 				6.3.10 Filter logic: AND vs OR
 				6.3.11 Active filters display
@@ -1627,11 +1454,8 @@
 				6.3.13 Filter responsiveness
 				6.3.14 Filter persistence
 				6.3.15 Filter performance
-</details>
 
 ## 6.4 Sort Implementation
-<details>
-
 				6.4.1 SortDropdown component (React)
 				6.4.2 Sort options
 				6.4.3 Sort UI
@@ -1639,11 +1463,8 @@
 				6.4.5 Sort + Filter interaction
 				6.4.6 Sort persistence
 				6.4.7 Sort performance
-</details>
 
 ## 6.5 AJAX Handlers
-<details>
-
 				6.5.1 AJAX endpoint: affiliate_filter_products
 				6.5.2 AJAX endpoint: affiliate_sort_products
 				6.5.3 AJAX endpoint: affiliate_paginate_products
@@ -1663,11 +1484,8 @@
 				6.5.19 AJAX handler: return available filters (dynamic)
 				6.5.20 AJAX handler: caching results (transients)
 				6.5.21 AJAX handler: rate limiting
-</details>
 
 ## 6.6 Query Optimization
-<details>
-
 				6.6.1 Use WP_Query with optimized arguments
 				6.6.2 Query only needed fields (no unnecessary meta queries)
 				6.6.3 Use tax_query for taxonomy filters
@@ -1687,11 +1505,8 @@
 				6.6.17 Use direct SQL for complex queries (with $wpdb->prepare)
 				6.6.18 Monitor slow queries (Query Monitor plugin in dev)
 				6.6.19 Query result pagination (don't load all results)
-</details>
 
 ## 6.7 🛍️ Random Products
-<details>
-
 				6.7.1 Shortcode attribute: orderby='random'
 				6.7.2 Query: 'orderby' => 'rand'
 				6.7.3 Cache random results per user session (avoid recalculation)
@@ -1700,13 +1515,10 @@
 				6.7.6 Exclude recently shown products (for returning visitors)
 				6.7.7 Random rotation (show different products on refresh)
 				6.7.8 Performance: limit random query to small subset first, then randomize
-</details>
 
 # Step 7 — 🟠 Step 7 — Link Tracking & Redirects
 
 ## 7.1 Redirect Handler
-<details>
-
 				7.1.1 Custom endpoint: /go/{product-slug}/
 				7.1.2 Custom endpoint: /go/{custom-redirect-slug}/
 				7.1.3 Custom endpoint: /out/{product-id}/
@@ -1727,11 +1539,8 @@
 				7.1.27 Security: whitelist allowed domains (if enabled)
 				7.1.28 Security: prevent redirect loops
 				7.1.29 Security: rate limit redirects per IP
-</details>
 
 ## 7.5 Link Management
-<details>
-
 				7.5.1 Admin: bulk edit affiliate links
 				7.5.2 Admin: test affiliate link (check if live)
 				7.5.3 Admin: broken link checker (scan all links)
@@ -1752,13 +1561,10 @@
 				7.5.18 Link attribution (via UTM parameters; recommend external analytics for attribution)
 				7.5.19 Link permissions (who can edit links)
 				7.5.20 Link audit log (who changed what, when)
-</details>
 
 # Step 8 — 🟠 Step 8 — Settings & Styling Controls
 
 ## 8.1 Settings Page Architecture
-<details>
-
 				8.1.1 Admin page: "Settings" under plugin menu
 				8.1.2 React-based settings page (TypeScript)
 				8.1.3 Tabbed interface: General, Styling, Advanced, Import/Export, Help
@@ -1779,14 +1585,9 @@
 				8.1.18 Settings version (track settings schema version)
 				8.1.19 Settings migration (upgrade from old version)
 				8.1.20 Settings backup (auto-backup before save)
-</details>
 
 ## 8.2 (generated)
-<details>
-
 ### 8.2.1 Basic Configuration
-<details>
-
 						8.2.1.1 Plugin enable/disable toggle
 						8.2.1.2 Default posts per page (12, 24, 48, custom)
 						8.2.1.3 Default columns (1-6)
@@ -1797,11 +1598,8 @@
 						8.2.1.8 Single product slug (default: affiliate-product)
 						8.2.1.9 Category slug (default: product-category)
 						8.2.1.10 Tag slug (default: product-tag)
-</details>
 
 ### 8.2.2 Display Options
-<details>
-
 						8.2.2.1 Show product image (global toggle)
 						8.2.2.2 Show brand name
 						8.2.2.3 Show product rating
@@ -1816,11 +1614,8 @@
 						8.2.2.12 Show categories/tags
 						8.2.2.13 Excerpt length (words)
 						8.2.2.14 Features count (max number to show)
-</details>
 
 ### 8.2.3 Pagination
-<details>
-
 						8.2.3.1 Enable pagination (toggle)
 						8.2.3.2 Pagination type (numbered, prev/next, load more, infinite scroll)
 						8.2.3.3 Pagination position (top, bottom, both)
@@ -1828,11 +1623,8 @@
 						8.2.3.5 Show pagination info ("Showing X of Y")
 						8.2.3.6 Scroll to top on page change
 						8.2.3.7 Smooth scroll animation
-</details>
 
 ### 8.2.4 Filtering & Sorting
-<details>
-
 						8.2.4.1 Enable filters (toggle)
 						8.2.4.2 Enable sorting (toggle)
 						8.2.4.3 Enable search (toggle)
@@ -1843,11 +1635,8 @@
 						8.2.4.8 Show active filters
 						8.2.4.9 Default sort option
 						8.2.4.10 Available sort options (multi-select)
-</details>
 
 ### 8.2.5 Single Product
-<details>
-
 						8.2.5.1 Enable single product page (or redirect to affiliate link)
 						8.2.5.2 Single product layout (default, sidebar, full-width)
 						8.2.5.3 Show related products
@@ -1857,11 +1646,8 @@
 						8.2.5.7 Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)
 						8.2.5.8 Enable product schema markup
 						8.2.5.9 CTA button position (top, bottom, sticky)
-</details>
 
 ### 8.2.6 Submission Form
-<details>
-
 						8.2.6.1 Enable frontend submission (toggle)
 						8.2.6.2 Submission page (select from pages)
 						8.2.6.3 Allow anonymous submissions
@@ -1876,27 +1662,17 @@
 						8.2.6.12 Max submissions per user per day
 						8.2.6.13 Max file upload size (MB)
 						8.2.6.14 Allowed file types (JPEG, PNG, WebP, GIF)
-</details>
 
 ### 8.2.7 Roles & Capabilities
-<details>
-
 						8.2.7.1 Who can add products (select roles)
 						8.2.7.2 Who can edit products (select roles)
 						8.2.7.3 Who can delete products (select roles)
 						8.2.7.4 Who can publish products (select roles)
 						8.2.7.5 Who can approve submissions (select roles)
 						8.2.7.6 Who can manage settings (select roles)
-</details>
-
-</details>
 
 ## 8.3 (generated)
-<details>
-
 ### 8.3.1 8.3.1
-<details>
-
 						8.3.1.1 Primary color (color picker)
 						8.3.1.2 Secondary color
 						8.3.1.3 Accent color
@@ -1909,11 +1685,8 @@
 						8.3.1.10 Color scheme presets (light, dark, custom)
 						8.3.1.11 Dark mode toggle (enable dark mode)
 						8.3.1.12 Dark mode auto (based on system preference)
-</details>
 
 ### 8.3.2 8.3.2
-<details>
-
 						8.3.2.1 Base font size (px, default 16px)
 						8.3.2.2 Heading font size scale (1.2x, 1.5x, 2x, etc.)
 						8.3.2.3 Line height (1.5, 1.6, 1.75, etc.)
@@ -1923,11 +1696,8 @@
 						8.3.2.7 Link color (inherit, custom)
 						8.3.2.8 Link hover color
 						8.3.2.9 Typography preset (default, compact, spacious)
-</details>
 
 ### 8.3.3 8.3.3
-<details>
-
 						8.3.3.1 Card border width (0-5px)
 						8.3.3.2 Card border style (solid, dashed, dotted, none)
 						8.3.3.3 Card border color
@@ -1938,11 +1708,8 @@
 						8.3.3.8 Card hover lift amount (px)
 						8.3.3.9 Card padding (sm, md, lg, xl)
 						8.3.3.10 Card gap (space between cards, px)
-</details>
 
 ### 8.3.4 8.3.4
-<details>
-
 						8.3.4.1 Button style (solid, outline, ghost, gradient)
 						8.3.4.2 Button size (sm, md, lg, xl)
 						8.3.4.3 Button text (custom default text, e.g., "View Deal")
@@ -1955,11 +1722,8 @@
 						8.3.4.10 Button icon (left, right, none)
 						8.3.4.11 Button icon type (arrow, external link, etc.)
 						8.3.4.12 Button full-width (on mobile)
-</details>
 
 ### 8.3.5 8.3.5
-<details>
-
 						8.3.5.1 Sale badge color
 						8.3.5.2 Sale badge text color
 						8.3.5.3 Sale badge style (badge, corner, banner)
@@ -1967,11 +1731,8 @@
 						8.3.5.5 Ribbon position (top-left, top-right, etc.)
 						8.3.5.6 Ribbon animation (none, pulse, bounce, rotate)
 						8.3.5.7 Ribbon size (sm, md, lg)
-</details>
 
 ### 8.3.6 8.3.6
-<details>
-
 						8.3.6.1 Image aspect ratio (1:1, 4:3, 16:9, custom)
 						8.3.6.2 Image object fit (cover, contain, fill)
 						8.3.6.3 Image border radius
@@ -1980,11 +1741,8 @@
 						8.3.6.6 Image placeholder type (blur, color, skeleton)
 						8.3.6.7 Image placeholder color
 						8.3.6.8 Lazy load images (toggle)
-</details>
 
 ### 8.3.7 8.3.7
-<details>
-
 						8.3.7.1 Container max-width (px, full-width, custom)
 						8.3.7.2 Container padding (sm, md, lg, xl)
 						8.3.7.3 Spacing (vertical gap between sections)
@@ -1992,11 +1750,8 @@
 						8.3.7.5 Column gap (horizontal gap between columns)
 						8.3.7.6 Content spacing (space between card elements)
 						8.3.7.7 Responsive breakpoints (sm, md, lg, xl, custom)
-</details>
 
 ### 8.3.8 8.3.8
-<details>
-
 						8.3.8.1 Enable animations (toggle)
 						8.3.8.2 Animation type (fade, slide, zoom, none)
 						8.3.8.3 Animation duration (ms)
@@ -2004,26 +1759,16 @@
 						8.3.8.5 Stagger animation delay (ms between cards)
 						8.3.8.6 Hover animation (scale, rotate, lift)
 						8.3.8.7 Respect prefers-reduced-motion
-</details>
 
 ### 8.3.9 8.3.9
-<details>
-
 						8.3.9.1 Custom CSS textarea (advanced users)
 						8.3.9.2 CSS editor with syntax highlighting
 						8.3.9.3 CSS validation (basic linting)
 						8.3.9.4 CSS preview (live preview in iframe)
 						8.3.9.5 CSS priority (load order: plugin CSS → custom CSS)
-</details>
-
-</details>
 
 ## 8.4 (generated)
-<details>
-
 ### 8.4.2 Link & Redirect
-<details>
-
 						8.4.2.1 Enable cloaked links (toggle)
 						8.4.2.2 Redirect type (301 permanent, 302 temporary)
 						8.4.2.3 Redirect delay (0 seconds, 1, 2, 3, custom)
@@ -2038,11 +1783,8 @@
 						8.4.2.12 Broken link checker (toggle)
 						8.4.2.13 Broken link check frequency (daily, weekly)
 						8.4.2.14 Broken link notification email
-</details>
 
 ### 8.4.3 Security
-<details>
-
 						8.4.3.1 Enable rate limiting (toggle)
 						8.4.3.2 Rate limit: submissions per hour per IP
 						8.4.3.3 Rate limit: submissions per day per user
@@ -2058,11 +1800,8 @@
 						8.4.3.13 Block disposable email domains
 						8.4.3.14 IP blacklist (comma-separated IPs)
 						8.4.3.15 Email domain blacklist
-</details>
 
 ### 8.4.4 Performance
-<details>
-
 						8.4.4.1 Enable caching (toggle)
 						8.4.4.2 Cache duration (transient TTL, seconds)
 						8.4.4.3 Clear cache on product update
@@ -2078,11 +1817,8 @@
 						8.4.4.13 Preload key assets
 						8.4.4.14 Enable HTTP/2 push (if supported)
 						8.4.4.15 Database optimization (button: optimize tables)
-</details>
 
 ### 8.4.5 Schema & SEO
-<details>
-
 						8.4.5.1 Enable schema markup (toggle)
 						8.4.5.2 Schema type (Product, AggregateOffer)
 						8.4.5.3 Default brand for schema
@@ -2094,11 +1830,8 @@
 						8.4.5.9 Twitter Card tags (toggle)
 						8.4.5.10 Canonical URLs (toggle)
 						8.4.5.11 Meta robots (index, noindex, follow, nofollow)
-</details>
 
 ### 8.4.6 Import/Export
-<details>
-
 						8.4.6.1 CSV column mapping tool
 						8.4.6.2 Import validation (dry run before actual import)
 						8.4.6.3 Import log (success, errors, skipped)
@@ -2107,11 +1840,8 @@
 						8.4.6.7 Export format (CSV, JSON, XML)
 						8.4.6.8 Include meta data in export
 						8.4.6.9 Include taxonomy data in export
-</details>
 
 ### 8.4.7 Developer
-<details>
-
 						8.4.7.1 Enable debug mode (toggle)
 						8.4.7.2 Debug log level (error, warning, info, debug)
 						8.4.7.3 Debug log destination (file, database, both)
@@ -2124,26 +1854,16 @@
 						8.4.7.10 Custom hook documentation (link to developer docs)
 						8.4.7.11 Database table prefix (read-only, for reference)
 						8.4.7.12 Plugin version (read-only, for reference)
-</details>
-
-</details>
 
 ## 8.5 (generated)
-<details>
-
 ### 8.5.1 Export Settings
-<details>
-
 						8.5.1.1 Export all settings (JSON download)
 						8.5.1.2 Export button
 						8.5.1.3 Export includes: general, styling, advanced
 						8.5.1.4 Export excludes: API keys, sensitive data
 						8.5.1.5 Export filename (auto-generated with date)
-</details>
 
 ### 8.5.2 Import Settings
-<details>
-
 						8.5.2.1 Import settings from JSON file
 						8.5.2.2 File upload field
 						8.5.2.3 Import button
@@ -2154,11 +1874,8 @@
 						8.5.2.8 Import error handling (display errors)
 						8.5.2.9 Backup current settings before import
 						8.5.2.10 Restore from backup (if import fails)
-</details>
 
 ### 8.5.3 Export Products
-<details>
-
 						8.5.3.1 Export all products (CSV, JSON)
 						8.5.3.2 Export filtered products (based on current filters)
 						8.5.3.3 Select fields to export (checkboxes)
@@ -2169,11 +1886,8 @@
 						8.5.3.8 Export progress indicator (for large datasets)
 						8.5.3.9 Export filename (custom or auto-generated)
 						8.5.3.10 Export format options (CSV, JSON, XML)
-</details>
 
 ### 8.5.4 Import Products
-<details>
-
 						8.5.4.1 Import products from CSV
 						8.5.4.2 Import products from JSON
 						8.5.4.3 File upload field
@@ -2187,36 +1901,23 @@
 						8.5.4.11 Import log (created, updated, skipped, errors)
 						8.5.4.12 Import error handling (display detailed errors)
 						8.5.4.13 Rollback option (undo last import)
-</details>
-
-</details>
 
 ## 8.6 (generated)
-<details>
-
 ### 8.6.1 Getting Started
-<details>
-
 						8.6.1.1 Quick start guide (steps to add first product)
 						8.6.1.2 Video tutorials (links to videos)
 						8.6.1.3 Documentation links
 						8.6.1.4 FAQ
 						8.6.1.5 Troubleshooting guide
-</details>
 
 ### 8.6.2 Support
-<details>
-
 						8.6.2.1 Support forum link
 						8.6.2.2 Email support contact
 						8.6.2.3 Bug report form (link to GitHub issues)
 						8.6.2.4 Feature request form
 						8.6.2.5 Live chat widget (if available)
-</details>
 
 ### 8.6.3 System Info
-<details>
-
 						8.6.3.1 WordPress version
 						8.6.3.2 PHP version
 						8.6.3.3 MySQL version
@@ -2229,35 +1930,24 @@
 						8.6.3.10 Max upload size
 						8.6.3.11 Copy system info (button)
 						8.6.3.12 Download system info (text file)
-</details>
 
 ### 8.6.4 Tools
-<details>
-
 						8.6.4.1 Database repair tool
 						8.6.4.2 Cache clear tool
 						8.6.4.3 Rewrite rules flush tool
 						8.6.4.4 Regenerate thumbnails tool
 						8.6.4.5 Check for updates tool (disabled if update checker removed)
 						8.6.4.6 Plugin reset tool (reset all settings, with confirmation)
-</details>
 
 ### 8.6.5 About
-<details>
-
 						8.6.5.1 Plugin name and version
 						8.6.5.2 Developer credits
 						8.6.5.3 License information (GPL v2+)
 						8.6.5.4 Changelog (recent versions)
 						8.6.5.5 Roadmap (upcoming features)
 						8.6.5.6 Donate/sponsor link
-</details>
-
-</details>
 
 ## 8.7 (generated)
-<details>
-
 				8.7.1 ColorPicker component (Hue/Saturation/Lightness)
 				8.7.2 Slider component (range input with value display)
 				8.7.3 Toggle component (checkbox styled as switch)
@@ -2288,11 +1978,8 @@
 				8.7.28 All components with PropTypes validation
 				8.7.29 All components memoized (React.memo)
 				8.7.30 All components accessible (ARIA, keyboard nav)
-</details>
 
 ## 8.8 (generated)
-<details>
-
 				8.8.1 Save settings via REST API
 				8.8.2 Endpoint: /wp-json/affiliate-showcase/v1/settings
 				8.8.3 Method: GET (retrieve settings)
@@ -2313,13 +2000,10 @@
 				8.8.18 Settings backup before save
 				8.8.19 Rollback to previous version
 				8.8.20 Settings changelog (audit log)
-</details>
 
 # Step 9 — 🔴 Step 9 — Testing & Standards
 
 ## 9.1 Code Standards & Linting
-<details>
-
 				9.1.1 PHP CodeSniffer (phpcs) with WordPress-Core ruleset
 				9.1.2 PHP CodeSniffer with WordPress-Extra ruleset
 				9.1.3 PHP CodeSniffer with WordPress-Docs ruleset
@@ -2339,11 +2023,8 @@
 				9.1.17 No warnings or errors allowed
 				9.1.18 Pre-commit hooks run all linters
 				9.1.19 CI/CD fails on any linting errors
-</details>
 
 ## 9.2 Unit Testing (PHPUnit)
-<details>
-
 				9.2.1 PHPUnit 9.5+ installed
 				9.2.2 Test bootstrap file (tests/bootstrap.php)
 				9.2.3 WordPress test library installed
@@ -2373,11 +2054,8 @@
 				9.2.27 Test organization: group related tests
 				9.2.28 Test fixtures for sample data
 				9.2.29 Test teardown (clean up after each test)
-</details>
 
 ## 9.3 Integration Testing
-<details>
-
 				9.3.1 Integration tests for API endpoints
 				9.3.2 Integration tests for AJAX handlers
 				9.3.3 Integration tests for shortcodes
@@ -2397,11 +2075,8 @@
 				9.3.17 Integration tests for data import/export
 				9.3.18 Integration tests for settings save/retrieve
 				9.3.19 Integration test coverage: minimum 80%
-</details>
 
 ## 9.4 🔒 Security Testing
-<details>
-
 				9.4.1 Manual security audit of all input points
 				9.4.2 OWASP Top 10 vulnerability checks
 				9.4.3 Automated security scanning (WPScan, Snyk)
@@ -2421,11 +2096,8 @@
 				9.4.17 Clickjacking testing (X-Frame-Options header)
 				9.4.18 Sensitive data in logs (no passwords, API keys in logs)
 				9.4.19 Security headers check (CSP, HSTS, X-Content-Type-Options, etc.)
-</details>
 
 ## 9.5 Performance Testing
-<details>
-
 				9.5.1 Page load time testing (under 2 seconds)
 				9.5.2 AJAX request time testing (under 500ms)
 				9.5.3 Database query time monitoring (under 100ms per query)
@@ -2454,11 +2126,8 @@
 				9.5.26 Endurance testing (24-hour sustained load)
 				9.5.27 Database load testing (10K products)
 				9.5.28 API rate limit testing
-</details>
 
 ## 9.6 Accessibility Testing
-<details>
-
 				9.6.1 WCAG 2.1 Level AA compliance
 				9.6.2 Keyboard navigation testing (Tab, Enter, Esc, Arrow keys)
 				9.6.3 Focus management testing (visible focus indicators)
@@ -2483,11 +2152,8 @@
 				9.6.22 Manual accessibility audit
 				9.6.23 Accessibility statement page
 				9.6.24 Accessibility feedback mechanism
-</details>
 
 ## 9.7 Compatibility Testing
-<details>
-
 				9.7.1 WordPress version compatibility: 6.4 to latest
 				9.7.2 PHP version compatibility: 7.4 to 8.3
 				9.7.3 MySQL version compatibility: 5.6 to 8.0
@@ -2517,11 +2183,8 @@
 				9.7.27 IPv6 compatibility
 				9.7.28 SSL/TLS compatibility
 				9.7.29 HTTP/2 compatibility
-</details>
 
 ## 9.8 User Acceptance Testing (UAT)
-<details>
-
 				9.8.1 Beta testing with select users
 				9.8.2 Feedback collection form
 				9.8.3 Bug reporting system
@@ -2541,11 +2204,8 @@
 				9.8.17 Persona-based testing
 				9.8.18 Accessibility user testing (users with disabilities)
 				9.8.19 Mobile user testing
-</details>
 
 ## 9.9 Rate Limiting Implementation
-<details>
-
 				9.9.1 Implement rate limiting on submission form (3/hour per IP)
 				9.9.2 Store rate limit data in transients (set_transient())
 				9.9.3 Key format: affiliate_rate_limit_{IP}_{endpoint}
@@ -2561,11 +2221,8 @@
 				9.9.13 Clear rate limit data after timeout
 				9.9.14 Rate limit statistics in admin dashboard
 				9.9.15 Rate limit reset option in admin
-</details>
 
 ## 9.10 CAPTCHA Implementation (Optional, Disabled by Default)
-<details>
-
 				9.10.1 CAPTCHA toggle in settings (disabled by default)
 				9.10.2 CAPTCHA type selector (math, image, question)
 				9.10.3 Math CAPTCHA: generate random math problem (2 + 3 = ?)
@@ -2585,11 +2242,8 @@
 				9.10.17 CAPTCHA error messages
 				9.10.18 CAPTCHA logging (failed attempts)
 				9.10.19 CAPTCHA bypass for whitelisted IPs
-</details>
 
 ## 9.11 Update Checker Removal
-<details>
-
 				9.11.1 Remove all pre_set_site_transient_update_plugins filters
 				9.11.2 Remove all site_transient_update_plugins filters
 				9.11.3 Remove all version comparison code
@@ -2599,11 +2253,8 @@
 				9.11.7 Remove all update checker classes/files
 				9.11.8 No ping-home for version checks
 				9.11.9 No analytics or telemetry on plugin usage
-</details>
 
 ## 9.12 🛍️ Composer Production Requirements
-<details>
-
 				9.12.1 composer.json 'require': empty or minimal
 				9.12.2 No Guzzle in production (use wp_remote_request() instead)
 				9.12.3 No Monolog in production (use error_log() or custom logger)
@@ -2619,13 +2270,10 @@
 				9.12.13 Remove unused classes from autoload
 				9.12.14 Security audit of all dependencies (composer audit)
 				9.12.15 License compatibility check (all GPL-compatible)
-</details>
 
 # Step 10 — 🟠 Step 10 — Docs, Accessibility & QA
 
 ## 10.1 PHPDoc Standards
-<details>
-
 				10.1.1 Every class has PHPDoc block with @package, @since, @version
 				10.1.2 Every method has PHPDoc block with description
 				10.1.3 Every method has @param tags with type, name, description
@@ -2645,11 +2293,8 @@
 				10.1.17 FIXME comments with priority (P0, P1, P2)
 				10.1.18 Complex code has inline comments explaining logic
 				10.1.19 Magic methods documented (__construct, __get, __set, etc.)
-</details>
 
 ## 10.2 API Documentation Generation
-<details>
-
 				10.2.1 Use phpDocumentor or Sami to generate API docs
 				10.2.2 Configure documentation generator
 				10.2.3 Output directory: /docs/api/
@@ -2669,11 +2314,8 @@
 				10.2.17 Host documentation on GitHub Pages
 				10.2.18 Auto-generate on release
 				10.2.19 Documentation badge in README
-</details>
 
 ## 10.3 User Documentation
-<details>
-
 				10.3.1 Installation guide (manual and WordPress admin methods)
 				10.3.2 Quick start guide (add first product in 5 minutes)
 				10.3.3 Admin interface overview with screenshots
@@ -2692,11 +2334,8 @@
 				10.3.17 FAQ (20+ questions)
 				10.3.18 Video tutorials (YouTube playlist)
 				10.3.19 Glossary of terms
-</details>
 
 ## 10.4 Developer Documentation
-<details>
-
 				10.4.1 Plugin architecture overview
 				10.4.2 File structure explanation
 				10.4.3 Coding standards guide
@@ -2725,11 +2364,8 @@
 				10.4.27 Performance optimization tips
 				10.4.28 Code examples repository
 				10.4.29 Boilerplate/starter templates
-</details>
 
 ## 10.5 Accessibility Implementation
-<details>
-
 				10.5.1 All interactive elements keyboard accessible
 				10.5.2 Tab order logical and predictable
 				10.5.3 Focus indicators visible (2px solid outline, high contrast)
@@ -2769,11 +2405,8 @@
 				10.5.37 Animations respect prefers-reduced-motion
 				10.5.38 No auto-playing media (or provide pause)
 				10.5.39 Timeout warnings (if applicable)
-</details>
 
 ## 10.6 WCAG 2.1 AA Compliance
-<details>
-
 				10.6.1 Perceivable: Text alternatives for non-text content
 				10.6.2 Perceivable: Captions and alternatives for time-based media
 				10.6.3 Perceivable: Content adaptable (different ways to view)
@@ -2803,11 +2436,8 @@
 				10.6.27 Level AA: Error suggestion provided
 				10.6.28 Level AA: Error prevention (legal, financial, data)
 				10.6.29 Level AA: Status messages programmatically determined
-</details>
 
 ## 10.7 Screen Reader Testing
-<details>
-
 				10.7.1 Test with NVDA (Windows, free)
 				10.7.2 Test with JAWS (Windows, trial)
 				10.7.3 Test with VoiceOver (macOS/iOS, built-in)
@@ -2827,11 +2457,8 @@
 				10.7.17 Reading order logical (matches visual order)
 				10.7.18 No 'clickable' divs without proper roles
 				10.7.19 Modal dialogs announced and escapable
-</details>
 
 ## 10.8 Fresh Install Testing
-<details>
-
 				10.8.1 Test on fresh WordPress installation (no other plugins)
 				10.8.2 Test activation process (no errors)
 				10.8.3 Test database table creation
@@ -2851,11 +2478,8 @@
 				10.8.17 Test with default WordPress theme
 				10.8.18 Test with popular themes (Astra, GeneratePress)
 				10.8.19 Test with no internet connection (offline mode)
-</details>
 
 ## 10.9 Multi-Environment Testing
-<details>
-
 				10.9.1 Test on PHP 7.4, 8.0, 8.1, 8.2, 8.3
 				10.9.2 Test on WordPress 6.4, 6.5, 6.6, 6.7, latest
 				10.9.3 Test on MySQL 5.6, 5.7, 8.0
@@ -2875,11 +2499,8 @@
 				10.9.17 Test with opcode caching (OPcache, APC)
 				10.9.18 Test with CDN (Cloudflare, KeyCDN - verify compatibility)
 				10.9.19 Test with security plugins (Wordfence, iThemes Security)
-</details>
 
 ## 10.10 Offline Functionality Verification
-<details>
-
 				10.10.1 Disable internet on test environment
 				10.10.2 Activate plugin (should succeed)
 				10.10.3 Access admin pages (should load)
@@ -2899,11 +2520,8 @@
 				10.10.17 All styles apply (bundled, local)
 				10.10.18 No CDN calls in source code
 				10.10.19 No Google Fonts calls in source code
-</details>
 
 ## 10.11 Standalone Audit
-<details>
-
 				10.11.1 Run grep -Ri 'https?://' dist/ vendor/ in plugin directory
 				10.11.2 Verify only results are user-entered affiliate links
 				10.11.3 No googleapis.com, gstatic.com, google.com
@@ -2923,11 +2541,8 @@
 				10.11.17 All assets in dist/ are bundled and minified
 				10.11.18 No update checker code present
 				10.11.19 No telemetry or phone-home code present
-</details>
 
 ## 10.12 🔒 Security Hardening Checklist
-<details>
-
 				10.12.1 All inputs sanitized (100% coverage)
 				10.12.2 All outputs escaped (100% coverage)
 				10.12.3 All SQL queries use prepared statements
@@ -2953,13 +2568,10 @@
 				10.12.23 Permissions follow least privilege principle
 				10.12.24 No hardcoded credentials or API keys
 				10.12.25 Third-party dependencies audited and minimal
-</details>
 
 # Step 11 — 🟢 Step 11 — CI/CD & Packaging
 
 ## 11.1 GitHub Actions Workflow
-<details>
-
 				11.1.1 Workflow file: .github/workflows/main.yml
 				11.1.2 Trigger on: push to main, pull request to main
 				11.1.3 Trigger on: release tag creation
@@ -2989,11 +2601,8 @@
 				11.1.27 Cache: Composer dependencies
 				11.1.28 Cache: NPM dependencies
 				11.1.29 Cache: Build outputs (if applicable)
-</details>
 
 ## 11.2 Packaging Script
-<details>
-
 				11.2.1 Script file: build/package.sh or package.js
 				11.2.2 Install production dependencies: composer install --no-dev --optimize-autoloader
 				11.2.3 Install NPM dependencies: npm ci
@@ -3023,11 +2632,8 @@
 				11.2.27 Exclude: .editorconfig, .gitignore, .gitattributes
 				11.2.28 Exclude: any other development files
 				11.2.29 Create .zip archive: affiliate-product-showcase-{version}.zip
-</details>
 
 ## 11.3 Final Package Audit
-<details>
-
 				11.3.1 Extract .zip to temporary directory
 				11.3.2 Verify no development files present
 				11.3.3 Verify no .env files present
@@ -3047,11 +2653,8 @@
 				11.3.17 Test offline mode (no internet, plugin functions fully)
 				11.3.18 Network tab: zero outbound requests (except user affiliate clicks)
 				11.3.19 Verify file size reasonable (under 5MB for .zip)
-</details>
 
 ## 11.4 Fresh WordPress Install Test
-<details>
-
 				11.4.1 Spin up fresh WordPress install (Docker or local server)
 				11.4.2 WordPress version: latest stable
 				11.4.3 PHP version: 8.3
@@ -3076,11 +2679,8 @@
 				11.4.22 Uninstall plugin
 				11.4.23 Verify cleanup: options deleted
 				11.4.24 Verify cleanup: custom tables deleted
-</details>
 
 ## 11.5 Offline Mode Test
-<details>
-
 				11.5.1 Disable internet connection on test environment
 				11.5.2 Fresh WordPress install
 				11.5.3 Upload plugin .zip via admin (already downloaded)
@@ -3099,11 +2699,8 @@
 				11.5.16 Settings save successfully
 				11.5.17 Affiliate link redirects work (to external sites, which will fail, but redirect logic works)
 				11.5.19 Deactivate plugin - should succeed
-</details>
 
 ## 11.6 Marketplace Asset Preparation
-<details>
-
 				11.6.1 Plugin header comment (Name, Plugin URI, Description, Version, Author, License)
 				11.6.2 README.txt for WordPress.org (required sections)
 				11.6.3 Screenshots (high quality, 1200px+ width)
@@ -3113,11 +2710,8 @@
 				11.6.7 Icon image retina (256×256 px)
 				11.6.8 Plugin logo (SVG or high-res PNG)
 				11.6.9 Video demo/walkthrough (YouTube or Vimeo, 2-5 minutes)
-</details>
 
 ## 11.7 Release Checklist
-<details>
-
 				11.7.1 All tests passing (unit, integration, E2E)
 				11.7.2 Code coverage ≥95%
 				11.7.3 No linting errors or warnings
@@ -3148,13 +2742,10 @@
 				11.7.28 GitHub release created with changelog
 				11.7.29 Plugin submitted to WordPress.org (if applicable)
 				11.7.30 Announcement prepared (blog post, social media)
-</details>
 
 # Step 12 — 🟢 Step 12 — Marketing & Launch
 
 ## 12.1 🛠️ Demo Site Setup
-<details>
-
 				12.1.1 Live demo site URL (e.g., demo.affiliateshowcase.com)
 				12.1.2 Fresh WordPress installation with plugin installed
 				12.1.3 Sample products: 50-100 diverse products across categories
@@ -3179,11 +2770,8 @@
 				12.1.22 Dark mode toggle on demo site
 				12.1.23 Contact form for demo inquiries
 				12.1.24 Link to documentation from demo site
-</details>
 
 ## 12.2 Marketing Copy
-<details>
-
 				12.2.1 Headline: 'The Enterprise-Level Affiliate Product Showcase Plugin for WordPress'
 				12.2.2 Subheadline: '100% Standalone. Zero External Dependencies. Privacy-First.'
 				12.2.3 Unique Selling Points (USPs):
@@ -3195,11 +2783,8 @@
 				12.2.9 Call-to-action: 'Download Free' or 'Get Started'
 				12.2.10 Money-back guarantee (if applicable)
 				12.2.11 Support promise (response time, channels)
-</details>
 
 ## 12.3 (reserved)
-<details>
-
 				12.3.1 Screenshot descriptions optimized for SEO
 				12.3.2 Captions highlighting key features
 				12.3.3 Before/after comparisons (if applicable)
@@ -3214,11 +2799,8 @@
 				12.3.12 Video closed captions: for accessibility
 				12.3.13 Social media graphics (1200×628 for Facebook, 1024×512 for Twitter)
 				12.3.14 Pinterest graphics (1000×1500)
-</details>
 
 ## 12.4 WordPress.org Submission
-<details>
-
 				12.4.1 Create WordPress.org account (if not exists)
 				12.4.2 Submit plugin via Add Your Plugin form
 				12.4.3 Wait for plugin review (1-2 weeks typically)
@@ -3228,11 +2810,8 @@
 				12.4.7 Tag first release (e.g., 1.0.0)
 				12.4.8 Upload screenshots and banner to assets/ folder in SVN
 				12.4.9 Verify plugin page displays correctly
-</details>
 
 ## 12.5 GitHub Release
-<details>
-
 				12.5.1 Create GitHub release for version tag (e.g., v1.0.0)
 				12.5.2 Release title: 'Version 1.0.0 - Initial Release'
 				12.5.3 Release description: changelog with all features
@@ -3242,11 +2821,8 @@
 				12.5.7 Link to documentation in release notes
 				12.5.8 Mention notable features in release notes
 				12.5.9 Credit contributors in release notes
-</details>
 
 ## 12.6 Documentation Site
-<details>
-
 				12.6.1 Dedicated documentation site (docs.affiliateshowcase.com or GitHub Pages)
 				12.6.2 Clean, searchable documentation theme (Docsify, MkDocs, etc.)
 				12.6.3 Sections: Getting Started, Features, Shortcodes, Hooks, Settings, FAQs
@@ -3256,11 +2832,8 @@
 				12.6.7 Screenshots and GIFs throughout docs
 				12.6.8 Responsive design (mobile-friendly)
 				12.6.9 Edit on GitHub links (for contributions)
-</details>
 
 ## 12.7 Support Channels
-<details>
-
 				12.7.1 WordPress.org support forum (monitor daily)
 				12.7.2 GitHub Issues (for bug reports and feature requests)
 				12.7.3 Email support (support@affiliateshowcase.com)
@@ -3270,11 +2843,8 @@
 				12.7.7 Community Slack/Discord (if community grows)
 				12.7.8 Support response time: under 24 hours for email, under 48 hours for forum
 				12.7.9 Clear issue templates on GitHub (bug report, feature request)
-</details>
 
 ## 12.8 Launch Announcement
-<details>
-
 				12.8.1 Blog post on plugin website
 				12.8.2 Social media announcements:
 				12.8.3 Email announcement (if list exists)
@@ -3282,11 +2852,8 @@
 				12.8.5 Submit to WordPress news sites (WPTavern, etc.)
 				12.8.6 Submit to plugin directories (besides WordPress.org)
 				12.8.7 Post in relevant Facebook groups (WordPress, affiliate marketing)
-</details>
 
 ## 12.9 SEO Optimization
-<details>
-
 				12.9.1 Keyword research (affiliate plugin, product showcase, WordPress affiliate, etc.)
 				12.9.2 Plugin page optimized for keywords
 				12.9.3 Blog posts targeting long-tail keywords
@@ -3301,11 +2868,8 @@
 				12.9.12 SSL certificate installed
 				12.9.13 Sitemap submitted to Google Search Console
 				12.9.14 Robots.txt configured
-</details>
 
 ## 12.10 Continuous Improvement
-<details>
-
 				12.10.1 Monitor support channels daily (WordPress.org, GitHub, email)
 				12.10.2 Collect feedback and feature requests
 				12.10.3 Prioritize bugs and security issues (fix within 24-48 hours)
@@ -3326,4 +2890,3 @@
 				12.10.18 User surveys (annually, to guide roadmap)
 				12.10.19 Competitive analysis (monitor competitor features)
 				12.10.20 Iterate on UX based on user feedback and analytics
-</details>

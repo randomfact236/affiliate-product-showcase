@@ -327,16 +327,12 @@ function outputItems(items, baseIndent = 2, parentLevel = 2) {
       // Level 3 → ###, Level 4 → ####, Level 5 → #####
       const headingLevel = '#'.repeat(item.level);
       
-      // Output as a heading instead of indented text
+      // Output as a heading instead of indented text (no details/summary tags)
       output.push(`${headingLevel} ${item.code} ${title}`);
-      output.push('<details>');
-      // summary for subtopics removed to simplify output
-      output.push('');
       
       // Recursively output nested items
       outputItems(item.items, baseIndent, item.level);
       
-      output.push('</details>');
       output.push('');
     } else {
       // No children - render as regular indented item
@@ -357,24 +353,13 @@ for (const step of structure.steps) {
   output.push('');
   
   for (const topic of step.topics) {
-    // Check if topic has items
-    const hasItems = topic.items && topic.items.length > 0;
+    // Output topic header (no collapse markers)
+    output.push(topic.line);
     
-    if (hasItems) {
-      output.push(topic.line);
-      output.push('<details>');
-      // Removed explicit '<summary>Expand topic</summary>' to avoid noisy summary lines
-      output.push('');
-      
-      // Output all items recursively with their own collapse markers
-      outputItems(topic.items, 2, 2);
-      
-      output.push('</details>');
-      output.push('');
-    } else {
-      output.push(topic.line);
-      output.push('');
-    }
+    // Output all items recursively
+    outputItems(topic.items, 2, 2);
+    
+    output.push('');
   }
 }
 
