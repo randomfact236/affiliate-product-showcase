@@ -2,7 +2,7 @@
 
 > This is the editable plan outline.
 >
-> **Workflow rule:** Edit this file, then run `node scripts/sync_todos.cjs`.
+> **Workflow rule:** Edit this file, then run `node scripts/plan_sync_todos.cjs`.
 > Do not manually edit `plan_sync.md`, `plan_sync_todo.md`, or `plan_todos.json` (they are generated).
 
 ## Priority badges

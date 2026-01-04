@@ -1,6 +1,6 @@
 {
-  "generatedBy": "scripts/sync_todos.cjs",
-  "generatedAt": "2026-01-04T09:14:32.442Z",
+  "generatedBy": "scripts/plan_sync_todos.cjs",
+  "generatedAt": "2026-01-04T10:16:31.135Z",
   "todos": [
     {
       "code": "1",

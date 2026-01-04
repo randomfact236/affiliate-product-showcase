@@ -24,16 +24,17 @@ Markers are computed bottom-up with strict priority:
 
 ## Commands
 
+
 Bootstrap once (creates `plan_source.md` from an existing `plan_sync.md`):
 
 ```powershell
-node scripts/sync_todos.cjs --bootstrap
+node scripts/plan_sync_todos.cjs --bootstrap
 ```
 
 Sync after any change:
 
 ```powershell
-node scripts/sync_todos.cjs
+node scripts/plan_sync_todos.cjs
 ```
 
 Update status for a specific code (then auto-sync):

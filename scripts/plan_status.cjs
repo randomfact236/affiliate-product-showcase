@@ -2,7 +2,7 @@
 /*
   plan_status.cjs
 
-  Updates plan/plan_state.json for a specific code, then runs scripts/sync_todos.cjs.
+  Updates plan/plan_state.json for a specific code, then runs scripts/plan_sync_todos.cjs.
 
   Usage:
     node scripts/plan_status.cjs --code 1.2.3 --status in-progress
@@ -15,7 +15,7 @@ const ROOT = path.join(__dirname, '..');
 const PLAN_DIR = path.join(ROOT, 'plan');
 
 const DEFAULT_STATE = path.join(PLAN_DIR, 'plan_state.json');
-const SYNC_SCRIPT = path.join(__dirname, 'sync_todos.cjs');
+const SYNC_SCRIPT = path.join(__dirname, 'plan_sync_todos.cjs');
 
 const VALID_STATUSES = new Set(['pending', 'in-progress', 'blocked', 'cancelled', 'completed']);
 
@@ -62,7 +62,7 @@ function main() {
   const args = parseArgs(process.argv);
 
   const state = loadJson(args.state, {
-    generatedBy: 'scripts/sync_todos.cjs',
+    generatedBy: 'scripts/plan_sync_todos.cjs',
     statusByCode: {}
   });
 
