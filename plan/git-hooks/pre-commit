@@ -1,0 +1,54 @@
+#!/bin/sh
+# Copy of the repository pre-commit hook. Place this file into .git/hooks/pre-commit
+# to enable a confirmation prompt before creating a commit (or allow bypass via env var).
+
+# Allow bypass in CI or explicit environment variable
+if [ -n "$GIT_COMMIT_ALLOW" ] || [ -n "$SKIP_PRE_COMMIT_CONFIRM" ] || [ -n "$CI" ]; then
+  echo "Bypass enabled via environment; proceeding."
+  exit 0
+fi
+
+# Show staged changes (if any)
+staged=$(git diff --cached --name-status)
+if [ -z "$staged" ]; then
+  echo "No staged changes to commit. Aborting."
+  exit 1
+fi
+
+echo "Staged changes:"
+echo "$staged"
+
+# On Windows try a native Allow/Deny dialog via PowerShell; otherwise fall back to a simple ENTER confirmation
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -Command "try { Add-Type -AssemblyName System.Windows.Forms; $r = [System.Windows.Forms.MessageBox]::Show('Proceed with commit?','Confirm',[System.Windows.Forms.MessageBoxButtons]::YesNo); if ($r -eq [System.Windows.Forms.DialogResult]::Yes) { exit 0 } else { exit 1 } } catch { exit 1 }"
+  exit $?
+fi
+if command -v powershell >/dev/null 2>&1; then
+  powershell -NoProfile -Command "try { Add-Type -AssemblyName System.Windows.Forms; $r = [System.Windows.Forms.MessageBox]::Show('Proceed with commit?','Confirm',[System.Windows.Forms.MessageBoxButtons]::YesNo); if ($r -eq [System.Windows.Forms.DialogResult]::Yes) { exit 0 } else { exit 1 } } catch { exit 1 }"
+  exit $?
+fi
+
+# On Windows try a native Allow/Deny dialog via PowerShell; otherwise fall back to a simple ENTER confirmation
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -Command "try { Add-Type -AssemblyName System.Windows.Forms; $r = [System.Windows.Forms.MessageBox]::Show('Proceed with commit?','Confirm',[System.Windows.Forms.MessageBoxButtons]::YesNo); if ($r -eq [System.Windows.Forms.DialogResult]::Yes) { exit 0 } else { exit 1 } } catch { exit 1 }"
+  exit $?
+fi
+if command -v powershell >/dev/null 2>&1; then
+  powershell -NoProfile -Command "try { Add-Type -AssemblyName System.Windows.Forms; $r = [System.Windows.Forms.MessageBox]::Show('Proceed with commit?','Confirm',[System.Windows.Forms.MessageBoxButtons]::YesNo); if ($r -eq [System.Windows.Forms.DialogResult]::Yes) { exit 0 } else { exit 1 } } catch { exit 1 }"
+  exit $?
+fi
+
+# Fallback for interactive TTYs: read from /dev/tty if available (don't consume git's stdin)
+if [ -e /dev/tty ]; then
+  printf "Press ENTER to allow commit (Ctrl+C to abort): "
+  read _ < /dev/tty
+  exit 0
+fi
+if [ -t 0 ]; then
+  printf "Press ENTER to allow commit (Ctrl+C to abort): "
+  read _
+  exit 0
+fi
+
+echo "Non-interactive shell detected. To bypass confirmation set GIT_COMMIT_ALLOW=1 or SKIP_PRE_COMMIT_CONFIRM=1, or use 'git commit --no-verify'."
+exit 1
