@@ -1,3 +1,7 @@
+<!-- GENERATED_BY_SYNC_TODOS: true -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: c51d1349c2c6beb60383b6b649a0a47c135813d6 -->
+<!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
+<!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
 > This is the editable plan outline.
