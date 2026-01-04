@@ -1,5 +1,5 @@
 {
-  "generatedBy": "scripts/plan_sync_todos.cjs",
+  "generatedBy": "plan/plan_sync_todos.cjs",
   "statusByCode": {
     "1": "pending",
     "2": "pending",
@@ -2684,5 +2684,5 @@
     "12.10.19": "pending",
     "12.10.20": "pending"
   },
-  "lastSyncAt": "2026-01-04T10:16:31.124Z"
+  "lastSyncAt": "2026-01-04T10:35:45.278Z"
 }

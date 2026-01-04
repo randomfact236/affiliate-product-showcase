@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 3134ea837744d9bfd0cb1b0cbc5ccc7e902e770b -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 4965cf00dac9f089fc62c2c95ce27b72d7d307d2 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -7,7 +7,7 @@
 
 > This is the editable plan outline.
 >
-> **Workflow rule:** Edit this file, then run `node scripts/plan_sync_todos.cjs`.
+> **Workflow rule:** Edit this file, then run `node plan/plan_sync_todos.cjs`.
 > Do not manually edit `plan_sync.md`, `plan_sync_todo.md`, or `plan_todos.json` (they are generated).
 
 ## Priority badges

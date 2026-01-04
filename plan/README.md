@@ -28,19 +28,19 @@ Markers are computed bottom-up with strict priority:
 Bootstrap once (creates `plan_source.md` from an existing `plan_sync.md`):
 
 ```powershell
-node scripts/plan_sync_todos.cjs --bootstrap
+node plan/plan_sync_todos.cjs --bootstrap
 ```
 
 Sync after any change:
 
 ```powershell
-node scripts/plan_sync_todos.cjs
+node plan/plan_sync_todos.cjs
 ```
 
 Update status for a specific code (then auto-sync):
 
 ```powershell
-node scripts/plan_status.cjs --code 1.1.1 --status in-progress
+node plan/plan_status.cjs --code 1.1.1 --status in-progress
 ```
 
 Valid statuses: `pending`, `in-progress`, `blocked`, `cancelled`, `completed`.
