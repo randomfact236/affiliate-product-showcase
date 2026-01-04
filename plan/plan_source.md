@@ -164,7 +164,7 @@
    1.6.14 `phpunit.xml` with coverage settings
    1.6.15 `phpunit.xml` with 95% coverage requirement
    1.6.16 `phpunit.xml` with testdox output
-   1.6.17 `phpunit.xml` bootstrap file
+   1.6.17 `phpunit.xml` test-setup file
    1.6.18 `phpstan.neon` with level 8
    1.6.19 `phpstan.neon` with WordPress stubs
    1.6.20 `phpstan.neon` with strict rules enabled

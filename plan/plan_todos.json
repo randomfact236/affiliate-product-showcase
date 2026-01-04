@@ -1133,7 +1133,7 @@
     {
       "code": "1.6.17",
       "kind": "item",
-      "title": "`phpunit.xml` bootstrap file",
+      "title": "`phpunit.xml` test-setup file",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
