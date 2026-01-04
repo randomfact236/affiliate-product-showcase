@@ -7,7 +7,7 @@ To install locally (recommended):
 1. Copy the hook into your repository hooks directory:
 
    ```powershell
-   copy .\plan_workflow\git-hooks\pre-push .git\hooks\pre-push
+   copy .\plan\git-hooks\pre-push .git\hooks\pre-push
    ```
 
 2. On Unix-like systems make it executable:
@@ -20,4 +20,4 @@ To install locally (recommended):
 
 Notes:
 - Hooks in `.git/hooks` are local to each clone and are not versioned by git.
-- Keeping a versioned copy in `plan_workflow/git-hooks` lets contributors install the same hooks.
+- Keeping a versioned copy in `plan/git-hooks` lets contributors install the same hooks.

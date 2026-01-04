@@ -8,14 +8,14 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 const inArg = process.argv[2];
 const outArg = process.argv[3];
-const inPath = inArg ? path.resolve(inArg) : path.join(root, 'plan_workflow', 'plan_workflow_sync.md');
+const inPath = inArg ? path.resolve(inArg) : path.join(root, 'plan', 'plan_sync.md');
 let outPath;
 if (outArg) {
   outPath = path.resolve(outArg);
 } else if (inArg) {
   outPath = path.join(path.dirname(inPath), path.basename(inPath, path.extname(inPath)) + '_flat.md');
 } else {
-  outPath = path.join(root, 'plan_workflow', 'plan_workflow_sync_root_copy.md');
+  outPath = path.join(root, 'plan', 'plan_sync_root_copy.md');
 }
 
 if (!fs.existsSync(inPath)) {
