@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: c51d1349c2c6beb60383b6b649a0a47c135813d6 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 90768f47a730a82792cbdace479c597c91291242 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
@@ -35,7 +35,7 @@
    1.1.9 Docker Compose v3.8+ with environment variable substitution
    1.1.10 Volume mounts for plugin development directory
    1.1.11 Network isolation between services
-   1.1.12 Automated database seeding with sample data (See <attachments> above for file contents. You may not need to search or read the file again.)
+   1.1.12 Automated database seeding with sample data
 
 ## 1.2 Folder Structure — create folder structure and repository layout
    1.2.1 `/admin` - Admin interface classes and controllers
