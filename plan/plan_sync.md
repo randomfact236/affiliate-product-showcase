@@ -1,7 +1,8 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 90768f47a730a82792cbdace479c597c91291242 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 2c53dde57c08f0c4d6caca61501c4cf73bc35f82 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
+
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
 > This is the editable plan outline.
@@ -21,10 +22,10 @@
 
 ---
 
-# Step 1 — 🔴 Step 1 — Setup
+# ⏳ Step 1 — 🔴 Step 1 — Setup
 
-## 1.1 Docker Environment — Docker compose setup to bring up local environment and services
-   1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
+## ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
+   ⏳ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
    1.1.2 MySQL 8.0 container with persistent volumes
    1.1.3 Nginx container with SSL/TLS configuration
    1.1.4 Redis container for object caching
@@ -1582,365 +1583,308 @@
    8.1.20 Settings backup (auto-backup before save)
 
 ## 8.2 (generated)
-### 8.2.1 (generated)
-      8.2.1.1 Plugin enable/disable toggle
-      8.2.1.2 Default posts per page (12, 24, 48, custom)
-      8.2.1.3 Default columns (1-6)
-      8.2.1.4 Default layout (grid, list, table, slider)
-      8.2.1.5 Default orderby (featured, date, price, etc.)
-      8.2.1.6 Default order (ASC, DESC)
-      8.2.1.7 Product archive slug (default: affiliate-products)
-      8.2.1.8 Single product slug (default: affiliate-product)
-      8.2.1.9 Category slug (default: product-category)
-      8.2.1.10 Tag slug (default: product-tag)
-
-### 8.2.2 (generated)
-      8.2.2.1 Show product image (global toggle)
-      8.2.2.2 Show brand name
-      8.2.2.3 Show product rating
-      8.2.2.4 Show product price
-      8.2.2.5 Show sale badge
-      8.2.2.6 Show stock status
-      8.2.2.7 Show ribbons
-      8.2.2.8 Show excerpt
-      8.2.2.9 Show features list
-      8.2.2.10 Show CTA button
-      8.2.2.11 Show share buttons
-      8.2.2.12 Show categories/tags
-      8.2.2.13 Excerpt length (words)
-      8.2.2.14 Features count (max number to show)
-
-### 8.2.3 (generated)
-      8.2.3.1 Enable pagination (toggle)
-      8.2.3.2 Pagination type (numbered, prev/next, load more, infinite scroll)
-      8.2.3.3 Pagination position (top, bottom, both)
-      8.2.3.4 Pagination style (default, minimal, pills)
-      8.2.3.5 Show pagination info ("Showing X of Y")
-      8.2.3.6 Scroll to top on page change
-      8.2.3.7 Smooth scroll animation
-
-### 8.2.4 (generated)
-      8.2.4.1 Enable filters (toggle)
-      8.2.4.2 Enable sorting (toggle)
-      8.2.4.3 Enable search (toggle)
-      8.2.4.4 Filter layout (sidebar, top bar, drawer)
-      8.2.4.5 Filter position (left, right)
-      8.2.4.6 Sticky filter sidebar
-      8.2.4.7 Show filter count
-      8.2.4.8 Show active filters
-      8.2.4.9 Default sort option
-      8.2.4.10 Available sort options (multi-select)
-
-### 8.2.5 (generated)
-      8.2.5.1 Enable single product page (or redirect to affiliate link)
-      8.2.5.2 Single product layout (default, sidebar, full-width)
-      8.2.5.3 Show related products
-      8.2.5.4 Related products count
-      8.2.5.5 Show breadcrumbs
-      8.2.5.6 Enable social sharing
-      8.2.5.7 Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)
-      8.2.5.8 Enable product schema markup
-      8.2.5.9 CTA button position (top, bottom, sticky)
-
-### 8.2.6 (generated)
-      8.2.6.1 Enable frontend submission (toggle)
-      8.2.6.2 Submission page (select from pages)
-      8.2.6.3 Allow anonymous submissions
-      8.2.6.4 Require email verification (send confirmation email)
-      8.2.6.5 Auto-approve submissions (or require manual approval)
-      8.2.6.6 Default submission status (draft, pending, publish)
-      8.2.6.7 Notify admin on new submission
-      8.2.6.8 Admin notification email address
-      8.2.6.9 Notify submitter on approval/rejection
-      8.2.6.10 Submission success message (custom text)
-      8.2.6.11 Submission redirect URL (after success)
-      8.2.6.12 Max submissions per user per day
-      8.2.6.13 Max file upload size (MB)
-      8.2.6.14 Allowed file types (JPEG, PNG, WebP, GIF)
-
-### 8.2.7 (generated)
-      8.2.7.1 Who can add products (select roles)
-      8.2.7.2 Who can edit products (select roles)
-      8.2.7.3 Who can delete products (select roles)
-      8.2.7.4 Who can publish products (select roles)
-      8.2.7.5 Who can approve submissions (select roles)
-      8.2.7.6 Who can manage settings (select roles)
+   8.2.1.1 Plugin enable/disable toggle
+   8.2.2.1 Show product image (global toggle)
+   8.2.3.1 Enable pagination (toggle)
+   8.2.4.1 Enable filters (toggle)
+   8.2.5.1 Enable single product page (or redirect to affiliate link)
+   8.2.6.1 Enable frontend submission (toggle)
+   8.2.7.1 Who can add products (select roles)
+   8.2.1.2 Default posts per page (12, 24, 48, custom)
+   8.2.2.2 Show brand name
+   8.2.3.2 Pagination type (numbered, prev/next, load more, infinite scroll)
+   8.2.4.2 Enable sorting (toggle)
+   8.2.5.2 Single product layout (default, sidebar, full-width)
+   8.2.6.2 Submission page (select from pages)
+   8.2.7.2 Who can edit products (select roles)
+   8.2.1.3 Default columns (1-6)
+   8.2.2.3 Show product rating
+   8.2.3.3 Pagination position (top, bottom, both)
+   8.2.4.3 Enable search (toggle)
+   8.2.5.3 Show related products
+   8.2.6.3 Allow anonymous submissions
+   8.2.7.3 Who can delete products (select roles)
+   8.2.1.4 Default layout (grid, list, table, slider)
+   8.2.2.4 Show product price
+   8.2.3.4 Pagination style (default, minimal, pills)
+   8.2.4.4 Filter layout (sidebar, top bar, drawer)
+   8.2.5.4 Related products count
+   8.2.6.4 Require email verification (send confirmation email)
+   8.2.7.4 Who can publish products (select roles)
+   8.2.1.5 Default orderby (featured, date, price, etc.)
+   8.2.2.5 Show sale badge
+   8.2.3.5 Show pagination info ("Showing X of Y")
+   8.2.4.5 Filter position (left, right)
+   8.2.5.5 Show breadcrumbs
+   8.2.6.5 Auto-approve submissions (or require manual approval)
+   8.2.7.5 Who can approve submissions (select roles)
+   8.2.1.6 Default order (ASC, DESC)
+   8.2.2.6 Show stock status
+   8.2.3.6 Scroll to top on page change
+   8.2.4.6 Sticky filter sidebar
+   8.2.5.6 Enable social sharing
+   8.2.6.6 Default submission status (draft, pending, publish)
+   8.2.7.6 Who can manage settings (select roles)
+   8.2.1.7 Product archive slug (default: affiliate-products)
+   8.2.2.7 Show ribbons
+   8.2.3.7 Smooth scroll animation
+   8.2.4.7 Show filter count
+   8.2.5.7 Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)
+   8.2.6.7 Notify admin on new submission
+   8.2.1.8 Single product slug (default: affiliate-product)
+   8.2.2.8 Show excerpt
+   8.2.4.8 Show active filters
+   8.2.5.8 Enable product schema markup
+   8.2.6.8 Admin notification email address
+   8.2.1.9 Category slug (default: product-category)
+   8.2.2.9 Show features list
+   8.2.4.9 Default sort option
+   8.2.5.9 CTA button position (top, bottom, sticky)
+   8.2.6.9 Notify submitter on approval/rejection
+   8.2.1.10 Tag slug (default: product-tag)
+   8.2.2.10 Show CTA button
+   8.2.4.10 Available sort options (multi-select)
+   8.2.6.10 Submission success message (custom text)
+   8.2.2.11 Show share buttons
+   8.2.6.11 Submission redirect URL (after success)
+   8.2.2.12 Show categories/tags
+   8.2.6.12 Max submissions per user per day
+   8.2.2.13 Excerpt length (words)
+   8.2.6.13 Max file upload size (MB)
+   8.2.2.14 Features count (max number to show)
+   8.2.6.14 Allowed file types (JPEG, PNG, WebP, GIF)
 
 ## 8.3 (generated)
-### 8.3.1 (generated)
-      8.3.1.1 Primary color (color picker)
-      8.3.1.2 Secondary color
-      8.3.1.3 Accent color
-      8.3.1.4 Success color (green for CTA, badges)
-      8.3.1.5 Warning color (yellow/orange)
-      8.3.1.6 Error color (red)
-      8.3.1.7 Text color (dark)
-      8.3.1.8 Background color (light)
-      8.3.1.9 Border color
-      8.3.1.10 Color scheme presets (light, dark, custom)
-      8.3.1.11 Dark mode toggle (enable dark mode)
-      8.3.1.12 Dark mode auto (based on system preference)
-
-### 8.3.2 (generated)
-      8.3.2.1 Base font size (px, default 16px)
-      8.3.2.2 Heading font size scale (1.2x, 1.5x, 2x, etc.)
-      8.3.2.3 Line height (1.5, 1.6, 1.75, etc.)
-      8.3.2.4 Letter spacing (normal, wide, wider)
-      8.3.2.5 Font weight (normal, medium, bold)
-      8.3.2.6 Link style (underline, no underline, hover underline)
-      8.3.2.7 Link color (inherit, custom)
-      8.3.2.8 Link hover color
-      8.3.2.9 Typography preset (default, compact, spacious)
-
-### 8.3.3 (generated)
-      8.3.3.1 Card border width (0-5px)
-      8.3.3.2 Card border style (solid, dashed, dotted, none)
-      8.3.3.3 Card border color
-      8.3.3.4 Card border radius (0-20px, full)
-      8.3.3.5 Card shadow (none, sm, md, lg, xl, 2xl)
-      8.3.3.6 Card background color
-      8.3.3.7 Card hover effect (lift, shadow, border, none)
-      8.3.3.8 Card hover lift amount (px)
-      8.3.3.9 Card padding (sm, md, lg, xl)
-      8.3.3.10 Card gap (space between cards, px)
-
-### 8.3.4 (generated)
-      8.3.4.1 Button style (solid, outline, ghost, gradient)
-      8.3.4.2 Button size (sm, md, lg, xl)
-      8.3.4.3 Button text (custom default text, e.g., "View Deal")
-      8.3.4.4 Button color (primary, secondary, custom)
-      8.3.4.5 Button text color
-      8.3.4.6 Button hover color
-      8.3.4.7 Button hover text color
-      8.3.4.8 Button border radius (0-full)
-      8.3.4.9 Button font weight
-      8.3.4.10 Button icon (left, right, none)
-      8.3.4.11 Button icon type (arrow, external link, etc.)
-      8.3.4.12 Button full-width (on mobile)
-
-### 8.3.5 (generated)
-      8.3.5.1 Sale badge color
-      8.3.5.2 Sale badge text color
-      8.3.5.3 Sale badge style (badge, corner, banner)
-      8.3.5.4 Stock badge color (in stock, out of stock)
-      8.3.5.5 Ribbon position (top-left, top-right, etc.)
-      8.3.5.6 Ribbon animation (none, pulse, bounce, rotate)
-      8.3.5.7 Ribbon size (sm, md, lg)
-
-### 8.3.6 (generated)
-      8.3.6.1 Image aspect ratio (1:1, 4:3, 16:9, custom)
-      8.3.6.2 Image object fit (cover, contain, fill)
-      8.3.6.3 Image border radius
-      8.3.6.4 Image hover effect (zoom, fade, slide, none)
-      8.3.6.5 Image hover zoom scale (1.05, 1.1, 1.2)
-      8.3.6.6 Image placeholder type (blur, color, skeleton)
-      8.3.6.7 Image placeholder color
-      8.3.6.8 Lazy load images (toggle)
-
-### 8.3.7 (generated)
-      8.3.7.1 Container max-width (px, full-width, custom)
-      8.3.7.2 Container padding (sm, md, lg, xl)
-      8.3.7.3 Spacing (vertical gap between sections)
-      8.3.7.4 Row gap (vertical gap between rows)
-      8.3.7.5 Column gap (horizontal gap between columns)
-      8.3.7.6 Content spacing (space between card elements)
-      8.3.7.7 Responsive breakpoints (sm, md, lg, xl, custom)
-
-### 8.3.8 (generated)
-      8.3.8.1 Enable animations (toggle)
-      8.3.8.2 Animation type (fade, slide, zoom, none)
-      8.3.8.3 Animation duration (ms)
-      8.3.8.4 Animation easing (ease, linear, ease-in, ease-out, ease-in-out)
-      8.3.8.5 Stagger animation delay (ms between cards)
-      8.3.8.6 Hover animation (scale, rotate, lift)
-      8.3.8.7 Respect prefers-reduced-motion
-
-### 8.3.9 (generated)
-      8.3.9.1 Custom CSS textarea (advanced users)
-      8.3.9.2 CSS editor with syntax highlighting
-      8.3.9.3 CSS validation (basic linting)
-      8.3.9.4 CSS preview (live preview in iframe)
-      8.3.9.5 CSS priority (load order: plugin CSS → custom CSS)
+   8.3.1.1 Primary color (color picker)
+   8.3.2.1 Base font size (px, default 16px)
+   8.3.3.1 Card border width (0-5px)
+   8.3.4.1 Button style (solid, outline, ghost, gradient)
+   8.3.5.1 Sale badge color
+   8.3.6.1 Image aspect ratio (1:1, 4:3, 16:9, custom)
+   8.3.7.1 Container max-width (px, full-width, custom)
+   8.3.8.1 Enable animations (toggle)
+   8.3.9.1 Custom CSS textarea (advanced users)
+   8.3.1.2 Secondary color
+   8.3.2.2 Heading font size scale (1.2x, 1.5x, 2x, etc.)
+   8.3.3.2 Card border style (solid, dashed, dotted, none)
+   8.3.4.2 Button size (sm, md, lg, xl)
+   8.3.5.2 Sale badge text color
+   8.3.6.2 Image object fit (cover, contain, fill)
+   8.3.7.2 Container padding (sm, md, lg, xl)
+   8.3.8.2 Animation type (fade, slide, zoom, none)
+   8.3.9.2 CSS editor with syntax highlighting
+   8.3.1.3 Accent color
+   8.3.2.3 Line height (1.5, 1.6, 1.75, etc.)
+   8.3.3.3 Card border color
+   8.3.4.3 Button text (custom default text, e.g., "View Deal")
+   8.3.5.3 Sale badge style (badge, corner, banner)
+   8.3.6.3 Image border radius
+   8.3.7.3 Spacing (vertical gap between sections)
+   8.3.8.3 Animation duration (ms)
+   8.3.9.3 CSS validation (basic linting)
+   8.3.1.4 Success color (green for CTA, badges)
+   8.3.2.4 Letter spacing (normal, wide, wider)
+   8.3.3.4 Card border radius (0-20px, full)
+   8.3.4.4 Button color (primary, secondary, custom)
+   8.3.5.4 Stock badge color (in stock, out of stock)
+   8.3.6.4 Image hover effect (zoom, fade, slide, none)
+   8.3.7.4 Row gap (vertical gap between rows)
+   8.3.8.4 Animation easing (ease, linear, ease-in, ease-out, ease-in-out)
+   8.3.9.4 CSS preview (live preview in iframe)
+   8.3.1.5 Warning color (yellow/orange)
+   8.3.2.5 Font weight (normal, medium, bold)
+   8.3.3.5 Card shadow (none, sm, md, lg, xl, 2xl)
+   8.3.4.5 Button text color
+   8.3.5.5 Ribbon position (top-left, top-right, etc.)
+   8.3.6.5 Image hover zoom scale (1.05, 1.1, 1.2)
+   8.3.7.5 Column gap (horizontal gap between columns)
+   8.3.8.5 Stagger animation delay (ms between cards)
+   8.3.9.5 CSS priority (load order: plugin CSS → custom CSS)
+   8.3.1.6 Error color (red)
+   8.3.2.6 Link style (underline, no underline, hover underline)
+   8.3.3.6 Card background color
+   8.3.4.6 Button hover color
+   8.3.5.6 Ribbon animation (none, pulse, bounce, rotate)
+   8.3.6.6 Image placeholder type (blur, color, skeleton)
+   8.3.7.6 Content spacing (space between card elements)
+   8.3.8.6 Hover animation (scale, rotate, lift)
+   8.3.1.7 Text color (dark)
+   8.3.2.7 Link color (inherit, custom)
+   8.3.3.7 Card hover effect (lift, shadow, border, none)
+   8.3.4.7 Button hover text color
+   8.3.5.7 Ribbon size (sm, md, lg)
+   8.3.6.7 Image placeholder color
+   8.3.7.7 Responsive breakpoints (sm, md, lg, xl, custom)
+   8.3.8.7 Respect prefers-reduced-motion
+   8.3.1.8 Background color (light)
+   8.3.2.8 Link hover color
+   8.3.3.8 Card hover lift amount (px)
+   8.3.4.8 Button border radius (0-full)
+   8.3.6.8 Lazy load images (toggle)
+   8.3.1.9 Border color
+   8.3.2.9 Typography preset (default, compact, spacious)
+   8.3.3.9 Card padding (sm, md, lg, xl)
+   8.3.4.9 Button font weight
+   8.3.1.10 Color scheme presets (light, dark, custom)
+   8.3.3.10 Card gap (space between cards, px)
+   8.3.4.10 Button icon (left, right, none)
+   8.3.1.11 Dark mode toggle (enable dark mode)
+   8.3.4.11 Button icon type (arrow, external link, etc.)
+   8.3.1.12 Dark mode auto (based on system preference)
+   8.3.4.12 Button full-width (on mobile)
 
 ## 8.4 (generated)
-### 8.4.2 (generated)
-      8.4.2.1 Enable cloaked links (toggle)
-      8.4.2.2 Redirect type (301 permanent, 302 temporary)
-      8.4.2.3 Redirect delay (0 seconds, 1, 2, 3, custom)
-      8.4.2.4 Show interstitial page ("You are leaving...")
-      8.4.2.5 Interstitial page custom message
-      8.4.2.6 Open links in new tab (toggle)
-      8.4.2.7 Add nofollow to affiliate links
-      8.4.2.8 Add sponsored to affiliate links
-      8.4.2.9 Add UGC to affiliate links
-      8.4.2.10 UTM parameters (source, medium, campaign)
-      8.4.2.11 Custom URL parameters (key=value pairs)
-      8.4.2.12 Broken link checker (toggle)
-      8.4.2.13 Broken link check frequency (daily, weekly)
-      8.4.2.14 Broken link notification email
-
-### 8.4.3 (generated)
-      8.4.3.1 Enable rate limiting (toggle)
-      8.4.3.2 Rate limit: submissions per hour per IP
-      8.4.3.3 Rate limit: submissions per day per user
-      8.4.3.4 Rate limit: AJAX requests per minute
-      8.4.3.5 Enable CAPTCHA (toggle, disabled by default)
-      8.4.3.6 CAPTCHA type (math, image, question, honeypot)
-      8.4.3.7 CAPTCHA difficulty (easy, medium, hard)
-      8.4.3.8 CAPTCHA for anonymous only (toggle)
-      8.4.3.9 Honeypot field name (randomize)
-      8.4.3.10 Enable spam protection (toggle)
-      8.4.3.11 Spam keywords (comma-separated list)
-      8.4.3.12 Spam score threshold (0-100)
-      8.4.3.13 Block disposable email domains
-      8.4.3.14 IP blacklist (comma-separated IPs)
-      8.4.3.15 Email domain blacklist
-
-### 8.4.4 (generated)
-      8.4.4.1 Enable caching (toggle)
-      8.4.4.2 Cache duration (transient TTL, seconds)
-      8.4.4.3 Clear cache on product update
-      8.4.4.4 Clear all cache (button)
-      8.4.4.5 Enable lazy loading (toggle)
-      8.4.4.6 Lazy load threshold (px before entering viewport)
-      8.4.4.7 Enable image optimization (toggle)
-      8.4.4.8 Image quality (0-100, compression)
-      8.4.4.9 Generate WebP versions
-      8.4.4.10 Enable minification (CSS, JS, toggle)
-      8.4.4.11 Load scripts in footer
-      8.4.4.12 Defer non-critical JS
-      8.4.4.13 Preload key assets
-      8.4.4.14 Enable HTTP/2 push (if supported)
-      8.4.4.15 Database optimization (button: optimize tables)
-
-### 8.4.5 (generated)
-      8.4.5.1 Enable schema markup (toggle)
-      8.4.5.2 Schema type (Product, AggregateOffer)
-      8.4.5.3 Default brand for schema
-      8.4.5.4 Default availability (InStock, OutOfStock)
-      8.4.5.5 Default condition (NewCondition, RefurbishedCondition)
-      8.4.5.6 Include rating in schema
-      8.4.5.7 Include review count in schema
-      8.4.5.8 Open Graph tags (toggle)
-      8.4.5.9 Twitter Card tags (toggle)
-      8.4.5.10 Canonical URLs (toggle)
-      8.4.5.11 Meta robots (index, noindex, follow, nofollow)
-
-### 8.4.6 (generated)
-      8.4.6.1 CSV column mapping tool
-      8.4.6.2 Import validation (dry run before actual import)
-      8.4.6.3 Import log (success, errors, skipped)
-      8.4.6.4 Export products to CSV
-      8.4.6.6 Export all or filtered products
-      8.4.6.7 Export format (CSV, JSON, XML)
-      8.4.6.8 Include meta data in export
-      8.4.6.9 Include taxonomy data in export
-
-### 8.4.7 (generated)
-      8.4.7.1 Enable debug mode (toggle)
-      8.4.7.2 Debug log level (error, warning, info, debug)
-      8.4.7.3 Debug log destination (file, database, both)
-      8.4.7.4 Clear debug log (button)
-      8.4.7.5 Enable REST API (toggle)
-      8.4.7.6 REST API authentication (WordPress auth, API key, both)
-      8.4.7.7 Generate API key (button)
-      8.4.7.8 API rate limiting (requests per hour)
-      8.4.7.9 Enable WP-CLI commands (toggle)
-      8.4.7.10 Custom hook documentation (link to developer docs)
-      8.4.7.11 Database table prefix (read-only, for reference)
-      8.4.7.12 Plugin version (read-only, for reference)
+   8.4.2.1 Enable cloaked links (toggle)
+   8.4.3.1 Enable rate limiting (toggle)
+   8.4.4.1 Enable caching (toggle)
+   8.4.5.1 Enable schema markup (toggle)
+   8.4.6.1 CSV column mapping tool
+   8.4.7.1 Enable debug mode (toggle)
+   8.4.2.2 Redirect type (301 permanent, 302 temporary)
+   8.4.3.2 Rate limit: submissions per hour per IP
+   8.4.4.2 Cache duration (transient TTL, seconds)
+   8.4.5.2 Schema type (Product, AggregateOffer)
+   8.4.6.2 Import validation (dry run before actual import)
+   8.4.7.2 Debug log level (error, warning, info, debug)
+   8.4.2.3 Redirect delay (0 seconds, 1, 2, 3, custom)
+   8.4.3.3 Rate limit: submissions per day per user
+   8.4.4.3 Clear cache on product update
+   8.4.5.3 Default brand for schema
+   8.4.6.3 Import log (success, errors, skipped)
+   8.4.7.3 Debug log destination (file, database, both)
+   8.4.2.4 Show interstitial page ("You are leaving...")
+   8.4.3.4 Rate limit: AJAX requests per minute
+   8.4.4.4 Clear all cache (button)
+   8.4.5.4 Default availability (InStock, OutOfStock)
+   8.4.6.4 Export products to CSV
+   8.4.7.4 Clear debug log (button)
+   8.4.2.5 Interstitial page custom message
+   8.4.3.5 Enable CAPTCHA (toggle, disabled by default)
+   8.4.4.5 Enable lazy loading (toggle)
+   8.4.5.5 Default condition (NewCondition, RefurbishedCondition)
+   8.4.7.5 Enable REST API (toggle)
+   8.4.2.6 Open links in new tab (toggle)
+   8.4.3.6 CAPTCHA type (math, image, question, honeypot)
+   8.4.4.6 Lazy load threshold (px before entering viewport)
+   8.4.5.6 Include rating in schema
+   8.4.6.6 Export all or filtered products
+   8.4.7.6 REST API authentication (WordPress auth, API key, both)
+   8.4.2.7 Add nofollow to affiliate links
+   8.4.3.7 CAPTCHA difficulty (easy, medium, hard)
+   8.4.4.7 Enable image optimization (toggle)
+   8.4.5.7 Include review count in schema
+   8.4.6.7 Export format (CSV, JSON, XML)
+   8.4.7.7 Generate API key (button)
+   8.4.2.8 Add sponsored to affiliate links
+   8.4.3.8 CAPTCHA for anonymous only (toggle)
+   8.4.4.8 Image quality (0-100, compression)
+   8.4.5.8 Open Graph tags (toggle)
+   8.4.6.8 Include meta data in export
+   8.4.7.8 API rate limiting (requests per hour)
+   8.4.2.9 Add UGC to affiliate links
+   8.4.3.9 Honeypot field name (randomize)
+   8.4.4.9 Generate WebP versions
+   8.4.5.9 Twitter Card tags (toggle)
+   8.4.6.9 Include taxonomy data in export
+   8.4.7.9 Enable WP-CLI commands (toggle)
+   8.4.2.10 UTM parameters (source, medium, campaign)
+   8.4.3.10 Enable spam protection (toggle)
+   8.4.4.10 Enable minification (CSS, JS, toggle)
+   8.4.5.10 Canonical URLs (toggle)
+   8.4.7.10 Custom hook documentation (link to developer docs)
+   8.4.2.11 Custom URL parameters (key=value pairs)
+   8.4.3.11 Spam keywords (comma-separated list)
+   8.4.4.11 Load scripts in footer
+   8.4.5.11 Meta robots (index, noindex, follow, nofollow)
+   8.4.7.11 Database table prefix (read-only, for reference)
+   8.4.2.12 Broken link checker (toggle)
+   8.4.3.12 Spam score threshold (0-100)
+   8.4.4.12 Defer non-critical JS
+   8.4.7.12 Plugin version (read-only, for reference)
+   8.4.2.13 Broken link check frequency (daily, weekly)
+   8.4.3.13 Block disposable email domains
+   8.4.4.13 Preload key assets
+   8.4.2.14 Broken link notification email
+   8.4.3.14 IP blacklist (comma-separated IPs)
+   8.4.4.14 Enable HTTP/2 push (if supported)
+   8.4.3.15 Email domain blacklist
+   8.4.4.15 Database optimization (button: optimize tables)
 
 ## 8.5 (generated)
-### 8.5.1 (generated)
-      8.5.1.1 Export all settings (JSON download)
-      8.5.1.2 Export button
-      8.5.1.3 Export includes: general, styling, advanced
-      8.5.1.4 Export excludes: API keys, sensitive data
-      8.5.1.5 Export filename (auto-generated with date)
-
-### 8.5.2 (generated)
-      8.5.2.1 Import settings from JSON file
-      8.5.2.2 File upload field
-      8.5.2.3 Import button
-      8.5.2.4 Import validation (check file format, version)
-      8.5.2.5 Import preview (show what will be imported)
-      8.5.2.6 Import confirmation (proceed or cancel)
-      8.5.2.7 Import success message
-      8.5.2.8 Import error handling (display errors)
-      8.5.2.9 Backup current settings before import
-      8.5.2.10 Restore from backup (if import fails)
-
-### 8.5.3 (generated)
-      8.5.3.1 Export all products (CSV, JSON)
-      8.5.3.2 Export filtered products (based on current filters)
-      8.5.3.3 Select fields to export (checkboxes)
-      8.5.3.4 Include images in export (URLs only)
-      8.5.3.5 Include categories, tags in export
-      8.5.3.6 Include meta data in export
-      8.5.3.7 Export button
-      8.5.3.8 Export progress indicator (for large datasets)
-      8.5.3.9 Export filename (custom or auto-generated)
-      8.5.3.10 Export format options (CSV, JSON, XML)
-
-### 8.5.4 (generated)
-      8.5.4.1 Import products from CSV
-      8.5.4.2 Import products from JSON
-      8.5.4.3 File upload field
-      8.5.4.4 CSV column mapping tool (map CSV columns to product fields)
-      8.5.4.5 Sample CSV download (template)
-      8.5.4.6 Import mode (create new, update existing, both)
-      8.5.4.7 Match existing by (ID, slug, SKU, title)
-      8.5.4.8 Dry run option (preview import without actually importing)
-      8.5.4.9 Import validation (check data types, required fields)
-      8.5.4.10 Import progress indicator
-      8.5.4.11 Import log (created, updated, skipped, errors)
-      8.5.4.12 Import error handling (display detailed errors)
-      8.5.4.13 Rollback option (undo last import)
+   8.5.1.1 Export all settings (JSON download)
+   8.5.2.1 Import settings from JSON file
+   8.5.3.1 Export all products (CSV, JSON)
+   8.5.4.1 Import products from CSV
+   8.5.1.2 Export button
+   8.5.2.2 File upload field
+   8.5.3.2 Export filtered products (based on current filters)
+   8.5.4.2 Import products from JSON
+   8.5.1.3 Export includes: general, styling, advanced
+   8.5.2.3 Import button
+   8.5.3.3 Select fields to export (checkboxes)
+   8.5.4.3 File upload field
+   8.5.1.4 Export excludes: API keys, sensitive data
+   8.5.2.4 Import validation (check file format, version)
+   8.5.3.4 Include images in export (URLs only)
+   8.5.4.4 CSV column mapping tool (map CSV columns to product fields)
+   8.5.1.5 Export filename (auto-generated with date)
+   8.5.2.5 Import preview (show what will be imported)
+   8.5.3.5 Include categories, tags in export
+   8.5.4.5 Sample CSV download (template)
+   8.5.2.6 Import confirmation (proceed or cancel)
+   8.5.3.6 Include meta data in export
+   8.5.4.6 Import mode (create new, update existing, both)
+   8.5.2.7 Import success message
+   8.5.3.7 Export button
+   8.5.4.7 Match existing by (ID, slug, SKU, title)
+   8.5.2.8 Import error handling (display errors)
+   8.5.3.8 Export progress indicator (for large datasets)
+   8.5.4.8 Dry run option (preview import without actually importing)
+   8.5.2.9 Backup current settings before import
+   8.5.3.9 Export filename (custom or auto-generated)
+   8.5.4.9 Import validation (check data types, required fields)
+   8.5.2.10 Restore from backup (if import fails)
+   8.5.3.10 Export format options (CSV, JSON, XML)
+   8.5.4.10 Import progress indicator
+   8.5.4.11 Import log (created, updated, skipped, errors)
+   8.5.4.12 Import error handling (display detailed errors)
+   8.5.4.13 Rollback option (undo last import)
 
 ## 8.6 (generated)
-### 8.6.1 (generated)
-      8.6.1.1 Quick start guide (steps to add first product)
-      8.6.1.2 Video tutorials (links to videos)
-      8.6.1.3 Documentation links
-      8.6.1.4 FAQ
-      8.6.1.5 Troubleshooting guide
-
-### 8.6.2 (generated)
-      8.6.2.1 Support forum link
-      8.6.2.2 Email support contact
-      8.6.2.3 Bug report form (link to GitHub issues)
-      8.6.2.4 Feature request form
-      8.6.2.5 Live chat widget (if available)
-
-### 8.6.3 (generated)
-      8.6.3.1 WordPress version
-      8.6.3.2 PHP version
-      8.6.3.3 MySQL version
-      8.6.3.4 Server software (Apache, Nginx)
-      8.6.3.5 Active theme
-      8.6.3.6 Active plugins (list)
-      8.6.3.7 Plugin version
-      8.6.3.8 Database tables (list custom tables)
-      8.6.3.9 Memory limit
-      8.6.3.10 Max upload size
-      8.6.3.11 Copy system info (button)
-      8.6.3.12 Download system info (text file)
-
-### 8.6.4 (generated)
-      8.6.4.1 Database repair tool
-      8.6.4.2 Cache clear tool
-      8.6.4.3 Rewrite rules flush tool
-      8.6.4.4 Regenerate thumbnails tool
-      8.6.4.5 Check for updates tool (disabled if update checker removed)
-      8.6.4.6 Plugin reset tool (reset all settings, with confirmation)
-
-### 8.6.5 (generated)
-      8.6.5.1 Plugin name and version
-      8.6.5.2 Developer credits
-      8.6.5.3 License information (GPL v2+)
-      8.6.5.4 Changelog (recent versions)
-      8.6.5.5 Roadmap (upcoming features)
-      8.6.5.6 Donate/sponsor link
+   8.6.1.1 Quick start guide (steps to add first product)
+   8.6.2.1 Support forum link
+   8.6.3.1 WordPress version
+   8.6.4.1 Database repair tool
+   8.6.5.1 Plugin name and version
+   8.6.1.2 Video tutorials (links to videos)
+   8.6.2.2 Email support contact
+   8.6.3.2 PHP version
+   8.6.4.2 Cache clear tool
+   8.6.5.2 Developer credits
+   8.6.1.3 Documentation links
+   8.6.2.3 Bug report form (link to GitHub issues)
+   8.6.3.3 MySQL version
+   8.6.4.3 Rewrite rules flush tool
+   8.6.5.3 License information (GPL v2+)
+   8.6.1.4 FAQ
+   8.6.2.4 Feature request form
+   8.6.3.4 Server software (Apache, Nginx)
+   8.6.4.4 Regenerate thumbnails tool
+   8.6.5.4 Changelog (recent versions)
+   8.6.1.5 Troubleshooting guide
+   8.6.2.5 Live chat widget (if available)
+   8.6.3.5 Active theme
+   8.6.4.5 Check for updates tool (disabled if update checker removed)
+   8.6.5.5 Roadmap (upcoming features)
+   8.6.3.6 Active plugins (list)
+   8.6.4.6 Plugin reset tool (reset all settings, with confirmation)
+   8.6.5.6 Donate/sponsor link
+   8.6.3.7 Plugin version
+   8.6.3.8 Database tables (list custom tables)
+   8.6.3.9 Memory limit
+   8.6.3.10 Max upload size
+   8.6.3.11 Copy system info (button)
+   8.6.3.12 Download system info (text file)
 
 ## 8.7 (generated)
    8.7.1 ColorPicker component (Hue/Saturation/Lightness)
@@ -2885,3 +2829,4 @@
    12.10.18 User surveys (annually, to guide roadmap)
    12.10.19 Competitive analysis (monitor competitor features)
    12.10.20 Iterate on UX based on user feedback and analytics
+

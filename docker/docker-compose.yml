@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: aps_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: wp
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: aps_redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wordpress:
+    image: wordpress:6.7-php8.3-fpm
+    container_name: aps_wordpress
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: "db:3306"
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ../:/var/www/html:cached
+      - ./php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: aps_nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../:/var/www/html:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:80 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: aps_phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: aps_mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  wpcli:
+    image: alpine:3.19
+    container_name: aps_wpcli
+    depends_on:
+      db:
+        condition: service_started
+    volumes:
+      - ../:/var/www/html
+    entrypoint: ["/bin/sh", "-c", "sleep 3600"]
+
+volumes:
+  db_data:
