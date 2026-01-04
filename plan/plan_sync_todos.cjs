@@ -31,11 +31,15 @@ function parseArgs(argv) {
     outTodoJson: DEFAULTS.outTodoJson,
     bootstrap: false,
     quiet: false
+    ,copySource: false
+    ,copyTodo: false
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--bootstrap') args.bootstrap = true;
     else if (a === '--quiet') args.quiet = true;
+    else if (a === '--copy-source') args.copySource = true;
+    else if (a === '--copy-todo') args.copyTodo = true;
     else if (a === '--source') args.source = path.resolve(argv[++i]);
     else if (a === '--state') args.state = path.resolve(argv[++i]);
     else if (a === '--out-plan') args.outPlan = path.resolve(argv[++i]);
@@ -123,14 +127,90 @@ function renderPlanMd(structure, opts) {
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
 
-function renderTodoMd(structure){ const out=[]; out.push('# Synced Todo List (Flattened)'); out.push(''); out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress'); out.push(''); for (const step of structure.steps){ const stepMarker = step.marker ? `${step.marker} ` : ''; out.push(`${stepMarker}Step ${step.code} — ${step.title}`.trimEnd()); for (const topic of step.topics){ const topicMarker = topic.marker ? `${topic.marker} ` : ''; out.push(`  ${topicMarker}${topic.code} ${topic.title}`.trimEnd()); function renderFlat(items){ if (!items) return; for (const item of items){ const marker = item.marker ? `${item.marker} ` : ''; out.push(`    ${marker}${item.code} ${item.title}`.trimEnd()); renderFlat(item.items); } } renderFlat(topic.items); } out.push(''); } return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n'; }
+function renderTodoMd(structure){
+  const out = [];
+  out.push('# Synced Todo List (Flattened)');
+  out.push('');
+  out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
+  out.push('');
+
+  function renderItemsAsList(items, indent){
+    if (!items) return;
+    const pad = '  '.repeat(indent);
+    for (const item of items){
+      const marker = item.marker ? `${item.marker} ` : '';
+      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
+      renderItemsAsList(item.items, indent+1);
+    }
+  }
+
+  for (const step of structure.steps){
+    const stepMarker = step.marker ? `${step.marker} ` : '';
+    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
+    for (const topic of step.topics){
+      const topicMarker = topic.marker ? `${topic.marker} ` : '';
+      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      renderItemsAsList(topic.items, 2);
+    }
+    out.push('');
+  }
+
+  return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
+}
 
 function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', generatedAt: new Date().toISOString(), todos }; }
 
 function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs.existsSync(args.source)){ const currentPlan = readUtf8IfExists(args.outPlan); if (!currentPlan) throw new Error(`Bootstrap failed: no existing generated plan at ${args.outPlan}`); const stripped = stripGeneratedHeader(currentPlan); writeUtf8(args.source, stripped.trimEnd()+'\n'); if (!args.quiet) console.log(`🧩 Bootstrapped plan source: ${args.source}`); }
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
-  const sourceMd = fs.readFileSync(args.source,'utf8'); const parsed = parsePlanSource(sourceMd);
+  const sourceMd = fs.readFileSync(args.source,'utf8');
+  const parsed = parsePlanSource(sourceMd);
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
-  const mergedState = mergeState(parsed, state); deriveMarkers(parsed); saveJsonPretty(args.state, mergedState); const planMd = renderPlanMd(parsed, args); writeUtf8(args.outPlan, planMd); const todoMd = renderTodoMd(parsed); writeUtf8(args.outTodoMd, todoMd); const todoJson = renderTodoJson(parsed); saveJsonPretty(args.outTodoJson, todoJson); if (!args.quiet){ console.log('✅ Sync complete'); console.log(' - Plan:', args.outPlan); console.log(' - Todo MD:', args.outTodoMd); console.log(' - Todo JSON:', args.outTodoJson); console.log(' - State:', args.state); } }
+  const mergedState = mergeState(parsed, state);
+  deriveMarkers(parsed);
+  saveJsonPretty(args.state, mergedState);
+
+  // If requested, emit the original source file as the generated plan (preserving formatting),
+  // but still generate the todo outputs and update state. Use --copy-source to enable.
+  const sourceText = sourceMd;
+  const checksum = sha1(sourceText);
+  const sourceRel = path.relative(ROOT, args.source).replace(/\\/g, '/');
+  const stateRel = path.relative(ROOT, args.state).replace(/\\/g, '/');
+  let planMd;
+  if (args.copySource) {
+    const header = [];
+    header.push('<!-- GENERATED_BY_SYNC_TODOS: true -->');
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ${checksum} -->`);
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_SOURCE: ${sourceRel} -->`);
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
+    header.push('');
+    planMd = header.join('\n') + sourceText.replace(/\r\n/g, '\n');
+  } else {
+    planMd = renderPlanMd(parsed, args);
+  }
+
+  writeUtf8(args.outPlan, planMd);
+  // Allow emitting the original source as the todo MD when requested (preserve exact formatting)
+  if (args.copyTodo) {
+    const header = [];
+    header.push('<!-- GENERATED_BY_SYNC_TODOS: true -->');
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ${checksum} -->`);
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_SOURCE: ${sourceRel} -->`);
+    header.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
+    header.push('');
+    writeUtf8(args.outTodoMd, header.join('\n') + sourceText.replace(/\r\n/g, '\n'));
+  } else {
+    const todoMd = renderTodoMd(parsed);
+    writeUtf8(args.outTodoMd, todoMd);
+  }
+  const todoJson = renderTodoJson(parsed);
+  saveJsonPretty(args.outTodoJson, todoJson);
+  if (!args.quiet){
+    console.log('✅ Sync complete');
+    console.log(' - Plan:', args.outPlan);
+    console.log(' - Todo MD:', args.outTodoMd);
+    console.log(' - Todo JSON:', args.outTodoJson);
+    console.log(' - State:', args.state);
+  }
+}
 
 try{ main(); } catch(err){ console.error('❌', err && err.message ? err.message : err); process.exit(1); }
