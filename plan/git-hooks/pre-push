@@ -1,6 +1,6 @@
 #!/bin/sh
 # Copy of the repository pre-push hook. Place this file into .git/hooks/pre-push
-# to enable the interactive confirmation before pushing.
+# to enable a single-Enter confirmation before pushing (or allow bypass via env var).
 
 remote_name="$1"
 remote_url="$2"
@@ -8,20 +8,28 @@ if [ -n "$remote_name" ] || [ -n "$remote_url" ]; then
   echo "About to push to ${remote_name:-(remote)} ${remote_url:-(url)}"
 fi
 
+# Allow bypass in CI or explicit environment variable
+if [ -n "$GIT_PUSH_ALLOW" ] || [ -n "$SKIP_PRE_PUSH_CONFIRM" ] || [ -n "$CI" ]; then
+  echo "Bypass enabled via environment; proceeding."
+  exit 0
+fi
+
+# If we have a TTY (interactive), prompt to press ENTER to continue
+if [ -t 0 ]; then
+  printf "Press ENTER to confirm push to %s %s (Ctrl+C to abort): " "${remote_name:-origin}" "${remote_url:-}"
+  read _
+  exit 0
+fi
+
+# If on Windows and pwsh/powershell available, try a PowerShell interactive read
 if command -v pwsh >/dev/null 2>&1; then
-  pwsh -NoProfile -NonInteractive -Command "Write-Host 'Confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Write-Host ': Type 'yes' to confirm'; \$ans = Read-Host 'Confirm push (yes to proceed)'; if (\$ans -ne 'yes') { Write-Host 'Push aborted.'; exit 1 }; exit 0"
+  pwsh -NoProfile -Command "try { Write-Host 'Press ENTER to confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Read-Host ''; exit 0 } catch { Write-Host 'Non-interactive shell; aborting.'; exit 1 }"
   exit $?
 fi
-
 if command -v powershell >/dev/null 2>&1; then
-  powershell -NoProfile -NonInteractive -Command "Write-Host 'Confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Write-Host ': Type 'yes' to confirm'; \$ans = Read-Host 'Confirm push (yes to proceed)'; if (\$ans -ne 'yes') { Write-Host 'Push aborted.'; exit 1 }; exit 0"
+  powershell -NoProfile -Command "try { Write-Host 'Press ENTER to confirm push to ' -NoNewline; Write-Host '${remote_name:-origin}' -ForegroundColor Cyan -NoNewline; Read-Host ''; exit 0 } catch { Write-Host 'Non-interactive shell; aborting.'; exit 1 }"
   exit $?
 fi
 
-printf "Confirm push to %s %s - type 'yes' to confirm: " "${remote_name:-origin}" "${remote_url:-}" 
-read ans
-if [ "$ans" != "yes" ]; then
-  echo "Push aborted."
-  exit 1
-fi
-exit 0
+echo "Non-interactive shell detected. To bypass confirmation set GIT_PUSH_ALLOW=1 or SKIP_PRE_PUSH_CONFIRM=1, or run 'git push --no-verify'."
+exit 1
