@@ -73,7 +73,30 @@ Actionable remediation:
 3. Ensure CI workflow runs `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
 4. If `vendor/` still contains submodule/gitlink references, remove submodule metadata and re-create a clean commit without those entries.
 
-I can run the `git rm -r --cached vendor` + `.gitignore` update and push now; would you like me to proceed? (This will remove vendor from history going forward but will not rewrite past commits.)
+# I can run the `git rm -r --cached vendor` + `.gitignore` update and push now; would you like me to proceed? (This will remove vendor from history going forward but will not rewrite past commits.)
+
+## CI: GitHub Actions failure (Issue #27)
+
+- **Triggered:** recent push to `main` by @randomfact236
+- **Status:** Failure during `composer install` / `phpunit` — exit code 1
+- **Run details:** `composer install` reported "Nothing to install, update or remove" then failed generating autoload files; job failed in ~51s
+- **Error output (relevant snippets):**
+   - "Generating autoload files"
+   - "Error: Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
+   - In ClassMapGenerator.php line 137: Could not scan for classes inside ... which does not appear to be a file nor a folder
+
+Notes: Composer reports dependencies satisfied but autoload generation fails because the runner's checkout contains `vendor/` entries that point to missing paths or gitlink entries. This prevents ClassMapGenerator from scanning and aborts the build.
+
+Immediate remediation (same as prior suggestions):
+
+1. Remove tracked `vendor/` from the repository root:
+    - `git rm -r --cached vendor`
+    - Commit and push the change.
+2. Ensure `vendor/` is listed in `.gitignore`.
+3. Update CI workflow to run `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
+4. If `vendor/` contains submodule/gitlink references, remove submodule metadata and create a clean commit without those entries.
+
+If you want, I can run the `git rm -r --cached vendor` + `.gitignore` update and push now.
 
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
