@@ -84,14 +84,40 @@ Actionable remediation:
    - "Generating autoload files"
    - "Error: Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
    - In ClassMapGenerator.php line 137: Could not scan for classes inside ... which does not appear to be a file nor a folder
-
 Notes: Composer reports dependencies satisfied but autoload generation fails because the runner's checkout contains `vendor/` entries that point to missing paths or gitlink entries. This prevents ClassMapGenerator from scanning and aborts the build.
+
+Observed run timeline / durations (from CI run): 1s, 26s, 2s, 1s, 5s, 15s, 0s
+
+Composer command executed by CI:
+
+```
+composer install --no-interaction --no-progress --prefer-dist
+```
+
+Observed composer output (copied from run):
+
+```
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Nothing to install, update or remove
+Generating autoload files
+Error: Could not scan for classes inside "/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/" which does not appear to be a file nor a folder
+
+In ClassMapGenerator.php line 137:
+                                                                                
+   Could not scan for classes inside "/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/" which does not  
+   appear to be a file nor a folder                                             
+
+Error: Process completed with exit code 1.
+```
+
+- **User note:** still got this error
 
 Immediate remediation (same as prior suggestions):
 
 1. Remove tracked `vendor/` from the repository root:
-    - `git rm -r --cached vendor`
-    - Commit and push the change.
+      - `git rm -r --cached vendor`
+      - Commit and push the change.
 2. Ensure `vendor/` is listed in `.gitignore`.
 3. Update CI workflow to run `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
 4. If `vendor/` contains submodule/gitlink references, remove submodule metadata and create a clean commit without those entries.
