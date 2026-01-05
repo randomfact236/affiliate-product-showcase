@@ -35,6 +35,26 @@ jobs:
           ls -la
           echo "Top-level files:" && ls -la | sed -n '1,200p'
 
+      - name: Composer files diagnostics (debug)
+        run: |
+          set -e
+          echo "pwd: $(pwd)"
+          echo "git status:" && (git status --porcelain=v1 || true)
+          echo "Searching for composer.json:" && (find . -maxdepth 4 -name composer.json -print || true)
+          echo "Searching for composer.lock:" && (find . -maxdepth 4 -name composer.lock -print || true)
+          echo "--- composer.json (if present) ---"
+          if [ -f composer.json ]; then
+            sed -n '1,200p' composer.json
+          else
+            echo "composer.json not found in $(pwd)"
+          fi
+          echo "--- composer.lock (if present) ---"
+          if [ -f composer.lock ]; then
+            sed -n '1,200p' composer.lock
+          else
+            echo "composer.lock not found in $(pwd)"
+          fi
+
       - name: Cache Composer
         uses: actions/cache@v4
         with:
@@ -80,7 +100,7 @@ jobs:
           set -e
           echo "Waiting for MySQL service to be ready..."
           for i in {1..60}; do
-            if mysqladmin ping -h mysql -P 3306 -uroot -proot >/dev/null 2>&1; then
+            if mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot >/dev/null 2>&1; then
               echo "MySQL is up"
               break
             fi
@@ -90,14 +110,14 @@ jobs:
 
       - name: Show MySQL status
         run: |
-          mysql -h mysql -uroot -proot -e "SELECT VERSION();"
-          mysql -h mysql -uroot -proot -e "SHOW DATABASES;"
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT VERSION();"
+          mysql -h 127.0.0.1 -uroot -proot -e "SHOW DATABASES;"
 
       - name: Wait for DB user 'wp' and database readiness
         run: |
           echo "Waiting for 'wp' user and 'wordpress' database to be ready..."
           for i in {1..30}; do
-            if mysql -h mysql -uwp -pwp -e "SELECT 1 FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='wordpress'" >/dev/null 2>&1; then
+            if mysql -h 127.0.0.1 -uwp -pwp -e "SELECT 1 FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='wordpress'" >/dev/null 2>&1; then
               echo "wp user / wordpress DB accessible"
               break
             fi
@@ -107,7 +127,7 @@ jobs:
 
       - name: Seed test database (verbose)
         env:
-          DB_HOST: mysql
+          DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_USER: wp
           DB_PASS: wp
@@ -119,7 +139,7 @@ jobs:
 
       - name: Run PHPUnit (verbose)
         env:
-          DB_HOST: mysql
+          DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_USER: wp
           DB_PASS: wp
