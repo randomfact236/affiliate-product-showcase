@@ -1,129 +1,7 @@
-# GENERATED_BY_SYNC_TODOS: true -->
-# GENERATED_BY_SYNC_TODOS_CHECKSUM: d344b62ce5254e555a0e8c6af59ca0deee67b9e0 -->
-# GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
-# GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
-
-<details>
-<summary>CI: GitHub Actions failure (Issue #23) — expand</summary>
-
-## CI: GitHub Actions failure (Issue #23)
-
-  - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
-  - "The process '/usr/bin/git' failed with exit code 128"
-
-Likely cause: the `vendor/` directory (or parts of it) were committed to the repository and contain gitlink entries (mode 160000). This can expose submodule/gitlink state that fails on the runner and prevents Composer/PHAR expectations from matching the local layout.
-
-Recommended remediation (short):
-
-1. Remove committed `vendor/` contents from the repository and stop tracking it:
-   - `git rm -r --cached vendor`
-4. Re-run CI and iterate: enable verbose Composer output if failures continue.
-
-Next actions (tracked): remove `vendor/` from git, add to `.gitignore`, update CI workflow to run `composer install`, then re-run tests.
-
-</details>
-
-<details>
-<summary>CI: GitHub Actions failure (Issue #24) — expand</summary>
-
-## CI: GitHub Actions failure (Issue #24)
-
-- **Triggered:** push by @randomfact236 (commit `b5562f7`) to `main`
-- **Status:** Failure — `phpunit` exited with code 1; `git` returned exit code 128
-- **Run details:** job ran ~1 minute after push; total duration reported 56s
-- **Annotations:** 2 errors and 1 warning. Key error messages:
-   - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
-   - "The process '/usr/bin/git' failed with exit code 128"
-
-
-## CI: GitHub Actions failure (Issue #25)
-
-Recommended remediation: same as Issue #23 (see above) — remove `vendor/` from the repo, add `vendor/` to `.gitignore`, and update CI to run `composer install` before tests. If you want, I can run the `git rm --cached` sequence now and push the `.gitignore` update.
-
-## CI: GitHub Actions failure (Issue #25)
-
-- **Triggered:** push by @randomfact236 (commit `f3f1192`) to `main`
-- **Status:** Failure — `phpunit` exited with code 1; `git` returned exit code 128
-- **Run details:** job ran ~1 minute after push; total duration reported 1m 3s
-- **Annotations:** 2 errors and 1 warning. Key error messages (same as previous runs):
-   - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
-   - "The process '/usr/bin/git' failed with exit code 128"
-
-User note: CI still fails after plan updates — "still got error".
-
-Suggested next step: remove `vendor/` from the repo and add to `.gitignore`, then update CI to run `composer install` before executing `phpunit`. If you'd like, I can perform the `git rm --cached vendor` + `.gitignore` update and push now.
-
-## CI: GitHub Actions failure (Issue #26)
-
-- **Triggered:** push by @randomfact236 (recent commit to `main`)
-- **Status:** Failure during `composer install` / `phpunit` — exit code 1
-- **Run details:** `composer install` reported "Nothing to install, update or remove" then attempted to generate autoload files and failed; total job time ~52s
-- **Error output (relevant snippets):**
-   - "Generating autoload files"
-   - "Error: Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
-   - In ClassMapGenerator.php line 137: Could not scan for classes inside ... which does not appear to be a file nor a folder
-
-Diagnosis: Composer completed install (using lockfile) but the autoloader generation failed because Composer expects `vendor/phpunit/phpunit/src/` to be a real directory. The runner's checkout contains `vendor/` entries that appear as gitlinks or otherwise point to missing paths, causing ClassMapGenerator to abort.
-
-Actionable remediation:
-
-1. Remove tracked `vendor/` from the repository root to avoid shipping platform-specific or gitlink entries:
-    - `git rm -r --cached vendor`
-    - Commit the change and push.
-2. Add `vendor/` to `.gitignore` if not already ignored.
-3. Ensure CI workflow runs `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
-4. If `vendor/` still contains submodule/gitlink references, remove submodule metadata and re-create a clean commit without those entries.
-
-# I can run the `git rm -r --cached vendor` + `.gitignore` update and push now; would you like me to proceed? (This will remove vendor from history going forward but will not rewrite past commits.)
-
-## CI: GitHub Actions failure (Issue #27)
-
-- **Triggered:** recent push to `main` by @randomfact236
-- **Status:** Failure during `composer install` / `phpunit` — exit code 1
-- **Run details:** `composer install` reported "Nothing to install, update or remove" then failed generating autoload files; job failed in ~51s
-- **Error output (relevant snippets):**
-   - "Generating autoload files"
-   - "Error: Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
-   - In ClassMapGenerator.php line 137: Could not scan for classes inside ... which does not appear to be a file nor a folder
-Notes: Composer reports dependencies satisfied but autoload generation fails because the runner's checkout contains `vendor/` entries that point to missing paths or gitlink entries. This prevents ClassMapGenerator from scanning and aborts the build.
-
-Observed run timeline / durations (from CI run): 1s, 26s, 2s, 1s, 5s, 15s, 0s
-
-Composer command executed by CI:
-
-```
-composer install --no-interaction --no-progress --prefer-dist
-```
-
-Observed composer output (copied from run):
-
-```
-Installing dependencies from lock file (including require-dev)
-Verifying lock file contents can be installed on current platform.
-Nothing to install, update or remove
-Generating autoload files
-Error: Could not scan for classes inside "/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/" which does not appear to be a file nor a folder
-
-In ClassMapGenerator.php line 137:
-                                                                                
-   Could not scan for classes inside "/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/" which does not  
-   appear to be a file nor a folder                                             
-
-Error: Process completed with exit code 1.
-```
-
-- **User note:** still got this error
-
-Immediate remediation (same as prior suggestions):
-
-1. Remove tracked `vendor/` from the repository root:
-      - `git rm -r --cached vendor`
-      - Commit and push the change.
-2. Ensure `vendor/` is listed in `.gitignore`.
-3. Update CI workflow to run `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
-4. If `vendor/` contains submodule/gitlink references, remove submodule metadata and create a clean commit without those entries.
-
-If you want, I can run the `git rm -r --cached vendor` + `.gitignore` update and push now.
+<!-- GENERATED_BY_SYNC_TODOS: true -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: bd9521289d09cd0902e9d840294ffbe66ac981a6 -->
+<!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
+<!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
@@ -144,32 +22,9 @@ If you want, I can run the `git rm -r --cached vendor` + `.gitignore` update and
 
 ---
 
-# ⏳ Step 1 — 🔴 Step 1 — Setup
+# Step 1 — 🔴 Step 1 — Setup
 
-## ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
-   ⏳ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-      ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
-      ⏳ 1.1.1.2 Configure environment variables and DB connection for container
-      ⏳ 1.1.1.3 Mount plugin source into container for development
-      ⏳ 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
-      ⏳ 1.1.1.5 Add container healthcheck and CI integration tests
-      ⏳ 1.1.1.6 Document WP-CLI helper commands and test entrypoints
-   ⏳ 1.1.2 MySQL 8.0 container with persistent volumes
-      ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
-      ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
-      ⏳ 1.1.2.3 Configure MySQL environment variables and credentials for compose
-      ⏳ 1.1.2.4 Add DB healthcheck and readiness probe for compose
-      ⏳ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
-   1.1.3 Nginx container with SSL/TLS configuration
-   1.1.4 Redis container for object caching
-   1.1.5 MailHog container for email testing
-   1.1.6 phpMyAdmin container for database management
-   1.1.7 WP-CLI container for automation tasks
-   1.1.8 Custom healthcheck scripts for all services
-   1.1.9 Docker Compose v3.8+ with environment variable substitution
-   1.1.10 Volume mounts for plugin development directory
-   1.1.11 Network isolation between services
-   1.1.12 Automated database seeding with sample data
+## 1.1 Docker Environment — Docker compose setup to bring up local environment and services
 
 ## 1.2 Folder Structure — create folder structure and repository layout
    1.2.1 Framework: WORDPRESS PLUGIN STRUCTURE (with Tailwind + Vite)

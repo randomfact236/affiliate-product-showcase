@@ -2,20 +2,32 @@
 const fs = require('fs');
 const path = require('path');
 
-const filePath = path.join(__dirname, '..', 'plan', 'plan_source.md');
-let content = fs.readFileSync(filePath, 'utf8');
+const root = path.join(__dirname, '..');
+
+function walk(dir) {
+  const results = [];
+  const list = fs.readdirSync(dir, { withFileTypes: true });
+  for (const ent of list) {
+    if (ent.name === 'node_modules' || ent.name === 'vendor' || ent.name === '.git') continue;
+    const full = path.join(dir, ent.name);
+    if (ent.isDirectory()) {
+      results.push(...walk(full));
+    } else if (ent.isFile() && full.toLowerCase().endsWith('.md')) {
+      results.push(full);
+    }
+  }
+  return results;
+}
 
 function format(text) {
   const lines = text.split(/\r?\n/);
   const out = lines.map((line) => {
-    // convert '#### ' headings to 3-space indented bullets
     if (/^\s*####\s+/.test(line)) {
       const rest = line.replace(/^\s*####\s+/, '').trim();
       return '   - ' + rest;
     }
 
-    // ensure lines like '- 1.1.1.1' have exactly 3 spaces before the '- '
-    if (/^\s*-\s+\d+\.\d+\.\d+/.test(line) || /^\s*-\s+\d+\.\d+/.test(line)) {
+    if (/^\s*-\s+\d+(?:\.\d+)+/.test(line)) {
       const rest = line.replace(/^\s*-\s+/, '').trim();
       return '   - ' + rest;
     }
@@ -25,19 +37,39 @@ function format(text) {
   return out.join('\n');
 }
 
-const formatted = format(content);
-if (process.argv.includes('--check')) {
+const files = walk(root);
+if (files.length === 0) {
+  console.log('No markdown files found.');
+  process.exit(0);
+}
+
+const checkOnly = process.argv.includes('--check');
+const changed = [];
+
+for (const fp of files) {
+  let content = fs.readFileSync(fp, 'utf8');
+  const formatted = format(content);
   if (formatted !== content) {
-    console.error('plan_source.md is not formatted. Run the formatter to fix it.');
+    changed.push(fp);
+    if (!checkOnly) {
+      fs.writeFileSync(fp, formatted, 'utf8');
+      console.log(path.relative(root, fp) + ' formatted and written.');
+    }
+  }
+}
+
+if (checkOnly) {
+  if (changed.length > 0) {
+    console.error('Formatted files differ:');
+    changed.forEach((f) => console.error(' - ' + path.relative(root, f)));
     process.exit(1);
   }
-  console.log('plan_source.md formatting OK');
+  console.log('All markdown files formatted.');
   process.exit(0);
 } else {
-  if (formatted !== content) {
-    fs.writeFileSync(filePath, formatted, 'utf8');
-    console.log('plan_source.md formatted and written.');
+  if (changed.length === 0) {
+    console.log('All markdown files already formatted.');
   } else {
-    console.log('plan_source.md already formatted.');
+    console.log('Formatted ' + changed.length + ' files.');
   }
 }
