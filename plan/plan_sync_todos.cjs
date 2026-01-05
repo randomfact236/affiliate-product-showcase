@@ -224,7 +224,37 @@ function renderPlanMd(structure, opts) {
   out.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
   out.push('');
   const headerLines = structure.headerLines || []; if (headerLines.length) { out.push(...headerLines); out.push(''); }
-  for (const step of structure.steps) { const stepMarker = step.marker ? `${step.marker} ` : ''; const stepTitle = step.title ? step.title : ''; out.push(`# ${stepMarker}Step ${step.code} — ${stepTitle}`.trimEnd()); out.push(''); for (const topic of step.topics) { const topicMarker = topic.marker ? `${topic.marker} ` : ''; out.push(`## ${topicMarker}${topic.code} ${topic.title}`.trimEnd()); function renderItems(items, indentLevel) { if (!items || items.length===0) return; for (const item of items) { const marker = item.marker ? `${item.marker} ` : ''; const indent = '   '.repeat(Math.max(0, indentLevel)); out.push(`${indent}${marker}${item.code} ${item.title}`.trimEnd()); renderItems(item.items, indentLevel+1); } } renderItems(topic.items,1); out.push(''); } }
+  for (const step of structure.steps) {
+    const stepMarker = step.marker ? `${step.marker} ` : '';
+    const stepTitle = step.title ? step.title : '';
+    out.push(`# ${stepMarker}Step ${step.code} — ${stepTitle}`.trimEnd());
+    out.push('');
+    for (const topic of step.topics) {
+      const topicMarker = topic.marker ? `${topic.marker} ` : '';
+      out.push(`## ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+
+      function renderItems(items, indentLevel) {
+        if (!items || items.length === 0) return;
+        for (const item of items) {
+          const marker = item.marker ? `${item.marker} ` : '';
+          // If the original source line for this item started with one or
+          // more '#' characters, preserve that heading level in the
+          // generated plan so editors can fold/expand the section.
+          if (item.rawLine && /^#+\s+/.test(item.rawLine)) {
+            const hashes = (item.rawLine.match(/^#+/) || [''])[0];
+            out.push(`${hashes} ${marker}${item.code} ${item.title}`.trimEnd());
+          } else {
+            const indent = '   '.repeat(Math.max(0, indentLevel));
+            out.push(`${indent}${marker}${item.code} ${item.title}`.trimEnd());
+          }
+          renderItems(item.items, indentLevel + 1);
+        }
+      }
+
+      renderItems(topic.items, 1);
+      out.push('');
+    }
+  }
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
 
