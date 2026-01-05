@@ -1,19 +1,115 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T11:28:56.024Z",
+  "generatedAt": "2026-01-05T11:52:48.462Z",
   "todos": [
     {
       "code": "1",
       "kind": "step",
       "title": "🔴 Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.1.1",
+      "kind": "item",
+      "title": "WordPress 6.7+ container with PHP 8.3-fpm-alpine",
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.1.2",
+      "kind": "item",
+      "title": "MySQL 8.0 container with persistent volumes",
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.1.3",
+      "kind": "item",
+      "title": "Nginx container with SSL/TLS configuration",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.4",
+      "kind": "item",
+      "title": "Redis container for object caching",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.5",
+      "kind": "item",
+      "title": "MailHog container for email testing",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.6",
+      "kind": "item",
+      "title": "phpMyAdmin container for database management",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.7",
+      "kind": "item",
+      "title": "WP-CLI container for automation tasks",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8",
+      "kind": "item",
+      "title": "Custom healthcheck scripts for all services",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.9",
+      "kind": "item",
+      "title": "Docker Compose v3.8+ with environment variable substitution",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10",
+      "kind": "item",
+      "title": "Volume mounts for plugin development directory",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.11",
+      "kind": "item",
+      "title": "Network isolation between services",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.12",
+      "kind": "item",
+      "title": "Automated database seeding with sample data",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12675,57 +12771,17 @@
       "marker": ""
     },
     {
+      "code": "8.2.1",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.2.1.1",
       "kind": "item",
       "title": "Plugin enable/disable toggle",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.2.1",
-      "kind": "item",
-      "title": "Show product image (global toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.1",
-      "kind": "item",
-      "title": "Enable pagination (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.1",
-      "kind": "item",
-      "title": "Enable filters (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.1",
-      "kind": "item",
-      "title": "Enable single product page (or redirect to affiliate link)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.1",
-      "kind": "item",
-      "title": "Enable frontend submission (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.1",
-      "kind": "item",
-      "title": "Who can add products (select roles)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12739,105 +12795,9 @@
       "marker": ""
     },
     {
-      "code": "8.2.2.2",
-      "kind": "item",
-      "title": "Show brand name",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.2",
-      "kind": "item",
-      "title": "Pagination type (numbered, prev/next, load more, infinite scroll)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.2",
-      "kind": "item",
-      "title": "Enable sorting (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.2",
-      "kind": "item",
-      "title": "Single product layout (default, sidebar, full-width)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.2",
-      "kind": "item",
-      "title": "Submission page (select from pages)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.2",
-      "kind": "item",
-      "title": "Who can edit products (select roles)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.2.1.3",
       "kind": "item",
       "title": "Default columns (1-6)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.2.3",
-      "kind": "item",
-      "title": "Show product rating",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.3",
-      "kind": "item",
-      "title": "Pagination position (top, bottom, both)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.3",
-      "kind": "item",
-      "title": "Enable search (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.3",
-      "kind": "item",
-      "title": "Show related products",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.3",
-      "kind": "item",
-      "title": "Allow anonymous submissions",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.3",
-      "kind": "item",
-      "title": "Who can delete products (select roles)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12851,105 +12811,9 @@
       "marker": ""
     },
     {
-      "code": "8.2.2.4",
-      "kind": "item",
-      "title": "Show product price",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.4",
-      "kind": "item",
-      "title": "Pagination style (default, minimal, pills)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.4",
-      "kind": "item",
-      "title": "Filter layout (sidebar, top bar, drawer)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.4",
-      "kind": "item",
-      "title": "Related products count",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.4",
-      "kind": "item",
-      "title": "Require email verification (send confirmation email)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.4",
-      "kind": "item",
-      "title": "Who can publish products (select roles)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.2.1.5",
       "kind": "item",
       "title": "Default orderby (featured, date, price, etc.)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.2.5",
-      "kind": "item",
-      "title": "Show sale badge",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.5",
-      "kind": "item",
-      "title": "Show pagination info (\"Showing X of Y\")",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.5",
-      "kind": "item",
-      "title": "Filter position (left, right)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.5",
-      "kind": "item",
-      "title": "Show breadcrumbs",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.5",
-      "kind": "item",
-      "title": "Auto-approve submissions (or require manual approval)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.5",
-      "kind": "item",
-      "title": "Who can approve submissions (select roles)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12963,97 +12827,9 @@
       "marker": ""
     },
     {
-      "code": "8.2.2.6",
-      "kind": "item",
-      "title": "Show stock status",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.6",
-      "kind": "item",
-      "title": "Scroll to top on page change",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.6",
-      "kind": "item",
-      "title": "Sticky filter sidebar",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.6",
-      "kind": "item",
-      "title": "Enable social sharing",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.6",
-      "kind": "item",
-      "title": "Default submission status (draft, pending, publish)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.7.6",
-      "kind": "item",
-      "title": "Who can manage settings (select roles)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.2.1.7",
       "kind": "item",
       "title": "Product archive slug (default: affiliate-products)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.2.7",
-      "kind": "item",
-      "title": "Show ribbons",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.3.7",
-      "kind": "item",
-      "title": "Smooth scroll animation",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.7",
-      "kind": "item",
-      "title": "Show filter count",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.7",
-      "kind": "item",
-      "title": "Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.7",
-      "kind": "item",
-      "title": "Notify admin on new submission",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13067,73 +12843,9 @@
       "marker": ""
     },
     {
-      "code": "8.2.2.8",
-      "kind": "item",
-      "title": "Show excerpt",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.8",
-      "kind": "item",
-      "title": "Show active filters",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.8",
-      "kind": "item",
-      "title": "Enable product schema markup",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.8",
-      "kind": "item",
-      "title": "Admin notification email address",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.2.1.9",
       "kind": "item",
       "title": "Category slug (default: product-category)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.2.9",
-      "kind": "item",
-      "title": "Show features list",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.9",
-      "kind": "item",
-      "title": "Default sort option",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.5.9",
-      "kind": "item",
-      "title": "CTA button position (top, bottom, sticky)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.9",
-      "kind": "item",
-      "title": "Notify submitter on approval/rejection",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13147,25 +12859,89 @@
       "marker": ""
     },
     {
+      "code": "8.2.2",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.1",
+      "kind": "item",
+      "title": "Show product image (global toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.2",
+      "kind": "item",
+      "title": "Show brand name",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.3",
+      "kind": "item",
+      "title": "Show product rating",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.4",
+      "kind": "item",
+      "title": "Show product price",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.5",
+      "kind": "item",
+      "title": "Show sale badge",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.6",
+      "kind": "item",
+      "title": "Show stock status",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.7",
+      "kind": "item",
+      "title": "Show ribbons",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.8",
+      "kind": "item",
+      "title": "Show excerpt",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.2.9",
+      "kind": "item",
+      "title": "Show features list",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.2.2.10",
       "kind": "item",
       "title": "Show CTA button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.4.10",
-      "kind": "item",
-      "title": "Available sort options (multi-select)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.10",
-      "kind": "item",
-      "title": "Submission success message (custom text)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13179,25 +12955,9 @@
       "marker": ""
     },
     {
-      "code": "8.2.6.11",
-      "kind": "item",
-      "title": "Submission redirect URL (after success)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.2.2.12",
       "kind": "item",
       "title": "Show categories/tags",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.2.6.12",
-      "kind": "item",
-      "title": "Max submissions per user per day",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13211,17 +12971,353 @@
       "marker": ""
     },
     {
-      "code": "8.2.6.13",
+      "code": "8.2.2.14",
       "kind": "item",
-      "title": "Max file upload size (MB)",
+      "title": "Features count (max number to show)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "8.2.2.14",
+      "code": "8.2.3",
       "kind": "item",
-      "title": "Features count (max number to show)",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.1",
+      "kind": "item",
+      "title": "Enable pagination (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.2",
+      "kind": "item",
+      "title": "Pagination type (numbered, prev/next, load more, infinite scroll)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.3",
+      "kind": "item",
+      "title": "Pagination position (top, bottom, both)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.4",
+      "kind": "item",
+      "title": "Pagination style (default, minimal, pills)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.5",
+      "kind": "item",
+      "title": "Show pagination info (\"Showing X of Y\")",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.6",
+      "kind": "item",
+      "title": "Scroll to top on page change",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.3.7",
+      "kind": "item",
+      "title": "Smooth scroll animation",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.1",
+      "kind": "item",
+      "title": "Enable filters (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.2",
+      "kind": "item",
+      "title": "Enable sorting (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.3",
+      "kind": "item",
+      "title": "Enable search (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.4",
+      "kind": "item",
+      "title": "Filter layout (sidebar, top bar, drawer)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.5",
+      "kind": "item",
+      "title": "Filter position (left, right)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.6",
+      "kind": "item",
+      "title": "Sticky filter sidebar",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.7",
+      "kind": "item",
+      "title": "Show filter count",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.8",
+      "kind": "item",
+      "title": "Show active filters",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.9",
+      "kind": "item",
+      "title": "Default sort option",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.4.10",
+      "kind": "item",
+      "title": "Available sort options (multi-select)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.1",
+      "kind": "item",
+      "title": "Enable single product page (or redirect to affiliate link)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.2",
+      "kind": "item",
+      "title": "Single product layout (default, sidebar, full-width)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.3",
+      "kind": "item",
+      "title": "Show related products",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.4",
+      "kind": "item",
+      "title": "Related products count",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.5",
+      "kind": "item",
+      "title": "Show breadcrumbs",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.6",
+      "kind": "item",
+      "title": "Enable social sharing",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.7",
+      "kind": "item",
+      "title": "Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.8",
+      "kind": "item",
+      "title": "Enable product schema markup",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.5.9",
+      "kind": "item",
+      "title": "CTA button position (top, bottom, sticky)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.1",
+      "kind": "item",
+      "title": "Enable frontend submission (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.2",
+      "kind": "item",
+      "title": "Submission page (select from pages)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.3",
+      "kind": "item",
+      "title": "Allow anonymous submissions",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.4",
+      "kind": "item",
+      "title": "Require email verification (send confirmation email)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.5",
+      "kind": "item",
+      "title": "Auto-approve submissions (or require manual approval)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.6",
+      "kind": "item",
+      "title": "Default submission status (draft, pending, publish)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.7",
+      "kind": "item",
+      "title": "Notify admin on new submission",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.8",
+      "kind": "item",
+      "title": "Admin notification email address",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.9",
+      "kind": "item",
+      "title": "Notify submitter on approval/rejection",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.10",
+      "kind": "item",
+      "title": "Submission success message (custom text)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.11",
+      "kind": "item",
+      "title": "Submission redirect URL (after success)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.12",
+      "kind": "item",
+      "title": "Max submissions per user per day",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.6.13",
+      "kind": "item",
+      "title": "Max file upload size (MB)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13235,8 +13331,72 @@
       "marker": ""
     },
     {
+      "code": "8.2.7",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.1",
+      "kind": "item",
+      "title": "Who can add products (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.2",
+      "kind": "item",
+      "title": "Who can edit products (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.3",
+      "kind": "item",
+      "title": "Who can delete products (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.4",
+      "kind": "item",
+      "title": "Who can publish products (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.5",
+      "kind": "item",
+      "title": "Who can approve submissions (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.2.7.6",
+      "kind": "item",
+      "title": "Who can manage settings (select roles)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.3",
       "kind": "topic",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.1",
+      "kind": "item",
       "title": "(generated)",
       "status": "pending",
       "derivedStatus": "pending",
@@ -13251,137 +13411,9 @@
       "marker": ""
     },
     {
-      "code": "8.3.2.1",
-      "kind": "item",
-      "title": "Base font size (px, default 16px)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.1",
-      "kind": "item",
-      "title": "Card border width (0-5px)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.1",
-      "kind": "item",
-      "title": "Button style (solid, outline, ghost, gradient)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.1",
-      "kind": "item",
-      "title": "Sale badge color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.1",
-      "kind": "item",
-      "title": "Image aspect ratio (1:1, 4:3, 16:9, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.1",
-      "kind": "item",
-      "title": "Container max-width (px, full-width, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.1",
-      "kind": "item",
-      "title": "Enable animations (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.9.1",
-      "kind": "item",
-      "title": "Custom CSS textarea (advanced users)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.3.1.2",
       "kind": "item",
       "title": "Secondary color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.2.2",
-      "kind": "item",
-      "title": "Heading font size scale (1.2x, 1.5x, 2x, etc.)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.2",
-      "kind": "item",
-      "title": "Card border style (solid, dashed, dotted, none)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.2",
-      "kind": "item",
-      "title": "Button size (sm, md, lg, xl)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.2",
-      "kind": "item",
-      "title": "Sale badge text color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.2",
-      "kind": "item",
-      "title": "Image object fit (cover, contain, fill)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.2",
-      "kind": "item",
-      "title": "Container padding (sm, md, lg, xl)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.2",
-      "kind": "item",
-      "title": "Animation type (fade, slide, zoom, none)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.9.2",
-      "kind": "item",
-      "title": "CSS editor with syntax highlighting",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13395,137 +13427,9 @@
       "marker": ""
     },
     {
-      "code": "8.3.2.3",
-      "kind": "item",
-      "title": "Line height (1.5, 1.6, 1.75, etc.)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.3",
-      "kind": "item",
-      "title": "Card border color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.3",
-      "kind": "item",
-      "title": "Button text (custom default text, e.g., \"View Deal\")",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.3",
-      "kind": "item",
-      "title": "Sale badge style (badge, corner, banner)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.3",
-      "kind": "item",
-      "title": "Image border radius",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.3",
-      "kind": "item",
-      "title": "Spacing (vertical gap between sections)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.3",
-      "kind": "item",
-      "title": "Animation duration (ms)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.9.3",
-      "kind": "item",
-      "title": "CSS validation (basic linting)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.3.1.4",
       "kind": "item",
       "title": "Success color (green for CTA, badges)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.2.4",
-      "kind": "item",
-      "title": "Letter spacing (normal, wide, wider)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.4",
-      "kind": "item",
-      "title": "Card border radius (0-20px, full)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.4",
-      "kind": "item",
-      "title": "Button color (primary, secondary, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.4",
-      "kind": "item",
-      "title": "Stock badge color (in stock, out of stock)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.4",
-      "kind": "item",
-      "title": "Image hover effect (zoom, fade, slide, none)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.4",
-      "kind": "item",
-      "title": "Row gap (vertical gap between rows)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.4",
-      "kind": "item",
-      "title": "Animation easing (ease, linear, ease-in, ease-out, ease-in-out)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.9.4",
-      "kind": "item",
-      "title": "CSS preview (live preview in iframe)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13539,129 +13443,9 @@
       "marker": ""
     },
     {
-      "code": "8.3.2.5",
-      "kind": "item",
-      "title": "Font weight (normal, medium, bold)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.5",
-      "kind": "item",
-      "title": "Card shadow (none, sm, md, lg, xl, 2xl)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.5",
-      "kind": "item",
-      "title": "Button text color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.5",
-      "kind": "item",
-      "title": "Ribbon position (top-left, top-right, etc.)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.5",
-      "kind": "item",
-      "title": "Image hover zoom scale (1.05, 1.1, 1.2)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.5",
-      "kind": "item",
-      "title": "Column gap (horizontal gap between columns)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.5",
-      "kind": "item",
-      "title": "Stagger animation delay (ms between cards)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.9.5",
-      "kind": "item",
-      "title": "CSS priority (load order: plugin CSS → custom CSS)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.3.1.6",
       "kind": "item",
       "title": "Error color (red)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.2.6",
-      "kind": "item",
-      "title": "Link style (underline, no underline, hover underline)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.6",
-      "kind": "item",
-      "title": "Card background color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.6",
-      "kind": "item",
-      "title": "Button hover color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.6",
-      "kind": "item",
-      "title": "Ribbon animation (none, pulse, bounce, rotate)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.6",
-      "kind": "item",
-      "title": "Image placeholder type (blur, color, skeleton)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.6",
-      "kind": "item",
-      "title": "Content spacing (space between card elements)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.6",
-      "kind": "item",
-      "title": "Hover animation (scale, rotate, lift)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13675,97 +13459,9 @@
       "marker": ""
     },
     {
-      "code": "8.3.2.7",
-      "kind": "item",
-      "title": "Link color (inherit, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.7",
-      "kind": "item",
-      "title": "Card hover effect (lift, shadow, border, none)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.7",
-      "kind": "item",
-      "title": "Button hover text color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.5.7",
-      "kind": "item",
-      "title": "Ribbon size (sm, md, lg)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.7",
-      "kind": "item",
-      "title": "Image placeholder color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.7.7",
-      "kind": "item",
-      "title": "Responsive breakpoints (sm, md, lg, xl, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.8.7",
-      "kind": "item",
-      "title": "Respect prefers-reduced-motion",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.3.1.8",
       "kind": "item",
       "title": "Background color (light)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.2.8",
-      "kind": "item",
-      "title": "Link hover color",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.8",
-      "kind": "item",
-      "title": "Card hover lift amount (px)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.8",
-      "kind": "item",
-      "title": "Button border radius (0-full)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.6.8",
-      "kind": "item",
-      "title": "Lazy load images (toggle)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13779,49 +13475,9 @@
       "marker": ""
     },
     {
-      "code": "8.3.2.9",
-      "kind": "item",
-      "title": "Typography preset (default, compact, spacious)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.9",
-      "kind": "item",
-      "title": "Card padding (sm, md, lg, xl)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.9",
-      "kind": "item",
-      "title": "Button font weight",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.3.1.10",
       "kind": "item",
       "title": "Color scheme presets (light, dark, custom)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.3.10",
-      "kind": "item",
-      "title": "Card gap (space between cards, px)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.3.4.10",
-      "kind": "item",
-      "title": "Button icon (left, right, none)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13835,17 +13491,273 @@
       "marker": ""
     },
     {
-      "code": "8.3.4.11",
+      "code": "8.3.1.12",
       "kind": "item",
-      "title": "Button icon type (arrow, external link, etc.)",
+      "title": "Dark mode auto (based on system preference)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "8.3.1.12",
+      "code": "8.3.2",
       "kind": "item",
-      "title": "Dark mode auto (based on system preference)",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.1",
+      "kind": "item",
+      "title": "Base font size (px, default 16px)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.2",
+      "kind": "item",
+      "title": "Heading font size scale (1.2x, 1.5x, 2x, etc.)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.3",
+      "kind": "item",
+      "title": "Line height (1.5, 1.6, 1.75, etc.)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.4",
+      "kind": "item",
+      "title": "Letter spacing (normal, wide, wider)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.5",
+      "kind": "item",
+      "title": "Font weight (normal, medium, bold)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.6",
+      "kind": "item",
+      "title": "Link style (underline, no underline, hover underline)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.7",
+      "kind": "item",
+      "title": "Link color (inherit, custom)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.8",
+      "kind": "item",
+      "title": "Link hover color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.2.9",
+      "kind": "item",
+      "title": "Typography preset (default, compact, spacious)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.1",
+      "kind": "item",
+      "title": "Card border width (0-5px)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.2",
+      "kind": "item",
+      "title": "Card border style (solid, dashed, dotted, none)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.3",
+      "kind": "item",
+      "title": "Card border color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.4",
+      "kind": "item",
+      "title": "Card border radius (0-20px, full)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.5",
+      "kind": "item",
+      "title": "Card shadow (none, sm, md, lg, xl, 2xl)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.6",
+      "kind": "item",
+      "title": "Card background color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.7",
+      "kind": "item",
+      "title": "Card hover effect (lift, shadow, border, none)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.8",
+      "kind": "item",
+      "title": "Card hover lift amount (px)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.9",
+      "kind": "item",
+      "title": "Card padding (sm, md, lg, xl)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.3.10",
+      "kind": "item",
+      "title": "Card gap (space between cards, px)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.1",
+      "kind": "item",
+      "title": "Button style (solid, outline, ghost, gradient)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.2",
+      "kind": "item",
+      "title": "Button size (sm, md, lg, xl)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.3",
+      "kind": "item",
+      "title": "Button text (custom default text, e.g., \"View Deal\")",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.4",
+      "kind": "item",
+      "title": "Button color (primary, secondary, custom)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.5",
+      "kind": "item",
+      "title": "Button text color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.6",
+      "kind": "item",
+      "title": "Button hover color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.7",
+      "kind": "item",
+      "title": "Button hover text color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.8",
+      "kind": "item",
+      "title": "Button border radius (0-full)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.9",
+      "kind": "item",
+      "title": "Button font weight",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.10",
+      "kind": "item",
+      "title": "Button icon (left, right, none)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.4.11",
+      "kind": "item",
+      "title": "Button icon type (arrow, external link, etc.)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13859,8 +13771,328 @@
       "marker": ""
     },
     {
+      "code": "8.3.5",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.1",
+      "kind": "item",
+      "title": "Sale badge color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.2",
+      "kind": "item",
+      "title": "Sale badge text color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.3",
+      "kind": "item",
+      "title": "Sale badge style (badge, corner, banner)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.4",
+      "kind": "item",
+      "title": "Stock badge color (in stock, out of stock)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.5",
+      "kind": "item",
+      "title": "Ribbon position (top-left, top-right, etc.)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.6",
+      "kind": "item",
+      "title": "Ribbon animation (none, pulse, bounce, rotate)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.5.7",
+      "kind": "item",
+      "title": "Ribbon size (sm, md, lg)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.1",
+      "kind": "item",
+      "title": "Image aspect ratio (1:1, 4:3, 16:9, custom)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.2",
+      "kind": "item",
+      "title": "Image object fit (cover, contain, fill)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.3",
+      "kind": "item",
+      "title": "Image border radius",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.4",
+      "kind": "item",
+      "title": "Image hover effect (zoom, fade, slide, none)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.5",
+      "kind": "item",
+      "title": "Image hover zoom scale (1.05, 1.1, 1.2)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.6",
+      "kind": "item",
+      "title": "Image placeholder type (blur, color, skeleton)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.7",
+      "kind": "item",
+      "title": "Image placeholder color",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.6.8",
+      "kind": "item",
+      "title": "Lazy load images (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.1",
+      "kind": "item",
+      "title": "Container max-width (px, full-width, custom)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.2",
+      "kind": "item",
+      "title": "Container padding (sm, md, lg, xl)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.3",
+      "kind": "item",
+      "title": "Spacing (vertical gap between sections)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.4",
+      "kind": "item",
+      "title": "Row gap (vertical gap between rows)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.5",
+      "kind": "item",
+      "title": "Column gap (horizontal gap between columns)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.6",
+      "kind": "item",
+      "title": "Content spacing (space between card elements)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.7.7",
+      "kind": "item",
+      "title": "Responsive breakpoints (sm, md, lg, xl, custom)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.1",
+      "kind": "item",
+      "title": "Enable animations (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.2",
+      "kind": "item",
+      "title": "Animation type (fade, slide, zoom, none)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.3",
+      "kind": "item",
+      "title": "Animation duration (ms)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.4",
+      "kind": "item",
+      "title": "Animation easing (ease, linear, ease-in, ease-out, ease-in-out)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.5",
+      "kind": "item",
+      "title": "Stagger animation delay (ms between cards)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.6",
+      "kind": "item",
+      "title": "Hover animation (scale, rotate, lift)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.8.7",
+      "kind": "item",
+      "title": "Respect prefers-reduced-motion",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9.1",
+      "kind": "item",
+      "title": "Custom CSS textarea (advanced users)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9.2",
+      "kind": "item",
+      "title": "CSS editor with syntax highlighting",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9.3",
+      "kind": "item",
+      "title": "CSS validation (basic linting)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9.4",
+      "kind": "item",
+      "title": "CSS preview (live preview in iframe)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.3.9.5",
+      "kind": "item",
+      "title": "CSS priority (load order: plugin CSS → custom CSS)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.4",
       "kind": "topic",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.2",
+      "kind": "item",
       "title": "(generated)",
       "status": "pending",
       "derivedStatus": "pending",
@@ -13875,89 +14107,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.1",
-      "kind": "item",
-      "title": "Enable rate limiting (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.1",
-      "kind": "item",
-      "title": "Enable caching (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.1",
-      "kind": "item",
-      "title": "Enable schema markup (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.1",
-      "kind": "item",
-      "title": "CSV column mapping tool",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.1",
-      "kind": "item",
-      "title": "Enable debug mode (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.2",
       "kind": "item",
       "title": "Redirect type (301 permanent, 302 temporary)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.2",
-      "kind": "item",
-      "title": "Rate limit: submissions per hour per IP",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.2",
-      "kind": "item",
-      "title": "Cache duration (transient TTL, seconds)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.2",
-      "kind": "item",
-      "title": "Schema type (Product, AggregateOffer)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.2",
-      "kind": "item",
-      "title": "Import validation (dry run before actual import)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.2",
-      "kind": "item",
-      "title": "Debug log level (error, warning, info, debug)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13971,89 +14123,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.3",
-      "kind": "item",
-      "title": "Rate limit: submissions per day per user",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.3",
-      "kind": "item",
-      "title": "Clear cache on product update",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.3",
-      "kind": "item",
-      "title": "Default brand for schema",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.3",
-      "kind": "item",
-      "title": "Import log (success, errors, skipped)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.3",
-      "kind": "item",
-      "title": "Debug log destination (file, database, both)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.4",
       "kind": "item",
       "title": "Show interstitial page (\"You are leaving...\")",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.4",
-      "kind": "item",
-      "title": "Rate limit: AJAX requests per minute",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.4",
-      "kind": "item",
-      "title": "Clear all cache (button)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.4",
-      "kind": "item",
-      "title": "Default availability (InStock, OutOfStock)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.4",
-      "kind": "item",
-      "title": "Export products to CSV",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.4",
-      "kind": "item",
-      "title": "Clear debug log (button)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14067,81 +14139,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.5",
-      "kind": "item",
-      "title": "Enable CAPTCHA (toggle, disabled by default)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.5",
-      "kind": "item",
-      "title": "Enable lazy loading (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.5",
-      "kind": "item",
-      "title": "Default condition (NewCondition, RefurbishedCondition)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.5",
-      "kind": "item",
-      "title": "Enable REST API (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.6",
       "kind": "item",
       "title": "Open links in new tab (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.6",
-      "kind": "item",
-      "title": "CAPTCHA type (math, image, question, honeypot)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.6",
-      "kind": "item",
-      "title": "Lazy load threshold (px before entering viewport)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.6",
-      "kind": "item",
-      "title": "Include rating in schema",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.6",
-      "kind": "item",
-      "title": "Export all or filtered products",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.6",
-      "kind": "item",
-      "title": "REST API authentication (WordPress auth, API key, both)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14155,89 +14155,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.7",
-      "kind": "item",
-      "title": "CAPTCHA difficulty (easy, medium, hard)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.7",
-      "kind": "item",
-      "title": "Enable image optimization (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.7",
-      "kind": "item",
-      "title": "Include review count in schema",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.7",
-      "kind": "item",
-      "title": "Export format (CSV, JSON, XML)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.7",
-      "kind": "item",
-      "title": "Generate API key (button)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.8",
       "kind": "item",
       "title": "Add sponsored to affiliate links",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.8",
-      "kind": "item",
-      "title": "CAPTCHA for anonymous only (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.8",
-      "kind": "item",
-      "title": "Image quality (0-100, compression)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.8",
-      "kind": "item",
-      "title": "Open Graph tags (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.8",
-      "kind": "item",
-      "title": "Include meta data in export",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.8",
-      "kind": "item",
-      "title": "API rate limiting (requests per hour)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14251,81 +14171,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.9",
-      "kind": "item",
-      "title": "Honeypot field name (randomize)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.9",
-      "kind": "item",
-      "title": "Generate WebP versions",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.9",
-      "kind": "item",
-      "title": "Twitter Card tags (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.6.9",
-      "kind": "item",
-      "title": "Include taxonomy data in export",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.9",
-      "kind": "item",
-      "title": "Enable WP-CLI commands (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.10",
       "kind": "item",
       "title": "UTM parameters (source, medium, campaign)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.10",
-      "kind": "item",
-      "title": "Enable spam protection (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.10",
-      "kind": "item",
-      "title": "Enable minification (CSS, JS, toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.10",
-      "kind": "item",
-      "title": "Canonical URLs (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.10",
-      "kind": "item",
-      "title": "Custom hook documentation (link to developer docs)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14339,65 +14187,9 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.11",
-      "kind": "item",
-      "title": "Spam keywords (comma-separated list)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.11",
-      "kind": "item",
-      "title": "Load scripts in footer",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.5.11",
-      "kind": "item",
-      "title": "Meta robots (index, noindex, follow, nofollow)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.11",
-      "kind": "item",
-      "title": "Database table prefix (read-only, for reference)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.12",
       "kind": "item",
       "title": "Broken link checker (toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.3.12",
-      "kind": "item",
-      "title": "Spam score threshold (0-100)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.12",
-      "kind": "item",
-      "title": "Defer non-critical JS",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.7.12",
-      "kind": "item",
-      "title": "Plugin version (read-only, for reference)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14411,25 +14203,121 @@
       "marker": ""
     },
     {
-      "code": "8.4.3.13",
-      "kind": "item",
-      "title": "Block disposable email domains",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.4.4.13",
-      "kind": "item",
-      "title": "Preload key assets",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.4.2.14",
       "kind": "item",
       "title": "Broken link notification email",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.1",
+      "kind": "item",
+      "title": "Enable rate limiting (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.2",
+      "kind": "item",
+      "title": "Rate limit: submissions per hour per IP",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.3",
+      "kind": "item",
+      "title": "Rate limit: submissions per day per user",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.4",
+      "kind": "item",
+      "title": "Rate limit: AJAX requests per minute",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.5",
+      "kind": "item",
+      "title": "Enable CAPTCHA (toggle, disabled by default)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.6",
+      "kind": "item",
+      "title": "CAPTCHA type (math, image, question, honeypot)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.7",
+      "kind": "item",
+      "title": "CAPTCHA difficulty (easy, medium, hard)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.8",
+      "kind": "item",
+      "title": "CAPTCHA for anonymous only (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.9",
+      "kind": "item",
+      "title": "Honeypot field name (randomize)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.10",
+      "kind": "item",
+      "title": "Enable spam protection (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.11",
+      "kind": "item",
+      "title": "Spam keywords (comma-separated list)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.12",
+      "kind": "item",
+      "title": "Spam score threshold (0-100)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.3.13",
+      "kind": "item",
+      "title": "Block disposable email domains",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14443,17 +14331,129 @@
       "marker": ""
     },
     {
-      "code": "8.4.4.14",
+      "code": "8.4.3.15",
       "kind": "item",
-      "title": "Enable HTTP/2 push (if supported)",
+      "title": "Email domain blacklist",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "8.4.3.15",
+      "code": "8.4.4",
       "kind": "item",
-      "title": "Email domain blacklist",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.1",
+      "kind": "item",
+      "title": "Enable caching (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.2",
+      "kind": "item",
+      "title": "Cache duration (transient TTL, seconds)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.3",
+      "kind": "item",
+      "title": "Clear cache on product update",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.4",
+      "kind": "item",
+      "title": "Clear all cache (button)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.5",
+      "kind": "item",
+      "title": "Enable lazy loading (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.6",
+      "kind": "item",
+      "title": "Lazy load threshold (px before entering viewport)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.7",
+      "kind": "item",
+      "title": "Enable image optimization (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.8",
+      "kind": "item",
+      "title": "Image quality (0-100, compression)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.9",
+      "kind": "item",
+      "title": "Generate WebP versions",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.10",
+      "kind": "item",
+      "title": "Enable minification (CSS, JS, toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.11",
+      "kind": "item",
+      "title": "Load scripts in footer",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.12",
+      "kind": "item",
+      "title": "Defer non-critical JS",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.13",
+      "kind": "item",
+      "title": "Preload key assets",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.4.14",
+      "kind": "item",
+      "title": "Enable HTTP/2 push (if supported)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14467,8 +14467,288 @@
       "marker": ""
     },
     {
+      "code": "8.4.5",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.1",
+      "kind": "item",
+      "title": "Enable schema markup (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.2",
+      "kind": "item",
+      "title": "Schema type (Product, AggregateOffer)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.3",
+      "kind": "item",
+      "title": "Default brand for schema",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.4",
+      "kind": "item",
+      "title": "Default availability (InStock, OutOfStock)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.5",
+      "kind": "item",
+      "title": "Default condition (NewCondition, RefurbishedCondition)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.6",
+      "kind": "item",
+      "title": "Include rating in schema",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.7",
+      "kind": "item",
+      "title": "Include review count in schema",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.8",
+      "kind": "item",
+      "title": "Open Graph tags (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.9",
+      "kind": "item",
+      "title": "Twitter Card tags (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.10",
+      "kind": "item",
+      "title": "Canonical URLs (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.5.11",
+      "kind": "item",
+      "title": "Meta robots (index, noindex, follow, nofollow)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.1",
+      "kind": "item",
+      "title": "CSV column mapping tool",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.2",
+      "kind": "item",
+      "title": "Import validation (dry run before actual import)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.3",
+      "kind": "item",
+      "title": "Import log (success, errors, skipped)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.4",
+      "kind": "item",
+      "title": "Export products to CSV",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.6",
+      "kind": "item",
+      "title": "Export all or filtered products",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.7",
+      "kind": "item",
+      "title": "Export format (CSV, JSON, XML)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.8",
+      "kind": "item",
+      "title": "Include meta data in export",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.9",
+      "kind": "item",
+      "title": "Include taxonomy data in export",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.1",
+      "kind": "item",
+      "title": "Enable debug mode (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.2",
+      "kind": "item",
+      "title": "Debug log level (error, warning, info, debug)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.3",
+      "kind": "item",
+      "title": "Debug log destination (file, database, both)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.4",
+      "kind": "item",
+      "title": "Clear debug log (button)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.5",
+      "kind": "item",
+      "title": "Enable REST API (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.6",
+      "kind": "item",
+      "title": "REST API authentication (WordPress auth, API key, both)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.7",
+      "kind": "item",
+      "title": "Generate API key (button)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.8",
+      "kind": "item",
+      "title": "API rate limiting (requests per hour)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.9",
+      "kind": "item",
+      "title": "Enable WP-CLI commands (toggle)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.10",
+      "kind": "item",
+      "title": "Custom hook documentation (link to developer docs)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.11",
+      "kind": "item",
+      "title": "Database table prefix (read-only, for reference)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.7.12",
+      "kind": "item",
+      "title": "Plugin version (read-only, for reference)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.5",
       "kind": "topic",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.1",
+      "kind": "item",
       "title": "(generated)",
       "status": "pending",
       "derivedStatus": "pending",
@@ -14483,57 +14763,9 @@
       "marker": ""
     },
     {
-      "code": "8.5.2.1",
-      "kind": "item",
-      "title": "Import settings from JSON file",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.1",
-      "kind": "item",
-      "title": "Export all products (CSV, JSON)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.1",
-      "kind": "item",
-      "title": "Import products from CSV",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.5.1.2",
       "kind": "item",
       "title": "Export button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.2.2",
-      "kind": "item",
-      "title": "File upload field",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.2",
-      "kind": "item",
-      "title": "Export filtered products (based on current filters)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.2",
-      "kind": "item",
-      "title": "Import products from JSON",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14547,57 +14779,9 @@
       "marker": ""
     },
     {
-      "code": "8.5.2.3",
-      "kind": "item",
-      "title": "Import button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.3",
-      "kind": "item",
-      "title": "Select fields to export (checkboxes)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.3",
-      "kind": "item",
-      "title": "File upload field",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.5.1.4",
       "kind": "item",
       "title": "Export excludes: API keys, sensitive data",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.2.4",
-      "kind": "item",
-      "title": "Import validation (check file format, version)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.4",
-      "kind": "item",
-      "title": "Include images in export (URLs only)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.4",
-      "kind": "item",
-      "title": "CSV column mapping tool (map CSV columns to product fields)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14611,25 +14795,49 @@
       "marker": ""
     },
     {
+      "code": "8.5.2",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.2.1",
+      "kind": "item",
+      "title": "Import settings from JSON file",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.2.2",
+      "kind": "item",
+      "title": "File upload field",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.2.3",
+      "kind": "item",
+      "title": "Import button",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.2.4",
+      "kind": "item",
+      "title": "Import validation (check file format, version)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.5.2.5",
       "kind": "item",
       "title": "Import preview (show what will be imported)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.5",
-      "kind": "item",
-      "title": "Include categories, tags in export",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.5",
-      "kind": "item",
-      "title": "Sample CSV download (template)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14643,41 +14851,9 @@
       "marker": ""
     },
     {
-      "code": "8.5.3.6",
-      "kind": "item",
-      "title": "Include meta data in export",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.6",
-      "kind": "item",
-      "title": "Import mode (create new, update existing, both)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.5.2.7",
       "kind": "item",
       "title": "Import success message",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.7",
-      "kind": "item",
-      "title": "Export button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.7",
-      "kind": "item",
-      "title": "Match existing by (ID, slug, SKU, title)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14691,41 +14867,9 @@
       "marker": ""
     },
     {
-      "code": "8.5.3.8",
-      "kind": "item",
-      "title": "Export progress indicator (for large datasets)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.8",
-      "kind": "item",
-      "title": "Dry run option (preview import without actually importing)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.5.2.9",
       "kind": "item",
       "title": "Backup current settings before import",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.3.9",
-      "kind": "item",
-      "title": "Export filename (custom or auto-generated)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.5.4.9",
-      "kind": "item",
-      "title": "Import validation (check data types, required fields)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14739,9 +14883,169 @@
       "marker": ""
     },
     {
+      "code": "8.5.3",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.1",
+      "kind": "item",
+      "title": "Export all products (CSV, JSON)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.2",
+      "kind": "item",
+      "title": "Export filtered products (based on current filters)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.3",
+      "kind": "item",
+      "title": "Select fields to export (checkboxes)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.4",
+      "kind": "item",
+      "title": "Include images in export (URLs only)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.5",
+      "kind": "item",
+      "title": "Include categories, tags in export",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.6",
+      "kind": "item",
+      "title": "Include meta data in export",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.7",
+      "kind": "item",
+      "title": "Export button",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.8",
+      "kind": "item",
+      "title": "Export progress indicator (for large datasets)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.3.9",
+      "kind": "item",
+      "title": "Export filename (custom or auto-generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.5.3.10",
       "kind": "item",
       "title": "Export format options (CSV, JSON, XML)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.1",
+      "kind": "item",
+      "title": "Import products from CSV",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.2",
+      "kind": "item",
+      "title": "Import products from JSON",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.3",
+      "kind": "item",
+      "title": "File upload field",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.4",
+      "kind": "item",
+      "title": "CSV column mapping tool (map CSV columns to product fields)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.5",
+      "kind": "item",
+      "title": "Sample CSV download (template)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.6",
+      "kind": "item",
+      "title": "Import mode (create new, update existing, both)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.7",
+      "kind": "item",
+      "title": "Match existing by (ID, slug, SKU, title)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.8",
+      "kind": "item",
+      "title": "Dry run option (preview import without actually importing)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.5.4.9",
+      "kind": "item",
+      "title": "Import validation (check data types, required fields)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14787,41 +15091,17 @@
       "marker": ""
     },
     {
+      "code": "8.6.1",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.6.1.1",
       "kind": "item",
       "title": "Quick start guide (steps to add first product)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.2.1",
-      "kind": "item",
-      "title": "Support forum link",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.3.1",
-      "kind": "item",
-      "title": "WordPress version",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.4.1",
-      "kind": "item",
-      "title": "Database repair tool",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.1",
-      "kind": "item",
-      "title": "Plugin name and version",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14835,73 +15115,9 @@
       "marker": ""
     },
     {
-      "code": "8.6.2.2",
-      "kind": "item",
-      "title": "Email support contact",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.3.2",
-      "kind": "item",
-      "title": "PHP version",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.4.2",
-      "kind": "item",
-      "title": "Cache clear tool",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.2",
-      "kind": "item",
-      "title": "Developer credits",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.6.1.3",
       "kind": "item",
       "title": "Documentation links",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.2.3",
-      "kind": "item",
-      "title": "Bug report form (link to GitHub issues)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.3.3",
-      "kind": "item",
-      "title": "MySQL version",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.4.3",
-      "kind": "item",
-      "title": "Rewrite rules flush tool",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.3",
-      "kind": "item",
-      "title": "License information (GPL v2+)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14915,41 +15131,49 @@
       "marker": ""
     },
     {
-      "code": "8.6.2.4",
-      "kind": "item",
-      "title": "Feature request form",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.3.4",
-      "kind": "item",
-      "title": "Server software (Apache, Nginx)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.4.4",
-      "kind": "item",
-      "title": "Regenerate thumbnails tool",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.4",
-      "kind": "item",
-      "title": "Changelog (recent versions)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.6.1.5",
       "kind": "item",
       "title": "Troubleshooting guide",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.2",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.2.1",
+      "kind": "item",
+      "title": "Support forum link",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.2.2",
+      "kind": "item",
+      "title": "Email support contact",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.2.3",
+      "kind": "item",
+      "title": "Bug report form (link to GitHub issues)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.2.4",
+      "kind": "item",
+      "title": "Feature request form",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14963,6 +15187,46 @@
       "marker": ""
     },
     {
+      "code": "8.6.3",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.3.1",
+      "kind": "item",
+      "title": "WordPress version",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.3.2",
+      "kind": "item",
+      "title": "PHP version",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.3.3",
+      "kind": "item",
+      "title": "MySQL version",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.3.4",
+      "kind": "item",
+      "title": "Server software (Apache, Nginx)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.6.3.5",
       "kind": "item",
       "title": "Active theme",
@@ -14971,41 +15235,9 @@
       "marker": ""
     },
     {
-      "code": "8.6.4.5",
-      "kind": "item",
-      "title": "Check for updates tool (disabled if update checker removed)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.5",
-      "kind": "item",
-      "title": "Roadmap (upcoming features)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
       "code": "8.6.3.6",
       "kind": "item",
       "title": "Active plugins (list)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.4.6",
-      "kind": "item",
-      "title": "Plugin reset tool (reset all settings, with confirmation)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "8.6.5.6",
-      "kind": "item",
-      "title": "Donate/sponsor link",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -15054,6 +15286,118 @@
       "code": "8.6.3.12",
       "kind": "item",
       "title": "Download system info (text file)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.1",
+      "kind": "item",
+      "title": "Database repair tool",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.2",
+      "kind": "item",
+      "title": "Cache clear tool",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.3",
+      "kind": "item",
+      "title": "Rewrite rules flush tool",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.4",
+      "kind": "item",
+      "title": "Regenerate thumbnails tool",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.5",
+      "kind": "item",
+      "title": "Check for updates tool (disabled if update checker removed)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.4.6",
+      "kind": "item",
+      "title": "Plugin reset tool (reset all settings, with confirmation)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5",
+      "kind": "item",
+      "title": "(generated)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.1",
+      "kind": "item",
+      "title": "Plugin name and version",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.2",
+      "kind": "item",
+      "title": "Developer credits",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.3",
+      "kind": "item",
+      "title": "License information (GPL v2+)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.4",
+      "kind": "item",
+      "title": "Changelog (recent versions)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.5",
+      "kind": "item",
+      "title": "Roadmap (upcoming features)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.6.5.6",
+      "kind": "item",
+      "title": "Donate/sponsor link",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

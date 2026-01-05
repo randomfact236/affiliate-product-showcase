@@ -92,10 +92,25 @@ function parsePlanSource(md) {
       const stepNum = topicCode.split('.')[0]; if (!currentStep || currentStep.code !== stepNum) currentStep = structure.steps.find(s => s.code === stepNum) || currentStep;
       if (currentStep) currentStep.topics.push(currentTopic); itemRegistry.set(topicCode, currentTopic); continue;
     }
-    const code = extractCode(trimmed); if (!code) continue; const level = getLevel(code); if (level < 3) continue;
+    // Support numbered item headings such as '### 1.1.1 Title' in addition to
+    // plain lines that start with '1.1.1 ...'. This lets authors use headings
+    // for subtopics while keeping the numeric structure parseable.
+    const headingItemMatch = line.match(/^\s*#{3,}\s+(\d+(?:\.\d+)*)\s+(.*)$/);
+    let code = null;
+    let title = null;
+    if (headingItemMatch) {
+      code = headingItemMatch[1];
+      title = headingItemMatch[2].trim();
+    } else {
+      code = extractCode(trimmed);
+      if (!code) continue;
+      const titleMatch = trimmed.match(/^\s*\d+(?:\.\d+)*\s+(.*)$/);
+      title = titleMatch ? titleMatch[1].trim() : trimmed.replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim();
+    }
+    const level = getLevel(code); if (level < 3) continue;
     const parentCode = getParentCode(code); let parent = itemRegistry.get(parentCode);
     if (!parent) { const parts = code.split('.'); for (let lvl = parts.length - 1; lvl >= 2; lvl--) { const ancestorCode = parts.slice(0, lvl).join('.'); if (itemRegistry.has(ancestorCode)) { parent = itemRegistry.get(ancestorCode); break; } } if (!parent) parent = currentTopic || currentStep; }
-    const title = trimmed.replace(/^\s*\d+(?:\.\d+)*\s+/, '').trim(); const node = { kind: 'item', code, title, rawLine: trimmed, items: [], status: 'pending' };
+    const node = { kind: 'item', code, title, rawLine: trimmed, items: [], status: 'pending' };
     if (parent) { if (!parent.items) parent.items = []; parent.items.push(node); } itemRegistry.set(code, node);
   }
   function sortNodes(nodes) { if (!nodes) return; nodes.sort((a,b)=>{const aNum=parseInt(a.code.split('.').pop(),10);const bNum=parseInt(b.code.split('.').pop(),10);return aNum-bNum;}); for (const n of nodes) sortNodes(n.items); }
