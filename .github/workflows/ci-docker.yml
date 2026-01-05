@@ -1,0 +1,62 @@
+name: CI - Docker Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Qemu
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Composer deps on runner
+        run: |
+          php -v || true
+          composer install --no-interaction --no-progress || true
+
+      - name: Bring up Docker Compose
+        run: |
+          docker compose -f docker/docker-compose.yml up -d --build
+
+      - name: Wait for DB health
+        run: |
+          echo "Waiting for MySQL to be healthy..."
+          for i in {1..60}; do
+            status=$(docker inspect --format='{{json .State.Health.Status}}' aps_db 2>/dev/null || echo '"unknown"')
+            if [ "$status" = '"healthy"' ]; then
+              echo "MySQL healthy"
+              break
+            fi
+            echo "MySQL status: $status"
+            sleep 2
+          done
+
+      - name: Run container healthcheck
+        run: |
+          chmod +x docker/healthcheck.sh || true
+          ./docker/healthcheck.sh http://localhost:8000
+
+      - name: Run PHPUnit inside wordpress container
+        run: |
+          docker exec -u 0 aps_wordpress sh -c "cd /var/www/html && composer install --no-interaction --no-progress || true && vendor/bin/phpunit --configuration phpunit.xml"
+        env:
+          CI: true
+
+      - name: Bring down Docker Compose
+        if: always()
+        run: |
+          docker compose -f docker/docker-compose.yml down -v

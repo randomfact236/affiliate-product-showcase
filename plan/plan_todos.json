@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T14:27:17.644Z",
+  "generatedAt": "2026-01-05T15:24:53.712Z",
   "todos": [
     {
       "code": "1",
@@ -54,17 +54,17 @@
       "code": "1.1.1.4",
       "kind": "item",
       "title": "Add PHP-FPM `www.conf` and php.ini overrides for dev",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.1.5",
       "kind": "item",
       "title": "Add container healthcheck and CI integration tests",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.1.6",
