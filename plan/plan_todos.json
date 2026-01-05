@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T17:45:35.285Z",
+  "generatedAt": "2026-01-05T18:15:15.887Z",
   "todos": [
     {
       "code": "1",
@@ -110,9 +110,9 @@
       "code": "1.1.2.4",
       "kind": "item",
       "title": "Add DB healthcheck and readiness probe for compose",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.2.5",
