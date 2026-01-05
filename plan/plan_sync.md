@@ -3,12 +3,11 @@
 # GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 # GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
+<details>
+<summary>CI: GitHub Actions failure (Issue #23) — expand</summary>
+
 ## CI: GitHub Actions failure (Issue #23)
 
-- **Triggered:** push by @randomfact236 (commit `d76eb00`) to `main`
-- **Status:** Failure — `phpunit` exited with code 1; `git` returned exit code 128
-- **Run details:** job ran ~1 minute after push; total duration reported 55s
-- **Annotations:** 2 errors and 1 warning. Key error messages:
   - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
   - "The process '/usr/bin/git' failed with exit code 128"
 
@@ -18,13 +17,14 @@ Recommended remediation (short):
 
 1. Remove committed `vendor/` contents from the repository and stop tracking it:
    - `git rm -r --cached vendor`
-   - Add `vendor/` to `.gitignore` (if not already present)
-2. Ensure CI installs dependencies instead of relying on committed vendor files:
-   - Add a step to run `composer install --no-interaction --prefer-dist --no-progress` before running tests.
-3. If any `vendor/*` entries are submodules (gitlinks), remove submodule metadata from the repo and re-install via Composer only.
 4. Re-run CI and iterate: enable verbose Composer output if failures continue.
 
 Next actions (tracked): remove `vendor/` from git, add to `.gitignore`, update CI workflow to run `composer install`, then re-run tests.
+
+</details>
+
+<details>
+<summary>CI: GitHub Actions failure (Issue #24) — expand</summary>
 
 ## CI: GitHub Actions failure (Issue #24)
 
@@ -35,7 +35,8 @@ Next actions (tracked): remove `vendor/` from git, add to `.gitignore`, update C
    - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
    - "The process '/usr/bin/git' failed with exit code 128"
 
-User note: "yesto error aako xa" (Nepali: this error occurred)
+
+## CI: GitHub Actions failure (Issue #25)
 
 Recommended remediation: same as Issue #23 (see above) — remove `vendor/` from the repo, add `vendor/` to `.gitignore`, and update CI to run `composer install` before tests. If you want, I can run the `git rm --cached` sequence now and push the `.gitignore` update.
 
