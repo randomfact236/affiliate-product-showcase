@@ -19,3 +19,8 @@ vendor/
 # Docker
 docker/mysql/
 docker/redis/
+
+# Local env files (do not commit)
+.env
+.env.bak
+docker/.env

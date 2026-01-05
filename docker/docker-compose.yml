@@ -8,10 +8,12 @@ services:
     container_name: aps_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
-      MYSQL_USER: ${MYSQL_USER:-wp}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wp}
+      # Credentials must be provided via .env or environment variables.
+      # Do NOT rely on defaults for production or shared repos.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -40,10 +42,11 @@ services:
         condition: service_healthy
     restart: always
     environment:
+      # DB host may keep a sensible default, but credentials must be supplied.
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST:-db:3306}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wp}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wp}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     env_file:
       - ../.env
     volumes:
@@ -80,7 +83,7 @@ services:
     environment:
       PMA_HOST: ${PMA_HOST:-db}
       PMA_USER: ${PMA_USER:-root}
-      PMA_PASSWORD: ${PMA_PASSWORD:-${MYSQL_ROOT_PASSWORD}}
+      PMA_PASSWORD: ${PMA_PASSWORD}
     ports:
       - "8081:80"
     healthcheck:
