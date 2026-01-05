@@ -29,6 +29,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Clean checked-in vendor (ensure CI builds fresh deps)
+        run: |
+          echo "Removing any checked-in vendor directory to avoid gitlinks/submodule issues"
+          rm -rf vendor || true
+          find . -path "./vendor/*/.git" -type d -prune -exec rm -rf {} + || true
+
 
       - name: Cache Composer
         uses: actions/cache@v4
