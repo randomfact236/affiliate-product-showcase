@@ -14,7 +14,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ⏳ 1.1.2 MySQL 8.0 container with persistent volumes
       - ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
       - ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
-      - ⏳ 1.1.2.3 Configure MySQL environment variables and credentials for compose
+      - ✅ 1.1.2.3 Configure MySQL environment variables and credentials for compose
       - ⏳ 1.1.2.4 Add DB healthcheck and readiness probe for compose
       - ⏳ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
     - 1.1.3 Nginx container with SSL/TLS configuration

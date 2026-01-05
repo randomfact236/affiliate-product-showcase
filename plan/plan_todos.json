@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T16:49:54.735Z",
+  "generatedAt": "2026-01-05T17:45:35.285Z",
   "todos": [
     {
       "code": "1",
@@ -102,9 +102,9 @@
       "code": "1.1.2.3",
       "kind": "item",
       "title": "Configure MySQL environment variables and credentials for compose",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.2.4",
