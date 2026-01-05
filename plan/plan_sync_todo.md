@@ -7,7 +7,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ⏳ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
       - ✅ 1.1.1.2 Configure environment variables and DB connection for container
-      - ⏳ 1.1.1.3 Mount plugin source into container for development
+      - ✅ 1.1.1.3 Mount plugin source into container for development
       - ⏳ 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
       - ⏳ 1.1.1.5 Add container healthcheck and CI integration tests
       - ⏳ 1.1.1.6 Document WP-CLI helper commands and test entrypoints
