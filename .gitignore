@@ -3,3 +3,19 @@ composer.phar
 
 # PHPUnit cache result
 .phpunit.result.cache
+
+# Node / build
+node_modules/
+dist/
+assets/dist/
+
+# Composer
+vendor/
+
+# OS / editor
+.DS_Store
+*.log
+
+# Docker
+docker/mysql/
+docker/redis/
