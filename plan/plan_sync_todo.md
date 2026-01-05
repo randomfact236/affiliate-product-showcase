@@ -5,8 +5,18 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 - Step 1 — 🔴 Step 1 — Setup
   - 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-      - 1.1.1.1 Add integration tests and CI healthchecks (recommended)
+      - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
+      - 1.1.1.2 Configure environment variables and DB connection for container
+      - 1.1.1.3 Mount plugin source into container for development
+      - 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
+      - 1.1.1.5 Add container healthcheck and CI integration tests
+      - 1.1.1.6 Document WP-CLI helper commands and test entrypoints
     - 1.1.2 MySQL 8.0 container with persistent volumes
+      - ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
+      - ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
+      - 1.1.2.3 Configure MySQL environment variables and credentials for compose
+      - 1.1.2.4 Add DB healthcheck and readiness probe for compose
+      - 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
     - 1.1.3 Nginx container with SSL/TLS configuration
     - 1.1.4 Redis container for object caching
     - 1.1.5 MailHog container for email testing

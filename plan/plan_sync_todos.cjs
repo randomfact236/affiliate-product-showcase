@@ -105,7 +105,44 @@ function parsePlanSource(md) {
 
 function walkPlan(structure, visitor) { for (const step of structure.steps) { visitor(step); for (const topic of step.topics) { visitor(topic); (function walkItems(items){ if (!items) return; for (const it of items) { visitor(it); walkItems(it.items); } })(topic.items); } } }
 
-function mergeState(structure, state) { const statusByCode = state.statusByCode || {}; walkPlan(structure, node=>{ const s = statusByCode[node.code]; node.status = VALID_STATUSES.has(s) ? s : 'pending'; }); walkPlan(structure, node=>{ if (!statusByCode[node.code]) statusByCode[node.code] = node.status; }); state.statusByCode = statusByCode; state.lastSyncAt = new Date().toISOString(); return state; }
+function mergeState(structure, state) {
+  const statusByCode = state.statusByCode || {};
+
+  // Build sets of known codes to detect newly added items since last run
+  const prevKnown = new Set(state.knownCodes || []);
+  const currKnown = new Set();
+  walkPlan(structure, node => { if (node && node.code) currKnown.add(node.code); });
+  const addedCodes = [];
+  for (const c of currKnown) if (!prevKnown.has(c)) addedCodes.push(c);
+
+  // Apply existing statuses from state to nodes (or default to 'pending')
+  walkPlan(structure, node => {
+    const s = statusByCode[node.code];
+    node.status = VALID_STATUSES.has(s) ? s : 'pending';
+  });
+
+  // Ensure every node has an entry in statusByCode
+  walkPlan(structure, node => { if (!statusByCode[node.code]) statusByCode[node.code] = node.status; });
+
+  // Only propagate "in-progress" up the tree when a child is explicitly
+  // marked as in-progress (i.e. the task was started by a person). This
+  // avoids automatically marking all newly added tasks as started.
+  const startedCodes = Object.keys(statusByCode).filter(c => statusByCode[c] === 'in-progress');
+  for (const started of startedCodes) {
+    let parent = getParentCode(started);
+    while (parent) {
+      if (statusByCode[parent] === 'completed') {
+        statusByCode[parent] = 'in-progress';
+      }
+      parent = getParentCode(parent);
+    }
+  }
+
+  state.statusByCode = statusByCode;
+  state.knownCodes = Array.from(currKnown);
+  state.lastSyncAt = new Date().toISOString();
+  return state;
+}
 
 function deriveMarkers(structure) { function deriveNode(node){ const children = node.kind==='step'?node.topics:(node.items||[]); const derivedChildren = (children||[]).map(deriveNode); const allChildrenCompleted = (children && children.length>0) ? derivedChildren.every(c=>c.derivedStatus==='completed') : false; const anyCancelled = node.status==='cancelled' || derivedChildren.some(c=>c.derivedStatus==='cancelled'); const anyBlocked = node.status==='blocked' || derivedChildren.some(c=>c.derivedStatus==='blocked'); const anyInProgress = node.status==='in-progress' || derivedChildren.some(c=>c.derivedStatus==='in-progress'); const leafCompleted = (!children || children.length===0) && node.status==='completed'; let derivedStatus='pending'; if (leafCompleted||allChildrenCompleted) derivedStatus='completed'; else if (anyCancelled) derivedStatus='cancelled'; else if (anyBlocked) derivedStatus='blocked'; else if (anyInProgress) derivedStatus='in-progress'; let marker=''; if (derivedStatus==='completed') marker='✅'; else if (derivedStatus==='cancelled') marker='❌'; else if (derivedStatus==='blocked') marker='⛔'; else if (derivedStatus==='in-progress') marker='⏳'; node.derivedStatus=derivedStatus; node.marker=marker; return {derivedStatus,marker}; }
   for (const step of structure.steps) deriveNode(step);
