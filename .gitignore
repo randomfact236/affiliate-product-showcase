@@ -1,0 +1,5 @@
+# Local Composer PHAR (installed for local dev/testing)
+composer.phar
+
+# PHPUnit cache result
+.phpunit.result.cache
