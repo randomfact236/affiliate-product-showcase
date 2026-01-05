@@ -55,6 +55,15 @@ jobs:
           sudo apt-get install -y default-mysql-client
         shell: bash
 
+      - name: Show composer.json (debug)
+        run: |
+          echo "Checking for composer.json in $(pwd)"
+          if [ -f composer.json ]; then
+            echo "composer.json found:"; cat composer.json
+          else
+            echo "composer.json not found"
+          fi
+
       - name: Install Composer dependencies
         working-directory: .
         run: composer install --no-interaction --no-progress --prefer-dist
