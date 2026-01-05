@@ -76,6 +76,18 @@ jobs:
           mysql -h mysql -uroot -proot -e "SELECT VERSION();"
           mysql -h mysql -uroot -proot -e "SHOW DATABASES;"
 
+      - name: Wait for DB user 'wp' and database readiness
+        run: |
+          echo "Waiting for 'wp' user and 'wordpress' database to be ready..."
+          for i in {1..30}; do
+            if mysql -h mysql -uwp -pwp -e "SELECT 1 FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='wordpress'" >/dev/null 2>&1; then
+              echo "wp user / wordpress DB accessible"
+              break
+            fi
+            echo "not ready yet ($i)"
+            sleep 2
+          done
+
       - name: Seed test database (verbose)
         env:
           DB_HOST: mysql
