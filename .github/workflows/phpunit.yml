@@ -35,6 +35,7 @@ jobs:
           path: ~/.composer/cache
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+        working-directory: ./affiliate-product-showcase
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -49,6 +50,7 @@ jobs:
         shell: bash
 
       - name: Install Composer dependencies
+        working-directory: ./affiliate-product-showcase
         run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: Debug environment
@@ -95,6 +97,7 @@ jobs:
           DB_USER: wp
           DB_PASS: wp
           DB_NAME: wordpress
+        working-directory: ./affiliate-product-showcase
         run: |
           set -x
           php -v
@@ -107,6 +110,7 @@ jobs:
           DB_USER: wp
           DB_PASS: wp
           DB_NAME: wordpress
+        working-directory: ./affiliate-product-showcase
         run: |
           set -x
           vendor/bin/phpunit --configuration phpunit.xml
