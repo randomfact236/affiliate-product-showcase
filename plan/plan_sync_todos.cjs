@@ -40,6 +40,8 @@ function parseArgs(argv) {
     else if (a === '--quiet') args.quiet = true;
     else if (a === '--copy-source') args.copySource = true;
     else if (a === '--copy-todo') args.copyTodo = true;
+    else if (a === '--print-source') args.printSource = true;
+    else if (a === '--print-todo') args.printTodo = true;
     else if (a === '--source') args.source = path.resolve(argv[++i]);
     else if (a === '--state') args.state = path.resolve(argv[++i]);
     else if (a === '--out-plan') args.outPlan = path.resolve(argv[++i]);
@@ -102,10 +104,13 @@ function parsePlanSource(md) {
       code = headingItemMatch[1];
       title = headingItemMatch[2].trim();
     } else {
-      code = extractCode(trimmed);
+      // Strip common list markers and blockquote markers before parsing.
+      // This allows lines like '- 1.1.1.1 ...' to be recognized.
+      const stripped = trimmed.replace(/^\s*(?:>\s*)?(?:[-*+]\s+)+/, '').trim();
+      code = extractCode(stripped);
       if (!code) continue;
-      const titleMatch = trimmed.match(/^\s*\d+(?:\.\d+)*\s+(.*)$/);
-      title = titleMatch ? titleMatch[1].trim() : trimmed.replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim();
+      const titleMatch = stripped.match(/^\s*\d+(?:\.\d+)*\s+(.*)$/);
+      title = titleMatch ? titleMatch[1].trim() : stripped.replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim();
     }
     const level = getLevel(code); if (level < 3) continue;
     const parentCode = getParentCode(code); let parent = itemRegistry.get(parentCode);
@@ -284,8 +289,8 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
     planMd = renderPlanMd(parsed, args);
   }
 
-  writeUtf8(args.outPlan, planMd);
-  // Allow emitting the original source as the todo MD when requested (preserve exact formatting)
+  // Prepare todo MD (either copy or generated)
+  let todoMd;
   if (args.copyTodo) {
     const header = [];
     header.push('<!-- GENERATED_BY_SYNC_TODOS: true -->');
@@ -293,11 +298,23 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
     header.push(`<!-- GENERATED_BY_SYNC_TODOS_SOURCE: ${sourceRel} -->`);
     header.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
     header.push('');
-    writeUtf8(args.outTodoMd, header.join('\n') + sourceText.replace(/\r\n/g, '\n'));
+    todoMd = header.join('\n') + sourceText.replace(/\r\n/g, '\n');
   } else {
-    const todoMd = renderTodoMd(parsed);
-    writeUtf8(args.outTodoMd, todoMd);
+    todoMd = renderTodoMd(parsed);
   }
+
+  // If requested, only print outputs to stdout (preview) and exit without writing files.
+  if (args.printSource) {
+    console.log(planMd.replace(/\n{3,}/g,'\n\n'));
+    process.exit(0);
+  }
+  if (args.printTodo) {
+    console.log(todoMd.replace(/\n{3,}/g,'\n\n'));
+    process.exit(0);
+  }
+
+  writeUtf8(args.outPlan, planMd);
+  writeUtf8(args.outTodoMd, todoMd);
   const todoJson = renderTodoJson(parsed);
   saveJsonPretty(args.outTodoJson, todoJson);
   if (!args.quiet){
