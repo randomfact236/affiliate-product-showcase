@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-04T21:06:33.983Z",
+  "generatedAt": "2026-01-05T06:08:58.179Z",
   "todos": [
     {
       "code": "1",
@@ -27,12 +27,20 @@
       "marker": "⏳"
     },
     {
-      "code": "1.1.2",
+      "code": "1.1.1.1",
       "kind": "item",
-      "title": "MySQL 8.0 container with persistent volumes",
+      "title": "Add integration tests and CI healthchecks (recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
+    },
+    {
+      "code": "1.1.2",
+      "kind": "item",
+      "title": "MySQL 8.0 container with persistent volumes",
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.3",

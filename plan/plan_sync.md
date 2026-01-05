@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 4d925d078f1d237fd4916795c1af959f2e471eaf -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 4ee3e1f03269d3c052ec7ee3ad6c231133b57884 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -26,7 +26,8 @@
 
 ## ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
    ⏳ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-   1.1.2 MySQL 8.0 container with persistent volumes
+      1.1.1.1 Add integration tests and CI healthchecks (recommended)
+   ✅ 1.1.2 MySQL 8.0 container with persistent volumes
    1.1.3 Nginx container with SSL/TLS configuration
    1.1.4 Redis container for object caching
    1.1.5 MailHog container for email testing
