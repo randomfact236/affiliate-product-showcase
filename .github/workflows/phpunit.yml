@@ -29,11 +29,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: List repository files (debug)
+        run: |
+          echo "Working directory: $(pwd)"
+          ls -la
+          echo "Top-level files:" && ls -la | sed -n '1,200p'
+
       - name: Cache Composer
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('affiliate-product-showcase/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
  
 
@@ -50,6 +56,7 @@ jobs:
         shell: bash
 
       - name: Install Composer dependencies
+        working-directory: .
         run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: Debug environment
