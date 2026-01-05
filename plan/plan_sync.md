@@ -52,6 +52,29 @@ User note: CI still fails after plan updates — "still got error".
 
 Suggested next step: remove `vendor/` from the repo and add to `.gitignore`, then update CI to run `composer install` before executing `phpunit`. If you'd like, I can perform the `git rm --cached vendor` + `.gitignore` update and push now.
 
+## CI: GitHub Actions failure (Issue #26)
+
+- **Triggered:** push by @randomfact236 (recent commit to `main`)
+- **Status:** Failure during `composer install` / `phpunit` — exit code 1
+- **Run details:** `composer install` reported "Nothing to install, update or remove" then attempted to generate autoload files and failed; total job time ~52s
+- **Error output (relevant snippets):**
+   - "Generating autoload files"
+   - "Error: Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
+   - In ClassMapGenerator.php line 137: Could not scan for classes inside ... which does not appear to be a file nor a folder
+
+Diagnosis: Composer completed install (using lockfile) but the autoloader generation failed because Composer expects `vendor/phpunit/phpunit/src/` to be a real directory. The runner's checkout contains `vendor/` entries that appear as gitlinks or otherwise point to missing paths, causing ClassMapGenerator to abort.
+
+Actionable remediation:
+
+1. Remove tracked `vendor/` from the repository root to avoid shipping platform-specific or gitlink entries:
+    - `git rm -r --cached vendor`
+    - Commit the change and push.
+2. Add `vendor/` to `.gitignore` if not already ignored.
+3. Ensure CI workflow runs `composer install --no-interaction --prefer-dist --no-progress` before `phpunit`.
+4. If `vendor/` still contains submodule/gitlink references, remove submodule metadata and re-create a clean commit without those entries.
+
+I can run the `git rm -r --cached vendor` + `.gitignore` update and push now; would you like me to proceed? (This will remove vendor from history going forward but will not rewrite past commits.)
+
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
 > This is the editable plan outline.
