@@ -26,6 +26,19 @@ Recommended remediation (short):
 
 Next actions (tracked): remove `vendor/` from git, add to `.gitignore`, update CI workflow to run `composer install`, then re-run tests.
 
+## CI: GitHub Actions failure (Issue #24)
+
+- **Triggered:** push by @randomfact236 (commit `b5562f7`) to `main`
+- **Status:** Failure — `phpunit` exited with code 1; `git` returned exit code 128
+- **Run details:** job ran ~1 minute after push; total duration reported 56s
+- **Annotations:** 2 errors and 1 warning. Key error messages:
+   - "Could not scan for classes inside \"/home/runner/work/affiliate-product-showcase/affiliate-product-showcase/vendor/phpunit/phpunit/src/\" which does not appear to be a file nor a folder"
+   - "The process '/usr/bin/git' failed with exit code 128"
+
+User note: "yesto error aako xa" (Nepali: this error occurred)
+
+Recommended remediation: same as Issue #23 (see above) — remove `vendor/` from the repo, add `vendor/` to `.gitignore`, and update CI to run `composer install` before tests. If you want, I can run the `git rm --cached` sequence now and push the `.gitignore` update.
+
 # 🚀 Affiliate Product Showcase — Step-by-step Plan (Source)
 
 > This is the editable plan outline.
