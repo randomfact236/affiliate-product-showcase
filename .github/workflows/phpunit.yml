@@ -9,19 +9,54 @@ on:
 jobs:
   phpunit:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wp
+          MYSQL_PASSWORD: wp
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.3'
+          extensions: mysqli, pdo_mysql
 
       - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Wait for MySQL
         run: |
-          if [ -f composer.json ]; then composer install --no-progress --no-suggest --prefer-dist; fi
+          for i in {1..30}; do mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot >/dev/null 2>&1 && break || sleep 2; done
+
+      - name: Seed test database
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: wp
+          DB_PASS: wp
+          DB_NAME: wordpress
+        run: php tests/db-seed.php
 
       - name: Run PHPUnit
-        run: |
-          if [ -f phpunit.xml ]; then ./vendor/bin/phpunit -c phpunit.xml || phpunit -c phpunit.xml; fi
+        run: vendor/bin/phpunit --configuration phpunit.xml
