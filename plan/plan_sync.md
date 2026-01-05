@@ -26,7 +26,7 @@
 
 ## ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
    ⏳ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-      1.1.1.1 Add integration tests and CI healthchecks (recommended)
+      ⏳ 1.1.1.1 Add integration tests and CI healthchecks (recommended)
    ✅ 1.1.2 MySQL 8.0 container with persistent volumes
    1.1.3 Nginx container with SSL/TLS configuration
    1.1.4 Redis container for object caching
