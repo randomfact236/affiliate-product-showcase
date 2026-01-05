@@ -1,46 +1,46 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T06:17:22.920Z",
+  "generatedAt": "2026-01-05T07:44:44.210Z",
   "todos": [
     {
       "code": "1",
       "kind": "step",
       "title": "🔴 Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1",
       "kind": "item",
       "title": "WordPress 6.7+ container with PHP 8.3-fpm-alpine",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1.1",
       "kind": "item",
       "title": "Add integration tests and CI healthchecks (recommended)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.2",
       "kind": "item",
       "title": "MySQL 8.0 container with persistent volumes",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.3",
