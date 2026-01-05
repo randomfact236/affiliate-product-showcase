@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T13:05:40.826Z",
+  "generatedAt": "2026-01-05T14:24:04.308Z",
   "todos": [
     {
       "code": "1",
@@ -38,9 +38,9 @@
       "code": "1.1.1.2",
       "kind": "item",
       "title": "Configure environment variables and DB connection for container",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.1.3",
