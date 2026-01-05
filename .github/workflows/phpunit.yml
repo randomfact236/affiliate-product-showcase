@@ -45,18 +45,44 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      - name: Wait for MySQL
+      - name: Debug environment
         run: |
-          for i in {1..30}; do mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot >/dev/null 2>&1 && break || sleep 2; done
+          php -v
+          php -m
+          uname -a || true
+          echo "Composer version:" && composer --version || true
 
-      - name: Seed test database
+      - name: Wait for MySQL (extended)
+        run: |
+          set -e
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..60}; do
+            if mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot >/dev/null 2>&1; then
+              echo "MySQL is up"
+              break
+            fi
+            echo "MySQL not ready yet ($i)"
+            sleep 2
+          done
+
+      - name: Show MySQL status
+        run: |
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT VERSION();"
+          mysql -h 127.0.0.1 -uroot -proot -e "SHOW DATABASES;"
+
+      - name: Seed test database (verbose)
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_USER: wp
           DB_PASS: wp
           DB_NAME: wordpress
-        run: php tests/db-seed.php
+        run: |
+          set -x
+          php -v
+          php tests/db-seed.php
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit --configuration phpunit.xml
+      - name: Run PHPUnit (verbose)
+        run: |
+          set -x
+          vendor/bin/phpunit --configuration phpunit.xml
