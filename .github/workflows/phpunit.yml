@@ -141,7 +141,7 @@ jobs:
             echo "WordPress already installed"
           else
             echo "Installing WordPress (creates DB tables)"
-            php wp-cli.phar core install --url=http://localhost --title=\"CI Test\" --admin_user=wp --admin_password=wp --admin_email=ci@example.com --skip-email --path=. --allow-root
+            php wp-cli.phar core install --url=http://localhost --title='CI Test' --admin_user=wp --admin_password=wp --admin_email=ci@example.com --skip-email --path=. --allow-root
           fi
 
       - name: Seed test database (verbose)
