@@ -1,22 +1,22 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-05T18:15:15.887Z",
+  "generatedAt": "2026-01-05T18:30:53.995Z",
   "todos": [
     {
       "code": "1",
       "kind": "step",
       "title": "🔴 Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1",
@@ -79,8 +79,8 @@
       "kind": "item",
       "title": "MySQL 8.0 container with persistent volumes",
       "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.2.1",
@@ -118,9 +118,9 @@
       "code": "1.1.2.5",
       "kind": "item",
       "title": "Secure collection: document backup/restore steps and credentials handling",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.3",
