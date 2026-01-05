@@ -108,12 +108,18 @@ function walkPlan(structure, visitor) { for (const step of structure.steps) { vi
 function mergeState(structure, state) {
   const statusByCode = state.statusByCode || {};
 
-  // Build sets of known codes to detect newly added items since last run
-  const prevKnown = new Set(state.knownCodes || []);
+  // Build sets of known codes to detect newly added items since last run.
+  // If `state.knownCodes` is missing (first bootstrap), treat this as
+  // a noop for added-code detection to avoid mass-changing statuses.
+  const prevKnown = new Set(Array.isArray(state.knownCodes) ? state.knownCodes : []);
   const currKnown = new Set();
   walkPlan(structure, node => { if (node && node.code) currKnown.add(node.code); });
-  const addedCodes = [];
-  for (const c of currKnown) if (!prevKnown.has(c)) addedCodes.push(c);
+  let addedCodes = [];
+  if (Array.isArray(state.knownCodes) && state.knownCodes.length > 0) {
+    for (const c of currKnown) if (!prevKnown.has(c)) addedCodes.push(c);
+  } else {
+    addedCodes = [];
+  }
 
   // Apply existing statuses from state to nodes (or default to 'pending')
   walkPlan(structure, node => {
@@ -123,6 +129,20 @@ function mergeState(structure, state) {
 
   // Ensure every node has an entry in statusByCode
   walkPlan(structure, node => { if (!statusByCode[node.code]) statusByCode[node.code] = node.status; });
+
+  // If new child was added under an ancestor that was previously completed,
+  // mark that ancestor (and its ancestors) as in-progress so the badge updates.
+  // Only do this when we detected actual added codes (i.e. not during initial
+  // bootstrapping where `knownCodes` was missing).
+  for (const added of addedCodes) {
+    let parent = getParentCode(added);
+    while (parent) {
+      if (statusByCode[parent] === 'completed') {
+        statusByCode[parent] = 'in-progress';
+      }
+      parent = getParentCode(parent);
+    }
+  }
 
   // Only propagate "in-progress" up the tree when a child is explicitly
   // marked as in-progress (i.e. the task was started by a person). This
@@ -144,8 +164,32 @@ function mergeState(structure, state) {
   return state;
 }
 
-function deriveMarkers(structure) { function deriveNode(node){ const children = node.kind==='step'?node.topics:(node.items||[]); const derivedChildren = (children||[]).map(deriveNode); const allChildrenCompleted = (children && children.length>0) ? derivedChildren.every(c=>c.derivedStatus==='completed') : false; const anyCancelled = node.status==='cancelled' || derivedChildren.some(c=>c.derivedStatus==='cancelled'); const anyBlocked = node.status==='blocked' || derivedChildren.some(c=>c.derivedStatus==='blocked'); const anyInProgress = node.status==='in-progress' || derivedChildren.some(c=>c.derivedStatus==='in-progress'); const leafCompleted = (!children || children.length===0) && node.status==='completed'; let derivedStatus='pending'; if (leafCompleted||allChildrenCompleted) derivedStatus='completed'; else if (anyCancelled) derivedStatus='cancelled'; else if (anyBlocked) derivedStatus='blocked'; else if (anyInProgress) derivedStatus='in-progress'; let marker=''; if (derivedStatus==='completed') marker='✅'; else if (derivedStatus==='cancelled') marker='❌'; else if (derivedStatus==='blocked') marker='⛔'; else if (derivedStatus==='in-progress') marker='⏳'; node.derivedStatus=derivedStatus; node.marker=marker; return {derivedStatus,marker}; }
-  for (const step of structure.steps) deriveNode(step);
+function deriveMarkers(structure) {
+  function deriveNode(node, inheritedInProgress) {
+    const children = node.kind === 'step' ? node.topics : (node.items || []);
+    const currentInherited = !!inheritedInProgress || node.status === 'in-progress';
+    const derivedChildren = (children || []).map(c => deriveNode(c, currentInherited));
+    const allChildrenCompleted = (children && children.length > 0) ? derivedChildren.every(c => c.derivedStatus === 'completed') : false;
+    const anyCancelled = node.status === 'cancelled' || derivedChildren.some(c => c.derivedStatus === 'cancelled');
+    const anyBlocked = node.status === 'blocked' || derivedChildren.some(c => c.derivedStatus === 'blocked');
+    const anyInProgress = currentInherited || derivedChildren.some(c => c.derivedStatus === 'in-progress');
+    const leafCompleted = (!children || children.length === 0) && node.status === 'completed';
+    let derivedStatus = 'pending';
+    if (leafCompleted || allChildrenCompleted) derivedStatus = 'completed';
+    else if (anyCancelled) derivedStatus = 'cancelled';
+    else if (anyBlocked) derivedStatus = 'blocked';
+    else if (anyInProgress) derivedStatus = 'in-progress';
+    let marker = '';
+    if (derivedStatus === 'completed') marker = '✅';
+    else if (derivedStatus === 'cancelled') marker = '❌';
+    else if (derivedStatus === 'blocked') marker = '⛔';
+    else if (derivedStatus === 'in-progress') marker = '⏳';
+    node.derivedStatus = derivedStatus;
+    node.marker = marker;
+    return { derivedStatus, marker };
+  }
+
+  for (const step of structure.steps) deriveNode(step, false);
 }
 
 function renderPlanMd(structure, opts) {
