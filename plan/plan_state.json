@@ -21,7 +21,7 @@
     "1.1.1.4": "pending",
     "1.1.1.5": "pending",
     "1.1.1.6": "pending",
-    "1.1.2": "pending",
+    "1.1.2": "in-progress",
     "1.1.2.1": "completed",
     "1.1.2.2": "completed",
     "1.1.2.3": "pending",
@@ -2806,7 +2806,7 @@
     "1.1.10": "pending",
     "1.1.11": "pending"
   },
-  "lastSyncAt": "2026-01-05T08:43:17.016Z",
+  "lastSyncAt": "2026-01-05T08:45:54.313Z",
   "lastUpdated": "2026-01-04T13:19:23.298Z",
   "knownCodes": [
     "1",
@@ -5613,5 +5613,5 @@
     "12.10.20"
   ],
   "cleanedAt": "2026-01-05T08:14:53.730Z",
-  "lastManualUpdate": "2026-01-05T08:40:34.668Z"
+  "lastManualUpdate": "2026-01-05T08:45:54.248Z"
 }
