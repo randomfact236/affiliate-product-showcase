@@ -2796,7 +2796,7 @@
     "1.2.145": "pending",
     "1.2.146": "pending",
     "1.2.147": "pending",
-    "1.1.3": "pending",
+    "1.1.3": "in-progress",
     "1.1.4": "pending",
     "1.1.5": "pending",
     "1.1.6": "pending",
@@ -2836,7 +2836,7 @@
     "8.6.3": "pending",
     "8.6.4": "pending",
     "8.6.5": "pending",
-    "1.1.3.1": "pending",
+    "1.1.3.1": "in-progress",
     "1.1.3.2": "pending",
     "1.1.3.3": "pending",
     "1.1.3.4": "pending",
@@ -2847,7 +2847,7 @@
     "1.1.3.9": "pending",
     "1.1.3.10": "pending"
   },
-  "lastSyncAt": "2026-01-06T02:34:37.033Z",
+  "lastSyncAt": "2026-01-06T02:38:53.731Z",
   "lastUpdated": "2026-01-04T13:19:23.298Z",
   "knownCodes": [
     "1",
