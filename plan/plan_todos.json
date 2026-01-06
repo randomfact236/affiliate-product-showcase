@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T13:29:20.653Z",
+  "generatedAt": "2026-01-06T13:32:30.103Z",
   "todos": [
     {
       "code": "1",
@@ -262,9 +262,9 @@
       "code": "1.1.5",
       "kind": "item",
       "title": "MailHog container for email testing",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5.1",
@@ -286,25 +286,25 @@
       "code": "1.1.5.3",
       "kind": "item",
       "title": "Web UI access (port 8025)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5.4",
       "kind": "item",
       "title": "Healthcheck for MailHog service",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5.5",
       "kind": "item",
       "title": "Basic testing (send/receive, mail capture)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5.6",
@@ -318,9 +318,9 @@
       "code": "1.1.6",
       "kind": "item",
       "title": "phpMyAdmin container for database management",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.7",
