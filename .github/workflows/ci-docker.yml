@@ -31,10 +31,12 @@ jobs:
       - name: Prepare .env for Docker Compose
         run: |
           if [ -f .env ]; then echo ".env already exists"; else cp .env.example .env; fi
+          echo "Checking env keys (values redacted):"
+          grep -E '^(MYSQL_|WORDPRESS_|PMA_)' .env | sed -E 's/=.*/=REDACTED/' || true
 
       - name: Bring up Docker Compose
         run: |
-          docker compose -f docker/docker-compose.yml up -d --build
+          docker compose --env-file .env -f docker/docker-compose.yml up -d --build
 
       - name: Wait for DB health
         run: |
