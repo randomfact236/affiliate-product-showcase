@@ -54,7 +54,19 @@ jobs:
       - name: Run container healthcheck
         run: |
           chmod +x docker/healthcheck.sh || true
+          set +e
           ./docker/healthcheck.sh http://localhost:8000
+          rc=$?
+          if [ $rc -ne 0 ]; then
+            echo "Healthcheck failed (code: $rc) — dumping container logs for diagnosis"
+            echo "--- aps_wordpress logs ---"
+            docker logs aps_wordpress --tail 200 || true
+            echo "--- aps_db logs ---"
+            docker logs aps_db --tail 200 || true
+            echo "--- full docker-compose ps ---"
+            docker compose --env-file .env -f docker/docker-compose.yml ps || true
+            exit $rc
+          fi
 
       - name: Run PHPUnit inside wordpress container
         run: |
