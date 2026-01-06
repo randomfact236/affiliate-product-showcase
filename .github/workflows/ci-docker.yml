@@ -38,14 +38,15 @@ jobs:
           # Inject additional wp-config eval to display errors and log them
           echo "WORDPRESS_CONFIG_EXTRA=\"ini_set('display_errors',1); ini_set('display_startup_errors',1); error_reporting(E_ALL); define('WP_DEBUG_LOG', true); define('WP_DEBUG_DISPLAY', true);\"" >> .env
           # Ensure DB_* variables expected by tests match the actual MySQL credentials
-          MYSQL_USER_VAL=$(grep -E '^MYSQL_USER=' .env | head -n1 | cut -d'=' -f2- || true)
-          MYSQL_PASSWORD_VAL=$(grep -E '^MYSQL_PASSWORD=' .env | head -n1 | cut -d'=' -f2- || true)
-          MYSQL_DATABASE_VAL=$(grep -E '^MYSQL_DATABASE=' .env | head -n1 | cut -d'=' -f2- || true)
+          # If the .env file contains duplicates, prefer the last occurrence (the one docker/env loader used)
+          MYSQL_USER_VAL=$(grep -E '^MYSQL_USER=' .env | tail -n1 | cut -d'=' -f2- || true)
+          MYSQL_PASSWORD_VAL=$(grep -E '^MYSQL_PASSWORD=' .env | tail -n1 | cut -d'=' -f2- || true)
+          MYSQL_DATABASE_VAL=$(grep -E '^MYSQL_DATABASE=' .env | tail -n1 | cut -d'=' -f2- || true)
           if [ -n "$MYSQL_USER_VAL" ]; then echo "DB_USER=$MYSQL_USER_VAL" >> .env; fi
           if [ -n "$MYSQL_PASSWORD_VAL" ]; then echo "DB_PASS=$MYSQL_PASSWORD_VAL" >> .env; fi
           if [ -n "$MYSQL_DATABASE_VAL" ]; then echo "DB_NAME=$MYSQL_DATABASE_VAL" >> .env; fi
           # Also ensure DB_HOST/DB_PORT align with WORDPRESS_DB_HOST if present
-          WP_DB_HOST_VAL=$(grep -E '^WORDPRESS_DB_HOST=' .env | head -n1 | cut -d'=' -f2- || true)
+          WP_DB_HOST_VAL=$(grep -E '^WORDPRESS_DB_HOST=' .env | tail -n1 | cut -d'=' -f2- || true)
           if [ -n "$WP_DB_HOST_VAL" ]; then
             # split host:port
             echo "DB_HOST=${WP_DB_HOST_VAL%%:*}" >> .env
