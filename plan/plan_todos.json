@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T09:36:52.640Z",
+  "generatedAt": "2026-01-06T10:08:09.814Z",
   "todos": [
     {
       "code": "1",
@@ -214,49 +214,49 @@
       "code": "1.1.4",
       "kind": "item",
       "title": "Redis container for object caching",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.4.1",
       "kind": "item",
       "title": "Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.4.2",
       "kind": "item",
       "title": "Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.4.3",
       "kind": "item",
       "title": "Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.4.4",
       "kind": "item",
       "title": "Add a Redis healthcheck and optional volume for persistence in development",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.4.5",
       "kind": "item",
       "title": "Document example `docker-compose.override.yml` and environment variable examples for local development",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5",

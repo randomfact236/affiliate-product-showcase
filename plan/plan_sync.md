@@ -49,12 +49,12 @@
       ✅ 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
       ✅ 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
       ✅ 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
-### 1.1.4 Redis container for object caching
-      1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
-      1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
-      1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
-      1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
-      1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
+### ✅ 1.1.4 Redis container for object caching
+      ✅ 1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
+      ✅ 1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
+      ✅ 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
+      ✅ 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
+      ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
 ### 1.1.5 MailHog container for email testing
 ### 1.1.6 phpMyAdmin container for database management
 ### 1.1.7 WP-CLI container for automation tasks
