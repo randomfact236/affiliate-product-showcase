@@ -2808,7 +2808,7 @@
     "1.2.146": "pending",
     "1.2.147": "pending",
     "1.1.4": "completed",
-    "1.1.5": "pending",
+    "1.1.5": "completed",
     "1.1.6": "pending",
     "1.1.7": "pending",
     "1.1.8": "pending",
@@ -2852,8 +2852,8 @@
     "1.1.4.4": "completed",
     "1.1.4.5": "completed"
   },
-  "lastSyncAt": "2026-01-06T10:29:32.544Z",
-  "lastUpdated": "2026-01-06T10:08:09.723Z",
+  "lastSyncAt": "2026-01-06T10:30:53.749Z",
+  "lastUpdated": "2026-01-06T10:30:53.554Z",
   "knownCodes": [
     "1",
     "1.1",

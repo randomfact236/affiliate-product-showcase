@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T10:29:32.559Z",
+  "generatedAt": "2026-01-06T10:30:53.766Z",
   "todos": [
     {
       "code": "1",
@@ -262,9 +262,9 @@
       "code": "1.1.5",
       "kind": "item",
       "title": "MailHog container for email testing",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6",

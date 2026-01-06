@@ -55,7 +55,7 @@
       ✅ 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
       ✅ 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
       ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
-### 1.1.5 MailHog container for email testing
+### ✅ 1.1.5 MailHog container for email testing
 ### 1.1.6 phpMyAdmin container for database management
 ### 1.1.7 WP-CLI container for automation tasks
 ### 1.1.8 Custom healthcheck scripts for all services

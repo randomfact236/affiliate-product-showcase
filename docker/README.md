@@ -56,3 +56,17 @@ Notes and troubleshooting
 - To disable Redis for a particular developer, use an override file that removes the `redis` service or set `REDIS_HOST` to an empty value.
 
 If you'd like, I can add a sample `wp-content/object-cache.php` drop-in that delegates to the Redis plugin when present — tell me if you want that scaffolded.
+ 
+MailHog (email testing)
+ - The compose stack includes a `mailhog` service (image `mailhog/mailhog`) exposing SMTP on `1025` and a web UI on `8025`.
+ - To route WordPress email to MailHog in development, set the SMTP host/port in `wp-config.php` or use a mail plugin that supports custom SMTP settings:
+
+```
+SMTP_HOST=mailhog
+SMTP_PORT=1025
+```
+
+ - Open the MailHog web UI in your browser at `http://localhost:8025` to view captured messages.
+ - The `mailhog` service in `docker/docker-compose.yml` already includes a simple healthcheck; exposing port 8025 to the host is optional but convenient for development.
+
+Security note: Do not expose MailHog ports in production environments.
