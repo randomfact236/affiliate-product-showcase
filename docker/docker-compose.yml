@@ -71,8 +71,8 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ../:/var/www/html:ro
-      - ./nginx/certs:/etc/letsencrypt:rw
-      - ./nginx/www:/var/www/certbot:rw
+      - nginx_certs:/etc/letsencrypt:rw
+      - certbot_www:/var/www/certbot:rw
     healthcheck:
       # Check nginx worker/process presence instead of HTTP from inside the container
       test: ["CMD-SHELL", "ps aux | grep nginx | grep -v grep >/dev/null || exit 1"]
@@ -116,8 +116,8 @@ services:
     env_file:
       - ../.env
     volumes:
-      - ./nginx/certs:/etc/letsencrypt
-      - ./nginx/www:/var/www/certbot
+      - nginx_certs:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
     entrypoint: ["/bin/sh", "-c"]
     # Use environment variables LETSENCRYPT_DOMAINS (comma-separated) and LETSENCRYPT_EMAIL in ../.env
     # Example start command (first-time obtain):
@@ -129,7 +129,7 @@ services:
     image: alpine:3.19
     container_name: aps_nginx_cert
     volumes:
-      - ./nginx/certs:/etc/letsencrypt
+      - nginx_certs:/etc/letsencrypt
     command: /bin/sh -c "apk add --no-cache openssl >/dev/null 2>&1; if [ ! -f /etc/letsencrypt/server.key ] || [ ! -f /etc/letsencrypt/server.crt ]; then mkdir -p /etc/letsencrypt && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/CN=localhost' -keyout /etc/letsencrypt/server.key -out /etc/letsencrypt/server.crt; fi; sleep 1"
     restart: 'no'
 
