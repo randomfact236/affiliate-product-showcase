@@ -33,6 +33,10 @@ jobs:
           if [ -f .env ]; then echo ".env already exists"; else cp .env.example .env; fi
           echo "Checking env keys (values redacted):"
           grep -E '^(MYSQL_|WORDPRESS_|PMA_)' .env | sed -E 's/=.*/=REDACTED/' || true
+          # Enable WordPress debug during CI to surface PHP errors (do not commit real .env)
+          echo "WORDPRESS_DEBUG=1" >> .env
+          # Inject additional wp-config eval to display errors and log them
+          echo "WORDPRESS_CONFIG_EXTRA=\"ini_set('display_errors',1); ini_set('display_startup_errors',1); error_reporting(E_ALL); define('WP_DEBUG_LOG', true); define('WP_DEBUG_DISPLAY', true);\"" >> .env
 
       - name: Bring up Docker Compose
         run: |
