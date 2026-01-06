@@ -40,7 +40,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ⏳ 1.1.5.3 Web UI access (port 8025)
       - ⏳ 1.1.5.4 Healthcheck for MailHog service
       - ⏳ 1.1.5.5 Basic testing (send/receive, mail capture)
-      - ⏳ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
+      - ✅ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
     - 1.1.6 phpMyAdmin container for database management
     - 1.1.7 WP-CLI container for automation tasks
     - 1.1.8 Custom healthcheck scripts for all services
