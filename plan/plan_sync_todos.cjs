@@ -53,8 +53,19 @@ function parseArgs(argv) {
 }
 
 function sha1(text) { return crypto.createHash('sha1').update(text, 'utf8').digest('hex'); }
-function readUtf8IfExists(filePath) { if (!fs.existsSync(filePath)) return null; return fs.readFileSync(filePath, 'utf8'); }
-function writeUtf8(filePath, content) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, content, 'utf8'); }
+function readUtf8IfExists(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  let txt = fs.readFileSync(filePath, 'utf8');
+  // Normalize line endings to LF and Unicode to NFC to avoid platform/encoding diffs
+  try { txt = txt.replace(/\r\n/g, '\n').normalize('NFC'); } catch (e) { txt = txt.replace(/\r\n/g, '\n'); }
+  return txt;
+}
+function writeUtf8(filePath, content) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  // Ensure LF line endings and Unicode NFC normalization to produce deterministic files
+  try { content = String(content).replace(/\r\n/g, '\n').normalize('NFC'); } catch (e) { content = String(content).replace(/\r\n/g, '\n'); }
+  fs.writeFileSync(filePath, content, 'utf8');
+}
 function loadJson(filePath, fallback) { if (!fs.existsSync(filePath)) return fallback; const raw = fs.readFileSync(filePath, 'utf8'); if (!raw.trim()) return fallback; return JSON.parse(raw); }
 function saveJsonPretty(filePath, obj) { writeUtf8(filePath, JSON.stringify(obj, null, 2) + '\n'); }
 
