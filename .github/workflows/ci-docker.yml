@@ -60,7 +60,16 @@ jobs:
           if [ $rc -ne 0 ]; then
             echo "Healthcheck failed (code: $rc) — dumping container logs for diagnosis"
             echo "--- aps_wordpress logs ---"
-            docker logs aps_wordpress --tail 200 || true
+            docker logs aps_wordpress --tail 1000 || true
+            echo "--- aps_wordpress: PHP & env info ---"
+            docker exec aps_wordpress sh -c 'php -v || true'
+            docker exec aps_wordpress sh -c 'env | grep -E "WORDPRESS_|DB_|MYSQL_" || true'
+            echo "--- listing webroot ---"
+            docker exec aps_wordpress sh -c 'ls -la /var/www/html || true'
+            echo "--- wp-config.php (first 200 lines) ---"
+            docker exec aps_wordpress sh -c 'sed -n "1,200p" /var/www/html/wp-config.php || true'
+            echo "--- mysqli quick test inside container ---"
+            docker exec aps_wordpress sh -c 'php -r "mysqli_report(MYSQLI_REPORT_OFF); $h=getenv(\"WORDPRESS_DB_HOST\"); $u=getenv(\"WORDPRESS_DB_USER\"); $p=getenv(\"WORDPRESS_DB_PASSWORD\"); $d=getenv(\"WORDPRESS_DB_NAME\"); $host=preg_replace(\"/:.*$/\",\"\",$h); $port=(strpos($h,\":\")!==false)?intval(substr($h,strpos($h,\":\")+1)):3306; $conn=@mysqli_connect($host,$u,$p,$d,$port); echo $conn?\"DB-CONNECT: OK\\n\":(\"DB-CONNECT-ERROR: \".mysqli_connect_error()."\\n");"' || true
             echo "--- aps_db logs ---"
             docker logs aps_db --tail 200 || true
             echo "--- full docker-compose ps ---"
