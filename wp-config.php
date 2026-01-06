@@ -124,6 +124,34 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARD
 }
 // (we include this by default because reverse proxying is extremely common in container environments)
 
+// Force SSL for admin and ensure WordPress recognizes the correct scheme and host/port.
+// This sets `WP_HOME` and `WP_SITEURL` dynamically so the site works on host:port combinations
+// (e.g. https://localhost:8443 or http://localhost:8000).
+if (empty($_SERVER['HTTPS']) && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+	$_SERVER['HTTPS'] = 'on';
+}
+// Treat HTTPS as on if detected
+$is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+	(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false);
+$_SERVER['HTTPS'] = $is_https ? 'on' : ($_SERVER['HTTPS'] ?? '');
+
+// Build host (including port when present) and scheme
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$scheme = $is_https ? 'https' : 'http';
+
+// Override WordPress site URL values so WP uses the same host:port the browser used.
+if (!defined('WP_HOME')) {
+	define('WP_HOME', $scheme . '://' . $host);
+}
+if (!defined('WP_SITEURL')) {
+	define('WP_SITEURL', $scheme . '://' . $host);
+}
+
+// Force SSL for admin pages and logins
+if (!defined('FORCE_SSL_ADMIN')) {
+	define('FORCE_SSL_ADMIN', true);
+}
+
 if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
