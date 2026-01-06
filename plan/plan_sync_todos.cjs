@@ -310,7 +310,7 @@ function renderTodoMd(structure){
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
 
-function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', generatedAt: new Date().toISOString(), todos }; }
+function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
 
 function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs.existsSync(args.source)){ const currentPlan = readUtf8IfExists(args.outPlan); if (!currentPlan) throw new Error(`Bootstrap failed: no existing generated plan at ${args.outPlan}`); const stripped = stripGeneratedHeader(currentPlan); writeUtf8(args.source, stripped.trimEnd()+'\n'); if (!args.quiet) console.log(`🧩 Bootstrapped plan source: ${args.source}`); }
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
@@ -666,7 +666,7 @@ function renderTodoMd(structure){
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
 
-function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', generatedAt: new Date().toISOString(), todos }; }
+function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
 
 function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs.existsSync(args.source)){ const currentPlan = readUtf8IfExists(args.outPlan); if (!currentPlan) throw new Error(`Bootstrap failed: no existing generated plan at ${args.outPlan}`); const stripped = stripGeneratedHeader(currentPlan); writeUtf8(args.source, stripped.trimEnd()+'\n'); if (!args.quiet) console.log(`🧩 Bootstrapped plan source: ${args.source}`); }
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
