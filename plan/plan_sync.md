@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 5953b1ad5459e5ea32ccbd398c7fe0831014a68d -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ced646b65c4b06dc0b31d53ea82b241d71c12606 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -39,7 +39,6 @@
       ✅ 1.1.2.4 Add DB healthcheck and readiness probe for compose
       ✅ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
 ### ⏳ 1.1.3 Nginx container with SSL/TLS configuration
-      ⏳ 1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
       ⏳ 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
       ⏳ 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
       ⏳ 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
