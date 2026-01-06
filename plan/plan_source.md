@@ -37,15 +37,15 @@
 
 ### 1.1.3 Nginx container with SSL/TLS configuration
    - 1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
-   - 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx (production feature - not needed for local dev)
-   - 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic (production feature - not needed for local dev)
-   - 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols (production feature - not needed for local dev)
-   - 1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations (production feature - not needed for local dev)
-   - 1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation (production feature - not needed for local dev)
-   - 1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr (production feature - not needed for local dev)
-   - 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images) (production feature - not needed for local dev)
-   - 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads) (production feature - not needed for local dev)
-   - 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support (production feature - not needed for local dev)
+   - 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
+   - 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
+   - 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
+   - 1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
+   - 1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
+   - 1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
+   - 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
+   - 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
+   - 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
 ### 1.1.4 Redis container for object caching
 ### 1.1.5 MailHog container for email testing
 ### 1.1.6 phpMyAdmin container for database management
