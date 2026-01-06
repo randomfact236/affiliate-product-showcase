@@ -14,7 +14,7 @@ services:
       PMA_USER: ${MYSQL_USER:-root}
       PMA_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "8080:80" # dev-only override: expose on 8080
+      - "127.0.0.1:8080:80" # dev-only override: bind to localhost only
     depends_on:
       - db
 
