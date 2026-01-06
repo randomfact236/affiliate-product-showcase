@@ -1,22 +1,22 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T17:37:13.407Z",
+  "generatedAt": "2026-01-06T17:53:03.504Z",
   "todos": [
     {
       "code": "1",
       "kind": "step",
       "title": "🔴 Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1",
@@ -318,129 +318,129 @@
       "code": "1.1.6",
       "kind": "item",
       "title": "phpMyAdmin container for database management",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.1",
       "kind": "item",
       "title": "REQUIRED - Image: phpmyadmin/phpmyadmin",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.2",
       "kind": "item",
       "title": "REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.3",
       "kind": "item",
       "title": "REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.4",
       "kind": "item",
       "title": "REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.5",
       "kind": "item",
       "title": "REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.6",
       "kind": "item",
       "title": "GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.7",
       "kind": "item",
       "title": "GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.8",
       "kind": "item",
       "title": "GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.9",
       "kind": "item",
       "title": "GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.10",
       "kind": "item",
       "title": "GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.11",
       "kind": "item",
       "title": "GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.12",
       "kind": "item",
       "title": "NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.13",
       "kind": "item",
       "title": "NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.14",
       "kind": "item",
       "title": "NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.6.15",
       "kind": "item",
       "title": "NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.7",

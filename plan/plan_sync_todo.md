@@ -2,8 +2,8 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- ⏳ Step 1 — 🔴 Step 1 — Setup
-  - ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
+- Step 1 — 🔴 Step 1 — Setup
+  - 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
       - ✅ 1.1.1.2 Configure environment variables and DB connection for container
@@ -41,7 +41,22 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.5.4 Healthcheck for MailHog service
       - ✅ 1.1.5.5 Basic testing (send/receive, mail capture)
       - ✅ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
-    - ⏳ 1.1.6 phpMyAdmin container for database management
+    - ✅ 1.1.6 phpMyAdmin container for database management
+      - ✅ 1.1.6.1 REQUIRED - Image: phpmyadmin/phpmyadmin
+      - ✅ 1.1.6.2 REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service
+      - ✅ 1.1.6.3 REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication
+      - ✅ 1.1.6.4 REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service
+      - ✅ 1.1.6.5 REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access
+      - ✅ 1.1.6.6 GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption
+      - ✅ 1.1.6.7 GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access
+      - ✅ 1.1.6.8 GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability
+      - ✅ 1.1.6.9 GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order
+      - ✅ 1.1.6.10 GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings
+      - ✅ 1.1.6.11 GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/
+      - ✅ 1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
+      - ✅ 1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
+      - ✅ 1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
+      - ✅ 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
     - 1.1.7 WP-CLI container for automation tasks
     - 1.1.8 Custom healthcheck scripts for all services
     - 1.1.9 Docker Compose v3.8+ with environment variable substitution
