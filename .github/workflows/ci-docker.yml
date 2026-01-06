@@ -28,6 +28,10 @@ jobs:
           php -v || true
           composer install --no-interaction --no-progress || true
 
+      - name: Prepare .env for Docker Compose
+        run: |
+          if [ -f .env ]; then echo ".env already exists"; else cp .env.example .env; fi
+
       - name: Bring up Docker Compose
         run: |
           docker compose -f docker/docker-compose.yml up -d --build
