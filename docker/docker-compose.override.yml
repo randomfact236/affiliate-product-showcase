@@ -7,6 +7,17 @@ services:
     ports:
       - "6379:6379" # expose for dev host access (optional)
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER:-root}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "8080:80" # dev-only override: expose on 8080
+    depends_on:
+      - db
+
 volumes:
   redis_data:
     driver: local
