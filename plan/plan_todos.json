@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T02:38:53.764Z",
+  "generatedAt": "2026-01-06T04:48:31.318Z",
   "todos": [
     {
       "code": "1",
@@ -22,7 +22,7 @@
       "code": "1.1.1",
       "kind": "item",
       "title": "WordPress 6.7+ container with PHP 8.3-fpm-alpine",
-      "status": "in-progress",
+      "status": "completed",
       "derivedStatus": "completed",
       "marker": "✅"
     },
@@ -78,7 +78,7 @@
       "code": "1.1.2",
       "kind": "item",
       "title": "MySQL 8.0 container with persistent volumes",
-      "status": "in-progress",
+      "status": "completed",
       "derivedStatus": "completed",
       "marker": "✅"
     },
