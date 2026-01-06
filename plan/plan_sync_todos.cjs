@@ -138,6 +138,7 @@ function walkPlan(structure, visitor) { for (const step of structure.steps) { vi
 
 function mergeState(structure, state) {
   const statusByCode = state.statusByCode || {};
+  const prevStatusHash = sha1(JSON.stringify(state.statusByCode || {}));
 
   // Build sets of known codes to detect newly added items since last run.
   // If `state.knownCodes` is missing (first bootstrap), treat this as
@@ -210,9 +211,15 @@ function mergeState(structure, state) {
     }
   });
 
+  const newStatusHash = sha1(JSON.stringify(statusByCode));
   state.statusByCode = statusByCode;
   state.knownCodes = Array.from(currKnown);
-  state.lastSyncAt = new Date().toISOString();
+  // Only update lastSyncAt when there was a meaningful change or when
+  // the field is missing (first run). This preserves the committed
+  // `lastSyncAt` across routine regenerations and avoids CI churn.
+  if (!state.lastSyncAt || prevStatusHash !== newStatusHash || addedCodes.length > 0) {
+    state.lastSyncAt = new Date().toISOString();
+  }
   return state;
 }
 
