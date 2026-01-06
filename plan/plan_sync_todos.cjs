@@ -178,6 +178,27 @@ function mergeState(structure, state) {
     }
   }
 
+  // Additional safety: if a node is marked `completed` but any of its
+  // children (or descendants) are not completed, mark the node as
+  // `in-progress`. This handles the common workflow where a parent was
+  // previously completed and new child items were later added.
+  function anyDescendantNotCompleted(items) {
+    if (!items || items.length === 0) return false;
+    for (const it of items) {
+      if (statusByCode[it.code] !== 'completed') return true;
+      if (anyDescendantNotCompleted(it.items)) return true;
+    }
+    return false;
+  }
+  walkPlan(structure, node => {
+    if (!node || !node.code) return;
+    const s = statusByCode[node.code];
+    const children = node.kind === 'step' ? node.topics : (node.items || []);
+    if (s === 'completed' && anyDescendantNotCompleted(children)) {
+      statusByCode[node.code] = 'in-progress';
+    }
+  });
+
   state.statusByCode = statusByCode;
   state.knownCodes = Array.from(currKnown);
   state.lastSyncAt = new Date().toISOString();

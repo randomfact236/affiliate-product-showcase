@@ -2,8 +2,8 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- Step 1 — 🔴 Step 1 — Setup
-  - 1.1 Docker Environment — Docker compose setup to bring up local environment and services
+- ⏳ Step 1 — 🔴 Step 1 — Setup
+  - ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
       - ✅ 1.1.1.2 Configure environment variables and DB connection for container
@@ -34,13 +34,13 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
       - ✅ 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
       - ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
-    - 1.1.5 MailHog container for email testing
-      - 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
-      - 1.1.5.2 SMTP configuration (PHP + WordPress)
-      - 1.1.5.3 Web UI access (port 8025)
-      - 1.1.5.4 Healthcheck for MailHog service
-      - 1.1.5.5 Basic testing (send/receive, mail capture)
-      - 1.1.5.6 Basic documentation (how-to, env vars, warnings)
+    - ⏳ 1.1.5 MailHog container for email testing
+      - ⏳ 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
+      - ⏳ 1.1.5.2 SMTP configuration (PHP + WordPress)
+      - ⏳ 1.1.5.3 Web UI access (port 8025)
+      - ⏳ 1.1.5.4 Healthcheck for MailHog service
+      - ⏳ 1.1.5.5 Basic testing (send/receive, mail capture)
+      - ⏳ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
     - 1.1.6 phpMyAdmin container for database management
     - 1.1.7 WP-CLI container for automation tasks
     - 1.1.8 Custom healthcheck scripts for all services
