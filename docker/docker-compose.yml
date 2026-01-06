@@ -15,11 +15,11 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      # Use mysqladmin with credentials from env; fall back to basic ping if unset.
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER:-root} -p'${MYSQL_PASSWORD:-}' >/dev/null 2>&1 || mysqladmin ping -h localhost >/dev/null 2>&1 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      # Robust healthcheck: handle empty password and give DB more time to initialize.
+      test: ["CMD-SHELL", "if [ -n \"${MYSQL_PASSWORD}\" ]; then mysqladmin ping -h localhost -u${MYSQL_USER:-root} -p'${MYSQL_PASSWORD}' >/dev/null 2>&1 || exit 1; else mysqladmin ping -h localhost -u${MYSQL_USER:-root} >/dev/null 2>&1 || exit 1; fi"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
 
   redis:
     image: redis:7-alpine
