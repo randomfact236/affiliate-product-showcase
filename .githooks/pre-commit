@@ -1,0 +1,21 @@
+#!/bin/sh
+# Verify generated plan files are up-to-date before allowing a commit
+set -e
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
+cd "$ROOT"
+
+if command -v node >/dev/null 2>&1; then
+  echo "Running plan regeneration check..."
+  node plan/plan_sync_todos.cjs >/dev/null 2>&1 || true
+  # Check for differences between regenerated files and committed files
+  if ! git diff --quiet -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json; then
+    echo "Error: Generated plan files are out of date. Run 'node plan/plan_sync_todos.cjs' and commit the regenerated files." >&2
+    git --no-pager diff -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json >&2 || true
+    exit 1
+  fi
+else
+  echo "Warning: node not found in PATH; skipping plan generation check." >&2
+fi
+
+exit 0
