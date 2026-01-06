@@ -5,11 +5,26 @@ class SeedTest extends TestCase
 {
     public function test_seeded_option_exists()
     {
-        $dbHost = getenv('DB_HOST') ?: 'db';
-        $dbPort = getenv('DB_PORT') ?: 3306;
-        $dbUser = getenv('DB_USER') ?: 'wp';
-        $dbPass = getenv('DB_PASS') ?: 'wp';
-        $dbName = getenv('DB_NAME') ?: 'wordpress';
+        // Prefer a set of common environment variable names (DB_*, MYSQL_*, WORDPRESS_*)
+        $env_first = function (...$keys) {
+            foreach ($keys as $k) {
+                $v = getenv($k);
+                if ($v !== false && $v !== '') return $v;
+            }
+            return null;
+        };
+
+        $dbHostRaw = $env_first('DB_HOST', 'WORDPRESS_DB_HOST', 'MYSQL_HOST') ?: 'db:3306';
+        $dbUser = $env_first('DB_USER', 'MYSQL_USER', 'WORDPRESS_DB_USER') ?: 'wp';
+        $dbPass = $env_first('DB_PASS', 'MYSQL_PASSWORD', 'WORDPRESS_DB_PASSWORD') ?: 'wp';
+        $dbName = $env_first('DB_NAME', 'MYSQL_DATABASE', 'WORDPRESS_DB_NAME') ?: 'wordpress';
+        $dbPort = 3306;
+        $dbHost = $dbHostRaw;
+        if (strpos($dbHostRaw, ':') !== false) {
+            [$h, $p] = explode(':', $dbHostRaw, 2);
+            $dbHost = $h;
+            if (is_numeric($p)) $dbPort = (int)$p;
+        }
 
         $mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, (int)$dbPort);
         if ($mysqli->connect_error) {
