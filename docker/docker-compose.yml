@@ -67,10 +67,13 @@ services:
     depends_on:
       - wordpress
     ports:
-      - "8000:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ../:/var/www/html:ro
+      - ./nginx/certs:/etc/letsencrypt:rw
+      - ./nginx/www:/var/www/certbot:rw
     healthcheck:
       # Check nginx worker/process presence instead of HTTP from inside the container
       test: ["CMD-SHELL", "ps aux | grep nginx | grep -v grep >/dev/null || exit 1"]
@@ -106,6 +109,23 @@ services:
       timeout: 5s
       retries: 5
 
+  certbot:
+    image: certbot/certbot:latest
+    container_name: aps_certbot
+    depends_on:
+      - nginx
+    env_file:
+      - ../.env
+    volumes:
+      - ./nginx/certs:/etc/letsencrypt
+      - ./nginx/www:/var/www/certbot
+    entrypoint: ["/bin/sh", "-c"]
+    # Use environment variables LETSENCRYPT_DOMAINS (comma-separated) and LETSENCRYPT_EMAIL in ../.env
+    # Example start command (first-time obtain):
+    # docker compose run --rm certbot sh -c "certbot certonly --webroot -w /var/www/certbot -d example.com -d www.example.com --email you@example.com --agree-tos --non-interactive"
+    # For automated renewals, run: certbot renew --webroot -w /var/www/certbot && nginx -s reload
+    command: "sleep infinity"
+
   wpcli:
     image: alpine:3.19
     container_name: aps_wpcli
@@ -124,3 +144,5 @@ services:
 
 volumes:
   db_data:
+  nginx_certs:
+  certbot_www:
