@@ -75,6 +75,15 @@ jobs:
             sleep 2
           done
 
+      - name: Ensure WordPress is installed (create WP tables)
+        run: |
+          echo "Checking if WP is installed and creating it if needed..."
+          # Use the official wordpress:cli image and the compose network to run WP-CLI commands.
+          # Favor the docker compose network name 'docker_default' which is created by the compose run above.
+          NETWORK_NAME=docker_default
+          docker run --rm --env-file .env --network ${NETWORK_NAME} -v "$PWD":/var/www/html -w /var/www/html wordpress:cli wp core is-installed --allow-root || \
+            docker run --rm --env-file .env --network ${NETWORK_NAME} -v "$PWD":/var/www/html -w /var/www/html wordpress:cli wp core install --url=http://localhost:8000 --title=CI --admin_user=ci_admin --admin_password=ci_pass --admin_email=ci@example.com --skip-email --allow-root
+
       - name: Run container healthcheck
         run: |
           chmod +x docker/healthcheck.sh || true
