@@ -8,3 +8,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 if (!defined('APS_PLUGIN_DIR')) {
     define('APS_PLUGIN_DIR', __DIR__ . '/../');
 }
+
+// If a DB seeder exists, run it so tests have the expected fixtures.
+$seeder = __DIR__ . '/db-seed.php';
+if (file_exists($seeder)) {
+    require_once $seeder;
+}
