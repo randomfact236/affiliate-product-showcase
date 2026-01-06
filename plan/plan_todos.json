@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T10:51:59.776Z",
+  "generatedAt": "2026-01-06T11:02:44.127Z",
   "todos": [
     {
       "code": "1",
@@ -270,7 +270,7 @@
       "code": "1.1.5.1",
       "kind": "item",
       "title": "Docker MailHog service (SMTP 1025, Web UI 8025)",
-      "status": "pending",
+      "status": "in-progress",
       "derivedStatus": "in-progress",
       "marker": "⏳"
     },
