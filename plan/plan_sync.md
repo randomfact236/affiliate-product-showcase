@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ec275658120562a0586e3aec0ac40b7d166a82d0 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 5953b1ad5459e5ea32ccbd398c7fe0831014a68d -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -32,28 +32,29 @@
       ✅ 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
       ✅ 1.1.1.5 Add container healthcheck and CI integration tests
       ✅ 1.1.1.6 Document WP-CLI helper commands and test entrypoints
-   1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
 ### ✅ 1.1.2 MySQL 8.0 container with persistent volumes
       ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
       ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
       ✅ 1.1.2.3 Configure MySQL environment variables and credentials for compose
       ✅ 1.1.2.4 Add DB healthcheck and readiness probe for compose
       ✅ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
-   1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
-   1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
-   1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
+### 1.1.3 Nginx container with SSL/TLS configuration
+      1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
+      1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
+      1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
+      1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
+      1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
+      1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
+      1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
+      1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
+      1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
+      1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
 ### 1.1.4 Redis container for object caching
-   1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
 ### 1.1.5 MailHog container for email testing
-   1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
 ### 1.1.6 phpMyAdmin container for database management
-   1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
 ### 1.1.7 WP-CLI container for automation tasks
-   1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
 ### 1.1.8 Custom healthcheck scripts for all services
-   1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
 ### 1.1.9 Docker Compose v3.8+ with environment variable substitution
-   1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
 ### 1.1.10 Volume mounts for plugin development directory
 ### 1.1.11 Network isolation between services
 ### 1.1.12 Automated database seeding with sample data
