@@ -57,7 +57,7 @@
       ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
 ### ⏳ 1.1.5 MailHog container for email testing
       ✅ 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
-      ⏳ 1.1.5.2 SMTP configuration (PHP + WordPress)
+      ✅ 1.1.5.2 SMTP configuration (PHP + WordPress)
       ⏳ 1.1.5.3 Web UI access (port 8025)
       ⏳ 1.1.5.4 Healthcheck for MailHog service
       ⏳ 1.1.5.5 Basic testing (send/receive, mail capture)

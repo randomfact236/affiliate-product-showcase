@@ -1,6 +1,6 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
-  "generatedAt": "2026-01-06T11:04:46.568Z",
+  "generatedAt": "2026-01-06T11:06:41.989Z",
   "todos": [
     {
       "code": "1",
@@ -278,9 +278,9 @@
       "code": "1.1.5.2",
       "kind": "item",
       "title": "SMTP configuration (PHP + WordPress)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.5.3",
