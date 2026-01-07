@@ -436,7 +436,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 1.12.23 Donation/sponsorship links
     - 1.12.24 Security policy and reporting
     - 1.12.25 Privacy policy template for users
-- Step 2 — 🔴 Step 2 — Content Types & Taxonomies
+- Step 2 — 🔴 — Content Types & Taxonomies
   - 2.1 Custom Post Type: affiliate_product
     - 2.1.1 Post type slug: `affiliate_product`
     - 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
@@ -631,7 +631,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 2.5.38 Code generation from PHPDoc (API docs)
     - 2.5.39 IDE autocomplete support
     - 2.5.40 Static analysis integration
-- Step 3 — 🔴 Step 3 — Admin UI & Meta
+- Step 3 — 🔴 — Admin UI & Meta
   - 3.1 Product Data Meta Box
     - 3.1.1 Meta box title: 'Product Information'
     - 3.1.2 Meta box context: normal
@@ -771,7 +771,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.10.13 Widget export data option
     - 3.10.14 Widget date range selector
     - 3.10.15 Widget full-screen view
-- Step 4 — 🔴 Step 4 — Submission Flow & Security
+- Step 4 — 🔴 — Submission Flow & Security
   - 4.1 Frontend Submission Form
     - 4.1.1 Form location: dedicated page template
     - 4.1.2 Form shortcode: `[affiliate_submit_form]`
@@ -1033,7 +1033,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.13.23 Learn from spam reports (improve filters)
     - 4.13.24 Spam statistics dashboard
     - 4.13.25 Bulk delete spam submissions
-- Step 5 — 🟠 Step 5 — Frontend Components
+- Step 5 — 🟠 — Frontend Components
   - 5.1 Tailwind CSS & Vite Setup
     - 5.1.1 Install Tailwind CSS via NPM
     - 5.1.2 Configure `tailwind.config.js` with custom theme
@@ -1458,7 +1458,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.15.23 Prettier: End of line (lf)
     - 5.15.24 Prettier: JSX brackets on same line (false)
     - 5.15.25 ESLint + Prettier integration (no conflicts)
-- Step 6 — 🟠 Step 6 — Shortcodes, Filters & Sorting
+- Step 6 — 🟠 — Shortcodes, Filters & Sorting
   - 6.1 Primary Shortcode: [affiliate_products]
     - 6.1.1 Shortcode name: affiliate_products
     - 6.1.2 Attribute: category (slug or ID, comma-separated)
@@ -1579,7 +1579,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.7.6 Exclude recently shown products (for returning visitors)
     - 6.7.7 Random rotation (show different products on refresh)
     - 6.7.8 Performance: limit random query to small subset first, then randomize
-- Step 7 — 🟠 Step 7 — Link Tracking & Redirects
+- Step 7 — 🟠 — Link Tracking & Redirects
   - 7.1 Redirect Handler
     - 7.1.1 Custom endpoint: /go/{product-slug}/
     - 7.1.2 Custom endpoint: /go/{custom-redirect-slug}/
@@ -1622,7 +1622,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 7.5.18 Link attribution (via UTM parameters; recommend external analytics for attribution)
     - 7.5.19 Link permissions (who can edit links)
     - 7.5.20 Link audit log (who changed what, when)
-- Step 8 — 🟠 Step 8 — Settings & Styling Controls
+- Step 8 — 🟠 — Settings & Styling Controls
   - 8.1 Settings Page Architecture
     - 8.1.1 Admin page: "Settings" under plugin menu
     - 8.1.2 React-based settings page (TypeScript)
@@ -2026,7 +2026,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 8.8.18 Settings backup before save
     - 8.8.19 Rollback to previous version
     - 8.8.20 Settings changelog (audit log)
-- Step 9 — 🔴 Step 9 — Testing & Standards
+- Step 9 — 🔴 — Testing & Standards
   - 9.1 Code Standards & Linting
     - 9.1.1 PHP CodeSniffer (phpcs) with WordPress-Core ruleset
     - 9.1.2 PHP CodeSniffer with WordPress-Extra ruleset
@@ -2283,7 +2283,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 9.12.13 Remove unused classes from autoload
     - 9.12.14 Security audit of all dependencies (composer audit)
     - 9.12.15 License compatibility check (all GPL-compatible)
-- Step 10 — 🟠 Step 10 — Docs, Accessibility & QA
+- Step 10 — 🟠 — Docs, Accessibility & QA
   - 10.1 PHPDoc Standards
     - 10.1.1 Every class has PHPDoc block with @package, @since, @version
     - 10.1.2 Every method has PHPDoc block with description
@@ -2568,7 +2568,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 10.12.23 Permissions follow least privilege principle
     - 10.12.24 No hardcoded credentials or API keys
     - 10.12.25 Third-party dependencies audited and minimal
-- Step 11 — 🟢 Step 11 — CI/CD & Packaging
+- Step 11 — 🟢 — CI/CD & Packaging
   - 11.1 GitHub Actions Workflow
     - 11.1.1 Workflow file: .github/workflows/main.yml
     - 11.1.2 Trigger on: push to main, pull request to main
@@ -2734,7 +2734,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 11.7.28 GitHub release created with changelog
     - 11.7.29 Plugin submitted to WordPress.org (if applicable)
     - 11.7.30 Announcement prepared (blog post, social media)
-- Step 12 — 🟢 Step 12 — Marketing & Launch
+- Step 12 — 🟢 — Marketing & Launch
   - 12.1 🛠️ Demo Site Setup
     - 12.1.1 Live demo site URL (e.g., demo.affiliateshowcase.com)
     - 12.1.2 Fresh WordPress installation with plugin installed

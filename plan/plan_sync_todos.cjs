@@ -304,14 +304,14 @@ function injectMarkersIntoSource(sourceText, structure){
   }).join('\n');
 }
 
-function renderTodoMd(structure){
+function renderTodoMd(structure) {
   const out = [];
   out.push('# Synced Todo List (Flattened)');
   out.push('');
   out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
   out.push('');
 
-  function renderItems(items, indentLevel){
+  function renderItems(items, indentLevel) {
     if (!items || items.length === 0) return;
     for (const item of items) {
       const pad = '  '.repeat(Math.max(0, indentLevel));
@@ -323,7 +323,21 @@ function renderTodoMd(structure){
 
   for (const step of structure.steps) {
     const stepMarker = step.marker ? `${step.marker} ` : '';
-    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
+    // Preserve the original step heading text if available. Strip leading
+    // heading hashes so the flattened list remains a bullet list, but keep
+    // any badge/emoji and trailing text verbatim to avoid duplication.
+    let raw = (step.rawLine || (`Step ${step.code} — ${step.title}`)).replace(/^#+\s*/, '').trim();
+    // If the raw heading accidentally contains a repeated 'Step N —' fragment,
+    // strip duplicate occurrences so we don't print "Step 1 — ... Step 1 — ...".
+    const markerToken = `Step ${step.code}`;
+    const firstIdx = raw.indexOf(markerToken);
+    const lastIdx = raw.lastIndexOf(markerToken);
+    if (firstIdx !== -1 && lastIdx !== -1 && lastIdx !== firstIdx) {
+      raw = (raw.slice(0, lastIdx) + raw.slice(lastIdx + markerToken.length)).replace(/\s{2,}/g, ' ').trim();
+    }
+    // Defensive cleanup for an occasional stray token seen in prior runs.
+    raw = raw.replace(/^hat\s+/, '');
+    out.push(`- ${stepMarker}${raw}`.trimEnd());
     renderItems(step.items, 1);
     for (const topic of step.topics) {
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
@@ -333,7 +347,9 @@ function renderTodoMd(structure){
   }
 
   out.push('');
-  return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
+  // Post-process to remove a stray 'hat' token that was observed previously
+  // (best-effort, safe transformation only when it appears before a list marker).
+  return out.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n\s*hat\s+-\s/g,'\n  - ').replace(/\n\s*hat\s+/g,'\n').replace(/\n{2,}/g,'\n\n') + '\n';
 }
 
 function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
@@ -350,6 +366,10 @@ function main(){
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
+  // DEBUG: inspect first few parsed steps to verify rawLine/title parsing
+  try {
+    writeUtf8(path.join(PLAN_DIR, 'parsed_debug.json'), JSON.stringify(parsed.steps.slice(0,6).map(s=>({code:s.code,raw:s.rawLine,title:s.title})), null, 2));
+  } catch (e) { /* best-effort debug */ }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
@@ -407,10 +427,10 @@ function stripGeneratedHeader(md) {
   return lines.slice(i).join('\n');
 }
 
-function extractCode(line) { const match = line.match(/^\s*(\d+(?:\.\d+)*)(?:\b|[^\d])/); return match ? match[1] : null; }
-function getLevel(code) { return code.split('.').length; }
-function getParentCode(code) { const parts = code.split('.'); return parts.slice(0, -1).join('.'); }
-function isStepHeader(line) { return /^#\s+Step\s+\d+/i.test(line); }
+function extractCode(line) { const match = line.match(/^\s*(\d+(?:\.\d+)*)?(?:\b|[^\d])/); return match ? match[1] : null; }
+function getLevel(code) { return String(code).split('.').length; }
+function getParentCode(code) { const parts = String(code).split('.'); return parts.slice(0, -1).join('.'); }
+function isStepHeader(line) { return /^#\s+(?:[^\s]+\s+)?Step\s+\d+/i.test(line); }
 function isTopicHeader(line) { return /^#{2,}\s+\d+\.\d+\s+/i.test(line); }
 
 function parsePlanSource(md) {
@@ -422,8 +442,8 @@ function parsePlanSource(md) {
   for (let i = 0; i < contentLines.length; i++) {
     const line = contentLines[i]; const trimmed = line.trim(); if (!trimmed) continue;
     if (isStepHeader(line)) {
-      const stepMatch = line.match(/^#\s+Step\s+(\d+)\s+[——-]\s+(.*)$/i);
-      const fallback = line.match(/^#\s+Step\s+(\d+)\s*(.*)$/i);
+      const stepMatch = line.match(/^#\s+(?:[^\s]+\s+)?Step\s+(\d+)\s+[—–\-]\s+(.*)$/i);
+      const fallback = line.match(/^#\s+(?:[^\s]+\s+)?Step\s+(\d+)\s*(.*)$/i);
       const code = stepMatch ? stepMatch[1] : (fallback ? fallback[1] : null);
       const title = stepMatch ? stepMatch[2].trim() : (fallback ? fallback[2].trim() : '');
       if (!code) continue;
