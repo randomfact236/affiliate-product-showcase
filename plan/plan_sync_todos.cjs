@@ -326,17 +326,12 @@ function renderTodoMd(structure) {
     // Preserve the original step heading text if available. Strip leading
     // heading hashes so the flattened list remains a bullet list, but keep
     // any badge/emoji and trailing text verbatim to avoid duplication.
-    let raw = (step.rawLine || (`Step ${step.code} — ${step.title}`)).replace(/^#+\s*/, '').trim();
-    // If the raw heading accidentally contains a repeated 'Step N —' fragment,
-    // strip duplicate occurrences so we don't print "Step 1 — ... Step 1 — ...".
-    const markerToken = `Step ${step.code}`;
-    const firstIdx = raw.indexOf(markerToken);
-    const lastIdx = raw.lastIndexOf(markerToken);
-    if (firstIdx !== -1 && lastIdx !== -1 && lastIdx !== firstIdx) {
-      raw = (raw.slice(0, lastIdx) + raw.slice(lastIdx + markerToken.length)).replace(/\s{2,}/g, ' ').trim();
-    }
-    // Defensive cleanup for an occasional stray token seen in prior runs.
-    raw = raw.replace(/^hat\s+/, '');
+    // Build a canonical flattened step heading from the parsed title.
+    // Strip any accidental leading 'Step N —' fragments in the parsed title
+    // so we don't duplicate them when constructing the bullet.
+    const titleVal = String(step.title || '');
+    const titleClean = titleVal.replace(new RegExp(`^Step\\s+${step.code}\\s*[—–\\-]\\s*`, 'i'), '').trim();
+    const raw = `Step ${step.code} — ${titleClean}`;
     out.push(`- ${stepMarker}${raw}`.trimEnd());
     renderItems(step.items, 1);
     for (const topic of step.topics) {
@@ -347,9 +342,12 @@ function renderTodoMd(structure) {
   }
 
   out.push('');
-  // Post-process to remove a stray 'hat' token that was observed previously
-  // (best-effort, safe transformation only when it appears before a list marker).
-  return out.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n\s*hat\s+-\s/g,'\n  - ').replace(/\n\s*hat\s+/g,'\n').replace(/\n{2,}/g,'\n\n') + '\n';
+  // Post-process: clean any leftover stray 'hat' tokens and normalize spacing.
+  return out.join('\n')
+    .replace(/\n{3,}/g,'\n\n')
+    .replace(/\n[ \t]*hat[ \t]*-+/gi,'\n  -')
+    .replace(/\n[ \t]*hat[ \t]*\n/gi,'\n')
+    .replace(/\n{2,}/g,'\n\n') + '\n';
 }
 
 function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
@@ -366,10 +364,11 @@ function main(){
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
-  // DEBUG: inspect first few parsed steps to verify rawLine/title parsing
+  // Temporary debug: write first two parsed step raw lines to a debug file.
   try {
-    writeUtf8(path.join(PLAN_DIR, 'parsed_debug.json'), JSON.stringify(parsed.steps.slice(0,6).map(s=>({code:s.code,raw:s.rawLine,title:s.title})), null, 2));
-  } catch (e) { /* best-effort debug */ }
+    const dbg = parsed.steps.slice(0,6).map(s=>({code:s.code,raw:s.rawLine,title:s.title}));
+    writeUtf8(path.join(PLAN_DIR,'parsed_debug.txt'), JSON.stringify(dbg, null, 2));
+  } catch(e) { }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
@@ -382,6 +381,17 @@ function main(){
   let planMd = renderPlanMd(parsed, args);
 
   let todoMd = renderTodoMd(parsed);
+
+  // Final pass: collapse accidental duplicated 'Step N — ... Step N — ...' patterns
+  // and remove stray 'hat' tokens in the generated outputs.
+  for (const step of parsed.steps) {
+    const token = `Step ${step.code}`;
+    const dupRe = new RegExp(token + "\\s*[—–\\-]\\s*([^\\n]*?)" + token + "\\s*[—–\\-]\\s*([^\\n]*)", 'g');
+    planMd = planMd.replace(dupRe, `${token} — $1$2`);
+    todoMd = todoMd.replace(dupRe, `${token} — $1$2`);
+  }
+  planMd = planMd.replace(/\n[ \t]*hat[ \t]*/g, '\n');
+  todoMd = todoMd.replace(/\n[ \t]*hat[ \t]*/g, '\n');
 
   if (args.copySource) {
     const header = [];
