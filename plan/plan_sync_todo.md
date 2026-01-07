@@ -56,7 +56,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
       - ✅ 1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
       - ✅ 1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
-      - ✅ 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
+      - ❌ 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
     - 1.1.7 WP-CLI container for automation tasks
     - 1.1.8 Custom healthcheck scripts for all services
     - 1.1.9 Docker Compose v3.8+ with environment variable substitution
