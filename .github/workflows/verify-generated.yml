@@ -28,41 +28,7 @@ jobs:
         run: node plan/plan_sync_todos.cjs
 
       - name: Normalize transient fields in generated files
-        run: |
-          set -e
-          # For generated markdown files, replace the entire GENERATED_BY_SYNC_TODOS header
-          # with the committed header (if present) to avoid checksum/timestamp diffs.
-          for f in plan/plan_sync.md plan/plan_sync_todo.md; do
-            if git show HEAD:$f > /dev/null 2>&1; then
-              git show HEAD:$f > /tmp/head_file
-              node - <<'NODE'
-const fs = require('fs');
-const head = fs.readFileSync('/tmp/head_file','utf8');
-const curPath = process.argv[1];
-const cur = fs.readFileSync(curPath,'utf8');
-const hdrMatch = head.match(/^(<!--\s*GENERATED_BY_SYNC_TODOS[\s\S]*?\n\n)/);
-if (hdrMatch) {
-  const newCur = cur.replace(/^(<!--\s*GENERATED_BY_SYNC_TODOS[\s\S]*?\n\n)/, hdrMatch[1]);
-  fs.writeFileSync(curPath, newCur, 'utf8');
-}
-NODE
-            fi
-          done
-
-          # For plan_state.json, copy lastSyncAt and lastUpdated from HEAD if present
-          if git show HEAD:plan/plan_state.json > /dev/null 2>&1; then
-            node - <<'NODE'
-const fs = require('fs');
-try {
-  const head = JSON.parse(require('child_process').execSync('git show HEAD:plan/plan_state.json').toString());
-  const curPath = 'plan/plan_state.json';
-  const cur = JSON.parse(fs.readFileSync(curPath,'utf8'));
-  if (head.lastSyncAt) cur.lastSyncAt = head.lastSyncAt;
-  if (head.lastUpdated) cur.lastUpdated = head.lastUpdated;
-  fs.writeFileSync(curPath, JSON.stringify(cur, null, 2) + '\n', 'utf8');
-} catch (e) { /* ignore */ }
-NODE
-          fi
+        run: node scripts/normalize_generated.js
       - name: Check for unstaged changes in generated files
         run: |
           set -e
