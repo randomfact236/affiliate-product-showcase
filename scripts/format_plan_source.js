@@ -48,10 +48,14 @@ const changed = [];
 
 for (const fp of files) {
   let content = fs.readFileSync(fp, 'utf8');
-  const formatted = format(content);
-  if (formatted !== content) {
+  // Normalize CRLF to LF before formatting/comparing to avoid
+  // differences caused solely by line endings across OSes.
+  const contentNorm = content.replace(/\r\n/g, '\n');
+  const formatted = format(contentNorm);
+  if (formatted !== contentNorm) {
     changed.push(fp);
     if (!checkOnly) {
+      // Write files with LF line endings consistently.
       fs.writeFileSync(fp, formatted, 'utf8');
       console.log(path.relative(root, fp) + ' formatted and written.');
     }

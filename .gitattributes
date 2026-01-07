@@ -1,0 +1,13 @@
+# Enforce LF line endings in the repository for these text files
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.js text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+
+# Ensure Git treats these as binary to avoid EOL conversion
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
