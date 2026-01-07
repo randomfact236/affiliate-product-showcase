@@ -310,14 +310,28 @@ function renderTodoMd(structure){
   out.push('');
   out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
   out.push('');
-  walkPlan(structure, node => {
-    if (!node || !node.code) return;
-    const level = getLevel(node.code);
-    const pad = '  '.repeat(Math.max(0, level - 1));
-    const marker = node.marker ? `${node.marker} ` : '';
-    if (node.kind === 'step') out.push(`${pad}- ${marker}Step ${node.code} — ${node.title}`.trimEnd());
-    else out.push(`${pad}- ${marker}${node.code} ${node.title}`.trimEnd());
-  });
+
+  function renderItems(items, indentLevel){
+    if (!items || items.length === 0) return;
+    for (const item of items) {
+      const pad = '  '.repeat(Math.max(0, indentLevel));
+      const marker = item.marker ? `${item.marker} ` : '';
+      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
+      renderItems(item.items, indentLevel + 1);
+    }
+  }
+
+  for (const step of structure.steps) {
+    const stepMarker = step.marker ? `${step.marker} ` : '';
+    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
+    renderItems(step.items, 1);
+    for (const topic of step.topics) {
+      const topicMarker = topic.marker ? `${topic.marker} ` : '';
+      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      renderItems(topic.items, 2);
+    }
+  }
+
   out.push('');
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
