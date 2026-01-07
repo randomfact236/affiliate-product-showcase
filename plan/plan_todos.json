@@ -4,7 +4,7 @@
     {
       "code": "1",
       "kind": "step",
-      "title": "🔴 Step 1 — Setup",
+      "title": "🔴 Setup",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

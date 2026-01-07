@@ -2,7 +2,7 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- Step 1 — 🔴 Step 1 — Setup
+- Step 1 — 🔴 Setup
   - 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)

@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 51c3decc1936c371681d4a262c1d508c9975cc99 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: fd533f06f2cb77166ea2000c4bc25b2ef18f8905 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -22,7 +22,7 @@
 
 ---
 
-# Step 1 — 🔴 Step 1 — Setup
+# Step 1 — 🔴 Setup
 
 ## 1.1 Docker Environment — Docker compose setup to bring up local environment and services
 ### ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
