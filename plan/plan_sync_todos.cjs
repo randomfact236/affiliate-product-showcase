@@ -39,6 +39,10 @@ function parseArgs(argv) {
     if (a === '--bootstrap') args.bootstrap = true;
     else if (a === '--quiet') args.quiet = true;
     else if (a === '--validate') args.validate = true
+    else if (a === '--strict') args.strict = true
+    else if (a === '--fix-missing') args.fixMissing = true
+    else if (a === '--preview') args.preview = true
+    else if (a === '--apply') args.apply = true
     else if (a === '--copy-source') args.copySource = true;
     else if (a === '--copy-todo') args.copyTodo = true;
     else if (a === '--print-source') args.printSource = true;
@@ -95,17 +99,18 @@ function validateStructure(sourceText, parsed) {
     if (!childrenByParent[parent]) childrenByParent[parent] = [];
     childrenByParent[parent].push(last);
   }
+  const missingSiblings = [];
   for (const [parent, arr] of Object.entries(childrenByParent)) {
     const max = Math.max(...arr);
     for (let i = 1; i <= max; i++) {
       if (!arr.includes(i)) {
-        const parentLabel = parent === '__root' ? '(root level)' : parent;
-        errors.push(`Missing sibling code under ${parentLabel}: ${parent}.${i}`);
+        const entry = { parent: parent === '__root' ? null : parent, code: parent === '__root' ? `${i}` : `${parent}.${i}` };
+        missingSiblings.push(entry);
       }
     }
   }
 
-  return errors;
+  return { errors, missingSiblings };
 }
 
 function sha1(text) { return crypto.createHash('sha1').update(text, 'utf8').digest('hex'); }
@@ -188,6 +193,37 @@ function parsePlanSource(md) {
   function sortNodes(nodes) { if (!nodes) return; nodes.sort((a,b)=>{const aNum=parseInt(a.code.split('.').pop(),10);const bNum=parseInt(b.code.split('.').pop(),10);return aNum-bNum;}); for (const n of nodes) sortNodes(n.items); }
   for (const step of structure.steps) { step.topics.sort((a,b)=>{const aNum=parseInt(a.code.split('.')[1],10);const bNum=parseInt(b.code.split('.')[1],10);return aNum-bNum;}); for (const topic of step.topics) sortNodes(topic.items); }
   return structure;
+}
+
+// Apply missing sibling placeholders into source text.
+function applyFixMissing(sourceText, missingSiblings) {
+  if (!missingSiblings || missingSiblings.length === 0) return sourceText;
+  const lines = sourceText.split(/\r?\n/);
+  // For each missing entry, find the parent header line and insert a TODO line after it.
+  for (const miss of missingSiblings) {
+    const code = miss.code;
+    const parent = miss.parent; // null for root
+    const parentRegex = parent ? new RegExp('^\\s*(?:#+\\s*)?'+parent.replace(/\./g,'\\.')+'\\b') : null;
+    let insertIndex = -1;
+    if (parentRegex) {
+      for (let i = 0; i < lines.length; i++) {
+        if (parentRegex.test(lines[i])) insertIndex = i+1;
+      }
+    } else {
+      // root: insert after header area (after first Step heading or after initial header block)
+      for (let i = 0; i < lines.length; i++) { if (/^#\s+Step\s+\d+/i.test(lines[i])) { insertIndex = i; break; } }
+      if (insertIndex === -1) insertIndex = lines.length;
+    }
+    const placeholder = `- ${code} TODO (auto-inserted)`;
+    if (insertIndex < 0) {
+      lines.push(placeholder);
+    } else {
+      // Insert but avoid duplicate placeholder if already present
+      if (lines[insertIndex] && lines[insertIndex].includes(placeholder)) continue;
+      lines.splice(insertIndex, 0, placeholder);
+    }
+  }
+  return lines.join('\n');
 }
 
 function walkPlan(structure, visitor) { for (const step of structure.steps) { visitor(step); for (const topic of step.topics) { visitor(topic); (function walkItems(items){ if (!items) return; for (const it of items) { visitor(it); walkItems(it.items); } })(topic.items); } } }
@@ -402,14 +438,49 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
   if (args.validate) {
-    const verrs = validateStructure(sourceMd, parsed);
-    if (verrs && verrs.length) {
-      console.error('❌ Validation failed:');
-      for (const e of verrs) console.error(' - ' + e);
-      process.exit(2);
+    const vres = validateStructure(sourceMd, parsed);
+    if (vres.errors && vres.errors.length) {
+      console.error('❌ Validation failed (errors):');
+      for (const e of vres.errors) console.error(' - ' + e);
     }
-    console.log('✅ Validation passed — no issues found');
-    process.exit(0);
+    if (vres.missingSiblings && vres.missingSiblings.length) {
+      if (args.strict) {
+        console.error('❌ Validation failed (missing siblings):');
+        for (const m of vres.missingSiblings) console.error(' - Missing sibling: ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      } else {
+        console.warn('⚠️ Validation warnings (missing siblings):');
+        for (const m of vres.missingSiblings) console.warn(' - Missing sibling: ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      }
+    }
+
+    const hasErrors = vres.errors && vres.errors.length;
+    const hasMissing = vres.missingSiblings && vres.missingSiblings.length;
+    if (hasErrors) process.exit(2);
+
+    // If fix-missing requested
+    if (args.fixMissing) {
+      if (!hasMissing) { console.log('✅ No missing siblings to fix'); process.exit(0); }
+      if (args.preview && !args.apply) {
+        console.log('🔍 Preview of auto-insert placeholders:');
+        for (const m of vres.missingSiblings) console.log(' - ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+        process.exit(1);
+      }
+      if (args.apply) {
+        const newSource = applyFixMissing(sourceMd, vres.missingSiblings);
+        writeUtf8(args.source, newSource);
+        console.log('✅ Applied auto-inserted placeholders to', args.source);
+        process.exit(0);
+      }
+      // If fix-missing requested without preview or apply, show preview by default
+      console.log('🔍 Preview (run with --apply to write):');
+      for (const m of vres.missingSiblings) console.log(' - ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      process.exit(1);
+    }
+
+    // Exit codes: 0 = ok/no issues, 1 = warnings only, 2 = errors
+    if (!hasErrors && hasMissing && !args.strict) { console.log('✅ Validation passed with warnings'); process.exit(1); }
+    if (!hasErrors && !hasMissing) { console.log('✅ Validation passed — no issues found'); process.exit(0); }
+    if (!hasErrors && hasMissing && args.strict) process.exit(2);
   }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
