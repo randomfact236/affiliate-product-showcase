@@ -38,6 +38,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === '--bootstrap') args.bootstrap = true;
     else if (a === '--quiet') args.quiet = true;
+    else if (a === '--validate') args.validate = true
     else if (a === '--copy-source') args.copySource = true;
     else if (a === '--copy-todo') args.copyTodo = true;
     else if (a === '--print-source') args.printSource = true;
@@ -49,7 +50,62 @@ function parseArgs(argv) {
     else if (a === '--out-todo-json') args.outTodoJson = path.resolve(argv[++i]);
     else throw new Error(`Unknown arg: ${a}`);
   }
+  if (args.validate) args.validate = true; // Add --validate option
   return args;
+}
+
+// Validate structure rules: duplicates, malformed codes, missing sibling numbers, orphan items
+function validateStructure(sourceText, parsed) {
+  const errors = [];
+  // Extract codes that appear at the start of a meaningful line (heading or list item).
+  // Match optional blockquote, list marker, or heading hashes before the numeric code.
+  const codeRegex = /^\s*(?:>\s*)?(?:[-*+]\s+)?(?:#+\s*)?(\d+(?:\.\d+)*)\b/mg;
+  const codes = [];
+  let m;
+  while ((m = codeRegex.exec(sourceText)) !== null) {
+    codes.push(m[1]);
+  }
+
+  // Duplicate detection
+  const counts = {};
+  for (const c of codes) counts[c] = (counts[c] || 0) + 1;
+  for (const [c,n] of Object.entries(counts)) if (n > 1) errors.push(`Duplicate code: ${c} appears ${n} times`);
+
+  // Malformed detection: ensure codes are purely numeric segments
+  const malformed = codes.filter(c => !/^\d+(?:\.\d+)*$/.test(c));
+  for (const c of malformed) errors.push(`Malformed code: ${c}`);
+
+  // Build set of unique codes
+  const codeSet = new Set(codes.filter(c => /^\d+(?:\.\d+)*$/.test(c)));
+
+  // Orphan detection: every non-top-level code must have a parent present
+  for (const c of Array.from(codeSet)) {
+    if (!c.includes('.')) continue;
+    const parent = getParentCode(c);
+    if (!codeSet.has(parent) && !parsed.steps.some(s => s.code === parent)) {
+      errors.push(`Orphan item: ${c} (parent ${parent} not found)`);
+    }
+  }
+
+  // Missing sibling numbers: group children by parent and check numeric gaps
+  const childrenByParent = {};
+  for (const c of Array.from(codeSet)) {
+    const parent = c.includes('.') ? getParentCode(c) : '__root';
+    const last = parseInt(c.split('.').pop(), 10);
+    if (!childrenByParent[parent]) childrenByParent[parent] = [];
+    childrenByParent[parent].push(last);
+  }
+  for (const [parent, arr] of Object.entries(childrenByParent)) {
+    const max = Math.max(...arr);
+    for (let i = 1; i <= max; i++) {
+      if (!arr.includes(i)) {
+        const parentLabel = parent === '__root' ? '(root level)' : parent;
+        errors.push(`Missing sibling code under ${parentLabel}: ${parent}.${i}`);
+      }
+    }
+  }
+
+  return errors;
 }
 
 function sha1(text) { return crypto.createHash('sha1').update(text, 'utf8').digest('hex'); }
@@ -345,6 +401,16 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
+  if (args.validate) {
+    const verrs = validateStructure(sourceMd, parsed);
+    if (verrs && verrs.length) {
+      console.error('❌ Validation failed:');
+      for (const e of verrs) console.error(' - ' + e);
+      process.exit(2);
+    }
+    console.log('✅ Validation passed — no issues found');
+    process.exit(0);
+  }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
@@ -701,6 +767,16 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
+  if (args.validate) {
+    const verrs = validateStructure(sourceMd, parsed);
+    if (verrs && verrs.length) {
+      console.error('❌ Validation failed:');
+      for (const e of verrs) console.error(' - ' + e);
+      process.exit(2);
+    }
+    console.log('✅ Validation passed — no issues found');
+    process.exit(0);
+  }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
