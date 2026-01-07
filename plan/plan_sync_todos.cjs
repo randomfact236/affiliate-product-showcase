@@ -79,7 +79,11 @@ function stripGeneratedHeader(md) {
 function extractCode(line) { const match = line.match(/^\s*(\d+(?:\.\d+)*)?(?:\b|[^\d])/); return match ? match[1] : null; }
 function getLevel(code) { return code.split('.').length; }
 function getParentCode(code) { const parts = code.split('.'); return parts.slice(0, -1).join('.'); }
-function isStepHeader(line) { return /^#\s+Step\s+\d+/i.test(line); }
+function isStepHeader(line) {
+  // Accept either '# Step N' or '# <badge> Step N' (badge like an emoji or short token).
+  // Allow optional non-space token (badge) between the '#' and the 'Step' word.
+  return /^\s*#\s*(?:\S+\s+)?Step\s+\d+/i.test(line);
+}
 function isTopicHeader(line) { return /^#{2,}\s+\d+\.\d+\s+/i.test(line); }
 
 function parsePlanSource(md) {
