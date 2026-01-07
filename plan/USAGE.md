@@ -45,7 +45,7 @@ Exit codes
 
 Troubleshooting
 - CI failing `verify-generated` or `check-plan-format`:
-  - Regenerate outputs locally, run the formatter (`node scripts/format_plan_source.js`), then commit the regenerated files with `PLAN_GENERATOR=1`.
+  - Regenerate outputs locally, run the formatter (`node plan/format_plan_source.js`), then commit the regenerated files with `PLAN_GENERATOR=1`.
 - Spurious timestamp diffs in CI:
   - The verify workflow normalizes `lastSyncAt` fields; if you still see diffs, regenerate outputs locally and commit.
 - If validation flags report duplicates or malformed codes:

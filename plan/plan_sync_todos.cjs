@@ -418,7 +418,7 @@ function renderTodoMd(structure){
 
   function renderItemsAsList(items, indent){
     if (!items) return;
-    const pad = '  '.repeat(indent);
+    const pad = '   '.repeat(indent);
     for (const item of items){
       const marker = item.marker ? `${item.marker} ` : '';
       out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
@@ -431,7 +431,7 @@ function renderTodoMd(structure){
     out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
     for (const topic of step.topics){
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      out.push(`   - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
       renderItemsAsList(topic.items, 2);
     }
     out.push('');
