@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 /*
-  plan_sync_todos.cjs (moved into plan/)
+  plan_sync_todos.cjs
 
-  Same functionality as before; placed inside `plan/` to keep plan-related scripts together.
+  Generator for plan files. Features:
+  - UTF-8 NFC normalization and LF line endings
+  - Preserve `lastSyncAt` unless status/code data meaningfully changes
+  - Accept optional badge before "Step N" headings
+  - Render nested items attached directly to steps
 */
 
 const fs = require('fs');
@@ -23,17 +27,17 @@ const DEFAULTS = {
 const VALID_STATUSES = new Set(['pending', 'in-progress', 'blocked', 'cancelled', 'completed']);
 
 function parseArgs(argv) {
-  const args = {
+  const args = Object.assign({
     source: DEFAULTS.source,
     state: DEFAULTS.state,
     outPlan: DEFAULTS.outPlan,
     outTodoMd: DEFAULTS.outTodoMd,
     outTodoJson: DEFAULTS.outTodoJson,
     bootstrap: false,
-    quiet: false
-    ,copySource: false
-    ,copyTodo: false
-  };
+    quiet: false,
+    copySource: false,
+    copyTodo: false
+  }, {});
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--bootstrap') args.bootstrap = true;
@@ -52,51 +56,67 @@ function parseArgs(argv) {
   return args;
 }
 
-function sha1(text) { return crypto.createHash('sha1').update(text, 'utf8').digest('hex'); }
+// Optional use of `unicode-normalize` if installed; fall back to String.prototype.normalize
+let unicodeNormalize = null;
+try { unicodeNormalize = require('unicode-normalize'); } catch (e) { unicodeNormalize = null; }
+
+function sha1(text) { return crypto.createHash('sha1').update(String(text), 'utf8').digest('hex'); }
+
+function normalizeText(txt) {
+  let s = String(txt || '');
+  s = s.replace(/\r\n/g, '\n');
+  try {
+    if (unicodeNormalize && typeof unicodeNormalize.nfc === 'function') return unicodeNormalize.nfc(s);
+    if (typeof s.normalize === 'function') return s.normalize('NFC');
+    return s;
+  } catch (e) { return s; }
+}
+
 function readUtf8IfExists(filePath) {
   if (!fs.existsSync(filePath)) return null;
-  let txt = fs.readFileSync(filePath, 'utf8');
-  // Normalize line endings to LF and Unicode to NFC to avoid platform/encoding diffs
-  try { txt = txt.replace(/\r\n/g, '\n').normalize('NFC'); } catch (e) { txt = txt.replace(/\r\n/g, '\n'); }
-  return txt;
+  const raw = fs.readFileSync(filePath, 'utf8');
+  return normalizeText(raw);
 }
+
 function writeUtf8(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  // Ensure LF line endings and Unicode NFC normalization to produce deterministic files
-  try { content = String(content).replace(/\r\n/g, '\n').normalize('NFC'); } catch (e) { content = String(content).replace(/\r\n/g, '\n'); }
-  fs.writeFileSync(filePath, content, 'utf8');
+  fs.writeFileSync(filePath, normalizeText(content), 'utf8');
 }
-function loadJson(filePath, fallback) { if (!fs.existsSync(filePath)) return fallback; const raw = fs.readFileSync(filePath, 'utf8'); if (!raw.trim()) return fallback; return JSON.parse(raw); }
+
+function loadJson(filePath, fallback) { if (!fs.existsSync(filePath)) return fallback; const raw = fs.readFileSync(filePath, 'utf8'); if (!raw.trim()) return fallback; return JSON.parse(normalizeText(raw)); }
 function saveJsonPretty(filePath, obj) { writeUtf8(filePath, JSON.stringify(obj, null, 2) + '\n'); }
 
 function stripGeneratedHeader(md) {
-  const lines = md.split(/\r?\n/);
+  const lines = String(md || '').split(/\r?\n/);
   let i = 0; while (i < lines.length && /^<!--\s*GENERATED_BY_SYNC_TODOS/.test(lines[i].trim())) i++;
   while (i < lines.length && !lines[i].trim()) i++;
   return lines.slice(i).join('\n');
 }
 
 function extractCode(line) { const match = line.match(/^\s*(\d+(?:\.\d+)*)?(?:\b|[^\d])/); return match ? match[1] : null; }
-function getLevel(code) { return code.split('.').length; }
-function getParentCode(code) { const parts = code.split('.'); return parts.slice(0, -1).join('.'); }
-function isStepHeader(line) { return /^#\s+Step\s+\d+/i.test(line); }
+function getLevel(code) { return String(code).split('.').length; }
+function getParentCode(code) { const parts = String(code).split('.'); return parts.slice(0, -1).join('.'); }
+
+// Accept optional emoji or badge before 'Step N' (e.g., '# 🔴 Step 1 — Title')
+function isStepHeader(line) { return /^#\s+(?:[^\s]+\s+)?Step\s+\d+/i.test(line); }
 function isTopicHeader(line) { return /^#{2,}\s+\d+\.\d+\s+/i.test(line); }
 
 function parsePlanSource(md) {
-  const allLines = md.split(/\r?\n/);
+  const allLines = String(md || '').split(/\r?\n/);
   let headerEnd = 0; for (let i = 0; i < allLines.length; i++) { if (isStepHeader(allLines[i])) { headerEnd = i; break; } }
   const headerLines = allLines.slice(0, headerEnd); const contentLines = allLines.slice(headerEnd);
   const structure = { headerLines, steps: [] };
   let currentStep = null; let currentTopic = null; const itemRegistry = new Map();
   for (let i = 0; i < contentLines.length; i++) {
-    const line = contentLines[i]; const trimmed = line.trim(); if (!trimmed) continue;
+    const line = contentLines[i]; const trimmed = String(line || '').trim(); if (!trimmed) continue;
     if (isStepHeader(line)) {
-      const stepMatch = line.match(/^#\s+Step\s+(\d+)\s+[——-]\s+(.*)$/i);
-      const fallback = line.match(/^#\s+Step\s+(\d+)\s*(.*)$/i);
+      // Match optional badge then Step number and title, allowing various dash chars
+      const stepMatch = line.match(/^#\s+(?:[^\s]+\s+)?Step\s+(\d+)\s+[—–\-]\s+(.*)$/i);
+      const fallback = line.match(/^#\s+(?:[^\s]+\s+)?Step\s+(\d+)\s*(.*)$/i);
       const code = stepMatch ? stepMatch[1] : (fallback ? fallback[1] : null);
       const title = stepMatch ? stepMatch[2].trim() : (fallback ? fallback[2].trim() : '');
       if (!code) continue;
-      currentStep = { kind: 'step', code, title, rawLine: line.trim(), topics: [], status: 'pending' };
+      currentStep = { kind: 'step', code, title, rawLine: line.trim(), topics: [], items: [], status: 'pending' };
       structure.steps.push(currentStep); itemRegistry.set(code, currentStep); currentTopic = null; continue;
     }
     if (isTopicHeader(line)) {
@@ -105,18 +125,11 @@ function parsePlanSource(md) {
       const stepNum = topicCode.split('.')[0]; if (!currentStep || currentStep.code !== stepNum) currentStep = structure.steps.find(s => s.code === stepNum) || currentStep;
       if (currentStep) currentStep.topics.push(currentTopic); itemRegistry.set(topicCode, currentTopic); continue;
     }
-    // Support numbered item headings such as '### 1.1.1 Title' in addition to
-    // plain lines that start with '1.1.1 ...'. This lets authors use headings
-    // for subtopics while keeping the numeric structure parseable.
     const headingItemMatch = line.match(/^\s*#{3,}\s+(\d+(?:\.\d+)*)\s+(.*)$/);
-    let code = null;
-    let title = null;
+    let code = null; let title = null;
     if (headingItemMatch) {
-      code = headingItemMatch[1];
-      title = headingItemMatch[2].trim();
+      code = headingItemMatch[1]; title = headingItemMatch[2].trim();
     } else {
-      // Strip common list markers and blockquote markers before parsing.
-      // This allows lines like '- 1.1.1.1 ...' to be recognized.
       const stripped = trimmed.replace(/^\s*(?:>\s*)?(?:[-*+]\s+)+/, '').trim();
       code = extractCode(stripped);
       if (!code) continue;
@@ -130,70 +143,58 @@ function parsePlanSource(md) {
     if (parent) { if (!parent.items) parent.items = []; parent.items.push(node); } itemRegistry.set(code, node);
   }
   function sortNodes(nodes) { if (!nodes) return; nodes.sort((a,b)=>{const aNum=parseInt(a.code.split('.').pop(),10);const bNum=parseInt(b.code.split('.').pop(),10);return aNum-bNum;}); for (const n of nodes) sortNodes(n.items); }
-  for (const step of structure.steps) { step.topics.sort((a,b)=>{const aNum=parseInt(a.code.split('.')[1],10);const bNum=parseInt(b.code.split('.')[1],10);return aNum-bNum;}); for (const topic of step.topics) sortNodes(topic.items); }
+  for (const step of structure.steps) { step.topics.sort((a,b)=>{const aNum=parseInt(a.code.split('.')[1],10);const bNum=parseInt(b.code.split('.')[1],10);return aNum-bNum;}); for (const topic of step.topics) sortNodes(topic.items); if (step.items) sortNodes(step.items); }
   return structure;
 }
 
-function walkPlan(structure, visitor) { for (const step of structure.steps) { visitor(step); for (const topic of step.topics) { visitor(topic); (function walkItems(items){ if (!items) return; for (const it of items) { visitor(it); walkItems(it.items); } })(topic.items); } } }
+function walkPlan(structure, visitor) {
+  function walkItems(items) {
+    if (!items) return;
+    for (const it of items) { visitor(it); walkItems(it.items); }
+  }
+  for (const step of structure.steps) {
+    visitor(step);
+    walkItems(step.items);
+    for (const topic of step.topics) { visitor(topic); walkItems(topic.items); }
+  }
+}
 
 function mergeState(structure, state) {
   const statusByCode = state.statusByCode || {};
   const prevStatusHash = sha1(JSON.stringify(state.statusByCode || {}));
 
-  // Build sets of known codes to detect newly added items since last run.
-  // If `state.knownCodes` is missing (first bootstrap), treat this as
-  // a noop for added-code detection to avoid mass-changing statuses.
   const prevKnown = new Set(Array.isArray(state.knownCodes) ? state.knownCodes : []);
   const currKnown = new Set();
   walkPlan(structure, node => { if (node && node.code) currKnown.add(node.code); });
   let addedCodes = [];
   if (Array.isArray(state.knownCodes) && state.knownCodes.length > 0) {
     for (const c of currKnown) if (!prevKnown.has(c)) addedCodes.push(c);
-  } else {
-    addedCodes = [];
   }
 
-  // Apply existing statuses from state to nodes (or default to 'pending')
   walkPlan(structure, node => {
     const s = statusByCode[node.code];
     node.status = VALID_STATUSES.has(s) ? s : 'pending';
   });
 
-  // Ensure every node has an entry in statusByCode
   walkPlan(structure, node => { if (!statusByCode[node.code]) statusByCode[node.code] = node.status; });
 
-  // If new child was added under an ancestor that was previously completed,
-  // mark that ancestor (and its ancestors) as in-progress so the badge updates.
-  // Only do this when we detected actual added codes (i.e. not during initial
-  // bootstrapping where `knownCodes` was missing).
   for (const added of addedCodes) {
     let parent = getParentCode(added);
     while (parent) {
-      if (statusByCode[parent] === 'completed') {
-        statusByCode[parent] = 'in-progress';
-      }
+      if (statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
       parent = getParentCode(parent);
     }
   }
 
-  // Only propagate "in-progress" up the tree when a child is explicitly
-  // marked as in-progress (i.e. the task was started by a person). This
-  // avoids automatically marking all newly added tasks as started.
   const startedCodes = Object.keys(statusByCode).filter(c => statusByCode[c] === 'in-progress');
   for (const started of startedCodes) {
     let parent = getParentCode(started);
     while (parent) {
-      if (statusByCode[parent] === 'completed') {
-        statusByCode[parent] = 'in-progress';
-      }
+      if (statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
       parent = getParentCode(parent);
     }
   }
 
-  // Additional safety: if a node is marked `completed` but any of its
-  // children (or descendants) are not completed, mark the node as
-  // `in-progress`. This handles the common workflow where a parent was
-  // previously completed and new child items were later added.
   function anyDescendantNotCompleted(items) {
     if (!items || items.length === 0) return false;
     for (const it of items) {
@@ -206,17 +207,12 @@ function mergeState(structure, state) {
     if (!node || !node.code) return;
     const s = statusByCode[node.code];
     const children = node.kind === 'step' ? node.topics : (node.items || []);
-    if (s === 'completed' && anyDescendantNotCompleted(children)) {
-      statusByCode[node.code] = 'in-progress';
-    }
+    if (s === 'completed' && anyDescendantNotCompleted(children)) statusByCode[node.code] = 'in-progress';
   });
 
   const newStatusHash = sha1(JSON.stringify(statusByCode));
   state.statusByCode = statusByCode;
   state.knownCodes = Array.from(currKnown);
-  // Only update lastSyncAt when there was a meaningful change or when
-  // the field is missing (first run). This preserves the committed
-  // `lastSyncAt` across routine regenerations and avoids CI churn.
   if (!state.lastSyncAt || prevStatusHash !== newStatusHash || addedCodes.length > 0) {
     state.lastSyncAt = new Date().toISOString();
   }
@@ -247,7 +243,6 @@ function deriveMarkers(structure) {
     node.marker = marker;
     return { derivedStatus, marker };
   }
-
   for (const step of structure.steps) deriveNode(step, false);
 }
 
@@ -268,33 +263,45 @@ function renderPlanMd(structure, opts) {
     const stepTitle = step.title ? step.title : '';
     out.push(`# ${stepMarker}Step ${step.code} — ${stepTitle}`.trimEnd());
     out.push('');
+    function renderItems(items, indentLevel) {
+      if (!items || items.length === 0) return;
+      for (const item of items) {
+        const marker = item.marker ? `${item.marker} ` : '';
+        if (item.rawLine && /^#+\s+/.test(item.rawLine)) {
+          const hashes = (item.rawLine.match(/^#+/) || [''])[0];
+          out.push(`${hashes} ${marker}${item.code} ${item.title}`.trimEnd());
+        } else {
+          const indent = '   '.repeat(Math.max(0, indentLevel));
+          out.push(`${indent}${marker}${item.code} ${item.title}`.trimEnd());
+        }
+        renderItems(item.items, indentLevel + 1);
+      }
+    }
+    renderItems(step.items, 1);
     for (const topic of step.topics) {
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
       out.push(`## ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
-
-      function renderItems(items, indentLevel) {
-        if (!items || items.length === 0) return;
-        for (const item of items) {
-          const marker = item.marker ? `${item.marker} ` : '';
-          // If the original source line for this item started with one or
-          // more '#' characters, preserve that heading level in the
-          // generated plan so editors can fold/expand the section.
-          if (item.rawLine && /^#+\s+/.test(item.rawLine)) {
-            const hashes = (item.rawLine.match(/^#+/) || [''])[0];
-            out.push(`${hashes} ${marker}${item.code} ${item.title}`.trimEnd());
-          } else {
-            const indent = '   '.repeat(Math.max(0, indentLevel));
-            out.push(`${indent}${marker}${item.code} ${item.title}`.trimEnd());
-          }
-          renderItems(item.items, indentLevel + 1);
-        }
-      }
-
       renderItems(topic.items, 1);
       out.push('');
     }
   }
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
+}
+
+function buildMarkerMap(structure){ const map = Object.create(null); walkPlan(structure, node => { if (node && node.code) map[node.code] = node.marker || ''; }); return map; }
+
+function injectMarkersIntoSource(sourceText, structure){
+  const markerMap = buildMarkerMap(structure);
+  const lines = String(sourceText || '').split(/\r?\n/);
+  return lines.map(line => {
+    if (!line || !line.trim()) return line;
+    const headingMatch = line.match(/^(\s*#+\s*)(\d+(?:\.\d+)*)(\b.*)$/);
+    if (headingMatch){ const pre = headingMatch[1]; const code = headingMatch[2]; const rest = headingMatch[3]; const mk = markerMap[code] ? markerMap[code] + ' ' : ''; return `${pre}${mk}${code}${rest}`; }
+    const stripped = line.replace(/^\s*(?:>\s*)?(?:[-*+]\s+)+/, '').trim();
+    const code = extractCode(stripped);
+    if (code && markerMap[code]) return line.replace(code, `${markerMap[code]} ${code}`);
+    return line;
+  }).join('\n');
 }
 
 function renderTodoMd(structure){
@@ -303,34 +310,29 @@ function renderTodoMd(structure){
   out.push('');
   out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
   out.push('');
-
-  function renderItemsAsList(items, indent){
-    if (!items) return;
-    const pad = '  '.repeat(indent);
-    for (const item of items){
-      const marker = item.marker ? `${item.marker} ` : '';
-      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
-      renderItemsAsList(item.items, indent+1);
-    }
-  }
-
-  for (const step of structure.steps){
-    const stepMarker = step.marker ? `${step.marker} ` : '';
-    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
-    for (const topic of step.topics){
-      const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
-      renderItemsAsList(topic.items, 2);
-    }
-    out.push('');
-  }
-
+  walkPlan(structure, node => {
+    if (!node || !node.code) return;
+    const level = getLevel(node.code);
+    const pad = '  '.repeat(Math.max(0, level - 1));
+    const marker = node.marker ? `${node.marker} ` : '';
+    if (node.kind === 'step') out.push(`${pad}- ${marker}Step ${node.code} — ${node.title}`.trimEnd());
+    else out.push(`${pad}- ${marker}${node.code} ${node.title}`.trimEnd());
+  });
+  out.push('');
   return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
 }
 
 function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
 
-function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs.existsSync(args.source)){ const currentPlan = readUtf8IfExists(args.outPlan); if (!currentPlan) throw new Error(`Bootstrap failed: no existing generated plan at ${args.outPlan}`); const stripped = stripGeneratedHeader(currentPlan); writeUtf8(args.source, stripped.trimEnd()+'\n'); if (!args.quiet) console.log(`🧩 Bootstrapped plan source: ${args.source}`); }
+function main(){
+  const args = parseArgs(process.argv);
+  if (args.bootstrap && !fs.existsSync(args.source)){
+    const currentPlan = readUtf8IfExists(args.outPlan);
+    if (!currentPlan) throw new Error(`Bootstrap failed: no existing generated plan at ${args.outPlan}`);
+    const stripped = stripGeneratedHeader(currentPlan);
+    writeUtf8(args.source, stripped.trimEnd() + '\n');
+    if (!args.quiet) console.log(`🧩 Bootstrapped plan source: ${args.source}`);
+  }
   if (!fs.existsSync(args.source)) throw new Error(`Plan source missing: ${args.source} (run with --bootstrap once)`);
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
@@ -339,13 +341,14 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
   deriveMarkers(parsed);
   saveJsonPretty(args.state, mergedState);
 
-  // If requested, emit the original source file as the generated plan (preserving formatting),
-  // but still generate the todo outputs and update state. Use --copy-source to enable.
   const sourceText = sourceMd;
   const checksum = sha1(sourceText);
   const sourceRel = path.relative(ROOT, args.source).replace(/\\/g, '/');
   const stateRel = path.relative(ROOT, args.state).replace(/\\/g, '/');
-  let planMd;
+  let planMd = renderPlanMd(parsed, args);
+
+  let todoMd = renderTodoMd(parsed);
+
   if (args.copySource) {
     const header = [];
     header.push('<!-- GENERATED_BY_SYNC_TODOS: true -->');
@@ -353,13 +356,9 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
     header.push(`<!-- GENERATED_BY_SYNC_TODOS_SOURCE: ${sourceRel} -->`);
     header.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
     header.push('');
-    planMd = header.join('\n') + sourceText.replace(/\r\n/g, '\n');
-  } else {
-    planMd = renderPlanMd(parsed, args);
+    const injected = injectMarkersIntoSource(sourceText.replace(/\r\n/g, '\n'), parsed);
+    planMd = header.join('\n') + injected;
   }
-
-  // Prepare todo MD (either copy or generated)
-  let todoMd;
   if (args.copyTodo) {
     const header = [];
     header.push('<!-- GENERATED_BY_SYNC_TODOS: true -->');
@@ -368,19 +367,10 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
     header.push(`<!-- GENERATED_BY_SYNC_TODOS_STATE: ${stateRel} -->`);
     header.push('');
     todoMd = header.join('\n') + sourceText.replace(/\r\n/g, '\n');
-  } else {
-    todoMd = renderTodoMd(parsed);
   }
 
-  // If requested, only print outputs to stdout (preview) and exit without writing files.
-  if (args.printSource) {
-    console.log(planMd.replace(/\n{3,}/g,'\n\n'));
-    process.exit(0);
-  }
-  if (args.printTodo) {
-    console.log(todoMd.replace(/\n{3,}/g,'\n\n'));
-    process.exit(0);
-  }
+  if (args.printSource) { console.log(planMd.replace(/\n{3,}/g,'\n\n')); process.exit(0); }
+  if (args.printTodo) { console.log(todoMd.replace(/\n{3,}/g,'\n\n')); process.exit(0); }
 
   writeUtf8(args.outPlan, planMd);
   writeUtf8(args.outTodoMd, todoMd);
@@ -396,13 +386,6 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
 }
 
 try{ main(); } catch(err){ console.error('❌', err && err.message ? err.message : err); process.exit(1); }
-
-function sha1(text) { return crypto.createHash('sha1').update(text, 'utf8').digest('hex'); }
-function readUtf8IfExists(filePath) { if (!fs.existsSync(filePath)) return null; return fs.readFileSync(filePath, 'utf8'); }
-function writeUtf8(filePath, content) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, content, 'utf8'); }
-function loadJson(filePath, fallback) { if (!fs.existsSync(filePath)) return fallback; const raw = fs.readFileSync(filePath, 'utf8'); if (!raw.trim()) return fallback; return JSON.parse(raw); }
-function saveJsonPretty(filePath, obj) { writeUtf8(filePath, JSON.stringify(obj, null, 2) + '\n'); }
-
 function stripGeneratedHeader(md) {
   const lines = md.split(/\r?\n/);
   let i = 0; while (i < lines.length && /^<!--\s*GENERATED_BY_SYNC_TODOS/.test(lines[i].trim())) i++;
@@ -653,36 +636,7 @@ function injectMarkersIntoSource(sourceText, structure){
   }).join('\n');
 }
 
-function renderTodoMd(structure){
-  const out = [];
-  out.push('# Synced Todo List (Flattened)');
-  out.push('');
-  out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
-  out.push('');
 
-  function renderItemsAsList(items, indent){
-    if (!items) return;
-    const pad = '  '.repeat(indent);
-    for (const item of items){
-      const marker = item.marker ? `${item.marker} ` : '';
-      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
-      renderItemsAsList(item.items, indent+1);
-    }
-  }
-
-  for (const step of structure.steps){
-    const stepMarker = step.marker ? `${step.marker} ` : '';
-    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
-    for (const topic of step.topics){
-      const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
-      renderItemsAsList(topic.items, 2);
-    }
-    out.push('');
-  }
-
-  return out.join('\n').replace(/\n{3,}/g,'\n\n')+'\n';
-}
 
 function renderTodoJson(structure){ const todos=[]; walkPlan(structure,node=>{ todos.push({ code: node.code, kind: node.kind, title: node.title, status: node.status, derivedStatus: node.derivedStatus, marker: node.marker }); }); return { generatedBy: 'plan/plan_sync_todos.cjs', todos }; }
 
