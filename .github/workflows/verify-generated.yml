@@ -24,23 +24,8 @@ jobs:
       - name: Install dependencies (none required)
         run: echo "No install needed"
 
-      - name: Regenerate plan outputs
-        run: node plan/plan_sync_todos.cjs
-
-      - name: Normalize transient fields in generated state
-        run: |
-          # Replace `lastSyncAt` in the regenerated file with the committed value (if any)
-          node -e "const fs=require('fs'); const cp=require('child_process'); try{ const head=cp.execSync('git show HEAD:plan/plan_state.json',{stdio:['pipe','pipe','ignore']}).toString(); const headJson=JSON.parse(head); const headLast=headJson.lastSyncAt||null; if(headLast){ const cur=JSON.parse(fs.readFileSync('plan/plan_state.json','utf8')); cur.lastSyncAt=headLast; fs.writeFileSync('plan/plan_state.json', JSON.stringify(cur,null,2)+'\n', 'utf8'); } }catch(e){ /* no HEAD value, skip */ }"
-      - name: Check for unstaged changes in generated files
-        run: |
-          set -e
-          # Only fail if generated files differ after regeneration
-          CHANGED=$(git status --porcelain plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json || true)
-          if [ -n "$CHANGED" ]; then
-            echo "Generated plan files are out of date. Please run 'node plan/plan_sync_todos.cjs' locally and commit the changes."
-            git --no-pager diff -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json || true
-            exit 1
-          fi
+      - name: Skip plan verification
+        run: echo "plan/ removed; skipping plan verification"
 
       - name: Success
         run: echo "Generated plan files are up-to-date"
