@@ -217,31 +217,49 @@ function mergeState(structure, state) {
 }
 
 function deriveMarkers(structure) {
-  function deriveNode(node, inheritedInProgress) {
+  // Collect descendant statuses and build multi-marker rollups per rules:
+  // Display order: ⛔ ⏳ ✅ ❌
+  // - Include ⛔ if any blocked
+  // - Include ⏳ if any in-progress
+  // - Include ✅ if there are some completed AND NO pending descendants
+  // - Include ❌ if any cancelled
+  function collectStatuses(node) {
     const children = node.kind === 'step' ? node.topics : (node.items || []);
-    const currentInherited = !!inheritedInProgress || node.status === 'in-progress';
-    const derivedChildren = (children || []).map(c => deriveNode(c, currentInherited));
-    const allChildrenCompleted = (children && children.length > 0) ? derivedChildren.every(c => c.derivedStatus === 'completed') : false;
-    const anyCancelled = node.status === 'cancelled' || derivedChildren.some(c => c.derivedStatus === 'cancelled');
-    const anyBlocked = node.status === 'blocked' || derivedChildren.some(c => c.derivedStatus === 'blocked');
-    const anyInProgress = currentInherited || derivedChildren.some(c => c.derivedStatus === 'in-progress');
-    const leafCompleted = (!children || children.length === 0) && node.status === 'completed';
+    let hasPending = node.status === 'pending';
+    let hasInProgress = node.status === 'in-progress';
+    let hasBlocked = node.status === 'blocked';
+    let hasCancelled = node.status === 'cancelled';
+    let hasCompleted = node.status === 'completed';
+
+    for (const c of children) {
+      const childFlags = collectStatuses(c);
+      hasPending = hasPending || childFlags.hasPending;
+      hasInProgress = hasInProgress || childFlags.hasInProgress;
+      hasBlocked = hasBlocked || childFlags.hasBlocked;
+      hasCancelled = hasCancelled || childFlags.hasCancelled;
+      hasCompleted = hasCompleted || childFlags.hasCompleted;
+    }
+
+    const parts = [];
+    if (hasBlocked) parts.push('⛔');
+    if (hasInProgress) parts.push('⏳');
+    if (hasCompleted && !hasPending) parts.push('✅');
+    if (hasCancelled) parts.push('❌');
+
+    node.marker = parts.join('');
+
+    // Derive a single-status summary for compatibility with existing logic.
     let derivedStatus = 'pending';
-    if (leafCompleted || allChildrenCompleted) derivedStatus = 'completed';
-    else if (anyCancelled) derivedStatus = 'cancelled';
-    else if (anyBlocked) derivedStatus = 'blocked';
-    else if (anyInProgress) derivedStatus = 'in-progress';
-    let marker = '';
-    if (derivedStatus === 'completed') marker = '✅';
-    else if (derivedStatus === 'cancelled') marker = '❌';
-    else if (derivedStatus === 'blocked') marker = '⛔';
-    else if (derivedStatus === 'in-progress') marker = '⏳';
+    if (hasCompleted && !hasPending) derivedStatus = 'completed';
+    else if (hasCancelled) derivedStatus = 'cancelled';
+    else if (hasBlocked) derivedStatus = 'blocked';
+    else if (hasInProgress) derivedStatus = 'in-progress';
     node.derivedStatus = derivedStatus;
-    node.marker = marker;
-    return { derivedStatus, marker };
+
+    return { hasPending, hasInProgress, hasBlocked, hasCancelled, hasCompleted };
   }
 
-  for (const step of structure.steps) deriveNode(step, false);
+  for (const step of structure.steps) collectStatuses(step);
 }
 
 function renderPlanMd(structure, opts) {
