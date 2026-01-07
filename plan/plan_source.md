@@ -543,6 +543,7 @@
    1.9.12 Database version tracking for migrations
    1.9.13 Rollback capability for failed migrations
    1.9.14 Cleanup old migration data
+- 1.9.3 TODO (auto-inserted)
 
 ## 1.10 Standalone & Privacy Guarantees — standalone mode, data handling, privacy
    1.10.1 Zero external HTTP requests during normal operation
@@ -663,6 +664,8 @@
    2.1.47 Autosave support
    2.1.48 Trash support
    2.1.49 Duplicate product functionality
+- 2.1.28 TODO (auto-inserted)
+- 2.1.27 TODO (auto-inserted)
 
 ## 2.2 🛍️ Taxonomy: Product Categories
    2.2.1 Taxonomy slug: `product_category`
@@ -873,6 +876,9 @@
    3.4.17 Featured flag (star icon, clickable toggle)
    3.4.18 Trending flag (fire icon)
    3.4.19 Stock status (color-coded)
+- 3.4.11 TODO (auto-inserted)
+- 3.4.10 TODO (auto-inserted)
+- 3.4.9 TODO (auto-inserted)
 
 ## 3.5 🔎 Admin List Table Filters
    3.5.1 All / Published / Draft / Pending / Trash
@@ -899,6 +905,9 @@
    3.6.9 Sort by last modified
    3.6.10 Sort by random (for testing)
    3.6.11 Multi-level sorting (primary + secondary)
+- 3.6.6 TODO (auto-inserted)
+- 3.6.5 TODO (auto-inserted)
+- 3.6.4 TODO (auto-inserted)
 
 ## 3.7 Quick Edit
    3.7.1 Title edit
@@ -935,6 +944,7 @@
    3.8.16 Duplicate selected products
    3.8.17 Bulk action confirmation dialogs
    3.8.19 Bulk action progress indicator
+- 3.8.18 TODO (auto-inserted)
 
 ## 3.9 🔎 Admin Search
    3.9.1 Search by title
@@ -964,6 +974,7 @@
    3.10.13 Widget export data option
    3.10.14 Widget date range selector
    3.10.15 Widget full-screen view
+- 3.10.12 TODO (auto-inserted)
 
 # Step 4 — 🔴 Step 4 — Submission Flow & Security
 
@@ -978,6 +989,10 @@
    4.1.12 Form accessibility
    4.1.13 Form styling
    4.1.14 Form customization
+- 4.1.8 TODO (auto-inserted)
+- 4.1.7 TODO (auto-inserted)
+- 4.1.6 TODO (auto-inserted)
+- 4.1.5 TODO (auto-inserted)
 
 ## 4.2 🔒 Security: File Upload
    4.2.1 Allowed file types: JPEG, PNG, WebP, GIF (configurable)
@@ -1118,6 +1133,7 @@
    4.7.17 Check capabilities before meta save
    4.7.18 Check capabilities before bulk actions
    4.7.19 Check capabilities before CSV export
+- 4.7.10 TODO (auto-inserted)
 
 ## 4.8 🔒 Security: Prepared Statements
    4.8.1 Use `$wpdb->prepare()` for all custom queries
@@ -1429,6 +1445,8 @@
    5.7.9 Card animations
    5.7.10 Card accessibility
    5.7.11 Card responsiveness
+- 5.7.5 TODO (auto-inserted)
+- 5.7.4 TODO (auto-inserted)
 
 ## 5.8 Grid & Layout Components
    5.8.1 ProductGrid component (container for cards)
@@ -1546,6 +1564,7 @@
    5.11.32 Search keyboard shortcuts (Ctrl+K, Cmd+K)
    5.11.33 Search modal/overlay (full-screen search)
    5.11.34 Search accessibility (ARIA labels, keyboard nav)
+- 5.11.31 TODO (auto-inserted)
 
 ## 5.12 Modal & Lightbox Components
    5.12.1 Modal component (reusable)
@@ -1749,6 +1768,14 @@
    6.3.13 Filter responsiveness
    6.3.14 Filter persistence
    6.3.15 Filter performance
+- 6.3.9 TODO (auto-inserted)
+- 6.3.8 TODO (auto-inserted)
+- 6.3.7 TODO (auto-inserted)
+- 6.3.6 TODO (auto-inserted)
+- 6.3.5 TODO (auto-inserted)
+- 6.3.4 TODO (auto-inserted)
+- 6.3.3 TODO (auto-inserted)
+- 6.3.2 TODO (auto-inserted)
 
 ## 6.4 Sort Implementation
    6.4.1 SortDropdown component (React)
@@ -1779,6 +1806,8 @@
    6.5.19 AJAX handler: return available filters (dynamic)
    6.5.20 AJAX handler: caching results (transients)
    6.5.21 AJAX handler: rate limiting
+- 6.5.9 TODO (auto-inserted)
+- 6.5.8 TODO (auto-inserted)
 
 ## 6.6 Query Optimization
    6.6.1 Use WP_Query with optimized arguments
@@ -1834,6 +1863,15 @@
    7.1.27 Security: whitelist allowed domains (if enabled)
    7.1.28 Security: prevent redirect loops
    7.1.29 Security: rate limit redirects per IP
+- 7.1.22 TODO (auto-inserted)
+- 7.1.17 TODO (auto-inserted)
+- 7.1.16 TODO (auto-inserted)
+- 7.1.15 TODO (auto-inserted)
+- 7.1.14 TODO (auto-inserted)
+- 7.1.13 TODO (auto-inserted)
+- 7.1.12 TODO (auto-inserted)
+- 7.1.11 TODO (auto-inserted)
+- 7.1.10 TODO (auto-inserted)
 
 ## 7.5 Link Management
    7.5.1 Admin: bulk edit affiliate links
@@ -1856,6 +1894,9 @@
    7.5.18 Link attribution (via UTM parameters; recommend external analytics for attribution)
    7.5.19 Link permissions (who can edit links)
    7.5.20 Link audit log (who changed what, when)
+- 7.4 TODO (auto-inserted)
+- 7.3 TODO (auto-inserted)
+- 7.2 TODO (auto-inserted)
 
 # Step 8 — 🟠 Step 8 — Settings & Styling Controls
 
@@ -2135,6 +2176,7 @@
       8.4.6.7 Export format (CSV, JSON, XML)
       8.4.6.8 Include meta data in export
       8.4.6.9 Include taxonomy data in export
+- 8.4.6.5 TODO (auto-inserted)
 
 ### 8.4.7 (generated)
       8.4.7.1 Enable debug mode (toggle)
@@ -2149,6 +2191,7 @@
       8.4.7.10 Custom hook documentation (link to developer docs)
       8.4.7.11 Database table prefix (read-only, for reference)
       8.4.7.12 Plugin version (read-only, for reference)
+- 8.4.1 TODO (auto-inserted)
 
 ## 8.5 (generated)
 ### 8.5.1 (generated)
@@ -2629,6 +2672,7 @@
    10.3.17 FAQ (20+ questions)
    10.3.18 Video tutorials (YouTube playlist)
    10.3.19 Glossary of terms
+- 10.3.13 TODO (auto-inserted)
 
 ## 10.4 Developer Documentation
    10.4.1 Plugin architecture overview
@@ -2659,6 +2703,7 @@
    10.4.27 Performance optimization tips
    10.4.28 Code examples repository
    10.4.29 Boilerplate/starter templates
+- 10.4.17 TODO (auto-inserted)
 
 ## 10.5 Accessibility Implementation
    10.5.1 All interactive elements keyboard accessible
@@ -2994,6 +3039,7 @@
    11.5.16 Settings save successfully
    11.5.17 Affiliate link redirects work (to external sites, which will fail, but redirect logic works)
    11.5.19 Deactivate plugin - should succeed
+- 11.5.18 TODO (auto-inserted)
 
 ## 11.6 Marketplace Asset Preparation
    11.6.1 Plugin header comment (Name, Plugin URI, Description, Version, Author, License)

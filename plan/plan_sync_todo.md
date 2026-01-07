@@ -359,6 +359,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
   - 1.9 Database Table Prefix — configurable DB prefix and migration notes
     - 1.9.1 Use `$wpdb->prefix` for all table names
     - 1.9.2 Custom tables: `{$wpdb->prefix}affiliate_products_meta`
+    - 1.9.3 TODO (auto-inserted)
     - 1.9.4 Custom tables: `{$wpdb->prefix}affiliate_products_submissions`
     - 1.9.5 Never hardcode `wp_` prefix
     - 1.9.6 Support custom table prefixes
@@ -465,6 +466,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 2.1.24 REST controller: custom controller class
     - 2.1.25 REST namespace: `affiliate-showcase/v1`
     - 2.1.26 Custom REST fields for meta data
+    - 2.1.27 TODO (auto-inserted)
+    - 2.1.28 TODO (auto-inserted)
     - 2.1.29 Custom REST endpoint for submissions
     - 2.1.30 Exclude from search: false (but customizable)
     - 2.1.31 Template file: `single-affiliate_product.php`
@@ -680,6 +683,9 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.4.6 Tags (filterable)
     - 3.4.7 Ribbons (visual badges)
     - 3.4.8 Price (sortable, with sale indicator)
+    - 3.4.9 TODO (auto-inserted)
+    - 3.4.10 TODO (auto-inserted)
+    - 3.4.11 TODO (auto-inserted)
     - 3.4.12 Rating (star display, sortable)
     - 3.4.13 Status (Published, Draft, Pending, etc.)
     - 3.4.14 Author (filterable)
@@ -707,6 +713,9 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.6.1 Sort by title (A-Z, Z-A)
     - 3.6.2 Sort by brand
     - 3.6.3 Sort by price (low to high, high to low)
+    - 3.6.4 TODO (auto-inserted)
+    - 3.6.5 TODO (auto-inserted)
+    - 3.6.6 TODO (auto-inserted)
     - 3.6.7 Sort by rating
     - 3.6.8 Sort by date added (newest, oldest)
     - 3.6.9 Sort by last modified
@@ -745,6 +754,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.8.15 Export selected (CSV, JSON)
     - 3.8.16 Duplicate selected products
     - 3.8.17 Bulk action confirmation dialogs
+    - 3.8.18 TODO (auto-inserted)
     - 3.8.19 Bulk action progress indicator
   - 3.9 🔎 Admin Search
     - 3.9.1 Search by title
@@ -770,6 +780,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.10.9 Widget: Expiring Sales
     - 3.10.10 Widget configuration (show/hide, position)
     - 3.10.11 Widget refresh button
+    - 3.10.12 TODO (auto-inserted)
     - 3.10.13 Widget export data option
     - 3.10.14 Widget date range selector
     - 3.10.15 Widget full-screen view
@@ -780,6 +791,10 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.1.2 Form shortcode: `[affiliate_submit_form]`
     - 4.1.3 Form widget for sidebars
     - 4.1.4 Form: Product Info, Pricing, Media, Contact
+    - 4.1.5 TODO (auto-inserted)
+    - 4.1.6 TODO (auto-inserted)
+    - 4.1.7 TODO (auto-inserted)
+    - 4.1.8 TODO (auto-inserted)
     - 4.1.9 Form validation
     - 4.1.10 Form submission
     - 4.1.11 Form security (see 4.2)
@@ -911,6 +926,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.7.7 Custom capability: `read_private_affiliate_products`
     - 4.7.8 Custom capability: `manage_affiliate_settings`
     - 4.7.9 Custom capability: `approve_affiliate_submissions`
+    - 4.7.10 TODO (auto-inserted)
     - 4.7.11 Map capabilities to roles (Administrator, Editor, Author, Contributor)
     - 4.7.12 Allow role customization via plugin settings
     - 4.7.13 Check capabilities in admin pages
@@ -1212,6 +1228,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.7.1 Component file: `ProductCard.tsx`
     - 5.7.2 Component props: product data object
     - 5.7.3 Card layout: image + content
+    - 5.7.4 TODO (auto-inserted)
+    - 5.7.5 TODO (auto-inserted)
     - 5.7.6 Card variants
     - 5.7.7 Card styling
     - 5.7.8 Card interactions
@@ -1328,6 +1346,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.11.28 Debounce search input (300ms)
     - 5.11.29 Loading indicator during search
     - 5.11.30 Voice search support (Web Speech API)
+    - 5.11.31 TODO (auto-inserted)
     - 5.11.32 Search keyboard shortcuts (Ctrl+K, Cmd+K)
     - 5.11.33 Search modal/overlay (full-screen search)
     - 5.11.34 Search accessibility (ARIA labels, keyboard nav)
@@ -1521,6 +1540,14 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.2.14 [affiliate_list] - Product list (alias)
   - 6.3 🔎 Filter UI Implementation
     - 6.3.1 FilterBar component (React)  6.3.2
+    - 6.3.2 TODO (auto-inserted)
+    - 6.3.3 TODO (auto-inserted)
+    - 6.3.4 TODO (auto-inserted)
+    - 6.3.5 TODO (auto-inserted)
+    - 6.3.6 TODO (auto-inserted)
+    - 6.3.7 TODO (auto-inserted)
+    - 6.3.8 TODO (auto-inserted)
+    - 6.3.9 TODO (auto-inserted)
     - 6.3.10 Filter logic: AND vs OR
     - 6.3.11 Active filters display
     - 6.3.12 Filter UI layouts
@@ -1543,6 +1570,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.5.5 AJAX endpoint: affiliate_load_more
     - 6.5.6 AJAX endpoint: affiliate_quick_view (product modal data)
     - 6.5.7 AJAX endpoint: affiliate_toggle_favorite
+    - 6.5.8 TODO (auto-inserted)
+    - 6.5.9 TODO (auto-inserted)
     - 6.5.10 AJAX handler: nonce verification
     - 6.5.11 AJAX handler: capability check (if needed)
     - 6.5.12 AJAX handler: input sanitization
@@ -1596,10 +1625,19 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 7.1.7 Validate product exists before redirect
     - 7.1.8 Validate affiliate link exists
     - 7.1.9 Get affiliate link from product meta
+    - 7.1.10 TODO (auto-inserted)
+    - 7.1.11 TODO (auto-inserted)
+    - 7.1.12 TODO (auto-inserted)
+    - 7.1.13 TODO (auto-inserted)
+    - 7.1.14 TODO (auto-inserted)
+    - 7.1.15 TODO (auto-inserted)
+    - 7.1.16 TODO (auto-inserted)
+    - 7.1.17 TODO (auto-inserted)
     - 7.1.18 HTTP 301 permanent redirect
     - 7.1.19 HTTP 302 temporary redirect (setting)
     - 7.1.20 Add rel attributes (nofollow, sponsored, ugc)
     - 7.1.21 Add UTM parameters to link (from settings)
+    - 7.1.22 TODO (auto-inserted)
     - 7.1.23 Open in new tab/window (via JS, not redirect)
     - 7.1.24 Delay redirect (optional, show 'Redirecting...' message)
     - 7.1.25 Interstitial page (optional, 'You are leaving our site')
@@ -1817,6 +1855,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - 8.3.9.4 CSS preview (live preview in iframe)
       - 8.3.9.5 CSS priority (load order: plugin CSS → custom CSS)
   - 8.4 (generated)
+    - 8.4.1 TODO (auto-inserted)
     - 8.4.2 (generated)
       - 8.4.2.1 Enable cloaked links (toggle)
       - 8.4.2.2 Redirect type (301 permanent, 302 temporary)
@@ -1881,6 +1920,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - 8.4.6.2 Import validation (dry run before actual import)
       - 8.4.6.3 Import log (success, errors, skipped)
       - 8.4.6.4 Export products to CSV
+      - 8.4.6.5 TODO (auto-inserted)
       - 8.4.6.6 Export all or filtered products
       - 8.4.6.7 Export format (CSV, JSON, XML)
       - 8.4.6.8 Include meta data in export
@@ -2346,6 +2386,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 10.3.10 Styling customization guide
     - 10.3.11 Template customization guide
     - 10.3.12 Import/export guide
+    - 10.3.13 TODO (auto-inserted)
     - 10.3.14 Multi-site setup guide
     - 10.3.15 Translation guide
     - 10.3.16 Troubleshooting guide (common issues and solutions)
@@ -2369,6 +2410,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 10.4.14 Plugin extension guide (how to extend)
     - 10.4.15 Custom field addition guide
     - 10.4.16 Custom validation/sanitization guide
+    - 10.4.17 TODO (auto-inserted)
     - 10.4.18 Custom export format guide
     - 10.4.19 Testing guide (how to run tests)
     - 10.4.20 Contributing guide (pull requests, code review)
@@ -2702,6 +2744,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 11.5.15 All functionality works: CRUD, filtering, submission, etc.
     - 11.5.16 Settings save successfully
     - 11.5.17 Affiliate link redirects work (to external sites, which will fail, but redirect logic works)
+    - 11.5.18 TODO (auto-inserted)
     - 11.5.19 Deactivate plugin - should succeed
   - 11.6 Marketplace Asset Preparation
     - 11.6.1 Plugin header comment (Name, Plugin URI, Description, Version, Author, License)

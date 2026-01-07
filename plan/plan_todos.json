@@ -2858,6 +2858,14 @@
       "marker": ""
     },
     {
+      "code": "1.9.3",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.9.4",
       "kind": "item",
       "title": "Custom tables: `{$wpdb->prefix}affiliate_products_submissions`",
@@ -3693,6 +3701,22 @@
       "code": "2.1.26",
       "kind": "item",
       "title": "Custom REST fields for meta data",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "2.1.27",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "2.1.28",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5410,6 +5434,30 @@
       "marker": ""
     },
     {
+      "code": "3.4.9",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "3.4.10",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "3.4.11",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "3.4.12",
       "kind": "item",
       "title": "Rating (star display, sortable)",
@@ -5621,6 +5669,30 @@
       "code": "3.6.3",
       "kind": "item",
       "title": "Sort by price (low to high, high to low)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "3.6.4",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "3.6.5",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "3.6.6",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5930,6 +6002,14 @@
       "marker": ""
     },
     {
+      "code": "3.8.18",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "3.8.19",
       "kind": "item",
       "title": "Bulk action progress indicator",
@@ -6130,6 +6210,14 @@
       "marker": ""
     },
     {
+      "code": "3.10.12",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "3.10.13",
       "kind": "item",
       "title": "Widget export data option",
@@ -6197,6 +6285,38 @@
       "code": "4.1.4",
       "kind": "item",
       "title": "Form: Product Info, Pricing, Media, Contact",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "4.1.5",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "4.1.6",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "4.1.7",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "4.1.8",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7245,6 +7365,14 @@
       "code": "4.7.9",
       "kind": "item",
       "title": "Custom capability: `approve_affiliate_submissions`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "4.7.10",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -9650,6 +9778,22 @@
       "marker": ""
     },
     {
+      "code": "5.7.4",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "5.7.5",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "5.7.6",
       "kind": "item",
       "title": "Card variants",
@@ -10573,6 +10717,14 @@
       "code": "5.11.30",
       "kind": "item",
       "title": "Voice search support (Web Speech API)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "5.11.31",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12114,6 +12266,70 @@
       "marker": ""
     },
     {
+      "code": "6.3.2",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.3",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.4",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.5",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.6",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.7",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.8",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.3.9",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "6.3.10",
       "kind": "item",
       "title": "Filter logic: AND vs OR",
@@ -12285,6 +12501,22 @@
       "code": "6.5.7",
       "kind": "item",
       "title": "AJAX endpoint: affiliate_toggle_favorite",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.5.8",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "6.5.9",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12706,6 +12938,70 @@
       "marker": ""
     },
     {
+      "code": "7.1.10",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.11",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.12",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.13",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.14",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.15",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.16",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.17",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "7.1.18",
       "kind": "item",
       "title": "HTTP 301 permanent redirect",
@@ -12733,6 +13029,14 @@
       "code": "7.1.21",
       "kind": "item",
       "title": "Add UTM parameters to link (from settings)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "7.1.22",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -14466,6 +14770,14 @@
       "marker": ""
     },
     {
+      "code": "8.4.1",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "8.4.2",
       "kind": "item",
       "title": "(generated)",
@@ -14973,6 +15285,14 @@
       "code": "8.4.6.4",
       "kind": "item",
       "title": "Export products to CSV",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "8.4.6.5",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -18682,6 +19002,14 @@
       "marker": ""
     },
     {
+      "code": "10.3.13",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "10.3.14",
       "kind": "item",
       "title": "Multi-site setup guide",
@@ -18861,6 +19189,14 @@
       "code": "10.4.16",
       "kind": "item",
       "title": "Custom validation/sanitization guide",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "10.4.17",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -21517,6 +21853,14 @@
       "code": "11.5.17",
       "kind": "item",
       "title": "Affiliate link redirects work (to external sites, which will fail, but redirect logic works)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "11.5.18",
+      "kind": "item",
+      "title": "TODO (auto-inserted)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
