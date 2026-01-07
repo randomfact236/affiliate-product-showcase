@@ -20,4 +20,4 @@ jobs:
 
       - name: Run plan formatter (check)
         run: |
-          node scripts/format_plan_source.js --check
+          node plan/format_plan_source.js --check

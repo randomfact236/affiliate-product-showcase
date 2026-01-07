@@ -28,7 +28,7 @@ jobs:
         run: node plan/plan_sync_todos.cjs
 
       - name: Normalize transient fields in generated files
-        run: node scripts/normalize_generated.js
+        run: node plan/normalize_generated.js
       - name: Check for unstaged changes in generated files
         run: |
           set -e
