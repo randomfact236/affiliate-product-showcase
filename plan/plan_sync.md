@@ -25,59 +25,63 @@
 # Step 1 — 🔴 Setup
 
 ## 1.1 Docker Environment — Docker compose setup to bring up local environment and services
-### ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-      ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
-      ✅ 1.1.1.2 Configure environment variables and DB connection for container
-      ✅ 1.1.1.3 Mount plugin source into container for development
-      ✅ 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
-      ✅ 1.1.1.5 Add container healthcheck and CI integration tests
-      ✅ 1.1.1.6 Document WP-CLI helper commands and test entrypoints
-### ✅ 1.1.2 MySQL 8.0 container with persistent volumes
-      ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
-      ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
-      ✅ 1.1.2.3 Configure MySQL environment variables and credentials for compose
-      ✅ 1.1.2.4 Add DB healthcheck and readiness probe for compose
-      ✅ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
-### ✅ 1.1.3 Nginx container with SSL/TLS configuration
-      ✅ 1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
-      ✅ 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
-      ✅ 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
-      ✅ 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
-      ✅ 1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
-      ✅ 1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
-      ✅ 1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
-      ✅ 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
-      ✅ 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
-      ✅ 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
-### ✅ 1.1.4 Redis container for object caching
-      ✅ 1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
-      ✅ 1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
-      ✅ 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
-      ✅ 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
-      ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
-### ✅ 1.1.5 MailHog container for email testing
-      ✅ 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
-      ✅ 1.1.5.2 SMTP configuration (PHP + WordPress)
-      ✅ 1.1.5.3 Web UI access (port 8025)
-      ✅ 1.1.5.4 Healthcheck for MailHog service
-      ✅ 1.1.5.5 Basic testing (send/receive, mail capture)
-      ✅ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
-### ✅ 1.1.6 phpMyAdmin container for database management
-      ✅ 1.1.6.1 REQUIRED - Image: phpmyadmin/phpmyadmin
-      ✅ 1.1.6.2 REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service
-      ✅ 1.1.6.3 REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication
-      ✅ 1.1.6.4 REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service
-      ✅ 1.1.6.5 REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access
-      ✅ 1.1.6.6 GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption
-      ✅ 1.1.6.7 GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access
-      ✅ 1.1.6.8 GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability
-      ✅ 1.1.6.9 GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order
-      ✅ 1.1.6.10 GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings
-      ✅ 1.1.6.11 GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/
-      ✅ 1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
-      ✅ 1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
-      ✅ 1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
-      ✅ 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
+### 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
+   - 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
+   - 1.1.1.2 Configure environment variables and DB connection for container
+   - 1.1.1.3 Mount plugin source into container for development
+   - 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
+   - 1.1.1.5 Add container healthcheck and CI integration tests
+   - 1.1.1.6 Document WP-CLI helper commands and test entrypoints
+
+### 1.1.2 MySQL 8.0 container with persistent volumes
+   - 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
+   - 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
+   - 1.1.2.3 Configure MySQL environment variables and credentials for compose
+   - 1.1.2.4 Add DB healthcheck and readiness probe for compose
+   - 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
+
+### 1.1.3 Nginx container with SSL/TLS configuration
+   - 1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
+   - 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
+   - 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
+   - 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
+   - 1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
+   - 1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
+   - 1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
+   - 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
+   - 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
+   - 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
+### 1.1.4 Redis container for object caching
+   - 1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
+   - 1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
+   - 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
+   - 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
+   - 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
+### 1.1.5 MailHog container for email testing
+   - 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
+   - 1.1.5.2 SMTP configuration (PHP + WordPress)
+   - 1.1.5.3 Web UI access (port 8025)
+   - 1.1.5.4 Healthcheck for MailHog service
+   - 1.1.5.5 Basic testing (send/receive, mail capture)
+   - 1.1.5.6 Basic documentation (how-to, env vars, warnings)
+### 1.1.6 phpMyAdmin container for database management
+   - 1.1.6.1 REQUIRED - Image: phpmyadmin/phpmyadmin
+   - 1.1.6.2 REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service
+   - 1.1.6.3 REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication
+   - 1.1.6.4 REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service
+   - 1.1.6.5 REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access
+
+   - 1.1.6.6 GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption
+   - 1.1.6.7 GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access
+   - 1.1.6.8 GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability
+   - 1.1.6.9 GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order
+   - 1.1.6.10 GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings
+   - 1.1.6.11 GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/
+
+   - 1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
+   - 1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
+   - 1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
+   - 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
 ### 1.1.7 WP-CLI container for automation tasks
 ### 1.1.8 Custom healthcheck scripts for all services
 ### 1.1.9 Docker Compose v3.8+ with environment variable substitution
@@ -87,152 +91,297 @@
 
 ## 1.2 Folder Structure — create folder structure and repository layout
    1.2.1 Framework: WORDPRESS PLUGIN STRUCTURE (with Tailwind + Vite)
-   1.2.2 Plugin Name: Affiliate-Product-Showcase
-   1.2.3 Always write and analyze code
-   1.2.4 Make plugin standalone, production ready; can be installed in any website and works instantly without modifying or re-editing code
-   1.2.5 Plugin should be ready to upload in CodeCanyon or any third‑party seller
-   1.2.6 Use standard code that aligns with WordPress core and industry best practices (security, standards)
-   1.2.7 Suggest changes when needed
-   1.2.8 Do cleanup step-by-step during work, then run a final release polish pass at the end
-   1.2.9 Code should be ready to integrate with any cache plugin
-   1.2.10 Structure format-affiliate-product-showcase/ (root)
-   1.2.11 affiliate-product-showcase.php (Main plugin file)
-   1.2.12 readme.txt (WordPress.org readme)
-   1.2.13 uninstall.php (Cleanup on uninstall)
-   1.2.14 composer.json (PHP dependencies)
-   1.2.15 package.json (Node dependencies)
-   1.2.16 .gitignore
-   1.2.17 phpcs.xml (Code standards)
-   1.2.18 README.md (Developer docs)
-   1.2.19 includes/ (Core PHP Logic - Enterprise Layer)
-   1.2.20 includes/class-plugin.php (Main orchestrator)
-   1.2.21 includes/class-activator.php
-   1.2.22 includes/class-deactivator.php
-   1.2.23 includes/class-loader.php (Hook manager)
-   1.2.24 includes/abstracts/ (Base classes)
-   1.2.25 includes/abstracts/abstract-repository.php
-   1.2.26 includes/abstracts/abstract-service.php
-   1.2.27 includes/abstracts/abstract-validator.php
-   1.2.28 includes/interfaces/ (Contracts)
-   1.2.29 includes/interfaces/repository-interface.php
-   1.2.30 includes/interfaces/service-interface.php
-   1.2.31 includes/traits/ (Reusable behaviors)
-   1.2.32 includes/traits/singleton-trait.php
-   1.2.33 includes/traits/hooks-trait.php
-   1.2.34 includes/models/ (Data models)
-   1.2.35 includes/models/class-product.php
-   1.2.36 includes/models/class-affiliate-link.php
-   1.2.37 includes/repositories/ (Data access)
-   1.2.38 includes/repositories/class-product-repository.php
-   1.2.39 includes/repositories/class-settings-repository.php
-   1.2.40 includes/services/ (Business logic)
-   1.2.41 includes/services/class-product-service.php
-   1.2.42 includes/services/class-affiliate-service.php
-   1.2.43 includes/services/class-analytics-service.php
-   1.2.44 includes/validators/ (Input validation)
-   1.2.45 includes/validators/class-product-validator.php
-   1.2.46 includes/sanitizers/ (Data sanitization)
-   1.2.47 includes/sanitizers/class-input-sanitizer.php
-   1.2.48 includes/formatters/ (Output formatting)
-   1.2.49 includes/formatters/class-price-formatter.php
-   1.2.50 includes/factories/ (Object creation)
-   1.2.51 includes/factories/class-product-factory.php
-   1.2.52 includes/exceptions/ (Custom exceptions)
-   1.2.53 includes/exceptions/class-plugin-exception.php
-   1.2.54 includes/helpers/ (Helper functions)
-   1.2.55 includes/helpers/functions.php
-   1.2.56 includes/hooks/ (Hook handlers)
-   1.2.57 includes/hooks/class-admin-hooks.php
-   1.2.58 includes/hooks/class-public-hooks.php
-   1.2.59 admin/ (Admin Interface)
-   1.2.60 admin/class-admin.php (Admin controller)
-   1.2.61 admin/class-settings.php (Settings API)
-   1.2.62 admin/class-meta-boxes.php (Meta box handler)
-   1.2.63 admin/partials/ (Admin templates)
-   1.2.64 admin/partials/settings-page.php
-   1.2.65 admin/partials/product-meta-box.php
-   1.2.66 admin/partials/dashboard-widget.php
-   1.2.67 public/ (Frontend)
-   1.2.68 public/class-public.php (Public controller)
-   1.2.69 public/class-shortcodes.php (Shortcode handlers)
-   1.2.70 public/class-widgets.php (Widget handlers)
-   1.2.71 public/partials/ (Frontend templates)
-   1.2.72 public/partials/product-grid.php
-   1.2.73 public/partials/product-card.php
-   1.2.74 public/partials/single-product.php
-   1.2.75 blocks/ (Gutenberg Blocks)
-   1.2.76 blocks/product-showcase/
-   1.2.77 blocks/product-showcase/block.json
-   1.2.78 blocks/product-showcase/index.js
-   1.2.79 blocks/product-showcase/edit.js
-   1.2.80 blocks/product-showcase/save.js
-   1.2.81 blocks/product-showcase/style.scss
-   1.2.82 blocks/product-grid/ (similar structure)
-   1.2.83 blocks/product-grid/block.json
-   1.2.84 blocks/product-grid/index.js
-   1.2.85 blocks/product-grid/edit.js
-   1.2.86 blocks/product-grid/save.js
-   1.2.87 blocks/product-grid/style.scss
-   1.2.88 src/ (Modern Source Files)
-   1.2.89 src/js/ (JavaScript source)
-   1.2.90 src/js/admin.js (Admin entry)
-   1.2.91 src/js/frontend.js (Frontend entry)
-   1.2.92 src/js/blocks.js (Blocks entry)
-   1.2.93 src/js/components/ (React components)
-   1.2.94 src/js/components/ProductCard.jsx
-   1.2.95 src/js/components/Modal.jsx
-   1.2.96 src/js/components/LoadingSpinner.jsx
-   1.2.97 src/js/utils/ (JS utilities)
-   1.2.98 src/js/utils/api.js
-   1.2.99 src/js/utils/helpers.js
-   1.2.100 src/js/utils/validation.js
-   1.2.101 src/styles/ (Style source)
-   1.2.102 src/styles/tailwind.css (Tailwind base)
-   1.2.103 src/styles/admin.scss (Admin styles)
-   1.2.104 src/styles/frontend.scss (Frontend styles)
-   1.2.105 src/styles/editor.scss (Block editor)
-   1.2.106 src/styles/components/ (Component styles)
-   1.2.107 src/styles/components/_buttons.scss
-   1.2.108 src/styles/components/_cards.scss
-   1.2.109 src/styles/components/_forms.scss
-   1.2.110 src/tailwind.config.js
-   1.2.111 src/vite.config.js
-   1.2.112 src/postcss.config.js
-   1.2.113 assets/ (Build Output & Static)
-   1.2.114 assets/dist/ (Compiled assets)
-   1.2.115 assets/dist/css/
-   1.2.116 assets/dist/css/admin-[hash].css
-   1.2.117 assets/dist/css/frontend-[hash].css
-   1.2.118 assets/dist/css/editor-[hash].css
-   1.2.119 assets/dist/js/
-   1.2.120 assets/dist/js/admin-[hash].js
-   1.2.121 assets/dist/js/frontend-[hash].js
-   1.2.122 assets/dist/js/blocks-[hash].js
-   1.2.123 assets/dist/manifest.json
-   1.2.124 assets/images/ (Static images)
-   1.2.125 assets/images/logo.svg
-   1.2.126 assets/images/placeholder.png
-   1.2.127 assets/fonts/ (Custom fonts)
-   1.2.128 api/ (REST API)
-   1.2.129 api/class-rest-controller.php
-   1.2.130 api/class-products-endpoint.php
-   1.2.131 api/class-analytics-endpoint.php
-   1.2.132 cli/ (WP-CLI Commands)
-   1.2.133 cli/class-product-command.php
-   1.2.134 languages/ (Internationalization)
-   1.2.135 languages/affiliate-product-showcase.pot
-   1.2.136 tests/ (Testing)
-   1.2.137 tests/bootstrap.php
-   1.2.138 tests/unit/
-   1.2.139 tests/unit/test-product-service.php
-   1.2.140 tests/integration/
-   1.2.141 tests/integration/test-api-endpoints.php
-   1.2.142 tests/fixtures/
-   1.2.143 tests/fixtures/sample-products.php
-   1.2.144 docs/ (Documentation)
-   1.2.145 docs/user-guide/
-   1.2.146 docs/developer/
-   1.2.147 vendor/ (Composer dependencies - gitignored)
+1.2.2 Plugin Name: Affiliate-Product-Showcase
+
+1.2.3 Always write and analyze code
+
+1.2.4 Make plugin standalone, production ready; can be installed in any website and works instantly without modifying or re-editing code
+
+1.2.5 Plugin should be ready to upload in CodeCanyon or any third‑party seller
+
+1.2.6 Use standard code that aligns with WordPress core and industry best practices (security, standards)
+
+1.2.7 Suggest changes when needed
+
+1.2.8 Do cleanup step-by-step during work, then run a final release polish pass at the end
+
+1.2.9 Code should be ready to integrate with any cache plugin
+
+1.2.10 Structure format-affiliate-product-showcase/ (root)
+
+1.2.11 affiliate-product-showcase.php (Main plugin file)
+
+1.2.12 readme.txt (WordPress.org readme)
+
+1.2.13 uninstall.php (Cleanup on uninstall)
+
+1.2.14 composer.json (PHP dependencies)
+
+1.2.15 package.json (Node dependencies)
+
+1.2.16 .gitignore
+
+1.2.17 phpcs.xml (Code standards)
+
+1.2.18 README.md (Developer docs)
+
+1.2.19 includes/ (Core PHP Logic - Enterprise Layer)
+
+1.2.20 includes/class-plugin.php (Main orchestrator)
+
+1.2.21 includes/class-activator.php
+
+1.2.22 includes/class-deactivator.php
+
+1.2.23 includes/class-loader.php (Hook manager)
+
+1.2.24 includes/abstracts/ (Base classes)
+
+1.2.25 includes/abstracts/abstract-repository.php
+
+1.2.26 includes/abstracts/abstract-service.php
+
+1.2.27 includes/abstracts/abstract-validator.php
+
+1.2.28 includes/interfaces/ (Contracts)
+
+1.2.29 includes/interfaces/repository-interface.php
+
+1.2.30 includes/interfaces/service-interface.php
+
+1.2.31 includes/traits/ (Reusable behaviors)
+
+1.2.32 includes/traits/singleton-trait.php
+
+1.2.33 includes/traits/hooks-trait.php
+
+1.2.34 includes/models/ (Data models)
+
+1.2.35 includes/models/class-product.php
+
+1.2.36 includes/models/class-affiliate-link.php
+
+1.2.37 includes/repositories/ (Data access)
+
+1.2.38 includes/repositories/class-product-repository.php
+
+1.2.39 includes/repositories/class-settings-repository.php
+
+1.2.40 includes/services/ (Business logic)
+
+1.2.41 includes/services/class-product-service.php
+
+1.2.42 includes/services/class-affiliate-service.php
+
+1.2.43 includes/services/class-analytics-service.php
+
+1.2.44 includes/validators/ (Input validation)
+
+1.2.45 includes/validators/class-product-validator.php
+
+1.2.46 includes/sanitizers/ (Data sanitization)
+
+1.2.47 includes/sanitizers/class-input-sanitizer.php
+
+1.2.48 includes/formatters/ (Output formatting)
+
+1.2.49 includes/formatters/class-price-formatter.php
+
+1.2.50 includes/factories/ (Object creation)
+
+1.2.51 includes/factories/class-product-factory.php
+
+1.2.52 includes/exceptions/ (Custom exceptions)
+
+1.2.53 includes/exceptions/class-plugin-exception.php
+
+1.2.54 includes/helpers/ (Helper functions)
+
+1.2.55 includes/helpers/functions.php
+
+1.2.56 includes/hooks/ (Hook handlers)
+
+1.2.57 includes/hooks/class-admin-hooks.php
+
+1.2.58 includes/hooks/class-public-hooks.php
+
+1.2.59 admin/ (Admin Interface)
+
+1.2.60 admin/class-admin.php (Admin controller)
+
+1.2.61 admin/class-settings.php (Settings API)
+
+1.2.62 admin/class-meta-boxes.php (Meta box handler)
+
+1.2.63 admin/partials/ (Admin templates)
+
+1.2.64 admin/partials/settings-page.php
+
+1.2.65 admin/partials/product-meta-box.php
+
+1.2.66 admin/partials/dashboard-widget.php
+
+1.2.67 public/ (Frontend)
+
+1.2.68 public/class-public.php (Public controller)
+
+1.2.69 public/class-shortcodes.php (Shortcode handlers)
+
+1.2.70 public/class-widgets.php (Widget handlers)
+
+1.2.71 public/partials/ (Frontend templates)
+
+1.2.72 public/partials/product-grid.php
+
+1.2.73 public/partials/product-card.php
+
+1.2.74 public/partials/single-product.php
+
+1.2.75 blocks/ (Gutenberg Blocks)
+
+1.2.76 blocks/product-showcase/
+
+1.2.77 blocks/product-showcase/block.json
+
+1.2.78 blocks/product-showcase/index.js
+
+1.2.79 blocks/product-showcase/edit.js
+
+1.2.80 blocks/product-showcase/save.js
+
+1.2.81 blocks/product-showcase/style.scss
+
+1.2.82 blocks/product-grid/ (similar structure)
+
+1.2.83 blocks/product-grid/block.json
+
+1.2.84 blocks/product-grid/index.js
+
+1.2.85 blocks/product-grid/edit.js
+
+1.2.86 blocks/product-grid/save.js
+
+1.2.87 blocks/product-grid/style.scss
+
+1.2.88 src/ (Modern Source Files)
+
+1.2.89 src/js/ (JavaScript source)
+
+1.2.90 src/js/admin.js (Admin entry)
+
+1.2.91 src/js/frontend.js (Frontend entry)
+
+1.2.92 src/js/blocks.js (Blocks entry)
+
+1.2.93 src/js/components/ (React components)
+
+1.2.94 src/js/components/ProductCard.jsx
+
+1.2.95 src/js/components/Modal.jsx
+
+1.2.96 src/js/components/LoadingSpinner.jsx
+
+1.2.97 src/js/utils/ (JS utilities)
+
+1.2.98 src/js/utils/api.js
+
+1.2.99 src/js/utils/helpers.js
+
+1.2.100 src/js/utils/validation.js
+
+1.2.101 src/styles/ (Style source)
+
+1.2.102 src/styles/tailwind.css (Tailwind base)
+
+1.2.103 src/styles/admin.scss (Admin styles)
+
+1.2.104 src/styles/frontend.scss (Frontend styles)
+
+1.2.105 src/styles/editor.scss (Block editor)
+
+1.2.106 src/styles/components/ (Component styles)
+
+1.2.107 src/styles/components/_buttons.scss
+
+1.2.108 src/styles/components/_cards.scss
+
+1.2.109 src/styles/components/_forms.scss
+
+1.2.110 src/tailwind.config.js
+
+1.2.111 src/vite.config.js
+
+1.2.112 src/postcss.config.js
+
+1.2.113 assets/ (Build Output & Static)
+
+1.2.114 assets/dist/ (Compiled assets)
+
+1.2.115 assets/dist/css/
+
+1.2.116 assets/dist/css/admin-[hash].css
+
+1.2.117 assets/dist/css/frontend-[hash].css
+
+1.2.118 assets/dist/css/editor-[hash].css
+
+1.2.119 assets/dist/js/
+
+1.2.120 assets/dist/js/admin-[hash].js
+
+1.2.121 assets/dist/js/frontend-[hash].js
+
+1.2.122 assets/dist/js/blocks-[hash].js
+
+1.2.123 assets/dist/manifest.json
+
+1.2.124 assets/images/ (Static images)
+
+1.2.125 assets/images/logo.svg
+
+1.2.126 assets/images/placeholder.png
+
+1.2.127 assets/fonts/ (Custom fonts)
+
+1.2.128 api/ (REST API)
+
+1.2.129 api/class-rest-controller.php
+
+1.2.130 api/class-products-endpoint.php
+
+1.2.131 api/class-analytics-endpoint.php
+
+1.2.132 cli/ (WP-CLI Commands)
+
+1.2.133 cli/class-product-command.php
+
+1.2.134 languages/ (Internationalization)
+
+1.2.135 languages/affiliate-product-showcase.pot
+
+1.2.136 tests/ (Testing)
+
+1.2.137 tests/bootstrap.php
+
+1.2.138 tests/unit/
+
+1.2.139 tests/unit/test-product-service.php
+
+1.2.140 tests/integration/
+
+1.2.141 tests/integration/test-api-endpoints.php
+
+1.2.142 tests/fixtures/
+
+1.2.143 tests/fixtures/sample-products.php
+
+1.2.144 docs/ (Documentation)
+
+1.2.145 docs/user-guide/
+
+1.2.146 docs/developer/
+
+1.2.147 vendor/ (Composer dependencies - gitignored)
 
 ## 1.3 Git Repository — initialize Git repository and basic branches
    1.3.1 Initialize Git with main branch
@@ -1749,6 +1898,7 @@
       8.2.1.8 Single product slug (default: affiliate-product)
       8.2.1.9 Category slug (default: product-category)
       8.2.1.10 Tag slug (default: product-tag)
+
 ### 8.2.2 (generated)
       8.2.2.1 Show product image (global toggle)
       8.2.2.2 Show brand name
@@ -1764,6 +1914,7 @@
       8.2.2.12 Show categories/tags
       8.2.2.13 Excerpt length (words)
       8.2.2.14 Features count (max number to show)
+
 ### 8.2.3 (generated)
       8.2.3.1 Enable pagination (toggle)
       8.2.3.2 Pagination type (numbered, prev/next, load more, infinite scroll)
@@ -1772,6 +1923,7 @@
       8.2.3.5 Show pagination info ("Showing X of Y")
       8.2.3.6 Scroll to top on page change
       8.2.3.7 Smooth scroll animation
+
 ### 8.2.4 (generated)
       8.2.4.1 Enable filters (toggle)
       8.2.4.2 Enable sorting (toggle)
@@ -1783,6 +1935,7 @@
       8.2.4.8 Show active filters
       8.2.4.9 Default sort option
       8.2.4.10 Available sort options (multi-select)
+
 ### 8.2.5 (generated)
       8.2.5.1 Enable single product page (or redirect to affiliate link)
       8.2.5.2 Single product layout (default, sidebar, full-width)
@@ -1793,6 +1946,7 @@
       8.2.5.7 Share networks (Facebook, Twitter, LinkedIn, Pinterest, Email)
       8.2.5.8 Enable product schema markup
       8.2.5.9 CTA button position (top, bottom, sticky)
+
 ### 8.2.6 (generated)
       8.2.6.1 Enable frontend submission (toggle)
       8.2.6.2 Submission page (select from pages)
@@ -1808,6 +1962,7 @@
       8.2.6.12 Max submissions per user per day
       8.2.6.13 Max file upload size (MB)
       8.2.6.14 Allowed file types (JPEG, PNG, WebP, GIF)
+
 ### 8.2.7 (generated)
       8.2.7.1 Who can add products (select roles)
       8.2.7.2 Who can edit products (select roles)
@@ -1830,6 +1985,7 @@
       8.3.1.10 Color scheme presets (light, dark, custom)
       8.3.1.11 Dark mode toggle (enable dark mode)
       8.3.1.12 Dark mode auto (based on system preference)
+
 ### 8.3.2 (generated)
       8.3.2.1 Base font size (px, default 16px)
       8.3.2.2 Heading font size scale (1.2x, 1.5x, 2x, etc.)
@@ -1840,6 +1996,7 @@
       8.3.2.7 Link color (inherit, custom)
       8.3.2.8 Link hover color
       8.3.2.9 Typography preset (default, compact, spacious)
+
 ### 8.3.3 (generated)
       8.3.3.1 Card border width (0-5px)
       8.3.3.2 Card border style (solid, dashed, dotted, none)
@@ -1851,6 +2008,7 @@
       8.3.3.8 Card hover lift amount (px)
       8.3.3.9 Card padding (sm, md, lg, xl)
       8.3.3.10 Card gap (space between cards, px)
+
 ### 8.3.4 (generated)
       8.3.4.1 Button style (solid, outline, ghost, gradient)
       8.3.4.2 Button size (sm, md, lg, xl)
@@ -1864,6 +2022,7 @@
       8.3.4.10 Button icon (left, right, none)
       8.3.4.11 Button icon type (arrow, external link, etc.)
       8.3.4.12 Button full-width (on mobile)
+
 ### 8.3.5 (generated)
       8.3.5.1 Sale badge color
       8.3.5.2 Sale badge text color
@@ -1872,6 +2031,7 @@
       8.3.5.5 Ribbon position (top-left, top-right, etc.)
       8.3.5.6 Ribbon animation (none, pulse, bounce, rotate)
       8.3.5.7 Ribbon size (sm, md, lg)
+
 ### 8.3.6 (generated)
       8.3.6.1 Image aspect ratio (1:1, 4:3, 16:9, custom)
       8.3.6.2 Image object fit (cover, contain, fill)
@@ -1881,6 +2041,7 @@
       8.3.6.6 Image placeholder type (blur, color, skeleton)
       8.3.6.7 Image placeholder color
       8.3.6.8 Lazy load images (toggle)
+
 ### 8.3.7 (generated)
       8.3.7.1 Container max-width (px, full-width, custom)
       8.3.7.2 Container padding (sm, md, lg, xl)
@@ -1889,6 +2050,7 @@
       8.3.7.5 Column gap (horizontal gap between columns)
       8.3.7.6 Content spacing (space between card elements)
       8.3.7.7 Responsive breakpoints (sm, md, lg, xl, custom)
+
 ### 8.3.8 (generated)
       8.3.8.1 Enable animations (toggle)
       8.3.8.2 Animation type (fade, slide, zoom, none)
@@ -1897,6 +2059,7 @@
       8.3.8.5 Stagger animation delay (ms between cards)
       8.3.8.6 Hover animation (scale, rotate, lift)
       8.3.8.7 Respect prefers-reduced-motion
+
 ### 8.3.9 (generated)
       8.3.9.1 Custom CSS textarea (advanced users)
       8.3.9.2 CSS editor with syntax highlighting
@@ -1920,6 +2083,7 @@
       8.4.2.12 Broken link checker (toggle)
       8.4.2.13 Broken link check frequency (daily, weekly)
       8.4.2.14 Broken link notification email
+
 ### 8.4.3 (generated)
       8.4.3.1 Enable rate limiting (toggle)
       8.4.3.2 Rate limit: submissions per hour per IP
@@ -1936,6 +2100,7 @@
       8.4.3.13 Block disposable email domains
       8.4.3.14 IP blacklist (comma-separated IPs)
       8.4.3.15 Email domain blacklist
+
 ### 8.4.4 (generated)
       8.4.4.1 Enable caching (toggle)
       8.4.4.2 Cache duration (transient TTL, seconds)
@@ -1952,6 +2117,7 @@
       8.4.4.13 Preload key assets
       8.4.4.14 Enable HTTP/2 push (if supported)
       8.4.4.15 Database optimization (button: optimize tables)
+
 ### 8.4.5 (generated)
       8.4.5.1 Enable schema markup (toggle)
       8.4.5.2 Schema type (Product, AggregateOffer)
@@ -1964,6 +2130,7 @@
       8.4.5.9 Twitter Card tags (toggle)
       8.4.5.10 Canonical URLs (toggle)
       8.4.5.11 Meta robots (index, noindex, follow, nofollow)
+
 ### 8.4.6 (generated)
       8.4.6.1 CSV column mapping tool
       8.4.6.2 Import validation (dry run before actual import)
@@ -1973,6 +2140,7 @@
       8.4.6.7 Export format (CSV, JSON, XML)
       8.4.6.8 Include meta data in export
       8.4.6.9 Include taxonomy data in export
+
 ### 8.4.7 (generated)
       8.4.7.1 Enable debug mode (toggle)
       8.4.7.2 Debug log level (error, warning, info, debug)
@@ -1994,6 +2162,7 @@
       8.5.1.3 Export includes: general, styling, advanced
       8.5.1.4 Export excludes: API keys, sensitive data
       8.5.1.5 Export filename (auto-generated with date)
+
 ### 8.5.2 (generated)
       8.5.2.1 Import settings from JSON file
       8.5.2.2 File upload field
@@ -2005,6 +2174,7 @@
       8.5.2.8 Import error handling (display errors)
       8.5.2.9 Backup current settings before import
       8.5.2.10 Restore from backup (if import fails)
+
 ### 8.5.3 (generated)
       8.5.3.1 Export all products (CSV, JSON)
       8.5.3.2 Export filtered products (based on current filters)
@@ -2016,6 +2186,7 @@
       8.5.3.8 Export progress indicator (for large datasets)
       8.5.3.9 Export filename (custom or auto-generated)
       8.5.3.10 Export format options (CSV, JSON, XML)
+
 ### 8.5.4 (generated)
       8.5.4.1 Import products from CSV
       8.5.4.2 Import products from JSON
@@ -2038,12 +2209,14 @@
       8.6.1.3 Documentation links
       8.6.1.4 FAQ
       8.6.1.5 Troubleshooting guide
+
 ### 8.6.2 (generated)
       8.6.2.1 Support forum link
       8.6.2.2 Email support contact
       8.6.2.3 Bug report form (link to GitHub issues)
       8.6.2.4 Feature request form
       8.6.2.5 Live chat widget (if available)
+
 ### 8.6.3 (generated)
       8.6.3.1 WordPress version
       8.6.3.2 PHP version
@@ -2057,6 +2230,7 @@
       8.6.3.10 Max upload size
       8.6.3.11 Copy system info (button)
       8.6.3.12 Download system info (text file)
+
 ### 8.6.4 (generated)
       8.6.4.1 Database repair tool
       8.6.4.2 Cache clear tool
@@ -2064,6 +2238,7 @@
       8.6.4.4 Regenerate thumbnails tool
       8.6.4.5 Check for updates tool (disabled if update checker removed)
       8.6.4.6 Plugin reset tool (reset all settings, with confirmation)
+
 ### 8.6.5 (generated)
       8.6.5.1 Plugin name and version
       8.6.5.2 Developer credits
@@ -3015,4 +3190,5 @@
    12.10.18 User surveys (annually, to guide roadmap)
    12.10.19 Competitive analysis (monitor competitor features)
    12.10.20 Iterate on UX based on user feedback and analytics
+
 
