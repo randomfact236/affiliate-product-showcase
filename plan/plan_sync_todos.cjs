@@ -421,7 +421,13 @@ function renderTodoMd(structure){
     const pad = '   '.repeat(indent);
     for (const item of items){
       const marker = item.marker ? `${item.marker} ` : '';
-      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
+      // Preserve heading-style lines when the original source used hashes
+      if (item.rawLine && /^#+\s+/.test(item.rawLine)) {
+        const hashes = (item.rawLine.match(/^#+/) || [''])[0];
+        out.push(`${hashes} ${marker}${item.code} ${item.title}`.trimEnd());
+      } else {
+        out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
+      }
       renderItemsAsList(item.items, indent+1);
     }
   }
@@ -431,7 +437,13 @@ function renderTodoMd(structure){
     out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
     for (const topic of step.topics){
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`   - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      // Preserve topic heading if original used heading hashes
+      if (topic.rawLine && /^#+\s+/.test(topic.rawLine)) {
+        const hashes = (topic.rawLine.match(/^#+/) || [''])[0];
+        out.push(`${hashes} ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      } else {
+        out.push(`   - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      }
       renderItemsAsList(topic.items, 2);
     }
     out.push('');
