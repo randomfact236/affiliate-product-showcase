@@ -61,26 +61,35 @@ function parseArgs(argv) {
 // Validate structure rules: duplicates, malformed codes, missing sibling numbers, orphan items
 function validateStructure(sourceText, parsed) {
   const errors = [];
-  // Extract codes that appear at the start of a meaningful line (heading or list item).
-  // Match optional blockquote, list marker, or heading hashes before the numeric code.
-  const codeRegex = /^\s*(?:>\s*)?(?:[-*+]\s+)?(?:#+\s*)?(\d+(?:\.\d+)*)\b/mg;
   const codes = [];
-  let m;
-  while ((m = codeRegex.exec(sourceText)) !== null) {
-    codes.push(m[1]);
+  const malformed = [];
+
+  // Scan each non-empty line and extract the first token after common markers.
+  const lines = sourceText.split(/\r?\n/);
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+    // Skip lines that are not likely to start with a code (e.g., prose)
+    const m = line.match(/^\s*(?:>\s*)?(?:[-*+]\s+)?(?:#+\s*)?([^\s]+)/);
+    if (!m) continue;
+    const token = m[1];
+    // If token starts with a digit, treat it as a candidate code; otherwise ignore.
+    if (!/^[0-9]/.test(token)) continue;
+    // If token is purely numeric-segments (e.g. 1.2.3), accept; else mark malformed.
+    if (/^\d+(?:\.\d+)*$/.test(token)) codes.push(token);
+    else malformed.push(token);
   }
+
+  // Report malformed tokens first
+  for (const t of malformed) errors.push(`Malformed code: ${t}`);
 
   // Duplicate detection
   const counts = {};
   for (const c of codes) counts[c] = (counts[c] || 0) + 1;
   for (const [c,n] of Object.entries(counts)) if (n > 1) errors.push(`Duplicate code: ${c} appears ${n} times`);
 
-  // Malformed detection: ensure codes are purely numeric segments
-  const malformed = codes.filter(c => !/^\d+(?:\.\d+)*$/.test(c));
-  for (const c of malformed) errors.push(`Malformed code: ${c}`);
-
   // Build set of unique codes
-  const codeSet = new Set(codes.filter(c => /^\d+(?:\.\d+)*$/.test(c)));
+  const codeSet = new Set(codes);
 
   // Orphan detection: every non-top-level code must have a parent present
   for (const c of Array.from(codeSet)) {
@@ -839,14 +848,49 @@ function main(){ const args = parseArgs(process.argv); if (args.bootstrap && !fs
   const sourceMd = fs.readFileSync(args.source,'utf8');
   const parsed = parsePlanSource(sourceMd);
   if (args.validate) {
-    const verrs = validateStructure(sourceMd, parsed);
-    if (verrs && verrs.length) {
-      console.error('❌ Validation failed:');
-      for (const e of verrs) console.error(' - ' + e);
-      process.exit(2);
+    const vres = validateStructure(sourceMd, parsed);
+    if (vres.errors && vres.errors.length) {
+      console.error('❌ Validation failed (errors):');
+      for (const e of vres.errors) console.error(' - ' + e);
     }
-    console.log('✅ Validation passed — no issues found');
-    process.exit(0);
+    if (vres.missingSiblings && vres.missingSiblings.length) {
+      if (args.strict) {
+        console.error('❌ Validation failed (missing siblings):');
+        for (const m of vres.missingSiblings) console.error(' - Missing sibling: ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      } else {
+        console.warn('⚠️ Validation warnings (missing siblings):');
+        for (const m of vres.missingSiblings) console.warn(' - Missing sibling: ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      }
+    }
+
+    const hasErrors = vres.errors && vres.errors.length;
+    const hasMissing = vres.missingSiblings && vres.missingSiblings.length;
+    if (hasErrors) process.exit(2);
+
+    // If fix-missing requested
+    if (args.fixMissing) {
+      if (!hasMissing) { console.log('✅ No missing siblings to fix'); process.exit(0); }
+      if (args.preview && !args.apply) {
+        console.log('🔍 Preview of auto-insert placeholders:');
+        for (const m of vres.missingSiblings) console.log(' - ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+        process.exit(1);
+      }
+      if (args.apply) {
+        const newSource = applyFixMissing(sourceMd, vres.missingSiblings);
+        writeUtf8(args.source, newSource);
+        console.log('✅ Applied auto-inserted placeholders to', args.source);
+        process.exit(0);
+      }
+      // If fix-missing requested without preview or apply, show preview by default
+      console.log('🔍 Preview (run with --apply to write):');
+      for (const m of vres.missingSiblings) console.log(' - ' + m.code + (m.parent ? ` (parent ${m.parent})` : ''));
+      process.exit(1);
+    }
+
+    // Exit codes: 0 = ok/no issues, 1 = warnings only, 2 = errors
+    if (!hasErrors && hasMissing && !args.strict) { console.log('✅ Validation passed with warnings'); process.exit(1); }
+    if (!hasErrors && !hasMissing) { console.log('✅ Validation passed — no issues found'); process.exit(0); }
+    if (!hasErrors && hasMissing && args.strict) process.exit(2);
   }
   const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
   const mergedState = mergeState(parsed, state);
