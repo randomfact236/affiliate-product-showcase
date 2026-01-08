@@ -6,16 +6,16 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.1",
@@ -789,97 +789,97 @@
       "code": "1.1.11",
       "kind": "item",
       "title": "Network isolation between services",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.1",
       "kind": "item",
       "title": "Custom network defined in docker-compose.yml. - ACTUALLY NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.2",
       "kind": "item",
       "title": "All services on same network. - ACTUALLY NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.3",
       "kind": "item",
       "title": "Network driver bridge. - ACTUALLY NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.4",
       "kind": "item",
       "title": "Services can communicate internally. - ACTUALLY NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.5",
       "kind": "item",
       "title": "Only Nginx exposes ports to host; internal services (DB/PHP) have no ports mapping. - ACTUALLY NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.6",
       "kind": "item",
       "title": "Multiple networks per service. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.7",
       "kind": "item",
       "title": "Advanced firewall rules. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.8",
       "kind": "item",
       "title": "Network policies. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.9",
       "kind": "item",
       "title": "Service mesh. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.10",
       "kind": "item",
       "title": "Complex routing configuration. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11.11",
       "kind": "item",
       "title": "VPN configuration. - NOT NEEDED",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.12",
