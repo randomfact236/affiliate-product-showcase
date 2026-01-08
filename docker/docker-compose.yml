@@ -73,8 +73,8 @@ services:
       nginx-cert:
         condition: service_started
     ports:
-      - "8000:80"
-      - "8443:443"
+      - "${NGINX_HTTP_PORT:-8000}:80"
+      - "${NGINX_HTTPS_PORT:-8443}:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ../:/var/www/html:ro
@@ -95,7 +95,7 @@ services:
       PMA_USER: ${PMA_USER:-root}
       PMA_PASSWORD: ${PMA_PASSWORD}
     ports:
-      - "8081:80"
+      - "${PHPMYADMIN_PORT:-8081}:80"
     depends_on:
       db:
         condition: service_healthy
@@ -109,8 +109,8 @@ services:
     image: mailhog/mailhog
     container_name: aps_mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "${MAILHOG_SMTP_PORT:-1025}:1025"
+      - "${MAILHOG_UI_PORT:-8025}:8025"
     healthcheck:
       # `curl` is not available in the default image; use wget which is present, falling back to exit 1
       test: ["CMD-SHELL", "wget -qO- http://localhost:8025 >/dev/null 2>&1 || exit 1"]

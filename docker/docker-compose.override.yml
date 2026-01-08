@@ -5,7 +5,7 @@ services:
       - redis_data:/data
     command: ["redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof"]
     ports:
-      - "6379:6379" # expose for dev host access (optional)
+      - "${REDIS_PORT:-6379}:6379" # expose for dev host access (optional)
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -14,7 +14,7 @@ services:
       PMA_USER: ${MYSQL_USER:-root}
       PMA_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "127.0.0.1:8080:80" # dev-only override: bind to localhost only
+      - "${PHPMYADMIN_HOST_BIND:-127.0.0.1}:${PHPMYADMIN_PORT:-8080}:80" # dev-only override: bind to localhost only
     depends_on:
       db:
         condition: service_healthy
