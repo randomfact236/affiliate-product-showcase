@@ -484,7 +484,7 @@
     {
       "code": "1.1.7.5",
       "kind": "item",
-      "title": "Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL]",
+      "title": "Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -492,7 +492,7 @@
     {
       "code": "1.1.7.6",
       "kind": "item",
-      "title": "Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL]",
+      "title": "Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -500,7 +500,7 @@
     {
       "code": "1.1.7.7",
       "kind": "item",
-      "title": "Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL]",
+      "title": "Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -508,7 +508,7 @@
     {
       "code": "1.1.7.8",
       "kind": "item",
-      "title": "CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL]",
+      "title": "CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -516,7 +516,7 @@
     {
       "code": "1.1.7.9",
       "kind": "item",
-      "title": "Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL]",
+      "title": "Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -524,7 +524,7 @@
     {
       "code": "1.1.7.10",
       "kind": "item",
-      "title": "Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL]",
+      "title": "Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"

@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: c0bb26ae2910af0d2d533a5e46c2a5ea153860e0 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: e5838faa8b27e64ad07d29b7485d9d6c200ee6a9 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -83,12 +83,12 @@
       ✅ 1.1.7.2 Volume and network setup — Bind-mount the project directory and `wp-content` where appropriate; attach the service to the same Docker network and share the DB named volume for direct access. [REQUIRED]
       ✅ 1.1.7.3 Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]
       ✅ 1.1.7.4 Plugin/theme management commands — Add reusable WP-CLI commands or scripts to install/activate plugins and themes (`wp plugin install --activate`, `wp theme install --activate`) and an `init` script for first-boot setup. [RECOMMENDED]
-      ⏳ 1.1.7.5 Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL]
-      ⏳ 1.1.7.6 Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL]
-      ⏳ 1.1.7.7 Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL]
-      ⏳ 1.1.7.8 CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL]
-      ⏳ 1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL]
-      ⏳ 1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL]
+      ⏳ 1.1.7.5 Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL — not installed]
+      ⏳ 1.1.7.6 Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL — not installed]
+      ⏳ 1.1.7.7 Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL — not installed]
+      ⏳ 1.1.7.8 CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL — not installed]
+      ⏳ 1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]
+      ⏳ 1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]
 ### 1.1.8 Custom healthcheck scripts for all services
 ### 1.1.9 Docker Compose v3.8+ with environment variable substitution
 ### 1.1.10 Volume mounts for plugin development directory
