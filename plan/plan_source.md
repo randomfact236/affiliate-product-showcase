@@ -123,6 +123,17 @@
    - 1.1.10.8 Permission scripts - NOT NEEDED
    - 1.1.10.9 Sync tools - NOT NEEDED
 ### 1.1.11 Network isolation between services
+   - 1.1.11.1 Custom network defined in docker-compose.yml. - ACTUALLY NEEDED
+   - 1.1.11.2 All services on same network. - ACTUALLY NEEDED
+   - 1.1.11.3 Network driver bridge. - ACTUALLY NEEDED
+   - 1.1.11.4 Services can communicate internally. - ACTUALLY NEEDED
+   - 1.1.11.5 Only Nginx exposes ports to host; internal services (DB/PHP) have no ports mapping. - ACTUALLY NEEDED
+   - 1.1.11.6 Multiple networks per service. - NOT NEEDED
+   - 1.1.11.7 Advanced firewall rules. - NOT NEEDED
+   - 1.1.11.8 Network policies. - NOT NEEDED
+   - 1.1.11.9 Service mesh. - NOT NEEDED
+   - 1.1.11.10 Complex routing configuration. - NOT NEEDED
+   - 1.1.11.11 VPN configuration. - NOT NEEDED
 ### 1.1.12 Automated database seeding with sample data
 
 ## 1.2 Folder Structure — create folder structure and repository layout
