@@ -21,5 +21,4 @@ add_action('rest_api_init', function(){
         'permission_callback' => function(){ return true; }
     ]);
 });
-?>
 
