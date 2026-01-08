@@ -557,9 +557,9 @@
       "code": "1.1.8.3",
       "kind": "item",
       "title": "MySQL: mysqladmin ping.",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.4",
