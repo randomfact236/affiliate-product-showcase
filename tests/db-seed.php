@@ -48,3 +48,71 @@ if (! $mysqli->query($sql)) {
 echo "Seed complete\n";
 
 $mysqli->close();
+
+// Additional sample content: posts, pages, and sample product posts.
+function ensure_post($mysqli, $post_type, $post_name, $post_title, $post_content = '', $post_status = 'publish') {
+    $prefix = 'wp_';
+    $posts_table = $prefix . 'posts';
+    $postmeta_table = $prefix . 'postmeta';
+
+    // Check existing by post_name and post_type
+    $stmt = $mysqli->prepare("SELECT ID FROM $posts_table WHERE post_name = ? AND post_type = ? LIMIT 1");
+    $stmt->bind_param('ss', $post_name, $post_type);
+    $stmt->execute();
+    $stmt->bind_result($id);
+    if ($stmt->fetch()) {
+        $stmt->close();
+        return (int)$id;
+    }
+    $stmt->close();
+
+    $now = date('Y-m-d H:i:s');
+    $stmt = $mysqli->prepare("INSERT INTO $posts_table (post_author, post_date, post_date_gmt, post_content, post_title, post_status, post_name, post_type, guid) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $guid = '';
+    $stmt->bind_param('sssssss', $now, $now, $post_content, $post_title, $post_status, $post_name, $post_type, $guid);
+    if (! $stmt->execute()) {
+        fwrite(STDERR, "Failed to insert post $post_name: " . $stmt->error . "\n");
+        $stmt->close();
+        return 0;
+    }
+    $new_id = $mysqli->insert_id;
+    $stmt->close();
+
+    // Update GUID to be the post ID-based permalink placeholder
+    $guid = "http://example.org/?p={$new_id}";
+    $stmt = $mysqli->prepare("UPDATE $posts_table SET guid = ? WHERE ID = ?");
+    $stmt->bind_param('si', $guid, $new_id);
+    $stmt->execute();
+    $stmt->close();
+
+    return (int)$new_id;
+}
+
+function ensure_postmeta($mysqli, $post_id, $meta_key, $meta_value) {
+    $prefix = 'wp_';
+    $postmeta_table = $prefix . 'postmeta';
+    $stmt = $mysqli->prepare("SELECT meta_id FROM $postmeta_table WHERE post_id = ? AND meta_key = ? LIMIT 1");
+    $stmt->bind_param('is', $post_id, $meta_key);
+    $stmt->execute();
+    $stmt->bind_result($mid);
+    if ($stmt->fetch()) { $stmt->close(); return; }
+    $stmt->close();
+
+    $stmt = $mysqli->prepare("INSERT INTO $postmeta_table (post_id, meta_key, meta_value) VALUES (?, ?, ?)");
+    $stmt->bind_param('iss', $post_id, $meta_key, $meta_value);
+    $stmt->execute();
+    $stmt->close();
+}
+
+// Create sample post and page
+$sample_post_id = ensure_post($mysqli, 'post', 'sample-seed-post', 'Sample Seed Post', 'This is a sample post inserted by the test DB seeder.');
+$sample_page_id = ensure_post($mysqli, 'page', 'sample-seed-page', 'Sample Seed Page', 'This is a sample page inserted by the test DB seeder.');
+
+// Create sample product as custom post type 'aps_product'
+$product_id = ensure_post($mysqli, 'aps_product', 'sample-product-1', 'Sample Product 1', 'Sample product description inserted by seeder.');
+ensure_postmeta($mysqli, $product_id, '_aps_product_price', '19.99');
+ensure_postmeta($mysqli, $product_id, '_aps_product_affiliate_url', 'https://example.com/product/1');
+
+fwrite(STDOUT, "Sample content ensured: post={$sample_post_id}, page={$sample_page_id}, product={$product_id}\n");
+
+// Close connection (already closed above) - nothing further

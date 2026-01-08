@@ -173,6 +173,20 @@ services:
     networks:
       - app_net
 
+  db-seed:
+    image: php:8.3-cli
+    container_name: aps_db_seed
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    volumes:
+      - ../:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ["/bin/sh", "-c", "/var/www/html/scripts/db-seed.sh || true; sleep 1"]
+    restart: 'no'
+    networks:
+      - app_net
+
 volumes:
   db_data:
   nginx_certs:
