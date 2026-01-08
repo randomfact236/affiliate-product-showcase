@@ -538,6 +538,94 @@
       "marker": ""
     },
     {
+      "code": "1.1.8.1",
+      "kind": "item",
+      "title": "Basic healthcheck in docker-compose.yml (inline commands).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.2",
+      "kind": "item",
+      "title": "depends_on with service_healthy condition.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.3",
+      "kind": "item",
+      "title": "MySQL: mysqladmin ping.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.4",
+      "kind": "item",
+      "title": "WordPress: php-fpm check.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.5",
+      "kind": "item",
+      "title": "Nginx: HTTP Probe (e.g., curl -f http://localhost).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.6",
+      "kind": "item",
+      "title": "Redis: redis-cli ping (if Redis is used).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.7",
+      "kind": "item",
+      "title": "Separate shell scripts. - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.8",
+      "kind": "item",
+      "title": "Fallback mechanisms. - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.9",
+      "kind": "item",
+      "title": "PHP alternatives. - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.10",
+      "kind": "item",
+      "title": "Custom Dockerfiles for healthchecks. - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.8.11",
+      "kind": "item",
+      "title": "Complex multi-layer checks. - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.1.9",
       "kind": "item",
       "title": "Docker Compose v3.8+ with environment variable substitution",

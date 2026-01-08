@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: e5838faa8b27e64ad07d29b7485d9d6c200ee6a9 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: a7e2bb23f12a83dc2676e93ce9c927b3f831170c -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -90,6 +90,17 @@
       ✅ 1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]
       ✅ 1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]
 ### 1.1.8 Custom healthcheck scripts for all services
+      1.1.8.1 Basic healthcheck in docker-compose.yml (inline commands).
+      1.1.8.2 depends_on with service_healthy condition.
+      1.1.8.3 MySQL: mysqladmin ping.
+      1.1.8.4 WordPress: php-fpm check.
+      1.1.8.5 Nginx: HTTP Probe (e.g., curl -f http://localhost).
+      1.1.8.6 Redis: redis-cli ping (if Redis is used).
+      1.1.8.7 Separate shell scripts. - NOT NEEDED
+      1.1.8.8 Fallback mechanisms. - NOT NEEDED
+      1.1.8.9 PHP alternatives. - NOT NEEDED
+      1.1.8.10 Custom Dockerfiles for healthchecks. - NOT NEEDED
+      1.1.8.11 Complex multi-layer checks. - NOT NEEDED
 ### 1.1.9 Docker Compose v3.8+ with environment variable substitution
 ### 1.1.10 Volume mounts for plugin development directory
 ### 1.1.11 Network isolation between services
