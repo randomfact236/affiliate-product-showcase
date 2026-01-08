@@ -81,7 +81,7 @@
 ### ⏳ 1.1.7 WP-CLI container for automation tasks
       ✅ 1.1.7.1 Docker service configuration — Add a `wp-cli` service (image: `wp-cli/wp-cli` or a small helper image), set DB and WP environment variables, and include a simple healthcheck and `depends_on` so it can run against the DB/PHP services. [REQUIRED]
       ✅ 1.1.7.2 Volume and network setup — Bind-mount the project directory and `wp-content` where appropriate; attach the service to the same Docker network and share the DB named volume for direct access. [REQUIRED]
-      ⏳ 1.1.7.3 Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]
+      ✅ 1.1.7.3 Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]
       ⏳ 1.1.7.4 Plugin/theme management commands — Add reusable WP-CLI commands or scripts to install/activate plugins and themes (`wp plugin install --activate`, `wp theme install --activate`) and an `init` script for first-boot setup. [RECOMMENDED]
       ⏳ 1.1.7.5 Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL]
       ⏳ 1.1.7.6 Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL]
