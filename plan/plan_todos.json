@@ -469,7 +469,7 @@
       "code": "1.1.7.3",
       "kind": "item",
       "title": "Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]",
-      "status": "pending",
+      "status": "in-progress",
       "derivedStatus": "in-progress",
       "marker": "⏳"
     },
