@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 0e936acb99eece719b503eff6285445234242508 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 2d5e88eb3f9fd524d62c8c1ca68431c884c71202 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -112,6 +112,15 @@
       ✅ 1.1.9.8 Extensive documentation - NOT NEEDED
       ✅ 1.1.9.9 * Secret management * Extensive documentation - NOT NEEDED
 ### 1.1.10 Volume mounts for plugin development directory
+      1.1.10.1 Mount plugin folder in docker-compose.yml - ACTUALLY NEEDED
+      1.1.10.2 Path: ./plugins/your-plugin:/var/www/html/wp-content/plugins/your-plugin - ACTUALLY NEEDED
+      1.1.10.3 Test write permission works- ACTUALLY NEEDED
+      1.1.10.4 Verify changes reflect in container- ACTUALLY NEEDED
+      1.1.10.5 Multiple plugin mounts - NOT NEEDED
+      1.1.10.6 Hot reload config - NOT NEEDED
+      1.1.10.7 File watchers - NOT NEEDED
+      1.1.10.8 Permission scripts - NOT NEEDED
+      1.1.10.9 Sync tools - NOT NEEDED
 ### 1.1.11 Network isolation between services
 ### 1.1.12 Automated database seeding with sample data
 

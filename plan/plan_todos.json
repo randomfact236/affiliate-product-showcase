@@ -714,6 +714,78 @@
       "marker": ""
     },
     {
+      "code": "1.1.10.1",
+      "kind": "item",
+      "title": "Mount plugin folder in docker-compose.yml - ACTUALLY NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.2",
+      "kind": "item",
+      "title": "Path: ./plugins/your-plugin:/var/www/html/wp-content/plugins/your-plugin - ACTUALLY NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.3",
+      "kind": "item",
+      "title": "Test write permission works- ACTUALLY NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.4",
+      "kind": "item",
+      "title": "Verify changes reflect in container- ACTUALLY NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.5",
+      "kind": "item",
+      "title": "Multiple plugin mounts - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.6",
+      "kind": "item",
+      "title": "Hot reload config - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.7",
+      "kind": "item",
+      "title": "File watchers - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.8",
+      "kind": "item",
+      "title": "Permission scripts - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.1.10.9",
+      "kind": "item",
+      "title": "Sync tools - NOT NEEDED",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.1.11",
       "kind": "item",
       "title": "Network isolation between services",
