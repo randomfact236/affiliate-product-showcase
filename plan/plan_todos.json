@@ -6,16 +6,16 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1",
@@ -534,8 +534,8 @@
       "kind": "item",
       "title": "Custom healthcheck scripts for all services",
       "status": "in-progress",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.1",
@@ -589,41 +589,41 @@
       "code": "1.1.8.7",
       "kind": "item",
       "title": "Separate shell scripts. - NOT NEEDED",
-      "status": "cancelled",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.8",
       "kind": "item",
       "title": "Fallback mechanisms. - NOT NEEDED",
-      "status": "cancelled",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.9",
       "kind": "item",
       "title": "PHP alternatives. - NOT NEEDED",
-      "status": "cancelled",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.10",
       "kind": "item",
       "title": "Custom Dockerfiles for healthchecks. - NOT NEEDED",
-      "status": "cancelled",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.11",
       "kind": "item",
       "title": "Complex multi-layer checks. - NOT NEEDED",
-      "status": "cancelled",
-      "derivedStatus": "cancelled",
-      "marker": "❌"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.9",
