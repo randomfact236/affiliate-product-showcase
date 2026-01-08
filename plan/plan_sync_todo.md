@@ -2,8 +2,8 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- ⏳ Step 1 — Step 1 — Setup
-  - ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
+- Step 1 — Step 1 — Setup
+   - 1.1 Docker Environment — Docker compose setup to bring up local environment and services
    - 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
    - 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
    - 1.1.1.2 Configure environment variables and DB connection for container
@@ -80,16 +80,16 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.8.9 PHP alternatives. - NOT NEEDED
       - ✅ 1.1.8.10 Custom Dockerfiles for healthchecks. - NOT NEEDED
       - ✅ 1.1.8.11 Complex multi-layer checks. - NOT NEEDED
-    - ⏳ 1.1.9 Docker Compose v3.8+ with environment variable substitution
+    - ✅ 1.1.9 Docker Compose v3.8+ with environment variable substitution
       - ✅ 1.1.9.1 Docker Compose version - Set to 3.8 or higher in yaml file. - ACTUALLY NEEDED
       - ✅ 1.1.9.2 Variable substitution - Use ${VAR} or ${VAR:-default} syntax in services. - ACTUALLY NEEDED
       - ✅ 1.1.9.3 .env.example file - Create with sample environment variables documented. - ACTUALLY NEEDED
       - ✅ 1.1.9.4 .gitignore update - Ensure .env is listed in .gitignore so local secrets are not committed. - ACTUALLY NEEDED
-      - ⏳ 1.1.9.5 Multiple environment files  - NOT NEEDED
-      - ⏳ 1.1.9.6 Validation scripts - NOT NEEDED
-      - ⏳ 1.1.9.7 Secret management - NOT NEEDED
-      - ⏳ 1.1.9.8 Extensive documentation - NOT NEEDED
-      - ⏳ 1.1.9.9 * Secret management * Extensive documentation - NOT NEEDED
+      - ✅ 1.1.9.5 Multiple environment files  - NOT NEEDED
+      - ✅ 1.1.9.6 Validation scripts - NOT NEEDED
+      - ✅ 1.1.9.7 Secret management - NOT NEEDED
+      - ✅ 1.1.9.8 Extensive documentation - NOT NEEDED
+      - ✅ 1.1.9.9 * Secret management * Extensive documentation - NOT NEEDED
    - 1.1.10 Volume mounts for plugin development directory
    - 1.1.11 Network isolation between services
    - 1.1.12 Automated database seeding with sample data
