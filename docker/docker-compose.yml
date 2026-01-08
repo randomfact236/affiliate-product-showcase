@@ -22,6 +22,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
+    networks:
+      - app_net
 
   redis:
     image: redis:7-alpine
@@ -32,6 +34,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app_net
 
   wordpress:
     build:
@@ -64,6 +68,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 6
+    networks:
+      - app_net
 
   nginx:
     image: nginx:stable-alpine
@@ -87,6 +93,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app_net
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -95,8 +103,6 @@ services:
       PMA_HOST: ${PMA_HOST:-db}
       PMA_USER: ${PMA_USER:-root}
       PMA_PASSWORD: ${PMA_PASSWORD}
-    ports:
-      - "${PHPMYADMIN_PORT:-8081}:80"
     depends_on:
       db:
         condition: service_healthy
@@ -105,19 +111,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app_net
 
   mailhog:
     image: mailhog/mailhog
     container_name: aps_mailhog
-    ports:
-      - "${MAILHOG_SMTP_PORT:-1025}:1025"
-      - "${MAILHOG_UI_PORT:-8025}:8025"
     healthcheck:
       # `curl` is not available in the default image; use wget which is present, falling back to exit 1
       test: ["CMD-SHELL", "wget -qO- http://localhost:8025 >/dev/null 2>&1 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app_net
 
   certbot:
     image: certbot/certbot:latest
@@ -135,6 +142,8 @@ services:
     # docker compose run --rm certbot sh -c "certbot certonly --webroot -w /var/www/certbot -d example.com -d www.example.com --email you@example.com --agree-tos --non-interactive"
     # For automated renewals, run: certbot renew --webroot -w /var/www/certbot && nginx -s reload
     command: "sleep infinity"
+    networks:
+      - app_net
 
   nginx-cert:
     image: alpine:3.19
@@ -143,6 +152,8 @@ services:
       - nginx_certs:/etc/letsencrypt
     command: /bin/sh -c "apk add --no-cache openssl >/dev/null 2>&1; if [ ! -f /etc/letsencrypt/server.key ] || [ ! -f /etc/letsencrypt/server.crt ]; then mkdir -p /etc/letsencrypt && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/CN=localhost' -keyout /etc/letsencrypt/server.key -out /etc/letsencrypt/server.crt; fi; sleep 1"
     restart: 'no'
+    networks:
+      - app_net
 
   wpcli:
     image: alpine:3.19
@@ -159,8 +170,14 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - app_net
 
 volumes:
   db_data:
   nginx_certs:
   certbot_www:
+
+networks:
+  app_net:
+    driver: bridge

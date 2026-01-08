@@ -797,41 +797,41 @@
       "code": "1.1.11.1",
       "kind": "item",
       "title": "Custom network defined in docker-compose.yml. - ACTUALLY NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.2",
       "kind": "item",
       "title": "All services on same network. - ACTUALLY NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.3",
       "kind": "item",
       "title": "Network driver bridge. - ACTUALLY NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.4",
       "kind": "item",
       "title": "Services can communicate internally. - ACTUALLY NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.5",
       "kind": "item",
       "title": "Only Nginx exposes ports to host; internal services (DB/PHP) have no ports mapping. - ACTUALLY NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.6",
