@@ -22,85 +22,85 @@
 
 ---
 
-# ⏳ Step 1 — Step 1 — Setup
+# ❌ Step 1 — Step 1 — Setup
 
-## ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
-### ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
-      ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
-      ✅ 1.1.1.2 Configure environment variables and DB connection for container
-      ✅ 1.1.1.3 Mount plugin source into container for development
-      ✅ 1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
-      ✅ 1.1.1.5 Add container healthcheck and CI integration tests
-      ✅ 1.1.1.6 Document WP-CLI helper commands and test entrypoints
-### ✅ 1.1.2 MySQL 8.0 container with persistent volumes
-      ✅ 1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
-      ✅ 1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
-      ✅ 1.1.2.3 Configure MySQL environment variables and credentials for compose
-      ✅ 1.1.2.4 Add DB healthcheck and readiness probe for compose
-      ✅ 1.1.2.5 Secure collection: document backup/restore steps and credentials handling
-### ✅ 1.1.3 Nginx container with SSL/TLS configuration
-      ✅ 1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
-      ✅ 1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
-      ✅ 1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
-      ✅ 1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
-      ✅ 1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
-      ✅ 1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
-      ✅ 1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
-      ✅ 1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
-      ✅ 1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
-      ✅ 1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
-### ✅ 1.1.4 Redis container for object caching
-      ✅ 1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
-      ✅ 1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
-      ✅ 1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
-      ✅ 1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
-      ✅ 1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
-### ✅ 1.1.5 MailHog container for email testing
-      ✅ 1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
-      ✅ 1.1.5.2 SMTP configuration (PHP + WordPress)
-      ✅ 1.1.5.3 Web UI access (port 8025)
-      ✅ 1.1.5.4 Healthcheck for MailHog service
-      ✅ 1.1.5.5 Basic testing (send/receive, mail capture)
-      ✅ 1.1.5.6 Basic documentation (how-to, env vars, warnings)
-### ✅ 1.1.6 phpMyAdmin container for database management
-      ✅ 1.1.6.1 REQUIRED - Image: phpmyadmin/phpmyadmin
-      ✅ 1.1.6.2 REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service
-      ✅ 1.1.6.3 REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication
-      ✅ 1.1.6.4 REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service
-      ✅ 1.1.6.5 REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access
-      ✅ 1.1.6.6 GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption
-      ✅ 1.1.6.7 GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access
-      ✅ 1.1.6.8 GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability
-      ✅ 1.1.6.9 GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order
-      ✅ 1.1.6.10 GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings
-      ✅ 1.1.6.11 GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/
-      ✅ 1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
-      ✅ 1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
-      ✅ 1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
-      ✅ 1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
-### ✅ 1.1.7 WP-CLI container for automation tasks
-      ✅ 1.1.7.1 Docker service configuration — Add a `wp-cli` service (image: `wp-cli/wp-cli` or a small helper image), set DB and WP environment variables, and include a simple healthcheck and `depends_on` so it can run against the DB/PHP services. [REQUIRED]
-      ✅ 1.1.7.2 Volume and network setup — Bind-mount the project directory and `wp-content` where appropriate; attach the service to the same Docker network and share the DB named volume for direct access. [REQUIRED]
-      ✅ 1.1.7.3 Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]
-      ✅ 1.1.7.4 Plugin/theme management commands — Add reusable WP-CLI commands or scripts to install/activate plugins and themes (`wp plugin install --activate`, `wp theme install --activate`) and an `init` script for first-boot setup. [RECOMMENDED]
-      ✅ 1.1.7.5 Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL — not installed]
-      ✅ 1.1.7.6 Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL — not installed]
-      ✅ 1.1.7.7 Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL — not installed]
-      ✅ 1.1.7.8 CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL — not installed]
-      ✅ 1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]
-      ✅ 1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]
-### ⏳ 1.1.8 Custom healthcheck scripts for all services
+## ❌ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
+### 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
+      1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
+      1.1.1.2 Configure environment variables and DB connection for container
+      1.1.1.3 Mount plugin source into container for development
+      1.1.1.4 Add PHP-FPM `www.conf` and php.ini overrides for dev
+      1.1.1.5 Add container healthcheck and CI integration tests
+      1.1.1.6 Document WP-CLI helper commands and test entrypoints
+### 1.1.2 MySQL 8.0 container with persistent volumes
+      1.1.2.1 Map DB volume to host path for backups (e.g., `docker/mysql_data`) — recommended for easy host-level backups and inspection
+      1.1.2.2 Add DB seeding for tests (e.g., `tests/db-seed.php`) to enable repeatable test setups
+      1.1.2.3 Configure MySQL environment variables and credentials for compose
+      1.1.2.4 Add DB healthcheck and readiness probe for compose
+      1.1.2.5 Secure collection: document backup/restore steps and credentials handling
+### 1.1.3 Nginx container with SSL/TLS configuration
+      1.1.3.1 Let's Encrypt automation: use Certbot/lego/nginx-proxy-companion or consider Caddy for automatic issuance and renewal
+      1.1.3.2 Auto-renewal handling: mount certificates to a volume and add a post-renewal reload hook to reload Nginx
+      1.1.3.3 HTTP→HTTPS redirect: expose port 80 only for redirects and ACME challenges; force HTTPS for site traffic
+      1.1.3.4 Strong TLS policy: enable TLS 1.2+ and TLS 1.3, set explicit cipher suites, and disable weak ciphers and legacy protocols
+      1.1.3.5 HSTS header: configure `Strict-Transport-Security` with an appropriate `max-age` and document preload considerations
+      1.1.3.6 OCSP stapling and TLS session caching: enable for improved performance and certificate validation
+      1.1.3.7 Container healthcheck & logging: add a simple health endpoint and stream access/error logs to stdout/stderr
+      1.1.3.8 Volume & secret management: document where certs/keys live and how secrets are injected (avoid baking keys into images)
+      1.1.3.9 Graceful reloads and scaling: ensure zero-downtime reload strategy when certs or config change (signal handling, rolling reloads)
+      1.1.3.10 Optional extras: mutual TLS (client certs), rate-limiting, security headers (CSP, X-Frame-Options), and IPv6 support
+### 1.1.4 Redis container for object caching
+      1.1.4.1 Add a Redis service to `docker/docker-compose.yml` and expose it to the PHP and WordPress containers
+      1.1.4.2 Install and enable the PHP `redis` extension in the PHP-FPM image (document Dockerfile/build steps)
+      1.1.4.3 Add a WordPress `object-cache.php` drop-in (or enable the Redis Object Cache plugin) and document configuration (host, port, and env vars)
+      1.1.4.4 Add a Redis healthcheck and optional volume for persistence in development
+      1.1.4.5 Document example `docker-compose.override.yml` and environment variable examples for local development
+### 1.1.5 MailHog container for email testing
+      1.1.5.1 Docker MailHog service (SMTP 1025, Web UI 8025)
+      1.1.5.2 SMTP configuration (PHP + WordPress)
+      1.1.5.3 Web UI access (port 8025)
+      1.1.5.4 Healthcheck for MailHog service
+      1.1.5.5 Basic testing (send/receive, mail capture)
+      1.1.5.6 Basic documentation (how-to, env vars, warnings)
+### 1.1.6 phpMyAdmin container for database management
+      1.1.6.1 REQUIRED - Image: phpmyadmin/phpmyadmin
+      1.1.6.2 REQUIRED - DB connectivity: set `PMA_HOST=db` so phpMyAdmin connects to the MySQL service
+      1.1.6.3 REQUIRED - Credentials: use the MySQL env vars (e.g., `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`) for authentication
+      1.1.6.4 REQUIRED - Network: attach phpMyAdmin to the same Docker network as the MySQL service
+      1.1.6.5 REQUIRED - Port mapping: expose phpMyAdmin on host `8080:80` for local access
+      1.1.6.6 GOOD - Blowfish secret: set `PMA_BLOWFISH_SECRET` for cookie encryption
+      1.1.6.7 GOOD - Localhost binding: bind host port to `127.0.0.1:8080` when running locally to limit external access
+      1.1.6.8 GOOD - Healthcheck: add a simple HTTP healthcheck for container reliability
+      1.1.6.9 GOOD - depends_on: add a `depends_on` for MySQL readiness (or a wait-for script) to ensure startup order
+      1.1.6.10 GOOD - Override file: keep phpMyAdmin service config in `docker-compose.override.yml` for dev-only settings
+      1.1.6.11 GOOD - Documentation: add usage notes (URL, default credentials, env var references) to docs/
+      1.1.6.12 NOT REQUIRED - Persistence: phpMyAdmin is stateless; no persistent volume required for typical dev use
+      1.1.6.13 NOT REQUIRED - Reverse proxy: unnecessary for simple localhost development
+      1.1.6.14 NOT REQUIRED - TLS/Traefik labels: skip for local dev; use in production only
+      1.1.6.15 NOT REQUIRED - Alternative notes: mention alternatives (Adminer, remote DB tools) under this topic for reference
+### 1.1.7 WP-CLI container for automation tasks
+      1.1.7.1 Docker service configuration — Add a `wp-cli` service (image: `wp-cli/wp-cli` or a small helper image), set DB and WP environment variables, and include a simple healthcheck and `depends_on` so it can run against the DB/PHP services. [REQUIRED]
+      1.1.7.2 Volume and network setup — Bind-mount the project directory and `wp-content` where appropriate; attach the service to the same Docker network and share the DB named volume for direct access. [REQUIRED]
+      1.1.7.3 Database automation scripts — Provide idempotent scripts for `db:backup`, `db:restore`, and `db:seed` using `wp db` or `mysqldump` wrapped in shell helpers placed in `scripts/` (or `Makefile` targets). [RECOMMENDED]
+      1.1.7.4 Plugin/theme management commands — Add reusable WP-CLI commands or scripts to install/activate plugins and themes (`wp plugin install --activate`, `wp theme install --activate`) and an `init` script for first-boot setup. [RECOMMENDED]
+      1.1.7.5 Backup automation system — Optional scheduled backups of the database and `wp-content` (cron container or host cron) with storage to a mounted backup volume or remote store. [OPTIONAL — not installed]
+      1.1.7.6 Deployment workflow scripts — Optional containerized deploy scripts (SSH/rsync or remote WP-CLI) and helper commands to perform zero-downtime updates and remote migrations. [OPTIONAL — not installed]
+      1.1.7.7 Cron job configuration — Optional cron service or host cron configuration to run WP-CLI scheduled tasks, or document relying on WP pseudo-cron for low-traffic dev setups. [OPTIONAL — not installed]
+      1.1.7.8 CI/CD integration — Optional CI jobs that call WP-CLI for test DB setup, plugin installs, and migrations (e.g., GitHub Actions/GitLab CI). [OPTIONAL — not installed]
+      1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]
+      1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]
+### ❌ 1.1.8 Custom healthcheck scripts for all services
       ✅ 1.1.8.1 Basic healthcheck in docker-compose.yml (inline commands).
       ✅ 1.1.8.2 depends_on with service_healthy condition.
       ✅ 1.1.8.3 MySQL: mysqladmin ping.
       ✅ 1.1.8.4 WordPress: php-fpm check.
       ✅ 1.1.8.5 Nginx: HTTP Probe (e.g., curl -f http://localhost).
       ✅ 1.1.8.6 Redis: redis-cli ping (if Redis is used).
-      ⏳ 1.1.8.7 Separate shell scripts. - NOT NEEDED
-      ⏳ 1.1.8.8 Fallback mechanisms. - NOT NEEDED
-      ⏳ 1.1.8.9 PHP alternatives. - NOT NEEDED
-      ⏳ 1.1.8.10 Custom Dockerfiles for healthchecks. - NOT NEEDED
-      ⏳ 1.1.8.11 Complex multi-layer checks. - NOT NEEDED
+      ❌ 1.1.8.7 Separate shell scripts. - NOT NEEDED
+      ❌ 1.1.8.8 Fallback mechanisms. - NOT NEEDED
+      ❌ 1.1.8.9 PHP alternatives. - NOT NEEDED
+      ❌ 1.1.8.10 Custom Dockerfiles for healthchecks. - NOT NEEDED
+      ❌ 1.1.8.11 Complex multi-layer checks. - NOT NEEDED
 ### 1.1.9 Docker Compose v3.8+ with environment variable substitution
 ### 1.1.10 Volume mounts for plugin development directory
 ### 1.1.11 Network isolation between services
