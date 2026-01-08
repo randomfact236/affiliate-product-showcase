@@ -6,16 +6,16 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.1",
@@ -709,9 +709,9 @@
       "code": "1.1.10",
       "kind": "item",
       "title": "Volume mounts for plugin development directory",
-      "status": "completed",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10.1",
@@ -750,40 +750,40 @@
       "kind": "item",
       "title": "Multiple plugin mounts - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10.6",
       "kind": "item",
       "title": "Hot reload config - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10.7",
       "kind": "item",
       "title": "File watchers - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10.8",
       "kind": "item",
       "title": "Permission scripts - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10.9",
       "kind": "item",
       "title": "Sync tools - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.11",
