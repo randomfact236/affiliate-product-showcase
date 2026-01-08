@@ -8,7 +8,7 @@ on:
 
 jobs:
   phpunit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         php: [ '8.0', '8.1', '8.2' ]
@@ -20,6 +20,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: composer:v2
+          extensions: mbstring, dom, xml, xmlwriter
 
       - name: Setup Composer cache
         uses: actions/cache@v4
