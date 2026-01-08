@@ -6,16 +6,16 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.1",
@@ -629,81 +629,81 @@
       "code": "1.1.9",
       "kind": "item",
       "title": "Docker Compose v3.8+ with environment variable substitution",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.1",
       "kind": "item",
-      "title": "Docker Compose version - Set to 3.8 or higher in yaml file. - NOT NEEDED",
+      "title": "Docker Compose version - Set to 3.8 or higher in yaml file. - ACTUALLY NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.2",
       "kind": "item",
-      "title": "Variable substitution - Use ${VAR} or ${VAR:-default} syntax in services. - NOT NEEDED",
+      "title": "Variable substitution - Use ${VAR} or ${VAR:-default} syntax in services. - ACTUALLY NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.3",
       "kind": "item",
-      "title": ".env.example file - Create with sample environment variables documented. - NOT NEEDED",
+      "title": ".env.example file - Create with sample environment variables documented. - ACTUALLY NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.4",
       "kind": "item",
-      "title": ".gitignore update - Ensure .env is listed in .gitignore so local secrets are not committed. - NOT NEEDED",
+      "title": ".gitignore update - Ensure .env is listed in .gitignore so local secrets are not committed. - ACTUALLY NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.5",
       "kind": "item",
       "title": "Multiple environment files  - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.6",
       "kind": "item",
       "title": "Validation scripts - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.7",
       "kind": "item",
       "title": "Secret management - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.8",
       "kind": "item",
       "title": "Extensive documentation - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.9.9",
       "kind": "item",
       "title": "* Secret management * Extensive documentation - NOT NEEDED",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1.10",
