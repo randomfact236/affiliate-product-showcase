@@ -6,8 +6,8 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
@@ -982,8 +982,8 @@
       "kind": "topic",
       "title": "Folder Structure — create folder structure and repository layout",
       "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.1",
@@ -1093,9 +1093,9 @@
       "code": "1.2.14",
       "kind": "item",
       "title": "composer.json (PHP dependencies - Configured with PSR-4 autoload mapping)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.15",
@@ -1125,9 +1125,9 @@
       "code": "1.2.18",
       "kind": "item",
       "title": "README.md (Developer docs)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.19",
@@ -1173,9 +1173,9 @@
       "code": "1.2.24",
       "kind": "item",
       "title": "includes/class-assets.php (Asset loader - reads manifest.json and enqueues hashed CSS/JS)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.25",
@@ -1893,9 +1893,9 @@
       "code": "1.2.114",
       "kind": "item",
       "title": "src/vite.config.js",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.115",
@@ -1909,121 +1909,121 @@
       "code": "1.2.116",
       "kind": "item",
       "title": "assets/ (Build Output & Static)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.117",
       "kind": "item",
       "title": "assets/dist/ (Compiled assets)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.118",
       "kind": "item",
       "title": "assets/dist/css/",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.119",
       "kind": "item",
       "title": "assets/dist/css/admin-[hash].css",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.120",
       "kind": "item",
       "title": "assets/dist/css/frontend-[hash].css",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.121",
       "kind": "item",
       "title": "assets/dist/css/editor-[hash].css",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.122",
       "kind": "item",
       "title": "assets/dist/js/",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.123",
       "kind": "item",
       "title": "assets/dist/js/admin-[hash].js",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.124",
       "kind": "item",
       "title": "assets/dist/js/frontend-[hash].js",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.125",
       "kind": "item",
       "title": "assets/dist/js/blocks-[hash].js",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.126",
       "kind": "item",
       "title": "assets/dist/manifest.json (Read by includes/class-assets.php)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.127",
       "kind": "item",
       "title": "assets/images/ (Static images)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.128",
       "kind": "item",
       "title": "assets/images/logo.svg",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.129",
       "kind": "item",
       "title": "assets/images/placeholder.png",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.130",
       "kind": "item",
       "title": "assets/fonts/ (Custom fonts)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.131",
@@ -2157,33 +2157,33 @@
       "code": "1.2.147",
       "kind": "item",
       "title": "docs/ (Documentation)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.148",
       "kind": "item",
       "title": "docs/user-guide/",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.149",
       "kind": "item",
       "title": "docs/developer/",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.150",
       "kind": "item",
       "title": "vendor/ (Composer dependencies - gitignored)",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3",

@@ -2,7 +2,7 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- Step 1 — Step 1 — Setup
+- ⏳ Step 1 — Step 1 — Setup
   - ✅ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
@@ -124,7 +124,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.12.9 Automatic re-seeding - NOT NEEDED
       - ✅ 1.1.12.10 Database migrations system - NOT NEEDED
       - ✅ 1.1.12.11 Fixtures framework - NOT NEEDED
-  - ✅ 1.2 Folder Structure — create folder structure and repository layout
+  - ⏳ 1.2 Folder Structure — create folder structure and repository layout
     - ✅ 1.2.1 Framework: WORDPRESS PLUGIN STRUCTURE (with Tailwind + Vite)
     - ✅ 1.2.2 Plugin Name: Affiliate-Product-Showcase
     - ✅ 1.2.3 Always write and analyze code
@@ -138,17 +138,17 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.11 affiliate-product-showcase.php (Main plugin file)
     - ✅ 1.2.12 readme.txt (WordPress.org readme)
     - ✅ 1.2.13 uninstall.php (Cleanup on uninstall)
-    - ✅ 1.2.14 composer.json (PHP dependencies - Configured with PSR-4 autoload mapping)
+    - ⏳ 1.2.14 composer.json (PHP dependencies - Configured with PSR-4 autoload mapping)
     - ✅ 1.2.15 package.json (Node dependencies)
     - ✅ 1.2.16 .gitignore
     - ✅ 1.2.17 phpcs.xml (Code standards)
-    - ✅ 1.2.18 README.md (Developer docs)
+    - ⏳ 1.2.18 README.md (Developer docs)
     - ✅ 1.2.19 includes/ (Core PHP Logic - Enterprise Layer)
     - ✅ 1.2.20 includes/class-plugin.php (Main orchestrator)
     - ✅ 1.2.21 includes/class-activator.php
     - ✅ 1.2.22 includes/class-deactivator.php
     - ✅ 1.2.23 includes/class-loader.php (Hook manager)
-    - ✅ 1.2.24 includes/class-assets.php (Asset loader - reads manifest.json and enqueues hashed CSS/JS)
+    - ⏳ 1.2.24 includes/class-assets.php (Asset loader - reads manifest.json and enqueues hashed CSS/JS)
     - ✅ 1.2.25 includes/class-cache.php (Wrapper for WP Transients/Object Cache - Handles API limit protection and cache plugin integration)
     - ✅ 1.2.26 includes/class-blocks.php (Block registry - Scans and registers block.json files)
     - ✅ 1.2.27 includes/abstracts/ (Base classes)
@@ -238,23 +238,23 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.111 src/styles/components/_cards.scss
     - ✅ 1.2.112 src/styles/components/_forms.scss
     - ✅ 1.2.113 src/tailwind.config.js
-    - ✅ 1.2.114 src/vite.config.js
+    - ⏳ 1.2.114 src/vite.config.js
     - ✅ 1.2.115 src/postcss.config.js
-    - ✅ 1.2.116 assets/ (Build Output & Static)
-    - ✅ 1.2.117 assets/dist/ (Compiled assets)
-    - ✅ 1.2.118 assets/dist/css/
-    - ✅ 1.2.119 assets/dist/css/admin-[hash].css
-    - ✅ 1.2.120 assets/dist/css/frontend-[hash].css
-    - ✅ 1.2.121 assets/dist/css/editor-[hash].css
-    - ✅ 1.2.122 assets/dist/js/
-    - ✅ 1.2.123 assets/dist/js/admin-[hash].js
-    - ✅ 1.2.124 assets/dist/js/frontend-[hash].js
-    - ✅ 1.2.125 assets/dist/js/blocks-[hash].js
-    - ✅ 1.2.126 assets/dist/manifest.json (Read by includes/class-assets.php)
-    - ✅ 1.2.127 assets/images/ (Static images)
-    - ✅ 1.2.128 assets/images/logo.svg
-    - ✅ 1.2.129 assets/images/placeholder.png
-    - ✅ 1.2.130 assets/fonts/ (Custom fonts)
+    - ⏳ 1.2.116 assets/ (Build Output & Static)
+    - ⏳ 1.2.117 assets/dist/ (Compiled assets)
+    - ⏳ 1.2.118 assets/dist/css/
+    - ⏳ 1.2.119 assets/dist/css/admin-[hash].css
+    - ⏳ 1.2.120 assets/dist/css/frontend-[hash].css
+    - ⏳ 1.2.121 assets/dist/css/editor-[hash].css
+    - ⏳ 1.2.122 assets/dist/js/
+    - ⏳ 1.2.123 assets/dist/js/admin-[hash].js
+    - ⏳ 1.2.124 assets/dist/js/frontend-[hash].js
+    - ⏳ 1.2.125 assets/dist/js/blocks-[hash].js
+    - ⏳ 1.2.126 assets/dist/manifest.json (Read by includes/class-assets.php)
+    - ⏳ 1.2.127 assets/images/ (Static images)
+    - ⏳ 1.2.128 assets/images/logo.svg
+    - ⏳ 1.2.129 assets/images/placeholder.png
+    - ⏳ 1.2.130 assets/fonts/ (Custom fonts)
     - ✅ 1.2.131 api/ (REST API)
     - ✅ 1.2.132 api/class-rest-controller.php
     - ✅ 1.2.133 api/class-products-endpoint.php
@@ -271,10 +271,10 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.144 tests/integration/test-api-endpoints.php
     - ✅ 1.2.145 tests/fixtures/
     - ✅ 1.2.146 tests/fixtures/sample-products.php
-    - ✅ 1.2.147 docs/ (Documentation)
-    - ✅ 1.2.148 docs/user-guide/
-    - ✅ 1.2.149 docs/developer/
-    - ✅ 1.2.150 vendor/ (Composer dependencies - gitignored)
+    - ⏳ 1.2.147 docs/ (Documentation)
+    - ⏳ 1.2.148 docs/user-guide/
+    - ⏳ 1.2.149 docs/developer/
+    - ⏳ 1.2.150 vendor/ (Composer dependencies - gitignored)
    - 1.3 Git Repository — initialize Git repository and basic branches
    - 1.3.1 Initialize Git with main branch
    - 1.3.2 Create develop branch for active development
