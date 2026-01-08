@@ -2963,17 +2963,17 @@
     "1.1.11.9": "completed",
     "1.1.11.10": "completed",
     "1.1.11.11": "completed",
-    "1.1.12.1": "pending",
-    "1.1.12.2": "pending",
-    "1.1.12.3": "pending",
-    "1.1.12.4": "pending",
-    "1.1.12.5": "pending",
-    "1.1.12.6": "pending",
-    "1.1.12.7": "pending",
-    "1.1.12.8": "pending",
-    "1.1.12.9": "pending",
-    "1.1.12.10": "pending",
-    "1.1.12.11": "pending"
+    "1.1.12.1": "completed",
+    "1.1.12.2": "completed",
+    "1.1.12.3": "completed",
+    "1.1.12.4": "completed",
+    "1.1.12.5": "completed",
+    "1.1.12.6": "completed",
+    "1.1.12.7": "completed",
+    "1.1.12.8": "completed",
+    "1.1.12.9": "completed",
+    "1.1.12.10": "completed",
+    "1.1.12.11": "completed"
   },
   "knownCodes": [
     "1",
@@ -5950,5 +5950,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-08T15:31:36.825Z"
+  "lastSyncAt": "2026-01-08T15:33:53.017Z"
 }

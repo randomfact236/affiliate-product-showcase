@@ -885,97 +885,97 @@
       "code": "1.1.12",
       "kind": "item",
       "title": "Automated database seeding with sample data",
-      "status": "completed",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.1",
       "kind": "item",
       "title": "Seed script in scripts/db-seed.sh - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.2",
       "kind": "item",
       "title": "Sample posts and pages - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.3",
       "kind": "item",
       "title": "Sample product data for plugin - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.4",
       "kind": "item",
       "title": "Run seed on first container start - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.5",
       "kind": "item",
       "title": "Verify seeding works - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.6",
       "kind": "item",
       "title": "Complex data generators - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.7",
       "kind": "item",
       "title": "Large datasets - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.8",
       "kind": "item",
       "title": "External data sources - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.9",
       "kind": "item",
       "title": "Automatic re-seeding - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.10",
       "kind": "item",
       "title": "Database migrations system - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12.11",
       "kind": "item",
       "title": "Fixtures framework - NOT NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2",
