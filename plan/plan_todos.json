@@ -653,17 +653,17 @@
       "code": "1.1.9.3",
       "kind": "item",
       "title": ".env.example file - Create with sample environment variables documented. - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.9.4",
       "kind": "item",
       "title": ".gitignore update - Ensure .env is listed in .gitignore so local secrets are not committed. - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.9.5",
