@@ -477,9 +477,9 @@
       "code": "1.1.7.4",
       "kind": "item",
       "title": "Plugin/theme management commands — Add reusable WP-CLI commands or scripts to install/activate plugins and themes (`wp plugin install --activate`, `wp theme install --activate`) and an `init` script for first-boot setup. [RECOMMENDED]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.7.5",
