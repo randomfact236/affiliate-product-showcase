@@ -1,0 +1,11 @@
+{
+	"apiVersion": 3,
+	"name": "affiliate-product-showcase/product-showcase",
+	"title": "Affiliate Product Showcase",
+	"category": "widgets",
+	"icon": "products",
+	"description": "Show a single affiliate product.",
+	"textdomain": "affiliate-product-showcase",
+	"editorScript": "file:./index.js",
+	"style": "file:./style.scss"
+}

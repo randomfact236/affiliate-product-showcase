@@ -1,0 +1,3 @@
+<?php
+
+// Integration test placeholder.
