@@ -982,8 +982,8 @@
       "kind": "topic",
       "title": "Folder Structure — create folder structure and repository layout",
       "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.2.1",

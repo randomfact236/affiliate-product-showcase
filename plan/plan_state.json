@@ -94,7 +94,7 @@
     "1.1.10": "completed",
     "1.1.11": "in-progress",
     "1.1.12": "in-progress",
-    "1.2": "completed",
+    "1.2": "in-progress",
     "1.2.1": "pending",
     "1.2.2": "pending",
     "1.2.3": "pending",
@@ -5956,5 +5956,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-08T17:54:56.035Z"
+  "lastSyncAt": "2026-01-08T18:36:47.123Z"
 }
