@@ -93,7 +93,7 @@
       ✅ 1.1.8.1 Basic healthcheck in docker-compose.yml (inline commands).
       ✅ 1.1.8.2 depends_on with service_healthy condition.
       ✅ 1.1.8.3 MySQL: mysqladmin ping.
-      ⏳ 1.1.8.4 WordPress: php-fpm check.
+      ✅ 1.1.8.4 WordPress: php-fpm check.
       ⏳ 1.1.8.5 Nginx: HTTP Probe (e.g., curl -f http://localhost).
       ⏳ 1.1.8.6 Redis: redis-cli ping (if Redis is used).
       ⏳ 1.1.8.7 Separate shell scripts. - NOT NEEDED

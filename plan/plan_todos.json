@@ -565,9 +565,9 @@
       "code": "1.1.8.4",
       "kind": "item",
       "title": "WordPress: php-fpm check.",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.5",

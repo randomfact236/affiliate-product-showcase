@@ -57,7 +57,7 @@ services:
       - ./php-fpm/php.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
     healthcheck:
       # Verify PHP-FPM process and that WordPress can connect to DB (readiness)
-      test: ["CMD-SHELL", "ps aux | grep php-fpm | grep -v grep >/dev/null && php /var/www/html/docker/healthcheck/wp-db-check.php >/dev/null 2>&1 || exit 1"]
+      test: ["CMD-SHELL", "/var/www/html/docker/healthcheck/php-fpm-check.sh >/dev/null 2>&1 && php /var/www/html/docker/healthcheck/wp-db-check.php >/dev/null 2>&1 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 6
