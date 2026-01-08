@@ -2957,12 +2957,12 @@
     "1.1.11.3": "completed",
     "1.1.11.4": "completed",
     "1.1.11.5": "completed",
-    "1.1.11.6": "in-progress",
-    "1.1.11.7": "in-progress",
-    "1.1.11.8": "in-progress",
-    "1.1.11.9": "in-progress",
-    "1.1.11.10": "in-progress",
-    "1.1.11.11": "in-progress"
+    "1.1.11.6": "completed",
+    "1.1.11.7": "completed",
+    "1.1.11.8": "completed",
+    "1.1.11.9": "completed",
+    "1.1.11.10": "completed",
+    "1.1.11.11": "completed"
   },
   "knownCodes": [
     "1",
@@ -5928,5 +5928,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-08T14:09:36.059Z"
+  "lastSyncAt": "2026-01-08T14:29:43.324Z"
 }

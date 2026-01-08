@@ -6,16 +6,16 @@
       "kind": "step",
       "title": "Step 1 — Setup",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
       "kind": "topic",
       "title": "Docker Environment — Docker compose setup to bring up local environment and services",
       "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1.1",
@@ -790,8 +790,8 @@
       "kind": "item",
       "title": "Network isolation between services",
       "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.1",
@@ -837,49 +837,49 @@
       "code": "1.1.11.6",
       "kind": "item",
       "title": "Multiple networks per service. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.7",
       "kind": "item",
       "title": "Advanced firewall rules. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.8",
       "kind": "item",
       "title": "Network policies. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.9",
       "kind": "item",
       "title": "Service mesh. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.10",
       "kind": "item",
       "title": "Complex routing configuration. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.11.11",
       "kind": "item",
       "title": "VPN configuration. - NOT NEEDED",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.12",
