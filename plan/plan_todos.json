@@ -4,7 +4,7 @@
     {
       "code": "1",
       "kind": "step",
-      "title": "🔴 Step 1 — Setup",
+      "title": "Step 1 — Setup",
       "status": "pending",
       "derivedStatus": "in-progress",
       "marker": "⏳"
@@ -3564,7 +3564,7 @@
     {
       "code": "2",
       "kind": "step",
-      "title": "🔴 Step 2 — Content Types & Taxonomies",
+      "title": "Step 2 — Content Types & Taxonomies",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3972,7 +3972,7 @@
     {
       "code": "2.2",
       "kind": "topic",
-      "title": "🛍️ Taxonomy: Product Categories",
+      "title": "Taxonomy: Product Categories",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5140,7 +5140,7 @@
     {
       "code": "3",
       "kind": "step",
-      "title": "🔴 Step 3 — Admin UI & Meta",
+      "title": "Step 3 — Admin UI & Meta",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5308,7 +5308,7 @@
     {
       "code": "3.2",
       "kind": "topic",
-      "title": "🚫 Analytics / Tracking (Removed)",
+      "title": "Analytics / Tracking (Removed)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5444,7 +5444,7 @@
     {
       "code": "3.4",
       "kind": "topic",
-      "title": "🧭 Admin List Table Columns",
+      "title": "Admin List Table Columns",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5604,7 +5604,7 @@
     {
       "code": "3.5",
       "kind": "topic",
-      "title": "🔎 Admin List Table Filters",
+      "title": "Admin List Table Filters",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5724,7 +5724,7 @@
     {
       "code": "3.6",
       "kind": "topic",
-      "title": "🧭 Admin List Table Sorting",
+      "title": "Admin List Table Sorting",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6100,7 +6100,7 @@
     {
       "code": "3.9",
       "kind": "topic",
-      "title": "🔎 Admin Search",
+      "title": "Admin Search",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6196,7 +6196,7 @@
     {
       "code": "3.10",
       "kind": "topic",
-      "title": "🧭 Admin Dashboard Widgets",
+      "title": "Admin Dashboard Widgets",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6324,7 +6324,7 @@
     {
       "code": "4",
       "kind": "step",
-      "title": "🔴 Step 4 — Submission Flow & Security",
+      "title": "Step 4 — Submission Flow & Security",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6452,7 +6452,7 @@
     {
       "code": "4.2",
       "kind": "topic",
-      "title": "🔒 Security: File Upload",
+      "title": "Security: File Upload",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6692,7 +6692,7 @@
     {
       "code": "4.3",
       "kind": "topic",
-      "title": "🔒 Security: Input Sanitization",
+      "title": "Security: Input Sanitization",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -6892,7 +6892,7 @@
     {
       "code": "4.4",
       "kind": "topic",
-      "title": "🔒 Security: Output Escaping",
+      "title": "Security: Output Escaping",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7052,7 +7052,7 @@
     {
       "code": "4.5",
       "kind": "topic",
-      "title": "🔒 Security: Validation",
+      "title": "Security: Validation",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7252,7 +7252,7 @@
     {
       "code": "4.6",
       "kind": "topic",
-      "title": "🔒 Security: Nonce Verification",
+      "title": "Security: Nonce Verification",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7372,7 +7372,7 @@
     {
       "code": "4.7",
       "kind": "topic",
-      "title": "🔒 Security: Capability Checks",
+      "title": "Security: Capability Checks",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7532,7 +7532,7 @@
     {
       "code": "4.8",
       "kind": "topic",
-      "title": "🔒 Security: Prepared Statements",
+      "title": "Security: Prepared Statements",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7652,7 +7652,7 @@
     {
       "code": "4.9",
       "kind": "topic",
-      "title": "🔒 Security: Rate Limiting",
+      "title": "Security: Rate Limiting",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7812,7 +7812,7 @@
     {
       "code": "4.10",
       "kind": "topic",
-      "title": "🔒 Security: CAPTCHA",
+      "title": "Security: CAPTCHA",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -7972,7 +7972,7 @@
     {
       "code": "4.11",
       "kind": "topic",
-      "title": "🔒 Security: Dependency Injection",
+      "title": "Security: Dependency Injection",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -8092,7 +8092,7 @@
     {
       "code": "4.12",
       "kind": "topic",
-      "title": "🔒 Security: Logging",
+      "title": "Security: Logging",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -8252,7 +8252,7 @@
     {
       "code": "4.13",
       "kind": "topic",
-      "title": "🔒 Security: Spam Protection",
+      "title": "Security: Spam Protection",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -8460,7 +8460,7 @@
     {
       "code": "5",
       "kind": "step",
-      "title": "🟠 Step 5 — Frontend Components",
+      "title": "Step 5 — Frontend Components",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -9588,7 +9588,7 @@
     {
       "code": "5.6",
       "kind": "topic",
-      "title": "🎨 CSS & Styling",
+      "title": "CSS & Styling",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -9828,7 +9828,7 @@
     {
       "code": "5.7",
       "kind": "topic",
-      "title": "🛍️ Product Card Component",
+      "title": "Product Card Component",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -10084,7 +10084,7 @@
     {
       "code": "5.9",
       "kind": "topic",
-      "title": "🔎 Filter & Sort Components",
+      "title": "Filter & Sort Components",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -10556,7 +10556,7 @@
     {
       "code": "5.11",
       "kind": "topic",
-      "title": "🔎 Search Component",
+      "title": "Search Component",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -11884,7 +11884,7 @@
     {
       "code": "6",
       "kind": "step",
-      "title": "🟠 Step 6 — Shortcodes, Filters & Sorting",
+      "title": "Step 6 — Shortcodes, Filters & Sorting",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12332,7 +12332,7 @@
     {
       "code": "6.3",
       "kind": "topic",
-      "title": "🔎 Filter UI Implementation",
+      "title": "Filter UI Implementation",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12340,7 +12340,7 @@
     {
       "code": "6.3.1",
       "kind": "item",
-      "title": "FilterBar component (React)  6.3.2",
+      "title": "FilterBar component (React) 6.3.2",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12860,7 +12860,7 @@
     {
       "code": "6.7",
       "kind": "topic",
-      "title": "🛍️ Random Products",
+      "title": "Random Products",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -12932,7 +12932,7 @@
     {
       "code": "7",
       "kind": "step",
-      "title": "🟠 Step 7 — Link Tracking & Redirects",
+      "title": "Step 7 — Link Tracking & Redirects",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -13348,7 +13348,7 @@
     {
       "code": "8",
       "kind": "step",
-      "title": "🟠 Step 8 — Settings & Styling Controls",
+      "title": "Step 8 — Settings & Styling Controls",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -16596,7 +16596,7 @@
     {
       "code": "9",
       "kind": "step",
-      "title": "🔴 Step 9 — Testing & Standards",
+      "title": "Step 9 — Testing & Standards",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -17164,7 +17164,7 @@
     {
       "code": "9.4",
       "kind": "topic",
-      "title": "🔒 Security Testing",
+      "title": "Security Testing",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -18524,7 +18524,7 @@
     {
       "code": "9.12",
       "kind": "topic",
-      "title": "🛍️ Composer Production Requirements",
+      "title": "Composer Production Requirements",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -18652,7 +18652,7 @@
     {
       "code": "10",
       "kind": "step",
-      "title": "🟠 Step 10 — Docs, Accessibility & QA",
+      "title": "Step 10 — Docs, Accessibility & QA",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -20740,7 +20740,7 @@
     {
       "code": "10.12",
       "kind": "topic",
-      "title": "🔒 Security Hardening Checklist",
+      "title": "Security Hardening Checklist",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -20948,7 +20948,7 @@
     {
       "code": "11",
       "kind": "step",
-      "title": "🟢 Step 11 — CI/CD & Packaging",
+      "title": "Step 11 — CI/CD & Packaging",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -22284,7 +22284,7 @@
     {
       "code": "12",
       "kind": "step",
-      "title": "🟢 Step 12 — Marketing & Launch",
+      "title": "Step 12 — Marketing & Launch",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -22292,7 +22292,7 @@
     {
       "code": "12.1",
       "kind": "topic",
-      "title": "🛠️ Demo Site Setup",
+      "title": "Demo Site Setup",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

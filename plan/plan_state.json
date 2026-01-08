@@ -2697,8 +2697,6 @@
     "12.10.19": "pending",
     "12.10.20": "pending",
     "1.1.12": "pending",
-    "1.1.13": "pending",
-    "1.1.14": "pending",
     "1.2.40": "pending",
     "1.2.41": "pending",
     "1.2.42": "pending",
@@ -2926,7 +2924,7 @@
     "1.1.7.9": "pending",
     "1.1.7.10": "pending"
   },
-  "lastSyncAt": "2026-01-08T04:57:10.697Z",
+  "lastSyncAt": "2026-01-08T06:08:30.945Z",
   "lastUpdated": "2026-01-06T13:32:29.872Z",
   "knownCodes": [
     "1",

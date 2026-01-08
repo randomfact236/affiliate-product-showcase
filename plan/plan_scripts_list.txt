@@ -1,9 +1,0 @@
-cleanup_state.cjs: Reset `in-progress` statuses to `pending` in `plan_state.json` (writes backup).
-diff_plan_files.js: Compare `plan/plan_source.md` with generated outputs and print normalized diffs/samples.
-format_plan_source.js: Format plan-related Markdown files (normalize EOLs, flatten certain headings/lists); supports `--check` for CI.
-normalize_generated.js: Normalize generated file headers and timestamps to match `HEAD` (used in CI verify step).
-plan_sync_todos.cjs: Parse `plan/plan_source.md`, merge `plan_state.json`, generate `plan_sync.md`, `plan_sync_todo.md`, `plan_todos.json`, and update state.
-plan_status.cjs: CLI to update a single code status in `plan_state.json` and re-run the sync script.
-start_task.cjs: Mark a code as `in-progress` in `plan_state.json` and re-run the sync script.
-test_plan_generator.cjs: Test harness for `plan_sync_todos.cjs` (behavioral/unit tests for generator/validator).
-set-status.js: Helper to set a code status, run the sync, and optionally commit & push regenerated outputs.

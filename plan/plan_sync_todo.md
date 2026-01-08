@@ -2,7 +2,7 @@
 
 Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
 
-- ⏳ Step 1 — 🔴 Step 1 — Setup
+- ⏳ Step 1 — Step 1 — Setup
   - ⏳ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
     - ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
       - ✅ 1.1.1.1 Pull and pin the WordPress PHP-FPM image (use exact tag)
@@ -448,7 +448,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 1.12.24 Security policy and reporting
     - 1.12.25 Privacy policy template for users
 
-- Step 2 — 🔴 Step 2 — Content Types & Taxonomies
+- Step 2 — Step 2 — Content Types & Taxonomies
   - 2.1 Custom Post Type: affiliate_product
     - 2.1.1 Post type slug: `affiliate_product`
     - 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
@@ -499,7 +499,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 2.1.47 Autosave support
     - 2.1.48 Trash support
     - 2.1.49 Duplicate product functionality
-  - 2.2 🛍️ Taxonomy: Product Categories
+  - 2.2 Taxonomy: Product Categories
     - 2.2.1 Taxonomy slug: `product_category`
     - 2.2.2 Labels: singular 'Category', plural 'Categories'
     - 2.2.3 Hierarchical: true
@@ -646,7 +646,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 2.5.39 IDE autocomplete support
     - 2.5.40 Static analysis integration
 
-- Step 3 — 🔴 Step 3 — Admin UI & Meta
+- Step 3 — Step 3 — Admin UI & Meta
   - 3.1 Product Data Meta Box
     - 3.1.1 Meta box title: 'Product Information'
     - 3.1.2 Meta box context: normal
@@ -667,7 +667,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.1.17 Meta box help tooltips
     - 3.1.18 Meta box field error display
     - 3.1.19 Meta box bulk edit support
-  - 3.2 🚫 Analytics / Tracking (Removed)
+  - 3.2 Analytics / Tracking (Removed)
     - 3.2.1 This plugin does not include built-in analytics or tracking functionality.
   - 3.3 Submission Status Meta Box
     - 3.3.1 Meta box title: 'Submission Details'
@@ -684,7 +684,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.3.12 Submission history log
     - 3.3.13 Duplicate check results
     - 3.3.14 Auto-moderation flags
-  - 3.4 🧭 Admin List Table Columns
+  - 3.4 Admin List Table Columns
     - 3.4.1 Checkbox (bulk actions)
     - 3.4.2 Thumbnail (featured image, 50×50px)
     - 3.4.3 Title (linked to edit)
@@ -704,7 +704,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.4.17 Featured flag (star icon, clickable toggle)
     - 3.4.18 Trending flag (fire icon)
     - 3.4.19 Stock status (color-coded)
-  - 3.5 🔎 Admin List Table Filters
+  - 3.5 Admin List Table Filters
     - 3.5.1 All / Published / Draft / Pending / Trash
     - 3.5.2 Filter by category (dropdown)
     - 3.5.3 Filter by tag (dropdown)
@@ -719,7 +719,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.5.12 Filter by submission status
     - 3.5.13 Advanced filters toggle
     - 3.5.14 Save filter presets
-  - 3.6 🧭 Admin List Table Sorting
+  - 3.6 Admin List Table Sorting
     - 3.6.1 Sort by title (A-Z, Z-A)
     - 3.6.2 Sort by brand
     - 3.6.3 Sort by price (low to high, high to low)
@@ -766,7 +766,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.8.17 Bulk action confirmation dialogs
     - 3.8.18 TODO (auto-inserted)
     - 3.8.19 Bulk action progress indicator
-  - 3.9 🔎 Admin Search
+  - 3.9 Admin Search
     - 3.9.1 Search by title
     - 3.9.2 Search by content
     - 3.9.3 Search by excerpt
@@ -778,7 +778,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.9.9 Search result highlighting
     - 3.9.10 Advanced search form (modal)
     - 3.9.11 Save search queries
-  - 3.10 🧭 Admin Dashboard Widgets
+  - 3.10 Admin Dashboard Widgets
     - 3.10.1 Widget: Overview Stats (total products, revenue)
     - 3.10.2 Widget: Recent Products (last 5 added)
     - 3.10.3 Widget: Pending Submissions (count + quick links)
@@ -795,7 +795,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 3.10.14 Widget date range selector
     - 3.10.15 Widget full-screen view
 
-- Step 4 — 🔴 Step 4 — Submission Flow & Security
+- Step 4 — Step 4 — Submission Flow & Security
   - 4.1 Frontend Submission Form
     - 4.1.1 Form location: dedicated page template
     - 4.1.2 Form shortcode: `[affiliate_submit_form]`
@@ -811,7 +811,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.1.12 Form accessibility
     - 4.1.13 Form styling
     - 4.1.14 Form customization
-  - 4.2 🔒 Security: File Upload
+  - 4.2 Security: File Upload
     - 4.2.1 Allowed file types: JPEG, PNG, WebP, GIF (configurable)
     - 4.2.2 Blocked file types: PHP, JS, EXE, BAT, SH, etc.
     - 4.2.3 MIME type validation (server-side)
@@ -841,7 +841,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.2.27 Log failed upload attempts
     - 4.2.28 Rate limit file uploads per IP
     - 4.2.29 Temporary file cleanup
-  - 4.3 🔒 Security: Input Sanitization
+  - 4.3 Security: Input Sanitization
     - 4.3.1 Sanitize all text inputs with `sanitize_text_field()`
     - 4.3.2 Sanitize textareas with `sanitize_textarea_field()`
     - 4.3.3 Sanitize URLs with `esc_url_raw()`
@@ -866,7 +866,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.3.22 Type casting for expected data types
     - 4.3.23 Reject malformed JSON
     - 4.3.24 Sanitize shortcode attributes
-  - 4.4 🔒 Security: Output Escaping
+  - 4.4 Security: Output Escaping
     - 4.4.1 Escape HTML with `esc_html()`
     - 4.4.2 Escape attributes with `esc_attr()`
     - 4.4.3 Escape URLs with `esc_url()`
@@ -886,7 +886,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.4.17 Escape in AJAX responses
     - 4.4.18 Escape in REST API responses
     - 4.4.19 Escape in admin pages
-  - 4.5 🔒 Security: Validation
+  - 4.5 Security: Validation
     - 4.5.1 Validate email format with `is_email()`
     - 4.5.2 Validate URL format with `wp_http_validate_url()`
     - 4.5.3 Validate numbers with `is_numeric()`, type checks
@@ -911,7 +911,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.5.22 Business logic validation (price > 0, sale < regular)
     - 4.5.23 Duplicate detection validation
     - 4.5.24 Spam detection validation
-  - 4.6 🔒 Security: Nonce Verification
+  - 4.6 Security: Nonce Verification
     - 4.6.1 Generate nonce with `wp_create_nonce()`
     - 4.6.2 Verify nonce with `wp_verify_nonce()`
     - 4.6.3 Check AJAX referer with `check_ajax_referer()`
@@ -926,7 +926,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.6.12 Never bypass nonce checks
     - 4.6.13 Nonce regeneration on sensitive actions
     - 4.6.14 Nonce tied to user session
-  - 4.7 🔒 Security: Capability Checks
+  - 4.7 Security: Capability Checks
     - 4.7.1 Check `current_user_can()` before any write operation
     - 4.7.2 Custom capability: `edit_affiliate_products`
     - 4.7.3 Custom capability: `publish_affiliate_products`
@@ -946,7 +946,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.7.17 Check capabilities before meta save
     - 4.7.18 Check capabilities before bulk actions
     - 4.7.19 Check capabilities before CSV export
-  - 4.8 🔒 Security: Prepared Statements
+  - 4.8 Security: Prepared Statements
     - 4.8.1 Use `$wpdb->prepare()` for all custom queries
     - 4.8.2 Use `%s` placeholder for strings
     - 4.8.3 Use `%d` placeholder for integers
@@ -961,7 +961,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.8.12 Use `$wpdb->get_row()` for single rows
     - 4.8.13 Check for SQL errors with `$wpdb->last_error`
     - 4.8.14 Log SQL errors
-  - 4.9 🔒 Security: Rate Limiting
+  - 4.9 Security: Rate Limiting
     - 4.9.1 Limit submission form to 3 per hour per IP
     - 4.9.2 Limit submission form to 10 per day per user
     - 4.9.3 Limit AJAX requests to 60 per minute per IP
@@ -981,7 +981,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.9.17 Different limits for authenticated vs anonymous users
     - 4.9.18 Rate limit bypass for administrators
     - 4.9.19 Rate limit statistics in admin dashboard
-  - 4.10 🔒 Security: CAPTCHA
+  - 4.10 Security: CAPTCHA
     - 4.10.1 CAPTCHA disabled by default
     - 4.10.2 Optional CAPTCHA toggle in settings
     - 4.10.3 Custom implementation (no external service)
@@ -1001,7 +1001,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.10.17 No reCAPTCHA, hCaptcha, Cloudflare Turnstile
     - 4.10.18 CAPTCHA settings documentation
     - 4.10.19 CAPTCHA accessibility compliance
-  - 4.11 🔒 Security: Dependency Injection
+  - 4.11 Security: Dependency Injection
     - 4.11.1 Use DI container (PHP-DI or custom)
     - 4.11.2 Inject database service
     - 4.11.3 Inject validation service
@@ -1016,7 +1016,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.11.12 Service locator pattern (if needed)
     - 4.11.13 Factory pattern for object creation
     - 4.11.14 Lazy loading for heavy services
-  - 4.12 🔒 Security: Logging
+  - 4.12 Security: Logging
     - 4.12.1 Log all submission attempts
     - 4.12.2 Log failed submissions (with reason)
     - 4.12.3 Log successful submissions
@@ -1036,7 +1036,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.12.17 Log filtering by type, date, user, IP
     - 4.12.18 Log dashboard widget
     - 4.12.19 Never log sensitive data (passwords, payment info)
-  - 4.13 🔒 Security: Spam Protection
+  - 4.13 Security: Spam Protection
     - 4.13.1 Honeypot field (hidden, should be empty)
     - 4.13.2 Time-based check (min 3 seconds to submit)
     - 4.13.3 Detect repeated submissions (same IP, same data)
@@ -1063,7 +1063,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 4.13.24 Spam statistics dashboard
     - 4.13.25 Bulk delete spam submissions
 
-- Step 5 — 🟠 Step 5 — Frontend Components
+- Step 5 — Step 5 — Frontend Components
   - 5.1 Tailwind CSS & Vite Setup
     - 5.1.1 Install Tailwind CSS via NPM
     - 5.1.2 Configure `tailwind.config.js` with custom theme
@@ -1204,7 +1204,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.5.27 ES6+ features with Babel transpilation
     - 5.5.28 Browser compatibility: last 2 versions, > 1% usage
     - 5.5.29 No jQuery dependency (use vanilla JS or React)
-  - 5.6 🎨 CSS & Styling
+  - 5.6 CSS & Styling
     - 5.6.1 All CSS bundled via Vite
     - 5.6.2 Tailwind CSS as base framework
     - 5.6.3 Custom CSS in separate file (loaded after Tailwind)
@@ -1234,7 +1234,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.6.27 CSS autoprefixer for vendor prefixes
     - 5.6.28 CSS purging (remove unused classes)
     - 5.6.29 CSS file size budget (100KB)
-  - 5.7 🛍️ Product Card Component
+  - 5.7 Product Card Component
     - 5.7.1 Component file: `ProductCard.tsx`
     - 5.7.2 Component props: product data object
     - 5.7.3 Card layout: image + content
@@ -1266,7 +1266,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.8.17 Grid container padding
     - 5.8.18 Grid full-width option
     - 5.8.19 Grid sidebar support (filters + grid)
-  - 5.9 🔎 Filter & Sort Components
+  - 5.9 Filter & Sort Components
     - 5.9.1 FilterBar component
     - 5.9.2 Filter by category (dropdown or checkbox list)
     - 5.9.3 Filter by tag (dropdown or checkbox list)
@@ -1325,7 +1325,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.10.17 Pagination position (top, bottom, both)
     - 5.10.18 Infinite scroll option (alternative to pagination)
     - 5.10.19 Load more button option (alternative to pagination)
-  - 5.11 🔎 Search Component
+  - 5.11 Search Component
     - 5.11.1 SearchBar component
     - 5.11.2 Search input with icon
     - 5.11.3 Search placeholder text (customizable)
@@ -1492,7 +1492,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 5.15.24 Prettier: JSX brackets on same line (false)
     - 5.15.25 ESLint + Prettier integration (no conflicts)
 
-- Step 6 — 🟠 Step 6 — Shortcodes, Filters & Sorting
+- Step 6 — Step 6 — Shortcodes, Filters & Sorting
   - 6.1 Primary Shortcode: [affiliate_products]
     - 6.1.1 Shortcode name: affiliate_products
     - 6.1.2 Attribute: category (slug or ID, comma-separated)
@@ -1548,8 +1548,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.2.12 [affiliate_slider] - Product slider/carousel
     - 6.2.13 [affiliate_grid] - Product grid (alias)
     - 6.2.14 [affiliate_list] - Product list (alias)
-  - 6.3 🔎 Filter UI Implementation
-    - 6.3.1 FilterBar component (React)  6.3.2
+  - 6.3 Filter UI Implementation
+    - 6.3.1 FilterBar component (React) 6.3.2
     - 6.3.2 TODO (auto-inserted)
     - 6.3.3 TODO (auto-inserted)
     - 6.3.4 TODO (auto-inserted)
@@ -1614,7 +1614,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.6.17 Use direct SQL for complex queries (with $wpdb->prepare)
     - 6.6.18 Monitor slow queries (Query Monitor plugin in dev)
     - 6.6.19 Query result pagination (don't load all results)
-  - 6.7 🛍️ Random Products
+  - 6.7 Random Products
     - 6.7.1 Shortcode attribute: orderby='random'
     - 6.7.2 Query: 'orderby' => 'rand'
     - 6.7.3 Cache random results per user session (avoid recalculation)
@@ -1624,7 +1624,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 6.7.7 Random rotation (show different products on refresh)
     - 6.7.8 Performance: limit random query to small subset first, then randomize
 
-- Step 7 — 🟠 Step 7 — Link Tracking & Redirects
+- Step 7 — Step 7 — Link Tracking & Redirects
   - 7.1 Redirect Handler
     - 7.1.1 Custom endpoint: /go/{product-slug}/
     - 7.1.2 Custom endpoint: /go/{custom-redirect-slug}/
@@ -1677,7 +1677,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 7.5.19 Link permissions (who can edit links)
     - 7.5.20 Link audit log (who changed what, when)
 
-- Step 8 — 🟠 Step 8 — Settings & Styling Controls
+- Step 8 — Step 8 — Settings & Styling Controls
   - 8.1 Settings Page Architecture
     - 8.1.1 Admin page: "Settings" under plugin menu
     - 8.1.2 React-based settings page (TypeScript)
@@ -2084,7 +2084,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 8.8.19 Rollback to previous version
     - 8.8.20 Settings changelog (audit log)
 
-- Step 9 — 🔴 Step 9 — Testing & Standards
+- Step 9 — Step 9 — Testing & Standards
   - 9.1 Code Standards & Linting
     - 9.1.1 PHP CodeSniffer (phpcs) with WordPress-Core ruleset
     - 9.1.2 PHP CodeSniffer with WordPress-Extra ruleset
@@ -2155,7 +2155,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 9.3.17 Integration tests for data import/export
     - 9.3.18 Integration tests for settings save/retrieve
     - 9.3.19 Integration test coverage: minimum 80%
-  - 9.4 🔒 Security Testing
+  - 9.4 Security Testing
     - 9.4.1 Manual security audit of all input points
     - 9.4.2 OWASP Top 10 vulnerability checks
     - 9.4.3 Automated security scanning (WPScan, Snyk)
@@ -2325,7 +2325,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 9.11.7 Remove all update checker classes/files
     - 9.11.8 No ping-home for version checks
     - 9.11.9 No analytics or telemetry on plugin usage
-  - 9.12 🛍️ Composer Production Requirements
+  - 9.12 Composer Production Requirements
     - 9.12.1 composer.json 'require': empty or minimal
     - 9.12.2 No Guzzle in production (use wp_remote_request() instead)
     - 9.12.3 No Monolog in production (use error_log() or custom logger)
@@ -2342,7 +2342,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 9.12.14 Security audit of all dependencies (composer audit)
     - 9.12.15 License compatibility check (all GPL-compatible)
 
-- Step 10 — 🟠 Step 10 — Docs, Accessibility & QA
+- Step 10 — Step 10 — Docs, Accessibility & QA
   - 10.1 PHPDoc Standards
     - 10.1.1 Every class has PHPDoc block with @package, @since, @version
     - 10.1.2 Every method has PHPDoc block with description
@@ -2603,7 +2603,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 10.11.17 All assets in dist/ are bundled and minified
     - 10.11.18 No update checker code present
     - 10.11.19 No telemetry or phone-home code present
-  - 10.12 🔒 Security Hardening Checklist
+  - 10.12 Security Hardening Checklist
     - 10.12.1 All inputs sanitized (100% coverage)
     - 10.12.2 All outputs escaped (100% coverage)
     - 10.12.3 All SQL queries use prepared statements
@@ -2630,7 +2630,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 10.12.24 No hardcoded credentials or API keys
     - 10.12.25 Third-party dependencies audited and minimal
 
-- Step 11 — 🟢 Step 11 — CI/CD & Packaging
+- Step 11 — Step 11 — CI/CD & Packaging
   - 11.1 GitHub Actions Workflow
     - 11.1.1 Workflow file: .github/workflows/main.yml
     - 11.1.2 Trigger on: push to main, pull request to main
@@ -2798,8 +2798,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - 11.7.29 Plugin submitted to WordPress.org (if applicable)
     - 11.7.30 Announcement prepared (blog post, social media)
 
-- Step 12 — 🟢 Step 12 — Marketing & Launch
-  - 12.1 🛠️ Demo Site Setup
+- Step 12 — Step 12 — Marketing & Launch
+  - 12.1 Demo Site Setup
     - 12.1.1 Live demo site URL (e.g., demo.affiliateshowcase.com)
     - 12.1.2 Fresh WordPress installation with plugin installed
     - 12.1.3 Sample products: 50-100 diverse products across categories
