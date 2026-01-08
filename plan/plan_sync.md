@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 36f3f523348a16ee8b1fc209a4d07e813f1db6d5 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 227278a9ec065551a4dcc665833a0a5a2ea601dc -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -156,7 +156,7 @@
    ✅ 1.2.7 Suggest changes when needed
    ✅ 1.2.8 Do cleanup step-by-step during work, then run a final release polish pass at the end
    ✅ 1.2.9 Code should be ready to integrate with any cache plugin
-   ✅ 1.2.10 Structure format-affiliate-product-showcase/ (root)
+   ✅ 1.2.10 Structure ./ (root)
    ✅ 1.2.11 affiliate-product-showcase.php (Main plugin file)
    ✅ 1.2.12 readme.txt (WordPress.org readme)
    ✅ 1.2.13 uninstall.php (Cleanup on uninstall)

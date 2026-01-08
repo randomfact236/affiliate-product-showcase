@@ -165,7 +165,7 @@
 
 1.2.9 Code should be ready to integrate with any cache plugin
 
-1.2.10 Structure format-affiliate-product-showcase/ (root)
+1.2.10 Structure ./ (root)
 
 1.2.11 affiliate-product-showcase.php (Main plugin file)
 

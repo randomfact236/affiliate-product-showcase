@@ -981,7 +981,7 @@
       "code": "1.2",
       "kind": "topic",
       "title": "Folder Structure — create folder structure and repository layout",
-      "status": "completed",
+      "status": "in-progress",
       "derivedStatus": "in-progress",
       "marker": "⏳"
     },
@@ -1060,7 +1060,7 @@
     {
       "code": "1.2.10",
       "kind": "item",
-      "title": "Structure format-affiliate-product-showcase/ (root)",
+      "title": "Structure ./ (root)",
       "status": "completed",
       "derivedStatus": "completed",
       "marker": "✅"
