@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const cp = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const PLAN_DIR = path.join(ROOT, 'plan');
@@ -63,6 +64,18 @@ function loadJson(filePath, fallback) {
 
 function saveJsonPretty(filePath, obj) {
   writeUtf8(filePath, JSON.stringify(obj, null, 2) + '\n');
+}
+
+function formatGeneratedMarkdownFiles(files, quiet) {
+  const formatter = path.join(__dirname, 'format_plan_source.js');
+  const res = cp.spawnSync(process.execPath, [formatter, '--files', ...files], {
+    stdio: quiet ? ['ignore', 'ignore', 'pipe'] : 'inherit'
+  });
+
+  if (res.status !== 0) {
+    const stderr = quiet && res.stderr ? String(res.stderr) : '';
+    throw new Error(`plan formatter failed${stderr ? `: ${stderr.trim()}` : ''}`);
+  }
 }
 
 function parseArgs(argv) {
@@ -659,6 +672,9 @@ function main() {
   writeUtf8(args.outPlan, planMd);
   writeUtf8(args.outTodoMd, todoMd);
   saveJsonPretty(args.outTodoJson, renderTodoJson(parsed));
+
+  // Ensure generated markdown matches CI formatting expectations.
+  formatGeneratedMarkdownFiles([args.outPlan, args.outTodoMd], args.quiet);
 
   if (!args.quiet) {
     console.log('✅ Sync complete');

@@ -4,6 +4,18 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 
+function parseFilesArg(argv) {
+  const idx = argv.indexOf('--files');
+  if (idx === -1) return null;
+  const files = [];
+  for (let i = idx + 1; i < argv.length; i++) {
+    const a = argv[i];
+    if (a.startsWith('--')) break;
+    files.push(a);
+  }
+  return files;
+}
+
 function walk(dir) {
   const results = [];
   const list = fs.readdirSync(dir, { withFileTypes: true });
@@ -37,7 +49,12 @@ function format(text) {
   return out.join('\n');
 }
 
-const files = walk(root);
+const filesArg = parseFilesArg(process.argv);
+const files = Array.isArray(filesArg)
+  ? filesArg
+      .map((fp) => (path.isAbsolute(fp) ? fp : path.join(root, fp)))
+      .filter((fp) => fp.toLowerCase().endsWith('.md'))
+  : walk(root);
 if (files.length === 0) {
   console.log('No markdown files found.');
   process.exit(0);
