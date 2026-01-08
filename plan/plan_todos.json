@@ -549,9 +549,9 @@
       "code": "1.1.8.2",
       "kind": "item",
       "title": "depends_on with service_healthy condition.",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.3",

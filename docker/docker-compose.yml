@@ -66,8 +66,10 @@ services:
     image: nginx:stable-alpine
     container_name: aps_nginx
     depends_on:
-      - wordpress
-      - nginx-cert
+      wordpress:
+        condition: service_healthy
+      nginx-cert:
+        condition: service_started
     ports:
       - "8000:80"
       - "8443:443"
@@ -92,6 +94,9 @@ services:
       PMA_PASSWORD: ${PMA_PASSWORD}
     ports:
       - "8081:80"
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost || exit 1"]
       interval: 10s
@@ -141,7 +146,7 @@ services:
     container_name: aps_wpcli
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - ../:/var/www/html
     entrypoint: ["/bin/sh", "-c", "sleep 3600"]

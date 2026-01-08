@@ -16,7 +16,8 @@ services:
     ports:
       - "127.0.0.1:8080:80" # dev-only override: bind to localhost only
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   redis_data:
