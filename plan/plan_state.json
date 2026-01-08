@@ -91,7 +91,7 @@
     "1.1.8.10": "completed",
     "1.1.8.11": "completed",
     "1.1.9": "in-progress",
-    "1.1.10": "pending",
+    "1.1.10": "in-progress",
     "1.1.11": "pending",
     "1.1.12": "pending",
     "1.2": "pending",
@@ -2943,10 +2943,10 @@
     "1.1.9.7": "completed",
     "1.1.9.8": "completed",
     "1.1.9.9": "completed",
-    "1.1.10.1": "pending",
-    "1.1.10.2": "pending",
-    "1.1.10.3": "pending",
-    "1.1.10.4": "pending",
+    "1.1.10.1": "completed",
+    "1.1.10.2": "completed",
+    "1.1.10.3": "completed",
+    "1.1.10.4": "completed",
     "1.1.10.5": "pending",
     "1.1.10.6": "pending",
     "1.1.10.7": "pending",
@@ -5906,5 +5906,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-08T12:43:21.507Z"
+  "lastSyncAt": "2026-01-08T13:09:03.028Z"
 }

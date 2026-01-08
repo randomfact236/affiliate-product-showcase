@@ -709,7 +709,7 @@
       "code": "1.1.10",
       "kind": "item",
       "title": "Volume mounts for plugin development directory",
-      "status": "pending",
+      "status": "completed",
       "derivedStatus": "pending",
       "marker": ""
     },
@@ -717,33 +717,33 @@
       "code": "1.1.10.1",
       "kind": "item",
       "title": "Mount plugin folder in docker-compose.yml - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.10.2",
       "kind": "item",
       "title": "Path: ./plugins/your-plugin:/var/www/html/wp-content/plugins/your-plugin - ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.10.3",
       "kind": "item",
       "title": "Test write permission works- ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.10.4",
       "kind": "item",
       "title": "Verify changes reflect in container- ACTUALLY NEEDED",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.10.5",

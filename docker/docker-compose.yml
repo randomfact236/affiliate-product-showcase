@@ -55,6 +55,7 @@ services:
       - ../.env
     volumes:
       - ../:/var/www/html:cached
+      - ./plugins/your-plugin:/var/www/html/wp-content/plugins/your-plugin
       - ./php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./php-fpm/php.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
     healthcheck:
