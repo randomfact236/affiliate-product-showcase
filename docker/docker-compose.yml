@@ -79,8 +79,8 @@ services:
       - nginx_certs:/etc/letsencrypt:rw
       - certbot_www:/var/www/certbot:rw
     healthcheck:
-      # Check nginx worker/process presence instead of HTTP from inside the container
-      test: ["CMD-SHELL", "ps aux | grep nginx | grep -v grep >/dev/null || exit 1"]
+      # HTTP probe: prefer curl, fall back to wget. Exit non-zero on failure.
+      test: ["CMD-SHELL", "(command -v curl >/dev/null 2>&1 && curl -fsS http://localhost >/dev/null 2>&1) || (command -v wget >/dev/null 2>&1 && wget -qO- http://localhost >/dev/null 2>&1) || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5

@@ -573,9 +573,9 @@
       "code": "1.1.8.5",
       "kind": "item",
       "title": "Nginx: HTTP Probe (e.g., curl -f http://localhost).",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.1.8.6",
