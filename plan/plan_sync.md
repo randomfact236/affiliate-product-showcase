@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 136bd33bbcd23803c1517fff5b5097aaaf37d466 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ba2faf74d9aaed4f4b8a3aaba1c34503894941fd -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -134,6 +134,17 @@
       ✅ 1.1.11.10 Complex routing configuration. - NOT NEEDED
       ✅ 1.1.11.11 VPN configuration. - NOT NEEDED
 ### 1.1.12 Automated database seeding with sample data
+      1.1.12.1 Seed script in scripts/db-seed.sh - ACTUALLY NEEDED
+      1.1.12.2 Sample posts and pages - ACTUALLY NEEDED
+      1.1.12.3 Sample product data for plugin - ACTUALLY NEEDED
+      1.1.12.4 Run seed on first container start - ACTUALLY NEEDED
+      1.1.12.5 Verify seeding works - ACTUALLY NEEDED
+      1.1.12.6 Complex data generators - NOT NEEDED
+      1.1.12.7 Large datasets - NOT NEEDED
+      1.1.12.8 External data sources - NOT NEEDED
+      1.1.12.9 Automatic re-seeding - NOT NEEDED
+      1.1.12.10 Database migrations system - NOT NEEDED
+      1.1.12.11 Fixtures framework - NOT NEEDED
 
 ## 1.2 Folder Structure — create folder structure and repository layout
    1.2.1 Framework: WORDPRESS PLUGIN STRUCTURE (with Tailwind + Vite)
