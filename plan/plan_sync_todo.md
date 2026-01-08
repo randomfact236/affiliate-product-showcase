@@ -69,7 +69,7 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.7.9 Testing automation — Optional harness to use WP-CLI during tests (e.g., `wp core install` for test DB, fixtures import) and integrate with `tests/` PHPUnit setup. [OPTIONAL — not installed]
       - ✅ 1.1.7.10 Monitoring and logging — Optional healthchecks, logging best-practices, and integration points for monitoring WP-CLI driven automation tasks. [OPTIONAL — not installed]
     - ⏳ 1.1.8 Custom healthcheck scripts for all services
-      - ✅ 1.1.8.1 Basic healthcheck in docker-compose.yml (inline commands).
+      - ⏳ 1.1.8.1 Basic healthcheck in docker-compose.yml (inline commands).
       - ⏳ 1.1.8.2 depends_on with service_healthy condition.
       - ⏳ 1.1.8.3 MySQL: mysqladmin ping.
       - ⏳ 1.1.8.4 WordPress: php-fpm check.
