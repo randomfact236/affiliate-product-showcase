@@ -2848,13 +2848,13 @@
     "1.2.19": "completed",
     "1.2.20": "completed",
     "1.2.21": "completed",
-    "1.2.22": "pending",
-    "1.2.23": "pending",
-    "1.2.24": "pending",
-    "1.2.25": "pending",
+    "1.2.22": "completed",
+    "1.2.23": "completed",
+    "1.2.24": "completed",
+    "1.2.25": "completed",
     "1.2.26": "completed",
     "1.2.27": "completed",
-    "1.2.28": "pending",
+    "1.2.28": "completed",
     "1.2.29": "pending",
     "1.2.30": "completed",
     "1.2.31": "completed",
@@ -5938,5 +5938,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-09T07:26:05.439Z"
+  "lastSyncAt": "2026-01-09T07:35:07.219Z"
 }

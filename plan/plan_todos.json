@@ -1157,33 +1157,33 @@
       "code": "1.2.22",
       "kind": "item",
       "title": ".prettierrc – Code formatting rules",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.23",
       "kind": "item",
       "title": "SECURITY.md – Security policy",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.24",
       "kind": "item",
       "title": "CONTRIBUTING.md – Contribution guidelines",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.25",
       "kind": "item",
       "title": "CODE_OF_CONDUCT.md – Community standards",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.26",
@@ -1205,9 +1205,9 @@
       "code": "1.2.28",
       "kind": "item",
       "title": "wp-tests-config-sample.php – Sample test configuration for contributors",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.29",

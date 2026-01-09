@@ -146,13 +146,13 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.19 .gitignore – Smart ignores (maps, test configs, vendor, node_modules, etc.)
     - ✅ 1.2.20 .editorconfig
     - ✅ 1.2.21 .eslintrc.cjs – Modern JavaScript linting config
-    - ⏳ 1.2.22 .prettierrc – Code formatting rules
-    - ⏳ 1.2.23 SECURITY.md – Security policy
-    - ⏳ 1.2.24 CONTRIBUTING.md – Contribution guidelines
-    - ⏳ 1.2.25 CODE_OF_CONDUCT.md – Community standards
+    - ✅ 1.2.22 .prettierrc – Code formatting rules
+    - ✅ 1.2.23 SECURITY.md – Security policy
+    - ✅ 1.2.24 CONTRIBUTING.md – Contribution guidelines
+    - ✅ 1.2.25 CODE_OF_CONDUCT.md – Community standards
     - ✅ 1.2.26 CHANGELOG.md – Version history
     - ✅ 1.2.27 LICENSE – GPL-2.0-or-later license
-    - ⏳ 1.2.28 wp-tests-config-sample.php – Sample test configuration for contributors
+    - ✅ 1.2.28 wp-tests-config-sample.php – Sample test configuration for contributors
     - ⏳ 1.2.29 PHP Source Code (src/ – PSR-4 root namespace: AffiliateProductShowcase)
     - ✅ 1.2.30 src/Plugin/Constants.php – All plugin constants (VERSION, TEXTDOMAIN, PREFIX, etc.)
     - ✅ 1.2.31 src/Plugin/Plugin.php – Main plugin singleton + initialization
