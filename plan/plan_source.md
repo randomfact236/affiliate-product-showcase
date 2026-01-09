@@ -149,7 +149,147 @@
 
 ## 1.2 Folder Structure — create folder structure and repository layout
 
-- Subtopics removed.
+1.2.1 Framework: Modern WordPress Plugin Boilerplate (Tailwind + Vite + PSR-4 + Security & Cache Ready)
+1.2.2 Plugin Name: Affiliate Product Showcase
+1.2.3 Goal: Standalone, production-ready, secure, cache-compatible, instantly working on any WordPress site, suitable for CodeCanyon / premium marketplace submission
+1.2.4 Standards: Follows WordPress Coding Standards, REST API best practices, accessibility, security hardening, proper prefixing, i18n, RTL support
+1.2.5 Root Level Files
+1.2.6 affiliate-product-showcase.php – Main plugin file (header, constants, bootstrap, textdomain loading)
+1.2.7 readme.txt – WordPress.org readme format
+1.2.8 README.md – Developer documentation & GitHub readme
+1.2.9 uninstall.php – Responsible cleanup (with data preservation option)
+1.2.10 composer.json – PSR-4 autoload, dependencies, dev tools & scripts
+1.2.11 composer.lock
+1.2.12 package.json – Node dependencies & build scripts
+1.2.13 package-lock.json
+1.2.14 vite.config.js – Vite build configuration
+1.2.15 tailwind.config.js – Tailwind configuration
+1.2.16 postcss.config.js – PostCSS configuration
+1.2.17 phpcs.xml.dist – WordPress-Extra + WordPress-Docs + prefix + textdomain enforcement
+1.2.18 phpunit.xml.dist – PHPUnit configuration
+1.2.19 .gitignore – Smart ignores (maps, test configs, vendor, node_modules, etc.)
+1.2.20 .editorconfig
+1.2.21 .eslintrc.cjs – Modern JavaScript linting config
+1.2.22 .prettierrc – Code formatting rules
+1.2.23 SECURITY.md – Security policy
+1.2.24 CONTRIBUTING.md – Contribution guidelines
+1.2.25 CODE_OF_CONDUCT.md – Community standards
+1.2.26 CHANGELOG.md – Version history
+1.2.27 LICENSE – GPL-2.0-or-later license
+1.2.28 wp-tests-config-sample.php – Sample test configuration for contributors
+1.2.29 PHP Source Code (src/ – PSR-4 root namespace: AffiliateProductShowcase)
+1.2.30 src/Plugin/Constants.php – All plugin constants (VERSION, TEXTDOMAIN, PREFIX, etc.)
+1.2.31 src/Plugin/Plugin.php – Main plugin singleton + initialization
+1.2.32 src/Plugin/Activator.php – Activation + version upgrade routines
+1.2.33 src/Plugin/Deactivator.php – Deactivation cleanup (events, rewrites)
+1.2.34 src/Plugin/Loader.php – Central hook, shortcode, widget, REST registration
+1.2.35 src/Admin/Admin.php – Admin menu, notices, enqueue logic
+1.2.36 src/Admin/Settings.php – Settings API wrapper + sanitization
+1.2.37 src/Admin/MetaBoxes.php – Product custom meta box handler
+1.2.38 src/Admin/partials/settings-page.php
+1.2.39 src/Admin/partials/product-meta-box.php
+1.2.40 src/Admin/partials/dashboard-widget.php
+1.2.41 src/Public/Public.php – Public frontend logic + enqueue
+1.2.42 src/Public/Shortcodes.php – Shortcode handlers
+1.2.43 src/Public/Widgets.php – Widget registration & rendering
+1.2.44 src/Public/partials/product-grid.php
+1.2.45 src/Public/partials/product-card.php
+1.2.46 src/Public/partials/single-product.php
+1.2.47 src/Blocks/Blocks.php – Dynamic block.json scanner & registration
+1.2.48 src/Rest/RestController.php – Base REST controller with capability checks
+1.2.49 src/Rest/ProductsController.php – REST endpoint: /affiliate/v1/products
+1.2.50 src/Rest/AnalyticsController.php – REST endpoint: /affiliate/v1/analytics
+1.2.51 src/Cache/Cache.php – Cache wrapper (transient + object cache + group support)
+1.2.52 src/Assets/Assets.php – Vite manifest reader + RTL + versioned assets
+1.2.53 src/Services/ProductService.php
+1.2.54 src/Services/AffiliateService.php
+1.2.55 src/Services/AnalyticsService.php
+1.2.56 src/Repositories/ProductRepository.php
+1.2.57 src/Repositories/SettingsRepository.php
+1.2.58 src/Models/Product.php
+1.2.59 src/Models/AffiliateLink.php
+1.2.60 src/Validators/ProductValidator.php
+1.2.61 src/Sanitizers/InputSanitizer.php
+1.2.62 src/Formatters/PriceFormatter.php
+1.2.63 src/Factories/ProductFactory.php
+1.2.64 src/Abstracts/AbstractRepository.php
+1.2.65 src/Abstracts/AbstractService.php
+1.2.66 src/Abstracts/AbstractValidator.php
+1.2.67 src/Interfaces/RepositoryInterface.php
+1.2.68 src/Interfaces/ServiceInterface.php
+1.2.69 src/Traits/SingletonTrait.php
+1.2.70 src/Traits/HooksTrait.php
+1.2.71 src/Exceptions/PluginException.php
+1.2.72 src/Helpers/helpers.php – Prefixed global helper functions
+1.2.73 src/Cli/ProductsCommand.php – WP-CLI commands (wp aps products ...)
+1.2.74 Frontend Development Source (Vite + React + Tailwind)
+1.2.75 frontend/js/admin.js
+1.2.76 frontend/js/frontend.js
+1.2.77 frontend/js/blocks.js
+1.2.78 frontend/js/components/ProductCard.jsx
+1.2.79 frontend/js/components/ProductModal.jsx
+1.2.80 frontend/js/components/LoadingSpinner.jsx
+1.2.81 frontend/js/components/index.js – Barrel export
+1.2.82 frontend/js/utils/api.js
+1.2.83 frontend/js/utils/i18n.js – WordPress JavaScript i18n helper
+1.2.84 frontend/js/utils/format.js
+1.2.85 frontend/styles/tailwind.css
+1.2.86 frontend/styles/admin.scss
+1.2.87 frontend/styles/frontend.scss
+1.2.88 frontend/styles/editor.scss
+1.2.89 frontend/styles/components/_buttons.scss
+1.2.90 frontend/styles/components/_cards.scss
+1.2.91 frontend/styles/components/_forms.scss
+1.2.92 frontend/styles/components/_modals.scss
+1.2.93 Gutenberg Blocks (per-block folder structure)
+1.2.94 blocks/product-showcase/block.json
+1.2.95 blocks/product-showcase/index.js
+1.2.96 blocks/product-showcase/edit.jsx
+1.2.97 blocks/product-showcase/save.jsx
+1.2.98 blocks/product-showcase/style.scss
+1.2.99 blocks/product-showcase/editor.scss
+1.2.100 blocks/product-grid/block.json
+1.2.101 blocks/product-grid/index.js
+1.2.102 blocks/product-grid/edit.jsx
+1.2.103 blocks/product-grid/save.jsx
+1.2.104 blocks/product-grid/style.scss
+1.2.105 blocks/product-grid/editor.scss
+1.2.106 Build Output & Static Assets
+1.2.107 assets/dist/manifest.json – Vite manifest (committed for marketplace)
+1.2.108 assets/dist/css/admin-[hash].css
+1.2.109 assets/dist/css/frontend-[hash].css
+1.2.110 assets/dist/css/editor-[hash].css
+1.2.111 assets/dist/js/admin-[hash].js
+1.2.112 assets/dist/js/frontend-[hash].js
+1.2.113 assets/dist/js/blocks-[hash].js
+1.2.114 assets/images/logo.svg
+1.2.115 assets/images/icon-128x128.png
+1.2.116 assets/images/icon-256x256.png
+1.2.117 assets/images/banner-772x250.png
+1.2.118 assets/images/banner-1544x500.png
+1.2.119 assets/images/screenshot-*.png
+1.2.120 assets/images/placeholder-product.png
+1.2.121 assets/fonts/ – optional custom fonts folder
+1.2.122 Testing & Quality Assurance
+1.2.123 tests/bootstrap.php
+1.2.124 tests/wp-tests-config.php – gitignored
+1.2.125 tests/unit/test-product-service.php
+1.2.126 tests/integration/test-rest-endpoints.php
+1.2.127 tests/fixtures/sample-products.php
+1.2.128 Internationalization
+1.2.129 languages/affiliate-product-showcase.pot
+1.2.130 languages/affiliate-product-showcase-.po
+1.2.131 languages/affiliate-product-showcase-.mo
+1.2.132 Documentation
+1.2.133 docs/user-guide.md
+1.2.134 docs/developer-guide.md
+1.2.135 docs/hooks-filters.md
+1.2.136 docs/rest-api.md
+1.2.137 docs/cli-commands.md
+1.2.138 Continuous Integration & Automation
+1.2.139 .github/workflows/ci.yml – PHPCS + PHPUnit + Frontend lint/build pipeline
+1.2.140 Composer Dependencies
+1.2.141 vendor/ – gitignored
 
 ## 1.3 Git Repository — initialize Git repository and basic branches
    1.3.1 Initialize Git with main branch
