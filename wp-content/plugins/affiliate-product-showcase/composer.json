@@ -84,8 +84,7 @@
 			"AffiliateProductShowcase\\Shared\\": "shared/"
 		},
 		"files": [
-			"src/Support/helpers.php",
-			"src/Support/constants.php"
+			"src/Helpers/helpers.php"
 		],
 		"exclude-from-classmap": [
 			"/tests/",
