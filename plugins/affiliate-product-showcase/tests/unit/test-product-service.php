@@ -1,3 +1,0 @@
-<?php
-
-// Unit test placeholder.
