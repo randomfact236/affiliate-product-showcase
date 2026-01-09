@@ -1,6 +1,68 @@
-import { promises as fs } from 'fs';
+import { createReadStream, promises as fs } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+
+// Security constants
+const SECURITY = {
+  MAX_FILE_SIZE: 50 * 1024 * 1024, // 50MB
+  ALLOWED_EXTENSIONS: new Set([
+    '.js', '.mjs', '.cjs', '.css', '.json',
+    '.png', '.jpg', '.jpeg', '.svg', '.webp', '.avif',
+    '.woff', '.woff2', '.ttf', '.eot', '.otf',
+  ]),
+  DISALLOWED_PATHS: ['node_modules', '.git', 'vendor', 'tests', '__tests__'],
+};
+
+async function computeFileHash(filePath, algorithm = 'sha384') {
+  const stats = await fs.stat(filePath);
+  if (stats.size > SECURITY.MAX_FILE_SIZE) {
+    const err = new Error(`File too large: ${filePath}`);
+    err.code = 'FILE_TOO_LARGE';
+    throw err;
+  }
+
+  const hash = crypto.createHash(algorithm);
+  const stream = createReadStream(filePath);
+  for await (const chunk of stream) {
+    hash.update(chunk);
+  }
+
+  return {
+    hash: hash.digest('base64'),
+    stats: { size: stats.size, mtime: stats.mtimeMs },
+  };
+}
+
+function validateFilePath(filePath, baseDir) {
+  const absolute = path.resolve(baseDir, filePath);
+  const rel = path.relative(baseDir, absolute);
+
+  if (!rel || rel.startsWith('..') || path.isAbsolute(rel)) {
+    const err = new Error(`Path traversal attempt: ${filePath}`);
+    err.code = 'SECURITY_VIOLATION';
+    throw err;
+  }
+
+  const normalized = rel.replace(/\\/g, '/');
+  const parts = normalized.split('/').filter(Boolean);
+
+  for (const segment of SECURITY.DISALLOWED_PATHS) {
+    if (parts.includes(segment)) {
+      const err = new Error(`File in disallowed directory: ${segment}`);
+      err.code = 'DISALLOWED_PATH';
+      throw err;
+    }
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext && !SECURITY.ALLOWED_EXTENSIONS.has(ext)) {
+    const err = new Error(`Disallowed file extension: ${ext}`);
+    err.code = 'INVALID_EXTENSION';
+    throw err;
+  }
+
+  return absolute;
+}
 
 function jsToPhp(value) {
   if (value === null) return 'null';
@@ -43,16 +105,32 @@ export default function wordpressManifestPlugin(opts = {}) {
         const raw = await fs.readFile(manifestPath, 'utf8');
         const manifest = JSON.parse(raw);
 
-        // Compute SRI for each asset we can find
+        // Compute SRI for each asset we can find (streaming hash, robust path checks)
         for (const [key, entry] of Object.entries(manifest)) {
           const fileRel = entry.file || entry.src || entry['file'] || null;
           if (!fileRel) continue;
-          const assetPath = path.resolve(outDir, fileRel);
+
+          let assetPath;
+          try {
+            assetPath = validateFilePath(fileRel, outDir);
+          } catch (err) {
+            this.warn(`wordpress-manifest: skipped ${fileRel} - ${err.message}`);
+            continue;
+          }
+
           const ok = await fs.stat(assetPath).then(() => true).catch(() => false);
-          if (!ok) continue;
-          const buf = await fs.readFile(assetPath);
-          const hash = crypto.createHash('sha384').update(buf).digest('base64');
-          entry.integrity = `sha384-${hash}`;
+          if (!ok) {
+            this.warn(`wordpress-manifest: asset not found, skipping ${assetPath}`);
+            continue;
+          }
+
+          try {
+            const { hash } = await computeFileHash(assetPath, 'sha384');
+            entry.integrity = `sha384-${hash}`;
+          } catch (err) {
+            this.warn(`wordpress-manifest: failed to hash ${assetPath} - ${err.message}`);
+            continue;
+          }
         }
 
         // Update manifest.json on disk (preserve readable formatting)
