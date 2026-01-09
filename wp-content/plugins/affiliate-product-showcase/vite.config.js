@@ -13,6 +13,9 @@ export default defineConfig({
         frontend: 'frontend/js/frontend.js',
         blocks: 'frontend/js/blocks.js'
       }
+      ,
+      // Externalize WordPress packages and React to avoid bundling them
+      external: [/^@wordpress\//, 'react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime']
     }
   }
 });
