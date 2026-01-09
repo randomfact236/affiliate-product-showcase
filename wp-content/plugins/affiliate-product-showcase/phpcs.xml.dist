@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Affiliate Product Showcase">
+  <description>PHPCS rules for the plugin (placeholder).</description>
+  <file>src</file>
+  <file>tests</file>
+</ruleset>

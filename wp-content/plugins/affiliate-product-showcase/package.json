@@ -1,0 +1,17 @@
+{
+  "name": "affiliate-product-showcase",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "lint": "eslint .",
+    "format": "prettier -w .",
+    "test": "echo \"No JS tests configured\""
+  }
+}
