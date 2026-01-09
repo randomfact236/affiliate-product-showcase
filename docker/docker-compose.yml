@@ -74,6 +74,7 @@ services:
   nginx:
     image: nginx:stable-alpine
     container_name: aps_nginx
+    restart: always
     depends_on:
       wordpress:
         condition: service_healthy
@@ -83,7 +84,7 @@ services:
       - "${NGINX_HTTP_PORT:-8000}:80"
       - "${NGINX_HTTPS_PORT:-8443}:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - ../:/var/www/html:ro
       - nginx_certs:/etc/letsencrypt:rw
       - certbot_www:/var/www/certbot:rw
