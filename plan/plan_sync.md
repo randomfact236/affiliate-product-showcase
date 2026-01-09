@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: b11287de93389c7bced350ac10260a8fabfcd303 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: e155579d9289a15514322ed87c74cc0d5d5851fb -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -145,8 +145,6 @@
       ✅ 1.1.12.9 Automatic re-seeding - NOT NEEDED
       ✅ 1.1.12.10 Database migrations system - NOT NEEDED
       ✅ 1.1.12.11 Fixtures framework - NOT NEEDED
-
-## ⏳ 1.2 Folder Structure — create folder structure and repository layout
 
 ## ⏳ 1.2 Folder Structure — create folder structure and repository layout
 

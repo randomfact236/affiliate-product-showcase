@@ -149,8 +149,6 @@
 
 ## 1.2 Folder Structure — create folder structure and repository layout
 
-## 1.2 Folder Structure — create folder structure and repository layout
-
 - Subtopics removed.
 
 ## 1.3 Git Repository — initialize Git repository and basic branches

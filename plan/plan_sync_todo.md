@@ -125,7 +125,6 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
       - ✅ 1.1.12.10 Database migrations system - NOT NEEDED
       - ✅ 1.1.12.11 Fixtures framework - NOT NEEDED
   - ⏳ 1.2 Folder Structure — create folder structure and repository layout
-  - ⏳ 1.2 Folder Structure — create folder structure and repository layout
    - 1.3 Git Repository — initialize Git repository and basic branches
    - 1.3.1 Initialize Git with main branch
    - 1.3.2 Create develop branch for active development
