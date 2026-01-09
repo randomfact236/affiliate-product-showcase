@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/infection/infection/master/resources/schema.json",
+  "source": {
+    "directories": [
+      "src",
+      "app",
+      "domain",
+      "infrastructure"
+    ],
+    "excludes": [
+      "*/Tests/*",
+      "*/tests/*",
+      "*Test.php",
+      "*TestCase.php",
+      "bootstrap.php",
+      "functions.php"
+    ]
+  },
+  "timeout": 15,
+  "logs": {
+    "html": "build/logs/infection.html",
+    "text": "build/logs/infection.log",
+    "summary": "build/logs/infection-summary.log",
+    "debug": "build/logs/infection-debug.log",
+    "perMutator": "build/logs/infection-per-mutator.md",
+    "json": "build/logs/infection.json"
+  },
+  "mutators": {
+    "@default": true,
+    "@function_signature": false,
+    "ArrayItem": {
+      "ignore": [
+        "add_filter",
+        "add_action",
+        "apply_filters",
+        "do_action",
+        "add_shortcode",
+        "register_post_type",
+        "register_taxonomy",
+        "register_activation_hook",
+        "register_deactivation_hook"
+      ]
+    },
+    "CastInt": {
+      "ignore": [
+        "\\abs",
+        "\\intval",
+        "\\WP_Query::get",
+        "\\get_option",
+        "\\get_post_meta"
+      ]
+    },
+    "GlobalScope": {
+      "ignore": [
+        "$wpdb",
+        "$post",
+        "$wp_query"
+      ]
+    }
+  },
+  "testFramework": "phpunit",
+  "bootstrap": "./vendor/autoload.php",
+  "initialTestsPhpOptions": "-d zend.enable_gc=0",
+  "testFrameworkOptions": "--configuration=phpunit.xml.dist --order-by=random",
+  "ignoreMsiWithNoMutations": true,
+  "minMsi": 65,
+  "minCoveredMsi": 75,
+  "msiPrecision": 2,
+  "gitDiffFilter": "AM",
+  "gitDiffBase": "origin/main",
+  "skipCoverage": false,
+  "tmpDir": "build/tmp/infection",
+  "phpUnit": {
+    "configDir": ".",
+    "customPath": "./vendor/bin/phpunit"
+  }
+}
