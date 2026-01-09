@@ -989,41 +989,41 @@
       "code": "1.2.1",
       "kind": "item",
       "title": "Framework: Modern WordPress Plugin Boilerplate (Tailwind + Vite + PSR-4 + Security & Cache Ready)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.2",
       "kind": "item",
       "title": "Plugin Name: Affiliate Product Showcase",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.3",
       "kind": "item",
       "title": "Goal: Standalone, production-ready, secure, cache-compatible, instantly working on any WordPress site, suitable for CodeCanyon / premium marketplace submission",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.4",
       "kind": "item",
       "title": "Standards: Follows WordPress Coding Standards, REST API best practices, accessibility, security hardening, proper prefixing, i18n, RTL support",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.5",
       "kind": "item",
       "title": "Root Level Files",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.6",
@@ -1213,9 +1213,9 @@
       "code": "1.2.29",
       "kind": "item",
       "title": "PHP Source Code (src/ – PSR-4 root namespace: AffiliateProductShowcase)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.30",
@@ -1573,9 +1573,9 @@
       "code": "1.2.74",
       "kind": "item",
       "title": "Frontend Development Source (Vite + React + Tailwind)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.75",
@@ -1725,9 +1725,9 @@
       "code": "1.2.93",
       "kind": "item",
       "title": "Gutenberg Blocks (per-block folder structure)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.94",
@@ -1829,9 +1829,9 @@
       "code": "1.2.106",
       "kind": "item",
       "title": "Build Output & Static Assets",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.107",
@@ -1933,9 +1933,9 @@
       "code": "1.2.119",
       "kind": "item",
       "title": "assets/images/screenshot-*.png",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.120",
@@ -1957,9 +1957,9 @@
       "code": "1.2.122",
       "kind": "item",
       "title": "Testing & Quality Assurance",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.123",
@@ -2005,9 +2005,9 @@
       "code": "1.2.128",
       "kind": "item",
       "title": "Internationalization",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.129",
@@ -2037,9 +2037,9 @@
       "code": "1.2.132",
       "kind": "item",
       "title": "Documentation",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.133",
@@ -2085,17 +2085,17 @@
       "code": "1.2.138",
       "kind": "item",
       "title": "Continuous Integration & Automation",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.139",
       "kind": "item",
       "title": ".github/workflows/ci.yml – PHPCS + PHPUnit + Frontend lint/build pipeline",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.140",
