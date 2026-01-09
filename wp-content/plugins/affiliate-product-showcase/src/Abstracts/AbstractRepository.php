@@ -2,4 +2,10 @@
 
 namespace AffiliateProductShowcase\Abstracts;
 
-abstract class AbstractRepository {}
+use AffiliateProductShowcase\Interfaces\RepositoryInterface;
+
+abstract class AbstractRepository implements RepositoryInterface {
+	protected function parse_int( $value ): int {
+		return (int) $value;
+	}
+}

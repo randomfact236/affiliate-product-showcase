@@ -1,3 +1,3 @@
 export default function LoadingSpinner() {
-  return null;
+  return <div className="aps-spinner" aria-label="Loading" />;
 }

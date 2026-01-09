@@ -2,4 +2,6 @@
 
 namespace AffiliateProductShowcase\Interfaces;
 
-interface ServiceInterface {}
+interface ServiceInterface {
+	public function boot(): void;
+}

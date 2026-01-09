@@ -2,4 +2,6 @@
 
 namespace AffiliateProductShowcase\Abstracts;
 
-abstract class AbstractService {}
+use AffiliateProductShowcase\Interfaces\ServiceInterface;
+
+abstract class AbstractService implements ServiceInterface {}

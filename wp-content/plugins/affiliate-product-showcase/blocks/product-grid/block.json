@@ -1,1 +1,16 @@
-{ "apiVersion": 2, "name": "aps/product-grid", "title": "Product Grid", "category": "widgets", "editorScript": "file:./index.js" }
+{
+	"apiVersion": 2,
+	"name": "aps/product-grid",
+	"title": "Product Grid",
+	"category": "widgets",
+	"editorScript": "file:./index.js",
+	"attributes": {
+		"perPage": {
+			"type": "number",
+			"default": 6
+		}
+	},
+	"supports": {
+		"align": true
+	}
+}

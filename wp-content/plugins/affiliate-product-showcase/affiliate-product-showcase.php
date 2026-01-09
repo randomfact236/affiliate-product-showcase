@@ -14,74 +14,29 @@
  * Domain Path:       /languages
  */
 
+declare( strict_types=1 );
+
+use AffiliateProductShowcase\Plugin\Activator;
+use AffiliateProductShowcase\Plugin\Deactivator;
+use AffiliateProductShowcase\Plugin\Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'APS_PLUGIN_VERSION' ) ) {
-	define( 'APS_PLUGIN_VERSION', '1.0.0' );
+$autoload = __DIR__ . '/vendor/autoload.php';
+if ( is_readable( $autoload ) ) {
+	require_once $autoload;
 }
 
-if ( ! defined( 'APS_TEXTDOMAIN' ) ) {
-	define( 'APS_TEXTDOMAIN', 'affiliate-product-showcase' );
-}
+register_activation_hook( __FILE__, static function (): void {
+	Activator::activate();
+} );
 
-if ( ! defined( 'APS_PLUGIN_FILE' ) ) {
-	define( 'APS_PLUGIN_FILE', __FILE__ );
-}
+register_deactivation_hook( __FILE__, static function (): void {
+	Deactivator::deactivate();
+} );
 
-if ( ! defined( 'APS_PLUGIN_BASENAME' ) ) {
-	define( 'APS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-}
-
-if ( ! defined( 'APS_PLUGIN_DIR' ) ) {
-	define( 'APS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-}
-
-if ( ! defined( 'APS_PLUGIN_URL' ) ) {
-	define( 'APS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-}
-
-if ( ! function_exists( 'aps_load_textdomain' ) ) {
-	function aps_load_textdomain() {
-		load_plugin_textdomain(
-			APS_TEXTDOMAIN,
-			false,
-			dirname( APS_PLUGIN_BASENAME ) . '/languages'
-		);
-	}
-}
-add_action( 'plugins_loaded', 'aps_load_textdomain' );
-
-if ( ! function_exists( 'aps_activate' ) ) {
-	function aps_activate() {
-		update_option( 'aps_plugin_version', APS_PLUGIN_VERSION );
-		flush_rewrite_rules();
-	}
-}
-register_activation_hook( __FILE__, 'aps_activate' );
-
-if ( ! function_exists( 'aps_deactivate' ) ) {
-	function aps_deactivate() {
-		flush_rewrite_rules();
-	}
-}
-register_deactivation_hook( __FILE__, 'aps_deactivate' );
-
-if ( ! function_exists( 'aps_bootstrap' ) ) {
-	function aps_bootstrap() {
-		$autoload = APS_PLUGIN_DIR . 'vendor/autoload.php';
-		if ( file_exists( $autoload ) ) {
-			require_once $autoload;
-		}
-
-		$main_class = '\\AffiliateProductShowcase\\Plugin\\Plugin';
-		if ( class_exists( $main_class ) && is_callable( array( $main_class, 'instance' ) ) ) {
-			$plugin = call_user_func( array( $main_class, 'instance' ) );
-			if ( is_object( $plugin ) && method_exists( $plugin, 'init' ) ) {
-				$plugin->init();
-			}
-		}
-	}
-}
-add_action( 'plugins_loaded', 'aps_bootstrap', 20 );
+add_action( 'plugins_loaded', static function (): void {
+	Plugin::instance()->init();
+}, 20 );

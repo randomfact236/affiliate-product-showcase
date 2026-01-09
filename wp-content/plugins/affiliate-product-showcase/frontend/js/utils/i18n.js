@@ -1,3 +1,3 @@
-export function __() {
-  return '';
+export function __(text) {
+  return text;
 }

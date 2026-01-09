@@ -1,1 +1,3 @@
-export default function Save() { return null; }
+export default function Save() {
+	return null; // Rendered in PHP for dynamic data.
+}
