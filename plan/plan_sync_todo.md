@@ -1,6 +1,6 @@
 # Synced Todo List (Flattened)
 
-Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
+Legend: ✅ completed · ⏳ in-progress
 
 - ⏳ Step 1 — Step 1 — Setup
   - ✅ 1.1 Docker Environment — Docker compose setup to bring up local environment and services

@@ -29,7 +29,7 @@ const DEFAULTS = {
   outTodoJson: path.join(PLAN_DIR, 'plan_todos.json')
 };
 
-const VALID_STATUSES = new Set(['pending', 'in-progress', 'blocked', 'cancelled', 'completed']);
+const VALID_STATUSES = new Set(['pending', 'in-progress', 'completed']);
 
 function sha1(text) {
   return crypto.createHash('sha1').update(String(text ?? ''), 'utf8').digest('hex');
@@ -407,8 +407,6 @@ function deriveMarkers(structure) {
     let marker = '';
     if (s === 'completed') marker = '✅';
     else if (s === 'in-progress') marker = '⏳';
-    else if (s === 'cancelled') marker = '❌';
-    else if (s === 'blocked') marker = '⛔';
     node.marker = marker;
   });
 }
@@ -473,7 +471,7 @@ function renderTodoMd(structure) {
   const out = [];
   out.push('# Synced Todo List (Flattened)');
   out.push('');
-  out.push('Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress');
+  out.push('Legend: ✅ completed · ⏳ in-progress');
   out.push('');
 
   function renderItemsAsList(items, indent) {

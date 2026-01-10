@@ -54,8 +54,7 @@ function mapActionToStatus(action) {
   if (!action) return null;
   if (['start', 'started', 'in-progress', 'progress', 'doing'].includes(action)) return 'in-progress';
   if (['done', 'completed', 'complete', 'finish', 'finished'].includes(action)) return 'completed';
-  if (['block', 'blocked'].includes(action)) return 'blocked';
-  if (['cancel', 'cancelled', 'canceled'].includes(action)) return 'cancelled';
+  // 'blocked' and 'cancelled' statuses intentionally removed — unsupported.
   return null;
 }
 

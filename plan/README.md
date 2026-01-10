@@ -7,7 +7,7 @@ This folder is managed by the plan synchronization scripts.
 
 **Editable (source of truth)**
 - `plan_source.md` — the plan outline (Steps → Topics → nested items). Edit this file.
-- `plan_state.json` — status mapping by code (`pending`, `in-progress`, `completed`, `blocked`, `cancelled`). Prefer updating via the status script.
+ - `plan_state.json` — status mapping by code (`pending`, `in-progress`, `completed`). Prefer updating via the status script.
 
 **Generated (do not edit manually)**
 - `plan_sync.md` — rendered plan with status markers.
@@ -38,7 +38,6 @@ node plan/set-status.cjs 1.3.1 done
 **Marker mapping (direct):**
 - `completed` → ✅
 - `in-progress` → ⏳
-- `blocked` → ⛔
-- `cancelled` → ❌
+ (removed: blocked/cancelled statuses are no longer supported)
 - `pending` → (no marker)
 ```
