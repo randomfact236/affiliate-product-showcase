@@ -75,3 +75,6 @@ docker/redis/
 .env
 .env.bak
 docker/.env
+
+# Backup files (created by local scripts)
+*.bak
