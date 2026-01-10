@@ -8,17 +8,9 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     exit 2
 }
 
-Write-Host "Regenerating plan files..."
-node plan/plan_sync_todos.cjs
+Write-Host "Regenerating plan files (single source of truth)..."
+node plan/manage-plan.js regenerate
 
-& git add plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json | Out-Null
-
-$env:PLAN_GENERATOR = '1'
-try {
-    git commit -m "[plan-generator] regenerate plan files from plan/plan_source.md" | Out-Null
-    Write-Host "Committed regenerated plan files."
-} catch {
-    Write-Host "No changes to commit."
-}
+Write-Host "Done. Review staged changes and commit when ready."
 
 exit 0

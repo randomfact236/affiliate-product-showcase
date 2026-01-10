@@ -9,16 +9,9 @@ if ! command -v node >/dev/null 2>&1; then
   exit 2
 fi
 
-echo "Regenerating plan files..."
-node plan/plan_sync_todos.cjs
+echo "Regenerating plan files (single source of truth)..."
+node plan/manage-plan.js regenerate
 
-git add plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json || true
-
-export PLAN_GENERATOR=1
-if git commit -m "[plan-generator] regenerate plan files from plan/plan_source.md"; then
-  echo "Committed regenerated plan files." 
-else
-  echo "No changes to commit." 
-fi
+echo "Done. Review staged changes and commit when ready."
 
 exit 0

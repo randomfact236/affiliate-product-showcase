@@ -1,11 +1,14 @@
 #!/bin/sh
 #!/bin/sh
-# Git pre-commit hook: enforce that generated plan files are only modified
-# via the plan generator. If `plan/plan_sync.md` or `plan/plan_sync_todo.md`
-# are staged, the commit is allowed only when one of these is true:
-#  - `plan/plan_source.md` is staged (source-of-truth changed)
-#  - environment variable `PLAN_GENERATOR=1` is set (generator made the commit)
-# Otherwise the commit is rejected with guidance.
+# Git pre-commit hook: enforce single source of truth for plan files.
+#
+# Rule:
+# - Do NOT edit generated files manually.
+# - Only `plan/plan_source.md` and `plan/plan_state.json` are sources.
+#
+# Enforcement:
+# - If generated plan files are staged, then at least one source file must also be staged.
+# - Always run: `node plan/manage-plan.js validate --staged`
 
 set -e
 
@@ -14,31 +17,20 @@ cd "$ROOT"
 
 staged=$(git diff --cached --name-only)
 
-if echo "$staged" | grep -E '^plan/(plan_sync.md|plan_sync_todo.md)$' >/dev/null 2>&1; then
-  if [ -n "$PLAN_GENERATOR" ]; then
-    # Generator env set; allow commit
-    true
-  elif echo "$staged" | grep -E '^plan/plan_source.md$' >/dev/null 2>&1; then
-    # Source file modified, allow commit
-    true
-  else
-    echo "ERROR: Do not edit plan/plan_sync.md or plan/plan_sync_todo.md directly." >&2
-    echo "Edit plan/plan_source.md and run: node plan/plan_sync_todos.cjs" >&2
-    echo "Or use scripts/update-plan.sh / scripts/update-plan.ps1 which regenerates and commits the plan files." >&2
+if echo "$staged" | grep -E '^plan/(plan_sync.md|plan_sync_todo.md|plan_todos.json)$' >/dev/null 2>&1; then
+  if ! echo "$staged" | grep -E '^plan/(plan_source.md|plan_state.json)$' >/dev/null 2>&1; then
+    echo "ERROR: Generated plan files are staged without source changes." >&2
+    echo "Edit plan/plan_source.md or plan/plan_state.json, then run:" >&2
+    echo "  node plan/manage-plan.js regenerate" >&2
     exit 1
   fi
 fi
 
-# Run generator to ensure generated files are up-to-date (if node is available)
-if command -v node >/dev/null 2>&1; then
-  node plan/plan_sync_todos.cjs >/dev/null 2>&1 || true
-  if ! git diff --quiet -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json; then
-    echo "ERROR: Generated plan files are out of date. Run 'node plan/plan_sync_todos.cjs' and commit the regenerated files." >&2
-    git --no-pager diff -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json >&2 || true
-    exit 1
-  fi
-else
-  echo "Warning: node not found in PATH; skipping plan generation check." >&2
+if ! command -v node >/dev/null 2>&1; then
+  echo "ERROR: node is required to validate plan workflow." >&2
+  exit 2
 fi
+
+node plan/manage-plan.js validate --staged
 
 exit 0

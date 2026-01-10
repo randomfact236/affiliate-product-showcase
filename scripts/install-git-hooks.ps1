@@ -1,5 +1,5 @@
 # Install git hooks from .githooks to .git/hooks
-$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $source = Join-Path $repoRoot ".githooks"
 $dest = Join-Path $repoRoot ".git\hooks"
 if (!(Test-Path $dest)) {
@@ -12,5 +12,5 @@ Get-ChildItem -Path $source -File | ForEach-Object {
     icacls $target /grant "$(whoami):(RX)" | Out-Null
 }
 Write-Output "Installed git hooks from .githooks to .git/hooks"
-Write-Output "Note: Hooks will reject manual edits to plan/ unless you set the environment variable PLAN_GENERATOR=1 when committing."
-Write-Output "Use scripts\update-plan.ps1 (or scripts\update-plan.sh) to regenerate and commit plan files."
+Write-Output "Hooks enforce plan single-source-of-truth (see plan/PLAN_WORKFLOW.md)."
+Write-Output "Use scripts\update-plan.ps1 (or scripts\update-plan.sh) to regenerate and stage plan files."

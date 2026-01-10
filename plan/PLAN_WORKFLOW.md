@@ -1,25 +1,51 @@
 # Plan Workflow Enforcement
 
-Rule: Do not edit generated plan files (`plan/plan_sync.md`, `plan/plan_sync_todo.md`, `plan/plan_todos.json`, `plan/plan_state.json`) directly.
+Single source of truth:
+- Edit only: `plan/plan_source.md`
+- Update statuses only via: `plan/plan_state.json` (prefer the command below)
 
-Source of truth: `plan/plan_source.md` is the editable source. Whenever you need to change the plan, edit `plan/plan_source.md` only and regenerate the derived files.
+Generated files (never edit manually):
+- `plan/plan_sync.md`
+- `plan/plan_sync_todo.md`
+- `plan/plan_todos.json`
 
-How to regenerate and commit (recommended):
+## Daily commands
 
-- Unix/macOS:
+Regenerate generated files (and stage them):
 
 ```sh
-./scripts/update-plan.sh
+node plan/manage-plan.js regenerate
 ```
 
-- Windows (PowerShell):
+Set a task status (updates `plan_state.json`, regenerates, stages):
 
-```powershell
-.\scripts\update-plan.ps1
+```sh
+node plan/manage-plan.js set 1.3.1 completed
+node plan/manage-plan.js set 1.3.1 in-progress
+node plan/manage-plan.js set 1.3.1 pending
 ```
 
-What the helper does:
-- Runs `node plan/plan_sync_todos.cjs` to regenerate the generated files.
-- Adds and commits the regenerated files with `PLAN_GENERATOR=1` so the repository hook allows the changes.
+Validate workflow (used by pre-commit):
 
-If you must force a manual commit to the generated files (not recommended), set the environment variable `PLAN_GENERATOR=1` when committing. Prefer editing `plan/plan_source.md` instead.
+```sh
+node plan/manage-plan.js validate
+```
+
+## Helper scripts
+
+- Unix/macOS: `./scripts/update-plan.sh`
+- Windows PowerShell: `./scripts/update-plan.ps1`
+
+Both helpers call `node plan/manage-plan.js regenerate`.
+
+## Pre-commit enforcement
+
+The git hook rejects commits when:
+- A generated plan file is staged without also staging `plan/plan_source.md` or `plan/plan_state.json`.
+- The generator output does not match what is committed (drift).
+
+If the hook blocks your commit, run:
+
+```sh
+node plan/manage-plan.js regenerate
+```

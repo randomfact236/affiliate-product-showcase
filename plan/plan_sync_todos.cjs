@@ -31,6 +31,13 @@ const DEFAULTS = {
 
 const VALID_STATUSES = new Set(['pending', 'in-progress', 'completed']);
 
+const STATUS_MARKERS_RE = /^(?:\s*[✅⏳]\s*)+/;
+
+function stripLeadingStatusMarkers(text) {
+  const s = String(text ?? '');
+  return s.replace(STATUS_MARKERS_RE, '').trimStart();
+}
+
 function sha1(text) {
   return crypto.createHash('sha1').update(String(text ?? ''), 'utf8').digest('hex');
 }
@@ -129,7 +136,7 @@ function parseArgs(argv) {
 }
 
 function extractCode(line) {
-  const m = String(line ?? '').match(/^\s*(\d+(?:\.\d+)*)(?:\b|[^\d])/);
+  const m = String(line ?? '').match(/^\s*(?:[✅⏳]\s*)?(\d+(?:\.\d+)*)(?:\b|[^\d])/);
   return m ? m[1] : null;
 }
 
@@ -147,7 +154,7 @@ function isStepHeader(line) {
 }
 
 function isTopicHeader(line) {
-  return /^#{2,}\s+\d+\.\d+\s+/i.test(String(line ?? ''));
+  return /^#{2,}\s+(?:[✅⏳]\s+)?\d+\.\d+\s+/i.test(String(line ?? ''));
 }
 
 function parsePlanSource(md) {
@@ -186,10 +193,10 @@ function parsePlanSource(md) {
     }
 
     if (isTopicHeader(line)) {
-      const m = String(line).match(/^#{2,}\s+(\d+\.\d+)\s+(.*)$/i);
+      const m = String(line).match(/^#{2,}\s+(?:[✅⏳]\s+)?(\d+\.\d+)\s+(.*)$/i);
       if (!m) continue;
       const topicCode = m[1];
-      const topicTitle = (m[2] || '').trim();
+      const topicTitle = stripLeadingStatusMarkers((m[2] || '').trim());
       currentTopic = { kind: 'topic', code: topicCode, title: topicTitle, rawLine: String(line).trim(), items: [], status: 'pending' };
 
       const stepNum = topicCode.split('.')[0];
@@ -201,19 +208,21 @@ function parsePlanSource(md) {
       continue;
     }
 
-    const headingItemMatch = String(line).match(/^\s*#{3,}\s+(\d+(?:\.\d+)*)\s+(.*)$/);
+    const headingItemMatch = String(line).match(/^\s*#{3,}\s+(?:[✅⏳]\s+)?(\d+(?:\.\d+)*)\s+(.*)$/);
     let code = null;
     let title = null;
 
     if (headingItemMatch) {
       code = headingItemMatch[1];
-      title = (headingItemMatch[2] || '').trim();
+      title = stripLeadingStatusMarkers((headingItemMatch[2] || '').trim());
     } else {
       const stripped = trimmed.replace(/^\s*(?:>\s*)?(?:[-*+]\s+)+/, '').trim();
-      code = extractCode(stripped);
+      const strippedForCode = stripLeadingStatusMarkers(stripped);
+      code = extractCode(strippedForCode);
       if (!code) continue;
-      const tm = stripped.match(/^\s*\d+(?:\.\d+)*\s+(.*)$/);
-      title = tm ? (tm[1] || '').trim() : stripped.replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim();
+      const tm = strippedForCode.match(/^\s*\d+(?:\.\d+)*\s+(.*)$/);
+      title = tm ? (tm[1] || '').trim() : strippedForCode.replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim();
+      title = stripLeadingStatusMarkers(title);
     }
 
     if (getLevel(code) < 3) continue;
@@ -233,7 +242,7 @@ function parsePlanSource(md) {
       if (!parent) parent = currentTopic || currentStep;
     }
 
-    const node = { kind: 'item', code, title: title || '', rawLine: trimmed, items: [], status: 'pending' };
+    const node = { kind: 'item', code, title: stripLeadingStatusMarkers(title || ''), rawLine: trimmed, items: [], status: 'pending' };
     if (parent) {
       if (!parent.items) parent.items = [];
       parent.items.push(node);
@@ -438,23 +447,26 @@ function renderPlanMd(structure, opts) {
 
   for (const step of structure.steps) {
     const stepMarker = step.marker ? `${step.marker} ` : '';
-    out.push(`# ${stepMarker}Step ${step.code} — ${step.title || ''}`.trimEnd());
+    const stepTitle = stripLeadingStatusMarkers(step.title || '');
+    out.push(`# ${stepMarker}Step ${step.code} — ${stepTitle}`.trimEnd());
     out.push('');
 
     for (const topic of step.topics) {
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`## ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      const topicTitle = stripLeadingStatusMarkers(topic.title || '');
+      out.push(`## ${topicMarker}${topic.code} ${topicTitle}`.trimEnd());
 
       function renderItems(items, indentLevel) {
         if (!items || items.length === 0) return;
         for (const item of items) {
           const marker = item.marker ? `${item.marker} ` : '';
+          const title = stripLeadingStatusMarkers(item.title || '');
           if (item.rawLine && /^#+\s+/.test(item.rawLine)) {
             const hashes = (item.rawLine.match(/^#+/) || [''])[0];
-            out.push(`${hashes} ${marker}${item.code} ${item.title}`.trimEnd());
+            out.push(`${hashes} ${marker}${item.code} ${title}`.trimEnd());
           } else {
             const indent = '   '.repeat(Math.max(0, indentLevel));
-            out.push(`${indent}${marker}${item.code} ${item.title}`.trimEnd());
+            out.push(`${indent}${marker}${item.code} ${title}`.trimEnd());
           }
           renderItems(item.items, indentLevel + 1);
         }
@@ -480,17 +492,20 @@ function renderTodoMd(structure) {
     const pad = '  '.repeat(indent);
     for (const item of items) {
       const marker = item.marker ? `${item.marker} ` : '';
-      out.push(`${pad}- ${marker}${item.code} ${item.title}`.trimEnd());
+      const title = stripLeadingStatusMarkers(item.title || '');
+      out.push(`${pad}- ${marker}${item.code} ${title}`.trimEnd());
       renderItemsAsList(item.items, indent + 1);
     }
   }
 
   for (const step of structure.steps) {
     const stepMarker = step.marker ? `${step.marker} ` : '';
-    out.push(`- ${stepMarker}Step ${step.code} — ${step.title}`.trimEnd());
+    const stepTitle = stripLeadingStatusMarkers(step.title || '');
+    out.push(`- ${stepMarker}Step ${step.code} — ${stepTitle}`.trimEnd());
     for (const topic of step.topics) {
       const topicMarker = topic.marker ? `${topic.marker} ` : '';
-      out.push(`  - ${topicMarker}${topic.code} ${topic.title}`.trimEnd());
+      const topicTitle = stripLeadingStatusMarkers(topic.title || '');
+      out.push(`  - ${topicMarker}${topic.code} ${topicTitle}`.trimEnd());
       renderItemsAsList(topic.items, 2);
     }
     out.push('');
