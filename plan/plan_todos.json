@@ -2340,7 +2340,7 @@
     {
       "code": "1.3.22",
       "kind": "item",
-      "title": "Set up semantic-release for automated versioning (Optional)--add all these to 1.3 with proper numbering do not sync just add , just add as it is donot add extra words in the points",
+      "title": "Set up semantic-release for automated versioning (Optional)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

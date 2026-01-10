@@ -294,7 +294,7 @@ Legend: ✅ completed · ⏳ in-progress
    - 1.3.19 Set up commitlint for commit message validation (Helpful)
    - 1.3.20 Create CONTRIBUTING.md with Git workflow guide (Recommended)
    - 1.3.21 Configure GitHub Actions for automated PR checks (Helpful)
-   - 1.3.22 Set up semantic-release for automated versioning (Optional)--add all these to 1.3 with proper numbering do not sync just add , just add as it is donot add extra words in the points
+   - 1.3.22 Set up semantic-release for automated versioning (Optional)
    - 1.3.23 Create .editorconfig for consistent code formatting (Recommended)
    - 1.4 Composer Configuration — composer.json and related setup
    - 1.4.1 Package name: `vendor/affiliate-product-showcase`
