@@ -28,7 +28,6 @@ final class Loader {
 		$this->register_hooks();
 		$this->admin->init();
 		$this->public->init();
-		$this->blocks->register();
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$this->products_command->register();
 		}
@@ -37,8 +36,10 @@ final class Loader {
 	protected function actions(): array {
 		return [
 			[ 'init', 'register_product_cpt' ],
+			[ 'init', 'register_blocks' ],
 			[ 'init', 'register_shortcodes' ],
 			[ 'widgets_init', 'register_widgets' ],
+			[ 'enqueue_block_editor_assets', 'enqueue_block_editor_assets' ],
 			[ 'rest_api_init', 'register_rest_controllers' ],
 			[ 'cli_init', 'register_cli' ],
 		];
@@ -48,12 +49,20 @@ final class Loader {
 		$this->product_service->register_post_type();
 	}
 
+	public function register_blocks(): void {
+		$this->blocks->register();
+	}
+
 	public function register_shortcodes(): void {
 		$this->public->register_shortcodes();
 	}
 
 	public function register_widgets(): void {
 		$this->public->register_widgets();
+	}
+
+	public function enqueue_block_editor_assets(): void {
+		$this->public->enqueue_editor_assets();
 	}
 
 	public function register_rest_controllers(): void {

@@ -3,7 +3,6 @@
 	"name": "aps/product-grid",
 	"title": "Product Grid",
 	"category": "widgets",
-	"editorScript": "file:./index.js",
 	"attributes": {
 		"perPage": {
 			"type": "number",

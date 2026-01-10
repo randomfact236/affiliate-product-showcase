@@ -1,1 +1,1 @@
-{ "apiVersion": 2, "name": "aps/product-showcase", "title": "Product Showcase", "category": "widgets", "editorScript": "file:./index.js" }
+{ "apiVersion": 2, "name": "aps/product-showcase", "title": "Product Showcase", "category": "widgets" }

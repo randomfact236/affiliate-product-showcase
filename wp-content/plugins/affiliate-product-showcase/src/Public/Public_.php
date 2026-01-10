@@ -25,6 +25,10 @@ final class Public_ {
         $this->assets->enqueue_frontend();
     }
 
+	public function enqueue_editor_assets(): void {
+		$this->assets->enqueue_editor();
+	}
+
     public function register_shortcodes(): void {
         $this->shortcodes->register();
     }
