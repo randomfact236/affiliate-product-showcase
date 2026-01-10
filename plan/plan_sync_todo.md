@@ -290,12 +290,12 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.3.15 Create issue templates (.github/ISSUE_TEMPLATE/) (Recommended)
     - ✅ 1.3.16 Create CONTRIBUTING.md with Git workflow guide (Recommended)
     - ✅ 1.3.17 Create .editorconfig for consistent code formatting (Recommended)
-    - ⏳ 1.3.18 Configure branch merge strategies (squash vs merge commit) (Helpful)
-    - ⏳ 1.3.19 Set up automated changelog generation (conventional-changelog) (Helpful)
-    - ⏳ 1.3.20 Configure Husky pre-commit hooks (lint, test) (Helpful)
-    - ⏳ 1.3.21 Set up commitlint for commit message validation (Helpful)
-    - ⏳ 1.3.22 Configure GitHub Actions for automated PR checks (Helpful)
-    - ⏳ 1.3.23 Set up semantic-release for automated versioning (Optional)
+    - ⏳ 1.3.18 Configure branch merge strategies (squash vs merge commit) (Helpful - NOT NEEDED)
+    - ⏳ 1.3.19 Set up automated changelog generation (conventional-changelog) (Helpful - NOT NEEDED)
+    - ⏳ 1.3.20 Configure Husky pre-commit hooks (lint, test) (Helpful - NOT NEEDED)
+    - ⏳ 1.3.21 Set up commitlint for commit message validation (Helpful - NOT NEEDED)
+    - ⏳ 1.3.22 Configure GitHub Actions for automated PR checks (Helpful - NOT NEEDED)
+    - ⏳ 1.3.23 Set up semantic-release for automated versioning (Optional - NOT NEEDED)
    - 1.4 Composer Configuration — composer.json and related setup
    - 1.4.1 Package name: `vendor/affiliate-product-showcase`
    - 1.4.2 Type: `wordpress-plugin`
