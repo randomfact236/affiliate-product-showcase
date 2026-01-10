@@ -2170,6 +2170,190 @@
       "marker": "⏳"
     },
     {
+      "code": "1.3.1",
+      "kind": "item",
+      "title": "Initialize Git with main branch (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.2",
+      "kind": "item",
+      "title": "Create develop branch for active development (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.3",
+      "kind": "item",
+      "title": "Create feature/* branches for new features (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.4",
+      "kind": "item",
+      "title": "Create hotfix/* branches for critical fixes (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.5",
+      "kind": "item",
+      "title": "Create release/* branches for version releases (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.6",
+      "kind": "item",
+      "title": "Branch protection rules (no direct push to main) (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.7",
+      "kind": "item",
+      "title": "Require pull request reviews (minimum 1 approval) (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.8",
+      "kind": "item",
+      "title": "Configure .gitignore for WordPress plugin (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.9",
+      "kind": "item",
+      "title": "Set up .gitattributes for line endings and exports (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.10",
+      "kind": "item",
+      "title": "Git Flow workflow implementation (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.11",
+      "kind": "item",
+      "title": "Require status checks before merge (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.12",
+      "kind": "item",
+      "title": "Require signed commits (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.13",
+      "kind": "item",
+      "title": "Semantic commit messages (conventional commits) (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.14",
+      "kind": "item",
+      "title": "Create PR templates (.github/pull_request_template.md) (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.15",
+      "kind": "item",
+      "title": "Create issue templates (.github/ISSUE_TEMPLATE/) (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.16",
+      "kind": "item",
+      "title": "Create CONTRIBUTING.md with Git workflow guide (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.17",
+      "kind": "item",
+      "title": "Create .editorconfig for consistent code formatting (Recommended)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.18",
+      "kind": "item",
+      "title": "Configure branch merge strategies (squash vs merge commit) (Helpful)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.19",
+      "kind": "item",
+      "title": "Set up automated changelog generation (conventional-changelog) (Helpful)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.20",
+      "kind": "item",
+      "title": "Configure Husky pre-commit hooks (lint, test) (Helpful)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.21",
+      "kind": "item",
+      "title": "Set up commitlint for commit message validation (Helpful)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.22",
+      "kind": "item",
+      "title": "Configure GitHub Actions for automated PR checks (Helpful)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.3.23",
+      "kind": "item",
+      "title": "Set up semantic-release for automated versioning (Optional)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.4",
       "kind": "topic",
       "title": "Composer Configuration — composer.json and related setup",
