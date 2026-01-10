@@ -2364,7 +2364,7 @@
     {
       "code": "1.4.1",
       "kind": "item",
-      "title": "Package name: `vendor/affiliate-product-showcase`",
+      "title": "Package name: `vendor/affiliate-product-showcase` (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2372,7 +2372,7 @@
     {
       "code": "1.4.2",
       "kind": "item",
-      "title": "Type: `wordpress-plugin`",
+      "title": "Type: `wordpress-plugin` (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2380,7 +2380,7 @@
     {
       "code": "1.4.3",
       "kind": "item",
-      "title": "PHP version requirement: `>=7.4 <8.4`",
+      "title": "PSR-4 autoloading for plugin namespace (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2388,7 +2388,7 @@
     {
       "code": "1.4.4",
       "kind": "item",
-      "title": "WordPress version requirement: `>=6.4`",
+      "title": "Config with platform check enabled (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2396,7 +2396,7 @@
     {
       "code": "1.4.5",
       "kind": "item",
-      "title": "PSR-4 autoloading for plugin namespace",
+      "title": "Config with optimize-autoloader enabled (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2404,7 +2404,7 @@
     {
       "code": "1.4.6",
       "kind": "item",
-      "title": "PSR-4 autoloading for tests namespace",
+      "title": "Config with sort-packages enabled (Essential)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2412,7 +2412,7 @@
     {
       "code": "1.4.7",
       "kind": "item",
-      "title": "Classmap autoloading for legacy code",
+      "title": "PHP version requirement: `>=7.4 <8.4` (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2420,7 +2420,7 @@
     {
       "code": "1.4.8",
       "kind": "item",
-      "title": "Autoload optimization",
+      "title": "WordPress version requirement: `>=6.4` (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2428,7 +2428,7 @@
     {
       "code": "1.4.9",
       "kind": "item",
-      "title": "Production require (empty or minimal)",
+      "title": "PSR-4 autoloading for tests namespace (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2436,7 +2436,7 @@
     {
       "code": "1.4.10",
       "kind": "item",
-      "title": "Dev require: `phpunit/phpunit ^9.5`",
+      "title": "Autoload optimization (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2444,7 +2444,7 @@
     {
       "code": "1.4.11",
       "kind": "item",
-      "title": "Dev require: `phpstan/phpstan ^1.10`",
+      "title": "Production require (empty or minimal) (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2452,7 +2452,7 @@
     {
       "code": "1.4.12",
       "kind": "item",
-      "title": "Dev require: `vimeo/psalm ^5.0`",
+      "title": "Scripts with test, lint, analyze commands (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2460,7 +2460,7 @@
     {
       "code": "1.4.13",
       "kind": "item",
-      "title": "Dev require: `squizlabs/php_codesniffer ^3.7`",
+      "title": "Scripts with build, package commands (Recommended)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2468,7 +2468,7 @@
     {
       "code": "1.4.14",
       "kind": "item",
-      "title": "Dev require: `wp-coding-standards/wpcs ^3.0`",
+      "title": "Classmap autoloading for legacy code (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2476,7 +2476,7 @@
     {
       "code": "1.4.15",
       "kind": "item",
-      "title": "Dev require: `automattic/vipwpcs ^3.0`",
+      "title": "Dev require: `phpunit/phpunit ^9.5` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2484,7 +2484,7 @@
     {
       "code": "1.4.16",
       "kind": "item",
-      "title": "Dev require: `phpcompatibility/phpcompatibility-wp ^2.1`",
+      "title": "Dev require: `phpstan/phpstan ^1.10` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2492,7 +2492,7 @@
     {
       "code": "1.4.17",
       "kind": "item",
-      "title": "Dev require: `mockery/mockery ^1.5`",
+      "title": "Dev require: `vimeo/psalm ^5.0` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2500,7 +2500,7 @@
     {
       "code": "1.4.18",
       "kind": "item",
-      "title": "Dev require: `fakerphp/faker ^1.23`",
+      "title": "Dev require: `squizlabs/php_codesniffer ^3.7` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2508,7 +2508,7 @@
     {
       "code": "1.4.19",
       "kind": "item",
-      "title": "Scripts with test, lint, analyze commands",
+      "title": "Dev require: `wp-coding-standards/wpcs ^3.0` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2516,7 +2516,7 @@
     {
       "code": "1.4.20",
       "kind": "item",
-      "title": "Scripts with build, package commands",
+      "title": "Dev require: `phpcompatibility/phpcompatibility-wp ^2.1` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2524,7 +2524,7 @@
     {
       "code": "1.4.21",
       "kind": "item",
-      "title": "Config with platform check enabled",
+      "title": "Dev require: `mockery/mockery ^1.5` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2532,7 +2532,7 @@
     {
       "code": "1.4.22",
       "kind": "item",
-      "title": "Config with optimize-autoloader enabled",
+      "title": "Dev require: `fakerphp/faker ^1.23` (Helpful)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2540,7 +2540,7 @@
     {
       "code": "1.4.23",
       "kind": "item",
-      "title": "Config with sort-packages enabled",
+      "title": "Dev require: `automattic/vipwpcs ^3.0` (Optional)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2548,7 +2548,7 @@
     {
       "code": "1.4.24",
       "kind": "item",
-      "title": "Exclude vendor-dir from packaging",
+      "title": "Exclude vendor-dir from packaging (Optional)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
