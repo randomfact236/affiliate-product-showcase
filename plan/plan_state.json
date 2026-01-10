@@ -2966,8 +2966,8 @@
     "1.2.137": "completed",
     "1.2.138": "completed",
     "1.2.139": "completed",
-    "1.2.140": "completed",
-    "1.2.141": "completed",
+    "1.2.140": "pending",
+    "1.2.141": "pending",
     "1.2.142": "completed",
     "1.2.143": "completed",
     "1.2.144": "completed",
@@ -5960,5 +5960,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-10T11:10:28.174Z"
+  "lastSyncAt": "2026-01-10T11:42:25.064Z"
 }

@@ -2101,17 +2101,17 @@
       "code": "1.2.140",
       "kind": "item",
       "title": "Composer Dependencies",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.141",
       "kind": "item",
       "title": "vendor/ – gitignored",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.2.142",
