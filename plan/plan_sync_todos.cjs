@@ -637,7 +637,24 @@ function main() {
     if (!hasErrors && hasMissing && args.strict) process.exit(2);
   }
 
-  const state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
+  let state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
+
+  // Prefer explicit statuses from the synced todo JSON if available (allows
+  // editing `plan/plan_todos.json` and having those statuses reflected in
+  // generated plan files). Merge so existing state keys are preserved.
+  try {
+    const todoJson = loadJson(args.outTodoJson, null);
+    if (todoJson && Array.isArray(todoJson.todos)) {
+      const statusByTodos = Object.create(null);
+      for (const t of todoJson.todos) {
+        if (t && t.code && t.status) statusByTodos[t.code] = t.status;
+      }
+      state.statusByCode = Object.assign({}, state.statusByCode || {}, statusByTodos);
+    }
+  } catch (err) {
+    // ignore — fall back to state as-is
+  }
+
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
   saveJsonPretty(args.state, mergedState);
