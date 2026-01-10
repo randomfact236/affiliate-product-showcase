@@ -13,3 +13,4 @@ Get-ChildItem -Path $source -File | ForEach-Object {
 }
 Write-Output "Installed git hooks from .githooks to .git/hooks"
 Write-Output "Note: Hooks will reject manual edits to plan/ unless you set the environment variable PLAN_GENERATOR=1 when committing."
+Write-Output "Use scripts\update-plan.ps1 (or scripts\update-plan.sh) to regenerate and commit plan files."

@@ -1,31 +1,39 @@
 #!/bin/sh
-# Prevent manual edits to plan/ unless PLAN_GENERATOR=1 is set by the generator
-staged=$(git diff --cached --name-only)
-echo "$staged" | grep -E '^plan/' >/dev/null 2>&1
-if [ $? -eq 0 ]; then
-  if [ -n "$PLAN_GENERATOR" ]; then
-    exit 0
-  fi
-  echo "ERROR: Changes to files under plan/ must be made by the plan generator script."
-  echo "If you ran the generator and still see this, run:"
-  echo "  export PLAN_GENERATOR=1 && git commit -m \"[plan-generator] your message\""
-  echo "To install hooks run: scripts/install-git-hooks.ps1 (Windows) or scripts/install-git-hooks.sh (Unix)."
-  exit 1
-fi
-exit 0
 #!/bin/sh
-# Verify generated plan files are up-to-date before allowing a commit
+# Git pre-commit hook: enforce that generated plan files are only modified
+# via the plan generator. If `plan/plan_sync.md` or `plan/plan_sync_todo.md`
+# are staged, the commit is allowed only when one of these is true:
+#  - `plan/plan_source.md` is staged (source-of-truth changed)
+#  - environment variable `PLAN_GENERATOR=1` is set (generator made the commit)
+# Otherwise the commit is rejected with guidance.
+
 set -e
 
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
 cd "$ROOT"
 
+staged=$(git diff --cached --name-only)
+
+if echo "$staged" | grep -E '^plan/(plan_sync.md|plan_sync_todo.md)$' >/dev/null 2>&1; then
+  if [ -n "$PLAN_GENERATOR" ]; then
+    # Generator env set; allow commit
+    true
+  elif echo "$staged" | grep -E '^plan/plan_source.md$' >/dev/null 2>&1; then
+    # Source file modified, allow commit
+    true
+  else
+    echo "ERROR: Do not edit plan/plan_sync.md or plan/plan_sync_todo.md directly." >&2
+    echo "Edit plan/plan_source.md and run: node plan/plan_sync_todos.cjs" >&2
+    echo "Or use scripts/update-plan.sh / scripts/update-plan.ps1 which regenerates and commits the plan files." >&2
+    exit 1
+  fi
+fi
+
+# Run generator to ensure generated files are up-to-date (if node is available)
 if command -v node >/dev/null 2>&1; then
-  echo "Running plan regeneration check..."
   node plan/plan_sync_todos.cjs >/dev/null 2>&1 || true
-  # Check for differences between regenerated files and committed files
   if ! git diff --quiet -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json; then
-    echo "Error: Generated plan files are out of date. Run 'node plan/plan_sync_todos.cjs' and commit the regenerated files." >&2
+    echo "ERROR: Generated plan files are out of date. Run 'node plan/plan_sync_todos.cjs' and commit the regenerated files." >&2
     git --no-pager diff -- plan/plan_sync.md plan/plan_sync_todo.md plan/plan_todos.json plan/plan_state.json >&2 || true
     exit 1
   fi
