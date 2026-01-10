@@ -295,18 +295,18 @@
    ✅ 1.2.146 tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)
    ✅ 1.2.147 vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)
 
-## 1.3 Git Repository — initialize Git repository and basic branches
-   1.3.1 Initialize Git with main branch
-   1.3.2 Create develop branch for active development
-   1.3.3 Create feature/* branches for new features
-   1.3.4 Create hotfix/* branches for critical fixes
-   1.3.5 Create release/* branches for version releases
-   1.3.6 Git Flow workflow implementation
-   1.3.7 Branch protection rules (no direct push to main)
-   1.3.8 Require pull request reviews (minimum 1 approval)
-   1.3.9 Require status checks before merge
-   1.3.10 Require signed commits
-   1.3.11 Semantic commit messages (conventional commits)
+## ⏳ 1.3 Git Repository — initialize Git repository and basic branches
+   ⏳ 1.3.1 Initialize Git with main branch
+   ⏳ 1.3.2 Create develop branch for active development
+   ⏳ 1.3.3 Create feature/* branches for new features
+   ⏳ 1.3.4 Create hotfix/* branches for critical fixes
+   ⏳ 1.3.5 Create release/* branches for version releases
+   ⏳ 1.3.6 Git Flow workflow implementation
+   ⏳ 1.3.7 Branch protection rules (no direct push to main)
+   ⏳ 1.3.8 Require pull request reviews (minimum 1 approval)
+   ⏳ 1.3.9 Require status checks before merge
+   ⏳ 1.3.10 Require signed commits
+   ⏳ 1.3.11 Semantic commit messages (conventional commits)
 
 ## 1.4 Composer Configuration — composer.json and related setup
    1.4.1 Package name: `vendor/affiliate-product-showcase`

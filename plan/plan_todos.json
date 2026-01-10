@@ -2165,97 +2165,97 @@
       "code": "1.3",
       "kind": "topic",
       "title": "Git Repository — initialize Git repository and basic branches",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.1",
       "kind": "item",
       "title": "Initialize Git with main branch",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.2",
       "kind": "item",
       "title": "Create develop branch for active development",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.3",
       "kind": "item",
       "title": "Create feature/* branches for new features",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.4",
       "kind": "item",
       "title": "Create hotfix/* branches for critical fixes",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.5",
       "kind": "item",
       "title": "Create release/* branches for version releases",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.6",
       "kind": "item",
       "title": "Git Flow workflow implementation",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.7",
       "kind": "item",
       "title": "Branch protection rules (no direct push to main)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.8",
       "kind": "item",
       "title": "Require pull request reviews (minimum 1 approval)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.9",
       "kind": "item",
       "title": "Require status checks before merge",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.10",
       "kind": "item",
       "title": "Require signed commits",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.3.11",
       "kind": "item",
       "title": "Semantic commit messages (conventional commits)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.4",

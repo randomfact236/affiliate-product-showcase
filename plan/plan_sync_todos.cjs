@@ -368,7 +368,7 @@ function mergeState(structure, state) {
   for (const added of addedCodes) {
     let parent = getParentCode(added);
     while (parent) {
-      if (statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
+      if (statusByCode[parent] === 'pending' || statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
       parent = getParentCode(parent);
     }
   }
