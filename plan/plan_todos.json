@@ -2114,6 +2114,54 @@
       "marker": "⏳"
     },
     {
+      "code": "1.2.142",
+      "kind": "item",
+      "title": "src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.2.143",
+      "kind": "item",
+      "title": "src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.2.144",
+      "kind": "item",
+      "title": "tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.2.145",
+      "kind": "item",
+      "title": "vite.config.js / package.json#scripts – Bundle analyzer (on-demand via `vite-plugin-visualizer`)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.2.146",
+      "kind": "item",
+      "title": "tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
+      "code": "1.2.147",
+      "kind": "item",
+      "title": "vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)",
+      "status": "pending",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
+    },
+    {
       "code": "1.3",
       "kind": "topic",
       "title": "Git Repository — initialize Git repository and basic branches",
@@ -2989,6 +3037,46 @@
       "code": "1.6.39",
       "kind": "item",
       "title": "`tsconfig.json` with path aliases",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.6.40",
+      "kind": "item",
+      "title": "`vite.config.*` manifest handling – enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` for PHP mapping.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.6.41",
+      "kind": "item",
+      "title": "SRI/hash generation – build hook or separate `tools/generate-sri.js` to produce `assets/dist/sri.json` for server-side SRI verification.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.6.42",
+      "kind": "item",
+      "title": "Pre-compression output – optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx `docker/nginx/` config to serve precompressed assets.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.6.43",
+      "kind": "item",
+      "title": "Bundle analyzer plugin – `vite-plugin-visualizer` config entry that runs only when `--mode analyze` or `npm run analyze` is invoked.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.6.44",
+      "kind": "item",
+      "title": "Typecheck integration – CI `npm run typecheck` step using `tsc --noEmit` (if TS is used); mention IDE typechecking still recommended.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

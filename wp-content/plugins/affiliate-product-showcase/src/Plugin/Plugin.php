@@ -4,6 +4,8 @@ namespace AffiliateProductShowcase\Plugin;
 
 use AffiliateProductShowcase\Admin\Admin;
 use AffiliateProductShowcase\Assets\Assets;
+use AffiliateProductShowcase\Assets\Manifest;
+use AffiliateProductShowcase\Assets\SRI;
 use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Cache\Cache;
 use AffiliateProductShowcase\Cli\ProductsCommand;
@@ -20,6 +22,8 @@ final class Plugin {
 
 	private Loader $loader;
 	private Assets $assets;
+	private Manifest $manifest;
+	private SRI $sri;
 	private Cache $cache;
 	private ProductService $product_service;
 	private AffiliateService $affiliate_service;
@@ -40,7 +44,10 @@ final class Plugin {
 		$this->load_textdomain();
 
 		$this->cache              = new Cache();
-		$this->assets             = new Assets( $this->cache );
+		$this->manifest           = Manifest::get_instance();
+		$this->sri                = new SRI( $this->manifest );
+		$this->manifest->set_sri( $this->sri );
+		$this->assets             = new Assets( $this->manifest );
 		$this->product_service    = new ProductService();
 		$this->affiliate_service  = new AffiliateService();
 		$this->analytics_service  = new AnalyticsService();

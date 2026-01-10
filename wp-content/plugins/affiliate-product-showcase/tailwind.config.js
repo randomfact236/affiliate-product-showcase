@@ -10,7 +10,7 @@
  */
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   // =========================================================================
   // 1. NAMESPACE ISOLATION (Critical for WordPress)
   // =========================================================================
@@ -378,3 +378,5 @@ module.exports = {
     respectDefaultRingColorOpacity: true,
   },
 };
+
+export default config;

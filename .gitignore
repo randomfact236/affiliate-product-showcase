@@ -8,6 +8,11 @@ composer.phar
 node_modules/
 dist/
 assets/dist/
+wp-content/plugins/affiliate-product-showcase/assets/dist/
+*.gz
+*.br
+wp-content/plugins/affiliate-product-showcase/assets/dist/sri-hashes.json
+wp-content/plugins/affiliate-product-showcase/assets/dist/compression-report.json
 
 # Composer
 vendor/

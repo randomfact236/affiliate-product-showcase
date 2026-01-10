@@ -2,9 +2,14 @@
   "name": "affiliate-product-showcase",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "scripts": {
     "dev": "vite",
@@ -12,14 +17,18 @@
     "watch": "vite build --watch",
     "lint": "eslint .",
     "format": "prettier -w .",
-    "test": "echo \"No JS tests configured\""
-  }
-  ,"devDependencies":{
-    "vite":"^4.3.9",
-    "tailwindcss":"^3.4.24",
-    "postcss":"^8.4.24",
-    "autoprefixer":"^10.4.14",
-    "@vitejs/plugin-react":"^3.1.0",
-    "sass":"^1.70.0"
+    "test": "echo \"No JS tests configured\"",
+    "generate:sri": "node tools/generate-sri.js",
+    "compress": "node tools/compress.js",
+    "postbuild": "npm run generate:sri && npm run compress",
+    "analyze": "npm run build -- --mode=analyze"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^3.1.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "sass": "^1.70.0",
+    "tailwindcss": "^3.4.14",
+    "vite": "^4.3.9"
   }
 }

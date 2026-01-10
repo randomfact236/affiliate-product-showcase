@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 79e6b219c9a56634937f4ed0973be495185eec55 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: aeeb608295642aaaa0718f53b74395d8382964ca -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -288,6 +288,12 @@
    ✅ 1.2.139 .github/workflows/ci.yml – PHPCS + PHPUnit + Frontend lint/build pipeline
    ⏳ 1.2.140 Composer Dependencies
    ⏳ 1.2.141 vendor/ – gitignored
+   ⏳ 1.2.142 src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)
+   ⏳ 1.2.143 src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)
+   ⏳ 1.2.144 tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)
+   ⏳ 1.2.145 vite.config.js / package.json#scripts – Bundle analyzer (on-demand via `vite-plugin-visualizer`)
+   ⏳ 1.2.146 tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)
+   ⏳ 1.2.147 vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)
 
 ## 1.3 Git Repository — initialize Git repository and basic branches
    1.3.1 Initialize Git with main branch
@@ -402,6 +408,11 @@
    1.6.37 `tsconfig.json` with strict mode
    1.6.38 `tsconfig.json` with WordPress globals
    1.6.39 `tsconfig.json` with path aliases
+   1.6.40 `vite.config.*` manifest handling – enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` for PHP mapping.
+   1.6.41 SRI/hash generation – build hook or separate `tools/generate-sri.js` to produce `assets/dist/sri.json` for server-side SRI verification.
+   1.6.42 Pre-compression output – optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx `docker/nginx/` config to serve precompressed assets.
+   1.6.43 Bundle analyzer plugin – `vite-plugin-visualizer` config entry that runs only when `--mode analyze` or `npm run analyze` is invoked.
+   1.6.44 Typecheck integration – CI `npm run typecheck` step using `tsc --noEmit` (if TS is used); mention IDE typechecking still recommended.
 
 ## 1.7 Environment Variables — .env for dev, WP Options fallback
    1.7.1 `PLUGIN_DEV_MODE` - Enable/disable dev features

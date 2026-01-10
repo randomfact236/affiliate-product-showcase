@@ -12,6 +12,8 @@
 import { defineConfig, loadEnv, normalizePath } from 'vite';
 import { resolve, basename } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 import react from '@vitejs/plugin-react';
 import wordpressManifest from './vite-plugins/wordpress-manifest.js';
 
@@ -308,9 +310,9 @@ export default defineConfig(({ mode }) => {
         },
         postcss: {
           plugins: [
-            require('tailwindcss')(resolve(paths.root, 'tailwind.config.js')),
-            require('autoprefixer')({ overrideBrowserslist: CONFIG.BROWSERS }),
-          ].filter(Boolean),
+            tailwindcss(resolve(paths.root, 'tailwind.config.js')),
+            autoprefixer({ overrideBrowserslist: CONFIG.BROWSERS }),
+          ],
         },
       },
 
