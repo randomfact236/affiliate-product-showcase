@@ -2975,8 +2975,8 @@
     "1.3.5": "in-progress",
     "1.3.6": "in-progress",
     "1.3.7": "in-progress",
-    "1.3.8": "in-progress",
-    "1.3.9": "in-progress",
+    "1.3.8": "completed",
+    "1.3.9": "completed",
     "1.3.10": "in-progress",
     "1.3.11": "in-progress",
     "1.3.12": "in-progress",
@@ -2984,7 +2984,7 @@
     "1.3.14": "in-progress",
     "1.3.15": "in-progress",
     "1.3.16": "in-progress",
-    "1.3.17": "in-progress",
+    "1.3.17": "completed",
     "1.3.18": "in-progress",
     "1.3.19": "in-progress",
     "1.3.20": "in-progress",
@@ -5984,5 +5984,5 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-10T20:20:24.984Z"
+  "lastSyncAt": "2026-01-10T20:23:11.213Z"
 }

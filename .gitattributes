@@ -1,3 +1,44 @@
+# Auto-detect text files and normalize to LF
+* text=auto
+
+# Force LF for typical text/source files
+*.php text eol=lf
+*.inc text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Mark binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Export / packaging: skip dev files
+/.github/ export-ignore
+/tests/ export-ignore
+/docs/ export-ignore
+node_modules/ export-ignore
+vendor/ export-ignore
+.vscode/ export-ignore
+.idea/ export-ignore
 # Enforce LF line endings in the repository for these text files
 *.md text eol=lf
 *.yml text eol=lf

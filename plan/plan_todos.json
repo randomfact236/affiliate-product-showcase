@@ -2229,17 +2229,17 @@
       "code": "1.3.8",
       "kind": "item",
       "title": "Configure .gitignore for WordPress plugin (Essential)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.3.9",
       "kind": "item",
       "title": "Set up .gitattributes for line endings and exports (Essential)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.3.10",
@@ -2301,9 +2301,9 @@
       "code": "1.3.17",
       "kind": "item",
       "title": "Create .editorconfig for consistent code formatting (Recommended)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.3.18",
