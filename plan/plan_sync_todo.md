@@ -266,12 +266,12 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.139 .github/workflows/ci.yml – PHPCS + PHPUnit + Frontend lint/build pipeline
     - ✅ 1.2.140 Composer Dependencies
     - ✅ 1.2.141 vendor/ – gitignored
-    - ⏳ 1.2.142 src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)
-    - ⏳ 1.2.143 src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)
-    - ⏳ 1.2.144 tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)
-    - ⏳ 1.2.145 vite.config.js / package.json#scripts – Bundle analyzer (on-demand via `vite-plugin-visualizer`)
-    - ⏳ 1.2.146 tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)
-    - ⏳ 1.2.147 vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)
+    - ✅ 1.2.142 src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)
+    - ✅ 1.2.143 src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)
+    - ✅ 1.2.144 tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)
+    - ✅ 1.2.145 vite.config.js / package.json#scripts – Bundle analyzer (on-demand via `vite-plugin-visualizer`)
+    - ✅ 1.2.146 tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)
+    - ✅ 1.2.147 vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)
    - 1.3 Git Repository — initialize Git repository and basic branches
    - 1.3.1 Initialize Git with main branch
    - 1.3.2 Create develop branch for active development
