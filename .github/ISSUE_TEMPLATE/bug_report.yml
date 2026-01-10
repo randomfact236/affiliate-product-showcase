@@ -1,0 +1,28 @@
+name: Bug report
+description: Report a bug with steps to reproduce and expected behavior
+title: "[BUG] - "
+labels: bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the bug in detail
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide numbered steps
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, PHP version, WordPress version, plugin version
