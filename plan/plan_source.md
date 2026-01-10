@@ -304,27 +304,24 @@
    1.3.3 Create feature/* branches for new features (Essential)
    1.3.4 Create hotfix/* branches for critical fixes (Essential)
    1.3.5 Create release/* branches for version releases (Essential)
-   1.3.12 Configure .gitignore for WordPress plugin (Essential)
-   1.3.13 Set up .gitattributes for line endings and exports (Essential)
+   1.3.6 Git Flow workflow implementation (Recommended)
    1.3.7 Branch protection rules (no direct push to main) (Essential)
    1.3.8 Require pull request reviews (minimum 1 approval) (Essential)
-
-   1.3.6 Git Flow workflow implementation (Recommended)
    1.3.9 Require status checks before merge (Recommended)
    1.3.10 Require signed commits (Recommended)
    1.3.11 Semantic commit messages (conventional commits) (Recommended)
+   1.3.12 Configure .gitignore for WordPress plugin (Essential)
+   1.3.13 Set up .gitattributes for line endings and exports (Essential)
    1.3.14 Create PR templates (.github/pull_request_template.md) (Recommended)
    1.3.15 Create issue templates (.github/ISSUE_TEMPLATE/) (Recommended)
-   1.3.20 Create CONTRIBUTING.md with Git workflow guide (Recommended)
-   1.3.23 Create .editorconfig for consistent code formatting (Recommended)
-
    1.3.16 Configure branch merge strategies (squash vs merge commit) (Helpful)
    1.3.17 Set up automated changelog generation (conventional-changelog) (Helpful)
    1.3.18 Configure Husky pre-commit hooks (lint, test) (Helpful)
    1.3.19 Set up commitlint for commit message validation (Helpful)
+   1.3.20 Create CONTRIBUTING.md with Git workflow guide (Recommended)
    1.3.21 Configure GitHub Actions for automated PR checks (Helpful)
-
    1.3.22 Set up semantic-release for automated versioning (Optional)--add all these to 1.3 with proper numbering do not sync just add , just add as it is donot add extra words in the points
+   1.3.23 Create .editorconfig for consistent code formatting (Recommended)
 
 ## 1.4 Composer Configuration — composer.json and related setup
    1.4.1 Package name: `vendor/affiliate-product-showcase`
