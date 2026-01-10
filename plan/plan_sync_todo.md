@@ -284,7 +284,7 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.3.9 Set up .gitattributes for line endings and exports (Essential)
     - ✅ 1.3.10 Git Flow workflow implementation (Recommended)
     - ✅ 1.3.11 Require status checks before merge (Recommended)
-    - ⏳ 1.3.12 Require signed commits (Recommended)
+    - ✅ 1.3.12 Require signed commits (Recommended)
     - ✅ 1.3.13 Semantic commit messages (conventional commits) (Recommended)
     - ✅ 1.3.14 Create PR templates (.github/pull_request_template.md) (Recommended)
     - ✅ 1.3.15 Create issue templates (.github/ISSUE_TEMPLATE/) (Recommended)
