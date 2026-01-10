@@ -8,10 +8,9 @@ if (!fs.existsSync(filePath)) {
   process.exit(2);
 }
 
-let src = fs.readFileSync(filePath, 'utf8');
+const src = fs.readFileSync(filePath, 'utf8');
 const EMOJI = '⏳ ';
 
-// Target lines starting with optional indent then `1.3.` number (e.g., '   1.3.1 ...')
 const updated = src.replace(/^([ \t]*)(1\.3\.\d+)([.)]?\s*)(.*)$/gm, (m, indent, num, sep, rest) => {
   const trimmed = rest.trimStart();
   if (trimmed.startsWith(EMOJI)) return `${indent}${num}${sep}${rest}`;
