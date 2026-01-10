@@ -17,6 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup PHP on runner
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+
       - name: Set up Qemu
         uses: docker/setup-qemu-action@v2
 
@@ -114,7 +120,7 @@ jobs:
 
       - name: Run PHPUnit inside wordpress container
         run: |
-          docker exec -u 0 aps_wordpress sh -c "cd /var/www/html && composer install --no-interaction --no-progress || true && vendor/bin/phpunit --configuration phpunit.xml"
+          docker exec -u 0 aps_wordpress sh -c "cd /var/www/html && composer install --no-interaction --no-progress --ignore-platform-reqs || true && vendor/bin/phpunit --configuration phpunit.xml"
         env:
           CI: true
 
