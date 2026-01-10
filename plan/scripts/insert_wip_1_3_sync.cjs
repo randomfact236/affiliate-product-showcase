@@ -9,7 +9,7 @@ if (!fs.existsSync(filePath)) {
 }
 
 let src = fs.readFileSync(filePath, 'utf8');
-const EMOJI = '🛠️ ';
+const EMOJI = '⏳ ';
 
 const updated = src.replace(/^([ \t]*)(1\.3\.\d+)([\s\S]*?)$/gm, (m, indent, num, rest) => {
   // Only target lines that start with the 1.3.x number and don't already contain the emoji
