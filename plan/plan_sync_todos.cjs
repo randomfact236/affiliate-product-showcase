@@ -361,41 +361,35 @@ function mergeState(structure, state) {
     if (!statusByCode[node.code]) statusByCode[node.code] = node.status;
   });
 
-  const addedCodes = (Array.isArray(state.knownCodes) && state.knownCodes.length > 0)
-    ? Array.from(currKnown).filter(c => !prevKnown.has(c))
-    : [];
-
-  for (const added of addedCodes) {
-    let parent = getParentCode(added);
-    while (parent) {
-      if (statusByCode[parent] === 'pending' || statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
-      parent = getParentCode(parent);
-    }
-  }
-
-  const startedCodes = Object.keys(statusByCode).filter(c => statusByCode[c] === 'in-progress');
-  for (const started of startedCodes) {
-    let parent = getParentCode(started);
-    while (parent) {
-      if (statusByCode[parent] === 'completed') statusByCode[parent] = 'in-progress';
-      parent = getParentCode(parent);
-    }
-  }
-
-  function anyDescendantNotCompleted(items) {
-    if (!items || items.length === 0) return false;
-    for (const it of items) {
-      if (statusByCode[it.code] !== 'completed') return true;
-      if (anyDescendantNotCompleted(it.items)) return true;
-    }
-    return false;
-  }
-
+  // Simplified propagation rules (bottom-up):
+  // 1) If ANY child is `in-progress` -> parent becomes `in-progress`
+  // 2) If ALL children are `completed` -> parent becomes `completed`
+  // Build a list of nodes and process deepest-first so parents reflect child states.
+  const allNodes = [];
   walkPlan(structure, node => {
+    if (node && node.code) allNodes.push(node);
+  });
+
+  // Sort by depth descending (deepest first)
+  allNodes.sort((a, b) => getLevel(b.code) - getLevel(a.code));
+
+  for (const node of allNodes) {
     const children = node.kind === 'step' ? node.topics : (node.items || []);
-    if (statusByCode[node.code] === 'completed' && anyDescendantNotCompleted(children)) {
+    if (!children || children.length === 0) continue;
+
+    const childStatuses = children.map(c => statusByCode[c.code] || 'pending');
+    if (childStatuses.some(s => s === 'in-progress')) {
       statusByCode[node.code] = 'in-progress';
+    } else if (childStatuses.length > 0 && childStatuses.every(s => s === 'completed')) {
+      statusByCode[node.code] = 'completed';
     }
+    // otherwise leave parent status as-is
+  }
+
+  // Apply propagated statuses back onto nodes so rendering/markers match.
+  walkPlan(structure, node => {
+    const s = statusByCode[node.code];
+    node.status = VALID_STATUSES.has(s) ? s : 'pending';
   });
 
   state.generatedBy = 'plan/plan_sync_todos.cjs';
@@ -406,38 +400,17 @@ function mergeState(structure, state) {
 }
 
 function deriveMarkers(structure) {
-  function deriveNode(node, inheritedInProgress) {
-    const children = node.kind === 'step' ? node.topics : (node.items || []);
-    const currentInherited = !!inheritedInProgress || node.status === 'in-progress';
-    const derivedChildren = (children || []).map(c => deriveNode(c, currentInherited));
-
-    const allChildrenCompleted = (children && children.length > 0)
-      ? derivedChildren.every(c => c.derivedStatus === 'completed')
-      : false;
-
-    const anyCancelled = node.status === 'cancelled' || derivedChildren.some(c => c.derivedStatus === 'cancelled');
-    const anyBlocked = node.status === 'blocked' || derivedChildren.some(c => c.derivedStatus === 'blocked');
-    const anyInProgress = currentInherited || derivedChildren.some(c => c.derivedStatus === 'in-progress');
-    const leafCompleted = (!children || children.length === 0) && node.status === 'completed';
-
-    let derivedStatus = 'pending';
-    if (leafCompleted || allChildrenCompleted) derivedStatus = 'completed';
-    else if (anyCancelled) derivedStatus = 'cancelled';
-    else if (anyBlocked) derivedStatus = 'blocked';
-    else if (anyInProgress) derivedStatus = 'in-progress';
-
+  // Simplified marker mapping: direct status -> marker (no inheritance/derivation)
+  walkPlan(structure, node => {
+    const s = node.status || 'pending';
+    node.derivedStatus = s;
     let marker = '';
-    if (derivedStatus === 'completed') marker = '✅';
-    else if (derivedStatus === 'cancelled') marker = '❌';
-    else if (derivedStatus === 'blocked') marker = '⛔';
-    else if (derivedStatus === 'in-progress') marker = '⏳';
-
-    node.derivedStatus = derivedStatus;
+    if (s === 'completed') marker = '✅';
+    else if (s === 'in-progress') marker = '⏳';
+    else if (s === 'cancelled') marker = '❌';
+    else if (s === 'blocked') marker = '⛔';
     node.marker = marker;
-    return { derivedStatus, marker };
-  }
-
-  for (const step of structure.steps) deriveNode(step, false);
+  });
 }
 
 function renderHeader(opts, checksum) {

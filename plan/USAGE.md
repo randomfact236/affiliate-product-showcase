@@ -36,8 +36,6 @@ Common workflows
  3. `node plan/plan_sync_todos.cjs --validate --fix-missing --apply`
  4. Commit with `PLAN_GENERATOR=1` set.
 
-- Run the test harness locally (recommended before pushing large generator changes):
-  - `node plan/test_plan_generator.cjs`
 
 Exit codes
 - `0` — Success (no blocking validation errors).

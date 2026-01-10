@@ -245,10 +245,10 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.118 assets/images/banner-1544x500.png
     - ✅ 1.2.119 assets/images/screenshot-*.png
     - ✅ 1.2.120 assets/images/placeholder-product.png
-    - ⏳ 1.2.121 assets/fonts/ – optional custom fonts folder
+   - 1.2.121 assets/fonts/ – optional custom fonts folder
     - ✅ 1.2.122 Testing & Quality Assurance
     - ✅ 1.2.123 tests/bootstrap.php
-    - ⏳ 1.2.124 tests/wp-tests-config.php – gitignored
+   - 1.2.124 tests/wp-tests-config.php – gitignored
     - ✅ 1.2.125 tests/unit/test-product-service.php
     - ✅ 1.2.126 tests/integration/test-rest-endpoints.php
     - ✅ 1.2.127 tests/fixtures/sample-products.php
@@ -264,8 +264,8 @@ Legend: ✅ completed · ❌ cancelled · ⛔ blocked · ⏳ in-progress
     - ✅ 1.2.137 docs/cli-commands.md
     - ✅ 1.2.138 Continuous Integration & Automation
     - ✅ 1.2.139 .github/workflows/ci.yml – PHPCS + PHPUnit + Frontend lint/build pipeline
-    - ⏳ 1.2.140 Composer Dependencies
-    - ⏳ 1.2.141 vendor/ – gitignored
+   - 1.2.140 Composer Dependencies
+   - 1.2.141 vendor/ – gitignored
     - ✅ 1.2.142 src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)
     - ✅ 1.2.143 src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)
     - ✅ 1.2.144 tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)
