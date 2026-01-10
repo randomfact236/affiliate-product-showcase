@@ -2117,49 +2117,49 @@
       "code": "1.2.142",
       "kind": "item",
       "title": "src/Assets/Manifest.php – WordPress manifest generator (reads `assets/dist/manifest.json`)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.143",
       "kind": "item",
       "title": "src/Assets/SRI.php – Asset hashing / SRI (reads `assets/dist/sri.json`)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.144",
       "kind": "item",
       "title": "tools/compress.js (or `package.json` script) – Compression (precompress `.gz` / `.br` in `assets/dist/`)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.145",
       "kind": "item",
       "title": "vite.config.js / package.json#scripts – Bundle analyzer (on-demand via `vite-plugin-visualizer`)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.146",
       "kind": "item",
       "title": "tsconfig.json / package.json#scripts – Type checking (CI `tsc --noEmit`)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.147",
       "kind": "item",
       "title": "vite.config.js – Build integration notes (manifest, SRI, analyzer, compression hooks)",
-      "status": "pending",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.3",
