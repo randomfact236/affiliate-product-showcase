@@ -395,7 +395,8 @@ function mergeState(structure, state) {
   state.generatedBy = 'plan/plan_sync_todos.cjs';
   state.statusByCode = statusByCode;
   state.knownCodes = Array.from(currKnown);
-  state.lastSyncAt = new Date().toISOString();
+  // `lastSyncAt` is managed by the caller to avoid timestamp churn when
+  // generated files haven't actually changed.
   return state;
 }
 
@@ -628,7 +629,7 @@ function main() {
 
   const mergedState = mergeState(parsed, state);
   deriveMarkers(parsed);
-  saveJsonPretty(args.state, mergedState);
+  // Do not persist `lastSyncAt` yet — update it only when generated outputs change.
 
   const checksum = sha1(sourceMd);
   const header = renderHeader(args, checksum).join('\n');
@@ -657,12 +658,33 @@ function main() {
     process.exit(0);
   }
 
+  // Read previous outputs so we can decide whether the generated files
+  // actually changed. Only update `lastSyncAt` when something differs.
+  const prevPlan = readUtf8IfExists(args.outPlan) || '';
+  const prevTodoMd = readUtf8IfExists(args.outTodoMd) || '';
+  const prevTodoJson = readUtf8IfExists(args.outTodoJson) || '';
+
   writeUtf8(args.outPlan, planMd);
   writeUtf8(args.outTodoMd, todoMd);
   saveJsonPretty(args.outTodoJson, renderTodoJson(parsed));
 
   // Ensure generated markdown matches CI formatting expectations.
   formatGeneratedMarkdownFiles([args.outPlan, args.outTodoMd], args.quiet);
+
+  // Read new outputs and compare to previous contents.
+  const newPlan = readUtf8IfExists(args.outPlan) || '';
+  const newTodoMd = readUtf8IfExists(args.outTodoMd) || '';
+  const newTodoJson = readUtf8IfExists(args.outTodoJson) || '';
+
+  if (prevPlan !== newPlan || prevTodoMd !== newTodoMd || prevTodoJson !== newTodoJson) {
+    mergedState.lastSyncAt = new Date().toISOString();
+  } else {
+    mergedState.lastSyncAt = (state && state.lastSyncAt) ? state.lastSyncAt : null;
+  }
+
+  // Persist state after deciding on lastSyncAt so timestamps only change
+  // when generated outputs actually differ.
+  saveJsonPretty(args.state, mergedState);
 
   if (!args.quiet) {
     console.log('✅ Sync complete');
