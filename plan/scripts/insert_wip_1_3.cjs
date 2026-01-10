@@ -1,5 +1,7 @@
-#!/usr/bin/env node
 const fs = require('fs');
+// Note: shebang removed for Windows/Node compatibility in this repo environment
+// Run with: `node plan/scripts/insert_wip_1_3.cjs`
+const path = require('path');
 const path = require('path');
 
 const filePath = path.join(process.cwd(), 'plan', 'plan_source.md');
