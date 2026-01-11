@@ -2557,1257 +2557,1257 @@
       "code": "1.5",
       "kind": "topic",
       "title": "NPM Configuration & package.json Checklist — package.json and lockfiles",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1",
       "kind": "item",
       "title": "Implementation Checklist - Basic Metadata",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.1",
       "kind": "item",
       "title": "Field: `name` - value: \"affiliate-product-showcase\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.2",
       "kind": "item",
       "title": "Field: `version` - value: \"1.0.0\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.3",
       "kind": "item",
       "title": "Field: `description` - value: \"Affiliate Product Showcase — admin UI built with Vite, React, TypeScript and Tailwind for WordPress\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.4",
       "kind": "item",
       "title": "Field: `private` - value: true",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.5",
       "kind": "item",
       "title": "Field: `license` - value: \"GPL-2.0-or-later\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.6",
       "kind": "item",
       "title": "Field: `author` - value: \"Your Name <you@example.com>\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.7",
       "kind": "item",
       "title": "Field: `homepage` - value: project homepage or repo README URL",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.8",
       "kind": "item",
       "title": "Field: `repository` - value: `{ type: \"git\", url: \"https://github.com/your-org/affiliate-product-showcase.git\" }`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.9",
       "kind": "item",
       "title": "Field: `bugs` - value: repo issues URL (optional)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.10",
       "kind": "item",
       "title": "Field: `keywords` - value: [ \"wordpress\", \"plugin\", \"vite\", \"react\", \"typescript\", \"tailwind\" ]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.11",
       "kind": "item",
       "title": "Field: `main` - value: \"index.js\" or plugin bootstrap entry (kept for packaging)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.12",
       "kind": "item",
       "title": "Field: `files` - value: [ \"dist/\", \"build/\", \"src/\", \"languages/\", \"readme.txt\", \"readme.html\", \"index.php\" ]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.13",
       "kind": "item",
       "title": "Field: `sideEffects` - value: false (see decisions)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.1.14",
       "kind": "item",
       "title": "Field: `engines` - value: `{ \"node\": \">=18.0.0\", \"npm\": \">=9.0.0\" }`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.2",
       "kind": "item",
       "title": "Implementation Checklist - Policy & Constraints (project requirements)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.2.1",
       "kind": "item",
       "title": "Policy: All versions use caret ranges (`^`) for `dependencies` and `devDependencies`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.2.2",
       "kind": "item",
       "title": "Policy: Offline / no-CDN operation — no runtime asset loading from external URLs (no unpkg/jsDelivr/CDN fonts/icons).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.2.3",
       "kind": "item",
       "title": "Policy: Bundle all JS/CSS locally via Vite output; PHP enqueues only local files from `dist/` (and/or `assets/dist/`).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.2.4",
       "kind": "item",
       "title": "Policy: Avoid deps or build steps that download binaries at install-time unless strictly necessary.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.3",
       "kind": "item",
       "title": "Implementation Checklist - Required Top-level Fields (explicitly present)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.3.1",
       "kind": "item",
       "title": "Field: `scripts` - value: includes `dev`, `build`, `preview`, `lint`, `format`, `type-check`, `clean` (plus optional `prepare`).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.3.2",
       "kind": "item",
       "title": "Field: `dependencies` - value: runtime packages list below.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.3.3",
       "kind": "item",
       "title": "Field: `devDependencies` - value: build/lint/tooling packages list below.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4",
       "kind": "item",
       "title": "Implementation Checklist - Production Dependencies (runtime)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.1",
       "kind": "item",
       "title": "Package: `react` - version: `^18.x.x` - purpose: UI library for admin React UI",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.2",
       "kind": "item",
       "title": "Package: `react-dom` - version: `^18.x.x` - purpose: DOM renderer for React",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.3",
       "kind": "item",
       "title": "Package: `@wordpress/element` - version: `^x.x.x` - purpose: WP-compatible React abstraction (use when integrating with WP packages)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.4",
       "kind": "item",
       "title": "Package: `@wordpress/components` - version: `^x.x.x` - purpose: WP UI components for consistency with WP admin",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.5",
       "kind": "item",
       "title": "Package: `@wordpress/api-fetch` - version: `^x.x.x` - purpose: interact with WP REST API (auth, nonce handling)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.6",
       "kind": "item",
       "title": "Package: `@wordpress/i18n` - version: `^x.x.x` - purpose: translations and localization helpers",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.7",
       "kind": "item",
       "title": "Package: `@wordpress/data` - version: `^x.x.x` - purpose: centralized state management (optional)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.8",
       "kind": "item",
       "title": "Package: `@wordpress/hooks` - version: `^x.x.x` - purpose: WP-style hooks/pubsub utilities",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.9",
       "kind": "item",
       "title": "Package: `@heroicons/react` - version: `^x.x.x` - purpose: optional icon set for UI",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.4.10",
       "kind": "item",
       "title": "Package: `clsx` - version: `^1.x.x` - purpose: helper for conditional classNames",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5",
       "kind": "item",
       "title": "Implementation Checklist - Development Dependencies (build-time)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.1",
       "kind": "item",
       "title": "Package: `vite` - version: `^5.x.x` - purpose: dev server and bundler (Vite 5)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.2",
       "kind": "item",
       "title": "Package: `typescript` - version: `^5.x.x` - purpose: type checking and TS compilation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.3",
       "kind": "item",
       "title": "Package: `tailwindcss` - version: `^3.4.x` - purpose: utility-first CSS framework",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.4",
       "kind": "item",
       "title": "Package: `postcss` - version: `^8.x.x` - purpose: PostCSS runner",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.5",
       "kind": "item",
       "title": "Package: `postcss-import` - version: `^x.x.x` - purpose: allow `@import` in PostCSS",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.6",
       "kind": "item",
       "title": "Package: `postcss-nested` - version: `^x.x.x` - purpose: nested CSS rules support",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.7",
       "kind": "item",
       "title": "Package: `autoprefixer` - version: `^10.x.x` - purpose: vendor prefixing for CSS",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.8",
       "kind": "item",
       "title": "Package: `eslint` - version: `^8.x.x` - purpose: linting JS/TS",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.9",
       "kind": "item",
       "title": "Package: `@wordpress/eslint-plugin` - version: `^x.x.x` - purpose: WP-specific lint rules",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.10",
       "kind": "item",
       "title": "Package: `@typescript-eslint/parser` - version: `^6.x.x` - purpose: parse TS for ESLint",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.11",
       "kind": "item",
       "title": "Package: `@typescript-eslint/eslint-plugin` - version: `^6.x.x` - purpose: TS-specific lint rules",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.12",
       "kind": "item",
       "title": "Package: `eslint-config-prettier` - version: `^x.x.x` - purpose: disable formatting rules conflicting with Prettier",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.13",
       "kind": "item",
       "title": "Package: `eslint-plugin-prettier` - version: `^x.x.x` - purpose: run Prettier as ESLint rule (optional)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.14",
       "kind": "item",
       "title": "Package: `eslint-plugin-react` - version: `^7.x.x` - purpose: React-specific lint rules",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.15",
       "kind": "item",
       "title": "Package: `eslint-plugin-react-hooks` - version: `^4.x.x` - purpose: React hooks lint rules",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.16",
       "kind": "item",
       "title": "Package: `prettier` - version: `^3.x.x` or `^2.x.x` (verify stable) - purpose: code formatting",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.17",
       "kind": "item",
       "title": "Package: `stylelint` - version: `^15.x.x` - purpose: CSS linting",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.18",
       "kind": "item",
       "title": "Package: `stylelint-config-standard` - version: `^33.x.x` - purpose: base stylelint rules",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.19",
       "kind": "item",
       "title": "Package: `stylelint-config-tailwindcss` - version: `^0.x.x` or latest compatible - purpose: Tailwind-aware linting",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.20",
       "kind": "item",
       "title": "Package: `rimraf` - version: `^5.x.x` - purpose: cross-platform rm -rf for `clean`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.21",
       "kind": "item",
       "title": "Package: `concurrently` - version: `^8.x.x` - purpose: run multiple scripts locally (if needed)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.22",
       "kind": "item",
       "title": "Package: `cross-env` - version: `^7.x.x` - purpose: set env vars cross-platform in scripts",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.23",
       "kind": "item",
       "title": "Package: `vite-plugin-checker` - version: `^x.x.x` - purpose: run type-checking / diagnostics in Vite dev",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.24",
       "kind": "item",
       "title": "Package: `@types.react` - version: `^18.x.x` - purpose: TypeScript types for React",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.5.25",
       "kind": "item",
       "title": "Package: `@types.react-dom` - version: `^18.x.x` - purpose: TypeScript types for ReactDOM",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6",
       "kind": "item",
       "title": "Implementation Checklist - Scripts",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.1",
       "kind": "item",
       "title": "Script: `dev` - command: `cross-env NODE_ENV=development vite` - purpose: start Vite dev server with HMR",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.2",
       "kind": "item",
       "title": "Script: `build` - command: `cross-env NODE_ENV=production vite build` - purpose: produce production `dist/` assets and manifest",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.3",
       "kind": "item",
       "title": "Script: `preview` - command: `cross-env NODE_ENV=production vite preview --port 5173` - purpose: locally preview built assets",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.4",
       "kind": "item",
       "title": "Script: `clean` - command: `rimraf dist build .vite .turbo` - purpose: remove build outputs and caches",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.5",
       "kind": "item",
       "title": "Script: `type-check` - command: `tsc --noEmit` - purpose: run full TypeScript check",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.6",
       "kind": "item",
       "title": "Script: `lint` - command: `eslint --max-warnings=0 \"src/**/*.{ts,tsx,js,jsx}\"` - purpose: enforce linting rules and fail on warnings",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.7",
       "kind": "item",
       "title": "Script: `format` - command: `prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,md,json}\"` - purpose: format codebase",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.8",
       "kind": "item",
       "title": "Script: `prepare` - command: `npm run build` or `node ./scripts/prepare-dist.js` - purpose: produce artifacts for packaging",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.6.9",
       "kind": "item",
       "title": "Script: `check` (optional) - command: `concurrently \"npm:dev\" \"npm:watch:types\"` - purpose: run multiple watchers during dev (if desired)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7",
       "kind": "item",
       "title": "Implementation Checklist - Configuration Fields",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.1",
       "kind": "item",
       "title": "Field: `engines.node` - value: \">=18.0.0\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.2",
       "kind": "item",
       "title": "Field: `engines.npm` - value: \">=9.0.0\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.3",
       "kind": "item",
       "title": "Field: `files` - value: [ \"dist/\", \"build/\", \"src/\", \"languages/\", \"readme.txt\", \"readme.html\", \"index.php\" ]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.4",
       "kind": "item",
       "title": "Field: `sideEffects` - value: false (list global CSS files in `sideEffects` if needed)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.5",
       "kind": "item",
       "title": "Field: `repository` - value: as above",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.6",
       "kind": "item",
       "title": "Field: `bugs` - value: repo issues URL (optional)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.7",
       "kind": "item",
       "title": "Field: `keywords` - value: as above",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.8",
       "kind": "item",
       "title": "Field: `homepage` - value: repo or plugin page",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.9",
       "kind": "item",
       "title": "Field: `private` - value: true",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.10",
       "kind": "item",
       "title": "Field: `license` - value: \"GPL-2.0-or-later\"",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.7.11",
       "kind": "item",
       "title": "Field: `author` - value: as above",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8",
       "kind": "item",
       "title": "Implementation Checklist - Excluded Packages (commented placeholders)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8.1",
       "kind": "item",
       "title": "Comment: Testing stack — `vitest`, `@testing-library/react`, `@testing-library/jest-dom` — add when implementing unit/DOM tests; recommended versions to be chosen when opting into testing.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8.2",
       "kind": "item",
       "title": "Comment: Git hooks — `husky`, `lint-staged` — add when enabling pre-commit checks; only add if you want local commit-time formatting/linting.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8.3",
       "kind": "item",
       "title": "Comment: Bundle analysis — `rollup-plugin-visualizer`, `vite-plugin-visualizer` — add temporarily to analyze bundle size during optimization.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8.4",
       "kind": "item",
       "title": "Comment: Tailwind plugins — `@tailwindcss/forms`, `@tailwindcss/typography`, `@tailwindcss/aspect-ratio` — add only when those features are required.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.8.5",
       "kind": "item",
       "title": "Comment: Optional testing CI helpers — `playwright`, `cypress` — add when adding e2e tests.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9",
       "kind": "item",
       "title": "Version Verification (process items)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.1",
       "kind": "item",
       "title": "Verify `dist-tags.latest` for each package on npmjs.org (or via `npm view <pkg> dist-tags.latest`) and record the version (stable) as of Jan 2026.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.2",
       "kind": "item",
       "title": "Confirm `vite@^5.x` compatibility with chosen `vite-plugin-checker` version.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.3",
       "kind": "item",
       "title": "Confirm `typescript@^5.x` compatibility with `@types.react` and `@types.react-dom`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.4",
       "kind": "item",
       "title": "Confirm `prettier` major version compatibility with ESLint plugins and `eslint-config-prettier`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.5",
       "kind": "item",
       "title": "Confirm `stylelint-config-tailwindcss` compatibility with chosen `tailwindcss@3.4.x`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.6",
       "kind": "item",
       "title": "Ensure no peerDependency conflicts between `@wordpress/*` packages and React major version (use WP packages that support React 18).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.9.7",
       "kind": "item",
       "title": "Record all verified versions into a draft `package.json` before running `npm install`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10",
       "kind": "item",
       "title": "Version Verification (per-package checklist)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.1",
       "kind": "item",
       "title": "Verify stable version: `react` (React 18 line)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.2",
       "kind": "item",
       "title": "Verify stable version: `react-dom` (React 18 line)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.3",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/element`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.4",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/components`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.5",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/api-fetch`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.6",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/i18n`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.7",
       "kind": "item",
       "title": "Verify stable version: `@wordpress.data`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.8",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/hooks`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.9",
       "kind": "item",
       "title": "Verify stable version: `@heroicons/react`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.10",
       "kind": "item",
       "title": "Verify stable version: `clsx`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.11",
       "kind": "item",
       "title": "Verify stable version: `vite` (Vite 5 line)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.12",
       "kind": "item",
       "title": "Verify stable version: `typescript`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.13",
       "kind": "item",
       "title": "Verify stable version: `tailwindcss` (3.4 line)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.14",
       "kind": "item",
       "title": "Verify stable version: `postcss`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.15",
       "kind": "item",
       "title": "Verify stable version: `postcss-import`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.16",
       "kind": "item",
       "title": "Verify stable version: `postcss-nested`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.17",
       "kind": "item",
       "title": "Verify stable version: `autoprefixer`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.18",
       "kind": "item",
       "title": "Verify stable version: `eslint`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.19",
       "kind": "item",
       "title": "Verify stable version: `@wordpress/eslint-plugin`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.20",
       "kind": "item",
       "title": "Verify stable version: `@typescript-eslint/parser`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.21",
       "kind": "item",
       "title": "Verify stable version: `@typescript-eslint/eslint-plugin`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.22",
       "kind": "item",
       "title": "Verify stable version: `eslint-config-prettier`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.23",
       "kind": "item",
       "title": "Verify stable version: `eslint-plugin-prettier`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.24",
       "kind": "item",
       "title": "Verify stable version: `eslint-plugin-react`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.25",
       "kind": "item",
       "title": "Verify stable version: `eslint-plugin-react-hooks`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.26",
       "kind": "item",
       "title": "Verify stable version: `prettier`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.27",
       "kind": "item",
       "title": "Verify stable version: `stylelint`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.28",
       "kind": "item",
       "title": "Verify stable version: `stylelint-config-standard`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.29",
       "kind": "item",
       "title": "Verify stable version: `stylelint-config-tailwindcss`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.30",
       "kind": "item",
       "title": "Verify stable version: `rimraf`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.31",
       "kind": "item",
       "title": "Verify stable version: `concurrently`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.32",
       "kind": "item",
       "title": "Verify stable version: `cross-env`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.33",
       "kind": "item",
       "title": "Verify stable version: `vite-plugin-checker`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.34",
       "kind": "item",
       "title": "Verify stable version: `@types.react` (match React 18)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.10.35",
       "kind": "item",
       "title": "Verify stable version: `@types.react-dom` (match React 18)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.11",
       "kind": "item",
       "title": "Summary answers (after checklist) -  Total count of checklist items",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.11.1",
       "kind": "item",
       "title": "58 actionable checklist lines (checkboxes) across all sections.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.12",
       "kind": "item",
       "title": "Summary answers (after checklist) -  Estimated time to implement (assuming versions verified)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.12.1",
       "kind": "item",
       "title": "Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.12.2",
       "kind": "item",
       "title": "Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.12.3",
       "kind": "item",
       "title": "Verification, testing, and fixing peer conflicts: additional 1–2 hours.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13",
       "kind": "item",
       "title": "Summary answers (after checklist) -  Potential version conflicts or compatibility issues to watch for",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.1",
       "kind": "item",
       "title": "`@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.2",
       "kind": "item",
       "title": "`vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.3",
       "kind": "item",
       "title": "`prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.4",
       "kind": "item",
       "title": "`stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.5",
       "kind": "item",
       "title": "`postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.13.6",
       "kind": "item",
       "title": "TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14",
       "kind": "item",
       "title": "Summary answers (after checklist) -  Recommended order of implementation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.1",
       "kind": "item",
       "title": "Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.2",
       "kind": "item",
       "title": "Step 2: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.3",
       "kind": "item",
       "title": "Step 3: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.4",
       "kind": "item",
       "title": "Step 4: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.5",
       "kind": "item",
       "title": "Step 5: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.6",
       "kind": "item",
       "title": "Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.7",
       "kind": "item",
       "title": "Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.8",
       "kind": "item",
       "title": "Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.5.14.9",
       "kind": "item",
       "title": "Step 9: Run bundle analysis and optimize if needed.",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6",
