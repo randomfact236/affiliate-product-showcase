@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 5722772ea38266c488c0e88d38f114c094e8f78b -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 64c5940602f57ad10941502a4439126ad1a1af47 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -346,163 +346,163 @@
    ✅ 1.4.23 Dev require: `automattic/vipwpcs ^3.0` (Optional)
    ✅ 1.4.24 Exclude vendor-dir from packaging (Optional)
 
-## 1.5 NPM Configuration & package.json Checklist — package.json and lockfiles
-### 1.5.1 Implementation Checklist - Basic Metadata
-      1.5.1.1 Field: `name` - value: "affiliate-product-showcase"
-      1.5.1.2 Field: `version` - value: "1.0.0"
-      1.5.1.3 Field: `description` - value: "Affiliate Product Showcase — admin UI built with Vite, React, TypeScript and Tailwind for WordPress"
-      1.5.1.4 Field: `private` - value: true
-      1.5.1.5 Field: `license` - value: "GPL-2.0-or-later"
-      1.5.1.6 Field: `author` - value: "Your Name <you@example.com>"
-      1.5.1.7 Field: `homepage` - value: project homepage or repo README URL
-      1.5.1.8 Field: `repository` - value: `{ type: "git", url: "https://github.com/your-org/affiliate-product-showcase.git" }`
-      1.5.1.9 Field: `bugs` - value: repo issues URL (optional)
-      1.5.1.10 Field: `keywords` - value: [ "wordpress", "plugin", "vite", "react", "typescript", "tailwind" ]
-      1.5.1.11 Field: `main` - value: "index.js" or plugin bootstrap entry (kept for packaging)
-      1.5.1.12 Field: `files` - value: [ "dist/", "build/", "src/", "languages/", "readme.txt", "readme.html", "index.php" ]
-      1.5.1.13 Field: `sideEffects` - value: false (see decisions)
-      1.5.1.14 Field: `engines` - value: `{ "node": ">=18.0.0", "npm": ">=9.0.0" }`
-### 1.5.2 Implementation Checklist - Policy & Constraints (project requirements)
-      1.5.2.1 Policy: All versions use caret ranges (`^`) for `dependencies` and `devDependencies`.
-      1.5.2.2 Policy: Offline / no-CDN operation — no runtime asset loading from external URLs (no unpkg/jsDelivr/CDN fonts/icons).
-      1.5.2.3 Policy: Bundle all JS/CSS locally via Vite output; PHP enqueues only local files from `dist/` (and/or `assets/dist/`).
-      1.5.2.4 Policy: Avoid deps or build steps that download binaries at install-time unless strictly necessary.
-### 1.5.3 Implementation Checklist - Required Top-level Fields (explicitly present)
-      1.5.3.1 Field: `scripts` - value: includes `dev`, `build`, `preview`, `lint`, `format`, `type-check`, `clean` (plus optional `prepare`).
-      1.5.3.2 Field: `dependencies` - value: runtime packages list below.
-      1.5.3.3 Field: `devDependencies` - value: build/lint/tooling packages list below.
-### 1.5.4 Implementation Checklist - Production Dependencies (runtime)
-      1.5.4.1 Package: `react` - version: `^18.x.x` - purpose: UI library for admin React UI
-      1.5.4.2 Package: `react-dom` - version: `^18.x.x` - purpose: DOM renderer for React
-      1.5.4.3 Package: `@wordpress/element` - version: `^x.x.x` - purpose: WP-compatible React abstraction (use when integrating with WP packages)
-      1.5.4.4 Package: `@wordpress/components` - version: `^x.x.x` - purpose: WP UI components for consistency with WP admin
-      1.5.4.5 Package: `@wordpress/api-fetch` - version: `^x.x.x` - purpose: interact with WP REST API (auth, nonce handling)
-      1.5.4.6 Package: `@wordpress/i18n` - version: `^x.x.x` - purpose: translations and localization helpers
-      1.5.4.7 Package: `@wordpress/data` - version: `^x.x.x` - purpose: centralized state management (optional)
-      1.5.4.8 Package: `@wordpress/hooks` - version: `^x.x.x` - purpose: WP-style hooks/pubsub utilities
-      1.5.4.9 Package: `@heroicons/react` - version: `^x.x.x` - purpose: optional icon set for UI
-      1.5.4.10 Package: `clsx` - version: `^1.x.x` - purpose: helper for conditional classNames
-### 1.5.5 Implementation Checklist - Development Dependencies (build-time)
-      1.5.5.1 Package: `vite` - version: `^5.x.x` - purpose: dev server and bundler (Vite 5)
-      1.5.5.2 Package: `typescript` - version: `^5.x.x` - purpose: type checking and TS compilation
-      1.5.5.3 Package: `tailwindcss` - version: `^3.4.x` - purpose: utility-first CSS framework
-      1.5.5.4 Package: `postcss` - version: `^8.x.x` - purpose: PostCSS runner
-      1.5.5.5 Package: `postcss-import` - version: `^x.x.x` - purpose: allow `@import` in PostCSS
-      1.5.5.6 Package: `postcss-nested` - version: `^x.x.x` - purpose: nested CSS rules support
-      1.5.5.7 Package: `autoprefixer` - version: `^10.x.x` - purpose: vendor prefixing for CSS
-      1.5.5.8 Package: `eslint` - version: `^8.x.x` - purpose: linting JS/TS
-      1.5.5.9 Package: `@wordpress/eslint-plugin` - version: `^x.x.x` - purpose: WP-specific lint rules
-      1.5.5.10 Package: `@typescript-eslint/parser` - version: `^6.x.x` - purpose: parse TS for ESLint
-      1.5.5.11 Package: `@typescript-eslint/eslint-plugin` - version: `^6.x.x` - purpose: TS-specific lint rules
-      1.5.5.12 Package: `eslint-config-prettier` - version: `^x.x.x` - purpose: disable formatting rules conflicting with Prettier
-      1.5.5.13 Package: `eslint-plugin-prettier` - version: `^x.x.x` - purpose: run Prettier as ESLint rule (optional)
-      1.5.5.14 Package: `eslint-plugin-react` - version: `^7.x.x` - purpose: React-specific lint rules
-      1.5.5.15 Package: `eslint-plugin-react-hooks` - version: `^4.x.x` - purpose: React hooks lint rules
-      1.5.5.16 Package: `prettier` - version: `^3.x.x` or `^2.x.x` (verify stable) - purpose: code formatting
-      1.5.5.17 Package: `stylelint` - version: `^15.x.x` - purpose: CSS linting
-      1.5.5.18 Package: `stylelint-config-standard` - version: `^33.x.x` - purpose: base stylelint rules
-      1.5.5.19 Package: `stylelint-config-tailwindcss` - version: `^0.x.x` or latest compatible - purpose: Tailwind-aware linting
-      1.5.5.20 Package: `rimraf` - version: `^5.x.x` - purpose: cross-platform rm -rf for `clean`
-      1.5.5.21 Package: `concurrently` - version: `^8.x.x` - purpose: run multiple scripts locally (if needed)
-      1.5.5.22 Package: `cross-env` - version: `^7.x.x` - purpose: set env vars cross-platform in scripts
-      1.5.5.23 Package: `vite-plugin-checker` - version: `^x.x.x` - purpose: run type-checking / diagnostics in Vite dev
-      1.5.5.24 Package: `@types.react` - version: `^18.x.x` - purpose: TypeScript types for React
-      1.5.5.25 Package: `@types.react-dom` - version: `^18.x.x` - purpose: TypeScript types for ReactDOM
-### 1.5.6 Implementation Checklist - Scripts
-      1.5.6.1 Script: `dev` - command: `cross-env NODE_ENV=development vite` - purpose: start Vite dev server with HMR
-      1.5.6.2 Script: `build` - command: `cross-env NODE_ENV=production vite build` - purpose: produce production `dist/` assets and manifest
-      1.5.6.3 Script: `preview` - command: `cross-env NODE_ENV=production vite preview --port 5173` - purpose: locally preview built assets
-      1.5.6.4 Script: `clean` - command: `rimraf dist build .vite .turbo` - purpose: remove build outputs and caches
-      1.5.6.5 Script: `type-check` - command: `tsc --noEmit` - purpose: run full TypeScript check
-      1.5.6.6 Script: `lint` - command: `eslint --max-warnings=0 "src/**/*.{ts,tsx,js,jsx}"` - purpose: enforce linting rules and fail on warnings
-      1.5.6.7 Script: `format` - command: `prettier --write "src/**/*.{ts,tsx,js,jsx,css,scss,md,json}"` - purpose: format codebase
-      1.5.6.8 Script: `prepare` - command: `npm run build` or `node ./scripts/prepare-dist.js` - purpose: produce artifacts for packaging
-      1.5.6.9 Script: `check` (optional) - command: `concurrently "npm:dev" "npm:watch:types"` - purpose: run multiple watchers during dev (if desired)
-### 1.5.7 Implementation Checklist - Configuration Fields
-      1.5.7.1 Field: `engines.node` - value: ">=18.0.0"
-      1.5.7.2 Field: `engines.npm` - value: ">=9.0.0"
-      1.5.7.3 Field: `files` - value: [ "dist/", "build/", "src/", "languages/", "readme.txt", "readme.html", "index.php" ]
-      1.5.7.4 Field: `sideEffects` - value: false (list global CSS files in `sideEffects` if needed)
-      1.5.7.5 Field: `repository` - value: as above
-      1.5.7.6 Field: `bugs` - value: repo issues URL (optional)
-      1.5.7.7 Field: `keywords` - value: as above
-      1.5.7.8 Field: `homepage` - value: repo or plugin page
-      1.5.7.9 Field: `private` - value: true
-      1.5.7.10 Field: `license` - value: "GPL-2.0-or-later"
-      1.5.7.11 Field: `author` - value: as above
-### 1.5.8 Implementation Checklist - Excluded Packages (commented placeholders)
-      1.5.8.1 Comment: Testing stack — `vitest`, `@testing-library/react`, `@testing-library/jest-dom` — add when implementing unit/DOM tests; recommended versions to be chosen when opting into testing.
-      1.5.8.2 Comment: Git hooks — `husky`, `lint-staged` — add when enabling pre-commit checks; only add if you want local commit-time formatting/linting.
-      1.5.8.3 Comment: Bundle analysis — `rollup-plugin-visualizer`, `vite-plugin-visualizer` — add temporarily to analyze bundle size during optimization.
-      1.5.8.4 Comment: Tailwind plugins — `@tailwindcss/forms`, `@tailwindcss/typography`, `@tailwindcss/aspect-ratio` — add only when those features are required.
-      1.5.8.5 Comment: Optional testing CI helpers — `playwright`, `cypress` — add when adding e2e tests.
-### 1.5.9 Version Verification (process items)
-      1.5.9.1 Verify `dist-tags.latest` for each package on npmjs.org (or via `npm view <pkg> dist-tags.latest`) and record the version (stable) as of Jan 2026.
-      1.5.9.2 Confirm `vite@^5.x` compatibility with chosen `vite-plugin-checker` version.
-      1.5.9.3 Confirm `typescript@^5.x` compatibility with `@types.react` and `@types.react-dom`.
-      1.5.9.4 Confirm `prettier` major version compatibility with ESLint plugins and `eslint-config-prettier`.
-      1.5.9.5 Confirm `stylelint-config-tailwindcss` compatibility with chosen `tailwindcss@3.4.x`.
-      1.5.9.6 Ensure no peerDependency conflicts between `@wordpress/*` packages and React major version (use WP packages that support React 18).
-      1.5.9.7 Record all verified versions into a draft `package.json` before running `npm install`.
-### 1.5.10 Version Verification (per-package checklist)
-      1.5.10.1 Verify stable version: `react` (React 18 line)
-      1.5.10.2 Verify stable version: `react-dom` (React 18 line)
-      1.5.10.3 Verify stable version: `@wordpress/element`
-      1.5.10.4 Verify stable version: `@wordpress/components`
-      1.5.10.5 Verify stable version: `@wordpress/api-fetch`
-      1.5.10.6 Verify stable version: `@wordpress/i18n`
-      1.5.10.7 Verify stable version: `@wordpress.data`
-      1.5.10.8 Verify stable version: `@wordpress/hooks`
-      1.5.10.9 Verify stable version: `@heroicons/react`
-      1.5.10.10 Verify stable version: `clsx`
-      1.5.10.11 Verify stable version: `vite` (Vite 5 line)
-      1.5.10.12 Verify stable version: `typescript`
-      1.5.10.13 Verify stable version: `tailwindcss` (3.4 line)
-      1.5.10.14 Verify stable version: `postcss`
-      1.5.10.15 Verify stable version: `postcss-import`
-      1.5.10.16 Verify stable version: `postcss-nested`
-      1.5.10.17 Verify stable version: `autoprefixer`
-      1.5.10.18 Verify stable version: `eslint`
-      1.5.10.19 Verify stable version: `@wordpress/eslint-plugin`
-      1.5.10.20 Verify stable version: `@typescript-eslint/parser`
-      1.5.10.21 Verify stable version: `@typescript-eslint/eslint-plugin`
-      1.5.10.22 Verify stable version: `eslint-config-prettier`
-      1.5.10.23 Verify stable version: `eslint-plugin-prettier`
-      1.5.10.24 Verify stable version: `eslint-plugin-react`
-      1.5.10.25 Verify stable version: `eslint-plugin-react-hooks`
-      1.5.10.26 Verify stable version: `prettier`
-      1.5.10.27 Verify stable version: `stylelint`
-      1.5.10.28 Verify stable version: `stylelint-config-standard`
-      1.5.10.29 Verify stable version: `stylelint-config-tailwindcss`
-      1.5.10.30 Verify stable version: `rimraf`
-      1.5.10.31 Verify stable version: `concurrently`
-      1.5.10.32 Verify stable version: `cross-env`
-      1.5.10.33 Verify stable version: `vite-plugin-checker`
-      1.5.10.34 Verify stable version: `@types.react` (match React 18)
-      1.5.10.35 Verify stable version: `@types.react-dom` (match React 18)
-### 1.5.11 Summary answers (after checklist) -  Total count of checklist items
-      1.5.11.1 58 actionable checklist lines (checkboxes) across all sections.
-### 1.5.12 Summary answers (after checklist) -  Estimated time to implement (assuming versions verified)
-      1.5.12.1 Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.
-      1.5.12.2 Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.
-      1.5.12.3 Verification, testing, and fixing peer conflicts: additional 1–2 hours.
-### 1.5.13 Summary answers (after checklist) -  Potential version conflicts or compatibility issues to watch for
-      1.5.13.1 `@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).
-      1.5.13.2 `vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.
-      1.5.13.3 `prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.
-      1.5.13.4 `stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.
-      1.5.13.5 `postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.
-      1.5.13.6 TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.
-### 1.5.14 Summary answers (after checklist) -  Recommended order of implementation
-      1.5.14.1 Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
-      1.5.14.2 Step 2: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
-      1.5.14.3 Step 3: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).
-      1.5.14.4 Step 4: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.
-      1.5.14.5 Step 5: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.
-      1.5.14.6 Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.
-      1.5.14.7 Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.
-      1.5.14.8 Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.
-      1.5.14.9 Step9: Run bundle analysis and optimize if needed.
+## ⏳ 1.5 NPM Configuration & package.json Checklist — package.json and lockfiles
+### ⏳ 1.5.1 Implementation Checklist - Basic Metadata
+      ⏳ 1.5.1.1 Field: `name` - value: "affiliate-product-showcase"
+      ⏳ 1.5.1.2 Field: `version` - value: "1.0.0"
+      ⏳ 1.5.1.3 Field: `description` - value: "Affiliate Product Showcase — admin UI built with Vite, React, TypeScript and Tailwind for WordPress"
+      ⏳ 1.5.1.4 Field: `private` - value: true
+      ⏳ 1.5.1.5 Field: `license` - value: "GPL-2.0-or-later"
+      ⏳ 1.5.1.6 Field: `author` - value: "Your Name <you@example.com>"
+      ⏳ 1.5.1.7 Field: `homepage` - value: project homepage or repo README URL
+      ⏳ 1.5.1.8 Field: `repository` - value: `{ type: "git", url: "https://github.com/your-org/affiliate-product-showcase.git" }`
+      ⏳ 1.5.1.9 Field: `bugs` - value: repo issues URL (optional)
+      ⏳ 1.5.1.10 Field: `keywords` - value: [ "wordpress", "plugin", "vite", "react", "typescript", "tailwind" ]
+      ⏳ 1.5.1.11 Field: `main` - value: "index.js" or plugin bootstrap entry (kept for packaging)
+      ⏳ 1.5.1.12 Field: `files` - value: [ "dist/", "build/", "src/", "languages/", "readme.txt", "readme.html", "index.php" ]
+      ⏳ 1.5.1.13 Field: `sideEffects` - value: false (see decisions)
+      ⏳ 1.5.1.14 Field: `engines` - value: `{ "node": ">=18.0.0", "npm": ">=9.0.0" }`
+### ⏳ 1.5.2 Implementation Checklist - Policy & Constraints (project requirements)
+      ⏳ 1.5.2.1 Policy: All versions use caret ranges (`^`) for `dependencies` and `devDependencies`.
+      ⏳ 1.5.2.2 Policy: Offline / no-CDN operation — no runtime asset loading from external URLs (no unpkg/jsDelivr/CDN fonts/icons).
+      ⏳ 1.5.2.3 Policy: Bundle all JS/CSS locally via Vite output; PHP enqueues only local files from `dist/` (and/or `assets/dist/`).
+      ⏳ 1.5.2.4 Policy: Avoid deps or build steps that download binaries at install-time unless strictly necessary.
+### ⏳ 1.5.3 Implementation Checklist - Required Top-level Fields (explicitly present)
+      ⏳ 1.5.3.1 Field: `scripts` - value: includes `dev`, `build`, `preview`, `lint`, `format`, `type-check`, `clean` (plus optional `prepare`).
+      ⏳ 1.5.3.2 Field: `dependencies` - value: runtime packages list below.
+      ⏳ 1.5.3.3 Field: `devDependencies` - value: build/lint/tooling packages list below.
+### ⏳ 1.5.4 Implementation Checklist - Production Dependencies (runtime)
+      ⏳ 1.5.4.1 Package: `react` - version: `^18.x.x` - purpose: UI library for admin React UI
+      ⏳ 1.5.4.2 Package: `react-dom` - version: `^18.x.x` - purpose: DOM renderer for React
+      ⏳ 1.5.4.3 Package: `@wordpress/element` - version: `^x.x.x` - purpose: WP-compatible React abstraction (use when integrating with WP packages)
+      ⏳ 1.5.4.4 Package: `@wordpress/components` - version: `^x.x.x` - purpose: WP UI components for consistency with WP admin
+      ⏳ 1.5.4.5 Package: `@wordpress/api-fetch` - version: `^x.x.x` - purpose: interact with WP REST API (auth, nonce handling)
+      ⏳ 1.5.4.6 Package: `@wordpress/i18n` - version: `^x.x.x` - purpose: translations and localization helpers
+      ⏳ 1.5.4.7 Package: `@wordpress/data` - version: `^x.x.x` - purpose: centralized state management (optional)
+      ⏳ 1.5.4.8 Package: `@wordpress/hooks` - version: `^x.x.x` - purpose: WP-style hooks/pubsub utilities
+      ⏳ 1.5.4.9 Package: `@heroicons/react` - version: `^x.x.x` - purpose: optional icon set for UI
+      ⏳ 1.5.4.10 Package: `clsx` - version: `^1.x.x` - purpose: helper for conditional classNames
+### ⏳ 1.5.5 Implementation Checklist - Development Dependencies (build-time)
+      ⏳ 1.5.5.1 Package: `vite` - version: `^5.x.x` - purpose: dev server and bundler (Vite 5)
+      ⏳ 1.5.5.2 Package: `typescript` - version: `^5.x.x` - purpose: type checking and TS compilation
+      ⏳ 1.5.5.3 Package: `tailwindcss` - version: `^3.4.x` - purpose: utility-first CSS framework
+      ⏳ 1.5.5.4 Package: `postcss` - version: `^8.x.x` - purpose: PostCSS runner
+      ⏳ 1.5.5.5 Package: `postcss-import` - version: `^x.x.x` - purpose: allow `@import` in PostCSS
+      ⏳ 1.5.5.6 Package: `postcss-nested` - version: `^x.x.x` - purpose: nested CSS rules support
+      ⏳ 1.5.5.7 Package: `autoprefixer` - version: `^10.x.x` - purpose: vendor prefixing for CSS
+      ⏳ 1.5.5.8 Package: `eslint` - version: `^8.x.x` - purpose: linting JS/TS
+      ⏳ 1.5.5.9 Package: `@wordpress/eslint-plugin` - version: `^x.x.x` - purpose: WP-specific lint rules
+      ⏳ 1.5.5.10 Package: `@typescript-eslint/parser` - version: `^6.x.x` - purpose: parse TS for ESLint
+      ⏳ 1.5.5.11 Package: `@typescript-eslint/eslint-plugin` - version: `^6.x.x` - purpose: TS-specific lint rules
+      ⏳ 1.5.5.12 Package: `eslint-config-prettier` - version: `^x.x.x` - purpose: disable formatting rules conflicting with Prettier
+      ⏳ 1.5.5.13 Package: `eslint-plugin-prettier` - version: `^x.x.x` - purpose: run Prettier as ESLint rule (optional)
+      ⏳ 1.5.5.14 Package: `eslint-plugin-react` - version: `^7.x.x` - purpose: React-specific lint rules
+      ⏳ 1.5.5.15 Package: `eslint-plugin-react-hooks` - version: `^4.x.x` - purpose: React hooks lint rules
+      ⏳ 1.5.5.16 Package: `prettier` - version: `^3.x.x` or `^2.x.x` (verify stable) - purpose: code formatting
+      ⏳ 1.5.5.17 Package: `stylelint` - version: `^15.x.x` - purpose: CSS linting
+      ⏳ 1.5.5.18 Package: `stylelint-config-standard` - version: `^33.x.x` - purpose: base stylelint rules
+      ⏳ 1.5.5.19 Package: `stylelint-config-tailwindcss` - version: `^0.x.x` or latest compatible - purpose: Tailwind-aware linting
+      ⏳ 1.5.5.20 Package: `rimraf` - version: `^5.x.x` - purpose: cross-platform rm -rf for `clean`
+      ⏳ 1.5.5.21 Package: `concurrently` - version: `^8.x.x` - purpose: run multiple scripts locally (if needed)
+      ⏳ 1.5.5.22 Package: `cross-env` - version: `^7.x.x` - purpose: set env vars cross-platform in scripts
+      ⏳ 1.5.5.23 Package: `vite-plugin-checker` - version: `^x.x.x` - purpose: run type-checking / diagnostics in Vite dev
+      ⏳ 1.5.5.24 Package: `@types.react` - version: `^18.x.x` - purpose: TypeScript types for React
+      ⏳ 1.5.5.25 Package: `@types.react-dom` - version: `^18.x.x` - purpose: TypeScript types for ReactDOM
+### ⏳ 1.5.6 Implementation Checklist - Scripts
+      ⏳ 1.5.6.1 Script: `dev` - command: `cross-env NODE_ENV=development vite` - purpose: start Vite dev server with HMR
+      ⏳ 1.5.6.2 Script: `build` - command: `cross-env NODE_ENV=production vite build` - purpose: produce production `dist/` assets and manifest
+      ⏳ 1.5.6.3 Script: `preview` - command: `cross-env NODE_ENV=production vite preview --port 5173` - purpose: locally preview built assets
+      ⏳ 1.5.6.4 Script: `clean` - command: `rimraf dist build .vite .turbo` - purpose: remove build outputs and caches
+      ⏳ 1.5.6.5 Script: `type-check` - command: `tsc --noEmit` - purpose: run full TypeScript check
+      ⏳ 1.5.6.6 Script: `lint` - command: `eslint --max-warnings=0 "src/**/*.{ts,tsx,js,jsx}"` - purpose: enforce linting rules and fail on warnings
+      ⏳ 1.5.6.7 Script: `format` - command: `prettier --write "src/**/*.{ts,tsx,js,jsx,css,scss,md,json}"` - purpose: format codebase
+      ⏳ 1.5.6.8 Script: `prepare` - command: `npm run build` or `node ./scripts/prepare-dist.js` - purpose: produce artifacts for packaging
+      ⏳ 1.5.6.9 Script: `check` (optional) - command: `concurrently "npm:dev" "npm:watch:types"` - purpose: run multiple watchers during dev (if desired)
+### ⏳ 1.5.7 Implementation Checklist - Configuration Fields
+      ⏳ 1.5.7.1 Field: `engines.node` - value: ">=18.0.0"
+      ⏳ 1.5.7.2 Field: `engines.npm` - value: ">=9.0.0"
+      ⏳ 1.5.7.3 Field: `files` - value: [ "dist/", "build/", "src/", "languages/", "readme.txt", "readme.html", "index.php" ]
+      ⏳ 1.5.7.4 Field: `sideEffects` - value: false (list global CSS files in `sideEffects` if needed)
+      ⏳ 1.5.7.5 Field: `repository` - value: as above
+      ⏳ 1.5.7.6 Field: `bugs` - value: repo issues URL (optional)
+      ⏳ 1.5.7.7 Field: `keywords` - value: as above
+      ⏳ 1.5.7.8 Field: `homepage` - value: repo or plugin page
+      ⏳ 1.5.7.9 Field: `private` - value: true
+      ⏳ 1.5.7.10 Field: `license` - value: "GPL-2.0-or-later"
+      ⏳ 1.5.7.11 Field: `author` - value: as above
+### ⏳ 1.5.8 Implementation Checklist - Excluded Packages (commented placeholders)
+      ⏳ 1.5.8.1 Comment: Testing stack — `vitest`, `@testing-library/react`, `@testing-library/jest-dom` — add when implementing unit/DOM tests; recommended versions to be chosen when opting into testing.
+      ⏳ 1.5.8.2 Comment: Git hooks — `husky`, `lint-staged` — add when enabling pre-commit checks; only add if you want local commit-time formatting/linting.
+      ⏳ 1.5.8.3 Comment: Bundle analysis — `rollup-plugin-visualizer`, `vite-plugin-visualizer` — add temporarily to analyze bundle size during optimization.
+      ⏳ 1.5.8.4 Comment: Tailwind plugins — `@tailwindcss/forms`, `@tailwindcss/typography`, `@tailwindcss/aspect-ratio` — add only when those features are required.
+      ⏳ 1.5.8.5 Comment: Optional testing CI helpers — `playwright`, `cypress` — add when adding e2e tests.
+### ⏳ 1.5.9 Version Verification (process items)
+      ⏳ 1.5.9.1 Verify `dist-tags.latest` for each package on npmjs.org (or via `npm view <pkg> dist-tags.latest`) and record the version (stable) as of Jan 2026.
+      ⏳ 1.5.9.2 Confirm `vite@^5.x` compatibility with chosen `vite-plugin-checker` version.
+      ⏳ 1.5.9.3 Confirm `typescript@^5.x` compatibility with `@types.react` and `@types.react-dom`.
+      ⏳ 1.5.9.4 Confirm `prettier` major version compatibility with ESLint plugins and `eslint-config-prettier`.
+      ⏳ 1.5.9.5 Confirm `stylelint-config-tailwindcss` compatibility with chosen `tailwindcss@3.4.x`.
+      ⏳ 1.5.9.6 Ensure no peerDependency conflicts between `@wordpress/*` packages and React major version (use WP packages that support React 18).
+      ⏳ 1.5.9.7 Record all verified versions into a draft `package.json` before running `npm install`.
+### ⏳ 1.5.10 Version Verification (per-package checklist)
+      ⏳ 1.5.10.1 Verify stable version: `react` (React 18 line)
+      ⏳ 1.5.10.2 Verify stable version: `react-dom` (React 18 line)
+      ⏳ 1.5.10.3 Verify stable version: `@wordpress/element`
+      ⏳ 1.5.10.4 Verify stable version: `@wordpress/components`
+      ⏳ 1.5.10.5 Verify stable version: `@wordpress/api-fetch`
+      ⏳ 1.5.10.6 Verify stable version: `@wordpress/i18n`
+      ⏳ 1.5.10.7 Verify stable version: `@wordpress.data`
+      ⏳ 1.5.10.8 Verify stable version: `@wordpress/hooks`
+      ⏳ 1.5.10.9 Verify stable version: `@heroicons/react`
+      ⏳ 1.5.10.10 Verify stable version: `clsx`
+      ⏳ 1.5.10.11 Verify stable version: `vite` (Vite 5 line)
+      ⏳ 1.5.10.12 Verify stable version: `typescript`
+      ⏳ 1.5.10.13 Verify stable version: `tailwindcss` (3.4 line)
+      ⏳ 1.5.10.14 Verify stable version: `postcss`
+      ⏳ 1.5.10.15 Verify stable version: `postcss-import`
+      ⏳ 1.5.10.16 Verify stable version: `postcss-nested`
+      ⏳ 1.5.10.17 Verify stable version: `autoprefixer`
+      ⏳ 1.5.10.18 Verify stable version: `eslint`
+      ⏳ 1.5.10.19 Verify stable version: `@wordpress/eslint-plugin`
+      ⏳ 1.5.10.20 Verify stable version: `@typescript-eslint/parser`
+      ⏳ 1.5.10.21 Verify stable version: `@typescript-eslint/eslint-plugin`
+      ⏳ 1.5.10.22 Verify stable version: `eslint-config-prettier`
+      ⏳ 1.5.10.23 Verify stable version: `eslint-plugin-prettier`
+      ⏳ 1.5.10.24 Verify stable version: `eslint-plugin-react`
+      ⏳ 1.5.10.25 Verify stable version: `eslint-plugin-react-hooks`
+      ⏳ 1.5.10.26 Verify stable version: `prettier`
+      ⏳ 1.5.10.27 Verify stable version: `stylelint`
+      ⏳ 1.5.10.28 Verify stable version: `stylelint-config-standard`
+      ⏳ 1.5.10.29 Verify stable version: `stylelint-config-tailwindcss`
+      ⏳ 1.5.10.30 Verify stable version: `rimraf`
+      ⏳ 1.5.10.31 Verify stable version: `concurrently`
+      ⏳ 1.5.10.32 Verify stable version: `cross-env`
+      ⏳ 1.5.10.33 Verify stable version: `vite-plugin-checker`
+      ⏳ 1.5.10.34 Verify stable version: `@types.react` (match React 18)
+      ⏳ 1.5.10.35 Verify stable version: `@types.react-dom` (match React 18)
+### ⏳ 1.5.11 Summary answers (after checklist) -  Total count of checklist items
+      ⏳ 1.5.11.1 58 actionable checklist lines (checkboxes) across all sections.
+### ⏳ 1.5.12 Summary answers (after checklist) -  Estimated time to implement (assuming versions verified)
+      ⏳ 1.5.12.1 Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.
+      ⏳ 1.5.12.2 Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.
+      ⏳ 1.5.12.3 Verification, testing, and fixing peer conflicts: additional 1–2 hours.
+### ⏳ 1.5.13 Summary answers (after checklist) -  Potential version conflicts or compatibility issues to watch for
+      ⏳ 1.5.13.1 `@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).
+      ⏳ 1.5.13.2 `vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.
+      ⏳ 1.5.13.3 `prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.
+      ⏳ 1.5.13.4 `stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.
+      ⏳ 1.5.13.5 `postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.
+      ⏳ 1.5.13.6 TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.
+### ⏳ 1.5.14 Summary answers (after checklist) -  Recommended order of implementation
+      ⏳ 1.5.14.1 Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
+      ⏳ 1.5.14.2 Step 2: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
+      ⏳ 1.5.14.3 Step 3: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).
+      ⏳ 1.5.14.4 Step 4: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.
+      ⏳ 1.5.14.5 Step 5: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.
+      ⏳ 1.5.14.6 Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.
+      ⏳ 1.5.14.7 Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.
+      ⏳ 1.5.14.8 Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.
+      ⏳ 1.5.14.9 Step 9: Run bundle analysis and optimize if needed.
 
 ## 1.6 Configuration Files — `.gitignore`, `phpcs.xml`, `phpunit.xml`, `.editorconfig`, `.dockerignore`
    1.6.1 `.gitignore` with comprehensive exclusions

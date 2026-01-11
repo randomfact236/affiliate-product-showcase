@@ -535,7 +535,7 @@ Notes: Use caret ranges for all versions. Verify `prettier` major (v3 released 2
  1.5.14.6 Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.
  1.5.14.7 Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.
  1.5.14.8 Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.
- 1.5.14.9 Step9: Run bundle analysis and optimize if needed.
+ 1.5.14.9 Step 9: Run bundle analysis and optimize if needed.
 
 ---
 

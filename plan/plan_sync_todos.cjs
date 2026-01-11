@@ -636,7 +636,9 @@ function main() {
       for (const t of todoJson.todos) {
         if (t && t.code && t.status) statusByTodos[t.code] = t.status;
       }
-      state.statusByCode = Object.assign({}, state.statusByCode || {}, statusByTodos);
+      // Prefer statuses from `plan_state.json` (state) as the source of truth.
+      // Only fall back to `plan_todos.json` values for codes not present in state.
+      state.statusByCode = Object.assign({}, statusByTodos, state.statusByCode || {});
     }
   } catch (err) {
     // ignore — fall back to state as-is
