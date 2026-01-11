@@ -2570,9 +2570,153 @@
       "marker": ""
     },
     {
+      "code": "1.5.1.1",
+      "kind": "item",
+      "title": "Field: `name` - value: \"affiliate-product-showcase\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.2",
+      "kind": "item",
+      "title": "Field: `version` - value: \"1.0.0\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.3",
+      "kind": "item",
+      "title": "Field: `description` - value: \"Affiliate Product Showcase — admin UI built with Vite, React, TypeScript and Tailwind for WordPress\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.4",
+      "kind": "item",
+      "title": "Field: `private` - value: true",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.5",
+      "kind": "item",
+      "title": "Field: `license` - value: \"GPL-2.0-or-later\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.6",
+      "kind": "item",
+      "title": "Field: `author` - value: \"Your Name <you@example.com>\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.7",
+      "kind": "item",
+      "title": "Field: `homepage` - value: project homepage or repo README URL",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.8",
+      "kind": "item",
+      "title": "Field: `repository` - value: `{ type: \"git\", url: \"https://github.com/your-org/affiliate-product-showcase.git\" }`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.9",
+      "kind": "item",
+      "title": "Field: `bugs` - value: repo issues URL (optional)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.10",
+      "kind": "item",
+      "title": "Field: `keywords` - value: [ \"wordpress\", \"plugin\", \"vite\", \"react\", \"typescript\", \"tailwind\" ]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.11",
+      "kind": "item",
+      "title": "Field: `main` - value: \"index.js\" or plugin bootstrap entry (kept for packaging)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.12",
+      "kind": "item",
+      "title": "Field: `files` - value: [ \"dist/\", \"build/\", \"src/\", \"languages/\", \"readme.txt\", \"readme.html\", \"index.php\" ]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.13",
+      "kind": "item",
+      "title": "Field: `sideEffects` - value: false (see decisions)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.1.14",
+      "kind": "item",
+      "title": "Field: `engines` - value: `{ \"node\": \">=18.0.0\", \"npm\": \">=9.0.0\" }`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.5.2",
       "kind": "item",
       "title": "Implementation Checklist - Policy & Constraints (project requirements)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.2.1",
+      "kind": "item",
+      "title": "Policy: All versions use caret ranges (`^`) for `dependencies` and `devDependencies`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.2.2",
+      "kind": "item",
+      "title": "Policy: Offline / no-CDN operation — no runtime asset loading from external URLs (no unpkg/jsDelivr/CDN fonts/icons).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.2.3",
+      "kind": "item",
+      "title": "Policy: Bundle all JS/CSS locally via Vite output; PHP enqueues only local files from `dist/` (and/or `assets/dist/`).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.2.4",
+      "kind": "item",
+      "title": "Policy: Avoid deps or build steps that download binaries at install-time unless strictly necessary.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2586,9 +2730,113 @@
       "marker": ""
     },
     {
+      "code": "1.5.3.1",
+      "kind": "item",
+      "title": "Field: `scripts` - value: includes `dev`, `build`, `preview`, `lint`, `format`, `type-check`, `clean` (plus optional `prepare`).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.3.2",
+      "kind": "item",
+      "title": "Field: `dependencies` - value: runtime packages list below.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.3.3",
+      "kind": "item",
+      "title": "Field: `devDependencies` - value: build/lint/tooling packages list below.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.5.4",
       "kind": "item",
       "title": "Implementation Checklist - Production Dependencies (runtime)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.1",
+      "kind": "item",
+      "title": "Package: `react` - version: `^18.x.x` - purpose: UI library for admin React UI",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.2",
+      "kind": "item",
+      "title": "Package: `react-dom` - version: `^18.x.x` - purpose: DOM renderer for React",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.3",
+      "kind": "item",
+      "title": "Package: `@wordpress/element` - version: `^x.x.x` - purpose: WP-compatible React abstraction (use when integrating with WP packages)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.4",
+      "kind": "item",
+      "title": "Package: `@wordpress/components` - version: `^x.x.x` - purpose: WP UI components for consistency with WP admin",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.5",
+      "kind": "item",
+      "title": "Package: `@wordpress/api-fetch` - version: `^x.x.x` - purpose: interact with WP REST API (auth, nonce handling)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.6",
+      "kind": "item",
+      "title": "Package: `@wordpress/i18n` - version: `^x.x.x` - purpose: translations and localization helpers",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.7",
+      "kind": "item",
+      "title": "Package: `@wordpress/data` - version: `^x.x.x` - purpose: centralized state management (optional)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.8",
+      "kind": "item",
+      "title": "Package: `@wordpress/hooks` - version: `^x.x.x` - purpose: WP-style hooks/pubsub utilities",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.9",
+      "kind": "item",
+      "title": "Package: `@heroicons/react` - version: `^x.x.x` - purpose: optional icon set for UI",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.4.10",
+      "kind": "item",
+      "title": "Package: `clsx` - version: `^1.x.x` - purpose: helper for conditional classNames",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2602,9 +2850,281 @@
       "marker": ""
     },
     {
+      "code": "1.5.5.1",
+      "kind": "item",
+      "title": "Package: `vite` - version: `^5.x.x` - purpose: dev server and bundler (Vite 5)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.2",
+      "kind": "item",
+      "title": "Package: `typescript` - version: `^5.x.x` - purpose: type checking and TS compilation",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.3",
+      "kind": "item",
+      "title": "Package: `tailwindcss` - version: `^3.4.x` - purpose: utility-first CSS framework",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.4",
+      "kind": "item",
+      "title": "Package: `postcss` - version: `^8.x.x` - purpose: PostCSS runner",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.5",
+      "kind": "item",
+      "title": "Package: `postcss-import` - version: `^x.x.x` - purpose: allow `@import` in PostCSS",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.6",
+      "kind": "item",
+      "title": "Package: `postcss-nested` - version: `^x.x.x` - purpose: nested CSS rules support",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.7",
+      "kind": "item",
+      "title": "Package: `autoprefixer` - version: `^10.x.x` - purpose: vendor prefixing for CSS",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.8",
+      "kind": "item",
+      "title": "Package: `eslint` - version: `^8.x.x` - purpose: linting JS/TS",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.9",
+      "kind": "item",
+      "title": "Package: `@wordpress/eslint-plugin` - version: `^x.x.x` - purpose: WP-specific lint rules",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.10",
+      "kind": "item",
+      "title": "Package: `@typescript-eslint/parser` - version: `^6.x.x` - purpose: parse TS for ESLint",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.11",
+      "kind": "item",
+      "title": "Package: `@typescript-eslint/eslint-plugin` - version: `^6.x.x` - purpose: TS-specific lint rules",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.12",
+      "kind": "item",
+      "title": "Package: `eslint-config-prettier` - version: `^x.x.x` - purpose: disable formatting rules conflicting with Prettier",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.13",
+      "kind": "item",
+      "title": "Package: `eslint-plugin-prettier` - version: `^x.x.x` - purpose: run Prettier as ESLint rule (optional)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.14",
+      "kind": "item",
+      "title": "Package: `eslint-plugin-react` - version: `^7.x.x` - purpose: React-specific lint rules",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.15",
+      "kind": "item",
+      "title": "Package: `eslint-plugin-react-hooks` - version: `^4.x.x` - purpose: React hooks lint rules",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.16",
+      "kind": "item",
+      "title": "Package: `prettier` - version: `^3.x.x` or `^2.x.x` (verify stable) - purpose: code formatting",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.17",
+      "kind": "item",
+      "title": "Package: `stylelint` - version: `^15.x.x` - purpose: CSS linting",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.18",
+      "kind": "item",
+      "title": "Package: `stylelint-config-standard` - version: `^33.x.x` - purpose: base stylelint rules",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.19",
+      "kind": "item",
+      "title": "Package: `stylelint-config-tailwindcss` - version: `^0.x.x` or latest compatible - purpose: Tailwind-aware linting",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.20",
+      "kind": "item",
+      "title": "Package: `rimraf` - version: `^5.x.x` - purpose: cross-platform rm -rf for `clean`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.21",
+      "kind": "item",
+      "title": "Package: `concurrently` - version: `^8.x.x` - purpose: run multiple scripts locally (if needed)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.22",
+      "kind": "item",
+      "title": "Package: `cross-env` - version: `^7.x.x` - purpose: set env vars cross-platform in scripts",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.23",
+      "kind": "item",
+      "title": "Package: `vite-plugin-checker` - version: `^x.x.x` - purpose: run type-checking / diagnostics in Vite dev",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.24",
+      "kind": "item",
+      "title": "Package: `@types.react` - version: `^18.x.x` - purpose: TypeScript types for React",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.5.25",
+      "kind": "item",
+      "title": "Package: `@types.react-dom` - version: `^18.x.x` - purpose: TypeScript types for ReactDOM",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.5.6",
       "kind": "item",
       "title": "Implementation Checklist - Scripts",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.1",
+      "kind": "item",
+      "title": "Script: `dev` - command: `cross-env NODE_ENV=development vite` - purpose: start Vite dev server with HMR",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.2",
+      "kind": "item",
+      "title": "Script: `build` - command: `cross-env NODE_ENV=production vite build` - purpose: produce production `dist/` assets and manifest",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.3",
+      "kind": "item",
+      "title": "Script: `preview` - command: `cross-env NODE_ENV=production vite preview --port 5173` - purpose: locally preview built assets",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.4",
+      "kind": "item",
+      "title": "Script: `clean` - command: `rimraf dist build .vite .turbo` - purpose: remove build outputs and caches",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.5",
+      "kind": "item",
+      "title": "Script: `type-check` - command: `tsc --noEmit` - purpose: run full TypeScript check",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.6",
+      "kind": "item",
+      "title": "Script: `lint` - command: `eslint --max-warnings=0 \"src/**/*.{ts,tsx,js,jsx}\"` - purpose: enforce linting rules and fail on warnings",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.7",
+      "kind": "item",
+      "title": "Script: `format` - command: `prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,md,json}\"` - purpose: format codebase",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.8",
+      "kind": "item",
+      "title": "Script: `prepare` - command: `npm run build` or `node ./scripts/prepare-dist.js` - purpose: produce artifacts for packaging",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.6.9",
+      "kind": "item",
+      "title": "Script: `check` (optional) - command: `concurrently \"npm:dev\" \"npm:watch:types\"` - purpose: run multiple watchers during dev (if desired)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2618,9 +3138,137 @@
       "marker": ""
     },
     {
+      "code": "1.5.7.1",
+      "kind": "item",
+      "title": "Field: `engines.node` - value: \">=18.0.0\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.2",
+      "kind": "item",
+      "title": "Field: `engines.npm` - value: \">=9.0.0\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.3",
+      "kind": "item",
+      "title": "Field: `files` - value: [ \"dist/\", \"build/\", \"src/\", \"languages/\", \"readme.txt\", \"readme.html\", \"index.php\" ]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.4",
+      "kind": "item",
+      "title": "Field: `sideEffects` - value: false (list global CSS files in `sideEffects` if needed)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.5",
+      "kind": "item",
+      "title": "Field: `repository` - value: as above",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.6",
+      "kind": "item",
+      "title": "Field: `bugs` - value: repo issues URL (optional)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.7",
+      "kind": "item",
+      "title": "Field: `keywords` - value: as above",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.8",
+      "kind": "item",
+      "title": "Field: `homepage` - value: repo or plugin page",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.9",
+      "kind": "item",
+      "title": "Field: `private` - value: true",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.10",
+      "kind": "item",
+      "title": "Field: `license` - value: \"GPL-2.0-or-later\"",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.7.11",
+      "kind": "item",
+      "title": "Field: `author` - value: as above",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.5.8",
       "kind": "item",
       "title": "Implementation Checklist - Excluded Packages (commented placeholders)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.8.1",
+      "kind": "item",
+      "title": "Comment: Testing stack — `vitest`, `@testing-library/react`, `@testing-library/jest-dom` — add when implementing unit/DOM tests; recommended versions to be chosen when opting into testing.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.8.2",
+      "kind": "item",
+      "title": "Comment: Git hooks — `husky`, `lint-staged` — add when enabling pre-commit checks; only add if you want local commit-time formatting/linting.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.8.3",
+      "kind": "item",
+      "title": "Comment: Bundle analysis — `rollup-plugin-visualizer`, `vite-plugin-visualizer` — add temporarily to analyze bundle size during optimization.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.8.4",
+      "kind": "item",
+      "title": "Comment: Tailwind plugins — `@tailwindcss/forms`, `@tailwindcss/typography`, `@tailwindcss/aspect-ratio` — add only when those features are required.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.8.5",
+      "kind": "item",
+      "title": "Comment: Optional testing CI helpers — `playwright`, `cypress` — add when adding e2e tests.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2634,9 +3282,345 @@
       "marker": ""
     },
     {
+      "code": "1.5.9.1",
+      "kind": "item",
+      "title": "Verify `dist-tags.latest` for each package on npmjs.org (or via `npm view <pkg> dist-tags.latest`) and record the version (stable) as of Jan 2026.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.2",
+      "kind": "item",
+      "title": "Confirm `vite@^5.x` compatibility with chosen `vite-plugin-checker` version.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.3",
+      "kind": "item",
+      "title": "Confirm `typescript@^5.x` compatibility with `@types.react` and `@types.react-dom`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.4",
+      "kind": "item",
+      "title": "Confirm `prettier` major version compatibility with ESLint plugins and `eslint-config-prettier`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.5",
+      "kind": "item",
+      "title": "Confirm `stylelint-config-tailwindcss` compatibility with chosen `tailwindcss@3.4.x`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.6",
+      "kind": "item",
+      "title": "Ensure no peerDependency conflicts between `@wordpress/*` packages and React major version (use WP packages that support React 18).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.9.7",
+      "kind": "item",
+      "title": "Record all verified versions into a draft `package.json` before running `npm install`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
       "code": "1.5.10",
       "kind": "item",
       "title": "Version Verification (per-package checklist)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.1",
+      "kind": "item",
+      "title": "Verify stable version: `react` (React 18 line)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.2",
+      "kind": "item",
+      "title": "Verify stable version: `react-dom` (React 18 line)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.3",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/element`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.4",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/components`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.5",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/api-fetch`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.6",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/i18n`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.7",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress.data`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.8",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/hooks`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.9",
+      "kind": "item",
+      "title": "Verify stable version: `@heroicons/react`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.10",
+      "kind": "item",
+      "title": "Verify stable version: `clsx`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.11",
+      "kind": "item",
+      "title": "Verify stable version: `vite` (Vite 5 line)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.12",
+      "kind": "item",
+      "title": "Verify stable version: `typescript`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.13",
+      "kind": "item",
+      "title": "Verify stable version: `tailwindcss` (3.4 line)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.14",
+      "kind": "item",
+      "title": "Verify stable version: `postcss`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.15",
+      "kind": "item",
+      "title": "Verify stable version: `postcss-import`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.16",
+      "kind": "item",
+      "title": "Verify stable version: `postcss-nested`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.17",
+      "kind": "item",
+      "title": "Verify stable version: `autoprefixer`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.18",
+      "kind": "item",
+      "title": "Verify stable version: `eslint`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.19",
+      "kind": "item",
+      "title": "Verify stable version: `@wordpress/eslint-plugin`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.20",
+      "kind": "item",
+      "title": "Verify stable version: `@typescript-eslint/parser`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.21",
+      "kind": "item",
+      "title": "Verify stable version: `@typescript-eslint/eslint-plugin`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.22",
+      "kind": "item",
+      "title": "Verify stable version: `eslint-config-prettier`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.23",
+      "kind": "item",
+      "title": "Verify stable version: `eslint-plugin-prettier`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.24",
+      "kind": "item",
+      "title": "Verify stable version: `eslint-plugin-react`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.25",
+      "kind": "item",
+      "title": "Verify stable version: `eslint-plugin-react-hooks`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.26",
+      "kind": "item",
+      "title": "Verify stable version: `prettier`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.27",
+      "kind": "item",
+      "title": "Verify stable version: `stylelint`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.28",
+      "kind": "item",
+      "title": "Verify stable version: `stylelint-config-standard`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.29",
+      "kind": "item",
+      "title": "Verify stable version: `stylelint-config-tailwindcss`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.30",
+      "kind": "item",
+      "title": "Verify stable version: `rimraf`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.31",
+      "kind": "item",
+      "title": "Verify stable version: `concurrently`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.32",
+      "kind": "item",
+      "title": "Verify stable version: `cross-env`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.33",
+      "kind": "item",
+      "title": "Verify stable version: `vite-plugin-checker`",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.34",
+      "kind": "item",
+      "title": "Verify stable version: `@types.react` (match React 18)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.10.35",
+      "kind": "item",
+      "title": "Verify stable version: `@types.react-dom` (match React 18)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
