@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 044e6398d814a4661fa531526ff1ac85b8eb2e96 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: cb8894da7c9726ae86696feaf22143a81cb645f1 -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -346,39 +346,17 @@
    ✅ 1.4.23 Dev require: `automattic/vipwpcs ^3.0` (Optional)
    ✅ 1.4.24 Exclude vendor-dir from packaging (Optional)
 
-## 1.5 NPM Configuration — package.json and lockfiles
-   1.5.1 Package name matching plugin slug
-   1.5.2 Private: true
-   1.5.3 Engines: Node >=18.0.0, NPM >=9.0.0
-   1.5.4 Scripts: `dev`, `build`, `watch`, `lint`, `format`, `test`
-   1.5.5 Dependencies: `react ^18.2.0`
-   1.5.6 Dependencies: `react-dom ^18.2.0`
-   1.5.7 Dependencies: `@wordpress/element`
-   1.5.8 Dependencies: `@wordpress/components`
-   1.5.9 Dependencies: `@wordpress/api-fetch`
-   1.5.10 Dependencies: `@wordpress/i18n`
-   1.5.11 Dependencies: `clsx` for conditional classes
-   1.5.12 DevDependencies: `typescript ^5.3.0`
-   1.5.13 DevDependencies: `@types/react`
-   1.5.14 DevDependencies: `@types/react-dom`
-   1.5.15 DevDependencies: `@types/wordpress__components`
-   1.5.16 DevDependencies: `vite ^5.0.0`
-   1.5.17 DevDependencies: `@vitejs/plugin-react`
-   1.5.18 DevDependencies: `tailwindcss ^3.4.0`
-   1.5.19 DevDependencies: `autoprefixer`
-   1.5.20 DevDependencies: `postcss`
-   1.5.21 DevDependencies: `eslint ^8.56.0`
-   1.5.22 DevDependencies: `@wordpress/eslint-plugin`
-   1.5.23 DevDependencies: `@typescript-eslint/parser`
-   1.5.24 DevDependencies: `@typescript-eslint/eslint-plugin`
-   1.5.25 DevDependencies: `prettier ^3.1.0`
-   1.5.26 DevDependencies: `eslint-config-prettier`
-   1.5.27 DevDependencies: `stylelint ^16.0.0`
-   1.5.28 DevDependencies: `stylelint-config-standard`
-   1.5.29 DevDependencies: `stylelint-config-tailwindcss`
-   1.5.30 DevDependencies: `husky ^9.0.0`
-   1.5.31 DevDependencies: `lint-staged ^15.0.0`
-   1.5.32 DevDependencies: `@heroicons/react`
+## 1.5 NPM Configuration & package.json Checklist — package.json and lockfiles
+### 1.5.1 Implementation Checklist - Basic Metadata
+### 1.5.2 Implementation Checklist - Policy & Constraints (project requirements)
+### 1.5.3 Implementation Checklist - Required Top-level Fields (explicitly present)
+### 1.5.4 Implementation Checklist - Production Dependencies (runtime)
+### 1.5.5 Implementation Checklist - Development Dependencies (build-time)
+### 1.5.6 Implementation Checklist - Scripts
+### 1.5.7 Implementation Checklist - Configuration Fields
+### 1.5.8 Implementation Checklist - Excluded Packages (commented placeholders)
+### 1.5.9 Version Verification (process items)
+### 1.5.10 Version Verification (per-package checklist)
 
 ## 1.6 Configuration Files — `.gitignore`, `phpcs.xml`, `phpunit.xml`, `.editorconfig`, `.dockerignore`
    1.6.1 `.gitignore` with comprehensive exclusions

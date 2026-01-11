@@ -2556,7 +2556,7 @@
     {
       "code": "1.5",
       "kind": "topic",
-      "title": "NPM Configuration — package.json and lockfiles",
+      "title": "NPM Configuration & package.json Checklist — package.json and lockfiles",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2564,7 +2564,7 @@
     {
       "code": "1.5.1",
       "kind": "item",
-      "title": "Package name matching plugin slug",
+      "title": "Implementation Checklist - Basic Metadata",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2572,7 +2572,7 @@
     {
       "code": "1.5.2",
       "kind": "item",
-      "title": "Private: true",
+      "title": "Implementation Checklist - Policy & Constraints (project requirements)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2580,7 +2580,7 @@
     {
       "code": "1.5.3",
       "kind": "item",
-      "title": "Engines: Node >=18.0.0, NPM >=9.0.0",
+      "title": "Implementation Checklist - Required Top-level Fields (explicitly present)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2588,7 +2588,7 @@
     {
       "code": "1.5.4",
       "kind": "item",
-      "title": "Scripts: `dev`, `build`, `watch`, `lint`, `format`, `test`",
+      "title": "Implementation Checklist - Production Dependencies (runtime)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2596,7 +2596,7 @@
     {
       "code": "1.5.5",
       "kind": "item",
-      "title": "Dependencies: `react ^18.2.0`",
+      "title": "Implementation Checklist - Development Dependencies (build-time)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2604,7 +2604,7 @@
     {
       "code": "1.5.6",
       "kind": "item",
-      "title": "Dependencies: `react-dom ^18.2.0`",
+      "title": "Implementation Checklist - Scripts",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2612,7 +2612,7 @@
     {
       "code": "1.5.7",
       "kind": "item",
-      "title": "Dependencies: `@wordpress/element`",
+      "title": "Implementation Checklist - Configuration Fields",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2620,7 +2620,7 @@
     {
       "code": "1.5.8",
       "kind": "item",
-      "title": "Dependencies: `@wordpress/components`",
+      "title": "Implementation Checklist - Excluded Packages (commented placeholders)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2628,7 +2628,7 @@
     {
       "code": "1.5.9",
       "kind": "item",
-      "title": "Dependencies: `@wordpress/api-fetch`",
+      "title": "Version Verification (process items)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -2636,183 +2636,7 @@
     {
       "code": "1.5.10",
       "kind": "item",
-      "title": "Dependencies: `@wordpress/i18n`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.11",
-      "kind": "item",
-      "title": "Dependencies: `clsx` for conditional classes",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.12",
-      "kind": "item",
-      "title": "DevDependencies: `typescript ^5.3.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.13",
-      "kind": "item",
-      "title": "DevDependencies: `@types/react`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.14",
-      "kind": "item",
-      "title": "DevDependencies: `@types/react-dom`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.15",
-      "kind": "item",
-      "title": "DevDependencies: `@types/wordpress__components`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.16",
-      "kind": "item",
-      "title": "DevDependencies: `vite ^5.0.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.17",
-      "kind": "item",
-      "title": "DevDependencies: `@vitejs/plugin-react`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.18",
-      "kind": "item",
-      "title": "DevDependencies: `tailwindcss ^3.4.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.19",
-      "kind": "item",
-      "title": "DevDependencies: `autoprefixer`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.20",
-      "kind": "item",
-      "title": "DevDependencies: `postcss`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.21",
-      "kind": "item",
-      "title": "DevDependencies: `eslint ^8.56.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.22",
-      "kind": "item",
-      "title": "DevDependencies: `@wordpress/eslint-plugin`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.23",
-      "kind": "item",
-      "title": "DevDependencies: `@typescript-eslint/parser`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.24",
-      "kind": "item",
-      "title": "DevDependencies: `@typescript-eslint/eslint-plugin`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.25",
-      "kind": "item",
-      "title": "DevDependencies: `prettier ^3.1.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.26",
-      "kind": "item",
-      "title": "DevDependencies: `eslint-config-prettier`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.27",
-      "kind": "item",
-      "title": "DevDependencies: `stylelint ^16.0.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.28",
-      "kind": "item",
-      "title": "DevDependencies: `stylelint-config-standard`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.29",
-      "kind": "item",
-      "title": "DevDependencies: `stylelint-config-tailwindcss`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.30",
-      "kind": "item",
-      "title": "DevDependencies: `husky ^9.0.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.31",
-      "kind": "item",
-      "title": "DevDependencies: `lint-staged ^15.0.0`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.5.32",
-      "kind": "item",
-      "title": "DevDependencies: `@heroicons/react`",
+      "title": "Version Verification (per-package checklist)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
