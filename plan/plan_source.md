@@ -509,33 +509,33 @@ Notes: Use caret ranges for all versions. Verify `prettier` major (v3 released 2
 
 ---
 
-### 1.5.11 Summary answers (after checklist)
+### 1.5.11 Summary answers (after checklist) -  Total count of checklist items
+ 1.5.11.1 58 actionable checklist lines (checkboxes) across all sections.
 
-1.5.11.1 Total count of checklist items
-- 58 actionable checklist lines (checkboxes) across all sections.
+### 1.5.12 Summary answers (after checklist) -  Estimated time to implement (assuming versions verified)
+ 1.5.12.1 Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.
+ 1.5.12.2 Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.
+ 1.5.12.3 Verification, testing, and fixing peer conflicts: additional 1–2 hours.
 
-1.5.11.2 Estimated time to implement (assuming versions verified)
-- Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.
-- Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.
-- Verification + testing + fix peer conflicts: additional 1–2 hours.
+### 1.5.13 Summary answers (after checklist) -  Potential version conflicts or compatibility issues to watch for
+ 1.5.13.1 `@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).
+ 1.5.13.2 `vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.
+ 1.5.13.3 `prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.
+ 1.5.13.4 `stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.
+ 1.5.13.5 `postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.
+ 1.5.13.6 TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.
 
-1.5.11.3 Potential version conflicts or compatibility issues to watch for
-- `@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).
-- `vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.
-- `prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.
-- `stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.
-- `postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.
-- TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.
-
-1.5.11.4 Recommended order of implementation
-- Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
-- Step 2: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).
-- Step 3: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.
-- Step 4: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.
-- Step 5: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.
-- Step 6: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.
-- Step 7: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.
-- Step 8: Run bundle analysis and optimize if needed.
+### 1.5.14 Summary answers (after checklist) -  Recommended order of implementation
+1.5.14.1 Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
+ 
+ 1.5.14.2 Step 2: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
+ 1.5.14.3 Step 3: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).
+ 1.5.14.4 Step 4: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.
+ 1.5.14.5 Step 5: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.
+ 1.5.14.6 Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.
+ 1.5.14.7 Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.
+ 1.5.14.8 Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.
+ 1.5.14.9 Step9: Run bundle analysis and optimize if needed.
 
 ---
 

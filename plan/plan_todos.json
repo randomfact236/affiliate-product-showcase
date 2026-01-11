@@ -3628,7 +3628,7 @@
     {
       "code": "1.5.11",
       "kind": "item",
-      "title": "Summary answers (after checklist)",
+      "title": "Summary answers (after checklist) -  Total count of checklist items",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3636,31 +3636,175 @@
     {
       "code": "1.5.11.1",
       "kind": "item",
-      "title": "Total count of checklist items",
+      "title": "58 actionable checklist lines (checkboxes) across all sections.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "1.5.11.2",
+      "code": "1.5.12",
       "kind": "item",
-      "title": "Estimated time to implement (assuming versions verified)",
+      "title": "Summary answers (after checklist) -  Estimated time to implement (assuming versions verified)",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "1.5.11.3",
+      "code": "1.5.12.1",
       "kind": "item",
-      "title": "Potential version conflicts or compatibility issues to watch for",
+      "title": "Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
     },
     {
-      "code": "1.5.11.4",
+      "code": "1.5.12.2",
       "kind": "item",
-      "title": "Recommended order of implementation",
+      "title": "Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.12.3",
+      "kind": "item",
+      "title": "Verification, testing, and fixing peer conflicts: additional 1–2 hours.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13",
+      "kind": "item",
+      "title": "Summary answers (after checklist) -  Potential version conflicts or compatibility issues to watch for",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.1",
+      "kind": "item",
+      "title": "`@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.2",
+      "kind": "item",
+      "title": "`vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.3",
+      "kind": "item",
+      "title": "`prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.4",
+      "kind": "item",
+      "title": "`stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.5",
+      "kind": "item",
+      "title": "`postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.13.6",
+      "kind": "item",
+      "title": "TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14",
+      "kind": "item",
+      "title": "Summary answers (after checklist) -  Recommended order of implementation",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.1",
+      "kind": "item",
+      "title": "Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.2",
+      "kind": "item",
+      "title": "Step 2: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.3",
+      "kind": "item",
+      "title": "Step 3: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.4",
+      "kind": "item",
+      "title": "Step 4: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.5",
+      "kind": "item",
+      "title": "Step 5: Add lint/format configs: `.eslintrc.cjs`, `.prettierrc`, `.stylelintrc.cjs`.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.6",
+      "kind": "item",
+      "title": "Step 6: Create a minimal `src/admin/index.tsx`, `src/styles/index.css`, and PHP enqueue stub that reads Vite manifest.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.7",
+      "kind": "item",
+      "title": "Step 7: Run `npm install` and then `npm run dev` — iterate on any peerDependency issues.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.8",
+      "kind": "item",
+      "title": "Step 8: Add CI/test tooling (vitest, testing-library) and git hooks (husky, lint-staged) only after core build works.",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.5.14.9",
+      "kind": "item",
+      "title": "Step9: Run bundle analysis and optimize if needed.",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
