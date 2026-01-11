@@ -80,6 +80,26 @@ function runGenerator() {
   }
 }
 
+function readTodosJson(p) {
+  if (!fs.existsSync(p)) return null;
+  try {
+    const raw = fs.readFileSync(p, 'utf8');
+    return raw.trim() ? JSON.parse(raw) : null;
+  } catch (err) {
+    console.warn('Warning: failed to read plan_todos.json:', err && err.message ? err.message : err);
+    return null;
+  }
+}
+
+function writeTodosJson(p, obj) {
+  try {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, JSON.stringify(obj, null, 2) + '\n', 'utf8');
+  } catch (err) {
+    console.warn('Warning: failed to write plan_todos.json:', err && err.message ? err.message : err);
+  }
+}
+
 function writeMarker() {
   const content = 'generated-by: plan-generator\n';
   fs.writeFileSync(GENERATED_MARKER, content, 'utf8');
@@ -111,6 +131,27 @@ function gitAdd(files) {
 
   // Run generator to refresh outputs and state-derived markers
   runGenerator();
+
+  // After the generator runs, update plan/plan_todos.json to reflect the new status for the changed code.
+  // This keeps the flattened JSON in sync for consumers that read it directly.
+  const TODOS_PATH = path.join(PLAN_DIR, 'plan_todos.json');
+  const todosJson = readTodosJson(TODOS_PATH);
+  if (todosJson && Array.isArray(todosJson.todos)) {
+    let updated = 0;
+    todosJson.todos = todosJson.todos.map(t => {
+      if (t && t.code === code) {
+        if (t.status !== status) {
+          t.status = status;
+          updated += 1;
+        }
+      }
+      return t;
+    });
+    if (updated > 0) {
+      writeTodosJson(TODOS_PATH, todosJson);
+      console.log(`Updated ${path.relative(ROOT, TODOS_PATH)}: ${updated} entries changed`);
+    }
+  }
 
   // Write marker and stage generated files for commit
   writeMarker();
