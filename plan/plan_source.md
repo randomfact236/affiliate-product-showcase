@@ -509,25 +509,25 @@ Notes: Use caret ranges for all versions. Verify `prettier` major (v3 released 2
 
 ---
 
-Summary answers (after checklist)
+### 1.5.11 Summary answers (after checklist)
 
-1) Total count of checklist items
+1.5.11.1 Total count of checklist items
 - 58 actionable checklist lines (checkboxes) across all sections.
 
-2) Estimated time to implement (assuming versions verified)
+1.5.11.2 Estimated time to implement (assuming versions verified)
 - Quick implementation (create/update `package.json` + scaffold basic config files, no installs): 30–60 minutes.
 - Full implementation (pin versions, install, scaffold `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`, `tsconfig.json`, basic `src/` + PHP enqueue + lint config): 2–3 hours.
 - Verification + testing + fix peer conflicts: additional 1–2 hours.
 
-3) Potential version conflicts or compatibility issues to watch for
+1.5.11.3 Potential version conflicts or compatibility issues to watch for
 - `@wordpress/*` packages historically align to specific React versions inside WordPress core; ensure the chosen `@wordpress/*` versions are compatible with React 18 (some older `@wordpress` packages may expect older React APIs).
 - `vite-plugin-checker` major release compatibility with Vite 5 — prefer a plugin release that documents Vite 5 support.
 - `prettier@3` vs older ESLint integrations — some `eslint-plugin-prettier` or `eslint-config-prettier` versions may lag; verify compatibility matrix.
 - `stylelint-config-tailwindcss` naming/major versions changed historically — pick a config version compatible with Tailwind 3.4.
 - `postcss-import` / `postcss` versions must be compatible; PostCSS 8 is the stable base for Tailwind 3.x.
-- TypeScript (`^5.x`) and `@types/react` versions must match React major line to avoid mismatched types.
+- TypeScript (`^5.x`) and `@types.react` versions must match React major line to avoid mismatched types.
 
-4) Recommended order of implementation
+1.5.11.4 Recommended order of implementation
 - Step 1: Version verification — run `npm view <pkg> dist-tags.latest` or consult npm to record exact stable versions (Jan 2026). (Essential)
 - Step 2: Draft `package.json` with caret ranges using verified versions (do not `npm install` yet if you want review).
 - Step 3: Scaffold config files: `tsconfig.json`, `vite.config.ts`, `postcss.config.cjs`, `tailwind.config.cjs`.
