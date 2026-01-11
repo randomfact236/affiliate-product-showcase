@@ -1,0 +1,88 @@
+{
+  "name": "affiliate-product-showcase",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modern WordPress plugin boilerplate — Vite 5 + React 18 + TypeScript + Tailwind",
+  "license": "GPL-2.0-or-later",
+  "main": "index.php",
+  "sideEffects": false,
+  "files": [
+    "dist/",
+    "build/",
+    "src/",
+    "languages/",
+    "readme.txt",
+    "readme.html",
+    "index.php"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourname/affiliate-product-showcase.git"
+  },
+  "author": "Your Name <you@example.com>",
+  "homepage": "https://github.com/yourname/affiliate-product-showcase#readme",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vite build",
+    "preview": "cross-env NODE_ENV=production vite preview --port 5173",
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx --ignore-path .gitignore .",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,md,json}\"",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist build .vite",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@wordpress/element": "^6.1.0",
+    "@wordpress/components": "^6.1.0",
+    "@wordpress/api-fetch": "^6.1.0",
+    "@wordpress/i18n": "^3.3.0",
+    "@wordpress/data": "^6.1.0",
+    "@wordpress/hooks": "^6.1.0",
+    "@heroicons/react": "^2.0.18",
+    "clsx": "^1.2.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.3.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "postcss-import": "^15.0.0",
+    "postcss-nested": "^6.0.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.0.0",
+    "@wordpress/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.7.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^33.0.0",
+    "stylelint-config-recommended": "^10.0.0",
+    "stylelint-config-tailwindcss": "^0.2.0",
+    "rimraf": "^5.0.0",
+    "concurrently": "^8.0.0",
+    "cross-env": "^7.0.0",
+    "vite-plugin-checker": "^1.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "_comment": {
+    "excluded": "The following packages are intentionally excluded from devDependencies and listed here as commented recommendations: vitest, @testing-library/react, @testing-library/jest-dom, husky, lint-staged, rollup-plugin-visualizer, @tailwindcss/forms, @tailwindcss/typography. Add them when you opt into testing/more tooling.",
+    "suggested": {
+      "vitest": "^1.2.0",
+      "@testing-library/react": "^14.0.0",
+      "husky": "^8.0.0",
+      "lint-staged": "^14.0.0",
+      "@tailwindcss/forms": "^1.0.0"
+    }
+  }
+}
