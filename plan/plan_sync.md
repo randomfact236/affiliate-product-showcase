@@ -1,5 +1,5 @@
 <!-- GENERATED_BY_SYNC_TODOS: true -->
-<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: 64c5940602f57ad10941502a4439126ad1a1af47 -->
+<!-- GENERATED_BY_SYNC_TODOS_CHECKSUM: ac586014898121b95c18eb0b81afa42d26d9b70e -->
 <!-- GENERATED_BY_SYNC_TODOS_SOURCE: plan/plan_source.md -->
 <!-- GENERATED_BY_SYNC_TODOS_STATE: plan/plan_state.json -->
 
@@ -505,172 +505,96 @@
       ✅ 1.5.14.9 Step 9: Run bundle analysis and optimize if needed.
 
 ## 1.6 Configuration Files — `.gitignore`, `phpcs.xml`, `phpunit.xml`, `.editorconfig`, `.dockerignore`
-   1.6.1 `.gitignore` with comprehensive exclusions
-   1.6.2 `.gitignore` excludes: `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`
-   1.6.3 `.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz`
-   1.6.4 `.editorconfig` with WordPress standards
-   1.6.5 `.editorconfig` settings: indent_style=tab, indent_size=4, end_of_line=lf, charset=utf-8
-   1.6.6 `.dockerignore` mirroring `.gitignore`
-   1.6.7 `phpcs.xml` with WordPress-Core, WordPress-Extra, WordPress-Docs rulesets
-   1.6.8 `phpcs.xml` with WordPress-VIP-Go ruleset
-   1.6.9 `phpcs.xml` with PHPCompatibility ruleset
-   1.6.10 `phpcs.xml` with minimum_supported_wp_version=6.4
-   1.6.11 `phpcs.xml` with testVersion=7.4-8.3
-   1.6.12 `phpcs.xml` with text domain check enabled
-   1.6.13 `phpcs.xml` with prefix check enabled
-   1.6.14 `phpunit.xml` with coverage settings
-   1.6.15 `phpunit.xml` with 95% coverage requirement
-   1.6.16 `phpunit.xml` with testdox output
-   1.6.17 `phpunit.xml` test-setup file
-   1.6.18 `phpstan.neon` with level 8
-   1.6.19 `phpstan.neon` with WordPress stubs
-   1.6.20 `phpstan.neon` with strict rules enabled
-   1.6.21 `psalm.xml` with errorLevel 1
-   1.6.22 `psalm.xml` with WordPress stubs
-   1.6.23 `psalm.xml` with totallyTyped enabled
-   1.6.24 `.eslintrc.json` with WordPress config
-   1.6.25 `.eslintrc.json` with TypeScript support
-   1.6.26 `.eslintrc.json` with React hooks rules
-   1.6.27 `.prettierrc.json` with WordPress code style
-   1.6.28 `stylelint.config.js` with standard + Tailwind config
-   1.6.29 `tailwind.config.js` with custom theme
-   1.6.30 `tailwind.config.js` with content paths
-   1.6.31 `tailwind.config.js` with safelist for dynamic classes
-   1.6.32 `postcss.config.js` with Tailwind + Autoprefixer
-   1.6.33 `vite.config.ts` with React plugin
-   1.6.34 `vite.config.ts` with build output to dist/
-   1.6.35 `vite.config.ts` with chunk splitting
-   1.6.36 `vite.config.ts` with asset inlining threshold
-   1.6.37 `tsconfig.json` with strict mode
-   1.6.38 `tsconfig.json` with WordPress globals
-   1.6.39 `tsconfig.json` with path aliases
-   1.6.40 `vite.config.*` manifest handling – enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` for PHP mapping.
-   1.6.41 SRI/hash generation – build hook or separate `tools/generate-sri.js` to produce `assets/dist/sri.json` for server-side SRI verification.
-   1.6.42 Pre-compression output – optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx `docker/nginx/` config to serve precompressed assets.
-   1.6.43 Bundle analyzer plugin – `vite-plugin-visualizer` config entry that runs only when `--mode analyze` or `npm run analyze` is invoked.
-   1.6.44 Typecheck integration – CI `npm run typecheck` step using `tsc --noEmit` (if TS is used); mention IDE typechecking still recommended.
+   1.6.1 `.gitignore` with comprehensive exclusions — `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`. [High]
+   1.6.2 `.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz` (examples). [High]
+   1.6.3 `.editorconfig` with WordPress standards — settings: `indent_style=tab`, `indent_size=4`, `end_of_line=lf`, `charset=utf-8`. [High]
+   1.6.4 `phpcs.xml` with WordPress-Core, WordPress-Extra, WordPress-Docs rulesets; include WordPress-VIP-Go, PHPCompatibility, `minimum_supported_wp_version=6.4`, `testVersion=7.4-8.3`, enable textdomain and prefix checks. [High]
+   1.6.5 `phpunit.xml` with coverage settings, 95% coverage requirement, `--testdox` output and a test-setup/bootstrap file. [High]
+   1.6.6 `postcss.config.js` with Tailwind and Autoprefixer configured for build pipelines. [High]
+   1.6.7 `vite.config.ts` with React plugin, manifest output to `assets/dist/`, and build output configured to `dist/`. [High]
+   1.6.8 `tsconfig.json` (strict mode) with strict type checking for frontend TypeScript. [High]
+   1.6.9 Vite manifest handling — enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` so PHP mapping uses a predictable path. [High]
+   1.6.10 `.dockerignore` mirroring `.gitignore` to keep Docker contexts lean. [Medium]
+   1.6.11 `phpstan.neon` configured at level 8 with WordPress stubs and strict rules. [Medium]
+   1.6.12 `psalm.xml` with `errorLevel=1`, WordPress stubs and typed configuration. [Medium]
+   1.6.13 `.eslintrc.json` with WordPress-config, TypeScript support and React hooks rules. [Medium]
+   1.6.14 `.prettierrc.json` with WordPress-friendly code style settings. [Medium]
+   1.6.15 `stylelint.config.js` combining `stylelint-config-standard` and Tailwind-aware rules. [Medium]
+   1.6.16 `tailwind.config.js` with custom theme, content paths and safelist for dynamic classes. [Medium]
+   1.6.17 `vite.config.ts` tuned for chunk splitting and performance (configurable thresholds). [Medium]
+   1.6.18 `tsconfig.json` additions for WordPress globals and ambient typings. [Medium]
+   1.6.19 SRI/hash generation — `tools/generate-sri.js` or build hook to produce `assets/dist/sri.json` for server-side SRI verification. [Medium]
+   1.6.20 Typecheck integration — CI `npm run typecheck` (`tsc --noEmit`) step; recommend IDE typechecking as well. [Medium]
+   1.6.21 `vite.config.ts` asset inlining threshold and related optimizations. [Low]
+   1.6.22 `tsconfig.json` path aliases for frontend sources (optional convenience). [Low]
+   1.6.23 Pre-compression output — optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx config to serve precompressed assets. [Low]
+   1.6.24 Bundle analyzer plugin — `vite-plugin-visualizer` entry for `--mode analyze` or `npm run analyze`. [Low]
 
 ## 1.7 Environment Variables — .env for dev, WP Options fallback
-   1.7.1 `PLUGIN_DEV_MODE` - Enable/disable dev features
-   1.7.2 `PLUGIN_DEBUG` - Enable debug logging
-   1.7.3 `DB_HOST` - Database host (fallback to WP constant)
-   1.7.4 `DB_NAME` - Database name (fallback to WP constant)
-   1.7.5 `DB_USER` - Database user (fallback to WP constant)
-   1.7.6 `DB_PASSWORD` - Database password (fallback to WP constant)
-   1.7.7 `DB_CHARSET` - Database charset (fallback to WP constant)
-   1.7.8 `DB_COLLATE` - Database collation (fallback to WP constant)
-   1.7.9 `REDIS_HOST` - Redis host for caching
-   1.7.10 `REDIS_PORT` - Redis port
-   1.7.11 `REDIS_DATABASE` - Redis database number
-   1.7.12 WordPress Options API fallback for all settings
-   1.7.13 Function `get_plugin_option($key, $default)` with env fallback
-   1.7.14 Function `update_plugin_option($key, $value)` uses WP Options API
-   1.7.15 Never commit `.env` file
-   1.7.16 `.env` excluded from packaging script
-   1.7.17 Documentation: 'Use .env for local dev only'
-   1.7.18 Documentation: 'Production uses WP Options API'
-   1.7.19 Security note: 'Never store API keys in .env on production'
+   1.7.1 `.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]
+   1.7.2 `src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]
+   1.7.3 `src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]
+   1.7.4 `docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]
 
 ## 1.8 WordPress Path/URL Functions — canonical helpers for URLs and paths
-   1.8.1 Use `plugins_url()` for all asset URLs
-   1.8.2 Use `plugin_dir_path(__FILE__)` for file paths
-   1.8.3 Use `plugin_dir_url(__FILE__)` for directory URLs
-   1.8.4 Use `plugin_basename(__FILE__)` for plugin identification
-   1.8.5 Use `get_home_url()` for site URL
-   1.8.6 Use `admin_url()` for admin URLs
-   1.8.7 Use `rest_url()` for REST API URLs
-   1.8.8 Use `wp_upload_dir()` for upload paths
-   1.8.9 Never hardcode paths like `/wp-content/plugins/`
-   1.8.10 Never hardcode domains like `https://example.com`
-   1.8.11 Support subdirectory installations
-   1.8.12 Support domain mapping
-   1.8.13 Support multisite network installations
-   1.8.14 Support custom wp-content directory names
+   1.8.1 `src/Helpers/Paths.php` — Canonical wrapper helpers for `plugins_url()`, `plugin_dir_path()`, `plugin_dir_url()`, `plugin_basename()`, `rest_url()`, `admin_url()`, `get_home_url()`, and `wp_upload_dir()` providing consistent asset URLs/paths, multisite/subdirectory/custom wp-content support, and preventing hardcoded paths/domains. [High]
+   1.8.2 `src/Plugin/Constants.php` — Ensure `src/Plugin/Constants.php` is authoritative, documented, and exposes view/asset helpers (`asset_url`, `view_path`) used by templates and `Paths.php`. (If already present, verify and document.) [Medium]
+   1.8.3 `docs/developer-guide.md` examples — Usage examples showing how to use `src/Helpers/Paths.php` and `src/Plugin/Constants.php` when enqueuing assets, registering REST routes, and generating view paths. [Low]
 
 ## 1.9 Database Table Prefix — configurable DB prefix and migration notes
-   1.9.1 Use `$wpdb->prefix` for all table names
-   1.9.2 Custom tables: `{$wpdb->prefix}affiliate_products_meta`
-   1.9.3 TODO (auto-inserted)
-   1.9.4 Custom tables: `{$wpdb->prefix}affiliate_products_submissions`
-   1.9.5 Never hardcode `wp_` prefix
-   1.9.6 Support custom table prefixes
-   1.9.7 Support multisite base prefix
-   1.9.8 Table creation uses `$wpdb->get_charset_collate()`
-   1.9.9 Use `$wpdb->prepare()` for all queries
-   1.9.10 Index creation on custom tables
-   1.9.11 Foreign key relationships where appropriate
-   1.9.12 Database version tracking for migrations
-   1.9.13 Rollback capability for failed migrations
-   1.9.14 Cleanup old migration data
+   1.9.1 `src/Database/Database.php` — Database access layer standardizing table naming via `$wpdb->prefix`, using `$wpdb->get_charset_collate()` for table creation, wrapping `$wpdb->prepare()` for safe queries, and providing helpers for index creation and common queries. [High]
+   1.9.2 `src/Database/Migrations.php` — Migration manager tracking schema version, safe upgrade routines, rollback capability, and cleanup of old migration data. [High]
+   1.9.3 `src/Database/seeders/sample-products.php` — Sample data seeder for `scripts/db-seed.sh` and integration tests (fixtures for products/pages). [Medium]
+   1.9.4 `docs/migrations.md` — Migration and rollback documentation for maintainers, including versioning and deployment notes. [Low]
 
 ## 1.10 Standalone & Privacy Guarantees — standalone mode, data handling, privacy
-   1.10.1 Zero external HTTP requests during normal operation
-   1.10.2 No CDNs (Cloudflare, jsDelivr, unpkg, etc.)
-   1.10.3 No Google Fonts or any web font service
-   1.10.4 No Font Awesome or external icon libraries
-   1.10.5 No Google Analytics, Mixpanel, Segment, etc.
-   1.10.6 No tracking pixels or beacons
-   1.10.7 No external image URLs (reject on submission)
-   1.10.8 No external JS libraries loaded via CDN
-   1.10.9 No update checker (completely disabled)
-   1.10.10 No license verification servers
-   1.10.11 No phone-home behavior of any kind
-   1.10.12 All assets bundled and loaded locally
-   1.10.13 System font stack only
-   1.10.14 Local SVG icons only
-   1.10.15 No built-in analytics/tracking (handled by Site Kit / separate plugin)
-   1.10.16 No external API calls except user-clicked affiliate links
-   1.10.17 CAPTCHA disabled by default (optional, no external service code)
-   1.10.18 README prominently states '100% Standalone - No External Dependencies'
-   1.10.19 README lists all bundled vs. excluded dependencies
+   1.10.1 `README.md` addition — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]
+   1.10.2 `src/Services/AffiliateService.php` — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]
+   1.10.3 `docs/privacy-policy-template.md` — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]
+   1.10.4 `tools/check-external-requests.js` — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]
 
 ## 1.11 Code Quality Tools — PHPCS, PHPUnit, linters and config
-   1.11.1 Husky pre-commit hooks installation
-   1.11.2 Lint-staged configuration for staged files only
-   1.11.3 Pre-commit: Run PHPCS on PHP files
-   1.11.4 Pre-commit: Run PHPStan on PHP files
-   1.11.5 Pre-commit: Run Psalm on PHP files
-   1.11.6 Pre-commit: Run ESLint on JS/TS files
-   1.11.7 Pre-commit: Run Prettier on JS/TS files
-   1.11.8 Pre-commit: Run Stylelint on CSS files
-   1.11.9 Pre-commit: Run PHPUnit tests
-   1.11.10 Pre-commit: Check for `strict_types=1` in all PHP files
-   1.11.11 Pre-commit: Check for PHPDoc blocks
-   1.11.12 Pre-commit: Prevent commits with `var_dump`, `dd`, `console.log`
-   1.11.13 Pre-commit: Check for merge conflict markers
-   1.11.14 Pre-commit: Check file size limits
-   1.11.15 Pre-commit: Check for trailing whitespace
-   1.11.16 Pre-push: Run full test suite
-   1.11.17 Pre-push: Verify code coverage ≥95%
-   1.11.18 Pre-push: Run security scans
-   1.11.19 Commit-msg hook: Validate conventional commits format
+   1.11.1 `.husky/*` — Commit-msg, `pre-commit` and `pre-push` hooks executing quality gates: PHPCS, PHPStan, Psalm, ESLint, Prettier, Stylelint, PHPUnit, security scans and coverage checks to block bad commits/pushes. [High]
+   1.11.2 `.lintstagedrc.json` — Lint-staged mapping of file globs to fast staged checks (phpcs/eslint/prettier/stylelint/phpstan quick runners). [High]
+   1.11.3 `commitlint.config.cjs` — Conventional commits enforcement used by `commit-msg` hook for changelog automation. [High]
+   1.11.4 `package.json` devDependencies & scripts — Add/install-time setup for `husky`, `lint-staged`, `@commitlint/*`, plus scripts for `lint`, `format`, `typecheck`, `test`, `generate:sri`, and `assert-coverage`. [High]
+   1.11.5 `scripts/check-debug.js` — Staged-file scanner to prevent committing debug artifacts (`var_dump`, `dd`, `console.log`). [Medium]
+   1.11.6 `scripts/assert-coverage.sh` — Pre-push helper that asserts coverage ≥95% and fails pushes when threshold unmet. [Medium]
+   1.11.7 Pre-commit hygiene checks configuration — enforce `declare(strict_types=1)`, PHPDoc presence, merge-marker detection, file-size/trailing-whitespace limits and other lightweight sanity checks as part of the staged checks. [Low]
 
 ## 1.12 README Documentation — installation, local setup, and developer notes
-   1.12.1 Plugin name and tagline
-   1.12.2 '100% Standalone' badge
-   1.12.3 'Zero External Dependencies' badge
-   1.12.4 'Privacy-First' badge
-   1.12.5 'Enterprise-Grade' badge
-   1.12.6 Feature highlights list
-   1.12.7 Screenshots
-   1.12.8 Requirements: PHP, WordPress, MySQL versions
-   1.12.9 Installation instructions (manual + WP admin)
-   1.12.10 Quick start guide
-   1.12.11 Configuration guide
-   1.12.12 Shortcode documentation
-   1.12.13 REST API documentation
-   1.12.14 WP-CLI commands documentation
-   1.12.15 Hooks and filters reference
-   1.12.16 Troubleshooting
-   1.12.17 FAQ
-   1.12.18 Changelog with semantic versioning
-   1.12.19 Contributing guidelines
-   1.12.20 License information (GPL v2 or later)
-   1.12.21 Credits and acknowledgments
-   1.12.22 Support channels
-   1.12.23 Donation/sponsorship links
-   1.12.24 Security policy and reporting
-   1.12.25 Privacy policy template for users
+   1.12.1 Plugin name and tagline [High]
+   1.12.2 '100% Standalone' badge [High]
+   1.12.3 'Zero External Dependencies' badge [High]
+   1.12.4 'Privacy-First' badge [High]
+   1.12.5 'Enterprise-Grade' badge [High]
+   1.12.6 Feature highlights list [High]
+   1.12.7 Requirements: PHP, WordPress, MySQL versions [High]
+   1.12.8 Installation instructions (manual + WP admin) [High]
+   1.12.9 Quick start guide [High]
+   1.12.10 Configuration guide [High]
+   1.12.11 REST API documentation [High]
+   1.12.12 Changelog with semantic versioning [High]
+   1.12.13 Contributing guidelines [High]
+   1.12.14 License information (GPL v2 or later) [High]
+   1.12.15 Security policy and reporting [High]
+   1.12.16 `README.md` — Comprehensive repository README with badges (`100% Standalone`, `Privacy-First`, `Enterprise-Grade`), requirements, installation (manual + WP admin), quick start, configuration guide, shortcode examples, REST API reference and a `readme.txt` for WordPress.org. [High]
+   1.12.17 `CHANGELOG.md` — Semantic changelog generated from conventional commits for release notes. [High]
+   1.12.18 `CONTRIBUTING.md` & `CODE_OF_CONDUCT.md` — Contribution guide, branch strategy, PR templates, local setup, and community standards. [High]
+   1.12.19 `SECURITY.md` — Security disclosure and reporting policy for the plugin package. [High]
+   1.12.20 Screenshots [Medium]
+   1.12.21 Shortcode documentation [Medium]
+   1.12.22 WP-CLI commands documentation [Medium]
+   1.12.23 Hooks and filters reference [Medium]
+   1.12.24 Troubleshooting [Medium]
+   1.12.25 FAQ [Medium]
+   1.12.26 Support channels [Medium]
+   1.12.27 `docs/shortcode-reference.md` — Example usage and attribute reference for all plugin shortcodes. [Medium]
+   1.12.28 `docs/cli-commands.md` (expand) — Expanded CLI docs with command examples and references to `src/Cli/ProductsCommand.php`. [Medium]
+   1.12.29 Credits and acknowledgments [Low]
+   1.12.30 Donation/sponsorship links [Low]
+   1.12.31 Privacy policy template for users [Low]
+   1.12.32 `docs/privacy-policy-template.md` — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]
 
 # Step 2 — Step 2 — Content Types & Taxonomies
 

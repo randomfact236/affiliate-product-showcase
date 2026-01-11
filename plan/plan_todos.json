@@ -3820,7 +3820,7 @@
     {
       "code": "1.6.1",
       "kind": "item",
-      "title": "`.gitignore` with comprehensive exclusions",
+      "title": "`.gitignore` with comprehensive exclusions — `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3828,7 +3828,7 @@
     {
       "code": "1.6.2",
       "kind": "item",
-      "title": "`.gitignore` excludes: `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`",
+      "title": "`.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz` (examples). [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3836,7 +3836,7 @@
     {
       "code": "1.6.3",
       "kind": "item",
-      "title": "`.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz`",
+      "title": "`.editorconfig` with WordPress standards — settings: `indent_style=tab`, `indent_size=4`, `end_of_line=lf`, `charset=utf-8`. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3844,7 +3844,7 @@
     {
       "code": "1.6.4",
       "kind": "item",
-      "title": "`.editorconfig` with WordPress standards",
+      "title": "`phpcs.xml` with WordPress-Core, WordPress-Extra, WordPress-Docs rulesets; include WordPress-VIP-Go, PHPCompatibility, `minimum_supported_wp_version=6.4`, `testVersion=7.4-8.3`, enable textdomain and prefix checks. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3852,7 +3852,7 @@
     {
       "code": "1.6.5",
       "kind": "item",
-      "title": "`.editorconfig` settings: indent_style=tab, indent_size=4, end_of_line=lf, charset=utf-8",
+      "title": "`phpunit.xml` with coverage settings, 95% coverage requirement, `--testdox` output and a test-setup/bootstrap file. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3860,7 +3860,7 @@
     {
       "code": "1.6.6",
       "kind": "item",
-      "title": "`.dockerignore` mirroring `.gitignore`",
+      "title": "`postcss.config.js` with Tailwind and Autoprefixer configured for build pipelines. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3868,7 +3868,7 @@
     {
       "code": "1.6.7",
       "kind": "item",
-      "title": "`phpcs.xml` with WordPress-Core, WordPress-Extra, WordPress-Docs rulesets",
+      "title": "`vite.config.ts` with React plugin, manifest output to `assets/dist/`, and build output configured to `dist/`. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3876,7 +3876,7 @@
     {
       "code": "1.6.8",
       "kind": "item",
-      "title": "`phpcs.xml` with WordPress-VIP-Go ruleset",
+      "title": "`tsconfig.json` (strict mode) with strict type checking for frontend TypeScript. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3884,7 +3884,7 @@
     {
       "code": "1.6.9",
       "kind": "item",
-      "title": "`phpcs.xml` with PHPCompatibility ruleset",
+      "title": "Vite manifest handling — enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` so PHP mapping uses a predictable path. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3892,7 +3892,7 @@
     {
       "code": "1.6.10",
       "kind": "item",
-      "title": "`phpcs.xml` with minimum_supported_wp_version=6.4",
+      "title": "`.dockerignore` mirroring `.gitignore` to keep Docker contexts lean. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3900,7 +3900,7 @@
     {
       "code": "1.6.11",
       "kind": "item",
-      "title": "`phpcs.xml` with testVersion=7.4-8.3",
+      "title": "`phpstan.neon` configured at level 8 with WordPress stubs and strict rules. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3908,7 +3908,7 @@
     {
       "code": "1.6.12",
       "kind": "item",
-      "title": "`phpcs.xml` with text domain check enabled",
+      "title": "`psalm.xml` with `errorLevel=1`, WordPress stubs and typed configuration. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3916,7 +3916,7 @@
     {
       "code": "1.6.13",
       "kind": "item",
-      "title": "`phpcs.xml` with prefix check enabled",
+      "title": "`.eslintrc.json` with WordPress-config, TypeScript support and React hooks rules. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3924,7 +3924,7 @@
     {
       "code": "1.6.14",
       "kind": "item",
-      "title": "`phpunit.xml` with coverage settings",
+      "title": "`.prettierrc.json` with WordPress-friendly code style settings. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3932,7 +3932,7 @@
     {
       "code": "1.6.15",
       "kind": "item",
-      "title": "`phpunit.xml` with 95% coverage requirement",
+      "title": "`stylelint.config.js` combining `stylelint-config-standard` and Tailwind-aware rules. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3940,7 +3940,7 @@
     {
       "code": "1.6.16",
       "kind": "item",
-      "title": "`phpunit.xml` with testdox output",
+      "title": "`tailwind.config.js` with custom theme, content paths and safelist for dynamic classes. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3948,7 +3948,7 @@
     {
       "code": "1.6.17",
       "kind": "item",
-      "title": "`phpunit.xml` test-setup file",
+      "title": "`vite.config.ts` tuned for chunk splitting and performance (configurable thresholds). [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3956,7 +3956,7 @@
     {
       "code": "1.6.18",
       "kind": "item",
-      "title": "`phpstan.neon` with level 8",
+      "title": "`tsconfig.json` additions for WordPress globals and ambient typings. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3964,7 +3964,7 @@
     {
       "code": "1.6.19",
       "kind": "item",
-      "title": "`phpstan.neon` with WordPress stubs",
+      "title": "SRI/hash generation — `tools/generate-sri.js` or build hook to produce `assets/dist/sri.json` for server-side SRI verification. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3972,7 +3972,7 @@
     {
       "code": "1.6.20",
       "kind": "item",
-      "title": "`phpstan.neon` with strict rules enabled",
+      "title": "Typecheck integration — CI `npm run typecheck` (`tsc --noEmit`) step; recommend IDE typechecking as well. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3980,7 +3980,7 @@
     {
       "code": "1.6.21",
       "kind": "item",
-      "title": "`psalm.xml` with errorLevel 1",
+      "title": "`vite.config.ts` asset inlining threshold and related optimizations. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3988,7 +3988,7 @@
     {
       "code": "1.6.22",
       "kind": "item",
-      "title": "`psalm.xml` with WordPress stubs",
+      "title": "`tsconfig.json` path aliases for frontend sources (optional convenience). [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -3996,7 +3996,7 @@
     {
       "code": "1.6.23",
       "kind": "item",
-      "title": "`psalm.xml` with totallyTyped enabled",
+      "title": "Pre-compression output — optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx config to serve precompressed assets. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4004,167 +4004,7 @@
     {
       "code": "1.6.24",
       "kind": "item",
-      "title": "`.eslintrc.json` with WordPress config",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.25",
-      "kind": "item",
-      "title": "`.eslintrc.json` with TypeScript support",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.26",
-      "kind": "item",
-      "title": "`.eslintrc.json` with React hooks rules",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.27",
-      "kind": "item",
-      "title": "`.prettierrc.json` with WordPress code style",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.28",
-      "kind": "item",
-      "title": "`stylelint.config.js` with standard + Tailwind config",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.29",
-      "kind": "item",
-      "title": "`tailwind.config.js` with custom theme",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.30",
-      "kind": "item",
-      "title": "`tailwind.config.js` with content paths",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.31",
-      "kind": "item",
-      "title": "`tailwind.config.js` with safelist for dynamic classes",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.32",
-      "kind": "item",
-      "title": "`postcss.config.js` with Tailwind + Autoprefixer",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.33",
-      "kind": "item",
-      "title": "`vite.config.ts` with React plugin",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.34",
-      "kind": "item",
-      "title": "`vite.config.ts` with build output to dist/",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.35",
-      "kind": "item",
-      "title": "`vite.config.ts` with chunk splitting",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.36",
-      "kind": "item",
-      "title": "`vite.config.ts` with asset inlining threshold",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.37",
-      "kind": "item",
-      "title": "`tsconfig.json` with strict mode",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.38",
-      "kind": "item",
-      "title": "`tsconfig.json` with WordPress globals",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.39",
-      "kind": "item",
-      "title": "`tsconfig.json` with path aliases",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.40",
-      "kind": "item",
-      "title": "`vite.config.*` manifest handling – enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` for PHP mapping.",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.41",
-      "kind": "item",
-      "title": "SRI/hash generation – build hook or separate `tools/generate-sri.js` to produce `assets/dist/sri.json` for server-side SRI verification.",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.42",
-      "kind": "item",
-      "title": "Pre-compression output – optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx `docker/nginx/` config to serve precompressed assets.",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.43",
-      "kind": "item",
-      "title": "Bundle analyzer plugin – `vite-plugin-visualizer` config entry that runs only when `--mode analyze` or `npm run analyze` is invoked.",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.6.44",
-      "kind": "item",
-      "title": "Typecheck integration – CI `npm run typecheck` step using `tsc --noEmit` (if TS is used); mention IDE typechecking still recommended.",
+      "title": "Bundle analyzer plugin — `vite-plugin-visualizer` entry for `--mode analyze` or `npm run analyze`. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4180,7 +4020,7 @@
     {
       "code": "1.7.1",
       "kind": "item",
-      "title": "`PLUGIN_DEV_MODE` - Enable/disable dev features",
+      "title": "`.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4188,7 +4028,7 @@
     {
       "code": "1.7.2",
       "kind": "item",
-      "title": "`PLUGIN_DEBUG` - Enable debug logging",
+      "title": "`src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4196,7 +4036,7 @@
     {
       "code": "1.7.3",
       "kind": "item",
-      "title": "`DB_HOST` - Database host (fallback to WP constant)",
+      "title": "`src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4204,127 +4044,7 @@
     {
       "code": "1.7.4",
       "kind": "item",
-      "title": "`DB_NAME` - Database name (fallback to WP constant)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.5",
-      "kind": "item",
-      "title": "`DB_USER` - Database user (fallback to WP constant)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.6",
-      "kind": "item",
-      "title": "`DB_PASSWORD` - Database password (fallback to WP constant)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.7",
-      "kind": "item",
-      "title": "`DB_CHARSET` - Database charset (fallback to WP constant)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.8",
-      "kind": "item",
-      "title": "`DB_COLLATE` - Database collation (fallback to WP constant)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.9",
-      "kind": "item",
-      "title": "`REDIS_HOST` - Redis host for caching",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.10",
-      "kind": "item",
-      "title": "`REDIS_PORT` - Redis port",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.11",
-      "kind": "item",
-      "title": "`REDIS_DATABASE` - Redis database number",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.12",
-      "kind": "item",
-      "title": "WordPress Options API fallback for all settings",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.13",
-      "kind": "item",
-      "title": "Function `get_plugin_option($key, $default)` with env fallback",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.14",
-      "kind": "item",
-      "title": "Function `update_plugin_option($key, $value)` uses WP Options API",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.15",
-      "kind": "item",
-      "title": "Never commit `.env` file",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.16",
-      "kind": "item",
-      "title": "`.env` excluded from packaging script",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.17",
-      "kind": "item",
-      "title": "Documentation: 'Use .env for local dev only'",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.18",
-      "kind": "item",
-      "title": "Documentation: 'Production uses WP Options API'",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.7.19",
-      "kind": "item",
-      "title": "Security note: 'Never store API keys in .env on production'",
+      "title": "`docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4340,7 +4060,7 @@
     {
       "code": "1.8.1",
       "kind": "item",
-      "title": "Use `plugins_url()` for all asset URLs",
+      "title": "`src/Helpers/Paths.php` — Canonical wrapper helpers for `plugins_url()`, `plugin_dir_path()`, `plugin_dir_url()`, `plugin_basename()`, `rest_url()`, `admin_url()`, `get_home_url()`, and `wp_upload_dir()` providing consistent asset URLs/paths, multisite/subdirectory/custom wp-content support, and preventing hardcoded paths/domains. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4348,7 +4068,7 @@
     {
       "code": "1.8.2",
       "kind": "item",
-      "title": "Use `plugin_dir_path(__FILE__)` for file paths",
+      "title": "`src/Plugin/Constants.php` — Ensure `src/Plugin/Constants.php` is authoritative, documented, and exposes view/asset helpers (`asset_url`, `view_path`) used by templates and `Paths.php`. (If already present, verify and document.) [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4356,95 +4076,7 @@
     {
       "code": "1.8.3",
       "kind": "item",
-      "title": "Use `plugin_dir_url(__FILE__)` for directory URLs",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.4",
-      "kind": "item",
-      "title": "Use `plugin_basename(__FILE__)` for plugin identification",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.5",
-      "kind": "item",
-      "title": "Use `get_home_url()` for site URL",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.6",
-      "kind": "item",
-      "title": "Use `admin_url()` for admin URLs",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.7",
-      "kind": "item",
-      "title": "Use `rest_url()` for REST API URLs",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.8",
-      "kind": "item",
-      "title": "Use `wp_upload_dir()` for upload paths",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.9",
-      "kind": "item",
-      "title": "Never hardcode paths like `/wp-content/plugins/`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.10",
-      "kind": "item",
-      "title": "Never hardcode domains like `https://example.com`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.11",
-      "kind": "item",
-      "title": "Support subdirectory installations",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.12",
-      "kind": "item",
-      "title": "Support domain mapping",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.13",
-      "kind": "item",
-      "title": "Support multisite network installations",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.8.14",
-      "kind": "item",
-      "title": "Support custom wp-content directory names",
+      "title": "`docs/developer-guide.md` examples — Usage examples showing how to use `src/Helpers/Paths.php` and `src/Plugin/Constants.php` when enqueuing assets, registering REST routes, and generating view paths. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4460,7 +4092,7 @@
     {
       "code": "1.9.1",
       "kind": "item",
-      "title": "Use `$wpdb->prefix` for all table names",
+      "title": "`src/Database/Database.php` — Database access layer standardizing table naming via `$wpdb->prefix`, using `$wpdb->get_charset_collate()` for table creation, wrapping `$wpdb->prepare()` for safe queries, and providing helpers for index creation and common queries. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4468,7 +4100,7 @@
     {
       "code": "1.9.2",
       "kind": "item",
-      "title": "Custom tables: `{$wpdb->prefix}affiliate_products_meta`",
+      "title": "`src/Database/Migrations.php` — Migration manager tracking schema version, safe upgrade routines, rollback capability, and cleanup of old migration data. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4476,7 +4108,7 @@
     {
       "code": "1.9.3",
       "kind": "item",
-      "title": "TODO (auto-inserted)",
+      "title": "`src/Database/seeders/sample-products.php` — Sample data seeder for `scripts/db-seed.sh` and integration tests (fixtures for products/pages). [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4484,87 +4116,7 @@
     {
       "code": "1.9.4",
       "kind": "item",
-      "title": "Custom tables: `{$wpdb->prefix}affiliate_products_submissions`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.5",
-      "kind": "item",
-      "title": "Never hardcode `wp_` prefix",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.6",
-      "kind": "item",
-      "title": "Support custom table prefixes",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.7",
-      "kind": "item",
-      "title": "Support multisite base prefix",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.8",
-      "kind": "item",
-      "title": "Table creation uses `$wpdb->get_charset_collate()`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.9",
-      "kind": "item",
-      "title": "Use `$wpdb->prepare()` for all queries",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.10",
-      "kind": "item",
-      "title": "Index creation on custom tables",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.11",
-      "kind": "item",
-      "title": "Foreign key relationships where appropriate",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.12",
-      "kind": "item",
-      "title": "Database version tracking for migrations",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.13",
-      "kind": "item",
-      "title": "Rollback capability for failed migrations",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.9.14",
-      "kind": "item",
-      "title": "Cleanup old migration data",
+      "title": "`docs/migrations.md` — Migration and rollback documentation for maintainers, including versioning and deployment notes. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4580,7 +4132,7 @@
     {
       "code": "1.10.1",
       "kind": "item",
-      "title": "Zero external HTTP requests during normal operation",
+      "title": "`README.md` addition — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4588,7 +4140,7 @@
     {
       "code": "1.10.2",
       "kind": "item",
-      "title": "No CDNs (Cloudflare, jsDelivr, unpkg, etc.)",
+      "title": "`src/Services/AffiliateService.php` — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4596,7 +4148,7 @@
     {
       "code": "1.10.3",
       "kind": "item",
-      "title": "No Google Fonts or any web font service",
+      "title": "`docs/privacy-policy-template.md` — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4604,127 +4156,7 @@
     {
       "code": "1.10.4",
       "kind": "item",
-      "title": "No Font Awesome or external icon libraries",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.5",
-      "kind": "item",
-      "title": "No Google Analytics, Mixpanel, Segment, etc.",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.6",
-      "kind": "item",
-      "title": "No tracking pixels or beacons",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.7",
-      "kind": "item",
-      "title": "No external image URLs (reject on submission)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.8",
-      "kind": "item",
-      "title": "No external JS libraries loaded via CDN",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.9",
-      "kind": "item",
-      "title": "No update checker (completely disabled)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.10",
-      "kind": "item",
-      "title": "No license verification servers",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.11",
-      "kind": "item",
-      "title": "No phone-home behavior of any kind",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.12",
-      "kind": "item",
-      "title": "All assets bundled and loaded locally",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.13",
-      "kind": "item",
-      "title": "System font stack only",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.14",
-      "kind": "item",
-      "title": "Local SVG icons only",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.15",
-      "kind": "item",
-      "title": "No built-in analytics/tracking (handled by Site Kit / separate plugin)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.16",
-      "kind": "item",
-      "title": "No external API calls except user-clicked affiliate links",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.17",
-      "kind": "item",
-      "title": "CAPTCHA disabled by default (optional, no external service code)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.18",
-      "kind": "item",
-      "title": "README prominently states '100% Standalone - No External Dependencies'",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.10.19",
-      "kind": "item",
-      "title": "README lists all bundled vs. excluded dependencies",
+      "title": "`tools/check-external-requests.js` — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4740,7 +4172,7 @@
     {
       "code": "1.11.1",
       "kind": "item",
-      "title": "Husky pre-commit hooks installation",
+      "title": "`.husky/*` — Commit-msg, `pre-commit` and `pre-push` hooks executing quality gates: PHPCS, PHPStan, Psalm, ESLint, Prettier, Stylelint, PHPUnit, security scans and coverage checks to block bad commits/pushes. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4748,7 +4180,7 @@
     {
       "code": "1.11.2",
       "kind": "item",
-      "title": "Lint-staged configuration for staged files only",
+      "title": "`.lintstagedrc.json` — Lint-staged mapping of file globs to fast staged checks (phpcs/eslint/prettier/stylelint/phpstan quick runners). [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4756,7 +4188,7 @@
     {
       "code": "1.11.3",
       "kind": "item",
-      "title": "Pre-commit: Run PHPCS on PHP files",
+      "title": "`commitlint.config.cjs` — Conventional commits enforcement used by `commit-msg` hook for changelog automation. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4764,7 +4196,7 @@
     {
       "code": "1.11.4",
       "kind": "item",
-      "title": "Pre-commit: Run PHPStan on PHP files",
+      "title": "`package.json` devDependencies & scripts — Add/install-time setup for `husky`, `lint-staged`, `@commitlint/*`, plus scripts for `lint`, `format`, `typecheck`, `test`, `generate:sri`, and `assert-coverage`. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4772,7 +4204,7 @@
     {
       "code": "1.11.5",
       "kind": "item",
-      "title": "Pre-commit: Run Psalm on PHP files",
+      "title": "`scripts/check-debug.js` — Staged-file scanner to prevent committing debug artifacts (`var_dump`, `dd`, `console.log`). [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4780,7 +4212,7 @@
     {
       "code": "1.11.6",
       "kind": "item",
-      "title": "Pre-commit: Run ESLint on JS/TS files",
+      "title": "`scripts/assert-coverage.sh` — Pre-push helper that asserts coverage ≥95% and fails pushes when threshold unmet. [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4788,103 +4220,7 @@
     {
       "code": "1.11.7",
       "kind": "item",
-      "title": "Pre-commit: Run Prettier on JS/TS files",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.8",
-      "kind": "item",
-      "title": "Pre-commit: Run Stylelint on CSS files",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.9",
-      "kind": "item",
-      "title": "Pre-commit: Run PHPUnit tests",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.10",
-      "kind": "item",
-      "title": "Pre-commit: Check for `strict_types=1` in all PHP files",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.11",
-      "kind": "item",
-      "title": "Pre-commit: Check for PHPDoc blocks",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.12",
-      "kind": "item",
-      "title": "Pre-commit: Prevent commits with `var_dump`, `dd`, `console.log`",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.13",
-      "kind": "item",
-      "title": "Pre-commit: Check for merge conflict markers",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.14",
-      "kind": "item",
-      "title": "Pre-commit: Check file size limits",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.15",
-      "kind": "item",
-      "title": "Pre-commit: Check for trailing whitespace",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.16",
-      "kind": "item",
-      "title": "Pre-push: Run full test suite",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.17",
-      "kind": "item",
-      "title": "Pre-push: Verify code coverage ≥95%",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.18",
-      "kind": "item",
-      "title": "Pre-push: Run security scans",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
-    },
-    {
-      "code": "1.11.19",
-      "kind": "item",
-      "title": "Commit-msg hook: Validate conventional commits format",
+      "title": "Pre-commit hygiene checks configuration — enforce `declare(strict_types=1)`, PHPDoc presence, merge-marker detection, file-size/trailing-whitespace limits and other lightweight sanity checks as part of the staged checks. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4900,7 +4236,7 @@
     {
       "code": "1.12.1",
       "kind": "item",
-      "title": "Plugin name and tagline",
+      "title": "Plugin name and tagline [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4908,7 +4244,7 @@
     {
       "code": "1.12.2",
       "kind": "item",
-      "title": "'100% Standalone' badge",
+      "title": "'100% Standalone' badge [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4916,7 +4252,7 @@
     {
       "code": "1.12.3",
       "kind": "item",
-      "title": "'Zero External Dependencies' badge",
+      "title": "'Zero External Dependencies' badge [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4924,7 +4260,7 @@
     {
       "code": "1.12.4",
       "kind": "item",
-      "title": "'Privacy-First' badge",
+      "title": "'Privacy-First' badge [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4932,7 +4268,7 @@
     {
       "code": "1.12.5",
       "kind": "item",
-      "title": "'Enterprise-Grade' badge",
+      "title": "'Enterprise-Grade' badge [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4940,7 +4276,7 @@
     {
       "code": "1.12.6",
       "kind": "item",
-      "title": "Feature highlights list",
+      "title": "Feature highlights list [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4948,7 +4284,7 @@
     {
       "code": "1.12.7",
       "kind": "item",
-      "title": "Screenshots",
+      "title": "Requirements: PHP, WordPress, MySQL versions [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4956,7 +4292,7 @@
     {
       "code": "1.12.8",
       "kind": "item",
-      "title": "Requirements: PHP, WordPress, MySQL versions",
+      "title": "Installation instructions (manual + WP admin) [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4964,7 +4300,7 @@
     {
       "code": "1.12.9",
       "kind": "item",
-      "title": "Installation instructions (manual + WP admin)",
+      "title": "Quick start guide [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4972,7 +4308,7 @@
     {
       "code": "1.12.10",
       "kind": "item",
-      "title": "Quick start guide",
+      "title": "Configuration guide [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4980,7 +4316,7 @@
     {
       "code": "1.12.11",
       "kind": "item",
-      "title": "Configuration guide",
+      "title": "REST API documentation [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4988,7 +4324,7 @@
     {
       "code": "1.12.12",
       "kind": "item",
-      "title": "Shortcode documentation",
+      "title": "Changelog with semantic versioning [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -4996,7 +4332,7 @@
     {
       "code": "1.12.13",
       "kind": "item",
-      "title": "REST API documentation",
+      "title": "Contributing guidelines [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5004,7 +4340,7 @@
     {
       "code": "1.12.14",
       "kind": "item",
-      "title": "WP-CLI commands documentation",
+      "title": "License information (GPL v2 or later) [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5012,7 +4348,7 @@
     {
       "code": "1.12.15",
       "kind": "item",
-      "title": "Hooks and filters reference",
+      "title": "Security policy and reporting [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5020,7 +4356,7 @@
     {
       "code": "1.12.16",
       "kind": "item",
-      "title": "Troubleshooting",
+      "title": "`README.md` — Comprehensive repository README with badges (`100% Standalone`, `Privacy-First`, `Enterprise-Grade`), requirements, installation (manual + WP admin), quick start, configuration guide, shortcode examples, REST API reference and a `readme.txt` for WordPress.org. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5028,7 +4364,7 @@
     {
       "code": "1.12.17",
       "kind": "item",
-      "title": "FAQ",
+      "title": "`CHANGELOG.md` — Semantic changelog generated from conventional commits for release notes. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5036,7 +4372,7 @@
     {
       "code": "1.12.18",
       "kind": "item",
-      "title": "Changelog with semantic versioning",
+      "title": "`CONTRIBUTING.md` & `CODE_OF_CONDUCT.md` — Contribution guide, branch strategy, PR templates, local setup, and community standards. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5044,7 +4380,7 @@
     {
       "code": "1.12.19",
       "kind": "item",
-      "title": "Contributing guidelines",
+      "title": "`SECURITY.md` — Security disclosure and reporting policy for the plugin package. [High]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5052,7 +4388,7 @@
     {
       "code": "1.12.20",
       "kind": "item",
-      "title": "License information (GPL v2 or later)",
+      "title": "Screenshots [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5060,7 +4396,7 @@
     {
       "code": "1.12.21",
       "kind": "item",
-      "title": "Credits and acknowledgments",
+      "title": "Shortcode documentation [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5068,7 +4404,7 @@
     {
       "code": "1.12.22",
       "kind": "item",
-      "title": "Support channels",
+      "title": "WP-CLI commands documentation [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5076,7 +4412,7 @@
     {
       "code": "1.12.23",
       "kind": "item",
-      "title": "Donation/sponsorship links",
+      "title": "Hooks and filters reference [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5084,7 +4420,7 @@
     {
       "code": "1.12.24",
       "kind": "item",
-      "title": "Security policy and reporting",
+      "title": "Troubleshooting [Medium]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""
@@ -5092,7 +4428,63 @@
     {
       "code": "1.12.25",
       "kind": "item",
-      "title": "Privacy policy template for users",
+      "title": "FAQ [Medium]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.26",
+      "kind": "item",
+      "title": "Support channels [Medium]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.27",
+      "kind": "item",
+      "title": "`docs/shortcode-reference.md` — Example usage and attribute reference for all plugin shortcodes. [Medium]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.28",
+      "kind": "item",
+      "title": "`docs/cli-commands.md` (expand) — Expanded CLI docs with command examples and references to `src/Cli/ProductsCommand.php`. [Medium]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.29",
+      "kind": "item",
+      "title": "Credits and acknowledgments [Low]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.30",
+      "kind": "item",
+      "title": "Donation/sponsorship links [Low]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.31",
+      "kind": "item",
+      "title": "Privacy policy template for users [Low]",
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
+    },
+    {
+      "code": "1.12.32",
+      "kind": "item",
+      "title": "`docs/privacy-policy-template.md` — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]",
       "status": "pending",
       "derivedStatus": "pending",
       "marker": ""

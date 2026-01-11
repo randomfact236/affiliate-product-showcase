@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.19.0'
 
       - name: Run plan validation (--validate --strict)
         run: node plan/plan_sync_todos.cjs --validate --strict
