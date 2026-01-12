@@ -6,6 +6,7 @@
 
   Commands:
     node plan/manage-plan.js set <code> <pending|in-progress|completed>
+      (Updates <code> AND all its sub-topics/children)
     node plan/manage-plan.js regenerate
     node plan/manage-plan.js validate [--staged]
 */
@@ -236,8 +237,28 @@ function cmdSet(code, status) {
 
   const state = readJson(PATHS.state) || { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} };
   state.statusByCode = state.statusByCode || {};
-  state.statusByCode[code] = normalized;
+
+  // Collect target code and all its descendants (children)
+  const codesToUpdate = [code];
+  
+  // Ensure knownCodes exists and is an array
+  if (state.knownCodes && Array.isArray(state.knownCodes)) {
+    for (const k of state.knownCodes) {
+      // Check if k is a child of code (starts with code.)
+      if (k.startsWith(code + '.')) {
+        codesToUpdate.push(k);
+      }
+    }
+  }
+
+  for (const c of codesToUpdate) {
+    state.statusByCode[c] = normalized;
+  }
+
   writeJson(PATHS.state, state);
+  
+  // Log how many items were updated
+  console.log(`Updated ${codesToUpdate.length} items to ${normalized}.`);
 
   // Also update the flattened todos JSON so the generator does not override
   // the desired status. This keeps plan_state.json authoritative when using
