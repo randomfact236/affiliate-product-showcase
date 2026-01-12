@@ -1,6 +1,167 @@
 <?xml version="1.0"?>
 <ruleset name="Affiliate Product Showcase">
-  <description>PHPCS rules for the plugin (placeholder).</description>
+  <description>PHPCS rules for the plugin - WordPress Coding Standards</description>
+
+  <!-- Include WordPress Coding Standards -->
+  <rule ref="WordPress"/>
+  <rule ref="WordPress-Core"/>
+  <rule ref="WordPress-Docs"/>
+  <rule ref="WordPress-Extra"/>
+  <rule ref="WordPress.WP.I18n"/>
+
+  <!-- Files to check -->
   <file>src</file>
   <file>tests</file>
+  <file>wp-content/plugins/affiliate-product-showcase</file>
+
+  <!-- Exclude patterns -->
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/.git/*</exclude-pattern>
+  <exclude-pattern>*/build/*</exclude-pattern>
+  <exclude-pattern>*/dist/*</exclude-pattern>
+  <exclude-pattern>*/cache/*</exclude-pattern>
+
+  <!-- Set line length to 120 characters -->
+  <rule ref="Generic.Files.LineLength">
+    <properties>
+      <property name="lineLimit" value="120"/>
+      <property name="ignoreComments" value="false"/>
+    </properties>
+  </rule>
+
+  <!-- PHP Compatibility for PHP 7.4+ -->
+  <rule ref="PHPCompatibility">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Security rules -->
+  <rule ref="Security">
+    <severity>10</severity>
+  </rule>
+
+  <!-- Performance rules -->
+  <rule ref="Performance">
+    <severity>7</severity>
+  </rule>
+
+  <!-- Best practices -->
+  <rule ref="Squiz.Commenting">
+    <severity>5</severity>
+  </rule>
+
+  <!-- Allow modern PHP syntax -->
+  <rule ref="PHPCompatibility.Syntax">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow typed properties (PHP 7.4+) -->
+  <rule ref="PHPCompatibility.TypeDeclarations">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow arrow functions (PHP 7.4+) -->
+  <rule ref="PHPCompatibility.FunctionDeclarations">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow null coalescing operator -->
+  <rule ref="PHPCompatibility.Operators">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow short array syntax -->
+  <rule ref="PHPCompatibility.Arrays">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow typed parameters -->
+  <rule ref="PHPCompatibility.ParameterValues">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow return type declarations -->
+  <rule ref="PHPCompatibility.ReturnTypeDeclarations">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow nullable types -->
+  <rule ref="PHPCompatibility.NullableTypes">
+    <properties>
+      <property name="testVersion" value="7.4-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow union types (PHP 8.0+) -->
+  <rule ref="PHPCompatibility.UnionTypes">
+    <properties>
+      <property name="testVersion" value="8.0-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow named arguments (PHP 8.0+) -->
+  <rule ref="PHPCompatibility.NamedArguments">
+    <properties>
+      <property name="testVersion" value="8.0-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow match expressions (PHP 8.0+) -->
+  <rule ref="PHPCompatibility.MatchExpressions">
+    <properties>
+      <property name="testVersion" value="8.0-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow constructor property promotion (PHP 8.0+) -->
+  <rule ref="PHPCompatibility.ConstructorPromotion">
+    <properties>
+      <property name="testVersion" value="8.0-"/>
+    </properties>
+  </rule>
+
+  <!-- Allow attributes (PHP 8.0+) -->
+  <rule ref="PHPCompatibility.Attributes">
+    <properties>
+      <property name="testVersion" value="8.0-"/>
+    </properties>
+  </rule>
+
+  <!-- Exclude Yoda conditions (modern PHP prefers natural order) -->
+  <rule ref="WordPress.PHP.YodaConditions">
+    <severity>0</severity>
+  </rule>
+
+  <!-- Allow modern WordPress hooks usage -->
+  <rule ref="WordPress.WP.Hooks">
+    <properties>
+      <property name="allowed_hooks" value="all"/>
+    </properties>
+  </rule>
+
+  <!-- Allow modern database queries -->
+  <rule ref="WordPress.DB">
+    <severity>5</severity>
+  </rule>
+
+  <!-- Allow modern WordPress functions -->
+  <rule ref="WordPress.WP">
+    <severity>5</severity>
+  </rule>
 </ruleset>

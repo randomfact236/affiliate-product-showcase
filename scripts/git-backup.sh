@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Guard to disable pushing via this script
+echo "[DISABLED] scripts/git-backup.sh: push operations are currently blocked."
+echo "To re-enable, remove the guard lines at the top of this file." 
+exit 0
+
 # Repo root
 repo_root=$(git rev-parse --show-toplevel)
 cd "$repo_root"

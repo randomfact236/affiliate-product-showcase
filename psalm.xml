@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    cacheDirectory="build/psalm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://psalm.dev/schema/config"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <directory name="node_modules"/>
+            <directory name="tests/_support"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <MixedPropertyAssignmentHandler>
+            <errorLevel type="suppress"/>
+        </MixedPropertyAssignmentHandler>
+        <MixedArrayOffsetAssignmentHandler>
+            <errorLevel type="suppress"/>
+        </MixedArrayOffsetAssignmentHandler>
+    </issueHandlers>
+
+    <stubs>
+        <file name="vendor/php-stubs/wordpress-stubs/wordpress-globals.php"/>
+        <file name="vendor/php-stubs/wordpress-stubs/wordpress-http-globals.php"/>
+        <file name="vendor/php-stubs/wordpress-stubs/wordpress-widget-globals.php"/>
+    </stubs>
+</psalm>

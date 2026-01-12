@@ -170,10 +170,10 @@ const CONFIG = {
 		// Localhost references (for development)
 		/localhost/gi,
 		/127\.0\.0\.1/gi,
-		// Relative URLs
-		/^\/\//,
 		// Data URLs
 		/^data:/,
+		// Blob URLs (for local file access)
+		/^blob:/,
 	],
 };
 

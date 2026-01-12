@@ -1,0 +1,117 @@
+# WordPress Plugin - Docker Ignored Files
+# Generated: January 12, 2026
+
+# Root files
+.editorconfig
+.env
+.env.local
+.env.example
+.git
+.gitignore
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+README.md
+SECURITY.md
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings
+
+# Build dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+.vite/
+.turbo/
+*.log
+
+# WordPress uploads (should be volume-mounted, not part of image)
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backups/
+
+# Database storage
+docker/mysql/
+docker/redis/
+*.sql
+*.sqlite
+*.sqlite3
+
+# Composer
+vendor/
+composer.lock
+composer.phar
+
+# Testing
+tests/phpunit.xml
+.phpunit.result.cache
+coverage/
+.phpunit.cache
+phpunit.xml
+phpcs.xml
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+circleci
+bitbucket-pipelines.yml
+codecov.yml
+
+# Documentation (except README.md)
+docs/
+*.md
+!README.md
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Security
+.env.production
+.env.*.local
+credentials/
+secrets/
+*.key
+*.pem
+*.cert
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+composer.lock

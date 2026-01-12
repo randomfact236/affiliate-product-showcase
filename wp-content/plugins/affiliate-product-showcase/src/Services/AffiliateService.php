@@ -181,7 +181,7 @@ final class AffiliateService {
 		$this->check_blocked_domains( $url );
 
 		// Prevent protocol-relative URLs (can be hijacked)
-		if ( str_starts_with( $url, '//' ) ) {
+		if ( 0 === strpos( $url, '//' ) ) {
 			throw new \InvalidArgumentException( 'Protocol-relative URLs are not allowed.' );
 		}
 	}
@@ -196,7 +196,7 @@ final class AffiliateService {
 		$urlLower = strtolower( $url );
 
 		foreach ( self::BLOCKED_DOMAINS as $blockedDomain ) {
-			if ( str_contains( $urlLower, $blockedDomain ) ) {
+			if ( false !== strpos( $urlLower, $blockedDomain ) ) {
 				throw new \InvalidArgumentException(
 					sprintf(
 						'URL contains blocked domain: %s. ' .

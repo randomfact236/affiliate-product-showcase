@@ -1,10 +1,10 @@
 /**
  * Enterprise-Grade Vite Configuration for WordPress Plugin Development
  *
- * @version 2.2.1 - PRODUCTION READY (All Bugs Fixed)
+ * @version 3.0.0 - MANIFEST ENABLED
  * @description Definitive 10/10 configuration. Uses OOP principles to ensure
  *              type safety, security, and robust error handling while maintaining
- *              architectural consistency with the PSR-4 WordPress boilerplate.
+ *              architectural consistency with PSR-4 WordPress boilerplate.
  *
  * @package AffiliateProductShowcase
  */
@@ -12,6 +12,7 @@
 import { defineConfig, loadEnv, normalizePath } from 'vite';
 import { resolve, basename } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import { createHash } from 'crypto';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import react from '@vitejs/plugin-react';
@@ -24,11 +25,11 @@ const CONFIG = Object.freeze({
     CHUNK_SIZE_LIMIT: 1000, 
     INLINE_LIMIT: 4096,
     MIN_CHUNK: 20000,
+    MANIFEST: true,
   },
   BROWSERS: [
     '> 0.2%', 'not dead', 'not op_mini all', 'not IE 11',
     'chrome >= 90', 'firefox >= 88', 'safari >= 14', 'edge >= 90',
-    'not IE_Mob 11',
     'maintained node versions',
   ],
   SECURITY_HEADERS: Object.freeze({
@@ -116,7 +117,7 @@ class EnvValidator {
         if (config.maxLength && str.length > config.maxLength) {
           throw new ConfigError(`Value too long for ${key}`);
         }
-        return str.replace(/[<>\'\"]/g, ''); // XSS protection
+        return str.replace(/[<>'"]/g, ''); // XSS protection
       case 'path':
         return str;
       default:
@@ -160,13 +161,25 @@ class InputConfig {
 const getChunkName = (id) => {
   if (id.includes('@wordpress/')) return 'vendor-wordpress';
   if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return 'vendor-react';
-  if (/[\\/]node_modules[\\/]lodash(-es)?[\\/]/.test(id)) return 'vendor-lodash';
-  if (/[\\/]node_modules[\\/]jquery[\\/]/.test(id)) return 'vendor-jquery';
+  if (/[\\/]node_modules[\\/](lodash-es?)[\\/]/.test(id)) return 'vendor-lodash';
+  if (/[\\/]node_modules[\\/](jquery)[\\/]/.test(id)) return 'vendor-jquery';
   if (/[\\/]node_modules[\\/](axios|ky)[\\/]/.test(id)) return 'vendor-http';
   if (id.includes('node_modules')) return 'vendor-common';
   if (id.includes('/components/')) return 'components';
   if (id.includes('/utils/')) return 'utils';
   if (id.includes('/hooks/')) return 'hooks';
+};
+
+// Generate SRI hash for a file
+const generateSRIHash = (filePath, algorithm = 'sha384') => {
+  try {
+    const content = readFileSync(filePath);
+    const hash = createHash(algorithm).update(content).digest('base64');
+    return `${algorithm}-${hash}`;
+  } catch (error) {
+    console.warn(`Failed to generate SRI hash for ${filePath}:`, error.message);
+    return null;
+  }
 };
 
 // SSL Loader (Safe File Reading)
@@ -194,12 +207,23 @@ const loadSSL = (env) => {
 const createPlugins = ({ mode, paths, env, hasTS }) => {
   const isProd = mode === 'production';
 
-  return [
+  const plugins = [
     // React plugin stays first for proper HMR
     react(),
-    // Generate PHP manifest and add SRI to Vite manifest after build
-    wordpressManifest({ outputFile: resolve(paths.plugin, 'includes/asset-manifest.php') }),
-  ].filter(Boolean);
+  ];
+
+  // Generate PHP manifest and add SRI to Vite manifest after build
+  if (isProd) {
+    plugins.push(
+      wordpressManifest({ 
+        outputFile: resolve(paths.plugin, 'includes/asset-manifest.php'),
+        generateSRI: true,
+        sriAlgorithm: 'sha384'
+      })
+    );
+  }
+
+  return plugins.filter(Boolean);
 };
 
 // Main Export
@@ -219,13 +243,17 @@ export default defineConfig(({ mode }) => {
 
     console.log(`\nBuilding WordPress Plugin [${mode}]`);
     console.log(`Output: ${paths.dist}`);
-    console.log(`TypeScript: ${hasTS ? 'enabled' : 'disabled'}\n`);
+    console.log(`TypeScript: ${hasTS ? 'enabled' : 'disabled'}`);
+    console.log(`Manifest: ${CONFIG.BUILD.MANIFEST ? 'enabled' : 'disabled'}\n`);
 
     return {
       root: paths.frontend,
       base: baseUrl,
       publicDir: false,
       
+      // Manifest enabled
+      manifest: CONFIG.BUILD.MANIFEST,
+
       define: {
         __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
         __WP_DEBUG__: JSON.stringify(envValidated.WP_DEBUG),
@@ -265,7 +293,7 @@ export default defineConfig(({ mode }) => {
         outDir: paths.dist,
         emptyOutDir: false,
         sourcemap: isProd ? 'hidden' : 'inline',
-        manifest: true,
+        manifest: CONFIG.BUILD.MANIFEST,
         minify: isProd,
         cssCodeSplit: true,
         target: 'es2019',
@@ -293,11 +321,7 @@ export default defineConfig(({ mode }) => {
             manualChunks: getChunkName,
             experimentalMinChunkSize: CONFIG.BUILD.MIN_CHUNK,
           },
-          external: ['jquery', /^@wordpress\/.*/],
-          treeshake: { 
-            moduleSideEffects: 'no-external', 
-            propertyReadSideEffects: false 
-          },
+          external: /^@wordpress\//,
         },
       },
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         testdox="true"
+         verbose="true"
+         stopOnFailure="false"
+         stopOnWarning="false"
+         colors="true"
+         cacheResult="false"
+         convertErrorsToExceptions="true"
+         convertWarningsToExceptions="true"
+         convertDeprecationsToExceptions="true"
+         convertNoticesToExceptions="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         forceCoversAnnotation="false"
+         stderr="true">
+
+  <!-- Test Suite Configuration -->
+  <testsuites>
+    <testsuite name="Affiliate Product Showcase - Plugin Tests">
+      <directory>tests</directory>
+      <exclude>vendor</exclude>
+      <exclude>node_modules</exclude>
+      <exclude>dist</exclude>
+      <exclude>build</exclude>
+    </testsuite>
+  </testsuites>
+
+  <!-- Test Coverage Configuration -->
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">vendor</directory>
+      <directory suffix=".php">node_modules</directory>
+      <directory suffix=".php">tests</directory>
+      <directory suffix=".php">assets</directory>
+      <file suffix=".php">index.php</file>
+    </exclude>
+    <report>
+      <clover outputFile="build/coverage/clover.xml"/>
+      <html outputDirectory="build/coverage/html" lowUpperBound="50" highLowerBound="80"/>
+      <text outputFile="build/coverage/coverage.txt"/>
+      <php outputFile="build/coverage/coverage.php"/>
+    </report>
+  </coverage>
+
+  <!-- Logging Configuration -->
+  <logging>
+    <testdoxHtml outputFile="build/reports/testdox.html" lowUpperBound="50" highLowerBound="80"/>
+    <testdoxText outputFile="build/reports/testdox.txt"/>
+    <testdoxXml outputFile="build/reports/testdox.xml"/>
+  </logging>
+
+  <!-- PHP Configuration -->
+  <php>
+    <env name="WP_TESTS_DIR" value="/tmp/wordpress-tests-lib"/>
+    <env name="WP_CORE_DIR" value="/tmp/wordpress/"/>
+    <env name="WP_PHPUNIT__ACTIVATE_PLUGINS" value="true"/>
+    <env name="WP_PHPUNIT__TESTS_CONFIG" value="phpunit.xml.dist"/>
+  </php>
+</phpunit>

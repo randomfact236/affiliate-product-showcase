@@ -136,8 +136,15 @@ function parseArgs(argv) {
 }
 
 function extractCode(line) {
-  const m = String(line ?? '').match(/^\s*(?:[✅⏳]\s*)?(\d+(?:\.\d+)*)(?:\b|[^\d])/);
-  return m ? m[1] : null;
+  // Extract code from lines that may have:
+  // - Leading whitespace
+  // - Optional blockquote (>)
+  // - Optional list markers (-, *, +)
+  // - Optional status markers (✅, ⏳)
+  // - Followed by code (e.g., "1.6.1")
+  const m = String(line ?? '').match(/^\s*(?:>\s*)?(?:[-*+]\s+)*(?:[✅⏳]\s*)?(\d+(?:\.\d+)*)(?:\b|[^\d])/);
+  // Ensure the code is trimmed to avoid issues with trailing spaces
+  return m ? m[1].trim() : null;
 }
 
 function getLevel(code) {
@@ -150,7 +157,9 @@ function getParentCode(code) {
 }
 
 function isStepHeader(line) {
-  return /^#\s+Step\s+\d+/i.test(String(line ?? ''));
+  // Step headers are like: # Step 1 — Step 1 — Setup
+  // Must match "# Step N —" pattern
+  return /^#\s+Step\s+\d+\s*—/i.test(String(line ?? ''));
 }
 
 function isTopicHeader(line) {
@@ -347,8 +356,11 @@ function validateStructure(sourceText, parsed) {
   return { errors, missingSiblings };
 }
 
+// FIX: Track which codes have explicit status set (from set-status.cjs)
+// and preserve them from being overridden by propagation logic
 function mergeState(structure, state) {
   const statusByCode = state.statusByCode || {};
+  const explicitStatusCodes = Array.isArray(state.explicitStatusCodes) ? state.explicitStatusCodes : [];
 
   const prevKnown = new Set(Array.isArray(state.knownCodes) ? state.knownCodes : []);
   const currKnown = new Set();
@@ -361,19 +373,13 @@ function mergeState(structure, state) {
     if (!currKnown.has(code)) delete statusByCode[code];
   }
 
+  // First pass: apply status from state
   walkPlan(structure, node => {
     const s = statusByCode[node.code];
     node.status = VALID_STATUSES.has(s) ? s : 'pending';
   });
 
-  walkPlan(structure, node => {
-    if (!statusByCode[node.code]) statusByCode[node.code] = node.status;
-  });
-
-  // Simplified propagation rules (bottom-up):
-  // 1) If ANY child is `in-progress` -> parent becomes `in-progress`
-  // 2) If ALL children are `completed` -> parent becomes `completed`
-  // Build a list of nodes and process deepest-first so parents reflect child states.
+  // Second pass: do bottom-up propagation, but respect explicit overrides
   const allNodes = [];
   walkPlan(structure, node => {
     if (node && node.code) allNodes.push(node);
@@ -383,6 +389,13 @@ function mergeState(structure, state) {
   allNodes.sort((a, b) => getLevel(b.code) - getLevel(a.code));
 
   for (const node of allNodes) {
+    // Skip propagation for explicitly set statuses
+    if (node && node.code && explicitStatusCodes.includes(node.code)) {
+      // Ensure explicit status is written to statusByCode
+      statusByCode[node.code] = node.status || statusByCode[node.code] || 'pending';
+      continue;
+    }
+    
     const children = node.kind === 'step' ? node.topics : (node.items || []);
     if (!children || children.length === 0) continue;
 
@@ -395,7 +408,7 @@ function mergeState(structure, state) {
     // otherwise leave parent status as-is
   }
 
-  // Apply propagated statuses back onto nodes so rendering/markers match.
+  // Apply final propagated statuses back onto nodes so rendering/markers match.
   walkPlan(structure, node => {
     const s = statusByCode[node.code];
     node.status = VALID_STATUSES.has(s) ? s : 'pending';
@@ -404,7 +417,7 @@ function mergeState(structure, state) {
   state.generatedBy = 'plan/plan_sync_todos.cjs';
   state.statusByCode = statusByCode;
   state.knownCodes = Array.from(currKnown);
-  // `lastSyncAt` is managed by the caller to avoid timestamp churn when
+  // `lastSyncAt` is managed by caller to avoid timestamp churn when
   // generated files haven't actually changed.
   return state;
 }
@@ -472,7 +485,9 @@ function renderPlanMd(structure, opts) {
         }
       }
 
-      renderItems(topic.items, 1);
+      // Call renderItems to actually render nested topic items
+      renderItems(topic.items, 0);
+
       out.push('');
     }
   }
@@ -555,7 +570,8 @@ function injectMarkersIntoSource(sourceText, structure) {
       }
 
       const stripped = line.replace(/^\s*(?:>\s*)?(?:[-*+]\s+)+/, '').trim();
-      const code = extractCode(stripped);
+      const strippedForCode = stripLeadingStatusMarkers(stripped);
+      const code = extractCode(strippedForCode);
       if (code && markerMap[code]) {
         return line.replace(code, `${markerMap[code]} ${code}`);
       }
@@ -626,7 +642,7 @@ function main() {
 
   let state = loadJson(args.state, { generatedBy: 'plan/plan_sync_todos.cjs', statusByCode: {} });
 
-  // Prefer explicit statuses from the synced todo JSON if available (allows
+  // Prefer explicit statuses from synced todo JSON if available (allows
   // editing `plan/plan_todos.json` and having those statuses reflected in
   // generated plan files). Merge so existing state keys are preserved.
   try {
@@ -636,8 +652,12 @@ function main() {
       for (const t of todoJson.todos) {
         if (t && t.code && t.status) statusByTodos[t.code] = t.status;
       }
-      // Prefer statuses from `plan_state.json` (state) as the source of truth.
-      // Only fall back to `plan_todos.json` values for codes not present in state.
+      // Prefer statuses from state (which includes explicit overrides) as source of truth.
+      for (const code of Object.keys(state.statusByCode)) {
+        if (state.statusByCode[code]) {
+          statusByTodos[code] = state.statusByCode[code];
+        }
+      }
       state.statusByCode = Object.assign({}, statusByTodos, state.statusByCode || {});
     }
   } catch (err) {
@@ -675,7 +695,7 @@ function main() {
     process.exit(0);
   }
 
-  // Read previous outputs so we can decide whether the generated files
+  // Read previous outputs so we can decide whether to generated files
   // actually changed. Only update `lastSyncAt` when something differs.
   const prevPlan = readUtf8IfExists(args.outPlan) || '';
   const prevTodoMd = readUtf8IfExists(args.outTodoMd) || '';
