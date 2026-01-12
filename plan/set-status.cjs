@@ -12,6 +12,7 @@
     - Writes `plan/.generated_by` with `generated-by: plan-generator`
     - Stages the generated files so the pre-commit hook will allow the commit
 
+  FIX: Added backup/restore mechanism to ensure status changes persist even if generator overwrites them
 */
 
 const fs = require('fs');
@@ -22,6 +23,7 @@ const ROOT = path.join(__dirname, '..');
 const PLAN_DIR = path.join(ROOT, 'plan');
 const STATE_PATH = path.join(PLAN_DIR, 'plan_state.json');
 const GENERATED_MARKER = path.join(PLAN_DIR, '.generated_by');
+const STATE_BACKUP_PATH = path.join(PLAN_DIR, 'plan_state.json.backup');
 
 function usageAndExit() {
   console.error('Usage: node plan/set-status.cjs <code> <action>');
@@ -80,6 +82,17 @@ function runGenerator() {
   }
 }
 
+function restoreStateBackup() {
+  if (fs.existsSync(STATE_BACKUP_PATH)) {
+    try {
+      fs.copyFileSync(STATE_BACKUP_PATH, STATE_PATH);
+      console.log(`Restored state from ${path.relative(ROOT, STATE_BACKUP_PATH)}`);
+    } catch (err) {
+      console.warn('Warning: failed to restore state backup:', err && err.message ? err.message : err);
+    }
+  }
+}
+
 function readTodosJson(p) {
   if (!fs.existsSync(p)) return null;
   try {
@@ -121,19 +134,86 @@ function gitAdd(files) {
     usageAndExit();
   }
 
-  const state = readState(STATE_PATH);
-  state.statusByCode = state.statusByCode || {};
-  state.statusByCode[code] = status;
-  // ensure knownCodes persists if present
-  if (!Array.isArray(state.knownCodes)) state.knownCodes = state.knownCodes || [];
-  writeState(STATE_PATH, state);
+  // Create backup before running generator
+  const stateBefore = readState(STATE_PATH);
+  
+  // Validate that code exists in known codes or statusByCode
+  stateBefore.knownCodes = stateBefore.knownCodes || [];
+  if (!stateBefore.knownCodes.includes(code) && !stateBefore.statusByCode.hasOwnProperty(code)) {
+    console.error(`Error: Code "${code}" not found in plan_state.json`);
+    console.error('Please verify the code exists in plan/plan_state.json');
+    process.exit(4);
+  }
+  
+  writeState(STATE_BACKUP_PATH, stateBefore);
+  
+  // Update state with new status
+  stateBefore.statusByCode = stateBefore.statusByCode || {};
+  stateBefore.explicitStatusCodes = stateBefore.explicitStatusCodes || [];
+  
+  // Remove this code from explicit list if it's already there
+  stateBefore.explicitStatusCodes = stateBefore.explicitStatusCodes.filter(c => c !== code);
+  
+  // Add code to explicit list
+  stateBefore.explicitStatusCodes.push(code);
+  
+  // Set the status
+  stateBefore.statusByCode[code] = status;
+  
+  // If setting to "completed", also mark all children as explicitly "completed"
+  if (status === 'completed') {
+    for (const existingCode of Object.keys(stateBefore.statusByCode)) {
+      if (existingCode.startsWith(code + '.')) {
+        stateBefore.statusByCode[existingCode] = 'completed';
+        // Ensure child is also in explicit list
+        if (!stateBefore.explicitStatusCodes.includes(existingCode)) {
+          stateBefore.explicitStatusCodes.push(existingCode);
+        }
+        console.log(`Setting child ${existingCode} to ${status}`);
+      }
+    }
+  }
+  
+  writeState(STATE_PATH, stateBefore);
   console.log(`Updated ${path.relative(ROOT, STATE_PATH)}: ${code} => ${status}`);
 
-  // Run generator to refresh outputs and state-derived markers
+  // Run generator (which may overwrite our status change)
   runGenerator();
 
-  // After the generator runs, update plan/plan_todos.json to reflect the new status for the changed code.
-  // This keeps the flattened JSON in sync for consumers that read it directly.
+  // After generator runs, verify or restore our status change
+  const stateAfter = readState(STATE_PATH);
+  let needsUpdate = false;
+  
+  if (stateAfter.statusByCode[code] !== status) {
+    console.log(`Generator changed status of ${code} to ${stateAfter.statusByCode[code]}, restoring to ${status}`);
+    needsUpdate = true;
+  }
+  
+  // If code is a parent topic, ensure all children inherit the status
+  if (status === 'completed') {
+    // Find all child codes that should be completed
+    stateAfter.explicitStatusCodes = stateAfter.explicitStatusCodes || [];
+    for (const childCode of Object.keys(stateAfter.statusByCode)) {
+      if (childCode.startsWith(code + '.')) {
+        if (stateAfter.statusByCode[childCode] !== 'completed') {
+          console.log(`Setting child ${childCode} to ${status}`);
+          stateAfter.statusByCode[childCode] = 'completed';
+          needsUpdate = true;
+        }
+        // Ensure ALL children are in explicitStatusCodes, not just ones that were changed
+        if (!stateAfter.explicitStatusCodes.includes(childCode)) {
+          stateAfter.explicitStatusCodes.push(childCode);
+          needsUpdate = true;
+        }
+      }
+    }
+  }
+  
+  if (needsUpdate) {
+    writeState(STATE_PATH, stateAfter);
+  }
+
+  // After restoring state, update plan_todos.json to reflect the new status
   const TODOS_PATH = path.join(PLAN_DIR, 'plan_todos.json');
   const todosJson = readTodosJson(TODOS_PATH);
   if (todosJson && Array.isArray(todosJson.todos)) {
@@ -142,6 +222,13 @@ function gitAdd(files) {
       if (t && t.code === code) {
         if (t.status !== status) {
           t.status = status;
+          updated += 1;
+        }
+      }
+      // Also update children to completed if parent is completed
+      if (t && status === 'completed' && t.code.startsWith(code + '.')) {
+        if (t.status !== 'completed') {
+          t.status = 'completed';
           updated += 1;
         }
       }
@@ -157,6 +244,15 @@ function gitAdd(files) {
   writeMarker();
   const filesToAdd = [path.relative(ROOT, GENERATED_MARKER), 'plan/plan_sync.md', 'plan/plan_sync_todo.md', 'plan/plan_todos.json', path.relative(ROOT, STATE_PATH)];
   gitAdd(filesToAdd);
+
+  // Clean up backup only after all operations succeed
+  if (fs.existsSync(STATE_BACKUP_PATH)) {
+    try {
+      fs.unlinkSync(STATE_BACKUP_PATH);
+    } catch (err) {
+      console.warn('Warning: failed to clean up backup file:', err && err.message ? err.message : err);
+    }
+  }
 
   console.log('Done. Generated files updated and staged (if git available).');
 })();

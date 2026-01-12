@@ -3813,201 +3813,201 @@
       "code": "1.6",
       "kind": "topic",
       "title": "Configuration Files — `.gitignore`, `phpcs.xml`, `phpunit.xml`, `.editorconfig`, `.dockerignore`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.1",
       "kind": "item",
       "title": "`.gitignore` with comprehensive exclusions — `.env*`, `node_modules/`, `vendor/`, `dist/`, `*.log`, `.DS_Store`. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.2",
       "kind": "item",
       "title": "`.gitignore` excludes: `docker/mysql/`, `docker/redis/`, `*.zip`, `*.tar.gz` (examples). [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.3",
       "kind": "item",
       "title": "`.editorconfig` with WordPress standards — settings: `indent_style=tab`, `indent_size=4`, `end_of_line=lf`, `charset=utf-8`. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.4",
       "kind": "item",
       "title": "`phpcs.xml` with WordPress-Core, WordPress-Extra, WordPress-Docs rulesets; include WordPress-VIP-Go, PHPCompatibility, `minimum_supported_wp_version=6.4`, `testVersion=7.4-8.3`, enable textdomain and prefix checks. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.5",
       "kind": "item",
       "title": "`phpunit.xml` with coverage settings, 95% coverage requirement, `--testdox` output and a test-setup/bootstrap file. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.6",
       "kind": "item",
       "title": "`postcss.config.js` with Tailwind and Autoprefixer configured for build pipelines. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.7",
       "kind": "item",
       "title": "`vite.config.ts` with React plugin, manifest output to `assets/dist/`, and build output configured to `dist/`. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.8",
       "kind": "item",
       "title": "`tsconfig.json` (strict mode) with strict type checking for frontend TypeScript. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.9",
       "kind": "item",
       "title": "Vite manifest handling — enable `manifest: true` and set `build.manifest` output to `assets/dist/manifest.json` so PHP mapping uses a predictable path. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.10",
       "kind": "item",
       "title": "`.dockerignore` mirroring `.gitignore` to keep Docker contexts lean. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.11",
       "kind": "item",
       "title": "`phpstan.neon` configured at level 8 with WordPress stubs and strict rules. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.12",
       "kind": "item",
       "title": "`psalm.xml` with `errorLevel=1`, WordPress stubs and typed configuration. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.13",
       "kind": "item",
       "title": "`.eslintrc.json` with WordPress-config, TypeScript support and React hooks rules. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.14",
       "kind": "item",
       "title": "`.prettierrc.json` with WordPress-friendly code style settings. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.15",
       "kind": "item",
       "title": "`stylelint.config.js` combining `stylelint-config-standard` and Tailwind-aware rules. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.16",
       "kind": "item",
       "title": "`tailwind.config.js` with custom theme, content paths and safelist for dynamic classes. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.17",
       "kind": "item",
       "title": "`vite.config.ts` tuned for chunk splitting and performance (configurable thresholds). [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.18",
       "kind": "item",
       "title": "`tsconfig.json` additions for WordPress globals and ambient typings. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.19",
       "kind": "item",
       "title": "SRI/hash generation — `tools/generate-sri.js` or build hook to produce `assets/dist/sri.json` for server-side SRI verification. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.20",
       "kind": "item",
       "title": "Typecheck integration — CI `npm run typecheck` (`tsc --noEmit`) step; recommend IDE typechecking as well. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.21",
       "kind": "item",
       "title": "`vite.config.ts` asset inlining threshold and related optimizations. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.22",
       "kind": "item",
       "title": "`tsconfig.json` path aliases for frontend sources (optional convenience). [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.23",
       "kind": "item",
       "title": "Pre-compression output — optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx config to serve precompressed assets. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.6.24",
       "kind": "item",
       "title": "Bundle analyzer plugin — `vite-plugin-visualizer` entry for `--mode analyze` or `npm run analyze`. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.7",
