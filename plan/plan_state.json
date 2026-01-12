@@ -527,11 +527,11 @@
     "1.9.2": "completed",
     "1.9.3": "completed",
     "1.9.4": "completed",
-    "1.10": "in-progress",
-    "1.10.1": "in-progress",
-    "1.10.2": "in-progress",
-    "1.10.3": "in-progress",
-    "1.10.4": "in-progress",
+    "1.10": "completed",
+    "1.10.1": "completed",
+    "1.10.2": "completed",
+    "1.10.3": "completed",
+    "1.10.4": "completed",
     "1.11": "in-progress",
     "1.11.1": "in-progress",
     "1.11.2": "in-progress",
@@ -6080,7 +6080,7 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-12T17:59:26.427Z",
+  "lastSyncAt": "2026-01-12T18:19:54.711Z",
   "explicitStatusCodes": [
     "1.11.7",
     "1.8",
@@ -6091,6 +6091,11 @@
     "1.9.1",
     "1.9.2",
     "1.9.3",
-    "1.9.4"
+    "1.9.4",
+    "1.10",
+    "1.10.1",
+    "1.10.2",
+    "1.10.3",
+    "1.10.4"
   ]
 }

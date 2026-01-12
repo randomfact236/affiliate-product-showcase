@@ -517,11 +517,11 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.9.2 `src/Database/Migrations.php` [PLUGIN] — Migration manager tracking schema version, safe upgrade routines, rollback capability, and cleanup of old migration data. [High]
     - ✅ 1.9.3 `src/Database/seeders/sample-products.php` [PLUGIN] — Sample data seeder for `scripts/db-seed.sh` and integration tests (fixtures for products/pages). [Medium]
     - ✅ 1.9.4 `docs/migrations.md` [DOCS - PLUGIN] — Migration and rollback documentation for maintainers, including versioning and deployment notes. [Low]
-  - ⏳ 1.10 Standalone & Privacy Guarantees — standalone mode, data handling, privacy
-    - ⏳ 1.10.1 `README.md` [PROJECT ROOT] — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]
-    - ⏳ 1.10.2 `src/Services/AffiliateService.php` [PLUGIN] — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]
-    - ⏳ 1.10.3 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]
-    - ⏳ 1.10.4 `tools/check-external-requests.js` [PROJECT ROOT] — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]
+  - ✅ 1.10 Standalone & Privacy Guarantees — standalone mode, data handling, privacy
+    - ✅ 1.10.1 `README.md` [PROJECT ROOT] — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]
+    - ✅ 1.10.2 `src/Services/AffiliateService.php` [PLUGIN] — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]
+    - ✅ 1.10.3 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]
+    - ✅ 1.10.4 `tools/check-external-requests.js` [PROJECT ROOT] — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]
   - ⏳ 1.11 Code Quality Tools — PHPCS, PHPUnit, linters and config
     - ⏳ 1.11.1 `.husky/*` [PROJECT ROOT] — Commit-msg, `pre-commit` and `pre-push` hooks executing quality gates: PHPCS, PHPStan, Psalm, ESLint, Prettier, Stylelint, PHPUnit, security scans and coverage checks to block bad commits/pushes. [High]
     - ⏳ 1.11.2 `.lintstagedrc.json` [PROJECT ROOT] — Lint-staged mapping of file globs to fast staged checks (phpcs/eslint/prettier/stylelint/phpstan quick runners). [High]

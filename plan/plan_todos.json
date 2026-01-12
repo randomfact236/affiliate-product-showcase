@@ -4125,41 +4125,41 @@
       "code": "1.10",
       "kind": "topic",
       "title": "Standalone & Privacy Guarantees — standalone mode, data handling, privacy",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.10.1",
       "kind": "item",
       "title": "`README.md` [PROJECT ROOT] — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.10.2",
       "kind": "item",
       "title": "`src/Services/AffiliateService.php` [PLUGIN] — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.10.3",
       "kind": "item",
       "title": "`docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.10.4",
       "kind": "item",
       "title": "`tools/check-external-requests.js` [PROJECT ROOT] — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.11",
