@@ -504,10 +504,10 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.6.23 Pre-compression output — optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx config to serve precompressed assets. [Low]
     - ✅ 1.6.24 Bundle analyzer plugin — `vite-plugin-visualizer` entry for `--mode analyze` or `npm run analyze`. [Low]
   - ⏳ 1.7 Environment Variables — .env for dev, WP Options fallback
-   - 1.7.1 `.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]
-   - 1.7.2 `src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]
-   - 1.7.3 `src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]
-   - 1.7.4 `docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]
+    - ⏳ 1.7.1 `.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]
+    - ⏳ 1.7.2 `src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]
+    - ⏳ 1.7.3 `src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]
+    - ⏳ 1.7.4 `docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]
    - 1.8 WordPress Path/URL Functions — canonical helpers for URLs and paths
    - 1.8.1 `src/Helpers/Paths.php` — Canonical wrapper helpers for `plugins_url()`, `plugin_dir_path()`, `plugin_dir_url()`, `plugin_basename()`, `rest_url()`, `admin_url()`, `get_home_url()`, and `wp_upload_dir()` providing consistent asset URLs/paths, multisite/subdirectory/custom wp-content support, and preventing hardcoded paths/domains. [High]
    - 1.8.2 `src/Plugin/Constants.php` — Ensure `src/Plugin/Constants.php` is authoritative, documented, and exposes view/asset helpers (`asset_url`, `view_path`) used by templates and `Paths.php`. (If already present, verify and document.) [Medium]

@@ -4021,33 +4021,33 @@
       "code": "1.7.1",
       "kind": "item",
       "title": "`.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.7.2",
       "kind": "item",
       "title": "`src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.7.3",
       "kind": "item",
       "title": "`src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.7.4",
       "kind": "item",
       "title": "`docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.8",
