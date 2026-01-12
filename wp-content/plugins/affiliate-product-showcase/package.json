@@ -29,6 +29,8 @@
     "test:coverage": "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase test:coverage",
     "assert-coverage": "bash scripts/assert-coverage.sh",
     "check-debug": "node scripts/check-debug.js",
+    "backup": "bash scripts/create-backup-branch.sh",
+    "backup:windows": "pwsh scripts/create-backup-branch.ps1",
     "quality": "npm run lint && npm run typecheck && npm run test",
     "precommit": "lint-staged && npm run check-debug",
     "prepush": "npm run quality && npm run assert-coverage",
