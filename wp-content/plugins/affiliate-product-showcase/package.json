@@ -12,20 +12,30 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
+    "prepare": "husky install",
     "dev": "vite",
     "build": "vite build",
     "watch": "vite build --watch",
     "preview": "vite preview",
-    "lint": "eslint .",
+    "lint": "npm run lint:php && npm run lint:js && npm run lint:css",
+    "lint:php": "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs",
+    "lint:js": "eslint 'assets/**/*.{js,jsx,ts,tsx}' --max-warnings=0",
+    "lint:css": "stylelint 'assets/**/*.{css,scss}' --max-warnings=0",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "test": "echo \"No JS tests configured\"",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,md,yml,yaml}'",
+    "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,css,scss,json,md,yml,yaml}'",
+    "typecheck": "tsc --noEmit",
+    "test": "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase test",
+    "test:coverage": "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase test:coverage",
+    "assert-coverage": "bash scripts/assert-coverage.sh",
+    "check-debug": "node scripts/check-debug.js",
+    "quality": "npm run lint && npm run typecheck && npm run test",
+    "precommit": "lint-staged && npm run check-debug",
+    "prepush": "npm run quality && npm run assert-coverage",
     "generate:sri": "node tools/generate-sri.js",
     "compress": "node tools/compress-assets.js",
     "postbuild": "npm run generate:sri && npm run compress",
     "analyze": "npm run build -- --mode=analyze",
-    "typecheck": "tsc --noEmit",
     "clean": "rimraf assets/dist"
   },
   "devDependencies": {
@@ -48,6 +58,10 @@
     "stylelint-selector-bem-pattern": "^3.0.1",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.3.3",
-    "vite": "^5.1.8"
+    "vite": "^5.1.8",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3"
   }
 }

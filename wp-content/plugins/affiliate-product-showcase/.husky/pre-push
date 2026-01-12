@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push quality gates..."
+
+# Navigate to plugin directory
+cd "$(dirname "$0")/.."
+
+# Full PHP linting (WordPress standards)
+echo "→ Running PHPCS (WordPress standards)..."
+npm run lint:php || exit 1
+
+# Static analysis (PHPStan Level 8)
+echo "→ Running PHPStan analysis..."
+cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan || exit 1
+cd wp-content/plugins/affiliate-product-showcase
+
+# JavaScript linting
+echo "→ Running ESLint..."
+npm run lint:js || exit 1
+
+# CSS linting
+echo "→ Running Stylelint..."
+npm run lint:css || exit 1
+
+# TypeScript type checking
+echo "→ Running TypeScript check..."
+npm run typecheck || exit 1
+
+# Full test suite
+echo "→ Running PHPUnit tests..."
+npm run test || exit 1
+
+# Coverage assertion (≥95%)
+echo "→ Checking coverage threshold..."
+npm run assert-coverage || exit 1
+
+echo "✅ All quality gates passed! Push approved."

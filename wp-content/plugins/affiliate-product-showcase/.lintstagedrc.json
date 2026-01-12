@@ -1,0 +1,17 @@
+{
+  "*.php": [
+    "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs --",
+    "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan analyse --no-progress --"
+  ],
+  "*.{js,jsx,ts,tsx}": [
+    "eslint --fix --max-warnings=0",
+    "prettier --write"
+  ],
+  "*.{css,scss}": [
+    "stylelint --fix --max-warnings=0",
+    "prettier --write"
+  ],
+  "*.{json,md,yml,yaml}": [
+    "prettier --write"
+  ]
+}
