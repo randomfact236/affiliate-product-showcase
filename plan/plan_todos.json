@@ -5,9 +5,9 @@
       "code": "1",
       "kind": "step",
       "title": "Step 1 — Setup",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.1",
@@ -981,9 +981,9 @@
       "code": "1.2",
       "kind": "topic",
       "title": "Folder Structure — create folder structure and repository layout",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.1",
@@ -1949,9 +1949,9 @@
       "code": "1.2.121",
       "kind": "item",
       "title": "assets/fonts/ – optional custom fonts folder",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.122",
@@ -1973,9 +1973,9 @@
       "code": "1.2.124",
       "kind": "item",
       "title": "tests/wp-tests-config.php – gitignored",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.125",
@@ -2101,17 +2101,17 @@
       "code": "1.2.140",
       "kind": "item",
       "title": "Composer Dependencies",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.141",
       "kind": "item",
       "title": "vendor/ – gitignored",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "1.2.142",
@@ -4013,481 +4013,481 @@
       "code": "1.7",
       "kind": "topic",
       "title": "Environment Variables — .env for dev, WP Options fallback",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.7.1",
       "kind": "item",
       "title": "`.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.7.2",
       "kind": "item",
       "title": "`src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.7.3",
       "kind": "item",
       "title": "`src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.7.4",
       "kind": "item",
       "title": "`docs/developer-guide.md` snippet — Document `.env` is dev-only, production uses WP Options API, packaging excludes `.env`, and include security guidance about API keys. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.8",
       "kind": "topic",
       "title": "WordPress Path/URL Functions — canonical helpers for URLs and paths",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.8.1",
       "kind": "item",
       "title": "`src/Helpers/Paths.php` — Canonical wrapper helpers for `plugins_url()`, `plugin_dir_path()`, `plugin_dir_url()`, `plugin_basename()`, `rest_url()`, `admin_url()`, `get_home_url()`, and `wp_upload_dir()` providing consistent asset URLs/paths, multisite/subdirectory/custom wp-content support, and preventing hardcoded paths/domains. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.8.2",
       "kind": "item",
       "title": "`src/Plugin/Constants.php` — Ensure `src/Plugin/Constants.php` is authoritative, documented, and exposes view/asset helpers (`asset_url`, `view_path`) used by templates and `Paths.php`. (If already present, verify and document.) [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.8.3",
       "kind": "item",
       "title": "`docs/developer-guide.md` examples — Usage examples showing how to use `src/Helpers/Paths.php` and `src/Plugin/Constants.php` when enqueuing assets, registering REST routes, and generating view paths. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.9",
       "kind": "topic",
       "title": "Database Table Prefix — configurable DB prefix and migration notes",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.9.1",
       "kind": "item",
       "title": "`src/Database/Database.php` — Database access layer standardizing table naming via `$wpdb->prefix`, using `$wpdb->get_charset_collate()` for table creation, wrapping `$wpdb->prepare()` for safe queries, and providing helpers for index creation and common queries. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.9.2",
       "kind": "item",
       "title": "`src/Database/Migrations.php` — Migration manager tracking schema version, safe upgrade routines, rollback capability, and cleanup of old migration data. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.9.3",
       "kind": "item",
       "title": "`src/Database/seeders/sample-products.php` — Sample data seeder for `scripts/db-seed.sh` and integration tests (fixtures for products/pages). [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.9.4",
       "kind": "item",
       "title": "`docs/migrations.md` — Migration and rollback documentation for maintainers, including versioning and deployment notes. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.10",
       "kind": "topic",
       "title": "Standalone & Privacy Guarantees — standalone mode, data handling, privacy",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.10.1",
       "kind": "item",
       "title": "`README.md` addition — Add a prominent '100% Standalone - No External Dependencies' badge and checklist documenting blocked external services (no CDNs, no external fonts/icons/APIs, no phone-home, all assets bundled locally) and list bundled vs excluded dependencies. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.10.2",
       "kind": "item",
       "title": "`src/Services/AffiliateService.php` — Runtime guard and input validation to reject external image/JS URLs on frontend submissions, sanitize affiliate links, and prevent any phone-home/update-check behavior. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.10.3",
       "kind": "item",
       "title": "`docs/privacy-policy-template.md` — Privacy policy template describing stored data, opt-outs, and assurance of no phone-home behavior for end users. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.10.4",
       "kind": "item",
       "title": "`tools/check-external-requests.js` — Optional audit script to scan source for external fetch/XHR/IMG patterns and flag accidental external resources during reviews. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11",
       "kind": "topic",
       "title": "Code Quality Tools — PHPCS, PHPUnit, linters and config",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.1",
       "kind": "item",
       "title": "`.husky/*` — Commit-msg, `pre-commit` and `pre-push` hooks executing quality gates: PHPCS, PHPStan, Psalm, ESLint, Prettier, Stylelint, PHPUnit, security scans and coverage checks to block bad commits/pushes. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.2",
       "kind": "item",
       "title": "`.lintstagedrc.json` — Lint-staged mapping of file globs to fast staged checks (phpcs/eslint/prettier/stylelint/phpstan quick runners). [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.3",
       "kind": "item",
       "title": "`commitlint.config.cjs` — Conventional commits enforcement used by `commit-msg` hook for changelog automation. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.4",
       "kind": "item",
       "title": "`package.json` devDependencies & scripts — Add/install-time setup for `husky`, `lint-staged`, `@commitlint/*`, plus scripts for `lint`, `format`, `typecheck`, `test`, `generate:sri`, and `assert-coverage`. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.5",
       "kind": "item",
       "title": "`scripts/check-debug.js` — Staged-file scanner to prevent committing debug artifacts (`var_dump`, `dd`, `console.log`). [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.6",
       "kind": "item",
       "title": "`scripts/assert-coverage.sh` — Pre-push helper that asserts coverage ≥95% and fails pushes when threshold unmet. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.11.7",
       "kind": "item",
       "title": "Pre-commit hygiene checks configuration — enforce `declare(strict_types=1)`, PHPDoc presence, merge-marker detection, file-size/trailing-whitespace limits and other lightweight sanity checks as part of the staged checks. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12",
       "kind": "topic",
       "title": "README Documentation — installation, local setup, and developer notes",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.1",
       "kind": "item",
       "title": "Plugin name and tagline [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.2",
       "kind": "item",
       "title": "'100% Standalone' badge [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.3",
       "kind": "item",
       "title": "'Zero External Dependencies' badge [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.4",
       "kind": "item",
       "title": "'Privacy-First' badge [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.5",
       "kind": "item",
       "title": "'Enterprise-Grade' badge [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.6",
       "kind": "item",
       "title": "Feature highlights list [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.7",
       "kind": "item",
       "title": "Requirements: PHP, WordPress, MySQL versions [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.8",
       "kind": "item",
       "title": "Installation instructions (manual + WP admin) [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.9",
       "kind": "item",
       "title": "Quick start guide [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.10",
       "kind": "item",
       "title": "Configuration guide [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.11",
       "kind": "item",
       "title": "REST API documentation [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.12",
       "kind": "item",
       "title": "Changelog with semantic versioning [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.13",
       "kind": "item",
       "title": "Contributing guidelines [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.14",
       "kind": "item",
       "title": "License information (GPL v2 or later) [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.15",
       "kind": "item",
       "title": "Security policy and reporting [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.16",
       "kind": "item",
       "title": "`README.md` — Comprehensive repository README with badges (`100% Standalone`, `Privacy-First`, `Enterprise-Grade`), requirements, installation (manual + WP admin), quick start, configuration guide, shortcode examples, REST API reference and a `readme.txt` for WordPress.org. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.17",
       "kind": "item",
       "title": "`CHANGELOG.md` — Semantic changelog generated from conventional commits for release notes. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.18",
       "kind": "item",
       "title": "`CONTRIBUTING.md` & `CODE_OF_CONDUCT.md` — Contribution guide, branch strategy, PR templates, local setup, and community standards. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.19",
       "kind": "item",
       "title": "`SECURITY.md` — Security disclosure and reporting policy for the plugin package. [High]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.20",
       "kind": "item",
       "title": "Screenshots [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.21",
       "kind": "item",
       "title": "Shortcode documentation [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.22",
       "kind": "item",
       "title": "WP-CLI commands documentation [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.23",
       "kind": "item",
       "title": "Hooks and filters reference [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.24",
       "kind": "item",
       "title": "Troubleshooting [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.25",
       "kind": "item",
       "title": "FAQ [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.26",
       "kind": "item",
       "title": "Support channels [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.27",
       "kind": "item",
       "title": "`docs/shortcode-reference.md` — Example usage and attribute reference for all plugin shortcodes. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.28",
       "kind": "item",
       "title": "`docs/cli-commands.md` (expand) — Expanded CLI docs with command examples and references to `src/Cli/ProductsCommand.php`. [Medium]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.29",
       "kind": "item",
       "title": "Credits and acknowledgments [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.30",
       "kind": "item",
       "title": "Donation/sponsorship links [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.31",
       "kind": "item",
       "title": "Privacy policy template for users [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "1.12.32",
       "kind": "item",
       "title": "`docs/privacy-policy-template.md` — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "pending",
+      "derivedStatus": "pending",
+      "marker": ""
     },
     {
       "code": "2",
