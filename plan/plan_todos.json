@@ -5,9 +5,9 @@
       "code": "1",
       "kind": "step",
       "title": "Step 1 — Setup",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.1",
@@ -4013,9 +4013,9 @@
       "code": "1.7",
       "kind": "topic",
       "title": "Environment Variables — .env for dev, WP Options fallback",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "1.7.1",

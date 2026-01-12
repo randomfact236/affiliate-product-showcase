@@ -1,7 +1,7 @@
 {
   "generatedBy": "plan/plan_sync_todos.cjs",
   "statusByCode": {
-    "1": "pending",
+    "1": "in-progress",
     "2": "pending",
     "3": "pending",
     "4": "pending",
@@ -513,7 +513,7 @@
     "1.6.22": "completed",
     "1.6.23": "completed",
     "1.6.24": "completed",
-    "1.7": "pending",
+    "1.7": "in-progress",
     "1.7.1": "pending",
     "1.7.2": "pending",
     "1.7.3": "pending",
@@ -6080,7 +6080,7 @@
     "12.10.19",
     "12.10.20"
   ],
-  "lastSyncAt": "2026-01-12T15:01:14.766Z",
+  "lastSyncAt": "2026-01-12T15:06:47.961Z",
   "explicitStatusCodes": [
     "1.6.1",
     "1.6.2",
@@ -6581,6 +6581,7 @@
     "1.5.14.7",
     "1.5.14.8",
     "1.5.14.9",
-    "1.6"
+    "1.6",
+    "1.7"
   ]
 }

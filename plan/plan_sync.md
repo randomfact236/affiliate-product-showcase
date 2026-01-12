@@ -22,7 +22,7 @@
 
 ---
 
-# Step 1 — Step 1 — Setup
+# ⏳ Step 1 — Step 1 — Setup
 
 ## ✅ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
 ### ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
@@ -530,7 +530,7 @@
 ✅ 1.6.23 Pre-compression output — optional build step producing `.gz` and `.br` files in `assets/dist/` and sample Nginx config to serve precompressed assets. [Low]
 ✅ 1.6.24 Bundle analyzer plugin — `vite-plugin-visualizer` entry for `--mode analyze` or `npm run analyze`. [Low]
 
-## 1.7 Environment Variables — .env for dev, WP Options fallback
+## ⏳ 1.7 Environment Variables — .env for dev, WP Options fallback
 1.7.1 `.env.example` — Template for local dev variables (PLUGIN_DEV_MODE, PLUGIN_DEBUG, DB_*, REDIS_*); must not contain secrets and must be excluded from packaging. [High]
 1.7.2 `src/Helpers/Options.php` — Centralized Options API wrapper exposing `get_plugin_option($key, $default)` with environment fallback and `update_plugin_option($key,$value)`. [High]
 1.7.3 `src/Helpers/Env.php` — Safe environment reader and casting helpers (boolean/int/string helpers, defaults, normalization for dev toggles). [Medium]
