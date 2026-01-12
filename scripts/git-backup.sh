@@ -12,7 +12,7 @@ if [ -z "$desc" ]; then
   exit 1
 fi
 
-timestamp=$(date +%Y%m%d-%H%M%S)
+timestamp=$(date +%Y-%m-%d-%H_%M_%S)
 branch="backup-$timestamp"
 
 echo "Staging all changes..."
