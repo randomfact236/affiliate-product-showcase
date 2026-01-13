@@ -1,5 +1,5 @@
 {
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "aps/product-grid",
     "title": "Product Grid",
     "description": "Display affiliate products in a responsive grid layout with customizable columns and spacing",

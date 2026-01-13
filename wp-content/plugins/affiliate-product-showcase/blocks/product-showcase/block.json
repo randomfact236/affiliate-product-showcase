@@ -1,5 +1,5 @@
 {
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "aps/product-showcase",
     "title": "Product Showcase",
     "description": "Display affiliate products in a beautiful showcase layout with customizable display options",

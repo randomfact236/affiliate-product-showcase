@@ -1,9 +1,139 @@
 name: CI
 on:
   push:
+    branches:
+      - main
+      - develop
   pull_request:
+    branches:
+      - main
+      - develop
+
 jobs:
-  placeholder:
+  # PHP Code Sniffer
+  phpcs:
+    name: PHPCS
     runs-on: ubuntu-latest
     steps:
-      - run: echo "CI placeholder"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPCS
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpcs --standard=phpcs.xml.dist
+
+  # PHP Static Analysis
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpstan analyse src --level=max --configuration=phpstan.neon
+
+  # PHP Unit Tests
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPUnit
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpunit --configuration=phpunit.xml.dist
+
+  # JavaScript Linting
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run ESLint
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npx eslint src --ext .js,.jsx
+
+  # Build Verification
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Build assets
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run build
+
+      - name: Check for uncommitted changes
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          git diff --exit-code || (echo "Build generated uncommitted changes" && exit 1)

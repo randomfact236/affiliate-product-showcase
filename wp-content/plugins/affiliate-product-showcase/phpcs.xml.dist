@@ -30,10 +30,10 @@
     </properties>
   </rule>
 
-  <!-- PHP Compatibility for PHP 7.4+ -->
+  <!-- PHP Compatibility for PHP 8.1+ -->
   <rule ref="PHPCompatibility">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
@@ -55,91 +55,91 @@
   <!-- Allow modern PHP syntax -->
   <rule ref="PHPCompatibility.Syntax">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow typed properties (PHP 7.4+) -->
   <rule ref="PHPCompatibility.TypeDeclarations">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow arrow functions (PHP 7.4+) -->
   <rule ref="PHPCompatibility.FunctionDeclarations">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow null coalescing operator -->
   <rule ref="PHPCompatibility.Operators">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow short array syntax -->
   <rule ref="PHPCompatibility.Arrays">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow typed parameters -->
   <rule ref="PHPCompatibility.ParameterValues">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow return type declarations -->
   <rule ref="PHPCompatibility.ReturnTypeDeclarations">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow nullable types -->
   <rule ref="PHPCompatibility.NullableTypes">
     <properties>
-      <property name="testVersion" value="7.4-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow union types (PHP 8.0+) -->
   <rule ref="PHPCompatibility.UnionTypes">
     <properties>
-      <property name="testVersion" value="8.0-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow named arguments (PHP 8.0+) -->
   <rule ref="PHPCompatibility.NamedArguments">
     <properties>
-      <property name="testVersion" value="8.0-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow match expressions (PHP 8.0+) -->
   <rule ref="PHPCompatibility.MatchExpressions">
     <properties>
-      <property name="testVersion" value="8.0-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow constructor property promotion (PHP 8.0+) -->
   <rule ref="PHPCompatibility.ConstructorPromotion">
     <properties>
-      <property name="testVersion" value="8.0-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
   <!-- Allow attributes (PHP 8.0+) -->
   <rule ref="PHPCompatibility.Attributes">
     <properties>
-      <property name="testVersion" value="8.0-"/>
+      <property name="testVersion" value="8.1-"/>
     </properties>
   </rule>
 
