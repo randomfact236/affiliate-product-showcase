@@ -22,7 +22,7 @@
 
 ---
 
-# ⏳ Step 1 — Step 1 — Setup
+# ✅ Step 1 — Step 1 — Setup
 
 ## ✅ 1.1 Docker Environment — Docker compose setup to bring up local environment and services
 ### ✅ 1.1.1 WordPress 6.7+ container with PHP 8.3-fpm-alpine
@@ -562,39 +562,39 @@
 ✅ 1.11.6 `scripts/assert-coverage.sh` [PROJECT ROOT] — Pre-push helper that asserts coverage ≥95% and fails pushes when threshold unmet. [Medium]
 ✅ 1.11.7 Pre-commit hygiene checks configuration [PROJECT ROOT] — enforce `declare(strict_types=1)`, PHPDoc presence, merge-marker detection, file-size/trailing-whitespace limits and other lightweight sanity checks as part of the staged checks. [Low]
 
-## ⏳ 1.12 README Documentation — installation, local setup, and developer notes
-⏳ 1.12.1 Plugin name and tagline [PROJECT ROOT - README.md] [High]
-⏳ 1.12.2 '100% Standalone' badge [PROJECT ROOT - README.md] [High]
-⏳ 1.12.3 'Zero External Dependencies' badge [PROJECT ROOT - README.md] [High]
-⏳ 1.12.4 'Privacy-First' badge [PROJECT ROOT - README.md] [High]
-⏳ 1.12.5 'Enterprise-Grade' badge [PROJECT ROOT - README.md] [High]
-⏳ 1.12.6 Feature highlights list [PROJECT ROOT - README.md] [High]
-⏳ 1.12.7 Requirements: PHP, WordPress, MySQL versions [PROJECT ROOT - README.md] [High]
-⏳ 1.12.8 Installation instructions (manual + WP admin) [PROJECT ROOT - README.md] [High]
-⏳ 1.12.9 Quick start guide [PROJECT ROOT - README.md] [High]
-⏳ 1.12.10 Configuration guide [PROJECT ROOT - README.md] [High]
-⏳ 1.12.11 REST API documentation [PROJECT ROOT - README.md] [High]
-⏳ 1.12.12 Changelog with semantic versioning [PROJECT ROOT - CHANGELOG.md] [High]
-⏳ 1.12.13 Contributing guidelines [PROJECT ROOT - CONTRIBUTING.md] [High]
-⏳ 1.12.14 License information (GPL v2 or later) [PROJECT ROOT - README.md] [High]
-⏳ 1.12.15 Security policy and reporting [PROJECT ROOT - SECURITY.md] [High]
-⏳ 1.12.16 `README.md` [PROJECT ROOT] — Comprehensive repository README with badges (`100% Standalone`, `Privacy-First`, `Enterprise-Grade`), requirements, installation (manual + WP admin), quick start, configuration guide, shortcode examples, REST API reference and a `readme.txt` for WordPress.org. [High]
-⏳ 1.12.17 `CHANGELOG.md` [PROJECT ROOT] — Semantic changelog generated from conventional commits for release notes. [High]
-⏳ 1.12.18 `CONTRIBUTING.md` & `CODE_OF_CONDUCT.md` [PROJECT ROOT] — Contribution guide, branch strategy, PR templates, local setup, and community standards. [High]
-⏳ 1.12.19 `SECURITY.md` [PROJECT ROOT] — Security disclosure and reporting policy for the plugin package. [High]
-⏳ 1.12.20 Screenshots [DOCS - PLUGIN] [Medium]
-⏳ 1.12.21 Shortcode documentation [DOCS - PLUGIN] [Medium]
-⏳ 1.12.22 WP-CLI commands documentation [DOCS - PLUGIN] [Medium]
-⏳ 1.12.23 Hooks and filters reference [DOCS - PLUGIN] [Medium]
-⏳ 1.12.24 Troubleshooting [DOCS - PLUGIN] [Medium]
-⏳ 1.12.25 FAQ [DOCS - PLUGIN] [Medium]
-⏳ 1.12.26 Support channels [DOCS - PLUGIN] [Medium]
-⏳ 1.12.27 `docs/shortcode-reference.md` [DOCS - PLUGIN] — Example usage and attribute reference for all plugin shortcodes. [Medium]
-⏳ 1.12.28 `docs/cli-commands.md` [DOCS - PLUGIN] (expand) — Expanded CLI docs with command examples and references to `src/Cli/ProductsCommand.php`. [Medium]
-⏳ 1.12.29 Credits and acknowledgments [DOCS - PLUGIN] [Low]
-⏳ 1.12.30 Donation/sponsorship links [DOCS - PLUGIN] [Low]
-⏳ 1.12.31 Privacy policy template for users [DOCS - PLUGIN] [Low]
-⏳ 1.12.32 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]
+## ✅ 1.12 README Documentation — installation, local setup, and developer notes
+✅ 1.12.1 Plugin name and tagline [PROJECT ROOT - README.md] [High]
+✅ 1.12.2 '100% Standalone' badge [PROJECT ROOT - README.md] [High]
+✅ 1.12.3 'Zero External Dependencies' badge [PROJECT ROOT - README.md] [High]
+✅ 1.12.4 'Privacy-First' badge [PROJECT ROOT - README.md] [High]
+✅ 1.12.5 'Enterprise-Grade' badge [PROJECT ROOT - README.md] [High]
+✅ 1.12.6 Feature highlights list [PROJECT ROOT - README.md] [High]
+✅ 1.12.7 Requirements: PHP, WordPress, MySQL versions [PROJECT ROOT - README.md] [High]
+✅ 1.12.8 Installation instructions (manual + WP admin) [PROJECT ROOT - README.md] [High]
+✅ 1.12.9 Quick start guide [PROJECT ROOT - README.md] [High]
+✅ 1.12.10 Configuration guide [PROJECT ROOT - README.md] [High]
+✅ 1.12.11 REST API documentation [PROJECT ROOT - README.md] [High]
+✅ 1.12.12 Changelog with semantic versioning [PROJECT ROOT - CHANGELOG.md] [High]
+✅ 1.12.13 Contributing guidelines [PROJECT ROOT - CONTRIBUTING.md] [High]
+✅ 1.12.14 License information (GPL v2 or later) [PROJECT ROOT - README.md] [High]
+✅ 1.12.15 Security policy and reporting [PROJECT ROOT - SECURITY.md] [High]
+✅ 1.12.16 `README.md` [PROJECT ROOT] — Comprehensive repository README with badges (`100% Standalone`, `Privacy-First`, `Enterprise-Grade`), requirements, installation (manual + WP admin), quick start, configuration guide, shortcode examples, REST API reference and a `readme.txt` for WordPress.org. [High]
+✅ 1.12.17 `CHANGELOG.md` [PROJECT ROOT] — Semantic changelog generated from conventional commits for release notes. [High]
+✅ 1.12.18 `CONTRIBUTING.md` & `CODE_OF_CONDUCT.md` [PROJECT ROOT] — Contribution guide, branch strategy, PR templates, local setup, and community standards. [High]
+✅ 1.12.19 `SECURITY.md` [PROJECT ROOT] — Security disclosure and reporting policy for the plugin package. [High]
+✅ 1.12.20 Screenshots [DOCS - PLUGIN] [Medium]
+✅ 1.12.21 Shortcode documentation [DOCS - PLUGIN] [Medium]
+✅ 1.12.22 WP-CLI commands documentation [DOCS - PLUGIN] [Medium]
+✅ 1.12.23 Hooks and filters reference [DOCS - PLUGIN] [Medium]
+✅ 1.12.24 Troubleshooting [DOCS - PLUGIN] [Medium]
+✅ 1.12.25 FAQ [DOCS - PLUGIN] [Medium]
+✅ 1.12.26 Support channels [DOCS - PLUGIN] [Medium]
+✅ 1.12.27 `docs/shortcode-reference.md` [DOCS - PLUGIN] — Example usage and attribute reference for all plugin shortcodes. [Medium]
+✅ 1.12.28 `docs/cli-commands.md` [DOCS - PLUGIN] (expand) — Expanded CLI docs with command examples and references to `src/Cli/ProductsCommand.php`. [Medium]
+✅ 1.12.29 Credits and acknowledgments [DOCS - PLUGIN] [Low]
+✅ 1.12.30 Donation/sponsorship links [DOCS - PLUGIN] [Low]
+✅ 1.12.31 Privacy policy template for users [DOCS - PLUGIN] [Low]
+✅ 1.12.32 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]
 
 # Step 2 — Step 2 — Content Types & Taxonomies
 
