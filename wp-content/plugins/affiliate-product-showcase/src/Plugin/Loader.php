@@ -39,7 +39,10 @@ final class Loader {
 			[ 'init', 'register_blocks' ],
 			[ 'init', 'register_shortcodes' ],
 			[ 'widgets_init', 'register_widgets' ],
-			[ 'enqueue_block_editor_assets', 'enqueue_block_editor_assets' ],
+			// IMPORTANT: run before WP core priority-10 block enqueue.
+			[ 'enqueue_block_editor_assets', 'enqueue_block_editor_assets', 9 ],
+			// IMPORTANT: ensure block front-end handles exist before core enqueues them.
+			[ 'enqueue_block_assets', 'enqueue_block_assets', 9 ],
 			[ 'rest_api_init', 'register_rest_controllers' ],
 			[ 'cli_init', 'register_cli' ],
 		];
@@ -59,6 +62,10 @@ final class Loader {
 
 	public function register_widgets(): void {
 		$this->public->register_widgets();
+	}
+
+	public function enqueue_block_assets(): void {
+		$this->public->enqueue_block_assets();
 	}
 
 	public function enqueue_block_editor_assets(): void {
