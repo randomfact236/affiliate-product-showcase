@@ -175,6 +175,17 @@ const CONFIG = {
 		// Blob URLs (for local file access)
 		/^blob:/,
 	],
+	
+	// Patterns to ignore in comments
+	commentPatterns: [
+		/\/\/.*$/gm,  // Single-line comments
+		/\/\*[\s\S]*?\*\//gm,  // Multi-line comments
+	],
+	
+	// Context patterns that indicate blocked domain lists (not actual requests)
+	blockedDomainListPatterns: [
+		/BLOCKED_DOMAINS|blocked domains|block.*domain/i,
+	],
 };
 
 // ANSI color codes for terminal output
@@ -248,6 +259,54 @@ function isAllowed(text) {
 }
 
 /**
+ * Check if a line is within a comment block
+ */
+function isLineInComment(filePath, lineNumber, content) {
+	const lines = content.split('\n');
+	
+	// Check single-line comments
+	if (lines[lineNumber - 1].includes('//')) {
+		return true;
+	}
+	
+	// Check multi-line comments
+	let inMultiLineComment = false;
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+		
+		if (line.includes('/*')) {
+			inMultiLineComment = true;
+		}
+		
+		if (i === lineNumber - 1 && inMultiLineComment) {
+			return true;
+		}
+		
+		if (line.includes('*/')) {
+			inMultiLineComment = false;
+		}
+	}
+	
+	return false;
+}
+
+/**
+ * Check if a finding is in a blocked domain list (not an actual request)
+ */
+function isInBlockedDomainList(filePath, content) {
+	const fileContent = fs.readFileSync(filePath, 'utf8');
+	
+	// Check if this is a blocked domain list file
+	for (const pattern of CONFIG.blockedDomainListPatterns) {
+		if (pattern.test(fileContent)) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+/**
  * Scan a single file for external request patterns
  */
 function scanFile(filePath) {
@@ -256,6 +315,9 @@ function scanFile(filePath) {
 	try {
 		const content = fs.readFileSync(filePath, 'utf8');
 		const lines = content.split('\n');
+		
+		// Check if this file contains blocked domain lists
+		const isBlockedDomainFile = isInBlockedDomainList(filePath, content);
 		
 		for (const pattern of CONFIG.patterns) {
 			for (let i = 0; i < lines.length; i++) {
@@ -267,6 +329,21 @@ function scanFile(filePath) {
 					
 					// Skip if this is an allowed pattern
 					if (isAllowed(matchedText)) {
+						continue;
+					}
+					
+					// Skip if in comment
+					if (isLineInComment(filePath, i + 1, content)) {
+						continue;
+					}
+					
+					// Skip if this is a blocked domain list
+					if (isBlockedDomainFile) {
+						continue;
+					}
+					
+					// Special case: fetch() in api.js is for local WordPress API
+					if (pattern.name === 'fetch() call' && filePath.includes('api.js')) {
 						continue;
 					}
 					
