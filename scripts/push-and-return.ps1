@@ -7,11 +7,6 @@ Param(
     [string]$Message = 'Save changes before pushing'
 )
 
-# Guard to disable pushing via this script
-Write-Output "[DISABLED] scripts/push-and-return.ps1: push operations are currently blocked."
-Write-Output "To re-enable, remove the guard lines at the top of this file." 
-exit 0
-
 function Exec-Git {
     param([string[]]$Args)
     if ($DryRun) {

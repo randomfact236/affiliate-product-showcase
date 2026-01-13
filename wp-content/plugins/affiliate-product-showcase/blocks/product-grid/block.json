@@ -1,15 +1,92 @@
 {
-	"apiVersion": 2,
-	"name": "aps/product-grid",
-	"title": "Product Grid",
-	"category": "widgets",
-	"attributes": {
-		"perPage": {
-			"type": "number",
-			"default": 6
-		}
-	},
-	"supports": {
-		"align": true
-	}
+    "apiVersion": 2,
+    "name": "aps/product-grid",
+    "title": "Product Grid",
+    "description": "Display affiliate products in a responsive grid layout with customizable columns and spacing",
+    "category": "widgets",
+    "icon": "grid-view",
+    "keywords": ["product", "grid", "affiliate", "showcase", "layout"],
+    "version": "1.0.0",
+    "textdomain": "affiliate-product-showcase",
+    "attributes": {
+        "perPage": {
+            "type": "number",
+            "default": 6
+        },
+        "columns": {
+            "type": "number",
+            "default": 3
+        },
+        "gap": {
+            "type": "number",
+            "default": 16
+        },
+        "showPrice": {
+            "type": "boolean",
+            "default": true
+        },
+        "showRating": {
+            "type": "boolean",
+            "default": true
+        },
+        "showBadge": {
+            "type": "boolean",
+            "default": true
+        },
+        "hoverEffect": {
+            "type": "string",
+            "default": "lift",
+            "enum": ["none", "lift", "scale", "shadow"]
+        }
+    },
+    "supports": {
+        "align": true,
+        "html": false,
+        "anchor": true,
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "blockGap": true
+        },
+        "color": {
+            "gradients": true,
+            "link": true,
+            "background": true
+        }
+    },
+    "styles": [
+        {
+            "name": "default",
+            "label": "Default",
+            "isDefault": true
+        },
+        {
+            "name": "compact",
+            "label": "Compact",
+            "attributes": {
+                "columns": 4,
+                "gap": 12
+            }
+        },
+        {
+            "name": "featured",
+            "label": "Featured",
+            "attributes": {
+                "columns": 2,
+                "gap": 24
+            }
+        }
+    ],
+    "example": {
+        "attributes": {
+            "perPage": 6,
+            "columns": 3,
+            "gap": 16,
+            "showPrice": true,
+            "showRating": true
+        }
+    },
+    "editorScript": "aps-blocks-editor",
+    "editorStyle": "aps-blocks-editor",
+    "style": "aps-blocks"
 }

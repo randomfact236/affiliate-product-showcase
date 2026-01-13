@@ -1,1 +1,83 @@
-{ "apiVersion": 2, "name": "aps/product-showcase", "title": "Product Showcase", "category": "widgets" }
+{
+    "apiVersion": 2,
+    "name": "aps/product-showcase",
+    "title": "Product Showcase",
+    "description": "Display affiliate products in a beautiful showcase layout with customizable display options",
+    "category": "widgets",
+    "icon": "store",
+    "keywords": ["product", "showcase", "affiliate", "display", "featured"],
+    "version": "1.0.0",
+    "textdomain": "affiliate-product-showcase",
+    "attributes": {
+        "layout": {
+            "type": "string",
+            "default": "grid"
+        },
+        "columns": {
+            "type": "number",
+            "default": 3
+        },
+        "gap": {
+            "type": "number",
+            "default": 16
+        },
+        "showPrice": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "showButton": {
+            "type": "boolean",
+            "default": true
+        },
+        "buttonText": {
+            "type": "string",
+            "default": "View Details"
+        }
+    },
+    "supports": {
+        "align": true,
+        "html": false,
+        "anchor": true,
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "color": {
+            "gradients": true,
+            "link": true
+        }
+    },
+    "styles": [
+        {
+            "name": "default",
+            "label": "Default",
+            "isDefault": true
+        },
+        {
+            "name": "list",
+            "label": "List View"
+        },
+        {
+            "name": "compact",
+            "label": "Compact"
+        }
+    ],
+    "example": {
+        "attributes": {
+            "layout": "grid",
+            "columns": 3,
+            "gap": 16
+        }
+    },
+    "editorScript": "aps-blocks-editor",
+    "editorStyle": "aps-blocks-editor",
+    "style": "aps-blocks",
+    "viewScript": "aps-blocks-frontend"
+}

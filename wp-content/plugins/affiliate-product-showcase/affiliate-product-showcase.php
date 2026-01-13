@@ -4,8 +4,8 @@
  * Plugin URI:        https://example.com/affiliate-product-showcase
  * Description:       Display affiliate products with shortcodes and blocks. Built with modern standards for security, performance, and scalability.
  * Version:           1.0.0
- * Requires at least: 6.0
- * Requires PHP:      7.4
+ * Requires at least: 6.7
+ * Requires PHP:      8.1
  * Author:            Affiliate Product Showcase Team
  * Author URI:        https://example.com/
  * License:           GPL-2.0-or-later
@@ -25,7 +25,7 @@ declare( strict_types=1 );
 // Prevents parse errors on PHP < 7.0 where strict_types is not supported.
 // ==============================================================================
 
-if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
+if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 	if ( defined( 'WP_ADMIN' ) && WP_ADMIN ) {
 		add_action(
 			'admin_notices',
@@ -38,7 +38,7 @@ if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 							__( '<strong>%1$s</strong> requires PHP %3$s or higher. Your site is running PHP %2$s. Please upgrade PHP or deactivate the plugin.', 'affiliate-product-showcase' ),
 							'Affiliate Product Showcase',
 							PHP_VERSION,
-							'7.4'
+							'8.1'
 						)
 					)
 				);

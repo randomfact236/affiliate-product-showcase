@@ -203,6 +203,29 @@ const loadSSL = (env) => {
   }
 };
 
+// Custom plugin to move Vite manifest from .vite/ to root
+const moveManifestPlugin = (outputDir) => ({
+  name: 'move-manifest',
+  writeBundle() {
+    const fs = require('fs');
+    const path = require('path');
+    
+    const viteManifest = path.resolve(outputDir, '.vite', 'manifest.json');
+    const targetManifest = path.resolve(outputDir, 'manifest.json');
+    
+    if (fs.existsSync(viteManifest)) {
+      fs.copyFileSync(viteManifest, targetManifest);
+      // Remove .vite directory to keep build clean
+      try {
+        fs.rmSync(path.dirname(viteManifest), { recursive: true, force: true });
+      } catch (error) {
+        console.warn('Could not remove .vite directory:', error.message);
+      }
+      console.log('✓ Vite manifest moved to root directory');
+    }
+  }
+});
+
 // Plugin Factory
 const createPlugins = ({ mode, paths, env, hasTS }) => {
   const isProd = mode === 'production';
@@ -221,6 +244,9 @@ const createPlugins = ({ mode, paths, env, hasTS }) => {
         sriAlgorithm: 'sha384'
       })
     );
+    
+    // Move Vite manifest from .vite/ to root for easier access
+    plugins.push(moveManifestPlugin(paths.dist));
   }
 
   return plugins.filter(Boolean);
