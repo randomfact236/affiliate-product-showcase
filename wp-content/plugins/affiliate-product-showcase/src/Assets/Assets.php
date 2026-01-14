@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Assets;
 
@@ -7,6 +8,7 @@ final class Assets {
 
 	public function __construct( Manifest $manifest ) {
 		$this->manifest = $manifest;
+		add_filter( 'script_loader_tag', [ $this, 'add_script_attributes' ], 10, 2 );
 	}
 
 	public function enqueue_admin(): void {
@@ -27,5 +29,38 @@ final class Assets {
 			true
 		);
 		$this->manifest->enqueue_style( 'aps-editor-style', 'editor.css' );
+	}
+
+	/**
+	 * Add defer/async attributes to plugin scripts.
+	 * 
+	 * Adds 'defer' attribute to frontend scripts and 'async' 
+	 * to admin scripts for better performance.
+	 *
+	 * @param string $tag    The script tag.
+	 * @param string $handle The script handle.
+	 * @return string Modified script tag with attributes.
+	 */
+	public function add_script_attributes( string $tag, string $handle ): string {
+		// Only modify plugin scripts
+		if ( ! str_starts_with( $handle, 'aps-' ) ) {
+			return $tag;
+		}
+
+		// Add defer to frontend scripts
+		if ( 'aps-frontend' === $handle || 'aps-blocks' === $handle ) {
+			if ( ! str_contains( $tag, ' defer' ) && ! str_contains( $tag, 'defer=' ) ) {
+				return str_replace( ' src=', ' defer src=', $tag );
+			}
+		}
+
+		// Add async to admin scripts
+		if ( 'aps-admin' === $handle ) {
+			if ( ! str_contains( $tag, ' async' ) && ! str_contains( $tag, 'async=' ) ) {
+				return str_replace( ' src=', ' async src=', $tag );
+			}
+		}
+
+		return $tag;
 	}
 }
