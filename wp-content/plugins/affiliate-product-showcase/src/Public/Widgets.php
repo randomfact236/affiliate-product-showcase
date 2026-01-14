@@ -7,11 +7,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 
 class APS_Product_Widget extends \WP_Widget {
 	private static ?ProductService $service = null;
 	private static ?SettingsRepository $settings_repository = null;
+	private static ?AffiliateService $affiliate_service = null;
 
 	public static function set_service( ProductService $service ): void {
 		self::$service = $service;
@@ -19,6 +21,10 @@ class APS_Product_Widget extends \WP_Widget {
 
 	public static function set_settings_repository( SettingsRepository $settings_repository ): void {
 		self::$settings_repository = $settings_repository;
+	}
+
+	public static function set_affiliate_service( AffiliateService $affiliate_service ): void {
+		self::$affiliate_service = $affiliate_service;
 	}
 
 	public function __construct() {
@@ -33,13 +39,18 @@ class APS_Product_Widget extends \WP_Widget {
 		$limit    = isset( $instance['count'] ) ? (int) $instance['count'] : 3;
 		$products = self::$service->get_products( [ 'per_page' => $limit ] );
 		$settings = ( self::$settings_repository ?? new SettingsRepository() )->get_settings();
+		$affiliate_service = self::$affiliate_service ?? new AffiliateService();
 
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
-		echo aps_view( 'src/Public/partials/product-grid.php', [ 'products' => $products, 'settings' => $settings ] );
+		echo aps_view( 'src/Public/partials/product-grid.php', [ 
+			'products' => $products, 
+			'settings' => $settings,
+			'affiliate_service' => $affiliate_service,
+		] );
 		echo $args['after_widget'];
 	}
 
@@ -67,11 +78,17 @@ class APS_Product_Widget extends \WP_Widget {
 }
 
 final class Widgets {
-	public function __construct( private ProductService $product_service, private SettingsRepository $settings_repository ) {}
+	public function __construct( 
+		private ProductService $product_service, 
+		private SettingsRepository $settings_repository,
+		AffiliateService $affiliate_service 
+	) {}
 
 	public function register(): void {
+		$affiliate_service = new AffiliateService();
 		APS_Product_Widget::set_service( $this->product_service );
 		APS_Product_Widget::set_settings_repository( $this->settings_repository );
+		APS_Product_Widget::set_affiliate_service( $affiliate_service );
 		register_widget( APS_Product_Widget::class );
 	}
 }

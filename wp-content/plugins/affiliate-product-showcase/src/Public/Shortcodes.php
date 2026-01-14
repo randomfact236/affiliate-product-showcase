@@ -7,10 +7,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 
 final class Shortcodes {
-	public function __construct( private ProductService $product_service, private SettingsRepository $settings_repository ) {}
+	private AffiliateService $affiliate_service;
+
+	public function __construct( 
+		private ProductService $product_service, 
+		private SettingsRepository $settings_repository,
+		AffiliateService $affiliate_service 
+	) {
+		$this->affiliate_service = $affiliate_service;
+	}
 
 	public function register(): void {
 		add_shortcode( 'aps_product', [ $this, 'render_single' ] );
@@ -25,8 +34,9 @@ final class Shortcodes {
 		}
 
 		return aps_view( 'src/Public/partials/product-card.php', [
-			'product'  => $product,
-			'settings' => $this->settings_repository->get_settings(),
+			'product'           => $product,
+			'settings'          => $this->settings_repository->get_settings(),
+			'affiliate_service' => $this->affiliate_service,
 		] );
 	}
 
@@ -35,8 +45,9 @@ final class Shortcodes {
 		$products = $this->product_service->get_products( [ 'per_page' => (int) $atts['per_page'] ] );
 
 		return aps_view( 'src/Public/partials/product-grid.php', [
-			'products' => $products,
-			'settings' => $this->settings_repository->get_settings(),
+			'products'          => $products,
+			'settings'          => $this->settings_repository->get_settings(),
+			'affiliate_service' => $this->affiliate_service,
 		] );
 	}
 }

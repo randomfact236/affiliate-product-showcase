@@ -8,17 +8,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 
 final class Public_ {
     private Shortcodes $shortcodes;
     private Widgets $widgets;
     private SettingsRepository $settings_repository;
+    private AffiliateService $affiliate_service;
 
     public function __construct( private Assets $assets, private ProductService $product_service ) {
+        $this->affiliate_service = new AffiliateService();
         $this->settings_repository = new SettingsRepository();
-        $this->shortcodes = new Shortcodes( $this->product_service, $this->settings_repository );
-        $this->widgets    = new Widgets( $this->product_service, $this->settings_repository );
+        $this->shortcodes = new Shortcodes( $this->product_service, $this->settings_repository, $this->affiliate_service );
+        $this->widgets    = new Widgets( $this->product_service, $this->settings_repository, $this->affiliate_service );
     }
 
     public function init(): void {
