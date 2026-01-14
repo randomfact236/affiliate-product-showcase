@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Configurable constants (can be defined in wp-config.php)
-defined( 'APS_UNINSTALL_REMOVE_ALL_DATA' )     or define( 'APS_UNINSTALL_REMOVE_ALL_DATA', true );
+defined( 'APS_UNINSTALL_REMOVE_ALL_DATA' )     or define( 'APS_UNINSTALL_REMOVE_ALL_DATA', false );
 defined( 'APS_UNINSTALL_FORCE_DELETE_CONTENT' ) or define( 'APS_UNINSTALL_FORCE_DELETE_CONTENT', false );
 defined( 'APS_UNINSTALL_BATCH_SIZE' )           or define( 'APS_UNINSTALL_BATCH_SIZE', 500 );
 
