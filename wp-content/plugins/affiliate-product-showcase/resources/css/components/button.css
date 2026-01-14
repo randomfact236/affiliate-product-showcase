@@ -1,0 +1,128 @@
+@layer components {
+	/* Base Button */
+	.aps-btn {
+		@apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer;
+	}
+
+	.aps-btn:disabled {
+		@apply opacity-50 cursor-not-allowed;
+	}
+
+	/* Primary Button */
+	.aps-btn--primary {
+		@apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800;
+	}
+
+	/* Secondary Button */
+	.aps-btn--secondary {
+		@apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 active:bg-gray-400;
+	}
+
+	/* Outline Button */
+	.aps-btn--outline {
+		@apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500 active:bg-blue-100;
+	}
+
+	/* Ghost Button */
+	.aps-btn--ghost {
+		@apply bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-blue-500;
+	}
+
+	/* Danger Button */
+	.aps-btn--danger {
+		@apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 active:bg-red-800;
+	}
+
+	/* Success Button */
+	.aps-btn--success {
+		@apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 active:bg-green-800;
+	}
+
+	/* Button Sizes */
+	.aps-btn--sm {
+		@apply px-3 py-1.5 text-sm;
+	}
+
+	.aps-btn--lg {
+		@apply px-6 py-3 text-lg;
+	}
+
+	.aps-btn--xl {
+		@apply px-8 py-4 text-xl;
+	}
+
+	/* Full Width Button */
+	.aps-btn--full {
+		@apply w-full;
+	}
+
+	/* Button with Icon */
+	.aps-btn--icon {
+		@apply gap-2;
+	}
+
+	.aps-btn__icon {
+		@apply w-4 h-4;
+	}
+
+	.aps-btn__icon--left {
+		@apply -ml-1 mr-2;
+	}
+
+	.aps-btn__icon--right {
+		@apply ml-2 -mr-1;
+	}
+
+	/* Loading Button */
+	.aps-btn--loading {
+		@apply relative;
+	}
+
+	.aps-btn--loading .aps-btn__text {
+		@apply invisible;
+	}
+
+	.aps-btn__spinner {
+		@apply absolute inset-0 flex items-center justify-center;
+	}
+
+	.aps-btn__spinner::before {
+		@apply content-[''] block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin;
+	}
+
+	/* Button Group */
+	.aps-btn-group {
+		@apply inline-flex rounded-lg overflow-hidden shadow-sm;
+	}
+
+	.aps-btn-group .aps-btn {
+		@apply rounded-none first:rounded-l-lg last:rounded-r-lg border-r border-gray-300;
+	}
+
+	.aps-btn-group .aps-btn:last-child {
+		@apply border-r-0;
+	}
+
+	/* Icon Only Button */
+	.aps-btn--icon-only {
+		@apply p-2 aspect-square;
+	}
+
+	/* Floating Action Button */
+	.aps-btn--fab {
+		@apply fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg;
+	}
+
+	.aps-btn--fab:hover {
+		@apply -translate-y-1 shadow-xl;
+	}
+
+	/* Button with Badge */
+	.aps-btn--badge {
+		@apply relative;
+	}
+
+	.aps-btn__badge {
+		@apply absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full;
+	}
+}

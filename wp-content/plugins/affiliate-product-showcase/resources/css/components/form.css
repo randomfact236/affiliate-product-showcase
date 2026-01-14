@@ -1,0 +1,217 @@
+@layer components {
+	/* Form Container */
+	.aps-form {
+		@apply space-y-6;
+	}
+
+	/* Form Group */
+	.aps-form-group {
+		@apply space-y-2;
+	}
+
+	/* Label */
+	.aps-label {
+		@apply block text-sm font-medium text-gray-700 mb-1;
+	}
+
+	.aps-label--required {
+		@apply after:content-['*'] after:text-red-500 after:ml-1;
+	}
+
+	.aps-label--inline {
+		@apply inline-flex items-center;
+	}
+
+	/* Input */
+	.aps-input {
+		@apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-gray-900 placeholder-gray-400;
+	}
+
+	.aps-input--error {
+		@apply border-red-500 focus:ring-red-500;
+	}
+
+	.aps-input--success {
+		@apply border-green-500 focus:ring-green-500;
+	}
+
+	.aps-input--sm {
+		@apply px-2 py-1.5 text-sm;
+	}
+
+	.aps-input--lg {
+		@apply px-4 py-3 text-lg;
+	}
+
+	.aps-input:disabled {
+		@apply bg-gray-100 cursor-not-allowed;
+	}
+
+	.aps-input:read-only {
+		@apply bg-gray-50;
+	}
+
+	/* Textarea */
+	.aps-textarea {
+		@apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-gray-900 placeholder-gray-400 resize-y;
+	}
+
+	.aps-textarea--error {
+		@apply border-red-500 focus:ring-red-500;
+	}
+
+	.aps-textarea--sm {
+		@apply px-2 py-1.5 text-sm;
+	}
+
+	.aps-textarea--lg {
+		@apply px-4 py-3 text-lg;
+	}
+
+	/* Select */
+	.aps-select {
+		@apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-gray-900 bg-white cursor-pointer;
+	}
+
+	.aps-select--error {
+		@apply border-red-500 focus:ring-red-500;
+	}
+
+	.aps-select--sm {
+		@apply px-2 py-1.5 text-sm;
+	}
+
+	.aps-select--lg {
+		@apply px-4 py-3 text-lg;
+	}
+
+	/* Checkbox */
+	.aps-checkbox {
+		@apply w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer;
+	}
+
+	.aps-checkbox-group {
+		@apply space-y-2;
+	}
+
+	.aps-checkbox-label {
+		@apply inline-flex items-center gap-2 text-sm text-gray-700 cursor-pointer;
+	}
+
+	/* Radio */
+	.aps-radio {
+		@apply w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer;
+	}
+
+	.aps-radio-group {
+		@apply space-y-2;
+	}
+
+	.aps-radio-label {
+		@apply inline-flex items-center gap-2 text-sm text-gray-700 cursor-pointer;
+	}
+
+	/* Helper Text */
+	.aps-helper {
+		@apply text-sm text-gray-500;
+	}
+
+	.aps-helper--error {
+		@apply text-red-600;
+	}
+
+	/* Error Message */
+	.aps-error {
+		@apply text-sm text-red-600 mt-1;
+	}
+
+	/* Input Group */
+	.aps-input-group {
+		@apply relative flex items-stretch;
+	}
+
+	.aps-input-group__prepend {
+		@apply flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-gray-500;
+	}
+
+	.aps-input-group__append {
+		@apply flex items-center px-3 bg-gray-100 border border-l-0 border-gray-300 rounded-r-lg text-gray-500;
+	}
+
+	.aps-input-group .aps-input {
+		@apply rounded-none first:rounded-l-lg last:rounded-r-lg;
+	}
+
+	/* Form Actions */
+	.aps-form-actions {
+		@apply flex items-center gap-3 mt-6;
+	}
+
+	.aps-form-actions--right {
+		@apply justify-end;
+	}
+
+	.aps-form-actions--center {
+		@apply justify-center;
+	}
+
+	/* Fieldset */
+	.aps-fieldset {
+		@apply border border-gray-200 rounded-lg p-4 space-y-4;
+	}
+
+	.aps-legend {
+		@apply text-sm font-medium text-gray-900 px-2;
+	}
+
+	/* Search Input */
+	.aps-search {
+		@apply relative;
+	}
+
+	.aps-search__input {
+		@apply pl-10 pr-4;
+	}
+
+	.aps-search__icon {
+		@apply absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400;
+	}
+
+	/* File Upload */
+	.aps-file {
+		@apply relative;
+	}
+
+	.aps-file__input {
+		@apply absolute inset-0 w-full h-full opacity-0 cursor-pointer;
+	}
+
+	.aps-file__label {
+		@apply flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer;
+	}
+
+	.aps-file__label--error {
+		@apply border-red-500 text-red-600 hover:border-red-600 hover:bg-red-50;
+	}
+
+	/* Toggle Switch */
+	.aps-toggle {
+		@apply relative inline-flex items-center cursor-pointer;
+	}
+
+	.aps-toggle__input {
+		@apply sr-only;
+	}
+
+	.aps-toggle__slider {
+		@apply w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors;
+	}
+
+	.aps-toggle__slider::before {
+		@apply absolute content-[''] h-4 w-4 left-1 top-1 bg-white rounded-full transition-transform peer-checked:translate-x-5;
+	}
+
+	.aps-toggle__input:checked + .aps-toggle__slider::before {
+		@apply translate-x-5;
+	}
+}
