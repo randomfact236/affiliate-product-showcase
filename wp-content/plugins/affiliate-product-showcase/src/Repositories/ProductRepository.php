@@ -185,13 +185,20 @@ final class ProductRepository extends AbstractRepository {
 		];
 
 		foreach ( $meta_fields as $key => $value ) {
-			$updated = update_post_meta( $post_id, $key, $value );
+			// Only update if value is actually changed
+			$current = get_post_meta( $post_id, $key, true );
 			
-			if ( false === $updated ) {
-				throw RepositoryException::saveFailed(
-					'Product Meta',
-					sprintf('Failed to update meta field "%s"', $key)
-				);
+			if ($value !== $current) {
+				$result = update_post_meta( $post_id, $key, $value );
+				
+				// update_post_meta returns false on FAILURE, not when value === false
+				// It returns the old value on success (which might be false)
+				if ($result === false && !in_array($value, [false, '', null], true)) {
+					throw RepositoryException::saveFailed(
+						'Product Meta',
+						sprintf('Failed to update meta field "%s"', $key)
+					);
+				}
 			}
 		}
 	}
