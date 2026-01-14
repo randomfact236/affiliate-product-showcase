@@ -21,28 +21,94 @@ final class ProductsController extends RestController {
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'list' ],
 					'permission_callback' => '__return_true',
+					'args'                => $this->get_list_args(),
 				],
 				[
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => [ $this, 'create' ],
 					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_create_args(),
 				],
 			]
 		);
 	}
 
+	/**
+	 * Get validation schema for list endpoint
+	 */
+	private function get_list_args(): array {
+		return [
+			'per_page' => [
+				'type'              => 'integer',
+				'default'           => 12,
+				'minimum'           => 1,
+				'maximum'           => 100,
+				'sanitize_callback' => 'absint',
+			],
+		];
+	}
+
+	/**
+	 * Get validation schema for create endpoint
+	 */
+	private function get_create_args(): array {
+		return [
+			'title'       => [
+				'required'          => true,
+				'type'              => 'string',
+				'minLength'         => 1,
+				'maxLength'         => 200,
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'description' => [
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'wp_kses_post',
+			],
+			'price'       => [
+				'required'          => true,
+				'type'              => 'number',
+				'minimum'           => 0,
+				'sanitize_callback' => 'floatval',
+			],
+			'currency'    => [
+				'required'          => true,
+				'type'              => 'string',
+				'default'           => 'USD',
+				'enum'              => ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'affiliate_url' => [
+				'required'          => true,
+				'type'              => 'string',
+				'format'            => 'uri',
+				'sanitize_callback' => 'esc_url_raw',
+			],
+			'image_url'   => [
+				'required'          => false,
+				'type'              => 'string',
+				'format'            => 'uri',
+				'sanitize_callback' => 'esc_url_raw',
+			],
+			'badge'       => [
+				'required'          => false,
+				'type'              => 'string',
+				'maxLength'         => 50,
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'rating'      => [
+				'required'          => false,
+				'type'              => 'number',
+				'minimum'           => 0,
+				'maximum'           => 5,
+				'sanitize_callback' => 'floatval',
+			],
+		];
+	}
+
 	public function list( \WP_REST_Request $request ): \WP_REST_Response {
-		$per_page = (int) $request->get_param( 'per_page' ) ?: 12;
-		
-		// Cap per_page to prevent DOS attacks
-		if ( $per_page > 100 ) {
-			$per_page = 100;
-		}
-		
-		// Ensure minimum value
-		if ( $per_page < 1 ) {
-			$per_page = 12;
-		}
+		// Parameters are already validated by REST API args
+		$per_page = $request->get_param( 'per_page' );
 
 		$products = $this->product_service->get_products( [
 			'per_page' => $per_page,
@@ -53,7 +119,8 @@ final class ProductsController extends RestController {
 
 	public function create( \WP_REST_Request $request ): \WP_REST_Response {
 		try {
-			$product = $this->product_service->create_or_update( $request->get_json_params() ?? [] );
+			// Parameters are already validated by REST API args
+			$product = $this->product_service->create_or_update( $request->get_params() );
 			return $this->respond( $product->to_array(), 201 );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
