@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Plugin;
 
@@ -11,6 +12,7 @@ use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\ProductsController;
+use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Cli\ProductsCommand;
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Traits\HooksTrait;
@@ -25,6 +27,7 @@ final class Loader {
 		private Blocks $blocks,
 		private ProductsController $products_controller,
 		private AnalyticsController $analytics_controller,
+		private HealthController $health_controller,
 		private ProductsCommand $products_command
 	) {}
 
@@ -79,6 +82,7 @@ final class Loader {
 	public function register_rest_controllers(): void {
 		$this->products_controller->register_routes();
 		$this->analytics_controller->register_routes();
+		$this->health_controller->register_routes();
 	}
 
 	public function register_cli(): void {

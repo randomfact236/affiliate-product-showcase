@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Plugin;
 
@@ -14,8 +15,11 @@ use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Cache\Cache;
 use AffiliateProductShowcase\Cli\ProductsCommand;
 use AffiliateProductShowcase\Public\Public_;
+use AffiliateProductShowcase\Privacy\GDPR;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\ProductsController;
+use AffiliateProductShowcase\Rest\HealthController;
+use AffiliateProductShowcase\Security\Headers;
 use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Services\AnalyticsService;
 use AffiliateProductShowcase\Services\ProductService;
@@ -37,7 +41,10 @@ final class Plugin {
 	private Blocks $blocks;
 	private ProductsController $products_controller;
 	private AnalyticsController $analytics_controller;
+	private HealthController $health_controller;
+	private GDPR $gdpr;
 	private ProductsCommand $products_command;
+	private Headers $headers;
 
 	public function init(): void {
 		$this->bootstrap();
@@ -47,20 +54,29 @@ final class Plugin {
 	private function bootstrap(): void {
 		$this->load_textdomain();
 
-		$this->cache              = new Cache();
-		$this->manifest           = Manifest::get_instance();
-		$this->sri                = new SRI( $this->manifest );
-		$this->manifest->set_sri( $this->sri );
-		$this->assets             = new Assets( $this->manifest );
-		$this->product_service    = new ProductService();
-		$this->affiliate_service  = new AffiliateService();
-		$this->analytics_service  = new AnalyticsService();
-		$this->admin              = new Admin( $this->assets, $this->product_service );
-		$this->public             = new Public_( $this->assets, $this->product_service );
-		$this->blocks             = new Blocks( $this->product_service );
-		$this->products_controller = new ProductsController( $this->product_service );
-		$this->analytics_controller = new AnalyticsController( $this->analytics_service );
-		$this->products_command    = new ProductsCommand( $this->product_service );
+		// Get DI container instance
+		$container = Container::get_instance();
+
+		// Resolve all services from container (automatic dependency injection)
+		$this->cache               = $container->get( Cache::class );
+		$this->manifest            = $container->get( Manifest::class );
+		$this->sri                 = $container->get( SRI::class );
+		$this->assets              = $container->get( Assets::class );
+		$this->product_service     = $container->get( ProductService::class );
+		$this->affiliate_service   = $container->get( AffiliateService::class );
+		$this->analytics_service   = $container->get( AnalyticsService::class );
+		$this->headers             = $container->get( Headers::class );
+		$this->admin               = $container->get( Admin::class );
+		$this->public              = $container->get( Public_::class );
+		$this->blocks              = $container->get( Blocks::class );
+		$this->products_controller  = $container->get( ProductsController::class );
+		$this->analytics_controller = $container->get( AnalyticsController::class );
+		$this->health_controller   = $container->get( HealthController::class );
+		$this->gdpr               = $container->get( GDPR::class );
+		$this->products_command    = $container->get( ProductsCommand::class );
+		
+		$this->gdpr->register();
+		
 		$this->loader              = new Loader(
 			$this->product_service,
 			$this->admin,
@@ -68,8 +84,36 @@ final class Plugin {
 			$this->blocks,
 			$this->products_controller,
 			$this->analytics_controller,
+			$this->health_controller,
 			$this->products_command
 		);
+	}
+
+	/**
+	 * Set product service (for dependency injection)
+	 *
+	 * @param ProductService $service
+	 */
+	public function set_product_service( ProductService $service ): void {
+		$this->product_service = $service;
+	}
+
+	/**
+	 * Set affiliate service (for dependency injection)
+	 *
+	 * @param AffiliateService $service
+	 */
+	public function set_affiliate_service( AffiliateService $service ): void {
+		$this->affiliate_service = $service;
+	}
+
+	/**
+	 * Set analytics service (for dependency injection)
+	 *
+	 * @param AnalyticsService $service
+	 */
+	public function set_analytics_service( AnalyticsService $service ): void {
+		$this->analytics_service = $service;
 	}
 
 	private function load_textdomain(): void {

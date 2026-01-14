@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Factories;
 
@@ -9,8 +10,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AffiliateProductShowcase\Models\Product;
 
 final class ProductFactory {
-	public function from_post( \WP_Post $post ): Product {
-		$meta = get_post_meta( $post->ID );
+	/**
+	 * Create a Product from a WP_Post object
+	 *
+	 * @param \WP_Post $post WordPress post object
+	 * @param array<string, array<string, mixed>>|null $meta_cache Optional pre-fetched meta data to avoid N+1 queries
+	 * @return Product Product instance
+	 */
+	public function from_post( \WP_Post $post, ?array $meta_cache = null ): Product {
+		// Use provided cache if available (for batch operations), otherwise fetch
+		$meta = $meta_cache ?? get_post_meta( $post->ID );
 
 		return new Product(
 			$post->ID,
@@ -27,6 +36,12 @@ final class ProductFactory {
 		);
 	}
 
+	/**
+	 * Create a Product from an array
+	 *
+	 * @param array<string, mixed> $data Product data
+	 * @return Product Product instance
+	 */
 	public function from_array( array $data ): Product {
 		return new Product(
 			(int) ( $data['id'] ?? 0 ),

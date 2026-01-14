@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Rest;
 
@@ -17,7 +18,13 @@ abstract class RestController {
 		return current_user_can( 'manage_options' );
 	}
 
-	protected function respond( $data, int $status = 200 ): \WP_REST_Response {
-		return new \WP_REST_Response( $data, $status );
+	protected function respond( $data, int $status = 200, array $headers = [] ): \WP_REST_Response {
+		$response = new \WP_REST_Response( $data, $status );
+		
+		foreach ( $headers as $key => $value ) {
+			$response->header( $key, $value );
+		}
+		
+		return $response;
 	}
 }

@@ -1,0 +1,29 @@
+{
+  "defaults": {
+    "timeout": "30000",
+    "viewportWidth": "1280",
+    "viewportHeight": "720",
+    "threshold": "0"
+  },
+  "urls": [
+    "http://localhost:8000/wp-admin/admin.php?page=affiliate-product-showcase",
+    "http://localhost:8000/products/",
+    "http://localhost:8000/sample-product/"
+  ],
+  "screenCapture": "./accessibility-screenshots/",
+  "reporters": [
+    "cli",
+    "json"
+  ],
+  "rules": [
+    "axe-core/valid-lang",
+    "axe-core/label-title-only",
+    "axe-core/landmark-unique",
+    "axe-core/region",
+    "axe-color-contrast/contrast",
+    "axe-color-contrast/contrast-enhanced",
+    "axe-name/role-img-alt",
+    "axe-name/label-title-only",
+    "axe-forms/label"
+  ]
+}

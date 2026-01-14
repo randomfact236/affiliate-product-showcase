@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Rest;
 
@@ -7,11 +8,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Security\RateLimiter;
 use WP_REST_Server;
 
 final class ProductsController extends RestController {
-	public function __construct( private ProductService $product_service ) {}
+	private RateLimiter $rate_limiter;
 
+	/**
+	 * Constructor
+	 *
+	 * @param ProductService $product_service Product service
+	 */
+	public function __construct( 
+		private ProductService $product_service
+	) {
+		$this->rate_limiter = new RateLimiter();
+	}
+
+	/**
+	 * Register REST API routes
+	 *
+	 * @return void
+	 */
 	public function register_routes(): void {
 		register_rest_route(
 			$this->namespace,
@@ -35,6 +53,8 @@ final class ProductsController extends RestController {
 
 	/**
 	 * Get validation schema for list endpoint
+	 *
+	 * @return array<string, mixed> Validation schema
 	 */
 	private function get_list_args(): array {
 		return [
@@ -50,6 +70,8 @@ final class ProductsController extends RestController {
 
 	/**
 	 * Get validation schema for create endpoint
+	 *
+	 * @return array<string, mixed> Validation schema
 	 */
 	private function get_create_args(): array {
 		return [
@@ -106,7 +128,21 @@ final class ProductsController extends RestController {
 		];
 	}
 
+	/**
+	 * List products
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response Response with products list
+	 */
 	public function list( \WP_REST_Request $request ): \WP_REST_Response {
+		// Check rate limit
+		if ( ! $this->rate_limiter->check( 'products_list' ) ) {
+			return $this->respond( [
+				'message' => __( 'Too many requests. Please try again later.', 'affiliate-product-showcase' ),
+				'code'    => 'rate_limit_exceeded',
+			], 429, $this->rate_limiter->get_headers( 'products_list' ) );
+		}
+
 		// Parameters are already validated by REST API args
 		$per_page = $request->get_param( 'per_page' );
 
@@ -114,14 +150,37 @@ final class ProductsController extends RestController {
 			'per_page' => $per_page,
 		] );
 
-		return $this->respond( array_map( fn( $p ) => $p->to_array(), $products ) );
+		return $this->respond( array_map( fn( $p ) => $p->to_array(), $products ), 200, $this->rate_limiter->get_headers( 'products_list' ) );
 	}
 
+	/**
+	 * Create a new product
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response Response with created product
+	 */
 	public function create( \WP_REST_Request $request ): \WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh the page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		// Check rate limit (stricter for create operations)
+		if ( ! $this->rate_limiter->check( 'products_create', 20 ) ) {
+			return $this->respond( [
+				'message' => __( 'Too many creation requests. Please try again later.', 'affiliate-product-showcase' ),
+				'code'    => 'rate_limit_exceeded',
+			], 429, $this->rate_limiter->get_headers( 'products_create', 20 ) );
+		}
+
 		try {
 			// Parameters are already validated by REST API args
 			$product = $this->product_service->create_or_update( $request->get_params() );
-			return $this->respond( $product->to_array(), 201 );
+			return $this->respond( $product->to_array(), 201, $this->rate_limiter->get_headers( 'products_create', 20 ) );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
 			// Log full error internally (includes details)

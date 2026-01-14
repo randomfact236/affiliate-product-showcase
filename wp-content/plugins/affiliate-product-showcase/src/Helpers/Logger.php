@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
  * Simple WordPress-compatible Logger
  *
  * Replaces Monolog with lightweight WordPress error_log based logging.
  * Suitable for WordPress plugins and VIP/Enterprise environments.
+ * Fully PSR-3 compliant for enterprise compatibility.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
@@ -17,15 +19,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use Psr\Log\InvalidArgumentException;
+
 /**
  * Logger Class
  *
  * Provides simple logging functionality using WordPress error_log.
  * Compatible with WordPress VIP and Enterprise environments.
+ * Fully PSR-3 compliant for enterprise integration.
  *
  * @since 1.0.0
+ * @implements LoggerInterface
  */
-class Logger {
+class Logger implements LoggerInterface {
     /**
      * Logger prefix for log entries
      *
@@ -34,93 +42,166 @@ class Logger {
     private const PREFIX = '[APS]';
 
     /**
-     * Log an error message
+     * PSR-3: Log an emergency message
      *
-     * @param string $message Error message to log
+     * @param string|\Stringable $message Emergency message to log
      * @param array<string,mixed> $context Additional context data
      * @return void
      */
-    public static function error( string $message, array $context = [] ): void {
-        self::log( 'ERROR', $message, $context );
+    public function emergency( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::EMERGENCY, $this->normalizeMessage( $message ), $context );
     }
 
     /**
-     * Log a warning message
+     * PSR-3: Log an alert message
      *
-     * @param string $message Warning message to log
+     * @param string|\Stringable $message Alert message to log
      * @param array<string,mixed> $context Additional context data
      * @return void
      */
-    public static function warning( string $message, array $context = [] ): void {
-        self::log( 'WARNING', $message, $context );
+    public function alert( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::ALERT, $this->normalizeMessage( $message ), $context );
     }
 
     /**
-     * Log an info message
+     * PSR-3: Log a critical message
      *
-     * @param string $message Info message to log
+     * @param string|\Stringable $message Critical message to log
      * @param array<string,mixed> $context Additional context data
      * @return void
      */
-    public static function info( string $message, array $context = [] ): void {
-        self::log( 'INFO', $message, $context );
+    public function critical( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::CRITICAL, $this->normalizeMessage( $message ), $context );
     }
 
     /**
-     * Log a debug message (only if WP_DEBUG is enabled)
+     * PSR-3: Log an error message
      *
-     * @param string $message Debug message to log
+     * @param string|\Stringable $message Error message to log
      * @param array<string,mixed> $context Additional context data
      * @return void
      */
-    public static function debug( string $message, array $context = [] ): void {
+    public function error( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::ERROR, $this->normalizeMessage( $message ), $context );
+    }
+
+    /**
+     * PSR-3: Log a warning message
+     *
+     * @param string|\Stringable $message Warning message to log
+     * @param array<string,mixed> $context Additional context data
+     * @return void
+     */
+    public function warning( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::WARNING, $this->normalizeMessage( $message ), $context );
+    }
+
+    /**
+     * PSR-3: Log a notice message
+     *
+     * @param string|\Stringable $message Notice message to log
+     * @param array<string,mixed> $context Additional context data
+     * @return void
+     */
+    public function notice( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::NOTICE, $this->normalizeMessage( $message ), $context );
+    }
+
+    /**
+     * PSR-3: Log an info message
+     *
+     * @param string|\Stringable $message Info message to log
+     * @param array<string,mixed> $context Additional context data
+     * @return void
+     */
+    public function info( string|\Stringable $message, array $context = [] ): void {
+        $this->log( LogLevel::INFO, $this->normalizeMessage( $message ), $context );
+    }
+
+    /**
+     * PSR-3: Log a debug message (only if WP_DEBUG is enabled)
+     *
+     * @param string|\Stringable $message Debug message to log
+     * @param array<string,mixed> $context Additional context data
+     * @return void
+     */
+    public function debug( string|\Stringable $message, array $context = [] ): void {
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            self::log( 'DEBUG', $message, $context );
+            $this->log( LogLevel::DEBUG, $this->normalizeMessage( $message ), $context );
         }
     }
 
     /**
-     * Internal log method
+     * PSR-3: Log with arbitrary level
      *
-     * @param string $level Log level (ERROR, WARNING, INFO, DEBUG)
-     * @param string $message Message to log
+     * @param mixed $level Log level
+     * @param string|\Stringable $message Message to log
      * @param array<string,mixed> $context Additional context
      * @return void
+     * @throws InvalidArgumentException If log level is invalid
      */
-    private static function log( string $level, string $message, array $context = [] ): void {
-        $log_entry = sprintf(
+    public function log( $level, string|\Stringable $message, array $context = [] ): void {
+        $validLevels = [
+            LogLevel::EMERGENCY,
+            LogLevel::ALERT,
+            LogLevel::CRITICAL,
+            LogLevel::ERROR,
+            LogLevel::WARNING,
+            LogLevel::NOTICE,
+            LogLevel::INFO,
+            LogLevel::DEBUG,
+        ];
+
+        if ( ! in_array( $level, $validLevels, true ) ) {
+            throw new InvalidArgumentException( sprintf( 'Invalid log level: %s', $level ) );
+        }
+
+        $logEntry = sprintf(
             '%s %s: %s',
             self::PREFIX,
-            $level,
-            $message
+            strtoupper( $level ),
+            $this->normalizeMessage( $message )
         );
 
         if ( ! empty( $context ) ) {
-            $log_entry .= ' | Context: ' . wp_json_encode( $context, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
+            $logEntry .= ' | Context: ' . wp_json_encode( $context, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
         }
 
         // Use WordPress error_log
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-        error_log( $log_entry );
+        error_log( $logEntry );
 
         // Hook for external logging services (Sentry, Bugsnag, New Relic, etc.)
         do_action(
             'affiliate_product_showcase_log',
-            $level,
-            $message,
+            strtoupper( $level ),
+            (string) $message,
             $context
         );
     }
 
     /**
-     * Log an exception with stack trace
+     * Normalize message to string
+     *
+     * @param string|\Stringable $message Message to normalize
+     * @return string Normalized message
+     */
+    private function normalizeMessage( string|\Stringable $message ): string {
+        if ( $message instanceof \Stringable ) {
+            return (string) $message;
+        }
+        return $message;
+    }
+
+    /**
+     * Log an exception with stack trace (convenience method)
      *
      * @param \Throwable $exception Exception to log
      * @param string $message Optional additional message
      * @return void
      */
-    public static function exception( \Throwable $exception, string $message = '' ): void {
-        $log_message = $message ?: $exception->getMessage();
+    public function exception( \Throwable $exception, string $message = '' ): void {
+        $logMessage = $message ?: $exception->getMessage();
 
         $context = [
             'exception' => get_class( $exception ),
@@ -134,21 +215,21 @@ class Logger {
             $context['stack_trace'] = $exception->getTraceAsString();
         }
 
-        self::error( $log_message, $context );
+        $this->error( $logMessage, $context );
     }
 
     /**
-     * Log performance metrics
+     * Log performance metrics (convenience method)
      *
      * @param string $operation Operation being measured
      * @param float $time Time taken in seconds
      * @param array<string,mixed> $context Additional context
      * @return void
      */
-    public static function performance( string $operation, float $time, array $context = [] ): void {
+    public function performance( string $operation, float $time, array $context = [] ): void {
         $context['time_seconds'] = $time;
         $context['time_formatted'] = number_format_i18n( $time * 1000, 2 ) . 'ms';
 
-        self::info( sprintf( 'Performance: %s', $operation ), $context );
+        $this->info( sprintf( 'Performance: %s', $operation ), $context );
     }
 }

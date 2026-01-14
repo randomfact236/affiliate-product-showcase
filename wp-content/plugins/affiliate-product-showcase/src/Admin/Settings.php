@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Admin;
 
@@ -17,7 +18,11 @@ final class Settings {
 	}
 
 	public function register(): void {
-		register_setting( Constants::SLUG, 'aps_settings', [ $this, 'sanitize' ] );
+		register_setting( Constants::SLUG, 'aps_settings', [
+			'sanitize_callback' => [ $this, 'sanitize' ],
+			'show_in_rest' => false,
+		] );
+		
 		add_settings_section( 'aps_general', __( 'General', Constants::TEXTDOMAIN ), '__return_false', Constants::SLUG );
 
 		add_settings_field( 'aps_currency', __( 'Currency', Constants::TEXTDOMAIN ), [ $this, 'field_currency' ], Constants::SLUG, 'aps_general' );
@@ -32,6 +37,19 @@ final class Settings {
 	}
 
 	public function sanitize( array $input ): array {
+		// Verify nonce for CSRF protection
+		if ( ! isset( $_POST['option_page'] ) || 
+		     ! isset( $_POST['_wpnonce'] ) || 
+		     ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'aps_settings-options' ) ) {
+			add_settings_error( 
+				Constants::SLUG, 
+				'invalid_nonce', 
+				__( 'Security check failed. Please try again.', Constants::TEXTDOMAIN ), 
+				'error' 
+			);
+			return $this->repository->get_settings();
+		}
+
 		$this->repository->update_settings( $input );
 		return $this->repository->get_settings();
 	}

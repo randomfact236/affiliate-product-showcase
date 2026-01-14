@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Cli;
 
@@ -9,8 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AffiliateProductShowcase\Services\ProductService;
 
 final class ProductsCommand {
+	/**
+	 * Constructor
+	 *
+	 * @param ProductService $product_service Product service
+	 */
 	public function __construct( private ProductService $product_service ) {}
 
+	/**
+	 * Register WP-CLI commands
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		if ( ! class_exists( '\WP_CLI' ) ) {
 			return;
@@ -19,6 +30,11 @@ final class ProductsCommand {
 		\WP_CLI::add_command( 'aps products', [ $this, 'list' ] );
 	}
 
+	/**
+	 * List all products via WP-CLI
+	 *
+	 * @return void
+	 */
 	public function list(): void {
 		$products = $this->product_service->get_products( [ 'per_page' => 100 ] );
 		$data     = array_map(
