@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Repositories;
 
@@ -24,13 +25,20 @@ final class SettingsRepository extends AbstractRepository {
 		return false;
 	}
 
+	/**
+	 * Get all plugin settings with defaults.
+	 *
+	 * @return array<string, mixed> Settings array
+	 */
 	public function get_settings(): array {
 		$defaults = [
-			'currency'       => 'USD',
-			'affiliate_id'   => '',
-			'enable_ratings' => true,
-			'enable_cache'   => true,
-			'cta_label'      => __( 'View Deal', Constants::TEXTDOMAIN ),
+			'currency'              => 'USD',
+			'affiliate_id'          => '',
+			'enable_ratings'        => true,
+			'enable_cache'          => true,
+			'cta_label'             => __( 'View Deal', Constants::TEXTDOMAIN ),
+			'disclosure_enabled'     => false,
+			'disclosure_text'       => __( 'This post contains affiliate links. We may earn a commission if you make a purchase.', Constants::TEXTDOMAIN ),
 		];
 
 		$settings = get_option( self::OPTION_KEY, [] );
@@ -41,13 +49,21 @@ final class SettingsRepository extends AbstractRepository {
 		return wp_parse_args( $settings, $defaults );
 	}
 
+	/**
+	 * Update plugin settings.
+	 *
+	 * @param array<string, mixed> $settings Settings to update
+	 * @return void
+	 */
 	public function update_settings( array $settings ): void {
 		$sanitized = [
-			'currency'       => sanitize_text_field( $settings['currency'] ?? 'USD' ),
-			'affiliate_id'   => sanitize_text_field( $settings['affiliate_id'] ?? '' ),
-			'enable_ratings' => ! empty( $settings['enable_ratings'] ),
-			'enable_cache'   => ! empty( $settings['enable_cache'] ),
-			'cta_label'      => sanitize_text_field( $settings['cta_label'] ?? __( 'View Deal', Constants::TEXTDOMAIN ) ),
+			'currency'              => sanitize_text_field( $settings['currency'] ?? 'USD' ),
+			'affiliate_id'          => sanitize_text_field( $settings['affiliate_id'] ?? '' ),
+			'enable_ratings'        => ! empty( $settings['enable_ratings'] ),
+			'enable_cache'          => ! empty( $settings['enable_cache'] ),
+			'cta_label'             => sanitize_text_field( $settings['cta_label'] ?? __( 'View Deal', Constants::TEXTDOMAIN ) ),
+			'disclosure_enabled'     => ! empty( $settings['disclosure_enabled'] ),
+			'disclosure_text'       => sanitize_textarea_field( $settings['disclosure_text'] ?? __( 'This post contains affiliate links. We may earn a commission if you make a purchase.', Constants::TEXTDOMAIN ) ),
 		];
 
 		update_option( self::OPTION_KEY, $sanitized );

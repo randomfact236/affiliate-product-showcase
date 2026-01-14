@@ -28,4 +28,9 @@ $cta_label = $settings['cta_label'] ?? __( 'View Deal', 'affiliate-product-showc
 			</a>
 		</div>
 	</div>
+	<?php if ( ! empty( $settings['disclosure_enabled'] ) ) : ?>
+		<div class="aps-card__disclosure">
+			<?php echo esc_html( $settings['disclosure_text'] ?? '' ); ?>
+		</div>
+	<?php endif; ?>
 </article>
