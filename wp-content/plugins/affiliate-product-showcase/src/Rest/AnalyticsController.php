@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Rest;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Services\AnalyticsService;
 use WP_REST_Server;
 

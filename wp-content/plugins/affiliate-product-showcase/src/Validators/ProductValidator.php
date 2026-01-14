@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Validators;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Abstracts\AbstractValidator;
 use AffiliateProductShowcase\Exceptions\PluginException;
 

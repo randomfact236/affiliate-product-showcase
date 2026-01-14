@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Formatters;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class PriceFormatter {
 	public function format( float $amount, string $currency = 'USD' ): string {
 		$symbol = $this->symbol_for_currency( $currency );

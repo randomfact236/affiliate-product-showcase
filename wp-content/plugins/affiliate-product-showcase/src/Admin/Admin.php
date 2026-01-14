@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Admin;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Services\ProductService;

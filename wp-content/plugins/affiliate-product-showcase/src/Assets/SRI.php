@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Assets;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WP_Error;
 
 final class SRI {

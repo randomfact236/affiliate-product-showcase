@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Repositories;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Abstracts\AbstractRepository;
 use AffiliateProductShowcase\Factories\ProductFactory;
 use AffiliateProductShowcase\Models\Product;

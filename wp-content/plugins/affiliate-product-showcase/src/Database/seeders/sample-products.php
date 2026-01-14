@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Database\Seeders;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Database\Database;
 
 /**

@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Public;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 

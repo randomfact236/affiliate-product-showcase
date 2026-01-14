@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\DependencyInjection;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Services\AnalyticsService;

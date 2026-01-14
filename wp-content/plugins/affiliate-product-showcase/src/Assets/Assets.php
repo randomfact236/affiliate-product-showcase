@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Assets;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class Assets {
 	private Manifest $manifest;
 

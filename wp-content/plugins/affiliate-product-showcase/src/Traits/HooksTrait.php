@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Traits;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 trait HooksTrait {
 	protected function actions(): array {
 		return [];

@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Blocks;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Repositories\SettingsRepository;

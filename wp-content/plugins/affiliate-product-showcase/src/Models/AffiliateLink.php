@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Models;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class AffiliateLink {
 	public function __construct(
 		public string $url,

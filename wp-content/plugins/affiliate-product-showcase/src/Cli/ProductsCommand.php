@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Cli;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Services\ProductService;
 
 final class ProductsCommand {

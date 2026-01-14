@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Sanitizers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class InputSanitizer {
 	public function bool( $value ): bool {
 		return filter_var( $value, FILTER_VALIDATE_BOOLEAN );

@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Factories;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Models\Product;
 
 final class ProductFactory {

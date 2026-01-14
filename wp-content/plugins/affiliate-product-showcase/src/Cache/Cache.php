@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Cache;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Plugin\Constants;
 
 final class Cache {

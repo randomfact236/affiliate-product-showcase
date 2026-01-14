@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Events;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use RuntimeException;
 
 /**

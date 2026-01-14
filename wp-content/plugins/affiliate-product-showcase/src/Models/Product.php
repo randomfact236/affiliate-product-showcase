@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Models;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class Product {
 	public function __construct(
 		public int $id,

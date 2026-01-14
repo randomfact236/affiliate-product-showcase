@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Helpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Environment Helper Class
  *

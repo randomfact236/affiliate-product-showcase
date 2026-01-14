@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Assets;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Plugin\Constants;
 use WP_Error;
 

@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Services;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Cache\Cache;
 
 final class AnalyticsService {

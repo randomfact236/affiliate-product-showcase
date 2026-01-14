@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Abstracts;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AffiliateProductShowcase\Interfaces\RepositoryInterface;
 
 abstract class AbstractRepository implements RepositoryInterface {

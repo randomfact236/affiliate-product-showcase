@@ -2,6 +2,10 @@
 
 namespace AffiliateProductShowcase\Interfaces;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 interface RepositoryInterface {
 	public function find( int $id );
 
