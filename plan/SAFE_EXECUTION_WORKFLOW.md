@@ -7,6 +7,85 @@
 
 ---
 
+## CRITICAL CONSIDERATIONS & KNOWN LIMITATIONS
+
+**Important Weak Points to Address:**
+
+### 1. Optimistic Effort Estimates
+- **DI Container Fix:** Estimated 3-4 hours → Realistic: 6-14 hours (depending on test coverage)
+- **Complete REST Validation:** Estimated 2 hours → Realistic: 4-9 hours for comprehensive coverage
+- **Impact:** These complex architectural changes require more time for proper testing and validation
+
+### 2. Manual Testing Approach
+- **Current State:** Testing is almost completely manual/smoke tests
+- **Missing:**
+  - No PHPUnit unit tests
+  - No integration tests
+  - No request mocking for REST API testing
+  - No automated regression tests
+- **Risk:** After plan completion, still very low automated coverage → regression risk remains high
+- **Recommendation:** Add automated testing before each major fix
+
+### 3. Manual DI Container Decision
+- **Current Recommendation:** Remove container entirely (manual DI)
+- **Pros:** Fine for small/medium plugins, simpler to understand
+- **Cons:** If project scales to enterprise level, will need proper container later anyway
+- **Decision Point:** Consider project roadmap before choosing manual vs container approach
+
+### 4. No Performance/Load Testing
+- **Missing:** Performance testing for critical fixes:
+  - Cache stampede protection (1.9)
+  - posts_per_page limiting (1.7)
+- **Risk:** Cannot verify performance improvements under actual load
+- **Recommendation:** Add load testing benchmarks before/after performance fixes
+
+### 5. No Static Analysis After Big Changes
+- **Missing:** Run static analysis after each architectural change:
+  - PHPStan (type analysis)
+  - Psalm (static analysis)
+  - PHPCS (code style)
+- **Risk:** New bugs may not be caught without automated analysis
+- **Recommendation:** Add static analysis verification to COMMIT OR ROLLBACK section
+
+### 6. Verbose Commit Messages
+- **Current Style:** Very detailed multi-line commit messages
+- **Pros:** Excellent for audit trail and code reviews
+- **Cons:** Can become annoying in real teams after ~50-60 commits
+- **Recommendation:** Consider using shorter, focused commit messages for routine changes, reserve verbose style for major refactors
+
+---
+
+## RECOMMENDED ADDITIONS TO WORKFLOW
+
+**Add to each issue's COMMIT OR ROLLBACK section:**
+
+```bash
+# After tests pass, run static analysis:
+vendor/bin/phpstan analyse src/ --level=5
+vendor/bin/psalm src/
+vendor/bin/phpcs --standard=WordPress src/
+
+# Only commit if all analysis passes
+```
+
+**Add performance testing for performance-related issues:**
+
+```bash
+# Before fix - baseline:
+ab -n 1000 -c 10 http://localhost/wp-json/affiliate-product-showcase/v1/products
+
+# After fix - compare:
+ab -n 1000 -c 10 http://localhost/wp-json/affiliate-product-showcase/v1/products
+```
+
+**Add automated testing requirement:**
+
+- Before executing any fix, write failing test
+- After fix, verify test passes
+- Commit test with fix in same commit
+
+---
+
 ## INSTRUCTIONS
 
 Each issue follows this SAFE EXECUTION WORKFLOW:
