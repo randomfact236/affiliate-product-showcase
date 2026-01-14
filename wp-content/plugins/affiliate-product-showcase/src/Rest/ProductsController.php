@@ -32,8 +32,20 @@ final class ProductsController extends RestController {
 	}
 
 	public function list( \WP_REST_Request $request ): \WP_REST_Response {
+		$per_page = (int) $request->get_param( 'per_page' ) ?: 12;
+		
+		// Cap per_page to prevent DOS attacks
+		if ( $per_page > 100 ) {
+			$per_page = 100;
+		}
+		
+		// Ensure minimum value
+		if ( $per_page < 1 ) {
+			$per_page = 12;
+		}
+
 		$products = $this->product_service->get_products( [
-			'per_page' => (int) $request->get_param( 'per_page' ) ?: 12,
+			'per_page' => $per_page,
 		] );
 
 		return $this->respond( array_map( fn( $p ) => $p->to_array(), $products ) );
