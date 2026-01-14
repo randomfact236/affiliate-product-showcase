@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Tailwind Components */
+@import './components/card.css';
+@import './components/button.css';
+@import './components/form.css';
+
+/* Custom Base Styles */
+@layer base {
+	html {
+		@apply scroll-smooth;
+	}
+
+	body {
+		@apply antialiased;
+	}
+}
+
+/* Custom Utilities */
+@layer utilities {
+	/* Accessibility Utilities */
+	.sr-only {
+		@apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+	}
+
+	/* Spacing Utilities */
+	.space-y-0\.5 > * + * {
+		@apply mt-0.5;
+	}
+
+	.space-x-0\.5 > * + * {
+		@apply ml-0.5;
+	}
+
+	/* Line Clamp Variants */
+	.line-clamp-1 {
+		@apply overflow-hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+	}
+
+	.line-clamp-2 {
+		@apply overflow-hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
+
+	.line-clamp-3 {
+		@apply overflow-hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+	}
+
+	.line-clamp-4 {
+		@apply overflow-hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 4;
+	}
+}
+
+/* Custom Animations */
+@layer utilities {
+	@keyframes spin {
+		from {
+			@apply transform rotate-0;
+		}
+		to {
+			@apply transform rotate-360;
+		}
+	}
+
+	@keyframes ping {
+		75%, 100% {
+			@apply transform scale-2 opacity-0;
+		}
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			@apply opacity-100;
+		}
+		50% {
+			@apply opacity-50;
+		}
+	}
+
+	.animate-spin {
+		animation: spin 1s linear infinite;
+	}
+
+	.animate-ping {
+		animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+	}
+
+	.animate-pulse {
+		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+}
