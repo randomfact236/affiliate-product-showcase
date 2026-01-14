@@ -66,6 +66,6 @@ final class SettingsRepository extends AbstractRepository {
 			'disclosure_text'       => sanitize_textarea_field( $settings['disclosure_text'] ?? __( 'This post contains affiliate links. We may earn a commission if you make a purchase.', Constants::TEXTDOMAIN ) ),
 		];
 
-		update_option( self::OPTION_KEY, $sanitized );
+		update_option( self::OPTION_KEY, $sanitized, 'no' );
 	}
 }
