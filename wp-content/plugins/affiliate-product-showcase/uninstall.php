@@ -92,8 +92,13 @@ function aps_cleanup_content() {
 		while ( true ) {
 			$safe_offset = absint( $offset );
 
+			// Properly escape LIMIT and OFFSET using sprintf() with absint()
 			$ids = $wpdb->get_col( $wpdb->prepare(
-				"SELECT ID FROM $wpdb->posts WHERE post_type = %s LIMIT {$limit} OFFSET {$safe_offset}",
+				sprintf(
+					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s LIMIT %d OFFSET %d",
+					absint( $limit ),
+					absint( $safe_offset )
+				),
 				$pt
 			));
 
