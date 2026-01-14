@@ -1,0 +1,51 @@
+{
+  "accessibility": {
+    "version": "1.0.0",
+    "wcag_level": "AA",
+    "testing_framework": "axe-core",
+    "enforced_rules": {
+      "aria-roles": true,
+      "aria-valid-attr": true,
+      "color-contrast": true,
+      "image-alt": true,
+      "label-title-only": true,
+      "link-name": true,
+      "region": true,
+      "heading-order": true,
+      "keyboard-navigation": true
+    },
+    "skip_links": true,
+    "focus_management": true,
+    "screen_reader_support": true
+  },
+  "components": {
+    "product-card": {
+      "aria_live": "polite",
+      "focusable_elements": [
+        ".aps-card",
+        ".aps-card__cta"
+      ],
+      "keyboard_trap": false,
+      "required_attributes": [
+        "aria-label",
+        "role",
+        "tabindex"
+      ]
+    },
+    "product-grid": {
+      "aria_labelledby": "products-heading",
+      "role": "region"
+    },
+    "settings-form": {
+      "aria_describedby": true,
+      "error_messages": true,
+      "required_indicators": true
+    }
+  },
+  "testing": {
+    "browser_stack": ["chrome", "firefox", "safari", "edge"],
+    "screen_readers": ["jaws", "nvda", "voiceover"],
+    "keyboard_only": true,
+    "high_contrast": true
+  }
+}
