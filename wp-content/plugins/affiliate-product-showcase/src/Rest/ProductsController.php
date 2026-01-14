@@ -43,8 +43,30 @@ final class ProductsController extends RestController {
 		try {
 			$product = $this->product_service->create_or_update( $request->get_json_params() ?? [] );
 			return $this->respond( $product->to_array(), 201 );
+			
+		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
+			// Log full error internally (includes details)
+			error_log(sprintf(
+				'[APS] Product creation failed: %s in %s:%d',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+			
+			// Return safe message to client
+			return $this->respond([
+				'message' => __('Failed to create product', 'affiliate-product-showcase'),
+				'code' => 'product_creation_error',
+			], 400);
+			
 		} catch ( \Throwable $e ) {
-			return $this->respond( [ 'message' => $e->getMessage() ], 400 );
+			// Catch-all for unexpected errors
+			error_log('[APS] Unexpected error in product creation: ' . $e->getMessage());
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
 		}
 	}
 }

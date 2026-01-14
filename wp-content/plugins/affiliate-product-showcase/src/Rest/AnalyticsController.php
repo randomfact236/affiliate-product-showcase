@@ -27,6 +27,19 @@ final class AnalyticsController extends RestController {
 	}
 
 	public function summary(): \WP_REST_Response {
-		return $this->respond( $this->analytics_service->summary() );
+		try {
+			$data = $this->analytics_service->summary();
+			return $this->respond($data);
+			
+		} catch (\Throwable $e) {
+			// Log full error internally
+			error_log('[APS] Analytics summary failed: ' . $e->getMessage());
+			
+			// Return safe message to client
+			return $this->respond([
+				'message' => __('Failed to retrieve analytics', 'affiliate-product-showcase'),
+				'code' => 'analytics_error',
+			], 500);
+		}
 	}
 }
