@@ -92,11 +92,12 @@ final class Constants {
 	 * REST API Namespace
 	 *
 	 * Namespace for plugin REST API endpoints.
+	 * Uses plugin slug to prevent collisions with other plugins.
 	 *
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public const REST_NAMESPACE = 'affiliate/v1';
+	public const REST_NAMESPACE = 'affiliate-product-showcase/v1';
 
 	/**
 	 * Admin Menu Slug Prefix
