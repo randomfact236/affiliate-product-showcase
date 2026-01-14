@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Assets;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
 
 final class Assets {
 	private Manifest $manifest;
 
 	public function __construct( Manifest $manifest ) {
 		$this->manifest = $manifest;
+		add_filter( 'script_loader_tag', [ $this, 'add_script_attributes' ], 10, 2 );
 	}
 
 	public function enqueue_admin(): void {
@@ -23,25 +21,7 @@ final class Assets {
 		$this->manifest->enqueue_style( 'aps-frontend-style', 'frontend.css' );
 	}
 
-	public function enqueue_block_assets(): void {
-		// Provides the front-end style handle used by block.json: "style": "aps-blocks".
-		$this->manifest->enqueue_style( 'aps-blocks', 'frontend.css' );
-
-		// Provides the viewScript handle used by block.json: "viewScript": "aps-blocks-frontend".
-		$this->manifest->enqueue_script( 'aps-blocks-frontend', 'frontend.js', [ 'wp-element' ], true );
-	}
-
 	public function enqueue_editor(): void {
-		// Provides the editorScript/editorStyle handles used by block.json.
-		$this->manifest->enqueue_script(
-			'aps-blocks-editor',
-			'blocks.js',
-			[ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
-			true
-		);
-		$this->manifest->enqueue_style( 'aps-blocks-editor', 'editor.css' );
-
-		// Keep existing handles for backwards compatibility (if other code uses them).
 		$this->manifest->enqueue_script(
 			'aps-blocks',
 			'blocks.js',
@@ -49,5 +29,38 @@ final class Assets {
 			true
 		);
 		$this->manifest->enqueue_style( 'aps-editor-style', 'editor.css' );
+	}
+
+	/**
+	 * Add defer/async attributes to plugin scripts.
+	 * 
+	 * Adds 'defer' attribute to frontend scripts and 'async' 
+	 * to admin scripts for better performance.
+	 *
+	 * @param string $tag    The script tag.
+	 * @param string $handle The script handle.
+	 * @return string Modified script tag with attributes.
+	 */
+	public function add_script_attributes( string $tag, string $handle ): string {
+		// Only modify plugin scripts
+		if ( ! str_starts_with( $handle, 'aps-' ) ) {
+			return $tag;
+		}
+
+		// Add defer to frontend scripts
+		if ( 'aps-frontend' === $handle || 'aps-blocks' === $handle ) {
+			if ( ! str_contains( $tag, ' defer' ) && ! str_contains( $tag, 'defer=' ) ) {
+				return str_replace( ' src=', ' defer src=', $tag );
+			}
+		}
+
+		// Add async to admin scripts
+		if ( 'aps-admin' === $handle ) {
+			if ( ! str_contains( $tag, ' async' ) && ! str_contains( $tag, 'async=' ) ) {
+				return str_replace( ' src=', ' async src=', $tag );
+			}
+		}
+
+		return $tag;
 	}
 }

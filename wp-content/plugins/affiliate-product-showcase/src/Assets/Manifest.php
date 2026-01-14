@@ -14,8 +14,6 @@ final class Manifest {
 	private const CACHE_TTL        = 600;
 	private const CACHE_KEY_PREFIX = 'manifest_';
 
-	private static ?self $instance = null;
-
 	/** @var array<string, array<string, mixed>> */
 	private array $manifest = [];
 	private string $manifest_path;
@@ -23,27 +21,10 @@ final class Manifest {
 	private string $dist_url;
 	private ?SRI $sri = null;
 
-	private function __construct() {
+	public function __construct() {
 		$this->manifest_path = $this->normalize_path( Constants::viewPath( 'assets/dist/manifest.json' ) );
 		$this->dist_path     = $this->normalize_path( Constants::viewPath( 'assets/dist/' ) );
 		$this->dist_url      = $this->ensure_trailing_slash( Constants::assetUrl( 'assets/dist/' ) );
-	}
-
-	public static function get_instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Internal-only helper for tests to reset the singleton.
-	 *
-	 * @internal
-	 */
-	public static function reset_instance(): void {
-		self::$instance = null;
 	}
 
 	public function set_sri( SRI $sri ): void {
