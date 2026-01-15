@@ -264,30 +264,30 @@ wp-content/plugins/affiliate-product-showcase/
 ## Plugin Structure List Format
 
 ### Root Level Files
-- `affiliate-product-showcase.php` - Main plugin file
-- `uninstall.php` - Plugin uninstallation script
-- `README.md` - Main documentation
-- `readme.txt` - WordPress.org readme
-- `CHANGELOG.md` - Version history
-- `package.json` - NPM dependencies
-- `package-lock.json` - NPM lock file
-- `composer.json` - PHP dependencies
-- `composer.lock` - PHP lock file
-- `tsconfig.json` - TypeScript configuration
-- `vite.config.js` - Vite build configuration
-- `tailwind.config.js` - Tailwind CSS configuration
-- `postcss.config.js` - PostCSS configuration
-- `phpcs.xml.dist` - PHP CodeSniffer config
-- `phpunit.xml.dist` - PHPUnit test configuration
-- `infection.json.dist` - Infection mutation testing config
-- `commitlint.config.cjs` - Commit linting config
-- `.lintstagedrc.json` - Lint-staged configuration
-- `.a11y.json` - Accessibility configuration
-- `.env.example` - Environment variables example
-- `run_phpunit.php` - PHPUnit runner script
-- `CODE_IMPROVEMENTS_SUMMARY.md` - Code improvements log
-- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - Compliance fixes
-- `FRAMEWORK_COMPLIANCE_REPORT.md` - Compliance report
+- `affiliate-product-showcase.php` - root
+- `uninstall.php` - root
+- `README.md` - root
+- `readme.txt` - root
+- `CHANGELOG.md` - root
+- `package.json` - root
+- `package-lock.json` - root
+- `composer.json` - root
+- `composer.lock` - root
+- `tsconfig.json` - root
+- `vite.config.js` - root
+- `tailwind.config.js` - root
+- `postcss.config.js` - root
+- `phpcs.xml.dist` - root
+- `phpunit.xml.dist` - root
+- `infection.json.dist` - root
+- `commitlint.config.cjs` - root
+- `.lintstagedrc.json` - root
+- `.a11y.json` - root
+- `.env.example` - root
+- `run_phpunit.php` - root
+- `CODE_IMPROVEMENTS_SUMMARY.md` - root
+- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - root
+- `FRAMEWORK_COMPLIANCE_REPORT.md` - root
 
 ### assets/
 **Purpose:** Contains static assets including images, banners, icons, logos, and screenshots used throughout the plugin.
@@ -299,6 +299,10 @@ wp-content/plugins/affiliate-product-showcase/
 - `logo.svg`
 - `placeholder-product.png`
 - `screenshot-1.png`
+
+**Related Root Files:**
+- `affiliate-product-showcase.php` - root
+- `uninstall.php` - root
 
 ### blocks/
 **Purpose:** Gutenberg block definitions with separate folders for each block, including configuration files, React components, and stylesheets.
@@ -317,6 +321,12 @@ wp-content/plugins/affiliate-product-showcase/
 - `editor.scss` - Editor styles
 - `style.scss` - Frontend styles
 
+**Related Root Files:**
+- `package.json` - root
+- `package-lock.json` - root
+- `tsconfig.json` - root
+- `.a11y.json` - root
+
 ### docs/
 **Purpose:** Comprehensive documentation including developer guides, user manuals, CLI commands, API documentation, and compliance guides.
 - `automatic-backup-guide.md`
@@ -329,6 +339,14 @@ wp-content/plugins/affiliate-product-showcase/
 - `tailwind-components.md`
 - `user-guide.md`
 - `wordpress-org-compliance.md`
+
+**Related Root Files:**
+- `README.md` - root
+- `readme.txt` - root
+- `CHANGELOG.md` - root
+- `CODE_IMPROVEMENTS_SUMMARY.md` - root
+- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - root
+- `FRAMEWORK_COMPLIANCE_REPORT.md` - root
 
 ### frontend/
 **Purpose:** Frontend build assets containing JavaScript and CSS loaders organized into components and utilities with index.php files for asset management.
@@ -344,9 +362,23 @@ wp-content/plugins/affiliate-product-showcase/
 ##### components/
 - `index.php` - Component styles
 
+**Related Root Files:**
+- `package.json` - root
+- `package-lock.json` - root
+- `tsconfig.json` - root
+- `vite.config.js` - root
+- `tailwind.config.js` - root
+- `postcss.config.js` - root
+- `.a11y.json` - root
+
 ### src/
 **Purpose:** PHP source code organized by architectural components including admin interface, assets management, blocks, caching, database operations, events, REST API, security, services, and more.
 - `index.php` - Source entry point
+
+**Related Root Files:**
+- `composer.json` - root
+- `composer.lock` - root
+- `phpcs.xml.dist` - root
 #### Abstracts/
 - `index.php` - Abstract base classes
 #### Admin/
@@ -452,6 +484,12 @@ wp-content/plugins/affiliate-product-showcase/
 ### tests/
 **Purpose:** Comprehensive test suite including unit tests, integration tests, and test fixtures for ensuring code quality and functionality.
 - `bootstrap.php` - Test bootstrap
+
+**Related Root Files:**
+- `phpunit.xml.dist` - root
+- `infection.json.dist` - root
+- `phpcs.xml.dist` - root
+- `run_phpunit.php` - root
 #### fixtures/
 - `sample-products.php` - Test fixtures
 #### integration/
@@ -481,6 +519,11 @@ wp-content/plugins/affiliate-product-showcase/
 ### vite-plugins/
 **Purpose:** Custom Vite plugins for WordPress integration including manifest generation for asset management.
 - `wordpress-manifest.js` - WordPress manifest plugin
+
+**Related Root Files:**
+- `package.json` - root
+- `package-lock.json` - root
+- `vite.config.js` - root
 
 ### src_backup_20260114_224130/
 **Purpose:** Backup directory created on 2026-01-14 containing a mirror of the src/ directory structure for version control and rollback purposes.
