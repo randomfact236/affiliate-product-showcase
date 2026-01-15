@@ -286,19 +286,12 @@ wp-content/plugins/affiliate-product-showcase/
 - `run_phpunit.php` - `root`
 
 ### 2. assets/
-**Purpose:** Contains static assets including images, banners, icons, logos, and screenshots used throughout the plugin.
-#### 2.1 images/
-- `banner-772x250.png`
-- `banner-1544x500.png`
-- `icon-128x128.png`
-- `icon-256x256.png`
-- `logo.svg`
-- `placeholder-product.png`
-- `screenshot-1.png`
+**Purpose:** Directory removed - static assets (images, banners, icons) were deleted as dead code. Plugin now uses compiled assets from `assets/dist/` managed by Vite build process.
 
-**Related Root Files:**
-- `affiliate-product-showcase.php` - `root`
-- `uninstall.php` - `root`
+**Note:** For WordPress.org submission, create and add:
+- Banner: 1540x500px, <500KB (PNG/JPG)
+- Icon: 512x512px, <200KB (PNG/JPG)
+- Screenshots: 1200x900px, <500KB each (minimum 1, maximum 5)
 
 ### 3. blocks/
 **Purpose:** Gutenberg block definitions with separate folders for each block, including configuration files, React components, and stylesheets.
@@ -329,8 +322,10 @@ wp-content/plugins/affiliate-product-showcase/
 - `cli-commands.md`
 - `code-quality-tools.md`
 - `developer-guide.md`
+- `documentation-validation.md`
 - `hooks-filters.md`
 - `migrations.md`
+- `performance-optimization-guide.md`
 - `rest-api.md`
 - `tailwind-components.md`
 - `user-guide.md`

@@ -471,9 +471,9 @@ The plugin follows WordPress security best practices:
 ### Documentation
 
 - [Developer Guide](docs/developer-guide.md)
-- [Troubleshooting](docs/troubleshooting.md)
-- [FAQ](docs/faq.md)
-- [Shortcode Reference](docs/shortcode-reference.md)
+- [Code Quality Tools](docs/code-quality-tools.md)
+- [CLI Commands](docs/cli-commands.md)
+- [Performance Optimization Guide](docs/performance-optimization-guide.md)
 
 ### Getting Help
 
@@ -506,4 +506,4 @@ This plugin:
 - All data remains on your server
 - Full GDPR compliance built-in
 
-See [Privacy Policy](docs/privacy-policy-template.md) for details.
+This plugin complies with GDPR and privacy best practices. No data is collected or transmitted externally. All data remains on your server.
