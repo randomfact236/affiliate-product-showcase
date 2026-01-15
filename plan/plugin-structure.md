@@ -26,11 +26,8 @@ wp-content/plugins/affiliate-product-showcase/
 ├── 📄 .a11y.json                           # Accessibility configuration
 ├── 📄 .env.example                         # Environment variables example
 ├── 📄 run_phpunit.php                      # PHPUnit runner script
-├── 📄 CODE_IMPROVEMENTS_SUMMARY.md         # Code improvements log
-├── 📄 FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md  # Compliance fixes
-├── 📄 FRAMEWORK_COMPLIANCE_REPORT.md      # Compliance report
 │
-├── 📁 assets/                              # Static assets
+├──  assets/                              # Static assets
 │   └── 📁 images/
 │       ├── banner-772x250.png
 │       ├── banner-1544x500.png
@@ -263,35 +260,32 @@ wp-content/plugins/affiliate-product-showcase/
 
 ## Plugin Structure List Format
 
-### Root Level Files
-- `affiliate-product-showcase.php` - root
-- `uninstall.php` - root
-- `README.md` - root
-- `readme.txt` - root
-- `CHANGELOG.md` - root
-- `package.json` - root
-- `package-lock.json` - root
-- `composer.json` - root
-- `composer.lock` - root
-- `tsconfig.json` - root
-- `vite.config.js` - root
-- `tailwind.config.js` - root
-- `postcss.config.js` - root
-- `phpcs.xml.dist` - root
-- `phpunit.xml.dist` - root
-- `infection.json.dist` - root
-- `commitlint.config.cjs` - root
-- `.lintstagedrc.json` - root
-- `.a11y.json` - root
-- `.env.example` - root
-- `run_phpunit.php` - root
-- `CODE_IMPROVEMENTS_SUMMARY.md` - root
-- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - root
-- `FRAMEWORK_COMPLIANCE_REPORT.md` - root
+### 1. Root Level Files
+- `affiliate-product-showcase.php` - `root`
+- `uninstall.php` - `root`
+- `README.md` - `root`
+- `readme.txt` - `root`
+- `CHANGELOG.md` - `root`
+- `package.json` - `root`
+- `package-lock.json` - `root`
+- `composer.json` - `root`
+- `composer.lock` - `root`
+- `tsconfig.json` - `root`
+- `vite.config.js` - `root`
+- `tailwind.config.js` - `root`
+- `postcss.config.js` - `root`
+- `phpcs.xml.dist` - `root`
+- `phpunit.xml.dist` - `root`
+- `infection.json.dist` - `root`
+- `commitlint.config.cjs` - `root`
+- `.lintstagedrc.json` - `root`
+- `.a11y.json` - `root`
+- `.env.example` - `root`
+- `run_phpunit.php` - `root`
 
-### assets/
+### 2. assets/
 **Purpose:** Contains static assets including images, banners, icons, logos, and screenshots used throughout the plugin.
-#### images/
+#### 2.1 images/
 - `banner-772x250.png`
 - `banner-1544x500.png`
 - `icon-128x128.png`
@@ -301,19 +295,19 @@ wp-content/plugins/affiliate-product-showcase/
 - `screenshot-1.png`
 
 **Related Root Files:**
-- `affiliate-product-showcase.php` - root
-- `uninstall.php` - root
+- `affiliate-product-showcase.php` - `root`
+- `uninstall.php` - `root`
 
-### blocks/
+### 3. blocks/
 **Purpose:** Gutenberg block definitions with separate folders for each block, including configuration files, React components, and stylesheets.
-#### product-grid/
+#### 3.1 product-grid/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
 - `save.jsx` - Save component
 - `editor.scss` - Editor styles
 - `style.scss` - Frontend styles
-#### product-showcase/
+#### 3.2 product-showcase/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
@@ -322,12 +316,12 @@ wp-content/plugins/affiliate-product-showcase/
 - `style.scss` - Frontend styles
 
 **Related Root Files:**
-- `package.json` - root
-- `package-lock.json` - root
-- `tsconfig.json` - root
-- `.a11y.json` - root
+- `package.json` - `root`
+- `package-lock.json` - `root`
+- `tsconfig.json` - `root`
+- `.a11y.json` - `root`
 
-### docs/
+### 4. docs/
 **Purpose:** Comprehensive documentation including developer guides, user manuals, CLI commands, API documentation, and compliance guides.
 - `automatic-backup-guide.md`
 - `cli-commands.md`
@@ -341,121 +335,118 @@ wp-content/plugins/affiliate-product-showcase/
 - `wordpress-org-compliance.md`
 
 **Related Root Files:**
-- `README.md` - root
-- `readme.txt` - root
-- `CHANGELOG.md` - root
-- `CODE_IMPROVEMENTS_SUMMARY.md` - root
-- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - root
-- `FRAMEWORK_COMPLIANCE_REPORT.md` - root
+- `README.md` - `root`
+- `readme.txt` - `root`
+- `CHANGELOG.md` - `root`
 
-### frontend/
+### 5. frontend/
 **Purpose:** Frontend build assets containing JavaScript and CSS loaders organized into components and utilities with index.php files for asset management.
 - `index.php` - Frontend entry point
-#### js/
+#### 5.1 js/
 - `index.php` - JavaScript loader
-##### components/
+##### 5.1.1 components/
 - `index.php` - Component exports
-##### utils/
+##### 5.1.2 utils/
 - `index.php` - Utility functions
-#### styles/
+#### 5.2 styles/
 - `index.php` - Styles loader
-##### components/
+##### 5.2.1 components/
 - `index.php` - Component styles
 
 **Related Root Files:**
-- `package.json` - root
-- `package-lock.json` - root
-- `tsconfig.json` - root
-- `vite.config.js` - root
-- `tailwind.config.js` - root
-- `postcss.config.js` - root
-- `.a11y.json` - root
+- `package.json` - `root`
+- `package-lock.json` - `root`
+- `tsconfig.json` - `root`
+- `vite.config.js` - `root`
+- `tailwind.config.js` - `root`
+- `postcss.config.js` - `root`
+- `.a11y.json` - `root`
 
-### src/
+### 6. src/
 **Purpose:** PHP source code organized by architectural components including admin interface, assets management, blocks, caching, database operations, events, REST API, security, services, and more.
 - `index.php` - Source entry point
 
 **Related Root Files:**
-- `composer.json` - root
-- `composer.lock` - root
-- `phpcs.xml.dist` - root
-#### Abstracts/
+- `composer.json` - `root`
+- `composer.lock` - `root`
+- `phpcs.xml.dist` - `root`
+#### 6.1 Abstracts/
 - `index.php` - Abstract base classes
-#### Admin/
+#### 6.2 Admin/
 - `index.php` - Admin main class
-##### partials/
+##### 6.2.1 partials/
 - `index.php` - Admin view templates
-#### Assets/
+#### 6.3 Assets/
 - `index.php` - Asset management
-#### Blocks/
+#### 6.4 Blocks/
 - `index.php` - Block loader
-##### product-showcase/
+##### 6.4.1 product-showcase/
 - `index.php` - Product showcase block
-#### Cache/
+#### 6.5 Cache/
 - `index.php` - Caching system
-#### Cli/
+#### 6.6 Cli/
 - `index.php` - WP-CLI commands
-#### Database/
+#### 6.7 Database/
 - `index.php` - Database operations
-#### Events/
+#### 6.8 Events/
 - `index.php` - Event system
-#### Exceptions/
+#### 6.9 Exceptions/
 - `index.php` - Custom exceptions
-#### Factories/
+#### 6.10 Factories/
 - `index.php` - Factory pattern
-#### Formatters/
+#### 6.11 Formatters/
 - `index.php` - Data formatters
-#### Frontend/
+#### 6.12 Frontend/
 - `index.php` - Frontend main class
-##### partials/
+##### 6.12.1 partials/
 - `index.php` - Frontend view templates
-#### Helpers/
+#### 6.13 Helpers/
 - `index.php` - Helper functions
-#### Interfaces/
+#### 6.14 Interfaces/
 - `index.php` - Interface definitions
-#### Models/
+#### 6.15 Models/
 - `index.php` - Data models
-#### Plugin/
+#### 6.16 Plugin/
 - `index.php` - Core plugin logic
-#### Privacy/
+#### 6.17 Privacy/
 - `index.php` - Privacy compliance
-#### Public/
+#### 6.18 Public/
 - `index.php` - Public interface
-#### Repositories/
+#### 6.19 Repositories/
 - `index.php` - Data repositories
-#### Rest/
+#### 6.20 Rest/
 - `index.php` - REST controllers
-#### Sanitizers/
+#### 6.21 Sanitizers/
 - `index.php` - Input sanitization
-#### Security/
+#### 6.22 Security/
 - `index.php` - Security handlers
-#### Services/
+#### 6.23 Services/
 - `index.php` - Business logic
-#### Traits/
+#### 6.24 Traits/
 - `index.php` - Reusable traits
-#### Validators/
+#### 6.25 Validators/
 - `index.php` - Validation logic
 
-### includes/
-**Purpose:** Include files for generated assets and manifest files used by the plugin.
+### 7. includes/
+**Purpose:** Include files for generated assets and manifest files used by plugin.
 - `asset-manifest.php` - Generated asset manifest
 
-### languages/
+### 8. languages/
 **Purpose:** Translation files for internationalization support including .pot template, .po source files, and compiled .mo binary files.
 - `affiliate-product-showcase.pot` - Translation template
 - `affiliate-product-showcase-.po` - English translation
 - `affiliate-product-showcase-.mo` - Compiled translation
 
-### resources/
+### 9. resources/
 **Purpose:** Build resources including CSS files and component stylesheets that are compiled and used in production.
-#### css/
+#### 9.1 css/
 - `app.css` - Main stylesheet
-##### components/
+##### 9.1.1 components/
 - `button.css`
 - `card.css`
 - `form.css`
 
-### scripts/
+### 10. scripts/
 **Purpose:** Utility scripts for development, deployment, and maintenance tasks including backup, database operations, and Git hooks in both PowerShell and Bash formats.
 - `backup.ps1` - PowerShell backup script
 - `backup.sh` - Bash backup script
@@ -481,55 +472,55 @@ wp-content/plugins/affiliate-product-showcase/
 - `update-plan.sh`
 - `wait-wordpress-healthy.ps1`
 
-### tests/
+### 11. tests/
 **Purpose:** Comprehensive test suite including unit tests, integration tests, and test fixtures for ensuring code quality and functionality.
 - `bootstrap.php` - Test bootstrap
 
 **Related Root Files:**
-- `phpunit.xml.dist` - root
-- `infection.json.dist` - root
-- `phpcs.xml.dist` - root
-- `run_phpunit.php` - root
-#### fixtures/
+- `phpunit.xml.dist` - `root`
+- `infection.json.dist` - `root`
+- `phpcs.xml.dist` - `root`
+- `run_phpunit.php` - `root`
+#### 11.1 fixtures/
 - `sample-products.php` - Test fixtures
-#### integration/
+#### 11.2 integration/
 - `AssetsTest.php`
 - `MultiSiteTest.php`
 - `test-rest-endpoints.php`
-#### unit/
+#### 11.3 unit/
 - `test-affiliate-service.php`
 - `test-analytics-service.php`
 - `test-product-service.php`
-##### Assets/
+##### 11.3.1 Assets/
 - `ManifestTest.php`
 - `SRITest.php`
-##### DependencyInjection/
+##### 11.3.2 DependencyInjection/
 - `ContainerTest.php`
-##### Models/
+##### 11.3.3 Models/
 - `ProductTest.php`
-##### Repositories/
+##### 11.3.4 Repositories/
 - `ProductRepositoryTest.php`
 
-### tools/
+### 12. tools/
 **Purpose:** Build tools and utilities for asset compression, SRI (Subresource Integrity) generation, and external request checking.
 - `check-external-requests.js`
 - `compress-assets.js`
 - `generate-sri.js`
 
-### vite-plugins/
+### 13. vite-plugins/
 **Purpose:** Custom Vite plugins for WordPress integration including manifest generation for asset management.
 - `wordpress-manifest.js` - WordPress manifest plugin
 
 **Related Root Files:**
-- `package.json` - root
-- `package-lock.json` - root
-- `vite.config.js` - root
+- `package.json` - `root`
+- `package-lock.json` - `root`
+- `vite.config.js` - `root`
 
-### src_backup_20260114_224130/
+### 14. src_backup_20260114_224130/
 **Purpose:** Backup directory created on 2026-01-14 containing a mirror of the src/ directory structure for version control and rollback purposes.
 - Backup directory (mirrors src/)
 
-### .github/
+### 15. .github/
 **Purpose:** GitHub Actions and workflow configurations for CI/CD, automated testing, and deployment processes.
 - GitHub Actions configurations
 
@@ -557,9 +548,6 @@ wp-content/plugins/affiliate-product-showcase/
 - `.a11y.json` - Accessibility configuration
 - `.env.example` - Environment variables example
 - `run_phpunit.php` - PHPUnit runner script
-- `CODE_IMPROVEMENTS_SUMMARY.md` - Code improvements log
-- `FRAMEWORK_COMPLIANCE_FIXES_COMPLETED.md` - Compliance fixes
-- `FRAMEWORK_COMPLIANCE_REPORT.md` - Compliance report
 
 ### assets/
 #### images/
