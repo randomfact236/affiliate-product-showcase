@@ -475,15 +475,17 @@ wp plugin check affiliate-product-showcase
 
 ### Step 1: Prepare Assets
 
-**Required assets**:
-- `assets/banner-1540x500.png` (Plugin banner)
-- `assets/icon-512x512.png` (Plugin icon)
-- `assets/screenshot-1.png` (Screenshot 1)
+**Required assets** (to be created when submitting to WordPress.org):
+- Banner: 1540x500px, <500KB (for plugin directory page)
+- Icon: 512x512px, <200KB (for plugin listing)
+- Screenshots: 1200x900px, <500KB each (minimum 1, maximum 5)
 
 **Asset specifications**:
-- Banner: 1540x500px, <500KB
-- Icon: 512x512px, <200KB
-- Screenshots: 1200x900px, <500KB each
+- Banner: 1540x500px, <500KB - PNG or JPG format
+- Icon: 512x512px, <200KB - PNG or JPG format with transparency support
+- Screenshots: 1200x900px, <500KB each - PNG or JPG format
+
+**Note**: These assets must be created and added to the plugin before WordPress.org submission. They are not currently included in the plugin.
 
 ### Step 2: Create Repository
 

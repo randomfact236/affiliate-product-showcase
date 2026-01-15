@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Product {
+	final class Product {
 	public function __construct(
 		public int $id,
 		public string $title,
@@ -15,6 +15,7 @@ final class Product {
 		public string $description,
 		public string $currency,
 		public float $price,
+		public ?float $original_price = null,
 		public string $affiliate_url,
 		public ?string $image_url = null,
 		public ?float $rating = null,
@@ -24,17 +25,19 @@ final class Product {
 
 	public function to_array(): array {
 		return [
-			'id'            => $this->id,
-			'title'         => $this->title,
-			'slug'          => $this->slug,
-			'description'   => $this->description,
-			'currency'      => $this->currency,
-			'price'         => $this->price,
-			'affiliate_url' => $this->affiliate_url,
-			'image_url'     => $this->image_url,
-			'rating'        => $this->rating,
-			'badge'         => $this->badge,
-			'categories'    => $this->categories,
+			'id'             => $this->id,
+			'title'          => $this->title,
+			'slug'           => $this->slug,
+			'description'    => $this->description,
+			'currency'       => $this->currency,
+			'price'          => $this->price,
+			'original_price'  => $this->original_price,
+			'affiliate_url'   => $this->affiliate_url,
+			'affiliate_link'  => $this->affiliate_url, // Alias for React components
+			'image_url'      => $this->image_url,
+			'rating'         => $this->rating,
+			'badge'          => $this->badge,
+			'categories'     => $this->categories,
 		];
 	}
 }

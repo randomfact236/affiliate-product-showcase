@@ -1,1 +1,164 @@
-/* Block editor style placeholder */
+/**
+ * Product Showcase Block - Editor Styles
+ *
+ * Styles for block editor interface
+ */
+
+.aps-block--showcase {
+	// Container
+	margin: 0;
+	padding: 0;
+
+	// Grid layout (default)
+	display: grid;
+	grid-template-columns: repeat(var(--aps-showcase-columns, 3), 1fr);
+	gap: var(--aps-showcase-gap, 16px);
+
+	// List layout variant
+	&[data-layout="list"] {
+		display: flex;
+		flex-direction: column;
+		gap: var(--aps-showcase-gap, 16px);
+
+		.aps-showcase-item {
+			display: flex;
+			gap: 1.5rem;
+			align-items: stretch;
+
+			.aps-product-image {
+				width: 200px;
+				height: 150px;
+				flex-shrink: 0;
+			}
+
+			.aps-product-content {
+				flex: 1;
+			}
+
+			@media (max-width: 768px) {
+				flex-direction: column;
+
+				.aps-product-image {
+					width: 100%;
+					height: 200px;
+				}
+			}
+		}
+	}
+
+	// Responsive adjustments
+	@media (max-width: 1200px) {
+		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
+	}
+
+	@media (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+
+	// Placeholder state
+	&:empty::before {
+		content: 'Product Showcase Block';
+		display: block;
+		padding: 2rem;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.03);
+		border: 2px dashed rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		color: #666;
+	}
+
+	// Showcase item placeholder
+	.aps-showcase-item {
+		background: #f0f0f1;
+		border: 1px solid #dcdcde;
+		border-radius: 8px;
+		padding: 1.5rem;
+		min-height: 280px;
+		display: flex;
+		flex-direction: column;
+
+		// Image placeholder
+		&::before {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 180px;
+			background: #e0e0e0;
+			margin-bottom: 1rem;
+			border-radius: 4px;
+		}
+
+		// Title placeholder
+		&::after {
+			content: '';
+			display: block;
+			width: 75%;
+			height: 1.5rem;
+			background: #e0e0e0;
+			border-radius: 2px;
+			margin-bottom: 1rem;
+		}
+
+		// Button placeholder
+		.aps-button-placeholder {
+			margin-top: auto;
+			width: 50%;
+			height: 2rem;
+			background: #e0e0e0;
+			border-radius: 4px;
+		}
+	}
+}
+
+// Compact style
+.aps-block--showcase.is-style-compact {
+	.aps-showcase-item {
+		padding: 1rem;
+		min-height: 220px;
+
+		&::before {
+			height: 120px;
+		}
+	}
+}
+
+// List style
+.aps-block--showcase.is-style-list {
+	[data-layout="list"] & {
+		.aps-showcase-item {
+			min-height: 180px;
+
+			&::before {
+				width: 200px;
+				height: 150px;
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+// Inspector controls help text
+.components-panel__body-title .components-button {
+	&:focus {
+		box-shadow: 0 0 0 2px var(--wp-admin-theme-color);
+	}
+}
+
+// Layout indicator
+.aps-layout-indicator {
+	display: flex;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #f0f0f1;
+	border-radius: 4px;
+	font-size: 12px;
+	color: #646970;
+	margin-top: 12px;
+}
+
+.aps-layout-icon {
+	width: 16px;
+	height: 16px;
+	background: #667eea;
+	border-radius: 2px;
+}

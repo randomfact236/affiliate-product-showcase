@@ -150,8 +150,6 @@ $js_url  = Paths::dist_file_url( 'admin.def456.js' );
 // Get uncompiled assets URL (for development)
 $images_url = Paths::images_url();
 // Returns: https://example.com/wp-content/plugins/affiliate-product-showcase/assets/images/
-
-$image_url = Paths::image_file_url( 'logo.svg' );
 ```
 
 ### Template/View File Paths

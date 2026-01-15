@@ -23,6 +23,19 @@ final class ProductRepository extends AbstractRepository {
 	}
 
 	/**
+	 * Get published products (alias for list method)
+	 *
+	 * @param int $per_page Number of products to retrieve
+	 * @return array<int, Product> Array of published products
+	 */
+	public function get_published_products( int $per_page = 10 ): array {
+		return $this->list( [
+			'per_page'   => $per_page,
+			'post_status' => 'publish',
+		] );
+	}
+
+	/**
 	 * Find a product by ID
 	 *
 	 * @param int $id Product ID
@@ -213,8 +226,9 @@ final class ProductRepository extends AbstractRepository {
 	 */
 	private function saveMeta( int $post_id, Product $product ): void {
 		$meta_fields = [
-			'aps_price'        => $product->price,
-			'aps_currency'     => $product->currency,
+			'aps_price'         => $product->price,
+			'aps_original_price' => $product->original_price,
+			'aps_currency'      => $product->currency,
 			'aps_affiliate_url' => $product->affiliate_url,
 			'aps_image_url'    => $product->image_url,
 			'aps_rating'       => $product->rating,
