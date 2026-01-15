@@ -258,6 +258,8 @@ wp-content/plugins/affiliate-product-showcase/
 
 ---
 
+> **⚠️ IMPORTANT NOTE:** Never make changes to "Plugin Structure List Format" section. This is a working format used to reorganize, optimize, and increase code quality. Manual edits only.
+
 ## Plugin Structure List Format
 
 ### 1. Root Level Files
