@@ -337,18 +337,36 @@ wp-content/plugins/affiliate-product-showcase/
 - `CHANGELOG.md` - `root`
 
 ### 5. frontend/
-**Purpose:** Frontend build assets containing JavaScript and CSS loaders organized into components and utilities with index.php files for asset management.
-- `index.php` - Frontend entry point
+**Purpose:** Frontend build assets containing TypeScript entry points, React components, utility functions, and SCSS stylesheets compiled by Vite.
+- `index.php` - Frontend entry point (placeholder)
 #### 5.1 js/
-- `index.php` - JavaScript loader
+- `index.php` - JavaScript loader (placeholder)
+- `admin.ts` - Admin JavaScript entry point
+- `blocks.ts` - Blocks JavaScript entry point
+- `frontend.ts` - Frontend JavaScript entry point
 ##### 5.1.1 components/
-- `index.php` - Component exports
+- `index.php` - Component exports (placeholder)
+- `index.ts` - Component barrel exports
+- `ProductCard.tsx` - Product card React component
+- `ProductModal.tsx` - Product modal React component
+- `LoadingSpinner.tsx` - Loading spinner React component
 ##### 5.1.2 utils/
-- `index.php` - Utility functions
+- `index.php` - Utility functions (placeholder)
+- `api.ts` - API fetch utility
+- `format.ts` - Formatting utilities
+- `i18n.ts` - Internationalization utilities
 #### 5.2 styles/
-- `index.php` - Styles loader
+- `index.php` - Styles loader (placeholder)
+- `admin.scss` - Admin styles
+- `editor.scss` - Editor styles
+- `frontend.scss` - Frontend styles
+- `tailwind.css` - Tailwind CSS framework
 ##### 5.2.1 components/
-- `index.php` - Component styles
+- `index.php` - Component styles (placeholder)
+- `_buttons.scss` - Button styles
+- `_cards.scss` - Card styles
+- `_forms.scss` - Form styles
+- `_modals.scss` - Modal styles
 
 **Related Root Files:**
 - `package.json` - `root`
