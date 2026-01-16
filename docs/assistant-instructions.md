@@ -155,6 +155,624 @@ Skip recommendations only when:
 
 ## Scanning Tasks
 
+### Professional Tool Requirements (MANDATORY for Deep Analysis)
+
+**IMPORTANT: Professional tools are REQUIRED for comprehensive error detection.** When performing deep scans, code analysis, or verification tasks:
+
+---
+
+## Pre-Scan Verification Checklist
+
+**BEFORE running any analysis, verify:**
+
+### Tool Installation Verification
+```bash
+# PHP Tools
+composer show --installed | grep phpstan
+composer show --installed | grep psalm
+composer show --installed | grep phpcs
+composer show --installed | grep phpunit
+
+# Frontend Tools
+npm list eslint
+npm list stylelint
+npm list @testing-library/react
+```
+
+**Required:**
+- ✅ PHPStan (v1.10+)
+- ✅ Psalm (v5.15+)
+- ✅ PHPCS (v3.7+)
+- ✅ PHPUnit (v9.6+)
+- ✅ ESLint (v8.56+)
+- ✅ Stylelint (v16.2+)
+
+### Configuration Files Verification
+```bash
+# PHP config files must exist:
+phpstan.neon (or phpstan.neon.dist)
+psalm.xml (or psalm.xml.dist)
+phpcs.xml (or phpcs.xml.dist)
+
+# Frontend config files must exist:
+.eslintrc.js (or .eslintrc.json)
+stylelint.config.js (or .stylelintrc.js)
+```
+
+**Required Config Files:**
+- ✅ `phpstan.neon` or `phpstan.neon.dist` - Analysis rules
+- ✅ `psalm.xml` or `psalm.xml.dist` - Type checking rules
+- ✅ `phpcs.xml` or `phpcs.xml.dist` - Coding standards
+- ✅ `.eslintrc.js` or `.eslintrc.json` - JS linting rules
+- ✅ `stylelint.config.js` or `.stylelintrc.js` - CSS linting rules
+
+**If Config Files Missing:**
+- ❌ DO NOT proceed with analysis
+- ⚠️ Report missing configurations
+- 📋 Create configuration files first
+
+---
+
+## MANDATORY Tool Execution Standards
+
+### PHP Analysis (All 3 Required)
+
+#### 1. PHPStan (Level 6+)
+```bash
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
+```
+**Minimum Level:** 6  
+**Purpose:** Static analysis, type errors, dead code  
+**Config:** phpstan.neon
+
+#### 2. Psalm (Level 3+)
+```bash
+composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
+```
+**Minimum Level:** 3  
+**Purpose:** Type checking, security vulnerabilities, logic bugs  
+**Config:** psalm.xml
+
+#### 3. PHPCS (PSR-12 + WPCS)
+```bash
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
+```
+**Standard:** PSR-12 + WordPress Coding Standards  
+**Purpose:** Code style, coding standards, duplicate code  
+**Config:** phpcs.xml
+
+### Frontend Analysis (Both Required)
+
+#### 1. ESLint
+```bash
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
+```
+**Maximum Errors:** 0  
+**Maximum Warnings:** <10  
+**Purpose:** Syntax errors, unused code, code quality  
+**Config:** .eslintrc.js
+
+#### 2. Stylelint
+```bash
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
+```
+**Maximum Errors:** 0  
+**Maximum Warnings:** <5  
+**Purpose:** CSS syntax errors, invalid selectors, duplicate styles  
+**Config:** stylelint.config.js
+
+### Testing (All Required)
+
+#### 1. PHPUnit
+```bash
+composer --working-dir=wp-content/plugins/affiliate-product-showcase test
+```
+**Status:** All tests passing required
+
+#### 2. Code Coverage
+```bash
+composer --working-dir=wp-content/plugins/affiliate-product-showcase test-coverage
+```
+**Minimum Coverage:** 80% overall  
+**Required Coverage:**
+- Critical paths: 90%+
+- Main business logic: 85%+
+- Utility functions: 80%+
+- Configuration: 70%+
+
+#### 3. Frontend Tests
+```bash
+npm --prefix wp-content/plugins/affiliate-product-showcase run test
+```
+**Status:** All tests passing required
+
+### Security Scanning (Required)
+
+#### 1. PHP Dependencies
+```bash
+composer audit
+composer outdated
+```
+
+#### 2. JavaScript Dependencies
+```bash
+npm audit
+npm outdated
+```
+
+#### 3. Sensitive Data Detection
+```bash
+# Scan for hardcoded secrets, API keys, passwords
+npm run check-debug
+```
+
+---
+
+## Error Severity Classification
+
+### CRITICAL (Blocks Production) 🚫
+
+**Definition:** Issues that prevent code from running correctly or pose security risks
+
+**Examples:**
+- Syntax errors (PHP, JavaScript, CSS)
+- Fatal errors (uncaught exceptions)
+- Security vulnerabilities (SQL injection, XSS, CSRF)
+- Missing required dependencies
+- Broken imports/requires
+- Type mismatches causing runtime errors
+- Failing critical tests
+
+**Action Required:** STOP - Must fix before proceeding
+
+---
+
+### MAJOR (Impacts Functionality) ⚠️
+
+**Definition:** Issues that affect functionality or user experience
+
+**Examples:**
+- Type errors (not causing fatal errors)
+- Logic bugs (incorrect behavior)
+- Failing tests (non-critical)
+- Performance issues (N+1 queries, missing cache)
+- Memory leaks
+- Blocking render resources
+- Missing lazy loading
+- Excessive API calls
+
+**Action Required:** Should fix soon (within sprint)
+
+---
+
+### MINOR (Code Quality) 📝
+
+**Definition:** Issues that don't affect functionality but impact maintainability
+
+**Examples:**
+- Style violations (PSR-12, ESLint, Stylelint)
+- Missing documentation (PHPDoc, comments)
+- Code duplication (3-10 lines)
+- Unused variables/functions
+- Inconsistent naming conventions
+- Minor optimization opportunities
+
+**Action Required:** Track and fix during technical debt time
+
+---
+
+### INFO (Suggestions) 💡
+
+**Definition:** Best practice recommendations and optimization opportunities
+
+**Examples:**
+- Refactoring opportunities
+- Performance optimizations (<5% impact)
+- Code organization improvements
+- Documentation enhancements
+- Best practice adoption
+
+**Action Required:** Consider for future improvements
+
+---
+
+## Quality Score Calculation
+
+### Formula
+
+```
+Quality Score = 10 - (Critical * 2) - (Major * 0.5) - (Minor * 0.1)
+```
+
+**Score Interpretation:**
+- **10/10 (Excellent):** 0 critical, 0-5 major, 0-20 minor
+- **9/10 (Very Good):** 0 critical, 6-10 major, 21-40 minor
+- **8/10 (Good):** 0 critical, 11-30 major, 41-80 minor
+- **7/10 (Acceptable):** 0 critical, 31-50 major, 81-120 minor
+- **6/10 (Fair):** 0 critical, 51-80 major, 121-200 minor
+- **5/10 or below (Poor):** 1+ critical OR 81+ major OR 201+ minor
+
+**Production Ready Criteria:**
+- ✅ 0 critical errors
+- ✅ ≤30 major errors
+- ✅ ≤120 minor errors
+- ✅ Quality score ≥7/10
+
+---
+
+## Complete Analysis Workflow
+
+### 1. Pre-Analysis Phase
+
+```bash
+# Step 1: Verify tools installed
+composer show --installed | grep -E "(phpstan|psalm|phpcodesniffer|phpunit)"
+npm list eslint stylelint @testing-library/react
+
+# Step 2: Verify config files exist
+ls -la phpstan.neon psalm.xml phpcs.xml
+ls -la .eslintrc.js stylelint.config.js
+
+# Step 3: If missing, stop and report
+```
+
+**Output:** Report verification status, proceed only if all checks pass
+
+---
+
+### 2. Static Analysis Phase
+
+```bash
+# Step 1: Run PHPStan
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
+
+# Step 2: Run Psalm
+composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
+
+# Step 3: Run PHPCS
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
+
+# Step 4: Run ESLint
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
+
+# Step 5: Run Stylelint
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
+```
+
+**Output:** Capture all tool outputs, categorize errors by severity
+
+---
+
+### 3. Testing Phase
+
+```bash
+# Step 1: Run PHPUnit
+composer --working-dir=wp-content/plugins/affiliate-product-showcase test
+
+# Step 2: Generate coverage report
+composer --working-dir=wp-content/plugins/affiliate-product-showcase test-coverage
+
+# Step 3: Run frontend tests
+npm --prefix wp-content/plugins/affiliate-product-showcase run test
+```
+
+**Output:** Test results, coverage percentage, failing tests
+
+---
+
+### 4. Security Phase
+
+```bash
+# Step 1: Audit PHP dependencies
+composer audit
+
+# Step 2: Audit JavaScript dependencies
+npm audit
+
+# Step 3: Check for sensitive data
+npm run check-debug
+```
+
+**Output:** Security vulnerabilities, outdated packages, hardcoded secrets
+
+---
+
+### 5. Result Aggregation Phase
+
+**Combine and Categorize:**
+- Count errors by severity (Critical/Major/Minor/Info)
+- Identify common patterns across tools
+- Cross-tool correlation (issues found by multiple tools)
+- Compare with baseline (if available)
+- Calculate quality score
+
+**Output:** Structured error summary
+
+---
+
+### 6. Report Generation Phase
+
+**Report Sections:**
+1. Executive Summary (status, quality score, production ready?)
+2. Professional Tool Results (each tool's findings)
+3. Error Analysis by Severity
+4. Common Patterns and Trends
+5. Baseline Comparison (if available)
+6. Coverage and Testing Results
+7. Security Scan Results
+8. Recommendations (prioritized action items)
+
+---
+
+## Tool Output Interpretation Guidelines
+
+### PHPStan Output Parsing
+
+```
+Format:
+Level X - [Error Type]: [File]:[Line]: [Message]
+
+Interpretation:
+- Level 0-2: Syntax errors (CRITICAL)
+- Level 3-5: Type errors (MAJOR)
+- Level 6-8: Possible bugs (MAJOR)
+- Level 9: Deprecated/unused (MINOR)
+```
+
+### Psalm Output Parsing
+
+```
+Format:
+[Error Type]: [File]:[Line]: [Message]
+
+Interpretation:
+- InvalidReturnType: Type mismatch (MAJOR)
+- UndefinedVariable: Undefined (CRITICAL)
+- PossiblyInvalidArgument: Type issue (MAJOR)
+- MissingReturnType: Missing docblock (MINOR)
+```
+
+### PHPCS Output Parsing
+
+```
+Format:
+[Standard] - [Error Type]: [File]:[Line]: [Message]
+
+Interpretation:
+- ERROR: Coding standard violation (MINOR)
+- WARNING: Best practice suggestion (INFO)
+```
+
+### ESLint Output Parsing
+
+```
+Format:
+[Error Type]: [File]:[Line]: [Message] [Rule]
+
+Interpretation:
+- error: Code quality issue (MAJOR)
+- warning: Best practice (MINOR)
+```
+
+### Stylelint Output Parsing
+
+```
+Format:
+[Error Type] - [Rule] - [File]:[Line]: [Message]
+
+Interpretation:
+- error: CSS issue (MAJOR)
+- warning: Optimization (MINOR)
+```
+
+---
+
+## Cross-Tool Correlation
+
+### Priority Enhancement
+
+**If multiple tools report same issue:**
+- 2 tools report → Priority: HIGH (confirmed issue)
+- 3 tools report → Priority: CRITICAL (must fix)
+
+**Example:**
+```
+PHPStan: "Undefined variable $productId"
+Psalm: "UndefinedVariable $productId"
+PHPCS: "Undefined variable $productId"
+→ Priority: CRITICAL (confirmed by 3 tools)
+```
+
+### Conflict Resolution
+
+**If tools disagree:**
+- Investigate context manually
+- Check tool configurations
+- Prioritize more strict tool
+- Document discrepancy
+
+**Example:**
+```
+ESLint: "unused variable"
+Code analysis: Variable is used in conditional
+→ Priority: MINOR (document investigation result)
+```
+
+---
+
+## Baseline and Regression Detection
+
+### Baseline Creation
+
+```bash
+# First scan - create baseline
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan --generate-baseline
+composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm --set-baseline=psalm.xml
+```
+
+### Regression Detection
+
+**Compare current scan with baseline:**
+```
+New errors introduced: X
+Existing errors fixed: Y
+Regressions: Z
+```
+
+**Analysis:**
+- New errors → Investigate recent changes
+- Fixed errors → Verify no regressions
+- Regressions → Immediate attention required
+
+---
+
+## Automated Fix Capabilities
+
+### Auto-Fix Options
+
+#### PHP Style Issues
+```bash
+# Auto-fix PHPCS issues
+composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs -- --fix
+```
+**Fixable:** ~60% of PHPCS issues  
+**Manual Review Required:** Yes
+
+#### JavaScript Issues
+```bash
+# Auto-fix ESLint issues
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js -- --fix
+```
+**Fixable:** ~70% of ESLint issues  
+**Manual Review Required:** Yes
+
+#### CSS Issues
+```bash
+# Auto-fix Stylelint issues
+npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css -- --fix
+```
+**Fixable:** ~40% of Stylelint issues  
+**Manual Review Required:** Yes
+
+### What CANNOT Be Auto-Fixed
+
+- ❌ Syntax errors (CRITICAL)
+- ❌ Type errors (MAJOR)
+- ❌ Logic bugs (MAJOR)
+- ❌ Security vulnerabilities (CRITICAL)
+- ❌ Performance issues (MAJOR)
+- ❌ Test failures (CRITICAL)
+
+---
+
+## When to Use Professional Tools
+
+**ALWAYS use professional tools for:**
+
+1. **Deep Code Scanning** - When analyzing code quality, syntax, or structure
+2. **Verification Tasks** - When confirming sections are error-free
+3. **Re-verification** - When re-checking previously fixed issues
+4. **Quality Assessment** - When providing quality scores/ratings
+5. **Error Detection** - When looking for syntax, duplicate, or other errors
+6. **Comprehensive Reports** - When creating detailed verification reports
+7. **Security Audits** - When checking for vulnerabilities
+8. **Performance Analysis** - When identifying optimization opportunities
+
+---
+
+## Reporting Professional Tool Results
+
+**ALWAYS include in verification reports:**
+
+```markdown
+### Professional Tool Analysis
+
+**Tool Verification:**
+- ✅ All tools verified and installed
+- ✅ All config files present
+- ✅ Minimum versions met
+
+**PHP Analysis:**
+- PHPStan: [Status] - [Total errors] - By severity: Critical [X], Major [X], Minor [X]
+- Psalm: [Status] - [Total errors] - By severity: Critical [X], Major [X], Minor [X]
+- PHPCS: [Status] - [Total errors] - By severity: Critical [X], Major [X], Minor [X]
+
+**Frontend Analysis:**
+- ESLint: [Status] - [Total errors] - [Total warnings] - By severity: Critical [X], Major [X], Minor [X]
+- Stylelint: [Status] - [Total errors] - [Total warnings] - By severity: Critical [X], Major [X], Minor [X]
+
+**Testing:**
+- PHPUnit: [Status] - [Passed]/[Total] tests
+- Coverage: [X]% overall - [Breakdown by area]
+- Frontend Tests: [Status] - [Passed]/[Total] tests
+
+**Security Scan:**
+- Composer Audit: [Vulnerabilities found]
+- NPM Audit: [Vulnerabilities found]
+- Sensitive Data: [Issues found]
+
+**Cross-Tool Correlation:**
+- Issues confirmed by 2+ tools: [List]
+- Conflicting findings: [List with resolution]
+
+**Quality Score:**
+- Calculated Score: [X]/10
+- Production Ready: ✅ Yes / ❌ No
+- Blocking Issues: [List critical issues]
+
+**Tool Execution:**
+- Tools Run: ✅ All / ⚠️ Partial / ❌ None
+- Execution Method: [Direct / User-Provided / Manual Only]
+```
+
+---
+
+## Integration with Manual Analysis
+
+Professional tools provide **automated, comprehensive error detection**. Use them **ALONGSIDE** manual analysis:
+
+**Professional Tools:**
+- ✅ Syntax errors (automatic detection)
+- ✅ Type errors (static analysis)
+- ✅ Code style issues (automated linting)
+- ✅ Duplicate code (pattern detection)
+- ✅ Security vulnerabilities (security scanners)
+- ✅ Functional errors (test failures)
+
+**Manual Analysis:**
+- ✅ Code organization (architectural review)
+- ✅ Best practices compliance (standards review)
+- ✅ Logic correctness (code review)
+- ✅ Pattern consistency (structure review)
+- ✅ Documentation quality (documentation review)
+- ✅ Integration completeness (dependency review)
+
+**Combined Approach:**
+1. Run professional tools first (automated detection)
+2. Analyze tool results (identify issues)
+3. Perform manual analysis (contextual review)
+4. Combine findings (comprehensive report)
+5. Provide recommendations (actionable next steps)
+
+---
+
+## Minimum Requirements for Production
+
+**To mark a section as "Production Ready":**
+
+- ✅ 0 critical errors
+- ✅ ≤30 major errors
+- ✅ ≤120 minor errors
+- ✅ Quality score ≥7/10
+- ✅ 80%+ test coverage
+- ✅ All tests passing
+- ✅ No security vulnerabilities
+- ✅ All tools executed (not manual only)
+
+**Any deviation from these requirements must be clearly documented.**
+
+---
+
 ### Structure and File Scanning
 
 When scanning plugin structure, directories, or files as per the Plugin Structure List Format (e.g., section 3 of plugin-structure.md):
