@@ -395,6 +395,98 @@ wp-content/plugins/affiliate-product-showcase/
 - `postcss.config.js` - `root`
 - `.a11y.json` - `root`
 
+#### Root Files Integration Details
+
+**package.json** - NPM dependencies and build scripts configuration
+- **Dependencies:**
+  - `react@18.2.0` - Used in `js/components/*.tsx` (ProductCard, ProductModal, LoadingSpinner)
+  - `react-dom@18.2.0` - Required by React
+  - `react-window@1.8.10` - Virtual scrolling for large product lists
+- **DevDependencies:**
+  - `vite@5.1.8` - Build tool for all frontend/ files
+  - `typescript@5.3.3` - Compiles .ts and .tsx files in `js/`
+  - `@vitejs/plugin-react@4.2.1` - React JSX/TSX compilation
+  - `sass@1.77.8` - Compiles SCSS files in `styles/`
+  - `tailwindcss@3.4.3` - Utility framework for `styles/tailwind.css`
+  - `postcss@8.4.47` - Post-processing for CSS
+  - `autoprefixer@10.4.20` - Adds vendor prefixes to CSS
+- **Build Scripts:**
+  - `npm run dev` - Starts Vite dev server with HMR for frontend/
+  - `npm run build` - Builds frontend/ → assets/dist/
+  - `npm run watch` - Watches frontend/ for changes
+- **Post-build Hooks:**
+  - `npm run generate:sri` - Generates SRI hashes for frontend/ assets
+  - `npm run compress` - Compresses frontend/ assets (gzip, brotli)
+
+**tsconfig.json** - TypeScript compiler configuration
+- **Include Paths:**
+  - `frontend/**/*` - All frontend/ TypeScript/TSX files included
+  - `blocks/**/*` - Block files included
+- **Path Aliases:**
+  - `@aps/*` → `frontend/*` - Enables imports like `@aps/js/components/ProductCard`
+- **Compiler Options:**
+  - `target: ES2020` - Modern JavaScript output
+  - `jsx: react-jsx` - New JSX transform (no need to import React)
+  - `strict: true` - Strict type checking for all frontend/ TypeScript files
+- **Usage:** Compiles `js/*.ts`, `js/*.tsx` files with type safety
+
+**vite.config.js** - Vite build configuration
+- **Root Directory:** `frontend/` - Vite root is set to frontend/ directory
+- **Entry Points:**
+  - `js/admin.ts` → `assets/dist/admin.js` - Admin pages
+  - `js/blocks.ts` → `assets/dist/blocks.js` - Gutenberg blocks
+  - `js/frontend.ts` → `assets/dist/frontend.js` - Frontend pages
+  - `styles/admin.scss` → `assets/dist/admin.css`
+  - `styles/frontend.scss` → `assets/dist/frontend.css`
+  - `styles/editor.scss` → `assets/dist/editor.css`
+- **Path Aliases:**
+  - `@` → `frontend/`
+  - `@js` → `frontend/js/`
+  - `@css` → `frontend/styles/`
+  - `@components` → `frontend/js/components/`
+  - `@utils` → `frontend/js/utils/`
+- **CSS Processing:**
+  - Compiles `styles/*.scss` files with Sass
+  - Applies Tailwind CSS transformations
+  - Adds vendor prefixes via Autoprefixer
+- **Manifest Generation:**
+  - Generates `includes/asset-manifest.php` for WordPress asset loading
+  - Adds SRI hashes for security
+
+**tailwind.config.js** - Tailwind CSS framework configuration
+- **Content Paths:**
+  - `./frontend/**/*.{js,jsx,ts,tsx,vue}` - Scans frontend/ for Tailwind classes
+  - `./**/*.php` - Scans all PHP templates
+- **Namespace Isolation:**
+  - `prefix: 'aps-'` - All utilities prefixed (e.g., `aps-flex`, `aps-bg-blue`)
+  - `important: '.aps-root'` - Scoped to plugin container
+- **Theme Configuration:**
+  - WordPress-aligned colors, spacing, typography
+  - Compatible with WordPress admin styles
+- **Usage:** `js/components/*.tsx` and `styles/*.scss` use Tailwind utilities
+
+**postcss.config.js** - PostCSS configuration
+- **Plugins:**
+  - `tailwindcss` - Processes Tailwind CSS
+  - `autoprefixer` - Adds vendor prefixes
+- **Processing:**
+  - Transforms `styles/*.scss` files
+  - Applies Tailwind transformations
+  - Adds browser-specific prefixes
+- **Output:** Production-ready CSS for all frontend/ stylesheets
+
+**.a11y.json** - Accessibility testing configuration
+- **Test URLs:**
+  - Admin page (uses `js/admin.ts`)
+  - Frontend pages (uses `js/frontend.ts`)
+  - Product pages
+- **Accessibility Rules:**
+  - Color contrast validation
+  - Image alt tags (ProductCard.tsx)
+  - Form labels validation
+  - ARIA attributes validation
+- **Usage:** `npm run test:a11y` tests frontend/ components
+
 ### 6. src/
 **Purpose:** PHP source code organized by architectural components including admin interface, assets management, blocks, caching, database operations, events, REST API, security, services, and more.
 - `index.php` - Source entry point
