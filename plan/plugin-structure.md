@@ -71,18 +71,36 @@ wp-content/plugins/affiliate-product-showcase/
 │   │
 │   ├── 📁 js/
 │   │   ├── 📄 index.php                    # JavaScript loader
+│   │   ├── 📄 admin.ts                     # Admin JS entry point
+│   │   ├── 📄 blocks.ts                    # Blocks JS entry point
+│   │   ├── 📄 frontend.ts                  # Frontend JS entry point
 │   │   │
 │   │   ├── 📁 components/
-│   │   │   └── 📄 index.php                # Component exports
+│   │   │   ├── 📄 index.php                # Component exports
+│   │   │   ├── 📄 index.ts                 # Component barrel exports
+│   │   │   ├── 📄 ProductCard.tsx          # Product card component
+│   │   │   ├── 📄 ProductModal.tsx         # Product modal component
+│   │   │   └── 📄 LoadingSpinner.tsx        # Loading spinner component
 │   │   │
 │   │   └── 📁 utils/
-│   │       └── 📄 index.php                # Utility functions
+│   │       ├── 📄 index.php                # Utility functions
+│   │       ├── 📄 api.ts                   # API fetch utility
+│   │       ├── 📄 format.ts                # Formatting utilities
+│   │       └── 📄 i18n.ts                  # Internationalization utilities
 │   │
 │   └── 📁 styles/
 │       ├── 📄 index.php                    # Styles loader
+│       ├── 📄 admin.scss                   # Admin styles
+│       ├── 📄 editor.scss                  # Editor styles
+│       ├── 📄 frontend.scss                # Frontend styles
+│       ├── 📄 tailwind.css                 # Tailwind CSS framework
 │       │
 │       └── 📁 components/
-│           └── 📄 index.php                # Component styles
+│           ├── 📄 index.php                # Component styles
+│           ├── 📄 _buttons.scss             # Button styles
+│           ├── 📄 _cards.scss               # Card styles
+│           ├── 📄 _forms.scss               # Form styles
+│           └── 📄 _modals.scss              # Modal styles
 │
 ├── 📁 src/                                 # PHP source code
 │   ├── 📄 index.php                        # Source entry point
@@ -606,14 +624,32 @@ wp-content/plugins/affiliate-product-showcase/
 - `index.php` - Frontend entry point
 #### js/
 - `index.php` - JavaScript loader
+- `admin.ts` - Admin JavaScript entry point
+- `blocks.ts` - Blocks JavaScript entry point
+- `frontend.ts` - Frontend JavaScript entry point
 ##### components/
 - `index.php` - Component exports
+- `index.ts` - Component barrel exports
+- `ProductCard.tsx` - Product card React component
+- `ProductModal.tsx` - Product modal React component
+- `LoadingSpinner.tsx` - Loading spinner React component
 ##### utils/
 - `index.php` - Utility functions
+- `api.ts` - API fetch utility
+- `format.ts` - Formatting utilities
+- `i18n.ts` - Internationalization utilities
 #### styles/
 - `index.php` - Styles loader
+- `admin.scss` - Admin styles
+- `editor.scss` - Editor styles
+- `frontend.scss` - Frontend styles
+- `tailwind.css` - Tailwind CSS framework
 ##### components/
 - `index.php` - Component styles
+- `_buttons.scss` - Button styles
+- `_cards.scss` - Card styles
+- `_forms.scss` - Form styles
+- `_modals.scss` - Modal styles
 
 ### src/
 - `index.php` - Source entry point
