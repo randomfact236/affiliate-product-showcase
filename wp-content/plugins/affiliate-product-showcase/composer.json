@@ -117,8 +117,9 @@
 			"@parallel-lint",
 			"@phpunit"
 		],
-		"test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage --coverage-clover clover.xml",
-		"test-coverage-ci": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage --coverage-clover clover.xml",
+        "test-coverage-ci": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml",
+        "compile-mo": "php scripts/compile-mo.php languages/affiliate-product-showcase-en_US.po languages/affiliate-product-showcase-en_US.mo",
 		"phpunit": "vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text",
 		"phpunit-html": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage",
 		"phpcs": "vendor/bin/phpcs --standard=WordPress --extensions=php --colors src/ app/ domain/ infrastructure/ shared/",
