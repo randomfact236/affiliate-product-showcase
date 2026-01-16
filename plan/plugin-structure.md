@@ -505,7 +505,10 @@ wp-content/plugins/affiliate-product-showcase/
 - `index.php` - Asset management
 #### 6.4 Blocks/
 - `index.php` - Block loader
-##### 6.4.1 product-showcase/
+##### 6.4.1 templates/
+- `product-grid-item.php` - Product grid item template
+- `product-showcase-item.php` - Product showcase item template
+##### 6.4.2 product-showcase/
 - `index.php` - Product showcase block
 #### 6.5 Cache/
 - `index.php` - Caching system
@@ -513,6 +516,8 @@ wp-content/plugins/affiliate-product-showcase/
 - `index.php` - WP-CLI commands
 #### 6.7 Database/
 - `index.php` - Database operations
+##### 6.7.1 seeders/
+- `sample-products.php` - Sample product seeder
 #### 6.8 Events/
 - `index.php` - Event system
 #### 6.9 Exceptions/
