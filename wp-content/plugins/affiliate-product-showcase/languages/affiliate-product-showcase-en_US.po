@@ -1,12 +1,14 @@
 # Copyright (C) 2026 Affiliate Product Showcase Team
 # This file is distributed under the same license as the Affiliate Product Showcase plugin.
+# Affiliate Product Showcase Team <contact@example.com>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Affiliate Product Showcase 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/randomfact236/affiliate-product-showcase/issues\n"
 "POT-Creation-Date: 2026-01-16T11:00:00+00:00\n"
 "PO-Revision-Date: 2026-01-16T11:00:00+00:00\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Affiliate Product Showcase Team <contact@example.com>\n"
 "Language-Team: English\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +20,10 @@ msgstr ""
 #: affiliate-product-showcase.php:60
 msgid ""
 "<strong>%1$s</strong> requires PHP %3$s or higher. Your site is running "
-"PHP %2$s. Please upgrade PHP or deactivate the plugin."
+"PHP %2$s. Please upgrade PHP or deactivate plugin."
 msgstr ""
+"<strong>%1$s</strong> requires PHP %3$s or higher. Your site is running "
+"PHP %2$s. Please upgrade PHP or deactivate plugin."
 
 #: affiliate-product-showcase.php:80
 #, php-format
@@ -27,6 +31,8 @@ msgid ""
 "<strong>%1$s</strong> installation is incomplete. Please run %2$s in the "
 "plugin directory."
 msgstr ""
+"<strong>%1$s</strong> installation is incomplete. Please run %2$s in the "
+"plugin directory."
 
 #: affiliate-product-showcase.php:95
 #, php-format
@@ -34,452 +40,454 @@ msgid ""
 "<strong>%s</strong> core class not found. Autoloader may be misconfigured. "
 "Try running %s again."
 msgstr ""
+"<strong>%s</strong> core class not found. Autoloader may be misconfigured. "
+"Try running %s again."
 
 #: affiliate-product-showcase.php:140
 #, php-format
 msgid "<strong>%1$s</strong> failed to initialize: %2$s"
-msgstr ""
+msgstr "<strong>%1$s</strong> failed to initialize: %2$s"
 
 #: src/Privacy/GDPR.php:45
 msgid "Affiliate Product Showcase"
-msgstr ""
+msgstr "Affiliate Product Showcase"
 
 #: src/Privacy/GDPR.php:65
 msgid "Affiliate ID"
-msgstr ""
+msgstr "Affiliate ID"
 
 #: src/Privacy/GDPR.php:72
 msgid "Analytics Summary"
-msgstr ""
+msgstr "Analytics Summary"
 
 #: src/Privacy/GDPR.php:74
 msgid "Aggregated analytics data available"
-msgstr ""
+msgstr "Aggregated analytics data available"
 
 #: src/Privacy/GDPR.php:80
 msgid "Analytics Data"
-msgstr ""
+msgstr "Analytics Data"
 
 #: src/Privacy/GDPR.php:100
 msgid "User not found"
-msgstr ""
+msgstr "User not found"
 
 #: src/Rest/AnalyticsController.php:45
 msgid "Invalid nonce. Please refresh the page and try again."
-msgstr ""
+msgstr "Invalid nonce. Please refresh the page and try again."
 
 #: src/Rest/AnalyticsController.php:55
 msgid "Too many requests. Please try again later."
-msgstr ""
+msgstr "Too many requests. Please try again later."
 
 #: src/Rest/AnalyticsController.php:70
 msgid "Failed to retrieve analytics"
-msgstr ""
+msgstr "Failed to retrieve analytics"
 
 #: src/Rest/AffiliatesController.php:40
 msgid "Affiliate product not found."
-msgstr ""
+msgstr "Affiliate product not found."
 
 #: src/Rest/AffiliatesController.php:60
 msgid "Affiliate updated successfully."
-msgstr ""
+msgstr "Affiliate updated successfully."
 
 #: src/Rest/AffiliatesController.php:75
 msgid "Failed to delete affiliate product."
-msgstr ""
+msgstr "Failed to delete affiliate product."
 
 #: src/Rest/AffiliatesController.php:85
 msgid "Affiliate deleted successfully."
-msgstr ""
+msgstr "Affiliate deleted successfully."
 
 #: src/Rest/AffiliatesController.php:95
 msgid "Click tracked successfully."
-msgstr ""
+msgstr "Click tracked successfully."
 
 #: src/Rest/AffiliatesController.php:110
 msgid "Current page of the collection."
-msgstr ""
+msgstr "Current page of the collection."
 
 #: src/Rest/AffiliatesController.php:115
 msgid "Maximum number of items to be returned in result set."
-msgstr ""
+msgstr "Maximum number of items to be returned in result set."
 
 #: src/Rest/AffiliatesController.php:120
 msgid "Limit results to those matching a string."
-msgstr ""
+msgstr "Limit results to those matching a string."
 
 #: src/Rest/AffiliatesController.php:125
 msgid "Sort collection by object attribute."
-msgstr ""
+msgstr "Sort collection by object attribute."
 
 #: src/Rest/AffiliatesController.php:130
 msgid "Order sort attribute ascending or descending."
-msgstr ""
+msgstr "Order sort attribute ascending or descending."
 
 #: src/Rest/AffiliatesController.php:135
 msgid "Unique identifier for the affiliate."
-msgstr ""
+msgstr "Unique identifier for the affiliate."
 
 #: src/Rest/AffiliatesController.php:140
 msgid "Affiliate title."
-msgstr ""
+msgstr "Affiliate title."
 
 #: src/Rest/AffiliatesController.php:145
 msgid "Affiliate content."
-msgstr ""
+msgstr "Affiliate content."
 
 #: src/Rest/AffiliatesController.php:150
 msgid "Product price."
-msgstr ""
+msgstr "Product price."
 
 #: src/Rest/AffiliatesController.php:155
 msgid "Affiliate URL."
-msgstr ""
+msgstr "Affiliate URL."
 
 #: src/Rest/AffiliatesController.php:160
 msgid "Product image URL."
-msgstr ""
+msgstr "Product image URL."
 
 #: src/Rest/AffiliatesController.php:165
 msgid "Product rating."
-msgstr ""
+msgstr "Product rating."
 
 #: src/Security/CSRFProtection.php:40
 msgid "Security check failed. Please refresh the page and try again."
-msgstr ""
+msgstr "Security check failed. Please refresh the page and try again."
 
 #: src/Security/CSRFProtection.php:50
 msgid "Security check failed. No nonce found."
-msgstr ""
+msgstr "Security check failed. No nonce found."
 
 #: src/Security/CSRFProtection.php:60
 msgid "Security check failed. Invalid nonce."
-msgstr ""
+msgstr "Security check failed. Invalid nonce."
 
 #: src/Public/Enqueue.php:50
 msgid "Loading..."
-msgstr ""
+msgstr "Loading..."
 
 #: src/Public/Enqueue.php:55
 msgid "Load More"
-msgstr ""
+msgstr "Load More"
 
 #: src/Public/Enqueue.php:60
 msgid "No products found."
-msgstr ""
+msgstr "No products found."
 
 #: src/Public/Enqueue.php:65
 msgid "Add to Cart"
-msgstr ""
+msgstr "Add to Cart"
 
 #: src/Public/Enqueue.php:70
 msgid "View Details"
-msgstr ""
+msgstr "View Details"
 
 #: src/Public/Enqueue.php:75
 msgid "Buy Now"
-msgstr ""
+msgstr "Buy Now"
 
 #: src/Public/Enqueue.php:80
 msgid "Out of Stock"
-msgstr ""
+msgstr "Out of Stock"
 
 #: src/Rest/ProductsController.php:45
 msgid "Too many requests. Please try again later."
-msgstr ""
+msgstr "Too many requests. Please try again later."
 
 #: src/Rest/ProductsController.php:55
 msgid "Invalid nonce. Please refresh the page and try again."
-msgstr ""
+msgstr "Invalid nonce. Please refresh the page and try again."
 
 #: src/Rest/ProductsController.php:70
 msgid "Too many creation requests. Please try again later."
-msgstr ""
+msgstr "Too many creation requests. Please try again later."
 
 #: src/Rest/ProductsController.php:85
 msgid "Failed to create product"
-msgstr ""
+msgstr "Failed to create product"
 
 #: src/Rest/ProductsController.php:100
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "An unexpected error occurred"
 
 #: src/Rest/SettingsController.php:40
 msgid "Setting not found."
-msgstr ""
+msgstr "Setting not found."
 
 #: src/Rest/SettingsController.php:50
 msgid "No settings provided."
-msgstr ""
+msgstr "No settings provided."
 
 #: src/Rest/SettingsController.php:60
 msgid "Settings validation failed."
-msgstr ""
+msgstr "Settings validation failed."
 
 #: src/Rest/SettingsController.php:75
 msgid "Settings updated successfully."
-msgstr ""
+msgstr "Settings updated successfully."
 
 #: src/Rest/SettingsController.php:90
 msgid "Failed to save settings."
-msgstr ""
+msgstr "Failed to save settings."
 
 #: src/Rest/SettingsController.php:105
 msgid "Setting validation failed."
-msgstr ""
+msgstr "Setting validation failed."
 
 #: src/Rest/SettingsController.php:120
 msgid "Setting updated successfully."
-msgstr ""
+msgstr "Setting updated successfully."
 
 #: src/Rest/SettingsController.php:135
 msgid "Failed to save setting."
-msgstr ""
+msgstr "Failed to save setting."
 
 #: src/Assets/Manifest.php:40
 msgid "The asset manifest could not be found or is not readable."
-msgstr ""
+msgstr "The asset manifest could not be found or is not readable."
 
 #: src/Assets/Manifest.php:50
 msgid "Unable to read the asset manifest."
-msgstr ""
+msgstr "Unable to read the asset manifest."
 
 #: src/Assets/Manifest.php:60
 msgid "The asset manifest contains invalid JSON."
-msgstr ""
+msgstr "The asset manifest contains invalid JSON."
 
 #: src/Assets/Manifest.php:70
 msgid "The asset manifest must decode to an associative array."
-msgstr ""
+msgstr "The asset manifest must decode to an associative array."
 
 #: src/Assets/Manifest.php:80
 msgid "The requested asset is not present in the manifest."
-msgstr ""
+msgstr "The requested asset is not present in the manifest."
 
 #: src/Assets/Manifest.php:90
 msgid "The asset file referenced in the manifest does not exist."
-msgstr ""
+msgstr "The asset file referenced in the manifest does not exist."
 
 #: src/Assets/Manifest.php:100
 msgid "Manifest entries must use safe, alphanumeric keys."
-msgstr ""
+msgstr "Manifest entries must use safe, alphanumeric keys."
 
 #: src/Assets/Manifest.php:110
 msgid "Each manifest entry must contain a file string."
-msgstr ""
+msgstr "Each manifest entry must contain a file string."
 
 #: src/Assets/Manifest.php:120
 msgid "Manifest file paths must remain within the dist directory."
-msgstr ""
+msgstr "Manifest file paths must remain within the dist directory."
 
 #: src/Assets/Manifest.php:130
 msgid "The provided manifest key is invalid."
-msgstr ""
+msgstr "The provided manifest key is invalid."
 
 #: src/Assets/SRI.php:40
 msgid "Cannot generate SRI hash because the file is missing or unreadable."
-msgstr ""
+msgstr "Cannot generate SRI hash because the file is missing or unreadable."
 
 #: src/Assets/SRI.php:50
 msgid "Failed to generate the SRI hash for the requested asset."
-msgstr ""
+msgstr "Failed to generate the SRI hash for the requested asset."
 
 #: src/Admin/Enqueue.php:50
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "Are you sure you want to delete this item?"
 
 #: src/Admin/Enqueue.php:55
 msgid "Saving..."
-msgstr ""
+msgstr "Saving..."
 
 #: src/Admin/Enqueue.php:60
 msgid "Saved successfully!"
-msgstr ""
+msgstr "Saved successfully!"
 
 #: src/Admin/Enqueue.php:65
 msgid "An error occurred. Please try again."
-msgstr ""
+msgstr "An error occurred. Please try again."
 
 #: src/Admin/Enqueue.php:70
 msgid "Upload Image"
-msgstr ""
+msgstr "Upload Image"
 
 #: src/Admin/Enqueue.php:75
 msgid "Select Image"
-msgstr ""
+msgstr "Select Image"
 
 #: src/Admin/Enqueue.php:80
 msgid "Remove Image"
-msgstr ""
+msgstr "Remove Image"
 
 #: src/Admin/Menu.php:45
 msgid "Affiliate Products"
-msgstr ""
+msgstr "Affiliate Products"
 
 #: src/Admin/Menu.php:50
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: src/Admin/Menu.php:55
 msgid "All Products"
-msgstr ""
+msgstr "All Products"
 
 #: src/Admin/Menu.php:60
 msgid "Add Product"
-msgstr ""
+msgstr "Add Product"
 
 #: src/Admin/Menu.php:65
 msgid "Analytics"
-msgstr ""
+msgstr "Analytics"
 
 #: src/Admin/Menu.php:70
 msgid "Settings"
-msgstr ""
+msgstr "Settings"
 
 #: src/Admin/Menu.php:75
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 #: src/Admin/BulkActions.php:40
 msgid "Set In Stock"
-msgstr ""
+msgstr "Set In Stock"
 
 #: src/Admin/BulkActions.php:45
 msgid "Set Out of Stock"
-msgstr ""
+msgstr "Set Out of Stock"
 
 #: src/Admin/BulkActions.php:50
 msgid "Reset Click Count"
-msgstr ""
+msgstr "Reset Click Count"
 
 #: src/Admin/BulkActions.php:55
 msgid "Export Products"
-msgstr ""
+msgstr "Export Products"
 
 #: src/Admin/BulkActions.php:70
 msgid "Download Export"
-msgstr ""
+msgstr "Download Export"
 
 #: src/Admin/BulkActions.php:80
 msgid "Export file not found."
-msgstr ""
+msgstr "Export file not found."
 
 #: src/Admin/Columns.php:40
 msgid "Price"
-msgstr ""
+msgstr "Price"
 
 #: src/Admin/Columns.php:45
 msgid "SKU"
-msgstr ""
+msgstr "SKU"
 
 #: src/Admin/Columns.php:50
 msgid "Brand"
-msgstr ""
+msgstr "Brand"
 
 #: src/Admin/Columns.php:55
 msgid "Rating"
-msgstr ""
+msgstr "Rating"
 
 #: src/Admin/Columns.php:60
 msgid "Clicks"
-msgstr ""
+msgstr "Clicks"
 
 #: src/Admin/Columns.php:65
 msgid "Conversions"
-msgstr ""
+msgstr "Conversions"
 
 #: src/Admin/Columns.php:80
 msgid "All Brands"
-msgstr ""
+msgstr "All Brands"
 
 #: src/Admin/Columns.php:85
 msgid "All Stock Status"
-msgstr ""
+msgstr "All Stock Status"
 
 #: src/Admin/Columns.php:90
 msgid "In Stock"
-msgstr ""
+msgstr "In Stock"
 
 #: src/Admin/Columns.php:95
 msgid "Out of Stock"
-msgstr ""
+msgstr "Out of Stock"
 
 #: src/Admin/Settings.php:40
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: src/Admin/Settings.php:45
 msgid "Currency"
-msgstr ""
+msgstr "Currency"
 
 #: src/Admin/Settings.php:50
 msgid "Affiliate ID"
-msgstr ""
+msgstr "Affiliate ID"
 
 #: src/Admin/Settings.php:55
 msgid "Enable ratings"
-msgstr ""
+msgstr "Enable ratings"
 
 #: src/Admin/Settings.php:60
 msgid "Show ratings on product cards"
-msgstr ""
+msgstr "Show ratings on product cards"
 
 #: src/Admin/Settings.php:65
 msgid "Enable cache"
-msgstr ""
+msgstr "Enable cache"
 
 #: src/Admin/Settings.php:70
 msgid "Use WordPress object cache when available"
-msgstr ""
+msgstr "Use WordPress object cache when available"
 
 #: src/Admin/Settings.php:75
 msgid "CTA label"
-msgstr ""
+msgstr "CTA label"
 
 #: src/Admin/Settings.php:80
 msgid "Security check failed. Please try again."
-msgstr ""
+msgstr "Security check failed. Please try again."
 
 #: src/Admin/MetaBoxes.php:35
 msgid "Product Details"
-msgstr ""
+msgstr "Product Details"
 
 #: src/Admin/Admin.php:40
 msgid "Affiliate Showcase"
-msgstr ""
+msgstr "Affiliate Showcase"
 
 #: src/Public/Widgets.php:35
 msgid "Affiliate Products"
-msgstr ""
+msgstr "Affiliate Products"
 
 #: src/Public/Widgets.php:45
 msgid "Featured Products"
-msgstr ""
+msgstr "Featured Products"
 
 #: src/Public/partials/product-card.php:25
 msgid "View Deal"
-msgstr ""
+msgstr "View Deal"
 
 #: src/Public/partials/product-card.php:30
 msgid "We may earn a commission when you purchase through our links."
-msgstr ""
+msgstr "We may earn a commission when you purchase through our links."
 
 #: src/Repositories/SettingsRepository.php:40
 msgid "View Deal"
-msgstr ""
+msgstr "View Deal"
 
 #: src/Repositories/SettingsRepository.php:45
 msgid "We may earn a commission when you purchase through our links."
-msgstr ""
+msgstr "We may earn a commission when you purchase through our links."
 
 #: src/Services/ProductService.php:50
 msgid "Affiliate Products"
-msgstr ""
+msgstr "Affiliate Products"
 
 #: src/Services/ProductService.php:55
 msgid "Affiliate Product"
-msgstr ""
+msgstr "Affiliate Product"
 
 #: src/Admin/partials/dashboard-widget.php:15
 msgid "Track affiliate product performance at a glance."
-msgstr ""
+msgstr "Track affiliate product performance at a glance."
