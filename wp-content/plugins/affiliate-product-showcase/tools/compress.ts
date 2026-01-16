@@ -9,7 +9,32 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'assets/dist');
 const reportFile = path.join(distDir, 'compression-report.json');
 
-const brotliOptions = {
+interface CompressionOptions {
+	params: {
+		[key: number]: number;
+	};
+}
+
+interface CompressionReportEntry {
+	file: string;
+	original: number;
+	gzip: {
+		size: number;
+		ratio: number;
+	};
+	brotli: {
+		size: number;
+		ratio: number;
+	};
+}
+
+interface BrotiliOptions {
+	params: {
+		[zlibConstants.BROTLI_PARAM_QUALITY]: number;
+	};
+}
+
+const brotliOptions: BrotiliOptions = {
 	params: {
 		[zlibConstants.BROTLI_PARAM_QUALITY]: 11,
 	},
@@ -17,7 +42,7 @@ const brotliOptions = {
 
 const gzipOptions = { level: 9 };
 
-async function walk(dir) {
+export async function walk(dir: string): Promise<string[]> {
 	const entries = await fs.readdir(dir, { withFileTypes: true });
 	const files = await Promise.all(
 		entries.map(async (entry) => {
@@ -32,7 +57,7 @@ async function walk(dir) {
 	return files.flat();
 }
 
-function shouldSkip(filePath) {
+export function shouldSkip(filePath: string): boolean {
 	const ext = path.extname(filePath).toLowerCase();
 	const basename = path.basename(filePath).toLowerCase();
 
@@ -43,7 +68,7 @@ function shouldSkip(filePath) {
 	return ext === '.gz' || ext === '.br' || ext === '.map';
 }
 
-async function compressFile(filePath) {
+export async function compressFile(filePath: string): Promise<CompressionReportEntry> {
 	const buffer = await fs.readFile(filePath);
 	const stats = await fs.stat(filePath);
 
@@ -72,11 +97,11 @@ async function compressFile(filePath) {
 	};
 }
 
-async function main() {
+export async function main(): Promise<void> {
 	try {
 		await fs.access(distDir);
 		const files = (await walk(distDir)).filter((file) => !shouldSkip(file));
-		const report = [];
+		const report: CompressionReportEntry[] = [];
 
 		for (const file of files) {
 			report.push(await compressFile(file));
@@ -85,7 +110,7 @@ async function main() {
 		await fs.writeFile(reportFile, JSON.stringify(report, null, 2), 'utf8');
 		console.log(`Compression report written to ${reportFile}`);
 	} catch (error) {
-		console.error('Compression failed:', error.message || error);
+		console.error('Compression failed:', error instanceof Error ? error.message : error);
 		process.exitCode = 1;
 	}
 }

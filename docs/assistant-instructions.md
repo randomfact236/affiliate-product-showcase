@@ -11,6 +11,400 @@
 
 ## Behavior Preferences
 
+### Assistant Files Usage Documentation (MANDATORY)
+
+**IMPORTANT: ALWAYS list ALL FOUR assistant files to prevent missing required standards.**
+
+- **ALWAYS list all four files to ensure no required standards are missed**
+- **CLEARLY MARK which files were ACTUALLY APPLIED vs. which were listed for completeness**
+- **NEVER skip listing a file - always include all four**
+- **This prevents the risk of missing required standards**
+
+---
+
+## When to Use Each File
+
+### assistant-instructions.md
+**Use for:**
+- ✅ ANY task (always applies)
+- ✅ Scanning and analysis tasks
+- ✅ Code writing
+- ✅ Report generation
+- ✅ File operations (read, write, list)
+
+**Contains:** Behavior preferences, scanning tasks, reporting standards, assistant files usage
+
+---
+
+### assistant-quality-standards.md
+**Use for:**
+- ✅ Writing or reviewing code
+- ✅ Code quality assessments
+- ✅ Testing and coverage
+- ✅ Security reviews
+- ✅ Best practices implementation
+
+**DO NOT use for:**
+- ❌ Simple file reading (just reporting contents)
+- ❌ File listing (ls/dir operations)
+- ❌ Directory scanning without quality assessment
+- ❌ Informational reports only
+
+**Contains:** Code quality standards, testing requirements, security standards, best practices
+
+---
+
+### assistant-rules.md
+**Use for:**
+- ✅ Git operations (commit, push, branch)
+- ✅ Git history analysis
+- ✅ Workflow tasks
+- ✅ PR/MR reviews
+
+**DO NOT use for:**
+- ❌ Code writing (before git operations)
+- ❌ Scanning and analysis
+- ❌ Regular file operations
+
+**Contains:** Git operations rules, workflow standards
+
+---
+
+### assistant-performance-optimization.md
+**Use for:**
+- ✅ Performance analysis
+- ✅ Optimization tasks
+- ✅ Performance audits
+- ✅ Code optimization reviews
+- ✅ Asset optimization (bundles, images, CSS)
+
+**DO NOT use for:**
+- ❌ Regular code writing (unless performance-related)
+- ❌ Structure scanning
+- ❌ Documentation tasks
+
+**Contains:** Performance guidelines, optimization standards, checklist
+
+---
+
+## File Selection Examples
+
+### Example 1: Writing Code
+**Task:** "Write a compression tool function"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (APPLIED - Code quality, testing requirements)
+- ✅ assistant-rules.md (LISTED - Not used: no git operations)
+- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+```
+
+### Example 2: Just Reading File
+**Task:** "Read and show me the contents of package.json"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
+- ✅ assistant-rules.md (LISTED - Not used: no git operations)
+- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+```
+
+### Example 3: Git Operations
+**Task:** "Commit and push these changes"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (LISTED - Not used: git operations only)
+- ✅ assistant-rules.md (APPLIED - Git operations)
+- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+```
+
+### Example 4: Performance Scan
+**Task:** "Analyze performance of the codebase"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (APPLIED - Code quality assessment)
+- ✅ assistant-rules.md (LISTED - Not used: no git operations)
+- ✅ assistant-performance-optimization.md (APPLIED - Performance standards)
+```
+
+### Example 5: Quality Scan
+**Task:** "Scan section 12 and report code quality"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (APPLIED - Quality assessment scale)
+- ✅ assistant-rules.md (LISTED - Not used: no git operations)
+- ✅ assistant-performance-optimization.md (LISTED - Not used: quality scan only)
+```
+
+### Example 6: Directory Listing
+**Task:** "List all files in the tools directory"
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
+- ✅ assistant-rules.md (LISTED - Not used: no git operations)
+- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+```
+
+---
+
+## Required Format
+
+### In Chat Summary (attempt_completion result):
+```
+**Standards Applied:**
+- ✅ assistant-instructions.md (Brief context of what was used)
+- ✅ assistant-quality-standards.md (If code quality was assessed)
+- ✅ assistant-rules.md (If git operations were performed)
+- ✅ assistant-performance-optimization.md (If performance analysis was done)
+```
+
+### In Generated Report Files:
+```markdown
+## Standards Applied
+
+**Files Used for This Analysis:**
+- ✅ assistant-instructions.md (Quality reporting, brutal truth rule, assistant files usage)
+- ✅ assistant-quality-standards.md (Quality assessment scale, code quality standards)
+- ✅ [Only include files that were actually used]
+```
+
+---
+
+## Why This Matters
+
+**Accurate Documentation:**
+- Shows which standards actually guided the work
+- Creates honest audit trail
+- Prevents false claims about standards usage
+- Maintains trust in reporting
+
+**Token Efficiency:**
+- Saves context window space
+- Reduces token usage on irrelevant documentation
+- Focuses on actual work performed
+
+**User Clarity:**
+- Makes it clear what standards were applied
+- Shows relevance of each file to the task
+- Avoids confusion about what was done
+
+**NO "Automatically Included":**
+- Never say a file was used if it wasn't read
+- Never list files just because they exist
+- Only list files that ACTUALLY guided the work
+
+---
+
+## Handling Ambiguous Commands
+
+### What If You Just Say "Scan"?
+
+When you say "scan" without specifying the type, I will:
+
+**Step 1: Analyze Context**
+- Look at what directory/section is being scanned
+- Check if it's related to code quality, performance, or structure
+- Review previous conversation context
+
+**Step 2: Make Reasonable Assumption**
+- Code directories (src/, blocks/, tools/) → Assume quality scan
+- Configuration files (package.json, tsconfig.json) → Assume structure scan
+- Performance-related contexts → Assume performance scan
+- Simple directory listing requested → Assume structure scan
+
+**Step 3: Clarify Assumption**
+I will explicitly state: "Assuming this is a [type] scan. If not, please clarify."
+
+**Step 4: Apply Relevant Files Based on Assumption**
+
+---
+
+### Examples of Ambiguous "Scan" Commands
+
+#### Example 1: "Scan section 12"
+**Context:** Section 12 contains tools/ directory with code files
+
+**My Assumption:** Quality scan (checking code quality)
+
+**Files Used:**
+```
+✅ assistant-instructions.md (Scanning standards, reporting)
+✅ assistant-quality-standards.md (Quality assessment, error classification)
+❌ assistant-rules.md (No git operations)
+❌ assistant-performance-optimization.md (Not explicitly performance-focused)
+```
+
+**I will state:** "Assuming this is a code quality scan. If you want a structure scan or performance scan, let me know."
+
+---
+
+#### Example 2: "Scan the tools directory"
+**Context:** Directory with tool code files
+
+**My Assumption:** Quality scan (checking code issues, quality)
+
+**Files Used:**
+```
+✅ assistant-instructions.md (Scanning standards, reporting)
+✅ assistant-quality-standards.md (Quality assessment)
+❌ assistant-rules.md (No git operations)
+❌ assistant-performance-optimization.md (Not explicitly requested)
+```
+
+**I will state:** "Performing a code quality scan. If you want structure scan or performance scan, please clarify."
+
+---
+
+#### Example 3: "Scan for performance issues"
+**Context:** Explicitly mentions performance
+
+**My Assumption:** Performance scan (checking optimization opportunities)
+
+**Files Used:**
+```
+✅ assistant-instructions.md (Scanning standards, reporting)
+✅ assistant-quality-standards.md (Code quality assessment)
+✅ assistant-performance-optimization.md (Performance checklist, optimization standards)
+❌ assistant-rules.md (No git operations)
+```
+
+**I will state:** "Performing a performance scan as requested."
+
+---
+
+#### Example 4: "Scan the root files"
+**Context:** Root configuration files (package.json, composer.json, etc.)
+
+**My Assumption:** Structure scan (checking file presence, naming, organization)
+
+**Files Used:**
+```
+✅ assistant-instructions.md (Scanning standards, reporting)
+❌ assistant-quality-standards.md (Not assessing code quality)
+❌ assistant-rules.md (No git operations)
+❌ assistant-performance-optimization.md (Not performance-focused)
+```
+
+**I will state:** "Performing a structure scan of root files."
+
+---
+
+## Quick Reference Guide
+
+| Task Type | Files to List |
+|------------|---------------|
+| Simple file read | assistant-instructions.md |
+| Directory listing | assistant-instructions.md |
+| Writing code | assistant-instructions.md + assistant-quality-standards.md |
+| Code quality scan | assistant-instructions.md + assistant-quality-standards.md |
+| Performance scan | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
+| Git operations | assistant-instructions.md + assistant-rules.md |
+| Writing tests | assistant-instructions.md + assistant-quality-standards.md |
+| Security review | assistant-instructions.md + assistant-quality-standards.md |
+| Optimization task | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
+| **"Scan" (ambiguous)** | **assistant-instructions.md + assistant-quality-standards.md (assumes quality scan)** |
+
+---
+
+**CRITICAL RULE:**
+- **ONLY list assistant files that WERE ACTUALLY USED**
+- **NEVER list files that weren't read or applied**
+- **If a standard wasn't applied, don't list the file**
+- **Be honest about what standards guided the work**
+- **No exceptions - only document files that were actually used**
+
+- **Mandatory Documentation Format:**
+
+**In Generated Report Files:**
+```markdown
+**Standards Applied:**
+- ✅ assistant-instructions.md (Quality reporting, brutal truth rule)
+- ✅ assistant-quality-standards.md (Enterprise-grade 10/10 requirements)
+- ✅ assistant-rules.md (Git rules)
+- ✅ assistant-performance-optimization.md (Performance standards)
+```
+
+**In Chat Summary (attempt_completion result):**
+```
+After reading and applying standards from:
+- ✅ assistant-instructions.md
+- ✅ assistant-quality-standards.md  
+- ✅ assistant-rules.md
+- ✅ assistant-performance-optimization.md
+```
+
+**Why This Matters:**
+- Ensures transparency in analysis standards used
+- Creates audit trail of which standards were applied
+- Allows reviewers to verify correct standards were followed
+- Prevents incomplete or partial standard application
+- Makes it clear what "enterprise-grade" or other standards mean
+
+**CRITICAL RULE:**
+- NEVER just say "followed assistant instructions"
+- ALWAYS list EVERY assistant file read and applied
+- If assistant-quality-standards.md is referenced, it MUST be read and applied
+- "Automatically included" means READ and APPLY, not "referenced but not read"
+
+### Time Estimation Policy (MANDATORY)
+
+**IMPORTANT: NEVER provide time estimates for any tasks.**
+
+- **Do NOT provide estimates for:**
+  - Fixing issues or bugs
+  - Developing features
+  - Implementing functionality
+  - Refactoring code
+  - Writing tests
+  - Any development work
+
+- **What to provide instead of time estimates:**
+  - Task complexity assessment (Low/Medium/High/Critical)
+  - Dependencies and prerequisites
+  - Required steps to complete the task
+  - Potential risks or challenges
+  - Implementation phases or stages
+  - Testing requirements
+  - Expected outcomes
+
+- **Why time estimates are not provided:**
+  - Development time varies significantly based on:
+    - Developer experience and familiarity with codebase
+    - Unforeseen technical challenges
+    - Dependencies and external factors
+    - Testing and debugging time
+    - Integration complexity
+  - Time estimates are often inaccurate and create unrealistic expectations
+  - Focus should be on understanding the work, not predicting duration
+
+- **Correct Example:**
+  ```
+  **Task Complexity:** High
+  
+  **Prerequisites:**
+  - Update PHP version to 8.1+
+  - Install TypeScript compiler
+  
+  **Implementation Steps:**
+  1. Convert all .js files to .ts
+  2. Add TypeScript types to functions
+  3. Create interfaces for data structures
+  4. Run TypeScript compiler and fix errors
+  
+  **Risks:**
+  - May need to update related type definitions
+  - Build process may need adjustment
+  ```
+
+- **Incorrect Example:**
+  ```
+  This will take 4-6 hours to complete.
+  ```
+
 ### Code Writing Permission
 
 **IMPORTANT: Never start writing code unless explicitly told to do so.**
@@ -32,35 +426,88 @@
 - This allows you to review changes before they're committed to repository
 - You can make git status checks, staging, and preparation without committing
 
-### Verification and Re-verification Reporting
+---
 
-**IMPORTANT: When creating verification or re-verification reports, always include the user's original request at the top of the report.**
+## Git Operation Rules
 
-- In the **Executive Summary** or **Purpose** section of the report, clearly state:
-  - What the user asked to verify
-  - The specific sections or components requested
-  - The exact wording of the user's request (in quotes where appropriate)
+### Branch Creation Policy
+
+**CRITICAL: The assistant MUST NOT create, checkout, or push any Git branch unless user explicitly instructs it to do so in a direct prompt.**
+
+- **Confirmation Required:** For any action that would create or modify remote branches, assistant will propose exact command and wait for user confirmation.
+- **Exceptions:** None. The assistant will always ask before making branch-related changes.
+- **Visibility:** The assistant will record this policy in project and in its internal task list for adherence.
+
+### Git Backup Branch Naming
+
+**Mandatory Format:** When creating a manual backup branch (e.g., requested by user), branch name MUST use format:
+```
+backup-YYYY-MM-DD-HHMM
+```
+
+**Examples:**
+- `backup-2026-01-16-1430` (January 16, 2026 at 2:30 PM)
+- `backup-2026-12-25-0915` (December 25, 2026 at 9:15 AM)
+
+### Branch Creation Request Format
+
+If you want assistant to create a branch in future, please reply with an explicit instruction like:
+```
+"Create branch X and push to origin"
+```
+
+**Examples of explicit instructions:**
+- "Create branch feature/new-pricing and push to origin"
+- "Create backup-2026-01-16-1430 and push to origin"
+- "Checkout to branch develop and pull latest"
+
+**What will NOT trigger branch creation:**
+- "Fix this issue" (requires explicit branch creation request)
+- "Make these changes" (requires explicit branch creation request)
+- "Start working on feature X" (requires explicit branch creation request)
+
+**Summary:**
+- Assistant will NEVER automatically create, checkout, or push branches
+- User must EXPLICITLY instruct to create a branch
+- Assistant will always propose exact git command and wait for confirmation
+- Backup branches must follow `backup-YYYY-MM-DD-HHMM` format
+
+### User Request Documentation (MANDATORY FOR ALL TASKS)
+
+**IMPORTANT: ALWAYS include the user's original request at the top of ALL attempt_completion results.**
+
+- **Universal Rule:** This applies to ALL tasks, regardless of type:
+  - ✅ Verification and re-verification reports
+  - ✅ Gap analysis reports
+  - ✅ Resolution summary reports
+  - ✅ Code writing tasks
+  - ✅ Feature implementation
+  - ✅ Bug fixes
+  - ✅ File operations
+  - ✅ Documentation tasks
+  - ✅ ANY task completion
+
+- **Location:** Always include in attempt_completion result (chat summary)
 
 - **Format for User Request Documentation:**
   ```
-  **User Request:** "re scan the section 7 and section 8, confirm whether the those secttion are completely, error free or not"
-  
-  **Verification Scope:**
-  - Section 7: includes/ directory
-  - Section 8: languages/ directory
-  - Verification Type: Re-scan and confirmation of error-free status
+  **User Request:** "scan section 12 and also compare with related root files"
   ```
 
-- **Apply to All Report Types:**
-  - Initial verification reports
-  - Re-verification reports
-  - Final verification reports
-  - Gap analysis reports
-  - Resolution summary reports
+- **Purpose:** 
+  - Provides clear context about what was requested
+  - Documents the user's intent and requirements
+  - Creates an audit trail of all user requests
+  - Ensures verification addresses the actual request
+  - Helps reviewers understand the task scope
 
-- **Include in Both Locations:**
-  1. **Generated Report Files** (e.g., final-verification-report.md)
-  2. **Chat Summary** (in attempt_completion result)
+- **When to Include:**
+  - ALWAYS include in every attempt_completion result
+  - No exceptions - this is a universal requirement
+
+- **Where to Include:**
+  - Chat Summary (attempt_completion result) - ALWAYS
+  - Generated Report Files - For verification/gap/resolution reports
 
 - **Why This Matters:**
   - Provides clear context for the verification work
@@ -155,7 +602,52 @@ Skip recommendations only when:
 
 ## Scanning Tasks
 
-### Professional Tool Requirements (MANDATORY for Deep Analysis)
+### Quality Reporting Principle (CRITICAL)
+
+**IMPORTANT: Distinction Between Guides and Reports**
+
+**Guides & Instructions:**
+- Target: Enterprise Grade (10/10)
+- Purpose: Set the standard to aim for
+- Content: Show what perfect looks like
+
+**Reports on Actual Code:**
+- Report: EXACT reality truthfully
+- Purpose: Assess actual state without sugarcoating
+- Content: Show what the code ACTUALLY is (could be 3/10, 5/10, 7/10, etc.)
+
+**Brutal Truth Rule:**
+- NEVER sugarcoat reports to make them "nice"
+- ALWAYS report the ACTUAL state, even if it's poor
+- Be honest about quality: if it's 3/10, say "3/10"
+- Rate code objectively using accurate scores
+- Call out issues even if they're inconvenient or uncomfortable
+- Score should reflect ACTUAL state, not desired state
+
+**Examples:**
+
+✅ **Correct Guide/Instructions:**
+```markdown
+## Quality Standard: Enterprise Grade (10/10)
+Target: All optimizations implemented to meet enterprise standards
+```
+
+✅ **Correct Report on Actual Code:**
+```markdown
+## Quality Assessment: 3/10 (Poor)
+Status: NOT meeting enterprise standards
+Issues: Multiple critical errors, missing implementations
+```
+
+❌ **Incorrect Report (Sugarcoated):**
+```markdown
+## Quality Assessment: 7/10 (Acceptable)
+Status: "Making progress toward standards"
+```
+
+**Summary:**
+- Guides aim for perfection (10/10)
+- Reports reveal truth (actual score)
 
 **IMPORTANT: Professional tools are REQUIRED for comprehensive error detection.** When performing deep scans, code analysis, or verification tasks:
 
@@ -957,7 +1449,7 @@ When scanning code (PHP, JavaScript, CSS), assess optimization level to ensure e
 When working on specific domains, refer to these comprehensive guides:
 
 ### Performance Optimization
-**Guide:** [Performance Optimization Guide](../wp-content/plugins/affiliate-product-showcase/docs/performance-optimization-guide.md)
+**Guide:** [Performance Optimization Guide](assistant-performance-optimization.md)
 
 **When to use:**
 - Analyzing web performance

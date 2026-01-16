@@ -84,6 +84,8 @@ function jsToPhp(value) {
 
 export default function wordpressManifestPlugin(opts = {}) {
   const outputFile = opts.outputFile || path.resolve(process.cwd(), 'includes/asset-manifest.php');
+  const generateSRI = opts.generateSRI !== false; // Default: true
+  const sriAlgorithm = opts.sriAlgorithm || 'sha384'; // Default: sha384
 
   return {
     name: 'wordpress-manifest',
@@ -124,12 +126,15 @@ export default function wordpressManifestPlugin(opts = {}) {
             continue;
           }
 
-          try {
-            const { hash } = await computeFileHash(assetPath, 'sha384');
-            entry.integrity = `sha384-${hash}`;
-          } catch (err) {
-            this.warn(`wordpress-manifest: failed to hash ${assetPath} - ${err.message}`);
-            continue;
+          // Only generate SRI if enabled (default: true)
+          if (generateSRI) {
+            try {
+              const { hash } = await computeFileHash(assetPath, sriAlgorithm);
+              entry.integrity = `${sriAlgorithm}-${hash}`;
+            } catch (err) {
+              this.warn(`wordpress-manifest: failed to hash ${assetPath} - ${err.message}`);
+              continue;
+            }
           }
         }
 

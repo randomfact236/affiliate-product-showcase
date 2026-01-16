@@ -12,7 +12,6 @@
 import { defineConfig, loadEnv, normalizePath } from 'vite';
 import { resolve, basename } from 'path';
 import { existsSync, readFileSync } from 'fs';
-import { createHash } from 'crypto';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import react from '@vitejs/plugin-react';
@@ -175,17 +174,7 @@ const getChunkName = (id) => {
   if (id.includes('/hooks/')) return 'hooks';
 };
 
-// Generate SRI hash for a file
-const generateSRIHash = (filePath, algorithm = 'sha384') => {
-  try {
-    const content = readFileSync(filePath);
-    const hash = createHash(algorithm).update(content).digest('base64');
-    return `${algorithm}-${hash}`;
-  } catch (error) {
-    console.warn(`Failed to generate SRI hash for ${filePath}:`, error.message);
-    return null;
-  }
-};
+// SRI generation handled by wordpressManifest plugin
 
 // SSL Loader (Safe File Reading)
 const loadSSL = (env) => {

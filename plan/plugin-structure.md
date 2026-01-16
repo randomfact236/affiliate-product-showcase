@@ -631,11 +631,6 @@ wp-content/plugins/affiliate-product-showcase/
 ##### 11.3.4 Repositories/
 - `ProductRepositoryTest.php`
 
-### 12. tools/
-**Purpose:** Build tools and utilities for asset compression, SRI (Subresource Integrity) generation, and external request checking.
-- `check-external-requests.js`
-- `compress-assets.js`
-- `generate-sri.js`
 
 ### 13. vite-plugins/
 **Purpose:** Custom Vite plugins for WordPress integration including manifest generation for asset management.
@@ -869,11 +864,6 @@ wp-content/plugins/affiliate-product-showcase/
 - `ProductTest.php`
 ##### Repositories/
 - `ProductRepositoryTest.php`
-
-### tools/
-- `check-external-requests.js`
-- `compress-assets.js`
-- `generate-sri.js`
 
 ### vite-plugins/
 - `wordpress-manifest.js` - WordPress manifest plugin
