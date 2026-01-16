@@ -36,7 +36,7 @@
     "precommit": "lint-staged && npm run check-debug",
     "prepush": "npm run quality && npm run assert-coverage",
     "generate:sri": "node tools/generate-sri.js",
-    "compress": "node tools/compress-assets.js",
+    "compress": "node tools/compress.js",
     "postbuild": "npm run generate:sri && npm run compress",
     "analyze": "npm run build -- --mode=analyze",
     "clean": "rimraf assets/dist"
