@@ -32,6 +32,54 @@
 - This allows you to review changes before they're committed to repository
 - You can make git status checks, staging, and preparation without committing
 
+### Verification and Re-verification Reporting
+
+**IMPORTANT: When creating verification or re-verification reports, always include the user's original request at the top of the report.**
+
+- In the **Executive Summary** or **Purpose** section of the report, clearly state:
+  - What the user asked to verify
+  - The specific sections or components requested
+  - The exact wording of the user's request (in quotes where appropriate)
+
+- **Format for User Request Documentation:**
+  ```
+  **User Request:** "re scan the section 7 and section 8, confirm whether the those secttion are completely, error free or not"
+  
+  **Verification Scope:**
+  - Section 7: includes/ directory
+  - Section 8: languages/ directory
+  - Verification Type: Re-scan and confirmation of error-free status
+  ```
+
+- **Apply to All Report Types:**
+  - Initial verification reports
+  - Re-verification reports
+  - Final verification reports
+  - Gap analysis reports
+  - Resolution summary reports
+
+- **Include in Both Locations:**
+  1. **Generated Report Files** (e.g., final-verification-report.md)
+  2. **Chat Summary** (in attempt_completion result)
+
+- **Why This Matters:**
+  - Provides clear context for the verification work
+  - Documents the user's intent and requirements
+  - Ensures verification addresses the actual request
+  - Creates an audit trail of user requests
+  - Helps reviewers understand the verification scope
+
+- **Example Executive Summary:**
+  ```
+  ## Executive Summary
+
+  **User Request:** "re scan the section 7 and section 8, confirm whether the those secttion are completely, error free or not"
+
+  **Overall Status:** ✅ **BOTH SECTIONS COMPLETE AND ERROR-FREE**
+
+  Both Section 7 and Section 8 have been re-scanned and verified. All critical issues have been addressed, and both sections are now production-ready with no errors or gaps.
+  ```
+
 ### Default Recommendations
 
 **Always provide proactive recommendations after code changes, file modifications, or feature implementations.**
