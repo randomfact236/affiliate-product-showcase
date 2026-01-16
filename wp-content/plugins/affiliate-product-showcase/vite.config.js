@@ -135,6 +135,7 @@ class InputConfig {
     { name: 'admin-styles', path: 'styles/admin.scss', required: false },
     { name: 'frontend-styles', path: 'styles/frontend.scss', required: true },
     { name: 'editor-styles', path: 'styles/editor.scss', required: false },
+    { name: 'component-library', path: '../resources/css/app.css', required: false },
   ];
 
   constructor(paths) {
@@ -142,7 +143,11 @@ class InputConfig {
     const missing = [];
     
     for (const { name, path, required } of InputConfig.ENTRIES) {
-      const full = resolve(paths.frontend, path);
+      // Handle relative paths for resources directory
+      const full = path.startsWith('../') 
+        ? resolve(paths.plugin, path.slice(3))
+        : resolve(paths.frontend, path);
+      
       if (existsSync(full)) {
         this.entries[name] = full;
       } else if (required) {
