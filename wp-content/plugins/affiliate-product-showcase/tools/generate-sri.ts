@@ -10,6 +10,15 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'assets/dist');
 const outputFile = path.join(distDir, 'sri-hashes.json');
 
+// Export fs context for testability
+export const fsContext = {
+	readdir: fs.readdir,
+	readFile: fs.readFile,
+	writeFile: fs.writeFile,
+	stat: fs.stat,
+	access: fs.access,
+};
+
 interface SRIEntry {
 	integrity: string;
 	size: number;
@@ -38,7 +47,7 @@ const brotliOptions: BrotiliOptions = {
 const gzipOptions = { level: 9 };
 
 export async function walk(dir: string): Promise<string[]> {
-	const entries = await fs.readdir(dir, { withFileTypes: true });
+	const entries = await fsContext.readdir(dir, { withFileTypes: true });
 	const files = await Promise.all(
 		entries.map(async (entry) => {
 			const fullPath = path.join(dir, entry.name);
@@ -76,8 +85,8 @@ export function buildIntegrity(buffer: Buffer): string {
 }
 
 export async function processFile(filePath: string): Promise<SRIEntry> {
-	const buffer = await fs.readFile(filePath);
-	const stats = await fs.stat(filePath);
+	const buffer = await fsContext.readFile(filePath);
+	const stats = await fsContext.stat(filePath);
 	const integrity = buildIntegrity(buffer);
 
 	const gzipSize = gzipSync(buffer, gzipOptions).byteLength;
@@ -95,7 +104,7 @@ export async function processFile(filePath: string): Promise<SRIEntry> {
 
 export async function main(): Promise<void> {
 	try {
-		await fs.access(distDir);
+		await fsContext.access(distDir);
 		const files = (await walk(distDir)).filter((file) => !shouldSkip(file));
 		const results: Record<string, SRIEntry> = {};
 
@@ -106,7 +115,7 @@ export async function main(): Promise<void> {
 		}
 
 		const output = JSON.stringify(results, null, 2);
-		await fs.writeFile(outputFile, output, 'utf8');
+		await fsContext.writeFile(outputFile, output, 'utf8');
 		console.log(`SRI hashes written to ${outputFile}`);
 	} catch (error) {
 		console.error('SRI generation failed:', error instanceof Error ? error.message : error);

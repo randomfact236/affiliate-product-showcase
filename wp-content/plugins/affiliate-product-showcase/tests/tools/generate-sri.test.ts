@@ -1,29 +1,29 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createHash } from 'crypto';
-import { promises as fs } from 'fs';
-import { brotliCompressSync, gzipSync } from 'zlib';
-
-// Mock fs module
-vi.mock('fs', async () => {
-	const actual = await vi.importActual('fs');
-	return {
-		...actual,
-		promises: {
-			readdir: vi.fn(),
-			readFile: vi.fn(),
-			writeFile: vi.fn(),
-			stat: vi.fn(),
-			access: vi.fn(),
-		},
-	};
-});
+import type { Stats } from 'fs';
 
 // Mock console.log and console.error
 const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
+// Mock fsContext
+const mockFsContext = {
+	readdir: vi.fn(),
+	readFile: vi.fn(),
+	writeFile: vi.fn(),
+	stat: vi.fn(),
+	access: vi.fn(),
+};
+
+vi.mock('../../tools/generate-sri', async () => {
+	const actual = await vi.importActual('../../tools/generate-sri');
+	return {
+		...actual,
+		fsContext: mockFsContext,
+	};
+});
+
 // Import module after mocking
-const { walk, shouldSkip, buildIntegrity, processFile, main } = await import('../../tools/generate-sri.ts');
+import { walk, shouldSkip, buildIntegrity, processFile, main } from '../../tools/generate-sri';
 
 describe('generate-sri.ts', () => {
 	beforeEach(() => {
@@ -36,7 +36,7 @@ describe('generate-sri.ts', () => {
 
 	describe('walk', () => {
 		it('should return array of file paths for a flat directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file2.js', isDirectory: () => false },
 			]);
@@ -46,7 +46,7 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should recursively walk through subdirectories', async () => {
-			vi.mocked(fs.readdir)
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'file1.js', isDirectory: () => false },
 					{ name: 'subdir', isDirectory: () => true },
@@ -60,14 +60,14 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should handle empty directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([]);
+			mockFsContext.readdir.mockResolvedValue([]);
 
 			const files = await walk('/test/dir');
 			expect(files).toEqual([]);
 		});
 
 		it('should handle nested directories deeply', async () => {
-			vi.mocked(fs.readdir)
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'dir1', isDirectory: () => true },
 				])
@@ -167,11 +167,11 @@ describe('generate-sri.ts', () => {
 
 	describe('processFile', () => {
 		const testBuffer = Buffer.from('test content');
-		const testStats = { size: testBuffer.length };
+		const testStats: Stats = { size: testBuffer.length } as Stats;
 
 		beforeEach(() => {
-			vi.mocked(fs.readFile).mockResolvedValue(testBuffer);
-			vi.mocked(fs.stat).mockResolvedValue(testStats);
+			mockFsContext.readFile.mockResolvedValue(testBuffer);
+			mockFsContext.stat.mockResolvedValue(testStats);
 		});
 
 		it('should process file and return SRI entry', async () => {
@@ -221,8 +221,8 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should handle files with size 0', async () => {
-			vi.mocked(fs.stat).mockResolvedValue({ size: 0 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from(''));
+			mockFsContext.stat.mockResolvedValue({ size: 0 } as Stats);
+			mockFsContext.readFile.mockResolvedValue(Buffer.from(''));
 
 			const result = await processFile('/test/empty.js');
 
@@ -234,8 +234,8 @@ describe('generate-sri.ts', () => {
 		it('should handle large files', async () => {
 			const largeContent = 'x'.repeat(100000);
 			const largeBuffer = Buffer.from(largeContent);
-			vi.mocked(fs.readFile).mockResolvedValue(largeBuffer);
-			vi.mocked(fs.stat).mockResolvedValue({ size: largeBuffer.length });
+			mockFsContext.readFile.mockResolvedValue(largeBuffer);
+			mockFsContext.stat.mockResolvedValue({ size: largeBuffer.length } as Stats);
 
 			const result = await processFile('/test/large.js');
 
@@ -246,19 +246,19 @@ describe('generate-sri.ts', () => {
 
 	describe('main', () => {
 		beforeEach(() => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 100 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('test'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 100 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('test'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 		});
 
 		it('should run successfully and write SRI hashes', async () => {
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledWith(
+			expect(mockFsContext.writeFile).toHaveBeenCalledWith(
 				expect.stringContaining('sri-hashes.json'),
 				expect.any(String),
 				'utf8'
@@ -266,7 +266,7 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should handle errors gracefully', async () => {
-			vi.mocked(fs.access).mockRejectedValue(new Error('Directory not found'));
+			mockFsContext.access.mockRejectedValue(new Error('Directory not found'));
 
 			await main();
 
@@ -274,7 +274,7 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should set process.exitCode on error', async () => {
-			vi.mocked(fs.access).mockRejectedValue(new Error('Error'));
+			mockFsContext.access.mockRejectedValue(new Error('Error'));
 
 			await main();
 
@@ -282,14 +282,14 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should process all files in dist directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file2.css', isDirectory: () => false },
 			]);
 
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledWith(
+			expect(mockFsContext.writeFile).toHaveBeenCalledWith(
 				expect.stringContaining('sri-hashes.json'),
 				expect.stringContaining('file1'),
 				'utf8'
@@ -297,7 +297,7 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should skip files that match shouldSkip criteria', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file1.js.map', isDirectory: () => false },
 				{ name: 'file2.js', isDirectory: () => false },
@@ -305,7 +305,7 @@ describe('generate-sri.ts', () => {
 
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			expect(output).not.toContain('file1.js.map');
 		});
@@ -313,7 +313,7 @@ describe('generate-sri.ts', () => {
 		it('should write JSON output with correct structure', async () => {
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			const parsed = JSON.parse(output);
 
@@ -324,19 +324,19 @@ describe('generate-sri.ts', () => {
 
 	describe('integration tests', () => {
 		it('should process multiple files with different extensions', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'app.js', isDirectory: () => false },
 				{ name: 'style.css', isDirectory: () => false },
 				{ name: 'index.html', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 1000 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('content'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 1000 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('content'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			const parsed = JSON.parse(output);
 
@@ -347,8 +347,8 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should handle subdirectories in dist folder', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir)
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'app.js', isDirectory: () => false },
 					{ name: 'css', isDirectory: () => true },
@@ -356,13 +356,13 @@ describe('generate-sri.ts', () => {
 				.mockResolvedValueOnce([
 					{ name: 'style.css', isDirectory: () => false },
 				]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 500 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('content'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 500 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('content'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			const parsed = JSON.parse(output);
 
@@ -372,18 +372,18 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should skip manifest.json but process other JSON files', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'manifest.json', isDirectory: () => false },
 				{ name: 'data.json', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 200 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('{}'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 200 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('{}'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			const parsed = JSON.parse(output);
 
@@ -392,20 +392,20 @@ describe('generate-sri.ts', () => {
 		});
 
 		it('should generate unique hashes for different files', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file2.js', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 100 });
-			vi.mocked(fs.readFile)
+			mockFsContext.stat.mockResolvedValue({ size: 100 });
+			mockFsContext.readFile
 				.mockResolvedValueOnce(Buffer.from('content1'))
 				.mockResolvedValueOnce(Buffer.from('content2'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
+			const writeCall = mockFsContext.writeFile.mock.calls[0];
 			const output = writeCall[1] as string;
 			const parsed = JSON.parse(output);
 

@@ -9,6 +9,15 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'assets/dist');
 const reportFile = path.join(distDir, 'compression-report.json');
 
+// Export fs context for testability
+export const fsContext = {
+	readdir: fs.readdir,
+	readFile: fs.readFile,
+	writeFile: fs.writeFile,
+	stat: fs.stat,
+	access: fs.access,
+};
+
 interface CompressionOptions {
 	params: {
 		[key: number]: number;
@@ -43,7 +52,7 @@ const brotliOptions: BrotiliOptions = {
 const gzipOptions = { level: 9 };
 
 export async function walk(dir: string): Promise<string[]> {
-	const entries = await fs.readdir(dir, { withFileTypes: true });
+	const entries = await fsContext.readdir(dir, { withFileTypes: true });
 	const files = await Promise.all(
 		entries.map(async (entry) => {
 			const fullPath = path.join(dir, entry.name);
@@ -69,14 +78,14 @@ export function shouldSkip(filePath: string): boolean {
 }
 
 export async function compressFile(filePath: string): Promise<CompressionReportEntry> {
-	const buffer = await fs.readFile(filePath);
-	const stats = await fs.stat(filePath);
+	const buffer = await fsContext.readFile(filePath);
+	const stats = await fsContext.stat(filePath);
 
 	const gzipBuffer = gzipSync(buffer, gzipOptions);
 	const brotliBuffer = brotliCompressSync(buffer, brotliOptions);
 
-	await fs.writeFile(`${filePath}.gz`, gzipBuffer);
-	await fs.writeFile(`${filePath}.br`, brotliBuffer);
+	await fsContext.writeFile(`${filePath}.gz`, gzipBuffer);
+	await fsContext.writeFile(`${filePath}.br`, brotliBuffer);
 
 	const gzipRatio = Number((gzipBuffer.byteLength / Math.max(stats.size, 1)).toFixed(4));
 	const brotliRatio = Number((brotliBuffer.byteLength / Math.max(stats.size, 1)).toFixed(4));
@@ -99,7 +108,7 @@ export async function compressFile(filePath: string): Promise<CompressionReportE
 
 export async function main(): Promise<void> {
 	try {
-		await fs.access(distDir);
+		await fsContext.access(distDir);
 		const files = (await walk(distDir)).filter((file) => !shouldSkip(file));
 		const report: CompressionReportEntry[] = [];
 
@@ -107,7 +116,7 @@ export async function main(): Promise<void> {
 			report.push(await compressFile(file));
 		}
 
-		await fs.writeFile(reportFile, JSON.stringify(report, null, 2), 'utf8');
+		await fsContext.writeFile(reportFile, JSON.stringify(report, null, 2), 'utf8');
 		console.log(`Compression report written to ${reportFile}`);
 	} catch (error) {
 		console.error('Compression failed:', error instanceof Error ? error.message : error);

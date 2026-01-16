@@ -1,30 +1,30 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { promises as fs } from 'fs';
 import path from 'path';
-import { brotliCompressSync, gzipSync } from 'zlib';
-import { fileURLToPath } from 'url';
-
-// Mock fs module
-vi.mock('fs', async () => {
-	const actual = await vi.importActual('fs');
-	return {
-		...actual,
-		promises: {
-			readdir: vi.fn(),
-			readFile: vi.fn(),
-			writeFile: vi.fn(),
-			stat: vi.fn(),
-			access: vi.fn(),
-		},
-	};
-});
+import type { Stats } from 'fs';
 
 // Mock console.log and console.error
 const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-// Import the module after mocking
-const { walk, shouldSkip, compressFile, main } = await import('../../tools/compress.ts');
+// Mock fsContext
+const mockFsContext = {
+	readdir: vi.fn(),
+	readFile: vi.fn(),
+	writeFile: vi.fn(),
+	stat: vi.fn(),
+	access: vi.fn(),
+};
+
+vi.mock('../../tools/compress', async () => {
+	const actual = await vi.importActual('../../tools/compress');
+	return {
+		...actual,
+		fsContext: mockFsContext,
+	};
+});
+
+// Import module after mocking
+import { walk, shouldSkip, compressFile, main } from '../../tools/compress';
 
 describe('compress.ts', () => {
 	beforeEach(() => {
@@ -37,7 +37,7 @@ describe('compress.ts', () => {
 
 	describe('walk', () => {
 		it('should return array of file paths for a flat directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file2.js', isDirectory: () => false },
 			]);
@@ -47,7 +47,7 @@ describe('compress.ts', () => {
 		});
 
 		it('should recursively walk through subdirectories', async () => {
-			vi.mocked(fs.readdir)
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'file1.js', isDirectory: () => false },
 					{ name: 'subdir', isDirectory: () => true },
@@ -61,14 +61,14 @@ describe('compress.ts', () => {
 		});
 
 		it('should handle empty directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([]);
+			mockFsContext.readdir.mockResolvedValue([]);
 
 			const files = await walk('/test/dir');
 			expect(files).toEqual([]);
 		});
 
 		it('should handle nested directories deeply', async () => {
-			vi.mocked(fs.readdir)
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'dir1', isDirectory: () => true },
 				])
@@ -119,19 +119,19 @@ describe('compress.ts', () => {
 
 	describe('compressFile', () => {
 		const testBuffer = Buffer.from('test content');
-		const testStats = { size: testBuffer.length };
+		const testStats: Stats = { size: testBuffer.length } as Stats;
 
 		beforeEach(() => {
-			vi.mocked(fs.readFile).mockResolvedValue(testBuffer);
-			vi.mocked(fs.stat).mockResolvedValue(testStats);
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.readFile.mockResolvedValue(testBuffer);
+			mockFsContext.stat.mockResolvedValue(testStats);
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 		});
 
 		it('should compress a file and create .gz and .br versions', async () => {
 			const result = await compressFile('/test/file.js');
 
-			expect(fs.writeFile).toHaveBeenCalledWith('/test/file.js.gz', expect.any(Buffer));
-			expect(fs.writeFile).toHaveBeenCalledWith('/test/file.js.br', expect.any(Buffer));
+			expect(mockFsContext.writeFile).toHaveBeenCalledWith('/test/file.js.gz', expect.any(Buffer));
+			expect(mockFsContext.writeFile).toHaveBeenCalledWith('/test/file.js.br', expect.any(Buffer));
 		});
 
 		it('should return compression report with correct structure', async () => {
@@ -157,8 +157,8 @@ describe('compress.ts', () => {
 		});
 
 		it('should handle files with size 0', async () => {
-			vi.mocked(fs.stat).mockResolvedValue({ size: 0 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from(''));
+			mockFsContext.stat.mockResolvedValue({ size: 0 } as Stats);
+			mockFsContext.readFile.mockResolvedValue(Buffer.from(''));
 
 			const result = await compressFile('/test/empty.js');
 
@@ -177,19 +177,19 @@ describe('compress.ts', () => {
 
 	describe('main', () => {
 		beforeEach(() => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 100 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('test'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 100 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('test'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 		});
 
 		it('should run successfully and write compression report', async () => {
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledWith(
+			expect(mockFsContext.writeFile).toHaveBeenCalledWith(
 				expect.stringContaining('compression-report.json'),
 				expect.any(String),
 				'utf8'
@@ -197,7 +197,7 @@ describe('compress.ts', () => {
 		});
 
 		it('should handle errors gracefully', async () => {
-			vi.mocked(fs.access).mockRejectedValue(new Error('Directory not found'));
+			mockFsContext.access.mockRejectedValue(new Error('Directory not found'));
 
 			await main();
 
@@ -205,7 +205,7 @@ describe('compress.ts', () => {
 		});
 
 		it('should set process.exitCode on error', async () => {
-			vi.mocked(fs.access).mockRejectedValue(new Error('Error'));
+			mockFsContext.access.mockRejectedValue(new Error('Error'));
 
 			await main();
 
@@ -213,18 +213,18 @@ describe('compress.ts', () => {
 		});
 
 		it('should process all files in dist directory', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file2.css', isDirectory: () => false },
 			]);
 
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledTimes(5); // 2 files * 2 compressions + 1 report
+			expect(mockFsContext.writeFile).toHaveBeenCalledTimes(5); // 2 files * 2 compressions + 1 report
 		});
 
 		it('should skip files that match shouldSkip criteria', async () => {
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'file1.js', isDirectory: () => false },
 				{ name: 'file1.js.gz', isDirectory: () => false },
 				{ name: 'file2.js', isDirectory: () => false },
@@ -233,30 +233,30 @@ describe('compress.ts', () => {
 			await main();
 
 			// Should only process file1.js and file2.js, skip file1.js.gz
-			expect(fs.writeFile).toHaveBeenCalledTimes(5);
+			expect(mockFsContext.writeFile).toHaveBeenCalledTimes(5);
 		});
 	});
 
 	describe('integration tests', () => {
 		it('should compress multiple files with different extensions', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir).mockResolvedValue([
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir.mockResolvedValue([
 				{ name: 'app.js', isDirectory: () => false },
 				{ name: 'style.css', isDirectory: () => false },
 				{ name: 'index.html', isDirectory: () => false },
 			]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 1000 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('content'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 1000 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('content'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledTimes(7); // 3 files * 2 + 1 report
+			expect(mockFsContext.writeFile).toHaveBeenCalledTimes(7); // 3 files * 2 + 1 report
 		});
 
 		it('should handle subdirectories in dist folder', async () => {
-			vi.mocked(fs.access).mockResolvedValue(undefined);
-			vi.mocked(fs.readdir)
+			mockFsContext.access.mockResolvedValue(undefined);
+			mockFsContext.readdir
 				.mockResolvedValueOnce([
 					{ name: 'app.js', isDirectory: () => false },
 					{ name: 'css', isDirectory: () => true },
@@ -264,13 +264,13 @@ describe('compress.ts', () => {
 				.mockResolvedValueOnce([
 					{ name: 'style.css', isDirectory: () => false },
 				]);
-			vi.mocked(fs.stat).mockResolvedValue({ size: 500 });
-			vi.mocked(fs.readFile).mockResolvedValue(Buffer.from('content'));
-			vi.mocked(fs.writeFile).mockResolvedValue(undefined);
+			mockFsContext.stat.mockResolvedValue({ size: 500 });
+			mockFsContext.readFile.mockResolvedValue(Buffer.from('content'));
+			mockFsContext.writeFile.mockResolvedValue(undefined);
 
 			await main();
 
-			expect(fs.writeFile).toHaveBeenCalledTimes(5); // 2 files * 2 + 1 report
+			expect(mockFsContext.writeFile).toHaveBeenCalledTimes(5); // 2 files * 2 + 1 report
 		});
 	});
 });
