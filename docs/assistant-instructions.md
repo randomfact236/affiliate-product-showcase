@@ -1482,19 +1482,42 @@ When working on specific domains, refer to these comprehensive guides:
 
 **NO EXCEPTIONS - This rule applies to ALL tasks regardless of type or complexity.**
 
+### Chat Summary Format (MANDATORY)
+
+**Every task completion must include the following format at the top of the summary:**
+
+```
+## User Request
+"[Your exact message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ assistant-quality-standards.md (APPLIED)
+- ✅ assistant-performance-optimization.md (APPLIED)
+```
+
+**OR if no assistant files were used:**
+```
+## User Request
+"[Your exact message]"
+
+## Assistant Files Used
+No assistant file is used
+```
+
 ### Storage Requirements
 
-**Location:** Root directory `chat-summaries/`
+**Location:** Root directory `chat-history/`
 
 **File Naming Convention:**
 ```
-chat-summaries/YYYY-MM-DD-HHMM-Chat-[Number].md
+chat-history/Chat-[Number]-YYYY-MM-DD-HHMM.md
 ```
 
 **Examples:**
-- `chat-summaries/2026-01-17-1550-Chat-001.md`
-- `chat-summaries/2026-01-17-1600-Chat-002.md`
-- `chat-summaries/2026-01-18-0930-Chat-003.md`
+- `chat-history/Chat-001-2026-01-17-1550.md`
+- `chat-history/Chat-002-2026-01-17-1600.md`
+- `chat-history/Chat-003-2026-01-18-0930.md`
 
 ### File Content Format
 
@@ -1508,10 +1531,15 @@ Each chat summary file should contain:
 **Time:** HH:MM (Timezone)
 
 ## User Request
-[Original user request/question]
+"[Your exact message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ assistant-quality-standards.md (APPLIED)
+- ✅ assistant-performance-optimization.md (APPLIED)
 
 ## Summary
-[Brief summary of the conversation]
+[Brief summary of the recent message]
 
 ## Key Points
 - [Point 1]
@@ -1537,6 +1565,8 @@ Each chat summary file should contain:
 *Generated on: YYYY-MM-DD HH:MM:SS*
 ```
 
+**IMPORTANT:** Only summarize the recent message, not the entire chat history. Each summary should be concise and focused on the current task.
+
 ### When to Create/Update Chat Files
 
 **🚨 CRITICAL: This is a NON-NEGOTIABLE requirement. Failure to create/update chat summaries will result in incomplete task completion.**
@@ -1548,6 +1578,7 @@ Each chat summary file should contain:
 3. **Code Changes:** After modifying files - **MANDATORY**
 4. **Git Operations:** After commit/push operations - **MANDATORY**
 5. **Verification Tasks:** After completing verification reports - **MANDATORY**
+6. **After Each Message Summary:** After creating each summary report - **MANDATORY**
 
 **NO EXCEPTIONS - This applies to:**
 - ✅ All task types (code writing, scanning, verification, documentation, etc.)
@@ -1557,10 +1588,41 @@ Each chat summary file should contain:
 
 **FAILURE TO COMPLY = INCOMPLETE TASK**
 
+### File Creation Strategy: Per Chat Session
+
+**IMPORTANT: Files are created per chat session, NOT per day.**
+
+**How it works:**
+- **First message of a new chat session:** Create a new file with next sequential number
+- **Subsequent messages in same session:** Update the existing file (append new summaries)
+- **New chat session:** Create a new file with incremented number
+
+**Example:**
+```
+Chat Session 1 (Today, 6:19 PM):
+- Message 1: Create file 001
+- Message 2: Update file 001
+- Message 3: Update file 001
+
+Chat Session 2 (Today, 6:30 PM):
+- Message 1: Create file 002
+- Message 2: Update file 002
+
+Chat Session 3 (Tomorrow, 9:00 AM):
+- Message 1: Create file 003
+```
+
+**Why per session, not per day:**
+- ✅ Tracks individual conversations
+- ✅ Easier to reference specific discussions
+- ✅ Maintains chronological order
+- ✅ Prevents file from becoming too large
+- ✅ Clear separation between different topics/sessions
+
 ### File Naming Logic
 
 **For New Chats:**
-- Check existing files in chat-summaries/
+- Check existing files in chat-history/
 - Find the highest numbered file
 - Increment the number by 1
 - Use current date and time
@@ -1579,11 +1641,11 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 
 # Find next chat number
-NEXT_NUM=$(ls chat-summaries/*.md 2>/dev/null | wc -l)
+NEXT_NUM=$(ls chat-history/*.md 2>/dev/null | wc -l)
 NEXT_NUM=$((NEXT_NUM + 1))
 
 # Format number with leading zeros
-FILE_NAME="chat-summaries/${DATE}-${TIME}-Chat-$(printf "%03d" ${NEXT_NUM}).md"
+FILE_NAME="chat-history/Chat-$(printf "%03d" ${NEXT_NUM})-${DATE}-${TIME}.md"
 ```
 
 **Step 2: Create file with template**
@@ -1654,21 +1716,21 @@ EOF
 
 ### Integration with Git
 
-**IMPORTANT: Include chat-summaries folder in git commits**
+**IMPORTANT: Include chat-history folder in git commits**`
 
 ```bash
-# Add chat summaries to git
-git add chat-summaries/
+# Add chat history to git
+git add chat-history/
 
 # Commit with appropriate message
-git commit -m "docs: Add chat summary for [task description]"
+git commit -m "docs: Add chat history for [task description]"
 
 # Push to remote
 git push
 ```
 
 **Git Ignore Consideration:**
-- Chat summaries SHOULD be tracked in git
+- Chat history SHOULD be tracked in git
 - They provide valuable documentation
 - Do NOT add to .gitignore
 

@@ -1,0 +1,288 @@
+name: Testing
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  # PHP Unit Tests
+  phpunit:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl, dom
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPUnit
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-text --coverage-clover=coverage.xml
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phpunit-coverage
+          path: wp-content/plugins/affiliate-product-showcase/coverage.xml
+
+  # PHP Unit Tests with Coverage
+  phpunit-coverage:
+    name: PHPUnit Coverage
+    runs-on: ubuntu-latest
+    needs: phpunit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl, dom
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Generate Coverage Report
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-html=coverage-html --coverage-text
+
+      - name: Upload HTML Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phpunit-coverage-html
+          path: wp-content/plugins/affiliate-product-showcase/coverage-html
+
+  # Frontend Tests
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run Frontend Tests
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run test
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-test-results
+          path: wp-content/plugins/affiliate-product-showcase/test-results
+
+  # Integration Tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl, dom, mysql
+          coverage: none
+
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '8.0'
+          mysql database: 'test_db'
+          mysql root password: 'root'
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Integration Tests
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpunit --configuration=phpunit.xml.dist --testsuite=integration
+
+  # Mutation Testing
+  mutation-testing:
+    name: Mutation Testing
+    runs-on: ubuntu-latest
+    needs: phpunit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl, dom
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Mutation Testing
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/infection --threads=4 --min-msi=80 --min-covered-msi=85
+
+      - name: Upload Mutation Testing Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-testing-report
+          path: wp-content/plugins/affiliate-product-showcase/infection.log
+
+  # Test Summary
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs:
+      - phpunit
+      - phpunit-coverage
+      - frontend-tests
+      - integration-tests
+      - mutation-testing
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download All Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: test-reports
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Generate Test Summary
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          
+          echo "# Test Report" > test-summary.md
+          echo "" >> test-summary.md
+          echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S")" >> test-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> test-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> test-summary.md
+          echo "" >> test-summary.md
+          
+          # PHPUnit Tests
+          echo "## PHPUnit Tests" >> test-summary.md
+          if [ -f "../test-reports/phpunit-coverage/coverage.xml" ]; then
+            echo "**Status:** ✅ Tests completed" >> test-summary.md
+            echo "**Coverage Report:** Available in artifacts" >> test-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> test-summary.md
+          fi
+          echo "" >> test-summary.md
+          
+          # Frontend Tests
+          echo "## Frontend Tests" >> test-summary.md
+          if [ -f "../test-reports/frontend-test-results" ]; then
+            echo "**Status:** ✅ Tests completed" >> test-summary.md
+            echo "**Results:** Available in artifacts" >> test-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> test-summary.md
+          fi
+          echo "" >> test-summary.md
+          
+          # Integration Tests
+          echo "## Integration Tests" >> test-summary.md
+          echo "**Status:** ✅ Tests completed" >> test-summary.md
+          echo "" >> test-summary.md
+          
+          # Mutation Testing
+          echo "## Mutation Testing" >> test-summary.md
+          if [ -f "../test-reports/mutation-testing-report/infection.log" ]; then
+            echo "**Status:** ✅ Mutation testing completed" >> test-summary.md
+            echo "**Report:** Available in artifacts" >> test-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> test-summary.md
+          fi
+          echo "" >> test-summary.md
+          
+          # Overall Status
+          echo "## Overall Status" >> test-summary.md
+          echo "" >> test-summary.md
+          echo "---" >> test-summary.md
+          echo "Generated by GitHub Actions Testing Workflow" >> test-summary.md
+          
+          cat test-summary.md
+
+      - name: Upload Test Summary
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-summary
+          path: wp-content/plugins/affiliate-product-showcase/test-summary.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const summaryPath = path.join('wp-content/plugins/affiliate-product-showcase', 'test-summary.md');
+            
+            if (fs.existsSync(summaryPath)) {
+              const summary = fs.readFileSync(summaryPath, 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            }

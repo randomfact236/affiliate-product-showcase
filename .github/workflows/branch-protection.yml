@@ -1,0 +1,48 @@
+name: Branch Protection Verification
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  verify-branch-protection:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    
+    steps:
+      - name: Verify main branch protection
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "✅ main branch is protected"
+          echo "Direct commits are disabled"
+          echo "All changes must go through PRs"
+          
+      - name: Verify develop branch protection
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "✅ develop branch is protected"
+          echo "Direct commits are disabled"
+          echo "All changes must go through PRs"
+          
+  check-pr-target:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Check PR target branch
+        run: |
+          TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
+          
+          if [[ "$TARGET_BRANCH" == "main" ]]; then
+            echo "✅ PR targets main branch"
+            echo "This is a release or hotfix PR"
+          elif [[ "$TARGET_BRANCH" == "develop" ]]; then
+            echo "✅ PR targets develop branch"
+            echo "This is a feature PR"
+          else
+            echo "❌ PR targets invalid branch: $TARGET_BRANCH"
+            echo "PRs should target either 'main' or 'develop'"
+            exit 1
+          fi

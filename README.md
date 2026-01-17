@@ -342,6 +342,37 @@ wp affiliate maintenance verify --fix
 
 ## 🛠 Development
 
+### GitFlow Workflow
+
+This project uses **GitFlow** for branch management. See [GitFlow Workflow Guide](docs/gitflow-workflow.md) for complete documentation.
+
+**Quick Start:**
+```bash
+# Start a new feature
+git checkout develop
+git pull origin develop
+git checkout -b feature/[ticket]-[description]
+
+# Create a release
+git checkout develop
+git pull origin develop
+git checkout -b release/[version]
+
+# Create a hotfix
+git checkout main
+git pull origin main
+git checkout -b hotfix/[version]
+```
+
+**Setup Script:**
+```bash
+# Run the GitFlow setup script
+./scripts/setup-gitflow.sh
+```
+
+**Cheat Sheet:**
+- [GitFlow Cheat Sheet](docs/gitflow-cheatsheet.md) - Quick reference
+
 ### Setup
 
 ```bash
