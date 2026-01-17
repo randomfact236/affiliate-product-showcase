@@ -1,5 +1,8 @@
 # Affiliate Product Showcase Plugin Structure
 
+**⚠️ STRICT RULE: NEVER DELETE THIS FILE**
+**This file is the authoritative source of truth for the plugin structure. It must never be deleted, modified without authorization, or moved. This file is critical for maintaining plugin integrity and must be preserved at all costs.**
+
 Complete directory and file structure for the Affiliate Product Showcase WordPress plugin.
 
 ```
