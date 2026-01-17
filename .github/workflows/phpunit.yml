@@ -36,19 +36,12 @@ jobs:
           find . -path "./vendor/*/.git" -type d -prune -exec rm -rf {} + || true
 
 
-      - name: Cache Composer
-        uses: actions/cache@v4
-        with:
-          path: ~/.composer/cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
- 
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP Environment
+        uses: ./.github/actions/setup-php
         with:
           php-version: '8.4'
-          extensions: mysqli, pdo_mysql
+          extensions: 'mysqli, pdo_mysql'
+          use-cache: 'false'
 
       - name: Install MySQL client
         run: |

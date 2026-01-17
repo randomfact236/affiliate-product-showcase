@@ -18,10 +18,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup PHP on runner
-        uses: shivammathur/setup-php@v2
+        uses: ./.github/actions/setup-php
         with:
           php-version: '8.4'
-          tools: composer:v2
+          use-cache: 'false'
 
       - name: Set up Qemu
         uses: docker/setup-qemu-action@v2

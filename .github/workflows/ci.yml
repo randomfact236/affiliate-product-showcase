@@ -24,19 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP Environment
+        uses: ./.github/actions/setup-php
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2
-          extensions: mbstring, dom, xml, xmlwriter
-
-      - name: Setup Composer cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.composer/cache
-          key: composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
 
       - name: Validate composer
         run: composer --version
