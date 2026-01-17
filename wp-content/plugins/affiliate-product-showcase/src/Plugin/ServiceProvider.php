@@ -21,6 +21,7 @@ use AffiliateProductShowcase\Privacy\GDPR;
 use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Repositories\ProductRepository;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
+use AffiliateProductShowcase\Rest\AffiliatesController;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Rest\ProductsController;
@@ -29,6 +30,8 @@ use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Services\AnalyticsService;
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Validators\ProductValidator;
+use League\Container\ContainerAwareTrait;
+use League\Container\ServiceProvider\ServiceProviderInterface;
 
 /**
  * Service Provider for Dependency Injection Container
@@ -39,11 +42,39 @@ use AffiliateProductShowcase\Validators\ProductValidator;
  * @package AffiliateProductShowcase\Plugin
  * @since 1.0.0
  */
-final class ServiceProvider implements \League\Container\ServiceProvider\ServiceProviderInterface {
+final class ServiceProvider implements ServiceProviderInterface {
+	use ContainerAwareTrait;
+
 	/**
-	 * List of services provided by this provider
+	 * @var string
+	 */
+	protected $identifier;
+
+	/**
+	 * Get the identifier for this service provider
 	 *
-	 * @return array<string> Service class names
+	 * @return string
+	 */
+	public function getIdentifier(): string {
+		return $this->identifier ?? get_class( $this );
+	}
+
+	/**
+	 * Set the identifier for this service provider
+	 *
+	 * @param string $id The identifier to set
+	 * @return ServiceProviderInterface
+	 */
+	public function setIdentifier( string $id ): ServiceProviderInterface {
+		$this->identifier = $id;
+		return $this;
+	}
+
+	/**
+	 * Check if this provider provides a specific service
+	 *
+	 * @param string $id The service identifier to check
+	 * @return bool
 	 */
 	public function provides( string $id ): bool {
 		$services = [
@@ -90,6 +121,7 @@ final class ServiceProvider implements \League\Container\ServiceProvider\Service
 			ProductsController::class,
 			AnalyticsController::class,
 			HealthController::class,
+			AffiliatesController::class,
 
 			// CLI
 			ProductsCommand::class,
@@ -177,7 +209,9 @@ final class ServiceProvider implements \League\Container\ServiceProvider\Service
 		// ============================================================================
 		$this->getContainer()->addShared( Public_::class )
 			->addArgument( Assets::class )
-			->addArgument( ProductService::class );
+			->addArgument( ProductService::class )
+			->addArgument( SettingsRepository::class )
+			->addArgument( AffiliateService::class );
 
 		// ============================================================================
 		// Blocks (Shared - Request Scope)
@@ -195,6 +229,9 @@ final class ServiceProvider implements \League\Container\ServiceProvider\Service
 			->addArgument( AnalyticsService::class );
 
 		$this->getContainer()->addShared( HealthController::class );
+
+		$this->getContainer()->addShared( AffiliatesController::class )
+			->addArgument( AffiliateService::class );
 
 		// ============================================================================
 		// CLI (Shared - Request Scope)
