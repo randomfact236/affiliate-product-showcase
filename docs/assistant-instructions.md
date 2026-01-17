@@ -1505,6 +1505,8 @@ When working on specific domains, refer to these comprehensive guides:
 No assistant file is used
 ```
 
+**IMPORTANT:** The "User Request" section should contain the **recent message** sent in the chat, not the original message from when the chat started. Each summary should focus on the current task and recent conversation.
+
 ### Storage Requirements
 
 **Location:** Root directory `chat-history/`
