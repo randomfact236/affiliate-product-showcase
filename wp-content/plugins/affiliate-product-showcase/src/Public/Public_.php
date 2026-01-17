@@ -15,12 +15,13 @@ use AffiliateProductShowcase\Repositories\SettingsRepository;
 final class Public_ {
     private Shortcodes $shortcodes;
     private Widgets $widgets;
-    private SettingsRepository $settings_repository;
-    private AffiliateService $affiliate_service;
 
-    public function __construct( private Assets $assets, private ProductService $product_service ) {
-        $this->affiliate_service = new AffiliateService();
-        $this->settings_repository = new SettingsRepository();
+    public function __construct(
+        private Assets $assets,
+        private ProductService $product_service,
+        private SettingsRepository $settings_repository,
+        private AffiliateService $affiliate_service
+    ) {
         $this->shortcodes = new Shortcodes( $this->product_service, $this->settings_repository, $this->affiliate_service );
         $this->widgets    = new Widgets( $this->product_service, $this->settings_repository, $this->affiliate_service );
     }
@@ -34,7 +35,7 @@ final class Public_ {
     }
 
 	public function enqueue_block_assets(): void {
-		$this->assets->enqueue_block_assets();
+		$this->assets->enqueue_editor();
 	}
 
 	public function enqueue_editor_assets(): void {
