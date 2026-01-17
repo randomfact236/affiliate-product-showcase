@@ -1476,6 +1476,192 @@ When working on specific domains, refer to these comprehensive guides:
 
 ---
 
+## Chat Summary Storage (MANDATORY)
+
+**IMPORTANT: Store all chat summaries in the chat-summaries folder.**
+
+### Storage Requirements
+
+**Location:** Root directory `chat-summaries/`
+
+**File Naming Convention:**
+```
+chat-summaries/YYYY-MM-DD-HHMM-Chat-[Number].md
+```
+
+**Examples:**
+- `chat-summaries/2026-01-17-1550-Chat-001.md`
+- `chat-summaries/2026-01-17-1600-Chat-002.md`
+- `chat-summaries/2026-01-18-0930-Chat-003.md`
+
+### File Content Format
+
+Each chat summary file should contain:
+
+```markdown
+# Chat Summary - [Date] - [Time]
+
+**Chat Number:** [Number]
+**Date:** YYYY-MM-DD
+**Time:** HH:MM (Timezone)
+
+## User Request
+[Original user request/question]
+
+## Summary
+[Brief summary of the conversation]
+
+## Key Points
+- [Point 1]
+- [Point 2]
+- [Point 3]
+
+## Actions Taken
+- [Action 1]
+- [Action 2]
+
+## Files Modified
+- [File path 1]
+- [File path 2]
+
+## Git Commit
+- Commit Hash: [Hash]
+- Commit Message: [Message]
+
+## Status
+✅ Complete / ⚠️ Partial / ❌ Pending
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+### When to Create/Update Chat Files
+
+**ALWAYS create or update a chat summary file when:**
+
+1. **Task Completion:** After using attempt_completion
+2. **Multi-step Tasks:** After completing each major step
+3. **Code Changes:** After modifying files
+4. **Git Operations:** After commit/push operations
+5. **Verification Tasks:** After completing verification reports
+
+### File Naming Logic
+
+**For New Chats:**
+- Check existing files in chat-summaries/
+- Find the highest numbered file
+- Increment the number by 1
+- Use current date and time
+
+**For Continuing Chats:**
+- If same chat continues, update the existing file
+- Add new sections with timestamps
+- Maintain version history
+
+### Example Implementation
+
+**Step 1: Determine file name**
+```bash
+# Get current date/time
+DATE=$(date +%Y-%m-%d)
+TIME=$(date +%H%M)
+
+# Find next chat number
+NEXT_NUM=$(ls chat-summaries/*.md 2>/dev/null | wc -l)
+NEXT_NUM=$((NEXT_NUM + 1))
+
+# Format number with leading zeros
+FILE_NAME="chat-summaries/${DATE}-${TIME}-Chat-$(printf "%03d" ${NEXT_NUM}).md"
+```
+
+**Step 2: Create file with template**
+```bash
+cat > "$FILE_NAME" << EOF
+# Chat Summary - ${DATE} - ${TIME}
+
+**Chat Number:** ${NEXT_NUM}
+**Date:** ${DATE}
+**Time:** ${TIME}
+
+## User Request
+[User request here]
+
+## Summary
+[Summary here]
+
+## Key Points
+- [Point 1]
+
+## Actions Taken
+- [Action 1]
+
+## Files Modified
+- [File path 1]
+
+## Git Commit
+- Commit Hash: [Hash]
+- Commit Message: [Message]
+
+## Status
+✅ Complete
+
+---
+*Generated on: $(date)*
+EOF
+```
+
+**Step 3: Update file after task completion**
+```bash
+# Append to existing file
+cat >> "$FILE_NAME" << EOF
+
+## Additional Notes
+[Additional information]
+
+---
+*Updated on: $(date)*
+EOF
+```
+
+### Why This Matters
+
+**Documentation:**
+- Creates audit trail of all conversations
+- Helps track progress over time
+- Provides reference for future work
+
+**Organization:**
+- Keeps all chat history in one place
+- Easy to search and reference
+- Maintains chronological order
+
+**Accountability:**
+- Documents what was done and when
+- Shows git commit history
+- Tracks file modifications
+
+### Integration with Git
+
+**IMPORTANT: Include chat-summaries folder in git commits**
+
+```bash
+# Add chat summaries to git
+git add chat-summaries/
+
+# Commit with appropriate message
+git commit -m "docs: Add chat summary for [task description]"
+
+# Push to remote
+git push
+```
+
+**Git Ignore Consideration:**
+- Chat summaries SHOULD be tracked in git
+- They provide valuable documentation
+- Do NOT add to .gitignore
+
+---
+
 ## Local Verification (Required)
 
 Run these from the repo root:
