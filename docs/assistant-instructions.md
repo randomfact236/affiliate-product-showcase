@@ -133,6 +133,12 @@
 - **NEVER skip listing a file - always include all four**
 - **This prevents the risk of missing required standards**
 
+**The Four Assistant Files:**
+1. **assistant-instructions.md** - Behavior preferences, scanning tasks, reporting standards
+2. **assistant-quality-standards.md** - Code quality, testing, security, best practices
+3. **assistant-performance-optimization.md** - Performance guidelines, optimization standards
+4. **assistant-rule.md** - Git operations, task completion format, chat history rules (consolidated rules)
+
 ---
 
 ## When to Use Each File
@@ -420,7 +426,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 | Writing code | assistant-instructions.md + assistant-quality-standards.md |
 | Code quality scan | assistant-instructions.md + assistant-quality-standards.md |
 | Performance scan | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
-| Git operations | assistant-instructions.md (includes git rules) |
+| Git operations | assistant-instructions.md + assistant-rule.md |
 | Writing tests | assistant-instructions.md + assistant-quality-standards.md |
 | Security review | assistant-instructions.md + assistant-quality-standards.md |
 | Optimization task | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
