@@ -54,19 +54,6 @@
 
 ---
 
-### assistant-rules.md
-**Use for:**
-- ✅ Git operations (commit, push, branch)
-- ✅ Git history analysis
-- ✅ Workflow tasks
-- ✅ PR/MR reviews
-
-**DO NOT use for:**
-- ❌ Code writing (before git operations)
-- ❌ Scanning and analysis
-- ❌ Regular file operations
-
-**Contains:** Git operations rules, workflow standards
 
 ---
 
@@ -95,7 +82,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Code quality, testing requirements)
-- ✅ assistant-rules.md (LISTED - Not used: no git operations)
 - ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
 ```
 
@@ -105,7 +91,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
-- ✅ assistant-rules.md (LISTED - Not used: no git operations)
 - ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
 ```
 
@@ -113,9 +98,8 @@
 **Task:** "Commit and push these changes"
 ```
 **Standards Applied:**
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
+- ✅ assistant-instructions.md (APPLIED - General behavior and reporting, includes git operation rules)
 - ✅ assistant-quality-standards.md (LISTED - Not used: git operations only)
-- ✅ assistant-rules.md (APPLIED - Git operations)
 - ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
 ```
 
@@ -125,7 +109,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Code quality assessment)
-- ✅ assistant-rules.md (LISTED - Not used: no git operations)
 - ✅ assistant-performance-optimization.md (APPLIED - Performance standards)
 ```
 
@@ -135,7 +118,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Quality assessment scale)
-- ✅ assistant-rules.md (LISTED - Not used: no git operations)
 - ✅ assistant-performance-optimization.md (LISTED - Not used: quality scan only)
 ```
 
@@ -145,7 +127,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
-- ✅ assistant-rules.md (LISTED - Not used: no git operations)
 - ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
 ```
 
@@ -158,7 +139,6 @@
 **Standards Applied:**
 - ✅ assistant-instructions.md (Brief context of what was used)
 - ✅ assistant-quality-standards.md (If code quality was assessed)
-- ✅ assistant-rules.md (If git operations were performed)
 - ✅ assistant-performance-optimization.md (If performance analysis was done)
 ```
 
@@ -234,7 +214,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 ```
 ✅ assistant-instructions.md (Scanning standards, reporting)
 ✅ assistant-quality-standards.md (Quality assessment, error classification)
-❌ assistant-rules.md (No git operations)
 ❌ assistant-performance-optimization.md (Not explicitly performance-focused)
 ```
 
@@ -251,7 +230,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 ```
 ✅ assistant-instructions.md (Scanning standards, reporting)
 ✅ assistant-quality-standards.md (Quality assessment)
-❌ assistant-rules.md (No git operations)
 ❌ assistant-performance-optimization.md (Not explicitly requested)
 ```
 
@@ -269,7 +247,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 ✅ assistant-instructions.md (Scanning standards, reporting)
 ✅ assistant-quality-standards.md (Code quality assessment)
 ✅ assistant-performance-optimization.md (Performance checklist, optimization standards)
-❌ assistant-rules.md (No git operations)
 ```
 
 **I will state:** "Performing a performance scan as requested."
@@ -285,7 +262,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 ```
 ✅ assistant-instructions.md (Scanning standards, reporting)
 ❌ assistant-quality-standards.md (Not assessing code quality)
-❌ assistant-rules.md (No git operations)
 ❌ assistant-performance-optimization.md (Not performance-focused)
 ```
 
@@ -302,7 +278,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 | Writing code | assistant-instructions.md + assistant-quality-standards.md |
 | Code quality scan | assistant-instructions.md + assistant-quality-standards.md |
 | Performance scan | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
-| Git operations | assistant-instructions.md + assistant-rules.md |
+| Git operations | assistant-instructions.md (includes git rules) |
 | Writing tests | assistant-instructions.md + assistant-quality-standards.md |
 | Security review | assistant-instructions.md + assistant-quality-standards.md |
 | Optimization task | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
@@ -324,7 +300,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 **Standards Applied:**
 - ✅ assistant-instructions.md (Quality reporting, brutal truth rule)
 - ✅ assistant-quality-standards.md (Enterprise-grade 10/10 requirements)
-- ✅ assistant-rules.md (Git rules)
 - ✅ assistant-performance-optimization.md (Performance standards)
 ```
 
@@ -333,7 +308,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 After reading and applying standards from:
 - ✅ assistant-instructions.md
 - ✅ assistant-quality-standards.md  
-- ✅ assistant-rules.md
 - ✅ assistant-performance-optimization.md
 ```
 
