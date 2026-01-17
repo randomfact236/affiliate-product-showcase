@@ -1,5 +1,30 @@
 # Assistant Instructions
 
+### 🚨 ABSOLUTE RULE - READ FIRST BEFORE ANYTHING ELSE
+
+**THIS IS THE MOST IMPORTANT RULE IN THIS FILE. VIOLATION IS NOT ACCEPTABLE.**
+
+**EVERY SINGLE TIME you use attempt_completion, you MUST use this exact format:**
+```markdown
+## User Request
+"[Exact user message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ [other files as applicable]
+- ❌ [files not used]
+
+## Summary
+[What was done, key findings, actions taken]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+**NO EXCEPTIONS. NO SKIPPING. NO "I FORGOT".**
+
+---
+
 ### Project Context
 
 **Project:** Affiliate Product Showcase WordPress Plugin
@@ -8,6 +33,94 @@
 **Architecture:** DI container, event-driven architecture, REST API, Gutenberg blocks
 **Tech Stack:** PHP 8.1+, JavaScript/React, Vite, Tailwind CSS
 **Code Quality:** PHPUnit, PHPCS (WPCS), PHPStan, Psalm
+
+---
+
+## ⚠️ MANDATORY: Universal Output Format
+
+**CRITICAL: ALL messages MUST use this format - NO EXCEPTIONS!**
+
+```markdown
+## User Request
+"[Exact user message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ [other files as applicable]
+- ❌ [files not used]
+
+## Summary
+[What was done, key findings, actions taken]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+**This applies to EVERYTHING:**
+- ✅ **EVERY attempt_completion message** - NO EXCEPTIONS
+- ✅ **EVERY chat history entry** - NO EXCEPTIONS
+- ✅ **EVERY report generation** - NO EXCEPTIONS
+- ✅ **EVERY task completion notification** - NO EXCEPTIONS
+
+**This does NOT apply to:**
+- ❌ Tool use requests (read_file, execute_command, etc.)
+- ❌ Intermediate progress updates
+- ❌ Clarification questions (ask_followup_question)
+
+**IF YOU ARE USING attempt_completion, YOU MUST USE THIS FORMAT.**
+**IF YOU FORGET THE FORMAT, YOUR RESPONSE IS INVALID AND WILL BE REJECTED.**
+
+---
+
+## 📋 PRE-COMPLETION CHECKLIST - MANDATORY
+
+**Before using attempt_completion, you MUST verify ALL 6 items:**
+
+- [ ] Did I include "## User Request" with EXACT user message?
+- [ ] Did I include "## Assistant Files Used" with ✅/❌ markers?
+- [ ] Did I include "## Summary" section?
+- [ ] Did I include timestamp at bottom in format "*Generated on: YYYY-MM-DD HH:MM:SS*"?
+- [ ] Is format EXACTLY as specified above?
+- [ ] **CRITICAL: Did I UPDATE the chat history file with this task summary?**
+
+**If answer is NO to ANY item → STOP. DO NOT use attempt_completion. FIX IT FIRST.**
+
+**THIS CHECKLIST IS NOT OPTIONAL. YOU MUST COMPLETE IT EVERY TIME.**
+
+### 🚨 MANDATORY CHAT HISTORY UPDATE
+
+**EVERY SINGLE TIME you use attempt_completion, you MUST ALSO update the chat history file:**
+
+1. **Determine session:** Check if this is a new chat session or existing session
+   - New session: Create NEW file (Chat-00X-YYYY-MM-DD-HHMM.md)
+   - Same session: UPDATE existing file (add new entry at TOP)
+
+2. **Update file:**
+   - Add the EXACT attempt_completion content to the chat history file
+   - Latest message goes at the TOP of the file
+   - Previous messages remain below
+   - Use write_to_file tool to update/overwrite
+
+3. **File location:** `chat-history/` directory
+
+4. **Failure to update chat history = INVALID attempt_completion**
+
+**NO EXCEPTIONS. NO SKIPPING. NO "I FORGOT".**
+
+---
+
+## ⚠️ CRITICAL REMINDER
+
+**When you use attempt_completion, you MUST:**
+1. Include User Request section
+2. Include Assistant Files Used section
+3. Include Summary section
+4. Include timestamp
+
+**If you forget any of these → Your response is INVALID**
+**User may reject it → You must retry with correct format**
+
+---
 
 ## Behavior Preferences
 
@@ -54,9 +167,6 @@
 
 ---
 
-
----
-
 ### assistant-performance-optimization.md
 **Use for:**
 - ✅ Performance analysis
@@ -79,77 +189,109 @@
 ### Example 1: Writing Code
 **Task:** "Write a compression tool function"
 ```
-**Standards Applied:**
+## User Request
+"Write a compression tool function"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Code quality, testing requirements)
-- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
+
+## Summary
+Created a compression tool function following code quality standards with proper error handling and testing requirements.
+
+---
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ### Example 2: Just Reading File
 **Task:** "Read and show me the contents of package.json"
 ```
-**Standards Applied:**
+## User Request
+"Read and show me the contents of package.json"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
-- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+- ❌ assistant-quality-standards.md (NOT USED - informational task only)
+- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
+
+## Summary
+Displayed the contents of package.json file as requested.
+
+---
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ### Example 3: Git Operations
 **Task:** "Commit and push these changes"
 ```
-**Standards Applied:**
+## User Request
+"Commit and push these changes"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting, includes git operation rules)
-- ✅ assistant-quality-standards.md (LISTED - Not used: git operations only)
-- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
+- ❌ assistant-quality-standards.md (NOT USED - git operations only)
+- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
+
+## Summary
+Committed and pushed changes to repository following git operation rules.
+
+---
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ### Example 4: Performance Scan
 **Task:** "Analyze performance of the codebase"
 ```
-**Standards Applied:**
+## User Request
+"Analyze performance of the codebase"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Code quality assessment)
 - ✅ assistant-performance-optimization.md (APPLIED - Performance standards)
+
+## Summary
+Performed comprehensive performance analysis identifying critical, high, medium, and low impact issues with prioritized recommendations.
+
+---
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ### Example 5: Quality Scan
 **Task:** "Scan section 12 and report code quality"
 ```
-**Standards Applied:**
+## User Request
+"Scan section 12 and report code quality"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
 - ✅ assistant-quality-standards.md (APPLIED - Quality assessment scale)
-- ✅ assistant-performance-optimization.md (LISTED - Not used: quality scan only)
+- ❌ assistant-performance-optimization.md (NOT USED - quality scan only)
+
+## Summary
+Conducted code quality scan of section 12, identified issues, and provided quality assessment with recommendations.
+
+---
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ### Example 6: Directory Listing
 **Task:** "List all files in the tools directory"
 ```
-**Standards Applied:**
+## User Request
+"List all files in the tools directory"
+
+## Assistant Files Used
 - ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ✅ assistant-quality-standards.md (LISTED - Not used: informational task only)
-- ✅ assistant-performance-optimization.md (LISTED - Not used: not performance-focused)
-```
+- ❌ assistant-quality-standards.md (NOT USED - informational task only)
+- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
+
+## Summary
+Listed all files in the tools directory as requested.
 
 ---
-
-## Required Format
-
-### In Chat Summary (attempt_completion result):
-```
-**Standards Applied:**
-- ✅ assistant-instructions.md (Brief context of what was used)
-- ✅ assistant-quality-standards.md (If code quality was assessed)
-- ✅ assistant-performance-optimization.md (If performance analysis was done)
-```
-
-### In Generated Report Files:
-```markdown
-## Standards Applied
-
-**Files Used for This Analysis:**
-- ✅ assistant-instructions.md (Quality reporting, brutal truth rule, assistant files usage)
-- ✅ assistant-quality-standards.md (Quality assessment scale, code quality standards)
-- ✅ [Only include files that were actually used]
+*Generated on: 2026-01-17 23:09:33*
 ```
 
 ---
@@ -284,6 +426,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 | Optimization task | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
 | **"Scan" (ambiguous)** | **assistant-instructions.md + assistant-quality-standards.md (assumes quality scan)** |
 
+
 ---
 
 **CRITICAL RULE:**
@@ -293,36 +436,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 - **Be honest about what standards guided the work**
 - **No exceptions - only document files that were actually used**
 
-- **Mandatory Documentation Format:**
-
-**In Generated Report Files:**
-```markdown
-**Standards Applied:**
-- ✅ assistant-instructions.md (Quality reporting, brutal truth rule)
-- ✅ assistant-quality-standards.md (Enterprise-grade 10/10 requirements)
-- ✅ assistant-performance-optimization.md (Performance standards)
-```
-
-**In Chat Summary (attempt_completion result):**
-```
-After reading and applying standards from:
-- ✅ assistant-instructions.md
-- ✅ assistant-quality-standards.md  
-- ✅ assistant-performance-optimization.md
-```
-
-**Why This Matters:**
-- Ensures transparency in analysis standards used
-- Creates audit trail of which standards were applied
-- Allows reviewers to verify correct standards were followed
-- Prevents incomplete or partial standard application
-- Makes it clear what "enterprise-grade" or other standards mean
-
-**CRITICAL RULE:**
-- NEVER just say "followed assistant instructions"
-- ALWAYS list EVERY assistant file read and applied
-- If assistant-quality-standards.md is referenced, it MUST be read and applied
-- "Automatically included" means READ and APPLY, not "referenced but not read"
+---
 
 ### Time Estimation Policy (MANDATORY)
 
@@ -402,6 +516,71 @@ After reading and applying standards from:
 
 ---
 
+## Chat History and Task Summary Rules
+
+### Chat History Storage (MANDATORY - EVERY ATTEMPT_COMPLETION)
+
+**🚨 CRITICAL: This is NOT optional. You MUST update chat history after EVERY attempt_completion.**
+
+**Location:** `chat-history/` directory
+
+**File Naming:**
+- For new chat session: Create new file with next sequential number
+- Format: `Chat-[Number]-YYYY-MM-DD-HHMM.md`
+- Example: `Chat-001-2026-01-17-2245.md`
+
+**Storage Strategy:**
+- **Latest message at the top** - Always store the most recent message at the top of the file
+- **Old messages below** - Previous task summaries go below the latest message
+- **Exact task summary** - Store the exact task completed summary in the history file
+- **No matter how many messages** - Even if multiple messages in chat box, only store the latest message summary
+
+**File Creation:**
+- New chat session → Create new file
+- Same chat session → Update existing file (add new summary at top)
+
+**MANDATORY PROCESS:**
+1. After completing task with attempt_completion, IMMEDIATELY update chat history
+2. Read existing chat history file (if exists)
+3. Add NEW entry at TOP (before previous entries)
+4. Use write_to_file to save updated content
+5. Verify file was updated successfully
+
+**THIS IS MANDATORY - FAILURE TO UPDATE CHAT HISTORY IS A CRITICAL ERROR**
+
+**Example Format in History File:**
+```
+## User Request
+"[Latest message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ assistant-quality-standards.md (APPLIED)
+- ✅ assistant-performance-optimization.md (APPLIED)
+
+## Summary
+[Summary of latest message]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+
+## User Request
+"[Previous message]"
+
+## Assistant Files Used
+- ✅ assistant-instructions.md (APPLIED)
+- ✅ assistant-quality-standards.md (APPLIED)
+- ❌ assistant-performance-optimization.md (NOT USED)
+
+## Summary
+[Summary of previous message]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+---
+
 ## Git Operation Rules
 
 ### Branch Creation Policy
@@ -446,60 +625,6 @@ If you want assistant to create a branch in future, please reply with an explici
 - Assistant will always propose exact git command and wait for confirmation
 - Backup branches must follow `backup-YYYY-MM-DD-HHMM` format
 
-### User Request Documentation (MANDATORY FOR ALL TASKS)
-
-**IMPORTANT: ALWAYS include the user's original request at the top of ALL attempt_completion results.**
-
-- **Universal Rule:** This applies to ALL tasks, regardless of type:
-  - ✅ Verification and re-verification reports
-  - ✅ Gap analysis reports
-  - ✅ Resolution summary reports
-  - ✅ Code writing tasks
-  - ✅ Feature implementation
-  - ✅ Bug fixes
-  - ✅ File operations
-  - ✅ Documentation tasks
-  - ✅ ANY task completion
-
-- **Location:** Always include in attempt_completion result (chat summary)
-
-- **Format for User Request Documentation:**
-  ```
-  **User Request:** "scan section 12 and also compare with related root files"
-  ```
-
-- **Purpose:** 
-  - Provides clear context about what was requested
-  - Documents the user's intent and requirements
-  - Creates an audit trail of all user requests
-  - Ensures verification addresses the actual request
-  - Helps reviewers understand the task scope
-
-- **When to Include:**
-  - ALWAYS include in every attempt_completion result
-  - No exceptions - this is a universal requirement
-
-- **Where to Include:**
-  - Chat Summary (attempt_completion result) - ALWAYS
-  - Generated Report Files - For verification/gap/resolution reports
-
-- **Why This Matters:**
-  - Provides clear context for the verification work
-  - Documents the user's intent and requirements
-  - Ensures verification addresses the actual request
-  - Creates an audit trail of user requests
-  - Helps reviewers understand the verification scope
-
-- **Example Executive Summary:**
-  ```
-  ## Executive Summary
-
-  **User Request:** "re scan the section 7 and section 8, confirm whether the those secttion are completely, error free or not"
-
-  **Overall Status:** ✅ **BOTH SECTIONS COMPLETE AND ERROR-FREE**
-
-  Both Section 7 and Section 8 have been re-scanned and verified. All critical issues have been addressed, and both sections are now production-ready with no errors or gaps.
-  ```
 
 ### Default Recommendations
 
@@ -601,20 +726,20 @@ Skip recommendations only when:
 **Examples:**
 
 ✅ **Correct Guide/Instructions:**
-```markdown
+```
 ## Quality Standard: Enterprise Grade (10/10)
 Target: All optimizations implemented to meet enterprise standards
 ```
 
 ✅ **Correct Report on Actual Code:**
-```markdown
+```
 ## Quality Assessment: 3/10 (Poor)
 Status: NOT meeting enterprise standards
 Issues: Multiple critical errors, missing implementations
 ```
 
 ❌ **Incorrect Report (Sugarcoated):**
-```markdown
+```
 ## Quality Assessment: 7/10 (Acceptable)
 Status: "Making progress toward standards"
 ```
@@ -1473,268 +1598,6 @@ When working on specific domains, refer to these comprehensive guides:
 **Standard:** Hybrid Quality Matrix - Maintain quality excellence while supporting sustainable development
 
 **Usage:** **THIS IS YOUR PRIMARY REFERENCE.** Before writing any code, consult this guide. Use pre-commit checklist before every commit. All new code must meet hybrid quality matrix standards.
-
----
-
-## Chat Summary Storage (STRICT MANDATORY RULE)
-
-**🚨 CRITICAL: This is a STRICT rule that MUST be followed for EVERY task completion.**
-
-**NO EXCEPTIONS - This rule applies to ALL tasks regardless of type or complexity.**
-
-### Chat Summary Format (MANDATORY)
-
-**Every task completion must include the following format at the top of the summary:**
-
-```
-## User Request
-"[Your exact message]"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ assistant-quality-standards.md (APPLIED)
-- ✅ assistant-performance-optimization.md (APPLIED)
-```
-
-**OR if no assistant files were used:**
-```
-## User Request
-"[Your exact message]"
-
-## Assistant Files Used
-No assistant file is used
-```
-
-**IMPORTANT:** The "User Request" section should contain the **recent message** sent in the chat, not the original message from when the chat started. Each summary should focus on the current task and recent conversation.
-
-### Storage Requirements
-
-**Location:** Root directory `chat-history/`
-
-**File Naming Convention:**
-```
-chat-history/Chat-[Number]-YYYY-MM-DD-HHMM.md
-```
-
-**Examples:**
-- `chat-history/Chat-001-2026-01-17-1550.md`
-- `chat-history/Chat-002-2026-01-17-1600.md`
-- `chat-history/Chat-003-2026-01-18-0930.md`
-
-### File Content Format
-
-Each chat summary file should contain:
-
-```markdown
-# Chat Summary - [Date] - [Time]
-
-**Chat Number:** [Number]
-**Date:** YYYY-MM-DD
-**Time:** HH:MM (Timezone)
-
-## User Request
-"[Your exact message]"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ assistant-quality-standards.md (APPLIED)
-- ✅ assistant-performance-optimization.md (APPLIED)
-
-## Summary
-[Brief summary of the recent message]
-
-## Key Points
-- [Point 1]
-- [Point 2]
-- [Point 3]
-
-## Actions Taken
-- [Action 1]
-- [Action 2]
-
-## Files Modified
-- [File path 1]
-- [File path 2]
-
-## Git Commit
-- Commit Hash: [Hash]
-- Commit Message: [Message]
-
-## Status
-✅ Complete / ⚠️ Partial / ❌ Pending
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
-**IMPORTANT:** Only summarize the recent message, not the entire chat history. Each summary should be concise and focused on the current task.
-
-### When to Create/Update Chat Files
-
-**🚨 CRITICAL: This is a NON-NEGOTIABLE requirement. Failure to create/update chat summaries will result in incomplete task completion.**
-
-**ALWAYS create or update a chat summary file when:**
-
-1. **Task Completion:** After using attempt_completion - **MANDATORY**
-2. **Multi-step Tasks:** After completing each major step - **MANDATORY**
-3. **Code Changes:** After modifying files - **MANDATORY**
-4. **Git Operations:** After commit/push operations - **MANDATORY**
-5. **Verification Tasks:** After completing verification reports - **MANDATORY**
-6. **After Each Message Summary:** After creating each summary report - **MANDATORY**
-
-**NO EXCEPTIONS - This applies to:**
-- ✅ All task types (code writing, scanning, verification, documentation, etc.)
-- ✅ All task complexities (simple reads, complex implementations, etc.)
-- ✅ All task durations (quick tasks, multi-hour sessions, etc.)
-- ✅ All task outcomes (success, partial success, failure, etc.)
-
-**FAILURE TO COMPLY = INCOMPLETE TASK**
-
-### File Creation Strategy: Per Chat Session
-
-**IMPORTANT: Files are created per chat session, NOT per day.**
-
-**How it works:**
-- **First message of a new chat session:** Create a new file with next sequential number
-- **Subsequent messages in same session:** Update the existing file (append new summaries)
-- **New chat session:** Create a new file with incremented number
-
-**Example:**
-```
-Chat Session 1 (Today, 6:19 PM):
-- Message 1: Create file 001
-- Message 2: Update file 001
-- Message 3: Update file 001
-
-Chat Session 2 (Today, 6:30 PM):
-- Message 1: Create file 002
-- Message 2: Update file 002
-
-Chat Session 3 (Tomorrow, 9:00 AM):
-- Message 1: Create file 003
-```
-
-**Why per session, not per day:**
-- ✅ Tracks individual conversations
-- ✅ Easier to reference specific discussions
-- ✅ Maintains chronological order
-- ✅ Prevents file from becoming too large
-- ✅ Clear separation between different topics/sessions
-
-### File Naming Logic
-
-**For New Chats:**
-- Check existing files in chat-history/
-- Find the highest numbered file
-- Increment the number by 1
-- Use current date and time
-
-**For Continuing Chats:**
-- If same chat continues, update the existing file
-- Add new sections with timestamps
-- Maintain version history
-
-### Example Implementation
-
-**Step 1: Determine file name**
-```bash
-# Get current date/time
-DATE=$(date +%Y-%m-%d)
-TIME=$(date +%H%M)
-
-# Find next chat number
-NEXT_NUM=$(ls chat-history/*.md 2>/dev/null | wc -l)
-NEXT_NUM=$((NEXT_NUM + 1))
-
-# Format number with leading zeros
-FILE_NAME="chat-history/Chat-$(printf "%03d" ${NEXT_NUM})-${DATE}-${TIME}.md"
-```
-
-**Step 2: Create file with template**
-```bash
-cat > "$FILE_NAME" << EOF
-# Chat Summary - ${DATE} - ${TIME}
-
-**Chat Number:** ${NEXT_NUM}
-**Date:** ${DATE}
-**Time:** ${TIME}
-
-## User Request
-[User request here]
-
-## Summary
-[Summary here]
-
-## Key Points
-- [Point 1]
-
-## Actions Taken
-- [Action 1]
-
-## Files Modified
-- [File path 1]
-
-## Git Commit
-- Commit Hash: [Hash]
-- Commit Message: [Message]
-
-## Status
-✅ Complete
-
----
-*Generated on: $(date)*
-EOF
-```
-
-**Step 3: Update file after task completion**
-```bash
-# Append to existing file
-cat >> "$FILE_NAME" << EOF
-
-## Additional Notes
-[Additional information]
-
----
-*Updated on: $(date)*
-EOF
-```
-
-### Why This Matters
-
-**Documentation:**
-- Creates audit trail of all conversations
-- Helps track progress over time
-- Provides reference for future work
-
-**Organization:**
-- Keeps all chat history in one place
-- Easy to search and reference
-- Maintains chronological order
-
-**Accountability:**
-- Documents what was done and when
-- Shows git commit history
-- Tracks file modifications
-
-### Integration with Git
-
-**IMPORTANT: Include chat-history folder in git commits**`
-
-```bash
-# Add chat history to git
-git add chat-history/
-
-# Commit with appropriate message
-git commit -m "docs: Add chat history for [task description]"
-
-# Push to remote
-git push
-```
-
-**Git Ignore Consideration:**
-- Chat history SHOULD be tracked in git
-- They provide valuable documentation
-- Do NOT add to .gitignore
 
 ---
 
