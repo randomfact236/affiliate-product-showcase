@@ -1476,9 +1476,11 @@ When working on specific domains, refer to these comprehensive guides:
 
 ---
 
-## Chat Summary Storage (MANDATORY)
+## Chat Summary Storage (STRICT MANDATORY RULE)
 
-**IMPORTANT: Store all chat summaries in the chat-summaries folder.**
+**🚨 CRITICAL: This is a STRICT rule that MUST be followed for EVERY task completion.**
+
+**NO EXCEPTIONS - This rule applies to ALL tasks regardless of type or complexity.**
 
 ### Storage Requirements
 
@@ -1537,13 +1539,23 @@ Each chat summary file should contain:
 
 ### When to Create/Update Chat Files
 
+**🚨 CRITICAL: This is a NON-NEGOTIABLE requirement. Failure to create/update chat summaries will result in incomplete task completion.**
+
 **ALWAYS create or update a chat summary file when:**
 
-1. **Task Completion:** After using attempt_completion
-2. **Multi-step Tasks:** After completing each major step
-3. **Code Changes:** After modifying files
-4. **Git Operations:** After commit/push operations
-5. **Verification Tasks:** After completing verification reports
+1. **Task Completion:** After using attempt_completion - **MANDATORY**
+2. **Multi-step Tasks:** After completing each major step - **MANDATORY**
+3. **Code Changes:** After modifying files - **MANDATORY**
+4. **Git Operations:** After commit/push operations - **MANDATORY**
+5. **Verification Tasks:** After completing verification reports - **MANDATORY**
+
+**NO EXCEPTIONS - This applies to:**
+- ✅ All task types (code writing, scanning, verification, documentation, etc.)
+- ✅ All task complexities (simple reads, complex implementations, etc.)
+- ✅ All task durations (quick tasks, multi-hour sessions, etc.)
+- ✅ All task outcomes (success, partial success, failure, etc.)
+
+**FAILURE TO COMPLY = INCOMPLETE TASK**
 
 ### File Naming Logic
 
