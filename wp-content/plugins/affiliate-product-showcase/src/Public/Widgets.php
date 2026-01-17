@@ -82,14 +82,13 @@ final class Widgets {
 	public function __construct( 
 		private ProductService $product_service, 
 		private SettingsRepository $settings_repository,
-		AffiliateService $affiliate_service 
+		private AffiliateService $affiliate_service 
 	) {}
 
 	public function register(): void {
-		$affiliate_service = new AffiliateService();
 		APS_Product_Widget::set_service( $this->product_service );
 		APS_Product_Widget::set_settings_repository( $this->settings_repository );
-		APS_Product_Widget::set_affiliate_service( $affiliate_service );
+		APS_Product_Widget::set_affiliate_service( $this->affiliate_service );
 		register_widget( APS_Product_Widget::class );
 	}
 }
