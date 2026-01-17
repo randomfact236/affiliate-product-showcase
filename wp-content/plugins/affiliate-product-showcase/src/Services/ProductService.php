@@ -65,8 +65,8 @@ final class ProductService extends AbstractService {
 			Constants::CPT_PRODUCT,
 			[
 				'labels' => [
-					'name'          => __( 'Affiliate Products', Constants::TEXTDOMAIN ),
-					'singular_name' => __( 'Affiliate Product', Constants::TEXTDOMAIN ),
+					'name'          => __( 'All Products', Constants::TEXTDOMAIN ),
+					'singular_name' => __( 'Product', Constants::TEXTDOMAIN ),
 				],
 				'public'              => true,
 				'show_in_rest'        => true,
