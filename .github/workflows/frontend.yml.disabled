@@ -1,0 +1,39 @@
+name: Frontend Tests
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node: ['20.19.0']
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript check
+        run: npm run type-check || npx tsc --noEmit
+
+      - name: Run ESLint
+        run: npm run lint || npx eslint .
+
+      - name: Run Vitest tests
+        run: npm test || npx vitest run
+
+      - name: Build frontend
+        run: npm run build

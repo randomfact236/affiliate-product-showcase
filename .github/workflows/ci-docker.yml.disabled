@@ -1,0 +1,130 @@
+name: CI - Docker Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP on runner
+        uses: ./.github/actions/setup-php
+        with:
+          php-version: '8.4'
+          use-cache: 'false'
+
+      - name: Set up Qemu
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Composer deps on runner
+        run: |
+          php -v || true
+          composer install --no-interaction --no-progress || true
+
+      - name: Prepare .env for Docker Compose
+        run: |
+          if [ -f .env ]; then echo ".env already exists"; else cp .env.example .env; fi
+          echo "Checking env keys (values redacted):"
+          grep -E '^(MYSQL_|WORDPRESS_|PMA_)' .env | sed -E 's/=.*/=REDACTED/' || true
+          # Enable WordPress debug during CI to surface PHP errors (do not commit real .env)
+          echo "WORDPRESS_DEBUG=1" >> .env
+          # Inject additional wp-config eval to display errors and log them
+          # Use printf to avoid writing surrounding quotes into the env value (which would
+          # be interpreted as literal quotes and break eval() inside wp-config).
+          printf 'WORDPRESS_CONFIG_EXTRA=%s\n' "ini_set('display_errors',1); ini_set('display_startup_errors',1); error_reporting(E_ALL); define('WP_DEBUG_LOG', true); define('WP_DEBUG_DISPLAY', true);" >> .env
+          # Ensure DB_* variables expected by tests match the actual MySQL credentials
+          # If the .env file contains duplicates, prefer the last occurrence (the one docker/env loader used)
+          MYSQL_USER_VAL=$(grep -E '^MYSQL_USER=' .env | tail -n1 | cut -d'=' -f2- || true)
+          MYSQL_PASSWORD_VAL=$(grep -E '^MYSQL_PASSWORD=' .env | tail -n1 | cut -d'=' -f2- || true)
+          MYSQL_DATABASE_VAL=$(grep -E '^MYSQL_DATABASE=' .env | tail -n1 | cut -d'=' -f2- || true)
+          if [ -n "$MYSQL_USER_VAL" ]; then echo "DB_USER=$MYSQL_USER_VAL" >> .env; fi
+          if [ -n "$MYSQL_PASSWORD_VAL" ]; then echo "DB_PASS=$MYSQL_PASSWORD_VAL" >> .env; fi
+          if [ -n "$MYSQL_DATABASE_VAL" ]; then echo "DB_NAME=$MYSQL_DATABASE_VAL" >> .env; fi
+          # Also ensure DB_HOST/DB_PORT align with WORDPRESS_DB_HOST if present
+          WP_DB_HOST_VAL=$(grep -E '^WORDPRESS_DB_HOST=' .env | tail -n1 | cut -d'=' -f2- || true)
+          if [ -n "$WP_DB_HOST_VAL" ]; then
+            # split host:port
+            echo "DB_HOST=${WP_DB_HOST_VAL%%:*}" >> .env
+            if echo "$WP_DB_HOST_VAL" | grep -q ':'; then
+              echo "DB_PORT=${WP_DB_HOST_VAL##*:}" >> .env
+            fi
+          else
+            echo "DB_HOST=db" >> .env
+            echo "DB_PORT=3306" >> .env
+          fi
+
+      - name: Bring up Docker Compose
+        run: |
+          docker compose --env-file .env -f docker/docker-compose.yml up -d --build
+
+      - name: Wait for DB health
+        run: |
+          echo "Waiting for MySQL to be healthy..."
+          for i in {1..60}; do
+            status=$(docker inspect --format='{{json .State.Health.Status}}' aps_db 2>/dev/null || echo '"unknown"')
+            if [ "$status" = '"healthy"' ]; then
+              echo "MySQL healthy"
+              break
+            fi
+            echo "MySQL status: $status"
+            sleep 2
+          done
+
+      - name: Ensure WordPress is installed (create WP tables)
+        run: |
+          echo "Checking if WP is installed and creating it if needed..."
+          # Use the official wordpress:cli image and the compose network to run WP-CLI commands.
+          # Favor the docker compose network name 'docker_default' which is created by the compose run above.
+          NETWORK_NAME=docker_default
+          docker run --rm --env-file .env --network ${NETWORK_NAME} -v "$PWD":/var/www/html -w /var/www/html wordpress:cli wp core is-installed --allow-root || \
+            docker run --rm --env-file .env --network ${NETWORK_NAME} -v "$PWD":/var/www/html -w /var/www/html wordpress:cli wp core install --url=http://localhost:8000 --title=CI --admin_user=ci_admin --admin_password=ci_pass --admin_email=ci@example.com --skip-email --allow-root
+
+      - name: Run container healthcheck
+        run: |
+          chmod +x docker/healthcheck.sh || true
+          set +e
+          ./docker/healthcheck.sh http://localhost:8000
+          rc=$?
+          if [ $rc -ne 0 ]; then
+            echo "Healthcheck failed (code: $rc) — dumping container logs for diagnosis"
+            echo "--- aps_wordpress logs ---"
+            docker logs aps_wordpress --tail 1000 || true
+            echo "--- aps_wordpress: PHP & env info ---"
+            docker exec aps_wordpress sh -c 'php -v || true'
+            docker exec aps_wordpress sh -c 'env | grep -E "WORDPRESS_|DB_|MYSQL_" || true'
+            echo "--- listing webroot ---"
+            docker exec aps_wordpress sh -c 'ls -la /var/www/html || true'
+            echo "--- wp-config.php (first 200 lines) ---"
+            docker exec aps_wordpress sh -c 'sed -n "1,200p" /var/www/html/wp-config.php || true'
+            echo "--- mysqli quick test inside container ---"
+            docker exec aps_wordpress sh -c 'php -r "mysqli_report(MYSQLI_REPORT_OFF); $h=getenv(\"WORDPRESS_DB_HOST\"); $u=getenv(\"WORDPRESS_DB_USER\"); $p=getenv(\"WORDPRESS_DB_PASSWORD\"); $d=getenv(\"WORDPRESS_DB_NAME\"); $host=preg_replace(\"/:.*$/\",\"\",$h); $port=(strpos($h,\":\")!==false)?intval(substr($h,strpos($h,\":\")+1)):3306; $conn=@mysqli_connect($host,$u,$p,$d,$port); echo $conn?\"DB-CONNECT: OK\\n\":(\"DB-CONNECT-ERROR: \".mysqli_connect_error()."\\n");"' || true
+            echo "--- aps_db logs ---"
+            docker logs aps_db --tail 200 || true
+            echo "--- full docker-compose ps ---"
+            docker compose --env-file .env -f docker/docker-compose.yml ps || true
+            exit $rc
+          fi
+
+      - name: Run PHPUnit inside wordpress container
+        run: |
+          docker exec -u 0 aps_wordpress sh -c "cd /var/www/html && composer install --no-interaction --no-progress --ignore-platform-reqs || true && vendor/bin/phpunit --configuration phpunit.xml"
+        env:
+          CI: true
+
+      - name: Bring down Docker Compose
+        if: always()
+        run: |
+          docker compose -f docker/docker-compose.yml down -v
