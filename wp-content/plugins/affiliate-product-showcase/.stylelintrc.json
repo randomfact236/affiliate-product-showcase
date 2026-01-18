@@ -1,0 +1,7 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-order"],
+  "plugins": ["stylelint-selector-bem-pattern"],
+  "rules": {
+    "max-line-length": null
+  }
+}
