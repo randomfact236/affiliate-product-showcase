@@ -88,7 +88,7 @@ backup-YYYY-MM-DD-HHMM
 - ❌ [files not used]
 
 ## Summary
-[What was done, key findings, actions taken]
+[What was done, key findings, actions taken, recent message replies]
 
 ---
 *Generated on: YYYY-MM-DD HH:MM:SS*
@@ -98,6 +98,7 @@ backup-YYYY-MM-DD-HHMM
 - ✅ **EVERY task completion message** - NO EXCEPTIONS
 - ✅ **EVERY chat history entry** - NO EXCEPTIONS
 - ✅ **EVERY report generation** - NO EXCEPTIONS
+- ✅ **INCLUDE recent message replies** - Show conversation context
 
 **This does NOT apply to:**
 - ❌ Tool use requests (read_file, execute_command, etc.)
@@ -292,6 +293,10 @@ backup-YYYY-MM-DD-HHMM
 
 ## Summary
 Created user authentication system with login, registration, and password reset functionality. All code follows quality standards with proper error handling and validation.
+
+**Recent Conversation:**
+User: "Should I add password strength validation?"
+Assistant: "Yes, password strength validation is recommended for security..."
 
 ---
 *Generated on: 2026-01-18 00:51:05*
