@@ -75,15 +75,6 @@ module.exports = {
     'comment-empty-line-before': null,
     'comment-no-empty': null,
     
-    // Length limits
-    'max-line-length': [
-      120,
-      {
-        ignorePattern: '^\\s*//',
-        ignoreUrls: true
-      }
-    ],
-    
     // Order rules
     'order/order': [
       'custom-properties',
