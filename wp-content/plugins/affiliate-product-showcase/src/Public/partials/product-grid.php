@@ -7,11 +7,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** @var array<\AffiliateProductShowcase\Models\Product> $products */
 /** @var \AffiliateProductShowcase\Services\AffiliateService $affiliate_service */
 ?>
-<div class="aps-grid">
+<div 
+	class="aps-grid"
+	role="list"
+	aria-label="<?php echo esc_attr( sprintf( _n( 'List of %d product', 'List of %d products', count( $products ), 'affiliate-product-showcase' ), count( $products ) ) ); ?>"
+>
 	<?php foreach ( $products as $product ) : ?>
-		<?php echo aps_view( 'src/Public/partials/product-card.php', [ 
-			'product' => $product,
-			'affiliate_service' => $affiliate_service
-		] ); ?>
+		<article role="listitem">
+			<?php echo aps_view( 'src/Public/partials/product-card.php', [ 
+				'product' => $product,
+				'affiliate_service' => $affiliate_service
+			] ); ?>
+		</article>
 	<?php endforeach; ?>
 </div>

@@ -1,1 +1,166 @@
-/* Frontend styles placeholder */
+/* 
+ * Frontend styles for Affiliate Product Showcase
+ * WCAG 2.1 Level AA Accessibility Compliant
+ * Optimized version - January 18, 2026
+ */
+
+// Screen reader only text utility
+// Hides content visually but keeps it available for screen readers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Focus indicators (WCAG 2.4.7 - Focus Visible)
+// Ensures keyboard focus is clearly visible using modern :focus-visible pseudo-class
+:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+// Enhanced focus for buttons and links
+// Inherits outline from :focus-visible, adds box-shadow for better visibility
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+}
+
+// Remove default outline only when custom focus is visible
+// Fallback for browsers without :focus-visible support
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// Skip link for keyboard users
+// Allows bypassing repeated content (WCAG 2.4.1)
+.aps-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+  
+  &:focus-visible {
+    top: 0;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
+
+// Ensure modal is properly focused
+.aps-modal:focus {
+  outline: none;
+}
+
+// Modal content focus management
+.aps-modal__content:focus-within {
+  outline: 2px solid #000;
+}
+
+// Card focus styles for keyboard navigation
+.aps-card:focus-within {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// Badge focus indicator
+.aps-card__badge:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// Rating focus indicator
+.aps-card__rating:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// Price focus indicator
+.aps-card__price:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// CTA button focus
+.aps-card__cta:focus-visible,
+.aps-modal__cta:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+}
+
+// Disclosure notice focus
+.aps-disclosure:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// Close button focus
+.aps-modal__close:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+}
+
+// Overlay focus
+.aps-modal__overlay:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+// Reduced motion support for users who prefer it
+// Using 0.01ms which effectively eliminates animations
+// !important is required to override existing animations and transitions
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .aps-card {
+    border: 2px solid currentColor;
+  }
+  
+  .aps-card__cta,
+  .aps-modal__cta {
+    border: 2px solid currentColor;
+  }
+  
+  .aps-disclosure {
+    border: 2px solid currentColor;
+  }
+}
+
+// Color contrast verification
+// All text should have minimum 4.5:1 contrast ratio
+// Large text (18pt+) should have minimum 3:1 contrast ratio
+// Interactive elements should have minimum 3:1 contrast ratio for focus indicators
