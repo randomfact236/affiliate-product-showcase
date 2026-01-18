@@ -3,7 +3,7 @@
  * Generated: January 12, 2026
  */
 
-module.exports = {
+export default {
   extends: [
     'stylelint-config-standard',
     'stylelint-config-recommended'
