@@ -82,29 +82,7 @@
   This will take 4-6 hours to complete.
   ```
 
-### Code Writing Permission
-
-**IMPORTANT: Never start writing code unless explicitly told to do so.**
-
-- Always ask: "Do you want me to start writing code?"
-- Only begin writing code when you receive:
-  - **Explicit "yes"** response to question
-  - **Direct "start"** command
-- This ensures you maintain control and review requirements before implementation
-
-### Git Operations Permission
-
-**IMPORTANT: Never commit and push changes unless explicitly told to do so.**
-
-- Always ask: "Do you want me to commit and push these changes?"
-- Only execute git commit and push when you receive:
-  - **Explicit "yes"** response to question
-  - **Direct command** to commit and push
-- This allows you to review changes before they're committed to repository
-- You can make git status checks, staging, and preparation without committing
-
 ---
-
 ### Default Recommendations
 
 **Always provide proactive recommendations after code changes, file modifications, or feature implementations.**
