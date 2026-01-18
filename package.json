@@ -1,0 +1,32 @@
+{
+  "name": "affiliate-product-showcase",
+  "version": "1.0.0",
+  "description": "Affiliate Product Showcase WordPress Plugin",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Build process would run here'",
+    "lint": "echo 'Lint process would run here'",
+    "test": "echo 'Test process would run here'",
+    "validate-plan": "node plan/plan_sync_todos.cjs --validate --strict",
+    "format-plan": "node plan/plan_sync_todos.cjs --format"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "affiliate",
+    "product",
+    "showcase"
+  ],
+  "author": "randomfact236",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^14.5.0",
+    "@wordpress/stylelint-config": "^21.7.0",
+    "eslint": "^8.57.0",
+    "stylelint": "^14.16.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
