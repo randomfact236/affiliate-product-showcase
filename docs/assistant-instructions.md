@@ -1,27 +1,17 @@
 # Assistant Instructions
 
-### 🚨 ABSOLUTE RULE - READ FIRST BEFORE ANYTHING ELSE
+### 🚨 CRITICAL: Git & Completion Rules
 
-**THIS IS THE MOST IMPORTANT RULE IN THIS FILE. VIOLATION IS NOT ACCEPTABLE.**
+**For Git operations, task completion format, and chat history rules, see:**
+**[assistant-rule.md](assistant-rule.md) - Consolidated rules for all critical operations**
 
-**EVERY SINGLE TIME you use attempt_completion, you MUST use this exact format:**
-```markdown
-## User Request
-"[Exact user message]"
+**This includes:**
+- Git operations (commit, push, branch creation)
+- Task completion format (attempt_completion)
+- Chat history updates (mandatory)
+- All related checklists and examples
 
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ [other files as applicable]
-- ❌ [files not used]
-
-## Summary
-[What was done, key findings, actions taken]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
-**NO EXCEPTIONS. NO SKIPPING. NO "I FORGOT".**
+**Read assistant-rule.md FIRST whenever you're unsure about these operations.**
 
 ---
 
@@ -36,110 +26,6 @@
 
 ---
 
-## ⚠️ MANDATORY: Universal Output Format
-
-**CRITICAL: ALL attempt_completion messages MUST use this exact format - NO EXCEPTIONS!**
-
-```markdown
-## User Request
-"[Exact user message]"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ [other files as applicable]
-- ❌ [files not used]
-
-## Summary
-[What was done, key findings, actions taken]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
-**IMPORTANT: Two Different Contexts for attempt_completion:**
-
-### 1. CHAT BOX attempt_completion (Shown to user)
-- **Show ONLY the current task summary** (just what was completed NOW)
-- **DO NOT show all previous history summaries**
-- Purpose: Answer current question/report current task completion
-- Format: Single entry - User Request + Assistant Files Used + Summary + Timestamp
-- Example: "Checked remaining workflows - found 3 disabled workflows" (NOT: entire session history)
-
-### 2. CHAT HISTORY FILE (Stored on disk)
-- **Copy the EXACT attempt_completion content to the file**
-- **Latest message at TOP of file**
-- **Older messages BELOW** (stacked downwards)
-- Purpose: Keep record of all work in session
-- Format: Multiple entries stacked, newest first, oldest last
-
-**KEY DIFFERENCE:**
-- Chat box = Show me what you just did NOW (single entry)
-- Chat history file = Keep record of everything we did (all entries)
-
-**This format applies to:**
-- ✅ **EVERY attempt_completion message** in chat box
-- ✅ **EVERY chat history file entry**
-
-**This does NOT apply to:**
-- ❌ Tool use requests (read_file, execute_command, etc.)
-- ❌ Intermediate progress updates
-- ❌ Clarification questions (ask_followup_question)
-
-**IF YOU ARE USING attempt_completion, YOU MUST USE THIS FORMAT.**
-**IF YOU FORGET THE FORMAT, YOUR RESPONSE IS INVALID AND WILL BE REJECTED.**
-
----
-
-## 📋 PRE-COMPLETION CHECKLIST - MANDATORY
-
-**Before using attempt_completion, you MUST verify ALL 6 items:**
-
-- [ ] Did I include "## User Request" with EXACT user message?
-- [ ] Did I include "## Assistant Files Used" with ✅/❌ markers?
-- [ ] Did I include "## Summary" section?
-- [ ] Did I include timestamp at bottom in format "*Generated on: YYYY-MM-DD HH:MM:SS*"?
-- [ ] Is format EXACTLY as specified above?
-- [ ] **CRITICAL: Did I UPDATE the chat history file with this task summary?**
-
-**If answer is NO to ANY item → STOP. DO NOT use attempt_completion. FIX IT FIRST.**
-
-**THIS CHECKLIST IS NOT OPTIONAL. YOU MUST COMPLETE IT EVERY TIME.**
-
-### 🚨 MANDATORY CHAT HISTORY UPDATE
-
-**EVERY SINGLE TIME you use attempt_completion, you MUST ALSO update the chat history file:**
-
-1. **Determine session:** Check if this is a new chat session or existing session
-   - New session: Create NEW file (Chat-00X-YYYY-MM-DD-HHMM.md)
-   - Same session: UPDATE existing file (add new entry at TOP)
-
-2. **Update file:**
-   - Add the EXACT attempt_completion content to the chat history file
-   - Latest message goes at the TOP of the file
-   - Previous messages remain below
-   - Use write_to_file tool to update/overwrite
-
-3. **File location:** `chat-history/` directory
-
-4. **Failure to update chat history = INVALID attempt_completion**
-
-**NO EXCEPTIONS. NO SKIPPING. NO "I FORGOT".**
-
----
-
-## ⚠️ CRITICAL REMINDER
-
-**When you use attempt_completion, you MUST:**
-1. Include User Request section
-2. Include Assistant Files Used section
-3. Include Summary section
-4. Include timestamp
-
-**If you forget any of these → Your response is INVALID**
-**User may reject it → You must retry with correct format**
-
----
-
 ## Behavior Preferences
 
 ### Assistant Files Usage Documentation (MANDATORY)
@@ -149,7 +35,7 @@
 - **ALWAYS list all four files to ensure no required standards are missed**
 - **CLEARLY MARK which files were ACTUALLY APPLIED vs. which were listed for completeness**
 - **NEVER skip listing a file - always include all four**
-- **This prevents the risk of missing required standards**
+- **This prevents risk of missing required standards**
 
 **The Four Assistant Files:**
 1. **assistant-instructions.md** - Behavior preferences, scanning tasks, reporting standards
@@ -208,118 +94,6 @@
 
 ---
 
-## File Selection Examples
-
-### Example 1: Writing Code
-**Task:** "Write a compression tool function"
-```
-## User Request
-"Write a compression tool function"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ✅ assistant-quality-standards.md (APPLIED - Code quality, testing requirements)
-- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
-
-## Summary
-Created a compression tool function following code quality standards with proper error handling and testing requirements.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
-### Example 2: Just Reading File
-**Task:** "Read and show me the contents of package.json"
-```
-## User Request
-"Read and show me the contents of package.json"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ❌ assistant-quality-standards.md (NOT USED - informational task only)
-- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
-
-## Summary
-Displayed the contents of package.json file as requested.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
-### Example 3: Git Operations
-**Task:** "Commit and push these changes"
-```
-## User Request
-"Commit and push these changes"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting, includes git operation rules)
-- ❌ assistant-quality-standards.md (NOT USED - git operations only)
-- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
-
-## Summary
-Committed and pushed changes to repository following git operation rules.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
-### Example 4: Performance Scan
-**Task:** "Analyze performance of the codebase"
-```
-## User Request
-"Analyze performance of the codebase"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ✅ assistant-quality-standards.md (APPLIED - Code quality assessment)
-- ✅ assistant-performance-optimization.md (APPLIED - Performance standards)
-
-## Summary
-Performed comprehensive performance analysis identifying critical, high, medium, and low impact issues with prioritized recommendations.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
-### Example 5: Quality Scan
-**Task:** "Scan section 12 and report code quality"
-```
-## User Request
-"Scan section 12 and report code quality"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ✅ assistant-quality-standards.md (APPLIED - Quality assessment scale)
-- ❌ assistant-performance-optimization.md (NOT USED - quality scan only)
-
-## Summary
-Conducted code quality scan of section 12, identified issues, and provided quality assessment with recommendations.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
-### Example 6: Directory Listing
-**Task:** "List all files in the tools directory"
-```
-## User Request
-"List all files in the tools directory"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED - General behavior and reporting)
-- ❌ assistant-quality-standards.md (NOT USED - informational task only)
-- ❌ assistant-performance-optimization.md (NOT USED - not performance-focused)
-
-## Summary
-Listed all files in the tools directory as requested.
-
----
-*Generated on: 2026-01-17 23:09:33*
-```
-
----
-
 ## Why This Matters
 
 **Accurate Documentation:**
@@ -371,7 +145,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ### Examples of Ambiguous "Scan" Commands
 
-   - Example 1: "Scan section 12"
+#### Example 1: "Scan section 12"
 **Context:** Section 12 contains tools/ directory with code files
 
 **My Assumption:** Quality scan (checking code quality)
@@ -387,7 +161,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-   - Example 2: "Scan the tools directory"
+#### Example 2: "Scan the tools directory"
 **Context:** Directory with tool code files
 
 **My Assumption:** Quality scan (checking code issues, quality)
@@ -403,7 +177,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-   - Example 3: "Scan for performance issues"
+#### Example 3: "Scan for performance issues"
 **Context:** Explicitly mentions performance
 
 **My Assumption:** Performance scan (checking optimization opportunities)
@@ -419,7 +193,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-   - Example 4: "Scan the root files"
+#### Example 4: "Scan the root files"
 **Context:** Root configuration files (package.json, composer.json, etc.)
 
 **My Assumption:** Structure scan (checking file presence, naming, organization)
@@ -449,7 +223,6 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 | Security review | assistant-instructions.md + assistant-quality-standards.md |
 | Optimization task | assistant-instructions.md + assistant-quality-standards.md + assistant-performance-optimization.md |
 | **"Scan" (ambiguous)** | **assistant-instructions.md + assistant-quality-standards.md (assumes quality scan)** |
-
 
 ---
 
@@ -540,134 +313,24 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-## Chat History and Task Summary Rules
-
-### Chat History Storage (MANDATORY - EVERY ATTEMPT_COMPLETION)
-
-**🚨 CRITICAL: This is NOT optional. You MUST update chat history after EVERY attempt_completion.**
-
-**Location:** `chat-history/` directory
-
-**File Naming:**
-- For new chat session: Create new file with next sequential number
-- Format: `Chat-[Number]-YYYY-MM-DD-HHMM.md`
-- Example: `Chat-001-2026-01-17-2245.md`
-
-**Storage Strategy:**
-- **Latest message at the top** - Always store the most recent message at the top of the file
-- **Old messages below** - Previous task summaries go below the latest message
-- **Exact task summary** - Store the exact task completed summary in the history file
-- **No matter how many messages** - Even if multiple messages in chat box, only store the latest message summary
-
-**File Creation:**
-- New chat session → Create new file
-- Same chat session → Update existing file (add new summary at top)
-
-**MANDATORY PROCESS:**
-1. After completing task with attempt_completion, IMMEDIATELY update chat history
-2. Read existing chat history file (if exists)
-3. Add NEW entry at TOP (before previous entries)
-4. Use write_to_file to save updated content
-5. Verify file was updated successfully
-
-**THIS IS MANDATORY - FAILURE TO UPDATE CHAT HISTORY IS A CRITICAL ERROR**
-
-**Example Format in History File:**
-```
-## User Request
-"[Latest message]"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ assistant-quality-standards.md (APPLIED)
-- ✅ assistant-performance-optimization.md (APPLIED)
-
-## Summary
-[Summary of latest message]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-
-## User Request
-"[Previous message]"
-
-## Assistant Files Used
-- ✅ assistant-instructions.md (APPLIED)
-- ✅ assistant-quality-standards.md (APPLIED)
-- ❌ assistant-performance-optimization.md (NOT USED)
-
-## Summary
-[Summary of previous message]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
----
-
-## Git Operation Rules
-
-### Branch Creation Policy
-
-**CRITICAL: The assistant MUST NOT create, checkout, or push any Git branch unless user explicitly instructs it to do so in a direct prompt.**
-
-- **Confirmation Required:** For any action that would create or modify remote branches, assistant will propose exact command and wait for user confirmation.
-- **Exceptions:** None. The assistant will always ask before making branch-related changes.
-- **Visibility:** The assistant will record this policy in project and in its internal task list for adherence.
-
-### Git Backup Branch Naming
-
-**Mandatory Format:** When creating a manual backup branch (e.g., requested by user), branch name MUST use format:
-```
-backup-YYYY-MM-DD-HHMM
-```
-
-**Examples:**
-- `backup-2026-01-16-1430` (January 16, 2026 at 2:30 PM)
-- `backup-2026-12-25-0915` (December 25, 2026 at 9:15 AM)
-
-### Branch Creation Request Format
-
-If you want assistant to create a branch in future, please reply with an explicit instruction like:
-```
-"Create branch X and push to origin"
-```
-
-**Examples of explicit instructions:**
-- "Create branch feature/new-pricing and push to origin"
-- "Create backup-2026-01-16-1430 and push to origin"
-- "Checkout to branch develop and pull latest"
-
-**What will NOT trigger branch creation:**
-- "Fix this issue" (requires explicit branch creation request)
-- "Make these changes" (requires explicit branch creation request)
-- "Start working on feature X" (requires explicit branch creation request)
-
-**Summary:**
-- Assistant will NEVER automatically create, checkout, or push branches
-- User must EXPLICITLY instruct to create a branch
-- Assistant will always propose exact git command and wait for confirmation
-- Backup branches must follow `backup-YYYY-MM-DD-HHMM` format
-
-
 ### Default Recommendations
 
 **Always provide proactive recommendations after code changes, file modifications, or feature implementations.**
 
 Include following sections in outputs:
 
-   - 1. Code Quality Suggestions
+#### 1. Code Quality Suggestions
 - Refactoring opportunities
 - Performance optimizations
 - Security enhancements
 - Best practice improvements
 
-   - 2. Next Steps
+#### 2. Next Steps
 - Immediate follow-up actions
 - Related features to consider
 - Testing recommendations
 
-   - 3. Related Features
+#### 3. Related Features
 - Features that complement current implementation
 - Edge cases to handle
 - Integrations to consider
@@ -832,7 +495,7 @@ stylelint.config.js (or .stylelintrc.js)
 
 ### PHP Analysis (All 3 Required)
 
-   - 1. PHPStan (Level 6+)
+#### 1. PHPStan (Level 6+)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
 ```
@@ -840,7 +503,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
 **Purpose:** Static analysis, type errors, dead code  
 **Config:** phpstan.neon
 
-   - 2. Psalm (Level 3+)
+#### 2. Psalm (Level 3+)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
 ```
@@ -848,7 +511,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
 **Purpose:** Type checking, security vulnerabilities, logic bugs  
 **Config:** psalm.xml
 
-   - 3. PHPCS (PSR-12 + WPCS)
+#### 3. PHPCS (PSR-12 + WPCS)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
 ```
@@ -858,7 +521,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
 
 ### Frontend Analysis (Both Required)
 
-   - 1. ESLint
+#### 1. ESLint
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
 ```
@@ -867,7 +530,7 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
 **Purpose:** Syntax errors, unused code, code quality  
 **Config:** .eslintrc.js
 
-   - 2. Stylelint
+#### 2. Stylelint
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
 ```
@@ -878,13 +541,13 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
 
 ### Testing (All Required)
 
-   - 1. PHPUnit
+#### 1. PHPUnit
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase test
 ```
 **Status:** All tests passing required
 
-   - 2. Code Coverage
+#### 2. Code Coverage
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase test-coverage
 ```
@@ -895,7 +558,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase test-covera
 - Utility functions: 80%+
 - Configuration: 70%+
 
-   - 3. Frontend Tests
+#### 3. Frontend Tests
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run test
 ```
@@ -903,19 +566,19 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run test
 
 ### Security Scanning (Required)
 
-   - 1. PHP Dependencies
+#### 1. PHP Dependencies
 ```bash
 composer audit
 composer outdated
 ```
 
-   - 2. JavaScript Dependencies
+#### 2. JavaScript Dependencies
 ```bash
 npm audit
 npm outdated
 ```
 
-   - 3. Sensitive Data Detection
+#### 3. Sensitive Data Detection
 ```bash
 # Scan for hardcoded secrets, API keys, passwords
 npm run check-debug
@@ -1245,7 +908,7 @@ Regressions: Z
 
 ### Auto-Fix Options
 
-   - PHP Style Issues
+#### PHP Style Issues
 ```bash
 # Auto-fix PHPCS issues
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs -- --fix
@@ -1253,7 +916,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs -- --
 **Fixable:** ~60% of PHPCS issues  
 **Manual Review Required:** Yes
 
-   - JavaScript Issues
+#### JavaScript Issues
 ```bash
 # Auto-fix ESLint issues
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js -- --fix
@@ -1261,7 +924,7 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js -- --fix
 **Fixable:** ~70% of ESLint issues  
 **Manual Review Required:** Yes
 
-   - CSS Issues
+#### CSS Issues
 ```bash
 # Auto-fix Stylelint issues
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css -- --fix
@@ -1566,6 +1229,7 @@ When scanning code (PHP, JavaScript, CSS), assess optimization level to ensure e
 - Include specific code quality findings in the scan summary
 - List all related files and their verification status
 
+---
 
 ## Specialized Reference Guides
 
