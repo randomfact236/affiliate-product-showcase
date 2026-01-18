@@ -10,8 +10,7 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "project": "./tsconfig.json"
+    }
   },
   "plugins": [
     "@typescript-eslint",
@@ -45,7 +44,26 @@
     ".vite",
     "coverage",
     "*.config.js",
-    "*.config.ts"
+    "*.config.ts",
+    "scripts",
+    "vite-plugins",
+    "tools",
+    "tests"
   ],
-  "overrides": []
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended"
+      ]
+    }
+  ]
 }

@@ -15,9 +15,22 @@ interface Props {
 export default function ProductModal({ product, onClose }: Props) {
   if (!product) return null;
 
+  const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      onClose?.();
+    }
+  };
+
   return (
     <div className="aps-modal" role="dialog" aria-modal="true">
-      <div className="aps-modal__overlay" onClick={onClose} />
+      <div 
+        className="aps-modal__overlay" 
+        onClick={onClose}
+        onKeyDown={handleOverlayKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label="Close modal"
+      />
       <div className="aps-modal__content">
         <button className="aps-modal__close" onClick={onClose} aria-label="Close">
           ×
@@ -29,7 +42,7 @@ export default function ProductModal({ product, onClose }: Props) {
             className="aps-modal__cta"
             href={product.affiliate_url}
             target="_blank"
-            rel="nofollow noopener sponsored"
+            rel="nofollow noreferrer"
           >
             View Deal
           </a>

@@ -1,4 +1,4 @@
-export async function apiFetch(path: string, options: RequestInit = {}): Promise<any> {
+export async function apiFetch<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(path, {
     credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
@@ -12,8 +12,8 @@ export async function apiFetch(path: string, options: RequestInit = {}): Promise
 
   const contentType = response.headers.get('content-type') || '';
   if (contentType.includes('application/json')) {
-    return response.json();
+    return (response.json() as unknown as T);
   }
 
-  return response.text();
+  return (response.text() as unknown as T);
 }
