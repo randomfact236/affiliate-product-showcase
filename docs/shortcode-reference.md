@@ -16,7 +16,7 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 
 ### Complete Attribute Reference
 
-#### Product Selection
+   - Product Selection
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
@@ -31,7 +31,7 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 | `on_sale` | boolean | false | Show only products on sale | `on_sale="true"` |
 | `in_stock` | boolean | false | Show only in-stock products | `in_stock="true"` |
 
-#### Display Settings
+   - Display Settings
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
@@ -41,14 +41,14 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 | `pagination` | boolean | true | Show pagination | `pagination="false"` |
 | `page` | integer | 1 | Page number to show | `page="2"` |
 
-#### Sorting
+   - Sorting
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
 | `orderby` | string | featured | Sort by: featured, date, title, price, rating, random | `orderby="price"` |
 | `order` | string | DESC | Sort order: ASC or DESC | `order="ASC"` |
 
-#### Content Display
+   - Content Display
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
@@ -62,7 +62,7 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 | `show_excerpt` | boolean | true | Show excerpt/description | `show_excerpt="false"` |
 | `excerpt_length` | integer | 20 | Excerpt length in words | `excerpt_length="30"` |
 
-#### Interactive Elements
+   - Interactive Elements
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
@@ -70,7 +70,7 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 | `search` | boolean | false | Show search bar | `search="true"` |
 | `sort` | boolean | false | Show sort dropdown | `sort="true"` |
 
-#### Customization
+   - Customization
 
 | Attribute | Type | Default | Description | Example |
 |-----------|------|---------|-------------|---------|
@@ -80,61 +80,61 @@ The main shortcode for displaying affiliate products with full filtering, sortin
 
 ### Examples
 
-#### Basic Product Grid
+   - Basic Product Grid
 
 ```php
 [affiliate_products limit="12" columns="3"]
 ```
 
-#### Featured Products Only
+   - Featured Products Only
 
 ```php
 [affiliate_products featured="true" limit="6" columns="2" orderby="date" order="DESC"]
 ```
 
-#### Category-Specific Products
+   - Category-Specific Products
 
 ```php
 [affiliate_products category="electronics,laptops" limit="8" columns="4" show_rating="true"]
 ```
 
-#### List Layout with Filters
+   - List Layout with Filters
 
 ```php
 [affiliate_products layout="list" filter="true" search="true" sort="true" limit="20"]
 ```
 
-#### Minimal Display (No Images or Features)
+   - Minimal Display (No Images or Features)
 
 ```php
 [affiliate_products show_image="false" show_features="false" show_rating="false" columns="1" layout="list"]
 ```
 
-#### Slider Layout
+   - Slider Layout
 
 ```php
 [affiliate_products layout="slider" limit="10" columns="1" show_cta="true" cta_text="Shop Now"]
 ```
 
-#### Random Products
+   - Random Products
 
 ```php
 [affiliate_products orderby="random" limit="6" columns="3" cache="true"]
 ```
 
-#### Specific Products by ID
+   - Specific Products by ID
 
 ```php
 [affiliate_products ids="123,456,789" columns="3" show_ribbons="true"]
 ```
 
-#### Exclude Products
+   - Exclude Products
 
 ```php
 [affiliate_products exclude="10,20,30" limit="12" category="featured"]
 ```
 
-#### Custom Styling
+   - Custom Styling
 
 ```php
 [affiliate_products class="premium-grid" style="background: #f8f9fa; padding: 20px;" limit="8"]

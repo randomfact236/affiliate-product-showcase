@@ -24,15 +24,15 @@ This guide provides a comprehensive framework for analyzing and optimizing web p
 
 List all current optimizations with examples:
 
-#### HTML/Structure
+   - HTML/Structure
 - ✅ [Feature 1]
 - ✅ [Feature 2]
 
-#### Performance
+   - Performance
 - ✅ [Feature 1]
 - ✅ [Feature 2]
 
-#### SEO/Accessibility
+   - SEO/Accessibility
 - ✅ [Feature 1]
 - ✅ [Feature 2]
 
@@ -40,7 +40,7 @@ List all current optimizations with examples:
 
 For each missing optimization, provide:
 
-#### Feature Name
+   - Feature Name
 **Priority:** [Critical / High / Medium / Low]
 
 **Current:**
@@ -166,7 +166,7 @@ For each missing optimization, provide:
 
 ### Critical Optimizations (Must Have)
 
-#### 1. Image Optimization
+   - 1. Image Optimization
 ```html
 <!-- Current -->
 <img src="image.webp" alt="Description">
@@ -187,7 +187,7 @@ For each missing optimization, provide:
 </picture>
 ```
 
-#### 2. Critical CSS
+   - 2. Critical CSS
 ```html
 <!-- Inline critical CSS (<14KB) -->
 <style>
@@ -201,7 +201,7 @@ header { /* ... */ }
 <noscript><link rel="stylesheet" href="/styles.css"></noscript>
 ```
 
-#### 3. Resource Hints
+   - 3. Resource Hints
 ```html
 <!-- Preconnect to external domains -->
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -217,7 +217,7 @@ header { /* ... */ }
 
 ### High Priority Optimizations (Should Have)
 
-#### 4. Content Security Policy
+   - 4. Content Security Policy
 ```html
 <meta http-equiv="Content-Security-Policy" 
       content="default-src 'self'; 
@@ -227,7 +227,7 @@ header { /* ... */ }
               font-src 'self' data:;">
 ```
 
-#### 5. Service Worker
+   - 5. Service Worker
 ```javascript
 // sw.js
 const CACHE_NAME = 'v1';
@@ -252,7 +252,7 @@ if ('serviceWorker' in navigator) {
 </script>
 ```
 
-#### 6. Core Web Vitals Monitoring
+   - 6. Core Web Vitals Monitoring
 ```html
 <script type="module">
 import {getCLS, getFID, getFCP, getLCP, getTTFB} from 'web-vitals';
@@ -265,7 +265,7 @@ getLCP(metric => gtag('event', metric.name, {value: metric.value}));
 
 ### Medium Priority Optimizations (Nice to Have)
 
-#### 7. Lazy Loading
+   - 7. Lazy Loading
 ```javascript
 // Intersection Observer
 const observer = new IntersectionObserver((entries) => {
@@ -281,7 +281,7 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));
 ```
 
-#### 8. Subresource Integrity (SRI)
+   - 8. Subresource Integrity (SRI)
 ```html
 <link rel="stylesheet" 
       href="https://cdn.example.com/styles.css" 

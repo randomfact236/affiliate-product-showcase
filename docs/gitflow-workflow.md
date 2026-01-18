@@ -8,14 +8,14 @@ GitFlow is a branching model for Git that provides a robust framework for managi
 
 ### Main Branches
 
-#### `main` (Production)
+   - `main` (Production)
 - **Purpose**: Production-ready code
 - **Protection**: Highly protected, direct commits disabled
 - **Merge sources**: `release/*` branches, `hotfix/*` branches
 - **Deployment**: Automatically deployed to production via GitHub Actions
 - **Stability**: Always stable and deployable
 
-#### `develop` (Development)
+   - `develop` (Development)
 - **Purpose**: Integration branch for features
 - **Protection**: Protected, direct commits disabled
 - **Merge sources**: `feature/*` branches
@@ -24,7 +24,7 @@ GitFlow is a branching model for Git that provides a robust framework for managi
 
 ### Supporting Branches
 
-#### `feature/*` (Feature Development)
+   - `feature/*` (Feature Development)
 - **Purpose**: Develop new features
 - **Branch from**: `develop`
 - **Merge into**: `develop`
@@ -34,7 +34,7 @@ GitFlow is a branching model for Git that provides a robust framework for managi
   - `feature/2.6-health-check`
   - `feature/3.1-admin-dashboard`
 
-#### `release/*` (Release Preparation)
+   - `release/*` (Release Preparation)
 - **Purpose**: Prepare for production release
 - **Branch from**: `develop`
 - **Merge into**: `main` and `develop`
@@ -44,7 +44,7 @@ GitFlow is a branching model for Git that provides a robust framework for managi
   - `release/2.0.0`
 - **Activities**: Version bumping, changelog updates, final testing
 
-#### `hotfix/*` (Emergency Fixes)
+   - `hotfix/*` (Emergency Fixes)
 - **Purpose**: Fix critical production bugs
 - **Branch from**: `main`
 - **Merge into**: `main` and `develop`
@@ -205,7 +205,7 @@ feature/1    feature/2    \ /       feature/3    feature/4
 
 ### Branch Protection Rules
 
-#### `main` Branch
+   - `main` Branch
 - ✅ Require pull request reviews
 - ✅ Require status checks to pass
 - ✅ Require branches to be up to date
@@ -213,7 +213,7 @@ feature/1    feature/2    \ /       feature/3    feature/4
 - ✅ Restrict direct pushes
 - ✅ Require conversation resolution
 
-#### `develop` Branch
+   - `develop` Branch
 - ✅ Require pull request reviews
 - ✅ Require status checks to pass
 - ✅ Require branches to be up to date

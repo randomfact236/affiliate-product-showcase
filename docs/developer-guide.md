@@ -19,14 +19,14 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 
 **IMPORTANT:** `.env` files are **NOT** used in production. They are strictly for local development and CI environments.
 
-#### Why .env is Dev-Only
+   - Why .env is Dev-Only
 
 1. **Security**: Environment files can accidentally be committed to version control
 2. **Portability**: Production servers may not support .env files or may use different configuration mechanisms
 3. **Performance**: WordPress Options API is cached and optimized for production use
 4. **Standardization**: WordPress plugins should use the WordPress Options API for configuration storage
 
-#### Development Workflow
+   - Development Workflow
 
 **For Local Development:**
 
@@ -52,14 +52,14 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 
 ### Available Environment Variables
 
-#### Plugin Settings
+   - Plugin Settings
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
 | `PLUGIN_DEV_MODE` | boolean | `false` | Enable development features, disable caching |
 | `PLUGIN_DEBUG` | boolean | `false` | Enable detailed logging and error messages |
 
-#### Database Configuration (Optional)
+   - Database Configuration (Optional)
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -71,7 +71,7 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 
 **Note:** If not set, defaults to WordPress database credentials.
 
-#### Redis Configuration (Optional)
+   - Redis Configuration (Optional)
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -81,7 +81,7 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 | `PLUGIN_REDIS_DATABASE` | integer | `0` | Redis database number |
 | `PLUGIN_REDIS_TTL` | integer | `3600` | Default TTL (seconds) |
 
-#### Developer Options
+   - Developer Options
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -99,7 +99,7 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 
 The plugin provides a centralized `Options` helper class for retrieving and updating options.
 
-#### Getting Options
+   - Getting Options
 
 ```php
 use AffiliateProductShowcase\Helpers\Options;
@@ -123,7 +123,7 @@ if ( Options::has_plugin_option( 'custom_setting' ) ) {
 }
 ```
 
-#### Updating Options
+   - Updating Options
 
 ```php
 use AffiliateProductShowcase\Helpers\Options;
@@ -135,7 +135,7 @@ $result = Options::update_plugin_option( 'cache_enabled', true );
 $result = Options::delete_plugin_option( 'temp_setting' );
 ```
 
-#### Convenience Methods
+   - Convenience Methods
 
 ```php
 use AffiliateProductShowcase\Helpers\Options;

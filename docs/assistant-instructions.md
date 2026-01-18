@@ -353,7 +353,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ### Examples of Ambiguous "Scan" Commands
 
-#### Example 1: "Scan section 12"
+   - Example 1: "Scan section 12"
 **Context:** Section 12 contains tools/ directory with code files
 
 **My Assumption:** Quality scan (checking code quality)
@@ -369,7 +369,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-#### Example 2: "Scan the tools directory"
+   - Example 2: "Scan the tools directory"
 **Context:** Directory with tool code files
 
 **My Assumption:** Quality scan (checking code issues, quality)
@@ -385,7 +385,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-#### Example 3: "Scan for performance issues"
+   - Example 3: "Scan for performance issues"
 **Context:** Explicitly mentions performance
 
 **My Assumption:** Performance scan (checking optimization opportunities)
@@ -401,7 +401,7 @@ I will explicitly state: "Assuming this is a [type] scan. If not, please clarify
 
 ---
 
-#### Example 4: "Scan the root files"
+   - Example 4: "Scan the root files"
 **Context:** Root configuration files (package.json, composer.json, etc.)
 
 **My Assumption:** Structure scan (checking file presence, naming, organization)
@@ -638,18 +638,18 @@ If you want assistant to create a branch in future, please reply with an explici
 
 Include following sections in outputs:
 
-#### 1. Code Quality Suggestions
+   - 1. Code Quality Suggestions
 - Refactoring opportunities
 - Performance optimizations
 - Security enhancements
 - Best practice improvements
 
-#### 2. Next Steps
+   - 2. Next Steps
 - Immediate follow-up actions
 - Related features to consider
 - Testing recommendations
 
-#### 3. Related Features
+   - 3. Related Features
 - Features that complement current implementation
 - Edge cases to handle
 - Integrations to consider
@@ -814,7 +814,7 @@ stylelint.config.js (or .stylelintrc.js)
 
 ### PHP Analysis (All 3 Required)
 
-#### 1. PHPStan (Level 6+)
+   - 1. PHPStan (Level 6+)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
 ```
@@ -822,7 +822,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpstan
 **Purpose:** Static analysis, type errors, dead code  
 **Config:** phpstan.neon
 
-#### 2. Psalm (Level 3+)
+   - 2. Psalm (Level 3+)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
 ```
@@ -830,7 +830,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase psalm
 **Purpose:** Type checking, security vulnerabilities, logic bugs  
 **Config:** psalm.xml
 
-#### 3. PHPCS (PSR-12 + WPCS)
+   - 3. PHPCS (PSR-12 + WPCS)
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
 ```
@@ -840,7 +840,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs
 
 ### Frontend Analysis (Both Required)
 
-#### 1. ESLint
+   - 1. ESLint
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
 ```
@@ -849,7 +849,7 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js
 **Purpose:** Syntax errors, unused code, code quality  
 **Config:** .eslintrc.js
 
-#### 2. Stylelint
+   - 2. Stylelint
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
 ```
@@ -860,13 +860,13 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css
 
 ### Testing (All Required)
 
-#### 1. PHPUnit
+   - 1. PHPUnit
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase test
 ```
 **Status:** All tests passing required
 
-#### 2. Code Coverage
+   - 2. Code Coverage
 ```bash
 composer --working-dir=wp-content/plugins/affiliate-product-showcase test-coverage
 ```
@@ -877,7 +877,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase test-covera
 - Utility functions: 80%+
 - Configuration: 70%+
 
-#### 3. Frontend Tests
+   - 3. Frontend Tests
 ```bash
 npm --prefix wp-content/plugins/affiliate-product-showcase run test
 ```
@@ -885,19 +885,19 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run test
 
 ### Security Scanning (Required)
 
-#### 1. PHP Dependencies
+   - 1. PHP Dependencies
 ```bash
 composer audit
 composer outdated
 ```
 
-#### 2. JavaScript Dependencies
+   - 2. JavaScript Dependencies
 ```bash
 npm audit
 npm outdated
 ```
 
-#### 3. Sensitive Data Detection
+   - 3. Sensitive Data Detection
 ```bash
 # Scan for hardcoded secrets, API keys, passwords
 npm run check-debug
@@ -1227,7 +1227,7 @@ Regressions: Z
 
 ### Auto-Fix Options
 
-#### PHP Style Issues
+   - PHP Style Issues
 ```bash
 # Auto-fix PHPCS issues
 composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs -- --fix
@@ -1235,7 +1235,7 @@ composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs -- --
 **Fixable:** ~60% of PHPCS issues  
 **Manual Review Required:** Yes
 
-#### JavaScript Issues
+   - JavaScript Issues
 ```bash
 # Auto-fix ESLint issues
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js -- --fix
@@ -1243,7 +1243,7 @@ npm --prefix wp-content/plugins/affiliate-product-showcase run lint:js -- --fix
 **Fixable:** ~70% of ESLint issues  
 **Manual Review Required:** Yes
 
-#### CSS Issues
+   - CSS Issues
 ```bash
 # Auto-fix Stylelint issues
 npm --prefix wp-content/plugins/affiliate-product-showcase run lint:css -- --fix

@@ -316,14 +316,14 @@ wp-content/plugins/affiliate-product-showcase/
 
 ### 3. blocks/
 **Purpose:** Gutenberg block definitions with separate folders for each block, including configuration files, React components, and stylesheets.
-#### 3.1 product-grid/
+   - 3.1 product-grid/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
 - `save.jsx` - Save component
 - `editor.scss` - Editor styles
 - `style.scss` - Frontend styles
-#### 3.2 product-showcase/
+   - 3.2 product-showcase/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
@@ -360,7 +360,7 @@ wp-content/plugins/affiliate-product-showcase/
 ### 5. frontend/
 **Purpose:** Frontend build assets containing TypeScript entry points, React components, utility functions, and SCSS stylesheets compiled by Vite.
 - `index.php` - Frontend entry point (placeholder)
-#### 5.1 js/
+   - 5.1 js/
 - `index.php` - JavaScript loader (placeholder)
 - `admin.ts` - Admin JavaScript entry point
 - `blocks.ts` - Blocks JavaScript entry point
@@ -376,7 +376,7 @@ wp-content/plugins/affiliate-product-showcase/
 - `api.ts` - API fetch utility
 - `format.ts` - Formatting utilities
 - `i18n.ts` - Internationalization utilities
-#### 5.2 styles/
+   - 5.2 styles/
 - `index.php` - Styles loader (placeholder)
 - `admin.scss` - Admin styles
 - `editor.scss` - Editor styles
@@ -398,7 +398,7 @@ wp-content/plugins/affiliate-product-showcase/
 - `postcss.config.js` - `root`
 - `.a11y.json` - `root`
 
-#### Root Files Integration Details
+   - Root Files Integration Details
 
 **package.json** - NPM dependencies and build scripts configuration
 - **Dependencies:**
@@ -498,66 +498,66 @@ wp-content/plugins/affiliate-product-showcase/
 - `composer.json` - `root`
 - `composer.lock` - `root`
 - `phpcs.xml.dist` - `root`
-#### 6.1 Abstracts/
+   - 6.1 Abstracts/
 - `index.php` - Abstract base classes
-#### 6.2 Admin/
+   - 6.2 Admin/
 - `index.php` - Admin main class
 ##### 6.2.1 partials/
 - `index.php` - Admin view templates
-#### 6.3 Assets/
+   - 6.3 Assets/
 - `index.php` - Asset management
-#### 6.4 Blocks/
+   - 6.4 Blocks/
 - `index.php` - Block loader
 ##### 6.4.1 templates/
 - `product-grid-item.php` - Product grid item template
 - `product-showcase-item.php` - Product showcase item template
 ##### 6.4.2 product-showcase/
 - `index.php` - Product showcase block
-#### 6.5 Cache/
+   - 6.5 Cache/
 - `index.php` - Caching system
-#### 6.6 Cli/
+   - 6.6 Cli/
 - `index.php` - WP-CLI commands
-#### 6.7 Database/
+   - 6.7 Database/
 - `index.php` - Database operations
 ##### 6.7.1 seeders/
 - `sample-products.php` - Sample product seeder
-#### 6.8 Events/
+   - 6.8 Events/
 - `index.php` - Event system
-#### 6.9 Exceptions/
+   - 6.9 Exceptions/
 - `index.php` - Custom exceptions
-#### 6.10 Factories/
+   - 6.10 Factories/
 - `index.php` - Factory pattern
-#### 6.11 Formatters/
+   - 6.11 Formatters/
 - `index.php` - Data formatters
-#### 6.12 Frontend/
+   - 6.12 Frontend/
 - `index.php` - Frontend main class
 ##### 6.12.1 partials/
 - `index.php` - Frontend view templates
-#### 6.13 Helpers/
+   - 6.13 Helpers/
 - `index.php` - Helper functions
-#### 6.14 Interfaces/
+   - 6.14 Interfaces/
 - `index.php` - Interface definitions
-#### 6.15 Models/
+   - 6.15 Models/
 - `index.php` - Data models
-#### 6.16 Plugin/
+   - 6.16 Plugin/
 - `index.php` - Core plugin logic
-#### 6.17 Privacy/
+   - 6.17 Privacy/
 - `index.php` - Privacy compliance
-#### 6.18 Public/
+   - 6.18 Public/
 - `index.php` - Public interface
-#### 6.19 Repositories/
+   - 6.19 Repositories/
 - `index.php` - Data repositories
-#### 6.20 Rest/
+   - 6.20 Rest/
 - `index.php` - REST controllers
-#### 6.21 Sanitizers/
+   - 6.21 Sanitizers/
 - `index.php` - Input sanitization
-#### 6.22 Security/
+   - 6.22 Security/
 - `index.php` - Security handlers
-#### 6.23 Services/
+   - 6.23 Services/
 - `index.php` - Business logic
-#### 6.24 Traits/
+   - 6.24 Traits/
 - `index.php` - Reusable traits
-#### 6.25 Validators/
+   - 6.25 Validators/
 - `index.php` - Validation logic
 
 ### 7. includes/
@@ -572,7 +572,7 @@ wp-content/plugins/affiliate-product-showcase/
 
 ### 9. resources/
 **Purpose:** Build resources including CSS files and component stylesheets that are compiled and used in production.
-#### 9.1 css/
+   - 9.1 css/
 - `app.css` - Main stylesheet
 ##### 9.1.1 components/
 - `button.css`
@@ -614,13 +614,13 @@ wp-content/plugins/affiliate-product-showcase/
 - `infection.json.dist` - `root`
 - `phpcs.xml.dist` - `root`
 - `run_phpunit.php` - `root`
-#### 11.1 fixtures/
+   - 11.1 fixtures/
 - `sample-products.php` - Test fixtures
-#### 11.2 integration/
+   - 11.2 integration/
 - `AssetsTest.php`
 - `MultiSiteTest.php`
 - `test-rest-endpoints.php`
-#### 11.3 unit/
+   - 11.3 unit/
 - `test-affiliate-service.php`
 - `test-analytics-service.php`
 - `test-product-service.php`
@@ -678,7 +678,7 @@ wp-content/plugins/affiliate-product-showcase/
 - `run_phpunit.php` - PHPUnit runner script
 
 ### assets/
-#### images/
+   - images/
 - `banner-772x250.png`
 - `banner-1544x500.png`
 - `icon-128x128.png`
@@ -688,14 +688,14 @@ wp-content/plugins/affiliate-product-showcase/
 - `screenshot-1.png`
 
 ### blocks/
-#### product-grid/
+   - product-grid/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
 - `save.jsx` - Save component
 - `editor.scss` - Editor styles
 - `style.scss` - Frontend styles
-#### product-showcase/
+   - product-showcase/
 - `block.json` - Block configuration
 - `index.js` - Block entry point
 - `edit.jsx` - Editor component
@@ -717,7 +717,7 @@ wp-content/plugins/affiliate-product-showcase/
 
 ### frontend/
 - `index.php` - Frontend entry point
-#### js/
+   - js/
 - `index.php` - JavaScript loader
 - `admin.ts` - Admin JavaScript entry point
 - `blocks.ts` - Blocks JavaScript entry point
@@ -733,7 +733,7 @@ wp-content/plugins/affiliate-product-showcase/
 - `api.ts` - API fetch utility
 - `format.ts` - Formatting utilities
 - `i18n.ts` - Internationalization utilities
-#### styles/
+   - styles/
 - `index.php` - Styles loader
 - `admin.scss` - Admin styles
 - `editor.scss` - Editor styles
@@ -748,61 +748,61 @@ wp-content/plugins/affiliate-product-showcase/
 
 ### src/
 - `index.php` - Source entry point
-#### Abstracts/
+   - Abstracts/
 - `index.php` - Abstract base classes
-#### Admin/
+   - Admin/
 - `index.php` - Admin main class
 ##### partials/
 - `index.php` - Admin view templates
-#### Assets/
+   - Assets/
 - `index.php` - Asset management
-#### Blocks/
+   - Blocks/
 - `index.php` - Block loader
 ##### product-showcase/
 - `index.php` - Product showcase block
-#### Cache/
+   - Cache/
 - `index.php` - Caching system
-#### Cli/
+   - Cli/
 - `index.php` - WP-CLI commands
-#### Database/
+   - Database/
 - `index.php` - Database operations
-#### Events/
+   - Events/
 - `index.php` - Event system
-#### Exceptions/
+   - Exceptions/
 - `index.php` - Custom exceptions
-#### Factories/
+   - Factories/
 - `index.php` - Factory pattern
-#### Formatters/
+   - Formatters/
 - `index.php` - Data formatters
-#### Frontend/
+   - Frontend/
 - `index.php` - Frontend main class
 ##### partials/
 - `index.php` - Frontend view templates
-#### Helpers/
+   - Helpers/
 - `index.php` - Helper functions
-#### Interfaces/
+   - Interfaces/
 - `index.php` - Interface definitions
-#### Models/
+   - Models/
 - `index.php` - Data models
-#### Plugin/
+   - Plugin/
 - `index.php` - Core plugin logic
-#### Privacy/
+   - Privacy/
 - `index.php` - Privacy compliance
-#### Public/
+   - Public/
 - `index.php` - Public interface
-#### Repositories/
+   - Repositories/
 - `index.php` - Data repositories
-#### Rest/
+   - Rest/
 - `index.php` - REST controllers
-#### Sanitizers/
+   - Sanitizers/
 - `index.php` - Input sanitization
-#### Security/
+   - Security/
 - `index.php` - Security handlers
-#### Services/
+   - Services/
 - `index.php` - Business logic
-#### Traits/
+   - Traits/
 - `index.php` - Reusable traits
-#### Validators/
+   - Validators/
 - `index.php` - Validation logic
 
 ### includes/
@@ -814,7 +814,7 @@ wp-content/plugins/affiliate-product-showcase/
 - `affiliate-product-showcase-.mo` - Compiled translation
 
 ### resources/
-#### css/
+   - css/
 - `app.css` - Main stylesheet
 ##### components/
 - `button.css`
@@ -848,13 +848,13 @@ wp-content/plugins/affiliate-product-showcase/
 
 ### tests/
 - `bootstrap.php` - Test bootstrap
-#### fixtures/
+   - fixtures/
 - `sample-products.php` - Test fixtures
-#### integration/
+   - integration/
 - `AssetsTest.php`
 - `MultiSiteTest.php`
 - `test-rest-endpoints.php`
-#### unit/
+   - unit/
 - `test-affiliate-service.php`
 - `test-analytics-service.php`
 - `test-product-service.php`

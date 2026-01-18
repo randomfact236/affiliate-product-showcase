@@ -76,7 +76,7 @@ Affiliate Product Showcase is a secure, privacy-focused WordPress plugin for dis
 1. Navigate to **Products → Add New**
 2. Enter the product details:
 
-#### Product Information
+   - Product Information
 
 **Title:** (Required)
 - Enter a descriptive product name
@@ -141,7 +141,7 @@ See [REST API Documentation](rest-api.md) for programmatic product creation.
 
 ### Using Shortcodes
 
-#### Display All Products
+   - Display All Products
 
 Show all published products:
 
@@ -149,7 +149,7 @@ Show all published products:
 [affiliate_products]
 ```
 
-#### Filter by Category
+   - Filter by Category
 
 Display products from a specific category:
 
@@ -163,7 +163,7 @@ You can filter by multiple categories:
 [affiliate_products category="electronics, audio"]
 ```
 
-#### Limit Number of Products
+   - Limit Number of Products
 
 Show a specific number of products:
 
@@ -171,7 +171,7 @@ Show a specific number of products:
 [affiliate_products limit="5"]
 ```
 
-#### Combine Parameters
+   - Combine Parameters
 
 You can combine multiple parameters:
 
@@ -179,7 +179,7 @@ You can combine multiple parameters:
 [affiliate_products category="electronics" limit="10"]
 ```
 
-#### All Shortcode Parameters
+   - All Shortcode Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -190,7 +190,7 @@ You can combine multiple parameters:
 
 ### Using PHP
 
-#### Get a Single Product
+   - Get a Single Product
 
 ```php
 // Get product by ID
@@ -202,7 +202,7 @@ echo $product->price;
 echo $product->affiliate_url;
 ```
 
-#### Get Multiple Products
+   - Get Multiple Products
 
 ```php
 // Get products with parameters
@@ -223,7 +223,7 @@ foreach ( $products as $product ) {
 }
 ```
 
-#### Display Product Card
+   - Display Product Card
 
 Use the built-in product card template:
 
@@ -244,7 +244,7 @@ See [REST API Documentation](rest-api.md) for fetching products programmatically
 
 Access settings at **Settings → Affiliate Product Showcase**
 
-#### General Settings
+   - General Settings
 
 **Affiliate ID**
 - Your affiliate tracking ID
@@ -268,7 +268,7 @@ Access settings at **Settings → Affiliate Product Showcase**
 - Default: "Enabled"
 - **Note:** Disable at your own risk - many jurisdictions require disclosure
 
-#### Analytics Settings
+   - Analytics Settings
 
 **Enable Analytics**
 - Track product views and clicks
@@ -281,7 +281,7 @@ Access settings at **Settings → Affiliate Product Showcase**
 - Lower values = more accurate, more database queries
 - Higher values = better performance, slightly delayed data
 
-#### Performance Settings
+   - Performance Settings
 
 **Enable Object Cache**
 - Use WordPress object cache for analytics
@@ -294,7 +294,7 @@ Access settings at **Settings → Affiliate Product Showcase**
 - Default: "Enabled"
 - Recommended: Always keep enabled
 
-#### Security Settings
+   - Security Settings
 
 **Standalone Mode**
 - Only allow local URLs (from your media library)
@@ -309,7 +309,7 @@ Access settings at **Settings → Affiliate Product Showcase**
 
 ### Customization
 
-#### Styling
+   - Styling
 
 The plugin uses Tailwind CSS for styling. Customize the appearance by overriding CSS classes in your theme:
 
@@ -379,7 +379,7 @@ The plugin uses Tailwind CSS for styling. Customize the appearance by overriding
 }
 ```
 
-#### Templates
+   - Templates
 
 Override plugin templates in your theme:
 
@@ -429,13 +429,13 @@ Override plugin templates in your theme:
 
 Display products with various options.
 
-#### Basic Usage
+   - Basic Usage
 
 ```php
 [affiliate_products]
 ```
 
-#### Parameters
+   - Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -445,7 +445,7 @@ Display products with various options.
 | `orderby` | string | `date` | Sort by: `date`, `title`, `price` |
 | `order` | string | `DESC` | Sort direction: `ASC`, `DESC` |
 
-#### Examples
+   - Examples
 
 **Display specific product:**
 ```php
@@ -480,14 +480,14 @@ Display products with various options.
 
 The Product Grid block provides a visual interface for displaying products in a grid layout.
 
-#### Adding the Block
+   - Adding the Block
 
 1. Edit a page or post in WordPress
 2. Click the **+** (Add Block) button
 3. Search for "Product Grid"
 4. Click to add the block
 
-#### Block Settings
+   - Block Settings
 
 **Grid Settings**
 
@@ -521,14 +521,14 @@ Quick styles for common layouts:
 
 The Product Showcase block provides a single product display with detailed information.
 
-#### Adding the Block
+   - Adding the Block
 
 1. Edit a page or post
 2. Click the **+** (Add Block) button
 3. Search for "Product Showcase"
 4. Click to add the block
 
-#### Block Settings
+   - Block Settings
 
 - Select a product from the dropdown
 - Customize display options

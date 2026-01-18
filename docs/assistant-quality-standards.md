@@ -76,7 +76,7 @@ Notes:
 
 ### PHP Code Requirements
 
-#### Type Safety
+   - Type Safety
 ```php
 <?php
 declare(strict_types=1);
@@ -112,7 +112,7 @@ final class YourClass {
 - ✅ Use `readonly` for immutable properties
 - ✅ Use `?` for nullable types (not `@var`)
 
-#### Function/Method Standards
+   - Function/Method Standards
 ```php
 // ✅ CORRECT: Single responsibility, < 20 lines
 public function get_product(int $id): ?Product {
@@ -147,7 +147,7 @@ public function getAndCacheAndLogAndValidate(int $id): ?Product {
 - ✅ No God classes (max 300 lines)
 - ✅ No God methods (max 50 lines)
 
-#### Error Handling
+   - Error Handling
 ```php
 // ✅ CORRECT: Proper exception handling
 public function process_order(array $data): Order {
@@ -188,7 +188,7 @@ public function process_order(array $data): Order {
 - ✅ Throw domain-specific exceptions
 - ✅ Use finally for cleanup
 
-#### PHPDoc Documentation
+   - PHPDoc Documentation
 ```php
 <?php
 declare(strict_types=1);
@@ -238,7 +238,7 @@ final class ProductService {
 
 ### JavaScript/React Code Requirements
 
-#### Type Safety (TypeScript/Prop-Types)
+   - Type Safety (TypeScript/Prop-Types)
 ```typescript
 // ✅ CORRECT: TypeScript with full typing
 interface ProductProps {
@@ -279,7 +279,7 @@ export default ProductCard;
 - ✅ No `any` types (use `unknown` instead)
 - ✅ Enable `strict: true` in tsconfig
 
-#### Component Standards
+   - Component Standards
 ```typescript
 // ✅ CORRECT: Functional component with hooks
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
@@ -316,7 +316,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
 - ✅ Memoize expensive computations
 - ✅ Memoize callback functions
 
-#### Error Boundaries
+   - Error Boundaries
 ```typescript
 // ✅ CORRECT: Error boundary component
 class ErrorBoundary extends React.Component<
@@ -354,7 +354,7 @@ class ErrorBoundary extends React.Component<
 
 ### Frontend Performance
 
-#### Image Standards
+   - Image Standards
 ```html
 <!-- ✅ CORRECT: Optimized image -->
 <img
@@ -389,7 +389,7 @@ class ErrorBoundary extends React.Component<
 - ✅ Alt text on all images
 - ✅ Max 500KB per image
 
-#### CSS Optimization
+   - CSS Optimization
 ```css
 /* ✅ CORRECT: Critical CSS inline */
 <style>
@@ -411,7 +411,7 @@ class ErrorBoundary extends React.Component<
 - ✅ Use CSS containment
 - ✅ Prefer CSS over JS animations
 
-#### JavaScript Optimization
+   - JavaScript Optimization
 ```typescript
 // ✅ CORRECT: Code splitting
 const ProductGrid = React.lazy(() => import('./ProductGrid'));
@@ -446,7 +446,7 @@ const observer = new IntersectionObserver((entries) => {
 
 ### Backend Performance
 
-#### Database Queries
+   - Database Queries
 ```php
 // ✅ CORRECT: Optimized query with cache
 public function get_product(int $id): ?Product {
@@ -482,7 +482,7 @@ public function get_product(int $id): ?Product {
 - ✅ No N+1 query problems
 - ✅ Track query time (target: 300ms, don't block)
 
-#### API Response Time
+   - API Response Time
 ```php
 // ✅ CORRECT: Fast response with pagination
 public function list(array $args = []): array {
@@ -510,7 +510,7 @@ public function list(array $args = []): array {
 - ✅ Gzip/Brotli compression enabled
 - ✅ API documented (OpenAPI/Swagger)
 
-#### API Rate Limiting
+   - API Rate Limiting
 ```php
 // ✅ CORRECT: Rate limiting middleware
 class RateLimiter {
@@ -736,7 +736,7 @@ add_action('send_headers', function() {
 
 ### Content Security Policy (CSP) Implementation
 
-#### Basic CSP Configuration
+   - Basic CSP Configuration
 ```php
 // ✅ CORRECT: Comprehensive CSP for WordPress plugin
 add_action('send_headers', function() {
@@ -812,7 +812,7 @@ add_action('template_redirect', function() {
 });
 ```
 
-#### CSP with Nonce for Dynamic Scripts
+   - CSP with Nonce for Dynamic Scripts
 ```php
 // ✅ CORRECT: CSP with nonce for inline scripts
 class CSPManager {
@@ -872,7 +872,7 @@ $csp_manager = new CSPManager();
 echo $csp_manager->get_inline_script('console.log("Hello!");');
 ```
 
-#### CSP for REST API Endpoints
+   - CSP for REST API Endpoints
 ```php
 // ✅ CORRECT: Separate CSP for API responses
 add_filter('rest_post_dispatch', function($result, $server, $request) {
@@ -884,7 +884,7 @@ add_filter('rest_post_dispatch', function($result, $server, $request) {
 }, 10, 3);
 ```
 
-#### CSP Migration Strategy (Report-Only Mode)
+   - CSP Migration Strategy (Report-Only Mode)
 ```php
 // ✅ CORRECT: Test CSP in report-only mode first
 add_action('send_headers', function() {
@@ -1840,7 +1840,7 @@ chore(deps): Update WordPress to 6.4
 
 ### Pull Request Standards
 
-#### PR Description Template
+   - PR Description Template
 ```
 ✅ CORRECT: PR Description
 
@@ -1878,7 +1878,7 @@ Adds support for original_price field to products, allowing display of sale pric
 - ✅ Checklist completed
 - ✅ Link to related issues
 
-#### PR Size Limits
+   - PR Size Limits
 ```yaml
 # GitHub PR size limits enforced via .github/pr-size-limit.yml
 pr_size_limit:
@@ -1900,7 +1900,7 @@ pr_size_limit:
 - ✅ Each PR should focus on a single feature/fix
 - ✅ Automated size check in CI
 
-#### Code Review Checklist
+   - Code Review Checklist
 ```markdown
 ## Code Review Checklist
 

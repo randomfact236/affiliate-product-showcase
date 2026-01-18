@@ -10,7 +10,7 @@ Actions are triggered at specific points during plugin execution. Use `add_actio
 
 ### Plugin Lifecycle
 
-#### `affiliate_product_showcase_loaded`
+   - `affiliate_product_showcase_loaded`
 
 Fired when the plugin is fully loaded and initialized.
 
@@ -24,7 +24,7 @@ add_action( 'affiliate_product_showcase_loaded', function() {
 
 **When:** After plugin files are loaded, before any admin/frontend logic
 
-#### `affiliate_product_showcase_activated`
+   - `affiliate_product_showcase_activated`
 
 Fired when the plugin is activated.
 
@@ -38,7 +38,7 @@ add_action( 'affiliate_product_showcase_activated', function() {
 
 **When:** Plugin activation hook
 
-#### `affiliate_product_showcase_deactivated`
+   - `affiliate_product_showcase_deactivated`
 
 Fired when the plugin is deactivated.
 
@@ -52,7 +52,7 @@ add_action( 'affiliate_product_showcase_deactivated', function() {
 
 **When:** Plugin deactivation hook
 
-#### `affiliate_product_showcase_uninstalled`
+   - `affiliate_product_showcase_uninstalled`
 
 Fired when the plugin is uninstalled (all data removed).
 
@@ -68,7 +68,7 @@ add_action( 'affiliate_product_showcase_uninstalled', function() {
 
 ### Admin Area
 
-#### `affiliate_product_showcase_admin_menu`
+   - `affiliate_product_showcase_admin_menu`
 
 Fired before admin menu is registered.
 
@@ -87,7 +87,7 @@ add_action( 'affiliate_product_showcase_admin_menu', function() {
 } );
 ```
 
-#### `affiliate_product_showcase_admin_init`
+   - `affiliate_product_showcase_admin_init`
 
 Fired during admin initialization.
 
@@ -99,7 +99,7 @@ add_action( 'affiliate_product_showcase_admin_init', function() {
 } );
 ```
 
-#### `affiliate_product_showcase_admin_head`
+   - `affiliate_product_showcase_admin_head`
 
 Fired in admin head section.
 
@@ -111,7 +111,7 @@ add_action( 'affiliate_product_showcase_admin_head', function() {
 } );
 ```
 
-#### `affiliate_product_showcase_admin_footer`
+   - `affiliate_product_showcase_admin_footer`
 
 Fired in admin footer.
 
@@ -125,7 +125,7 @@ add_action( 'affiliate_product_showcase_admin_footer', function() {
 
 ### Frontend
 
-#### `affiliate_product_showcase_before_shortcode`
+   - `affiliate_product_showcase_before_shortcode`
 
 Fired before shortcode output.
 
@@ -145,7 +145,7 @@ add_action( 'affiliate_product_showcase_before_shortcode', function( $atts ) {
 } );
 ```
 
-#### `affiliate_product_showcase_after_shortcode`
+   - `affiliate_product_showcase_after_shortcode`
 
 Fired after shortcode output.
 
@@ -163,7 +163,7 @@ add_action( 'affiliate_product_showcase_after_shortcode', function( $atts, $outp
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_before_product`
+   - `affiliate_product_showcase_before_product`
 
 Fired before each product is rendered.
 
@@ -178,7 +178,7 @@ add_action( 'affiliate_product_showcase_before_product', function( $product ) {
 } );
 ```
 
-#### `affiliate_product_showcase_after_product`
+   - `affiliate_product_showcase_after_product`
 
 Fired after each product is rendered.
 
@@ -193,7 +193,7 @@ add_action( 'affiliate_product_showcase_after_product', function( $product ) {
 } );
 ```
 
-#### `affiliate_product_showcase_before_cta`
+   - `affiliate_product_showcase_before_cta`
 
 Fired before CTA button.
 
@@ -209,7 +209,7 @@ add_action( 'affiliate_product_showcase_before_cta', function( $product, $atts )
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_after_cta`
+   - `affiliate_product_showcase_after_cta`
 
 Fired after CTA button.
 
@@ -227,7 +227,7 @@ add_action( 'affiliate_product_showcase_after_cta', function( $product, $atts ) 
 
 ### Product Management
 
-#### `affiliate_product_showcase_product_created`
+   - `affiliate_product_showcase_product_created`
 
 Fired after a product is created.
 
@@ -250,7 +250,7 @@ add_action( 'affiliate_product_showcase_product_created', function( $product_id,
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_updated`
+   - `affiliate_product_showcase_product_updated`
 
 Fired after a product is updated.
 
@@ -272,7 +272,7 @@ add_action( 'affiliate_product_showcase_product_updated', function( $product_id,
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_product_deleted`
+   - `affiliate_product_showcase_product_deleted`
 
 Fired after a product is deleted.
 
@@ -292,7 +292,7 @@ add_action( 'affiliate_product_showcase_product_deleted', function( $product_id,
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_imported`
+   - `affiliate_product_showcase_product_imported`
 
 Fired after products are imported.
 
@@ -314,7 +314,7 @@ add_action( 'affiliate_product_showcase_product_imported', function( $count, $re
 
 ### Tracking & Analytics
 
-#### `affiliate_product_track_click`
+   - `affiliate_product_track_click`
 
 Fired when an affiliate link is clicked.
 
@@ -331,7 +331,7 @@ add_action( 'affiliate_product_track_click', function( $product_id, $data ) {
 }, 10, 2 );
 ```
 
-#### `affiliate_product_track_impression`
+   - `affiliate_product_track_impression`
 
 Fired when a product is displayed.
 
@@ -347,7 +347,7 @@ add_action( 'affiliate_product_track_impression', function( $product_id ) {
 } );
 ```
 
-#### `affiliate_product_track_conversion`
+   - `affiliate_product_track_conversion`
 
 Fired when a conversion is tracked.
 
@@ -372,7 +372,7 @@ add_action( 'affiliate_product_track_conversion', function( $product_id, $revenu
 
 ### Cache Management
 
-#### `affiliate_product_showcase_cache_cleared`
+   - `affiliate_product_showcase_cache_cleared`
 
 Fired after cache is cleared.
 
@@ -392,7 +392,7 @@ add_action( 'affiliate_product_showcase_cache_cleared', function( $type ) {
 } );
 ```
 
-#### `affiliate_product_showcase_cache_warmed`
+   - `affiliate_product_showcase_cache_warmed`
 
 Fired after cache is warmed.
 
@@ -410,7 +410,7 @@ add_action( 'affiliate_product_showcase_cache_warmed', function( $count, $type )
 
 ### Settings
 
-#### `affiliate_product_showcase_settings_saved`
+   - `affiliate_product_showcase_settings_saved`
 
 Fired after settings are saved.
 
@@ -433,7 +433,7 @@ add_action( 'affiliate_product_showcase_settings_saved', function( $old_settings
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_settings_reset`
+   - `affiliate_product_showcase_settings_reset`
 
 Fired after settings are reset to defaults.
 
@@ -451,7 +451,7 @@ add_action( 'affiliate_product_showcase_settings_reset', function() {
 
 ### WP-CLI
 
-#### `affiliate_product_showcase_cli_before_command`
+   - `affiliate_product_showcase_cli_before_command`
 
 Fired before any WP-CLI command execution.
 
@@ -470,7 +470,7 @@ add_action( 'affiliate_product_showcase_cli_before_command', function( $command,
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_cli_after_command`
+   - `affiliate_product_showcase_cli_after_command`
 
 Fired after any WP-CLI command execution.
 
@@ -493,7 +493,7 @@ Filters allow you to modify data before it's used. Use `add_filter()` to modify 
 
 ### Product Data
 
-#### `affiliate_product_showcase_product_data`
+   - `affiliate_product_showcase_product_data`
 
 Filter product data before it's used.
 
@@ -518,7 +518,7 @@ add_filter( 'affiliate_product_showcase_product_data', function( $data, $product
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_name`
+   - `affiliate_product_showcase_product_name`
 
 Filter product name.
 
@@ -536,7 +536,7 @@ add_filter( 'affiliate_product_showcase_product_name', function( $name, $product
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_price`
+   - `affiliate_product_showcase_product_price`
 
 Filter product price.
 
@@ -558,7 +558,7 @@ add_filter( 'affiliate_product_showcase_product_price', function( $price, $produ
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_product_url`
+   - `affiliate_product_showcase_product_url`
 
 Filter affiliate URL.
 
@@ -580,7 +580,7 @@ add_filter( 'affiliate_product_showcase_product_url', function( $url, $product_i
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_image`
+   - `affiliate_product_showcase_product_image`
 
 Filter product image URL.
 
@@ -608,7 +608,7 @@ add_filter( 'affiliate_product_showcase_product_image', function( $image_url, $p
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_product_description`
+   - `affiliate_product_showcase_product_description`
 
 Filter product description/excerpt.
 
@@ -631,7 +631,7 @@ add_filter( 'affiliate_product_showcase_product_description', function( $descrip
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_features`
+   - `affiliate_product_showcase_product_features`
 
 Filter product features array.
 
@@ -654,7 +654,7 @@ add_filter( 'affiliate_product_showcase_product_features', function( $features, 
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_ribbons`
+   - `affiliate_product_showcase_product_ribbons`
 
 Filter product ribbons/badges.
 
@@ -679,7 +679,7 @@ add_filter( 'affiliate_product_showcase_product_ribbons', function( $ribbons, $p
 
 ### Shortcode Attributes
 
-#### `affiliate_product_showcase_shortcode_attributes`
+   - `affiliate_product_showcase_shortcode_attributes`
 
 Filter shortcode attributes before processing.
 
@@ -706,7 +706,7 @@ add_filter( 'affiliate_product_showcase_shortcode_attributes', function( $atts, 
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_query_args`
+   - `affiliate_product_showcase_query_args`
 
 Filter database query arguments.
 
@@ -743,7 +743,7 @@ add_filter( 'affiliate_product_showcase_query_args', function( $args, $atts ) {
 
 ### HTML Output
 
-#### `affiliate_product_showcase_product_html`
+   - `affiliate_product_showcase_product_html`
 
 Filter complete product HTML output.
 
@@ -762,7 +762,7 @@ add_filter( 'affiliate_product_showcase_product_html', function( $html, $product
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_cta_html`
+   - `affiliate_product_showcase_cta_html`
 
 Filter CTA button HTML.
 
@@ -787,7 +787,7 @@ add_filter( 'affiliate_product_showcase_cta_html', function( $html, $product, $a
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_wrapper_classes`
+   - `affiliate_product_showcase_wrapper_classes`
 
 Filter wrapper CSS classes.
 
@@ -812,7 +812,7 @@ add_filter( 'affiliate_product_showcase_wrapper_classes', function( $classes, $a
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_product_classes`
+   - `affiliate_product_showcase_product_classes`
 
 Filter product item CSS classes.
 
@@ -841,7 +841,7 @@ add_filter( 'affiliate_product_showcase_product_classes', function( $classes, $p
 
 ### Import/Export
 
-#### `affiliate_product_showcase_import_data`
+   - `affiliate_product_showcase_import_data`
 
 Filter import data before processing.
 
@@ -871,7 +871,7 @@ add_filter( 'affiliate_product_showcase_import_data', function( $data, $format )
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_export_data`
+   - `affiliate_product_showcase_export_data`
 
 Filter export data before output.
 
@@ -898,7 +898,7 @@ add_filter( 'affiliate_product_showcase_export_data', function( $data, $format )
 
 ### Cache
 
-#### `affiliate_product_showcase_cache_key`
+   - `affiliate_product_showcase_cache_key`
 
 Filter cache key.
 
@@ -922,7 +922,7 @@ add_filter( 'affiliate_product_showcase_cache_key', function( $key, $type, $args
 }, 10, 3 );
 ```
 
-#### `affiliate_product_showcase_cache_duration`
+   - `affiliate_product_showcase_cache_duration`
 
 Filter cache duration.
 
@@ -951,7 +951,7 @@ add_filter( 'affiliate_product_showcase_cache_duration', function( $duration, $t
 
 ### Settings
 
-#### `affiliate_product_showcase_settings`
+   - `affiliate_product_showcase_settings`
 
 Filter all settings.
 
@@ -970,7 +970,7 @@ add_filter( 'affiliate_product_showcase_settings', function( $settings ) {
 } );
 ```
 
-#### `affiliate_product_showcase_setting_{key}`
+   - `affiliate_product_showcase_setting_{key}`
 
 Filter specific setting by key.
 
@@ -995,7 +995,7 @@ add_filter( 'affiliate_product_showcase_setting_cache_enabled', function( $value
 
 ### URLs
 
-#### `affiliate_product_showcase_product_page_url`
+   - `affiliate_product_showcase_product_page_url`
 
 Filter product page URL.
 
@@ -1013,7 +1013,7 @@ add_filter( 'affiliate_product_showcase_product_page_url', function( $url, $prod
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_admin_url`
+   - `affiliate_product_showcase_admin_url`
 
 Filter admin page URLs.
 
@@ -1033,7 +1033,7 @@ add_filter( 'affiliate_product_showcase_admin_url', function( $url, $page ) {
 
 ### Messages
 
-#### `affiliate_product_showcase_message`
+   - `affiliate_product_showcase_message`
 
 Filter admin messages.
 
@@ -1051,7 +1051,7 @@ add_filter( 'affiliate_product_showcase_message', function( $message, $type ) {
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_error_message`
+   - `affiliate_product_showcase_error_message`
 
 Filter error messages specifically.
 
@@ -1081,7 +1081,7 @@ add_filter( 'affiliate_product_showcase_error_message', function( $message, $cod
 
 ### Permissions
 
-#### `affiliate_product_showcase_capability`
+   - `affiliate_product_showcase_capability`
 
 Filter capability required for action.
 
@@ -1103,7 +1103,7 @@ add_filter( 'affiliate_product_showcase_capability', function( $capability, $act
 }, 10, 2 );
 ```
 
-#### `affiliate_product_showcase_user_can_access`
+   - `affiliate_product_showcase_user_can_access`
 
 Filter access permission.
 

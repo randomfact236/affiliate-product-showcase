@@ -67,7 +67,7 @@ This project adheres to a code of conduct. By participating, you are expected to
 
 ### Initial Setup
 
-#### 1. Fork and Clone
+   - 1. Fork and Clone
 
 ```bash
 # Fork the repository on GitHub
@@ -79,7 +79,7 @@ cd affiliate-product-showcase
 git remote add upstream https://github.com/randomfact236/affiliate-product-showcase.git
 ```
 
-#### 2. Install Dependencies
+   - 2. Install Dependencies
 
 ```bash
 # PHP dependencies
@@ -92,7 +92,7 @@ npm install
 npm run build
 ```
 
-#### 3. Set Up Development Environment
+   - 3. Set Up Development Environment
 
 **Option A: Docker (Recommended)**
 
@@ -108,7 +108,7 @@ docker-compose up -d
 2. Copy plugin to `wp-content/plugins/affiliate-product-showcase`
 3. Activate plugin in WordPress admin
 
-#### 4. Verify Setup
+   - 4. Verify Setup
 
 ```bash
 # Run all checks
@@ -134,7 +134,7 @@ release/* (pre-release)
 
 ### Step-by-Step Workflow
 
-#### 1. Create Feature Branch
+   - 1. Create Feature Branch
 
 ```bash
 git checkout develop
@@ -142,14 +142,14 @@ git pull upstream develop
 git checkout -b feature/your-feature-name
 ```
 
-#### 2. Make Changes
+   - 2. Make Changes
 
 - Write clear, focused code
 - Follow coding standards
 - Add tests for new functionality
 - Update documentation
 
-#### 3. Test Your Changes
+   - 3. Test Your Changes
 
 ```bash
 # Run all tests
@@ -161,7 +161,7 @@ vendor/bin/phpunit --filter YourTest
 npm run lint:js -- src/your-file.js
 ```
 
-#### 4. Commit Your Changes
+   - 4. Commit Your Changes
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
 
@@ -178,7 +178,7 @@ git commit -m "feat(shortcodes): add custom class attribute"
 # chore: maintenance tasks
 ```
 
-#### 5. Push and Create PR
+   - 5. Push and Create PR
 
 ```bash
 git push origin feature/your-feature-name
@@ -285,7 +285,7 @@ export function exampleFunction(example) {
 
 ### Test Types
 
-#### 1. Unit Tests
+   - 1. Unit Tests
 
 ```bash
 # Run all unit tests
@@ -299,7 +299,7 @@ vendor/bin/phpunit tests/Unit/ExampleTest.php
 
 **Coverage Goal**: 80%+ for new code
 
-#### 2. Integration Tests
+   - 2. Integration Tests
 
 ```bash
 # Run all integration tests
@@ -310,7 +310,7 @@ vendor/bin/phpunit --testsuite=integration
 
 **Purpose**: Test WordPress integration
 
-#### 3. End-to-End Tests
+   - 3. End-to-End Tests
 
 ```bash
 # Requires Docker environment

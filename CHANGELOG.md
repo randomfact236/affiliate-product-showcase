@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-#### Core Features
+   - Core Features
 - ✅ **Product Management System**
   - Complete CRUD operations for affiliate products
   - Bulk import/export (CSV/JSON)
@@ -93,7 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - ESLint for JavaScript
   - Prettier for code formatting
 
-#### Documentation
+   - Documentation
 - ✅ **Comprehensive Documentation Suite**
   - README.md - Complete overview and quick start
   - CHANGELOG.md - This file with detailed version history
@@ -116,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - docs/wp-cli.md - WP-CLI usage guide
   - docs/phpmyadmin.md - Database management
 
-#### Infrastructure
+   - Infrastructure
 - ✅ **Docker Development Environment**
   - WordPress + MySQL + phpMyAdmin
   - Health checks and monitoring

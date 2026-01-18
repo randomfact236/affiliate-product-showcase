@@ -33,7 +33,7 @@ wp plugin status affiliate-product-showcase
 
 ### Product Management
 
-#### `wp affiliate product list`
+   - `wp affiliate product list`
 
 List all affiliate products with filtering and formatting options.
 
@@ -82,7 +82,7 @@ wp affiliate product list --status=draft
 - `featured` - Featured status (true/false)
 - `stock_status` - Stock status
 
-#### `wp affiliate product create`
+   - `wp affiliate product create`
 
 Create a new affiliate product.
 
@@ -131,7 +131,7 @@ wp affiliate product create "Gaming Laptop" 1299.99 "https://example.com/affilia
 wp affiliate product create "Test Product" 99.99 "https://example.com/test" --dry-run
 ```
 
-#### `wp affiliate product update`
+   - `wp affiliate product update`
 
 Update an existing affiliate product.
 
@@ -164,7 +164,7 @@ wp affiliate product update 123 --featured=false
 wp affiliate product update 123 --features="New Feature 1,New Feature 2"
 ```
 
-#### `wp affiliate product delete`
+   - `wp affiliate product delete`
 
 Delete one or more affiliate products.
 
@@ -195,7 +195,7 @@ wp affiliate product delete 123 456 789
 wp affiliate product delete 123 --dry-run
 ```
 
-#### `wp affiliate product get`
+   - `wp affiliate product get`
 
 Get detailed information about a specific product.
 
@@ -223,7 +223,7 @@ wp affiliate product get 123 --format=json
 wp affiliate product get 123 --fields=ID,post_title,price,affiliate_url,features
 ```
 
-#### `wp affiliate product import`
+   - `wp affiliate product import`
 
 Import products from CSV or JSON file.
 
@@ -287,7 +287,7 @@ wp affiliate product import products.csv --dry-run
 wp affiliate product import products.csv --update-existing
 ```
 
-#### `wp affiliate product export`
+   - `wp affiliate product export`
 
 Export products to CSV or JSON file.
 
@@ -322,7 +322,7 @@ wp affiliate product export products.csv --fields=name,price,affiliate_url,categ
 
 ### Category Management
 
-#### `wp affiliate category list`
+   - `wp affiliate category list`
 
 List all product categories.
 
@@ -342,7 +342,7 @@ wp affiliate category list --format=json
 wp affiliate category list --fields=term_id,name,slug,count
 ```
 
-#### `wp affiliate category create`
+   - `wp affiliate category create`
 
 Create a new category.
 
@@ -365,7 +365,7 @@ wp affiliate category create "Electronics"
 wp affiliate category create "Laptops" --slug=laptops --parent=10
 ```
 
-#### `wp affiliate category delete`
+   - `wp affiliate category delete`
 
 Delete a category.
 
@@ -388,7 +388,7 @@ wp affiliate category delete 10 --force
 
 ### Settings Management
 
-#### `wp affiliate settings list`
+   - `wp affiliate settings list`
 
 List all plugin settings.
 
@@ -403,7 +403,7 @@ wp affiliate settings list
 wp affiliate settings list --format=json
 ```
 
-#### `wp affiliate settings get`
+   - `wp affiliate settings get`
 
 Get a specific setting value.
 
@@ -421,7 +421,7 @@ wp affiliate settings get cache_enabled
 wp affiliate settings get default_currency
 ```
 
-#### `wp affiliate settings set`
+   - `wp affiliate settings set`
 
 Set a plugin setting.
 
@@ -444,7 +444,7 @@ wp affiliate settings set default_currency USD --type=string
 wp affiliate settings set items_per_page 20 --type=integer
 ```
 
-#### `wp affiliate settings reset`
+   - `wp affiliate settings reset`
 
 Reset settings to defaults.
 
@@ -464,7 +464,7 @@ wp affiliate settings reset --confirm
 
 ### Cache Management
 
-#### `wp affiliate cache clear`
+   - `wp affiliate cache clear`
 
 Clear plugin cache.
 
@@ -488,7 +488,7 @@ wp affiliate cache clear --type=products
 wp affiliate cache clear --type=transients
 ```
 
-#### `wp affiliate cache warm`
+   - `wp affiliate cache warm`
 
 Pre-warm cache for better performance.
 
@@ -515,7 +515,7 @@ wp affiliate cache warm --limit=50
 
 ### Maintenance Commands
 
-#### `wp affiliate maintenance cleanup`
+   - `wp affiliate maintenance cleanup`
 
 Perform cleanup and maintenance tasks.
 
@@ -540,7 +540,7 @@ wp affiliate maintenance cleanup --type=orphaned
 wp affiliate maintenance cleanup --dry-run
 ```
 
-#### `wp affiliate maintenance verify`
+   - `wp affiliate maintenance verify`
 
 Verify plugin data integrity.
 
@@ -565,7 +565,7 @@ wp affiliate maintenance verify --type=products
 wp affiliate maintenance verify --fix
 ```
 
-#### `wp affiliate maintenance stats`
+   - `wp affiliate maintenance stats`
 
 Display plugin statistics.
 
@@ -585,7 +585,7 @@ wp affiliate maintenance stats --format=json
 
 ### Reporting Commands
 
-#### `wp affiliate report clicks`
+   - `wp affiliate report clicks`
 
 Generate affiliate click report.
 
@@ -615,7 +615,7 @@ wp affiliate report clicks --product=123
 wp affiliate report clicks --format=json
 ```
 
-#### `wp affiliate report revenue`
+   - `wp affiliate report revenue`
 
 Generate revenue report (if tracking enabled).
 
@@ -632,7 +632,7 @@ wp affiliate report revenue [--start=<date>] [--end=<date>] [--format=<format>] 
 wp affiliate report revenue --start=2024-01-01 --end=2024-01-31
 ```
 
-#### `wp affiliate report products`
+   - `wp affiliate report products`
 
 Generate product performance report.
 
@@ -657,7 +657,7 @@ wp affiliate report products --limit=20 --sort=revenue
 
 ### Utility Commands
 
-#### `wp affiliate tools validate-links`
+   - `wp affiliate tools validate-links`
 
 Validate affiliate links for broken URLs.
 
@@ -683,7 +683,7 @@ wp affiliate tools validate-links --product=123
 wp affiliate tools validate-links --timeout=10
 ```
 
-#### `wp affiliate tools generate-test-data`
+   - `wp affiliate tools generate-test-data`
 
 Generate test products for development.
 
@@ -708,7 +708,7 @@ wp affiliate tools generate-test-data 10
 wp affiliate tools generate-test-data 20 --category=test
 ```
 
-#### `wp affiliate tools flush-permalinks`
+   - `wp affiliate tools flush-permalinks`
 
 Flush permalinks for affiliate product URLs.
 

@@ -40,7 +40,7 @@ Before diving into specific issues, perform these quick checks:
 
 ### 1. Plugin Activation Issues
 
-#### Problem: Plugin fails to activate
+   - Problem: Plugin fails to activate
 
 **Symptoms:**
 - White screen after activation
@@ -76,7 +76,7 @@ Before diving into specific issues, perform these quick checks:
    chmod 755 wp-content/plugins/affiliate-product-showcase
    ```
 
-#### Problem: "Headers already sent" error
+   - Problem: "Headers already sent" error
 
 **Cause:** Whitespace or BOM characters in PHP files
 
@@ -91,7 +91,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 2. Shortcode Display Issues
 
-#### Problem: Shortcode shows as plain text
+   - Problem: Shortcode shows as plain text
 
 **Solutions:**
 
@@ -134,7 +134,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    # Then reactivate plugins one by one
    ```
 
-#### Problem: Products not displaying
+   - Problem: Products not displaying
 
 **Solutions:**
 
@@ -169,7 +169,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 3. CSS/JavaScript Issues
 
-#### Problem: Products display without styling
+   - Problem: Products display without styling
 
 **Solutions:**
 
@@ -200,7 +200,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    wp affiliate cache clear --type=products
    ```
 
-#### Problem: JavaScript not working
+   - Problem: JavaScript not working
 
 **Solutions:**
 
@@ -233,7 +233,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 4. Performance Issues
 
-#### Problem: Page loads slowly
+   - Problem: Page loads slowly
 
 **Solutions:**
 
@@ -269,7 +269,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    wp affiliate settings set image_size 'thumbnail' --type=string
    ```
 
-#### Problem: High server resource usage
+   - Problem: High server resource usage
 
 **Solutions:**
 
@@ -299,7 +299,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 5. Import/Export Issues
 
-#### Problem: Import fails or times out
+   - Problem: Import fails or times out
 
 **Solutions:**
 
@@ -338,7 +338,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    tail -f wp-content/debug.log | grep -i "affiliate"
    ```
 
-#### Problem: Export produces empty file
+   - Problem: Export produces empty file
 
 **Solutions:**
 
@@ -368,7 +368,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 6. WP-CLI Command Issues
 
-#### Problem: Command not found
+   - Problem: Command not found
 
 **Solutions:**
 
@@ -394,7 +394,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    wp product list
    ```
 
-#### Problem: Permission denied
+   - Problem: Permission denied
 
 **Solutions:**
 
@@ -416,7 +416,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 7. Cache Issues
 
-#### Problem: Changes not reflecting
+   - Problem: Changes not reflecting
 
 **Solutions:**
 
@@ -445,7 +445,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
    wp transient delete --all
    ```
 
-#### Problem: Cache warming fails
+   - Problem: Cache warming fails
 
 **Solutions:**
 
@@ -471,7 +471,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 8. Database Issues
 
-#### Problem: Database errors
+   - Problem: Database errors
 
 **Solutions:**
 
@@ -502,7 +502,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 9. REST API Issues
 
-#### Problem: REST API endpoints not working
+   - Problem: REST API endpoints not working
 
 **Solutions:**
 
@@ -531,7 +531,7 @@ find wp-content/plugins/affiliate-product-showcase/ -name "*.php" -exec sed -i '
 
 ### 10. Security Issues
 
-#### Problem: Security warnings
+   - Problem: Security warnings
 
 **Solutions:**
 

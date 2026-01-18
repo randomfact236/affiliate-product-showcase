@@ -35,7 +35,7 @@ fetch('/wp-json/affiliate-product-showcase/v1/products', {
 
 ### Products
 
-#### List Products
+   - List Products
 
 Get a paginated list of products.
 
@@ -91,7 +91,7 @@ curl -X GET "https://yoursite.com/wp-json/affiliate-product-showcase/v1/products
 
 ---
 
-#### Get Single Product
+   - Get Single Product
 
 Retrieve details of a specific product.
 
@@ -144,7 +144,7 @@ curl -X GET https://yoursite.com/wp-json/affiliate-product-showcase/v1/products/
 
 ---
 
-#### Create Product
+   - Create Product
 
 Create a new product. Requires authentication.
 
@@ -238,7 +238,7 @@ curl -X POST https://yoursite.com/wp-json/affiliate-product-showcase/v1/products
 
 ---
 
-#### Update Product
+   - Update Product
 
 Update an existing product. Requires authentication.
 
@@ -301,7 +301,7 @@ curl -X PUT https://yoursite.com/wp-json/affiliate-product-showcase/v1/products/
 
 ---
 
-#### Delete Product
+   - Delete Product
 
 Delete a product. Requires authentication.
 
@@ -351,7 +351,7 @@ curl -X DELETE https://yoursite.com/wp-json/affiliate-product-showcase/v1/produc
 
 ### Analytics
 
-#### Get Analytics Summary
+   - Get Analytics Summary
 
 Retrieve view and click statistics for products. Requires authentication.
 
@@ -441,7 +441,7 @@ curl -X GET "https://yoursite.com/wp-json/affiliate-product-showcase/v1/analytic
 
 ---
 
-#### Record View
+   - Record View
 
 Record a product view (public endpoint).
 
@@ -477,7 +477,7 @@ curl -X POST https://yoursite.com/wp-json/affiliate-product-showcase/v1/analytic
 
 ---
 
-#### Record Click
+   - Record Click
 
 Record a product click (public endpoint).
 

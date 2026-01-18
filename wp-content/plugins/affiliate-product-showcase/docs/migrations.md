@@ -48,7 +48,7 @@ The plugin creates custom tables with proper WordPress prefix support:
 
 ### Key Classes
 
-#### Database Class
+   - Database Class
 
 The `Database` class provides a standardized database access layer:
 
@@ -70,7 +70,7 @@ $db->update('meta', ['meta_value' => '99.99'], ['id' => 1]);
 $db->delete('meta', ['id' => 1]);
 ```
 
-#### Migrations Class
+   - Migrations Class
 
 The `Migrations` class manages schema versioning:
 
@@ -388,7 +388,7 @@ foreach ($sites as $site) {
 
 ### Common Issues
 
-#### Migration Failed
+   - Migration Failed
 
 **Problem:** Migration fails to execute
 
@@ -405,7 +405,7 @@ if ($migrations->run() === false) {
 }
 ```
 
-#### Rollback Failed
+   - Rollback Failed
 
 **Problem:** Cannot rollback migration
 
@@ -424,7 +424,7 @@ try {
 }
 ```
 
-#### Version Mismatch
+   - Version Mismatch
 
 **Problem:** Database version doesn't match code version
 
@@ -440,7 +440,7 @@ SET option_value = '1.0.0'
 WHERE option_name = 'affiliate_products_db_version';
 ```
 
-#### Table Already Exists
+   - Table Already Exists
 
 **Problem:** Table creation fails because table exists
 
