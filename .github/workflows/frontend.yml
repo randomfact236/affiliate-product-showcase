@@ -33,13 +33,13 @@ jobs:
           HUSKY: 0
 
       - name: Run TypeScript check
-        run: npm run lint:js || npx tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: Run ESLint
-        run: npm run lint:js || npx eslint 'assets/**/*.{js,jsx}'
+        run: npm run lint:js
 
       - name: Run Stylelint
-        run: npm run lint:css || npx stylelint 'assets/**/*.{css,scss}'
+        run: npm run lint:css
 
       - name: Run Vitest tests
         run: npm run test:tools || npx vitest run
