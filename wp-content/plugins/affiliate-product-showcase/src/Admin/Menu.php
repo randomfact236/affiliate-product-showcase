@@ -62,7 +62,7 @@ class Menu {
             __( 'All Products', 'affiliate-product-showcase' ),
             __( 'All Products', 'affiliate-product-showcase' ),
             'edit_affiliate_products',
-            'edit.php?post_type=affiliate_product'
+            'edit.php?post_type=aps_product'
         );
 
         // Add Product submenu
@@ -71,7 +71,7 @@ class Menu {
             __( 'Add Product', 'affiliate-product-showcase' ),
             __( 'Add Product', 'affiliate-product-showcase' ),
             'edit_affiliate_products',
-            'post-new.php?post_type=affiliate_product'
+            'post-new.php?post_type=aps_product'
         );
 
         // Analytics submenu

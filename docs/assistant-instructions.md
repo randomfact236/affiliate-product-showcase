@@ -1,6 +1,6 @@
 # Assistant Instructions
 
-### 🚨 CRITICAL: Git & Completion Rules
+### 🚨 CRITICAL: Git & Completion Rules & Code Change Policy
 
 **For Git operations, task completion format, and chat history rules, see:**
 **[assistant-rule.md](assistant-rule.md) - Consolidated rules for all critical operations**
@@ -12,6 +12,65 @@
 - All related checklists and examples
 
 **Read assistant-rule.md FIRST whenever you're unsure about these operations.**
+
+---
+
+### 🚨 CRITICAL: Code Change Policy (MANDATORY)
+
+**RULE: NEVER make code changes unless explicitly instructed to do so.**
+
+**Requirements:**
+- ❌ **NEVER** automatically modify, edit, or delete code files
+- ❌ **NEVER** make code changes even when user asks questions or requests help
+- ❌ **NEVER** apply fixes, patches, or modifications without explicit approval
+- ✅ **ALWAYS** provide explanations, analysis, and solutions WITHOUT making changes
+- ✅ **ALWAYS** ask: "Do you want me to make these changes?" before applying any code modifications
+- ✅ **ONLY** make code changes when you receive:
+  - Explicit "yes" response to making changes
+  - Direct instruction to "fix this" or "apply this change"
+  - Command to "update" or "modify" specific files
+
+**What You CAN Do Without Permission:**
+- ✅ Read files to analyze code
+- ✅ Search for code patterns
+- ✅ Explain issues and provide solutions
+- ✅ Show code examples (without saving to files)
+- ✅ Run diagnostic commands (git status, php -l, etc.)
+- ✅ Stage files for changes (git add) - but NOT commit
+
+**What You MUST Get Permission For:**
+- ❌ Writing or editing files (write_to_file, replace_in_file)
+- ❌ Making code changes or fixes
+- ❌ Deleting or moving files
+- ❌ Applying patches or solutions to code
+
+**Example of CORRECT Behavior:**
+
+**User:** "Why is there two main menu items?"
+**Assistant:** Explains the issue, identifies the cause, suggests solution, then asks "Do you want me to fix this?"
+**User:** "Yes"
+**Assistant:** [Applies the fix]
+
+**Example of INCORRECT Behavior:**
+
+**User:** "Why is there two main menu items?"
+**Assistant:** [Immediately fixes the issue without asking]
+
+**This Policy Applies To:**
+- ✅ **ALL** code modifications
+- ✅ **ALL** file edits (write_to_file, replace_in_file)
+- ✅ **ALL** bug fixes
+- ✅ **ALL** feature implementations
+- ✅ **ALL** refactoring work
+- ✅ **ALL** configuration changes
+
+**Exceptions:**
+The ONLY times you can make changes without asking:
+- When user explicitly says "fix this" or "make this change"
+- When user says "yes" to your question about making changes
+- When user provides direct command to modify files
+
+**NO EXCEPTIONS** to this rule. User must explicitly approve all code changes.
 
 ---
 
