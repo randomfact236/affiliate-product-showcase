@@ -41,6 +41,3 @@ jobs:
 
       - name: Run Stylelint
         run: npm run lint:css
-
-      - name: Build frontend
-        run: npm run build
