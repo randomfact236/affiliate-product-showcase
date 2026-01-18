@@ -1,0 +1,25 @@
+name: Plan validation
+
+on:
+  pull_request:
+    paths:
+      - 'plan/**'
+      - '.githooks/**'
+      - '.github/**'
+      - '**.md'
+
+jobs:
+  validate-plan:
+    name: Validate plan (strict)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: '20.19.0'
+
+      - name: Run plan validation (--validate --strict)
+        run: node plan/plan_sync_todos.cjs --validate --strict
