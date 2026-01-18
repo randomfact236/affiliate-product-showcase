@@ -36,7 +36,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Run ESLint
-        run: npm run lint:js
+        run: npx eslint frontend/**/*.{js,jsx} --config .eslintrc.json --max-warnings=0
 
       - name: Run Stylelint
         run: npm run lint:css
