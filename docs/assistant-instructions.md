@@ -38,7 +38,7 @@
 
 ## ⚠️ MANDATORY: Universal Output Format
 
-**CRITICAL: ALL messages MUST use this format - NO EXCEPTIONS!**
+**CRITICAL: ALL attempt_completion messages MUST use this exact format - NO EXCEPTIONS!**
 
 ```markdown
 ## User Request
@@ -56,11 +56,29 @@
 *Generated on: YYYY-MM-DD HH:MM:SS*
 ```
 
-**This applies to EVERYTHING:**
-- ✅ **EVERY attempt_completion message** - NO EXCEPTIONS
-- ✅ **EVERY chat history entry** - NO EXCEPTIONS
-- ✅ **EVERY report generation** - NO EXCEPTIONS
-- ✅ **EVERY task completion notification** - NO EXCEPTIONS
+**IMPORTANT: Two Different Contexts for attempt_completion:**
+
+### 1. CHAT BOX attempt_completion (Shown to user)
+- **Show ONLY the current task summary** (just what was completed NOW)
+- **DO NOT show all previous history summaries**
+- Purpose: Answer current question/report current task completion
+- Format: Single entry - User Request + Assistant Files Used + Summary + Timestamp
+- Example: "Checked remaining workflows - found 3 disabled workflows" (NOT: entire session history)
+
+### 2. CHAT HISTORY FILE (Stored on disk)
+- **Copy the EXACT attempt_completion content to the file**
+- **Latest message at TOP of file**
+- **Older messages BELOW** (stacked downwards)
+- Purpose: Keep record of all work in session
+- Format: Multiple entries stacked, newest first, oldest last
+
+**KEY DIFFERENCE:**
+- Chat box = Show me what you just did NOW (single entry)
+- Chat history file = Keep record of everything we did (all entries)
+
+**This format applies to:**
+- ✅ **EVERY attempt_completion message** in chat box
+- ✅ **EVERY chat history file entry**
 
 **This does NOT apply to:**
 - ❌ Tool use requests (read_file, execute_command, etc.)
