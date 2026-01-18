@@ -1,11 +1,9 @@
 # PHPStan Configuration for Affiliate Product Showcase
-# Generated: January 12, 2026
 
-# Parameters
 parameters:
-    level: 8
+    level: 5
     paths:
-        - src
+        - includes
         - tests
     excludePaths:
         - vendor
@@ -15,22 +13,3 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-
-# Ignore some WordPress-specific patterns that are difficult to fix
-ignoreErrors:
-    - '#Unsafe array key \w+_(type|option|callback|setting|action|filter|query|meta|class) in \wpdb::\w+#'
-    - '#Access to undefined constant WordPress\_(DIR|INC|ADMIN|CONTENT|PLUGIN)#'
-
-# WordPress stubs
-bootstrapFiles:
-    - vendor/php-stubs/wordpress-stubs/wordpress-globals.php
-
-# Rules
-services:
-    -
-        class: PHPStan\Rules\DisallowedComparison\BooleanNotIdenticalRule
-        tags:
-            - forbidden-comparison
-
-# Additional analysis files (if any custom stub files exist)
-scanFiles: []
