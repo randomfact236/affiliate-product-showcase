@@ -6,8 +6,7 @@
          executionOrder="depends,defects"
          failOnRisky="true"
          failOnWarning="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true">
+         beStrictAboutOutputDuringTests="true">
     <testsuites>
         <testsuite name="Affiliate Product Showcase Test Suite">
             <directory suffix="Test.php">tests/</directory>
@@ -19,13 +18,4 @@
             <directory suffix=".php">includes/</directory>
         </include>
     </source>
-    
-    <coverage>
-        <include>
-            <directory suffix=".php">includes/</directory>
-        </include>
-        <report>
-            <html outputDirectory="tests/coverage"/>
-        </report>
-    </coverage>
 </phpunit>
