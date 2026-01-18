@@ -1,122 +1,183 @@
 @layer components {
 	/* Product Card Container */
 	.aps-card {
-		@apply bg-white rounded-lg shadow-md overflow-hidden border border-gray-200;
+		background-color: #ffffff;
+		border-radius: 0.5rem;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		overflow: hidden;
+		border: 1px solid #e5e7eb;
 	}
 
 	/* Card Header */
 	.aps-card__header {
-		@apply p-4 border-b border-gray-200 bg-gray-50;
+		padding: 1rem;
+		border-bottom: 1px solid #e5e7eb;
+		background-color: #f9fafb;
 	}
 
 	/* Card Body */
 	.aps-card__body {
-		@apply p-4;
+		padding: 1rem;
 	}
 
 	/* Card Footer */
 	.aps-card__footer {
-		@apply p-4 border-t border-gray-200 bg-gray-50;
+		padding: 1rem;
+		border-top: 1px solid #e5e7eb;
+		background-color: #f9fafb;
 	}
 
 	/* Card Title */
 	.aps-card__title {
-		@apply text-xl font-bold text-gray-900 mb-2;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #111827;
+		margin-bottom: 0.5rem;
 	}
 
 	/* Card Subtitle */
 	.aps-card__subtitle {
-		@apply text-sm text-gray-600 mb-3;
+		font-size: 0.875rem;
+		color: #4b5563;
+		margin-bottom: 0.75rem;
 	}
 
 	/* Card Price */
 	.aps-card__price {
-		@apply text-2xl font-bold text-blue-600 mb-4;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #2563eb;
+		margin-bottom: 1rem;
 	}
 
 	/* Card Description */
 	.aps-card__description {
-		@apply text-gray-700 mb-4 line-clamp-3;
+		color: #374151;
+		margin-bottom: 1rem;
+		line-clamp: 3;
 	}
 
 	/* Card Image Container */
 	.aps-card__image {
-		@apply w-full h-48 object-cover;
+		width: 100%;
+		height: 12rem;
+		object-fit: cover;
 	}
 
 	/* Card Badge */
 	.aps-card__badge {
-		@apply inline-block px-3 py-1 text-xs font-semibold rounded-full;
+		display: inline-block;
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		border-radius: 9999px;
 	}
 
 	.aps-card__badge--sale {
-		@apply bg-red-100 text-red-800;
+		background-color: #fef2f2;
+		color: #991b1b;
 	}
 
 	.aps-card__badge--new {
-		@apply bg-green-100 text-green-800;
+		background-color: #f0fdf4;
+		color: #166534;
 	}
 
 	.aps-card__badge--featured {
-		@apply bg-yellow-100 text-yellow-800;
+		background-color: #fefce8;
+		color: #854d0e;
 	}
 
 	/* Card Actions */
 	.aps-card__actions {
-		@apply flex gap-2 mt-4;
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 1rem;
 	}
 
 	/* Card Rating */
 	.aps-card__rating {
-		@apply flex items-center gap-1 mb-2;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.aps-card__star {
-		@apply text-yellow-400;
+		color: #facc15;
 	}
 
 	.aps-card__star--empty {
-		@apply text-gray-300;
+		color: #d1d5db;
 	}
 
 	/* Card Meta */
 	.aps-card__meta {
-		@apply flex items-center gap-4 text-sm text-gray-500 mb-3;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin-bottom: 0.75rem;
 	}
 
 	.aps-card__meta-item {
-		@apply flex items-center gap-1;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
 	}
 
 	/* Card Grid */
 	.aps-card-grid {
-		@apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+		display: grid;
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.aps-card-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.aps-card-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 
 	/* Card Hover Effect */
 	.aps-card--hover {
-		@apply transition-transform duration-200 hover:shadow-lg hover:-translate-y-1;
+		transition: transform 0.2s;
+	}
+
+	.aps-card--hover:hover {
+		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+		transform: translateY(-0.25rem);
 	}
 
 	/* Card with Image */
 	.aps-card--with-image {
-		@apply overflow-hidden;
+		overflow: hidden;
 	}
 
 	/* Compact Card */
 	.aps-card--compact {
-		@apply shadow-sm;
+		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 	}
 
 	.aps-card--compact .aps-card__header {
-		@apply p-3;
+		padding: 0.75rem;
 	}
 
 	.aps-card--compact .aps-card__body {
-		@apply p-3;
+		padding: 0.75rem;
 	}
 
 	.aps-card--compact .aps-card__title {
-		@apply text-lg;
+		font-size: 1.125rem;
 	}
 }

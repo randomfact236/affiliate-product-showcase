@@ -11,7 +11,7 @@
 
 import { defineConfig, loadEnv, normalizePath } from 'vite';
 import { resolve, basename } from 'path';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, copyFileSync, existsSync as fsExistsSync, rmSync, readdirSync, statSync } from 'fs';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import react from '@vitejs/plugin-react';
@@ -128,9 +128,9 @@ class EnvValidator {
 // Input Discovery
 class InputConfig {
   static ENTRIES = [
-    { name: 'admin', path: 'js/admin.js', required: false },
-    { name: 'frontend', path: 'js/frontend.js', required: true },
-    { name: 'blocks', path: 'js/blocks.js', required: false },
+    { name: 'admin', path: 'js/admin.ts', required: false },
+    { name: 'frontend', path: 'js/frontend.ts', required: true },
+    { name: 'blocks', path: 'js/blocks.ts', required: false },
     { name: 'admin-styles', path: 'styles/admin.scss', required: false },
     { name: 'frontend-styles', path: 'styles/frontend.scss', required: true },
     { name: 'editor-styles', path: 'styles/editor.scss', required: false },
@@ -201,17 +201,14 @@ const loadSSL = (env) => {
 const moveManifestPlugin = (outputDir) => ({
   name: 'move-manifest',
   writeBundle() {
-    const fs = require('fs');
-    const path = require('path');
+    const viteManifest = resolve(outputDir, '.vite', 'manifest.json');
+    const targetManifest = resolve(outputDir, 'manifest.json');
     
-    const viteManifest = path.resolve(outputDir, '.vite', 'manifest.json');
-    const targetManifest = path.resolve(outputDir, 'manifest.json');
-    
-    if (fs.existsSync(viteManifest)) {
-      fs.copyFileSync(viteManifest, targetManifest);
+    if (fsExistsSync(viteManifest)) {
+      copyFileSync(viteManifest, targetManifest);
       // Remove .vite directory to keep build clean
       try {
-        fs.rmSync(path.dirname(viteManifest), { recursive: true, force: true });
+        rmSync(resolve(viteManifest, '..'), { recursive: true, force: true });
       } catch (error) {
         console.warn('Could not remove .vite directory:', error.message);
       }

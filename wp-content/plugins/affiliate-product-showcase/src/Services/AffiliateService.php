@@ -223,26 +223,95 @@ final class AffiliateService {
 	 * @return string Sanitized URL
 	 */
 	private function sanitize_url( string $url ): string {
-		// Parse and rebuild URL safely
 		$parsed = wp_parse_url( $url );
+		$parts = $this->sanitizeUrlParts( $parsed );
+		return $this->rebuildSanitizedUrl( $parts );
+	}
 
-		$scheme   = isset( $parsed['scheme'] ) ? esc_url_raw( $parsed['scheme'] . '://' ) : 'https://';
-		$host     = isset( $parsed['host'] ) ? sanitize_text_field( $parsed['host'] ) : '';
-		$path     = isset( $parsed['path'] ) ? sanitize_text_field( $parsed['path'] ) : '';
-		$query    = isset( $parsed['query'] ) ? $this->sanitize_query_string( $parsed['query'] ) : '';
-		$fragment = isset( $parsed['fragment'] ) ? sanitize_text_field( $parsed['fragment'] ) : '';
+	/**
+	 * Sanitize individual URL parts
+	 *
+	 * @param array<string, mixed> $parsed Parsed URL components
+	 * @return array<string, string> Sanitized URL parts
+	 */
+	private function sanitizeUrlParts( array $parsed ): array {
+		return [
+			'scheme'   => $this->sanitizeScheme( $parsed['scheme'] ?? null ),
+			'host'     => $this->sanitizeHost( $parsed['host'] ?? '' ),
+			'path'     => $this->sanitizePath( $parsed['path'] ?? '' ),
+			'query'    => $this->sanitizeQuery( $parsed['query'] ?? '' ),
+			'fragment' => $this->sanitizeFragment( $parsed['fragment'] ?? '' ),
+		];
+	}
 
-		$sanitized = $scheme . $host . $path;
-
-		if ( ! empty( $query ) ) {
-			$sanitized .= '?' . $query;
+	/**
+	 * Rebuild sanitized URL from parts
+	 *
+	 * @param array<string, string> $parts Sanitized URL parts
+	 * @return string Reconstructed URL
+	 */
+	private function rebuildSanitizedUrl( array $parts ): string {
+		$sanitized = $parts['scheme'] . $parts['host'] . $parts['path'];
+		
+		if ( ! empty( $parts['query'] ) ) {
+			$sanitized .= '?' . $parts['query'];
 		}
-
-		if ( ! empty( $fragment ) ) {
-			$sanitized .= '#' . $fragment;
+		
+		if ( ! empty( $parts['fragment'] ) ) {
+			$sanitized .= '#' . $parts['fragment'];
 		}
-
+		
 		return $sanitized;
+	}
+
+	/**
+	 * Sanitize URL scheme
+	 *
+	 * @param string|null $scheme URL scheme
+	 * @return string Sanitized scheme with protocol separator
+	 */
+	private function sanitizeScheme( ?string $scheme ): string {
+		return $scheme ? esc_url_raw( $scheme . '://' ) : 'https://';
+	}
+
+	/**
+	 * Sanitize URL host
+	 *
+	 * @param string $host URL host
+	 * @return string Sanitized host
+	 */
+	private function sanitizeHost( string $host ): string {
+		return sanitize_text_field( $host );
+	}
+
+	/**
+	 * Sanitize URL path
+	 *
+	 * @param string $path URL path
+	 * @return string Sanitized path
+	 */
+	private function sanitizePath( string $path ): string {
+		return sanitize_text_field( $path );
+	}
+
+	/**
+	 * Sanitize URL query string
+	 *
+	 * @param string $query URL query string
+	 * @return string Sanitized query string
+	 */
+	private function sanitizeQuery( string $query ): string {
+		return $this->sanitize_query_string( $query );
+	}
+
+	/**
+	 * Sanitize URL fragment
+	 *
+	 * @param string $fragment URL fragment
+	 * @return string Sanitized fragment
+	 */
+	private function sanitizeFragment( string $fragment ): string {
+		return sanitize_text_field( $fragment );
 	}
 
 	/**
@@ -288,14 +357,14 @@ final class AffiliateService {
 		$product = get_post( $product_id );
 		
 		if ( ! $product || 'aps_product' !== $product->post_type ) {
-			throw new \InvalidArgumentException( 'Product not found.' );
+			throw new \InvalidArgumentException( __( 'Product not found.', 'affiliate-product-showcase' ) );
 		}
 
 		// Get affiliate URL from post meta
 		$affiliate_url = get_post_meta( $product_id, 'affiliate_url', true );
 		
 		if ( empty( $affiliate_url ) ) {
-			throw new \InvalidArgumentException( 'Product affiliate URL is not set.' );
+			throw new \InvalidArgumentException( __( 'Product affiliate URL is not set.', 'affiliate-product-showcase' ) );
 		}
 
 		// Build and return tracking URL

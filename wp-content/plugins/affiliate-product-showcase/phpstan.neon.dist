@@ -1,0 +1,33 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - vendor
+        - node_modules
+        - build
+        - dist
+        - assets/dist
+        - src_backup_*
+        - tests/fixtures
+    ignoreErrors:
+        # WordPress-specific patterns
+        - '#WordPress functions should be checked#'
+        - '#Calling static methods on non-static class#'
+    bootstrapFiles:
+        - tests/bootstrap.php
+    scanFiles:
+        - affiliate-product-showcase.php
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 32
+    memoryLimit: 1G
+    phpVersion: 80100
+    stubFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+        - vendor/php-stubs/wordpress-globals/wordpress-globals.php
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false

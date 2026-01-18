@@ -121,7 +121,7 @@ class AuditLogger {
     public function logProductChange( int $product_id, string $action, array $changes = [] ): bool {
         return $this->logEvent(
             "product_{$action}",
-            sprintf( 'Product %s: ID %d', $action, $product_id ),
+            sprintf( __( 'Product %1$s: ID %2$d', 'affiliate-product-showcase' ), $action, $product_id ),
             array_merge( [ 'product_id' => $product_id ], $changes )
         );
     }

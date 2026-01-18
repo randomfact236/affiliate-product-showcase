@@ -46,7 +46,11 @@ final class ProductsCommand {
 			$products
 		);
 
-		\WP_CLI::success( 'Products' );
-		\WP_CLI\Utils\format_items( 'table', $data, [ 'ID', 'Title', 'Price' ] );
+		\WP_CLI::success( __( 'Products', 'affiliate-product-showcase' ) );
+		\WP_CLI\Utils\format_items( 'table', $data, [ 
+			'ID' => __( 'ID', 'affiliate-product-showcase' ),
+			'Title' => __( 'Title', 'affiliate-product-showcase' ),
+			'Price' => __( 'Price', 'affiliate-product-showcase' )
+		] );
 	}
 }

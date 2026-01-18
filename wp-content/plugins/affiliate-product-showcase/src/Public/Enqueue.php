@@ -111,24 +111,34 @@ class Enqueue {
 
         // Only load tracking if enabled
         if ( $this->isTrackingEnabled() ) {
-            wp_enqueue_script(
+            wp_register_script(
                 'affiliate-product-showcase-tracking',
                 AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/tracking.js',
                 [],
                 self::VERSION,
                 true
             );
+            
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-tracking', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-tracking' );
         }
 
         // Lazy load images if enabled
         if ( $this->isLazyLoadEnabled() ) {
-            wp_enqueue_script(
+            wp_register_script(
                 'affiliate-product-showcase-lazyload',
                 AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/lazyload.js',
                 [],
                 self::VERSION,
                 true
             );
+            
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-lazyload', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-lazyload' );
         }
     }
 

@@ -50,8 +50,8 @@ $disclosure_position = $settings['disclosure_position'] ?? 'top';
 			</div>
 			<div class="aps-card__footer">
 				<span class="aps-card__price">
-					<span class="aps-card__price-currency" aria-label="Currency"><?php echo esc_html( $product->currency ); ?></span>
-					<span class="aps-card__price-value" aria-label="Price"><?php echo esc_html( number_format_i18n( $product->price, 2 ) ); ?></span>
+					<span class="aps-card__price-currency" aria-label="<?php echo esc_attr( __( 'Currency', 'affiliate-product-showcase' ) ); ?>"><?php echo esc_html( $product->currency ); ?></span>
+					<span class="aps-card__price-value" aria-label="<?php echo esc_attr( __( 'Price', 'affiliate-product-showcase' ) ); ?>"><?php echo esc_html( number_format_i18n( $product->price, 2 ) ); ?></span>
 				</span>
 				<a 
 					class="aps-card__cta aps-btn-wp" 

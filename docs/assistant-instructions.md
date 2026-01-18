@@ -83,6 +83,175 @@
   ```
 
 ---
+### Default Task Completion Format
+
+**Always use this format for EVERY attempt_completion - NO EXCEPTIONS!**
+
+```markdown
+## User Request
+"[Latest Message]"
+
+## Assistant Files Used
+- ✅ [filename].md (APPLIED)
+- ❌ [filename].md (NOT USED)
+
+## [Keep current format same]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+**This applies to EVERY attempt_completion:**
+- ✅ **EVERY task completion message** - NO EXCEPTIONS
+- ✅ **EVERY chat history entry** - NO EXCEPTIONS
+
+**This does NOT apply to:**
+- ❌ Tool use requests (read_file, execute_command, etc.)
+- ❌ Intermediate progress updates
+- ❌ Clarification questions (ask_followup_question)
+
+**Assistant Files Used Section Requirements:**
+
+**🚨 CRITICAL: MANDATORY - List ALL Assistant Files with Status**
+
+**What to List:**
+- ONLY list assistant instruction/reference files (docs/assistant-*.md)
+- DO NOT list project files, source code, or files created during task
+- List ALL relevant assistant files, not just those used
+
+**Status Indicators:**
+- ✅ (APPLIED) - File was used/applied during the task
+- ❌ (NOT USED) - File was referenced but not applied
+
+**Example:**
+```markdown
+## Assistant Files Used
+- ✅ docs/assistant-instructions.md (APPLIED)
+- ✅ docs/assistant-rule.md (APPLIED)
+- ❌ docs/assistant-quality-standards.md (NOT USED)
+- ❌ docs/assistant-performance-optimization.md (NOT USED)
+```
+
+**This section is MANDATORY for EVERY attempt_completion - NO EXCEPTIONS.**
+
+**This format should be used in chat history file ONLY when explicitly requested:**
+- Read existing chat history file (if exists)
+- Add NEW entry at TOP (before previous entries)
+- Use write_to_file to save updated content
+- Verify file was saved successfully
+
+**NOTE:** Chat history is OPTIONAL - only create/update when user explicitly requests it.
+
+**Benefits:**
+- Faster workflow (only update when requested)
+- Reduced token usage (fewer automatic operations)
+- User control over documentation
+- Latest information immediately visible
+
+---
+### Default Chat History Rules
+
+**⚠️ OPTIONAL: Update chat history ONLY when explicitly requested.**
+
+**Location:** `chat-history/` directory
+
+**File Naming:**
+- New chat session: Create new file with next sequential number
+- Format: `Chat-[Number]-YYYY-MM-DD-HHMM.md`
+- Example: `Chat-001-2026-01-17-2245.md`
+
+**Storage Strategy:**
+- **Latest message at the top** - Insert new entries at the beginning for easy access
+- **Old messages below** - Previous task summaries go below the latest message
+- **Exact task summary** - Store the exact task completed summary in the history file
+- **No matter how many messages** - Even if multiple messages in chat box, only store the latest message summary when requested
+
+**When to Create/Update Chat History:**
+- User explicitly requests: "update chat history"
+- User explicitly requests: "create chat history"
+- User explicitly requests: "save to chat history"
+- **DO NOT** automatically create/update unless explicitly requested
+
+---
+
+### File Creation Rules
+
+**New chat session (when requested):**
+1. Determine next sequential number (e.g., Chat-010, Chat-011)
+2. Create new file with timestamp
+3. Add task summary to file
+
+**Same chat session (when requested):**
+1. Read existing chat history file
+2. Add NEW entry at TOP (before previous entries)
+3. Use write_to_file to save updated content
+
+---
+
+### OPTIONAL Process
+
+**ONLY perform these steps when user explicitly requests chat history update:**
+
+1. User requests: "update chat history" or similar
+2. Read existing chat history file (if exists)
+3. Add NEW entry at TOP (before previous entries)
+4. Use write_to_file to save updated content
+5. Verify file was updated successfully
+
+**NOTE:** Chat history creation/update is OPTIONAL and MANUAL. Do NOT create automatically.
+
+**Benefits of Manual Chat History:**
+- Faster workflow (only update when requested)
+- Reduced token usage (fewer automatic operations)
+- User control over what gets documented
+- Flexibility to update when needed
+- Latest information immediately visible
+
+---
+
+### Chat History File Format
+
+**Reverse Chronological Order (Latest → Oldest):**
+
+```markdown
+## User Request
+"[Latest Message]"
+
+## Assistant Files Used
+- ✅ [filename].md (APPLIED)
+- ❌ [filename].md (NOT USED)
+
+## [Task summary content]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+
+## User Request
+"[Next Message]"
+
+## Assistant Files Used
+- ✅ [filename].md (APPLIED)
+- ❌ [filename].md (NOT USED)
+
+## [Task summary content]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+
+## User Request
+"[Oldest Message]"
+
+## Assistant Files Used
+- ✅ [filename].md (APPLIED)
+- ❌ [filename].md (NOT USED)
+
+## [Task summary content]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+---
 ### Default Recommendations
 
 **Always provide proactive recommendations after code changes, file modifications, or feature implementations.**

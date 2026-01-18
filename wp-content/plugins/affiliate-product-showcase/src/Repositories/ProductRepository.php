@@ -44,7 +44,7 @@ final class ProductRepository extends AbstractRepository {
 	 */
 	public function find( int $id ): ?Product {
 		if ( $id <= 0 ) {
-			throw RepositoryException::validationError('id', 'ID must be a positive integer');
+			throw RepositoryException::validationError('id', __( 'ID must be a positive integer', 'affiliate-product-showcase' ));
 		}
 
 		// Check cache first
@@ -71,7 +71,7 @@ final class ProductRepository extends AbstractRepository {
 			wp_cache_set( $cache_key, $product, 'aps_products', HOUR_IN_SECONDS );
 			return $product;
 		} catch ( \Exception $e ) {
-			throw RepositoryException::queryError('Product', $e->getMessage(), 0, $e);
+			throw RepositoryException::queryError(__( 'Product', 'affiliate-product-showcase' ), $e->getMessage(), 0, $e);
 		}
 	}
 
@@ -83,6 +83,34 @@ final class ProductRepository extends AbstractRepository {
 	 * @throws RepositoryException If query fails
 	 */
 	public function list( array $args = [] ): array {
+		$query_args = $this->prepareQueryArgs( $args );
+		
+		// Check cache first
+		$cache_key = $this->generateCacheKey( $query_args );
+		$cached_items = $this->getCachedItems( $cache_key );
+		
+		if ( false !== $cached_items ) {
+			return $cached_items;
+		}
+		
+		// Execute query and process results
+		$query = $this->executeQuery( $query_args );
+		$items = $this->processQueryResults( $query );
+		
+		// Cache results
+		$this->cacheItems( $cache_key, $items );
+		
+		return $items;
+	}
+
+	/**
+	 * Prepare and validate query arguments
+	 *
+	 * @param array<string, mixed> $args Query arguments
+	 * @return array<string, mixed> Prepared query arguments
+	 * @throws RepositoryException If validation fails
+	 */
+	private function prepareQueryArgs( array $args ): array {
 		$query_args = wp_parse_args(
 			$args,
 			[
@@ -94,32 +122,83 @@ final class ProductRepository extends AbstractRepository {
 			]
 		);
 
-		// Validate posts_per_page
-		if ( isset( $query_args['posts_per_page'] ) && $query_args['posts_per_page'] < -1 ) {
-			throw RepositoryException::validationError('posts_per_page', 'Must be -1 or a positive integer');
-		}
-
-		// Create cache key from query args
-		$cache_key = 'aps_product_list_' . md5( serialize( $query_args ) );
+		$this->validateQueryArgs( $query_args );
 		
-		// Check cache first
-		$cached_items = wp_cache_get( $cache_key, 'aps_products' );
-		
-		if ( false !== $cached_items ) {
-			return $cached_items;
-		}
+		return $query_args;
+	}
 
+	/**
+	 * Validate query arguments
+	 *
+	 * @param array<string, mixed> $args Query arguments to validate
+	 * @throws RepositoryException If validation fails
+	 */
+	private function validateQueryArgs( array $args ): void {
+		if ( isset( $args['posts_per_page'] ) && $args['posts_per_page'] < -1 ) {
+			throw RepositoryException::validationError( 'posts_per_page', 'Must be -1 or a positive integer' );
+		}
+	}
+
+	/**
+	 * Generate cache key from query arguments
+	 *
+	 * @param array<string, mixed> $args Query arguments
+	 * @return string Cache key
+	 */
+	private function generateCacheKey( array $args ): string {
+		return 'aps_product_list_' . md5( serialize( $args ) );
+	}
+
+	/**
+	 * Get cached items if available
+	 *
+	 * @param string $cache_key Cache key
+	 * @return array<int, Product>|false Cached items or false if not cached
+	 */
+	private function getCachedItems( string $cache_key ) {
+		return wp_cache_get( $cache_key, 'aps_products' );
+	}
+
+	/**
+	 * Execute WP_Query with error handling
+	 *
+	 * @param array<string, mixed> $args Query arguments
+	 * @return \WP_Query Query object
+	 * @throws RepositoryException If query fails
+	 */
+	private function executeQuery( array $args ): \WP_Query {
 		try {
-			$query = new \WP_Query( $query_args );
+			return new \WP_Query( $args );
 		} catch ( \Exception $e ) {
-			throw RepositoryException::queryError('Product', $e->getMessage(), 0, $e);
+			throw RepositoryException::queryError(
+				__( 'Product', 'affiliate-product-showcase' ),
+				$e->getMessage(),
+				0,
+				$e
+			);
 		}
+	}
 
-		// OPTIMIZATION: Fetch all meta data at once to prevent N+1 queries
-		// Instead of calling get_post_meta() for each post individually,
-		// we fetch all meta data in a single query using get_post_meta()
-		// with the third parameter set to false (returns all meta for all posts)
+	/**
+	 * Process query results with N+1 query optimization
+	 *
+	 * @param \WP_Query $query Query object
+	 * @return array<int, Product> Processed products
+	 */
+	private function processQueryResults( \WP_Query $query ): array {
 		$post_ids = wp_list_pluck( $query->posts, 'ID' );
+		$all_meta = $this->fetchAllMeta( $post_ids );
+		
+		return $this->buildProductsFromQuery( $query->posts, $all_meta );
+	}
+
+	/**
+	 * Fetch all meta data for given post IDs (N+1 query prevention)
+	 *
+	 * @param array<int, int> $post_ids Array of post IDs
+	 * @return array<int, array<string, mixed>> Meta data indexed by post ID
+	 */
+	private function fetchAllMeta( array $post_ids ): array {
 		$all_meta = [];
 		
 		if ( ! empty( $post_ids ) ) {
@@ -127,26 +206,56 @@ final class ProductRepository extends AbstractRepository {
 				$all_meta[ $post_id ] = get_post_meta( $post_id );
 			}
 		}
+		
+		return $all_meta;
+	}
 
+	/**
+	 * Build product objects from query results
+	 *
+	 * @param array<int, \WP_Post> $posts Array of post objects
+	 * @param array<int, array<string, mixed>> $all_meta Pre-fetched meta data
+	 * @return array<int, Product> Array of product objects
+	 */
+	private function buildProductsFromQuery( array $posts, array $all_meta ): array {
 		$items = [];
-		foreach ( $query->posts as $post ) {
+		
+		foreach ( $posts as $post ) {
 			try {
-				// Pass pre-fetched meta to factory to avoid additional queries
 				$items[] = $this->factory->from_post( $post, $all_meta[ $post->ID ] ?? [] );
 			} catch ( \Exception $e ) {
-				// Log error but continue with other posts
-				error_log(sprintf(
-					'ProductRepository: Failed to create product from post %d: %s',
-					$post->ID,
-					$e->getMessage()
-				));
+				$this->logProductCreationError( $post->ID, $e );
 			}
 		}
 		
+		return $items;
+	}
+
+	/**
+	 * Log product creation error
+	 *
+	 * @param int $post_id Post ID
+	 * @param \Exception $exception Exception that occurred
+	 * @return void
+	 */
+	private function logProductCreationError( int $post_id, \Exception $exception ): void {
+		error_log( sprintf(
+			'ProductRepository: Failed to create product from post %d: %s',
+			$post_id,
+			$exception->getMessage()
+		) );
+	}
+
+	/**
+	 * Cache items for future queries
+	 *
+	 * @param string $cache_key Cache key
+	 * @param array<int, Product> $items Items to cache
+	 * @return void
+	 */
+	private function cacheItems( string $cache_key, array $items ): void {
 		// Cache for 5 minutes (shorter for lists as they change more frequently)
 		wp_cache_set( $cache_key, $items, 'aps_products', 5 * MINUTE_IN_SECONDS );
-
-		return $items;
 	}
 
 	/**
@@ -179,8 +288,8 @@ final class ProductRepository extends AbstractRepository {
 		if ( is_wp_error( $stored_id ) ) {
 			$error_message = $stored_id instanceof WP_Error 
 				? implode( ', ', $stored_id->get_error_messages() ) 
-				: 'Unknown error';
-			throw RepositoryException::saveFailed('Product', $error_message);
+				: __( 'Unknown error', 'affiliate-product-showcase' );
+			throw RepositoryException::saveFailed(__( 'Product', 'affiliate-product-showcase' ), $error_message);
 		}
 
 		$stored_id = (int) $stored_id;
@@ -200,19 +309,19 @@ final class ProductRepository extends AbstractRepository {
 	 */
 	private function validateProduct( Product $product ): void {
 		if ( empty( $product->title ) ) {
-			throw RepositoryException::validationError('title', 'Title is required');
+			throw RepositoryException::validationError('title', __( 'Title is required', 'affiliate-product-showcase' ));
 		}
 
 		if ( empty( $product->affiliate_url ) ) {
-			throw RepositoryException::validationError('affiliate_url', 'Affiliate URL is required');
+			throw RepositoryException::validationError('affiliate_url', __( 'Affiliate URL is required', 'affiliate-product-showcase' ));
 		}
 
 		if ( ! filter_var( $product->affiliate_url, FILTER_VALIDATE_URL ) ) {
-			throw RepositoryException::validationError('affiliate_url', 'Must be a valid URL');
+			throw RepositoryException::validationError('affiliate_url', __( 'Must be a valid URL', 'affiliate-product-showcase' ));
 		}
 
 		if ( null !== $product->price && $product->price < 0 ) {
-			throw RepositoryException::validationError('price', 'Cannot be negative');
+			throw RepositoryException::validationError('price', __( 'Cannot be negative', 'affiliate-product-showcase' ));
 		}
 	}
 
@@ -225,7 +334,23 @@ final class ProductRepository extends AbstractRepository {
 	 * @throws RepositoryException If meta save fails
 	 */
 	private function saveMeta( int $post_id, Product $product ): void {
-		$meta_fields = [
+		$meta_fields = $this->getProductMetaFields( $product );
+		
+		foreach ( $meta_fields as $key => $value ) {
+			if ( $this->shouldUpdateMeta( $post_id, $key, $value ) ) {
+				$this->updateMetaField( $post_id, $key, $value );
+			}
+		}
+	}
+
+	/**
+	 * Get product meta fields as associative array
+	 *
+	 * @param Product $product Product object
+	 * @return array<string, mixed> Meta fields keyed by meta key
+	 */
+	private function getProductMetaFields( Product $product ): array {
+		return [
 			'aps_price'         => $product->price,
 			'aps_original_price' => $product->original_price,
 			'aps_currency'      => $product->currency,
@@ -235,24 +360,51 @@ final class ProductRepository extends AbstractRepository {
 			'aps_badge'        => $product->badge,
 			'aps_categories'    => $product->categories,
 		];
+	}
 
-		foreach ( $meta_fields as $key => $value ) {
-			// Only update if value is actually changed
-			$current = get_post_meta( $post_id, $key, true );
-			
-			if ($value !== $current) {
-				$result = update_post_meta( $post_id, $key, $value );
-				
-				// update_post_meta returns false on FAILURE, not when value === false
-				// It returns the old value on success (which might be false)
-				if ($result === false && !in_array($value, [false, '', null], true)) {
-					throw RepositoryException::saveFailed(
-						'Product Meta',
-						sprintf('Failed to update meta field "%s"', $key)
-					);
-				}
-			}
+	/**
+	 * Check if meta field should be updated
+	 *
+	 * @param int $post_id Post ID
+	 * @param string $key Meta key
+	 * @param mixed $value New value
+	 * @return bool True if field should be updated
+	 */
+	private function shouldUpdateMeta( int $post_id, string $key, $value ): bool {
+		$current = get_post_meta( $post_id, $key, true );
+		return $value !== $current;
+	}
+
+	/**
+	 * Update a single meta field with error handling
+	 *
+	 * @param int $post_id Post ID
+	 * @param string $key Meta key
+	 * @param mixed $value Meta value
+	 * @throws RepositoryException If meta update fails
+	 */
+	private function updateMetaField( int $post_id, string $key, $value ): void {
+		$result = update_post_meta( $post_id, $key, $value );
+		
+		if ( $this->isMetaUpdateFailed( $result, $value ) ) {
+			throw RepositoryException::saveFailed(
+				__( 'Product Meta', 'affiliate-product-showcase' ),
+				sprintf( __( 'Failed to update meta field "%s"', 'affiliate-product-showcase' ), $key )
+			);
 		}
+	}
+
+	/**
+	 * Check if meta update operation failed
+	 *
+	 * @param mixed $result Result from update_post_meta
+	 * @param mixed $value Value that was being updated
+	 * @return bool True if update failed
+	 */
+	private function isMetaUpdateFailed( $result, $value ): bool {
+		// update_post_meta returns false on FAILURE, not when value === false
+		// It returns the old value on success (which might be false)
+		return $result === false && ! in_array( $value, [ false, '', null ], true );
 	}
 
 	/**
@@ -264,19 +416,19 @@ final class ProductRepository extends AbstractRepository {
 	 */
 	public function delete( int $id ): bool {
 		if ( $id <= 0 ) {
-			throw RepositoryException::validationError('id', 'ID must be a positive integer');
+			throw RepositoryException::validationError('id', __( 'ID must be a positive integer', 'affiliate-product-showcase' ));
 		}
 
 		// Check if product exists and is correct type
 		$product = $this->find( $id );
 		if ( ! $product ) {
-			throw RepositoryException::notFound('Product', $id);
+			throw RepositoryException::notFound(__( 'Product', 'affiliate-product-showcase' ), $id);
 		}
 
 		$deleted = wp_delete_post( $id, true );
 		
 		if ( false === $deleted ) {
-			throw RepositoryException::deleteFailed('Product', 'wp_delete_post returned false');
+			throw RepositoryException::deleteFailed(__( 'Product', 'affiliate-product-showcase' ), __( 'wp_delete_post returned false', 'affiliate-product-showcase' ));
 		}
 		
 		// Clear product cache

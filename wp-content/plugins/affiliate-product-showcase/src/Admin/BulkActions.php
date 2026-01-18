@@ -145,39 +145,22 @@ class BulkActions {
 
         // CSV headers
         fputcsv( $file, [
-            'ID',
-            'Title',
-            'SKU',
-            'Brand',
-            'Price',
-            'Rating',
-            'In Stock',
-            'Affiliate URL',
-            'Image URL',
+            __( 'ID', 'affiliate-product-showcase' ),
+            __( 'Title', 'affiliate-product-showcase' ),
+            __( 'SKU', 'affiliate-product-showcase' ),
+            __( 'Brand', 'affiliate-product-showcase' ),
+            __( 'Price', 'affiliate-product-showcase' ),
+            __( 'Rating', 'affiliate-product-showcase' ),
+            __( 'In Stock', 'affiliate-product-showcase' ),
+            __( 'Affiliate URL', 'affiliate-product-showcase' ),
+            __( 'Image URL', 'affiliate-product-showcase' ),
         ] );
 
         $count = 0;
 
-        foreach ( $post_ids as $post_id ) {
-            $post = get_post( $post_id );
-
-            if ( ! $post ) {
-                continue;
-            }
-
-            $row = [
-                $post->ID,
-                $post->post_title,
-                get_post_meta( $post_id, '_sku', true ),
-                get_post_meta( $post_id, '_brand', true ),
-                get_post_meta( $post_id, '_price', true ),
-                get_post_meta( $post_id, '_rating', true ),
-                get_post_meta( $post_id, '_in_stock', true ),
-                get_post_meta( $post_id, '_affiliate_url', true ),
-                get_post_meta( $post_id, '_image_url', true ),
-            ];
-
-            fputcsv( $file, $row );
+        // Use generator for memory-efficient processing
+        foreach ( $this->getProductsForExport( $post_ids ) as $product_data ) {
+            fputcsv( $file, $product_data );
             $count++;
         }
 
@@ -190,6 +173,62 @@ class BulkActions {
         set_transient( 'product_export_url_' . get_current_user_id(), $download_url, HOUR_IN_SECONDS );
 
         return $count;
+    }
+
+    /**
+     * Get products for export using generator pattern
+     * Yields product data one at a time to reduce memory usage
+     *
+     * @param array<int> $post_ids Post IDs to export
+     * @return \Generator<array<string,mixed>> Generator yielding product data arrays
+     */
+    private function getProductsForExport( array $post_ids ): \Generator {
+        $batch_size = 50; // Process 50 products at a time for memory efficiency
+
+        // Process in batches to reduce memory usage
+        foreach ( array_chunk( $post_ids, $batch_size ) as $chunk ) {
+            $args = [
+                'post__in'     => $chunk,
+                'post_type'    => 'affiliate_product',
+                'post_status'  => 'any',
+                'posts_per_page' => -1,
+                'fields'       => 'ids',
+            ];
+
+            $product_post_ids = get_posts( $args );
+
+            // Pre-fetch all meta data for batch to reduce queries
+            $all_meta = [];
+            foreach ( $product_post_ids as $product_post_id ) {
+                $all_meta[ $product_post_id ] = get_post_meta( $product_post_id );
+            }
+
+            // Process posts with pre-fetched meta
+            foreach ( $product_post_ids as $product_post_id ) {
+                $post = get_post( $product_post_id );
+
+                if ( ! $post ) {
+                    continue;
+                }
+
+                $meta = $all_meta[ $product_post_id ] ?? [];
+
+                yield [
+                    $post->ID,
+                    $post->post_title,
+                    $meta['_sku'][0] ?? '',
+                    $meta['_brand'][0] ?? '',
+                    $meta['_price'][0] ?? '',
+                    $meta['_rating'][0] ?? '',
+                    $meta['_in_stock'][0] ?? '',
+                    $meta['_affiliate_url'][0] ?? '',
+                    $meta['_image_url'][0] ?? '',
+                ];
+            }
+
+            // Clear meta array to free memory after each batch
+            $all_meta = [];
+        }
     }
 
     /**

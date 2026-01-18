@@ -121,24 +121,34 @@ class Enqueue {
 
         // Dashboard scripts
         if ( $this->isDashboardPage( $hook ) ) {
-            wp_enqueue_script(
+            wp_register_script(
                 'affiliate-product-showcase-dashboard',
                 AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
                 [ 'jquery', 'wp-util' ],
                 self::VERSION,
                 true
             );
+            
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
         }
 
         // Analytics scripts
         if ( $this->isAnalyticsPage( $hook ) ) {
-            wp_enqueue_script(
+            wp_register_script(
                 'affiliate-product-showcase-analytics',
                 AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
                 [ 'jquery', 'wp-util', 'chart.js' ],
                 self::VERSION,
                 true
             );
+            
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-analytics' );
         }
 
         // Settings scripts

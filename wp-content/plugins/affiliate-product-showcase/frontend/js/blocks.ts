@@ -1,3 +1,3 @@
 import '../styles/editor.scss';
-import '../../blocks/product-showcase/index.js';
-import '../../blocks/product-grid/index.js';
+import '../../blocks/product-showcase/index.jsx';
+import '../../blocks/product-grid/index.jsx';

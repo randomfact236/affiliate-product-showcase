@@ -92,15 +92,15 @@ class ProductValidator {
         // Check length
         if ( strlen( $title ) < 3 ) {
             $result['valid'] = false;
-            $result['errors']['title'] = 'Title must be at least 3 characters';
+            $result['errors']['title'] = __( 'Title must be at least 3 characters', 'affiliate-product-showcase' );
         } elseif ( strlen( $title ) > 200 ) {
             $result['valid'] = false;
-            $result['errors']['title'] = 'Title must not exceed 200 characters';
+            $result['errors']['title'] = __( 'Title must not exceed 200 characters', 'affiliate-product-showcase' );
         }
 
         // Check for suspicious patterns
         if ( $this->containsSpamKeywords( $title ) ) {
-            $result['warnings']['title'] = 'Title contains suspicious keywords';
+            $result['warnings']['title'] = __( 'Title contains suspicious keywords', 'affiliate-product-showcase' );
         }
 
         return $result;
@@ -122,11 +122,11 @@ class ProductValidator {
 
         if ( $price < 0 ) {
             $result['valid'] = false;
-            $result['errors']['price'] = 'Price cannot be negative';
+            $result['errors']['price'] = __( 'Price cannot be negative', 'affiliate-product-showcase' );
         }
 
         if ( $price > 999999.99 ) {
-            $result['warnings']['price'] = 'Price seems unusually high';
+            $result['warnings']['price'] = __( 'Price seems unusually high', 'affiliate-product-showcase' );
         }
 
         return $result;
@@ -185,7 +185,7 @@ class ProductValidator {
 
         if ( $rating < 0 || $rating > 5 ) {
             $result['valid'] = false;
-            $result['errors']['rating'] = 'Rating must be between 0 and 5';
+            $result['errors']['rating'] = __( 'Rating must be between 0 and 5', 'affiliate-product-showcase' );
         }
 
         return $result;
