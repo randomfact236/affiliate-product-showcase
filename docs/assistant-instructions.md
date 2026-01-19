@@ -1,20 +1,5 @@
 # Assistant Instructions
 
-### 🚨 CRITICAL: Git & Completion Rules & Code Change Policy
-
-**For Git operations, task completion format, and chat history rules, see:**
-**[assistant-rule.md](assistant-rule.md) - Consolidated rules for all critical operations**
-
-**This includes:**
-- Git operations (commit, push, branch creation)
-- Task completion format (attempt_completion)
-- Chat history updates (mandatory)
-- All related checklists and examples
-
-**Read assistant-rule.md FIRST whenever you're unsure about these operations.**
-
----
-
 ### 🚨 CRITICAL: Code Change Policy (MANDATORY)
 
 **RULE: NEVER make code changes unless explicitly instructed to do so.**
@@ -291,7 +276,6 @@ Before Any Git Operation:
 
 ## Assistant Files Used
 - ✅ docs/assistant-instructions.md (APPLIED)
-- ✅ docs/assistant-rule.md (APPLIED)
 - ❌ docs/assistant-quality-standards.md (NOT USED)
 - ❌ docs/assistant-performance-optimization.md (NOT USED)
 
@@ -460,7 +444,6 @@ These sections appear under "## 💡 Recommendations" at the BOTTOM of EVERY mes
 
 ## Assistant Files Used
 - ✅ docs/assistant-instructions.md (APPLIED)
-- ✅ docs/assistant-rule.md (APPLIED)
 - ❌ docs/assistant-quality-standards.md (NOT USED)
 - ❌ docs/assistant-performance-optimization.md (NOT USED)
 

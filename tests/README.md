@@ -282,5 +282,5 @@ When adding new features:
 
 - [PHPUnit Documentation](https://phpunit.de/documentation.html)
 - [WordPress Plugin Testing](https://make.wordpress.org/cli/handbook/misc/plugin-unit-testing/)
-- [Assistant Rules](../../docs/assistant-rule.md)
+- [Assistant Instructions](../../docs/assistant-instructions.md)
 - [Quality Standards](../../docs/assistant-quality-standards.md)
