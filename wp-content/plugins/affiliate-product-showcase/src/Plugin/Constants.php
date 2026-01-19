@@ -79,6 +79,26 @@ final class Constants {
 	public const CPT_PRODUCT = 'aps_product';
 
 	/**
+	 * Taxonomy: Category
+	 *
+	 * Taxonomy slug for product categories.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public const TAX_CATEGORY = 'aps_category';
+
+	/**
+	 * Taxonomy: Tag
+	 *
+	 * Taxonomy slug for product tags.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public const TAX_TAG = 'aps_tag';
+
+	/**
 	 * Option Prefix
 	 *
 	 * Prefix for WordPress options stored by the plugin.

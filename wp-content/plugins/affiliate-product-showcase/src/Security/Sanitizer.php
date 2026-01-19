@@ -148,11 +148,11 @@ class Sanitizer {
 				: [ intval( $data['category_ids'] ) ];
 		}
 
-        if ( isset( $data['tags'] ) ) {
-            $sanitized['tags'] = is_array( $data['tags'] )
-                ? self::array( $data['tags'], 'text' )
-                : [ self::string( $data['tags'], 'text' ) ];
-        }
+		if ( isset( $data['tag_ids'] ) ) {
+			$sanitized['tag_ids'] = is_array( $data['tag_ids'] )
+				? array_map( 'intval', $data['tag_ids'] )
+				: [ intval( $data['tag_ids'] ) ];
+		}
 
         if ( isset( $data['rating'] ) ) {
             $sanitized['rating'] = self::float( $data['rating'], 0.0 );

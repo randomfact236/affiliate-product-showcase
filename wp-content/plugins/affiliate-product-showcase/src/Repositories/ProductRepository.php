@@ -341,6 +341,12 @@ final class ProductRepository extends AbstractRepository {
 				$this->updateMetaField( $post_id, $key, $value );
 			}
 		}
+
+		// Save category taxonomies
+		$this->saveCategories( $post_id, $product );
+		
+		// Save tag taxonomies
+		$this->saveTags( $post_id, $product );
 	}
 
 	/**
@@ -358,8 +364,47 @@ final class ProductRepository extends AbstractRepository {
 			'aps_image_url'    => $product->image_url,
 			'aps_rating'       => $product->rating,
 			'aps_badge'        => $product->badge,
-			'aps_categories'    => $product->categories,
 		];
+	}
+
+	/**
+	 * Save category taxonomies for a product
+	 *
+	 * @param int $post_id Post ID
+	 * @param Product $product Product object
+	 * @return void
+	 */
+	private function saveCategories( int $post_id, Product $product ): void {
+		// Remove old 'aps_categories' meta if it exists (migration cleanup)
+		delete_post_meta( $post_id, 'aps_categories' );
+		
+		// Set taxonomy terms
+		if ( ! empty( $product->category_ids ) ) {
+			wp_set_object_terms( $post_id, $product->category_ids, Constants::TAX_CATEGORY );
+		} else {
+			// Remove all category terms if empty array provided
+			wp_set_object_terms( $post_id, [], Constants::TAX_CATEGORY );
+		}
+	}
+
+	/**
+	 * Save tag taxonomies for a product
+	 *
+	 * @param int $post_id Post ID
+	 * @param Product $product Product object
+	 * @return void
+	 */
+	private function saveTags( int $post_id, Product $product ): void {
+		// Remove old 'aps_tags' meta if it exists (migration cleanup)
+		delete_post_meta( $post_id, 'aps_tags' );
+		
+		// Set taxonomy terms
+		if ( ! empty( $product->tag_ids ) ) {
+			wp_set_object_terms( $post_id, $product->tag_ids, Constants::TAX_TAG );
+		} else {
+			// Remove all tag terms if empty array provided
+			wp_set_object_terms( $post_id, [], Constants::TAX_TAG );
+		}
 	}
 
 	/**

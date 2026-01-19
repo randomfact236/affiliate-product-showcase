@@ -21,6 +21,14 @@ final class ProductFactory {
 		// Use provided cache if available (for batch operations), otherwise fetch
 		$meta = $meta_cache ?? get_post_meta( $post->ID );
 
+		// Get category taxonomy terms
+		$category_terms = wp_get_object_terms( $post->ID, \AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY, [ 'fields' => 'ids' ] );
+		$category_ids = ! is_wp_error( $category_terms ) ? array_map( 'intval', $category_terms ) : [];
+
+		// Get tag taxonomy terms
+		$tag_terms = wp_get_object_terms( $post->ID, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG, [ 'fields' => 'ids' ] );
+		$tag_ids = ! is_wp_error( $tag_terms ) ? array_map( 'intval', $tag_terms ) : [];
+
 		return new Product(
 			$post->ID,
 			$post->post_title,
@@ -33,7 +41,8 @@ final class ProductFactory {
 			esc_url_raw( $meta['aps_image_url'][0] ?? '' ) ?: null,
 			isset( $meta['aps_rating'][0] ) ? (float) $meta['aps_rating'][0] : null,
 			sanitize_text_field( $meta['aps_badge'][0] ?? '' ) ?: null,
-			array_map( 'sanitize_text_field', $meta['aps_categories'] ?? [] )
+			$category_ids,
+			$tag_ids
 		);
 	}
 
@@ -44,6 +53,18 @@ final class ProductFactory {
 	 * @return Product Product instance
 	 */
 	public function from_array( array $data ): Product {
+		// Support both 'category_ids' and 'categories' for backward compatibility
+		$category_ids = $data['category_ids'] ?? $data['categories'] ?? [];
+		if ( ! empty( $category_ids ) ) {
+			$category_ids = array_map( 'intval', (array) $category_ids );
+		}
+
+		// Support both 'tag_ids' and 'tags' for backward compatibility
+		$tag_ids = $data['tag_ids'] ?? $data['tags'] ?? [];
+		if ( ! empty( $tag_ids ) ) {
+			$tag_ids = array_map( 'intval', (array) $tag_ids );
+		}
+
 		return new Product(
 			(int) ( $data['id'] ?? 0 ),
 			sanitize_text_field( $data['title'] ?? '' ),
@@ -56,7 +77,8 @@ final class ProductFactory {
 			esc_url_raw( $data['image_url'] ?? '' ) ?: null,
 			isset( $data['rating'] ) ? (float) $data['rating'] : null,
 			sanitize_text_field( $data['badge'] ?? '' ) ?: null,
-			array_map( 'sanitize_text_field', $data['categories'] ?? [] )
+			$category_ids,
+			$tag_ids
 		);
 	}
 }

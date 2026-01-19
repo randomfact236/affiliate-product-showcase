@@ -42,6 +42,27 @@ final class ProductValidator extends AbstractValidator {
 			}
 		}
 
+		// Validate tag IDs
+		if ( isset( $data['tag_ids'] ) ) {
+			if ( ! is_array( $data['tag_ids'] ) ) {
+				$errors[] = 'Tag IDs must be an array.';
+			} else {
+				foreach ( $data['tag_ids'] as $tag_id ) {
+					if ( ! is_numeric( $tag_id ) || $tag_id <= 0 ) {
+						$errors[] = 'Tag IDs must be positive integers.';
+						break;
+					}
+					
+					// Verify tag term exists
+					$term = get_term( (int) $tag_id, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG );
+					if ( ! $term || is_wp_error( $term ) ) {
+						$errors[] = sprintf( 'Tag ID %d does not exist.', (int) $tag_id );
+						break;
+					}
+				}
+			}
+		}
+
 		if ( ! empty( $errors ) ) {
 			throw new PluginException( implode( ' ', $errors ) );
 		}

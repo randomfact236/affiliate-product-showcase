@@ -87,6 +87,70 @@ final class ProductService extends AbstractService {
 				'capability_type'     => 'post',
 				'show_in_menu'        => true,
 				'menu_position'       => 55,
+				'taxonomies'          => [ Constants::TAX_CATEGORY, Constants::TAX_TAG ],
+			]
+		);
+	}
+
+	/**
+	 * Register product taxonomies
+	 *
+	 * @return void
+	 */
+	public function register_taxonomies(): void {
+		// Register Category taxonomy (hierarchical)
+		register_taxonomy(
+			Constants::TAX_CATEGORY,
+			Constants::CPT_PRODUCT,
+			[
+				'labels' => [
+					'name'                       => __( 'Categories', Constants::TEXTDOMAIN ),
+					'singular_name'              => __( 'Category', Constants::TEXTDOMAIN ),
+					'search_items'               => __( 'Search Categories', Constants::TEXTDOMAIN ),
+					'all_items'                  => __( 'All Categories', Constants::TEXTDOMAIN ),
+					'parent_item'                => __( 'Parent Category', Constants::TEXTDOMAIN ),
+					'parent_item_colon'          => __( 'Parent Category:', Constants::TEXTDOMAIN ),
+					'edit_item'                  => __( 'Edit Category', Constants::TEXTDOMAIN ),
+					'update_item'                => __( 'Update Category', Constants::TEXTDOMAIN ),
+					'add_new_item'               => __( 'Add New Category', Constants::TEXTDOMAIN ),
+					'new_item_name'              => __( 'New Category Name', Constants::TEXTDOMAIN ),
+					'menu_name'                  => __( 'Categories', Constants::TEXTDOMAIN ),
+				],
+				'hierarchical'               => true,
+				'public'                     => true,
+				'show_in_rest'               => true,
+				'show_ui'                    => true,
+				'show_admin_column'           => true,
+				'show_in_nav_menus'          => true,
+				'show_tagcloud'              => true,
+				'rewrite'                    => [ 'slug' => 'product-category' ],
+			]
+		);
+
+		// Register Tag taxonomy (non-hierarchical)
+		register_taxonomy(
+			Constants::TAX_TAG,
+			Constants::CPT_PRODUCT,
+			[
+				'labels' => [
+					'name'                       => __( 'Tags', Constants::TEXTDOMAIN ),
+					'singular_name'              => __( 'Tag', Constants::TEXTDOMAIN ),
+					'search_items'               => __( 'Search Tags', Constants::TEXTDOMAIN ),
+					'all_items'                  => __( 'All Tags', Constants::TEXTDOMAIN ),
+					'edit_item'                  => __( 'Edit Tag', Constants::TEXTDOMAIN ),
+					'update_item'                => __( 'Update Tag', Constants::TEXTDOMAIN ),
+					'add_new_item'               => __( 'Add New Tag', Constants::TEXTDOMAIN ),
+					'new_item_name'              => __( 'New Tag Name', Constants::TEXTDOMAIN ),
+					'menu_name'                  => __( 'Tags', Constants::TEXTDOMAIN ),
+				],
+				'hierarchical'               => false,
+				'public'                     => true,
+				'show_in_rest'               => true,
+				'show_ui'                    => true,
+				'show_admin_column'           => true,
+				'show_in_nav_menus'          => true,
+				'show_tagcloud'              => true,
+				'rewrite'                    => [ 'slug' => 'product-tag' ],
 			]
 		);
 	}

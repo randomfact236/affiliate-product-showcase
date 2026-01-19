@@ -83,6 +83,23 @@ function aps_cleanup_content() {
 		register_taxonomy( $tax, $post_types, [ 'public' => false ] );
 	}
 
+	// Delete terms first (before deleting posts)
+	foreach ( $taxonomies as $tax ) {
+		$terms = get_terms( [
+			'taxonomy'   => $tax,
+			'hide_empty' => false,
+			'fields'     => 'ids',
+		] );
+
+		if ( is_wp_error( $terms ) ) continue;
+
+		foreach ( $terms as $term_id ) {
+			wp_delete_term( $term_id, $tax );
+		}
+
+		aps_uninstall_log( "Taxonomy '{$tax}': " . count( $terms ) . ' terms deleted.' );
+	}
+
 	// Batch delete posts
 	foreach ( $post_types as $pt ) {
 		$offset = 0;
@@ -122,22 +139,14 @@ function aps_cleanup_content() {
 		aps_uninstall_log( "Post type '{$pt}': {$total} posts {$action}." );
 	}
 
-	// Delete terms
-	foreach ( $taxonomies as $tax ) {
-		$terms = get_terms( [
-			'taxonomy'   => $tax,
-			'hide_empty' => false,
-			'fields'     => 'ids',
-		] );
-
-		if ( is_wp_error( $terms ) ) continue;
-
-		foreach ( $terms as $term_id ) {
-			wp_delete_term( $term_id, $tax );
-		}
-
-		aps_uninstall_log( "Taxonomy '{$tax}': " . count( $terms ) . ' terms deleted.' );
-	}
+	// Clean up old 'aps_categories' post meta (migration cleanup)
+	$meta_deleted = $wpdb->query(
+		$wpdb->prepare(
+			"DELETE FROM {$wpdb->postmeta} WHERE meta_key = %s",
+			'aps_categories'
+		)
+	);
+	aps_uninstall_log( "Deleted {$meta_deleted} 'aps_categories' meta entries (migration cleanup)." );
 }
 
 function aps_cleanup_user_data() {

@@ -43,6 +43,7 @@ final class Loader {
 	protected function actions(): array {
 		return [
 			[ 'init', 'register_product_cpt' ],
+			[ 'init', 'register_taxonomies' ],
 			[ 'init', 'register_blocks' ],
 			[ 'init', 'register_shortcodes' ],
 			[ 'widgets_init', 'register_widgets' ],
@@ -57,6 +58,10 @@ final class Loader {
 
 	public function register_product_cpt(): void {
 		$this->product_service->register_post_type();
+	}
+
+	public function register_taxonomies(): void {
+		$this->product_service->register_taxonomies();
 	}
 
 	public function register_blocks(): void {
