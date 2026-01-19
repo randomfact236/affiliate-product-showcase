@@ -139,7 +139,7 @@ class AffiliatesController extends RestController {
         $params = $request->get_params();
         
         $args = [
-            'post_type'      => 'affiliate_product',
+            'post_type'      => 'aps_product',
             'posts_per_page' => $params['per_page'] ?? 10,
             'paged'          => $params['page'] ?? 1,
             'orderby'        => $params['orderby'] ?? 'date',

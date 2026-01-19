@@ -142,11 +142,11 @@ class Sanitizer {
             $sanitized['brand'] = self::string( $data['brand'], 'text' );
         }
 
-        if ( isset( $data['category'] ) ) {
-            $sanitized['category'] = is_array( $data['category'] )
-                ? self::array( $data['category'], 'text' )
-                : [ self::string( $data['category'], 'text' ) ];
-        }
+		if ( isset( $data['category_ids'] ) ) {
+			$sanitized['category_ids'] = is_array( $data['category_ids'] )
+				? array_map( 'intval', $data['category_ids'] )
+				: [ intval( $data['category_ids'] ) ];
+		}
 
         if ( isset( $data['tags'] ) ) {
             $sanitized['tags'] = is_array( $data['tags'] )
