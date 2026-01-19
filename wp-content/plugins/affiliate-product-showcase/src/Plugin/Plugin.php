@@ -24,6 +24,7 @@ use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Services\AnalyticsService;
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Traits\SingletonTrait;
+use AffiliateProductShowcase\Plugin\Container;
 
 final class Plugin {
 	use SingletonTrait;

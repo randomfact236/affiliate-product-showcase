@@ -20,8 +20,8 @@ class BulkActions {
      * Constructor
      */
     public function __construct() {
-        add_filter( 'bulk_actions-edit-affiliate_product', [ $this, 'registerBulkActions' ] );
-        add_filter( 'handle_bulk_actions-edit-affiliate_product', [ $this, 'handleBulkActions' ], 10, 3 );
+        add_filter( 'bulk_actions-edit-aps_product', [ $this, 'registerBulkActions' ] );
+        add_filter( 'handle_bulk_actions-edit-aps_product', [ $this, 'handleBulkActions' ], 10, 3 );
         add_action( 'admin_notices', [ $this, 'bulkActionNotices' ] );
     }
 
@@ -189,7 +189,7 @@ class BulkActions {
         foreach ( array_chunk( $post_ids, $batch_size ) as $chunk ) {
             $args = [
                 'post__in'     => $chunk,
-                'post_type'    => 'affiliate_product',
+                'post_type'    => 'aps_product',
                 'post_status'  => 'any',
                 'posts_per_page' => -1,
                 'fields'       => 'ids',

@@ -19,12 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Database\Database;
+use AffiliateProductShowcase\Plugin\Constants;
 
 /**
  * SampleProductsSeeder Class
  *
  * Generates sample products and affiliate links for testing purposes.
- * Used by integration tests and the db-seed.sh script.
+ * Used by integration tests and db-seed.sh script.
  *
  * @package AffiliateProductShowcase
  * @subpackage Database\Seeders
@@ -42,11 +43,11 @@ class SampleProductsSeeder {
     private string $seed_option = 'affiliate_products_seeded';
     
     /**
-     * Sample product categories
+     * Sample product category names
      *
      * @var array<string>
      */
-    private array $categories = [
+    private array $category_names = [
         'Electronics',
         'Books',
         'Fashion',
@@ -56,6 +57,13 @@ class SampleProductsSeeder {
         'Toys',
         'Health',
     ];
+    
+    /**
+     * Category term IDs (populated during seeding)
+     *
+     * @var array<int>
+     */
+    private array $category_ids = [];
     
     /**
      * Sample product data templates
@@ -141,6 +149,9 @@ class SampleProductsSeeder {
             $this->clear_seed_data();
         }
         
+        // Create taxonomy terms first
+        $this->create_taxonomy_terms();
+        
         $seeded = 0;
         
         for ($i = 0; $i < $count; $i++) {
@@ -164,6 +175,32 @@ class SampleProductsSeeder {
     }
     
     /**
+     * Create taxonomy terms for categories
+     *
+     * Creates terms in the aps_category taxonomy for sample data.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    private function create_taxonomy_terms(): void {
+        foreach ($this->category_names as $category_name) {
+            // Check if term already exists
+            $term = term_exists($category_name, Constants::TAX_CATEGORY);
+            
+            if (!$term || is_wp_error($term)) {
+                // Create new term
+                $result = wp_insert_term($category_name, Constants::TAX_CATEGORY);
+                if (!is_wp_error($result)) {
+                    $this->category_ids[] = $result['term_id'];
+                }
+            } else {
+                // Term exists, use its ID
+                $this->category_ids[] = (int) $term['term_id'];
+            }
+        }
+    }
+    
+    /**
      * Create a sample product
      *
      * Creates a single product as a custom post type.
@@ -174,14 +211,15 @@ class SampleProductsSeeder {
      * @return int|false Product ID or false on failure
      */
     private function create_product(array $template, int $index) {
-        $category = $this->categories[$index % count($this->categories)];
+        $category_name = $this->category_names[$index % count($this->category_names)];
+        $category_id = $this->category_ids[$index % count($this->category_ids)];
         $name = $template['name'];
         
         // Create product post
         $post_id = wp_insert_post([
             'post_title' => $name,
-            'post_content' => $this->generate_description($name, $category),
-            'post_type' => 'affiliate_product',
+            'post_content' => $this->generate_description($name, $category_name),
+            'post_type' => 'aps_product',
             'post_status' => 'publish',
             'post_author' => get_current_user_id() ?: 1,
         ]);
@@ -190,8 +228,11 @@ class SampleProductsSeeder {
             return false;
         }
         
+        // Assign category to product via taxonomy
+        wp_set_object_terms($post_id, [$category_id], Constants::TAX_CATEGORY);
+        
         // Add product as a submission for testing
-        $this->create_submission($template, $category, $post_id);
+        $this->create_submission($template, $category_name, $post_id, $category_id);
         
         return $post_id;
     }
@@ -241,11 +282,12 @@ class SampleProductsSeeder {
      *
      * @since 1.0.0
      * @param array<mixed> $template Product template
-     * @param string $category Product category
+     * @param string $category_name Product category name
      * @param int $product_id Associated product ID
+     * @param int $category_id Category term ID
      * @return int|false Submission ID or false on failure
      */
-    private function create_submission(array $template, string $category, int $product_id) {
+    private function create_submission(array $template, string $category_name, int $product_id, int $category_id) {
         $statuses = ['pending', 'approved', 'rejected'];
         $status = $statuses[array_rand($statuses, 1)];
         
@@ -254,8 +296,9 @@ class SampleProductsSeeder {
             'product_url' => $template['url'],
             'product_image' => $template['image'],
             'price' => $template['price'],
-            'description' => $this->generate_description($template['name'], $category),
-            'category' => $category,
+            'description' => $this->generate_description($template['name'], $category_name),
+            'category' => $category_name,
+            'category_id' => $category_id,
             'status' => $status,
             'submitted_by' => get_current_user_id() ?: 1,
             'notes' => $status === 'rejected' ? 'Does not meet quality standards' : '',
@@ -335,7 +378,7 @@ class SampleProductsSeeder {
     /**
      * Clear all seed data
      *
-     * Removes all sample data from the database.
+     * Removes all sample data from database.
      *
      * @since 1.0.0
      * @return int Number of items removed
@@ -354,7 +397,7 @@ class SampleProductsSeeder {
             "DELETE FROM {$this->db->get_table_name('meta')} 
              WHERE product_id IN (
                  SELECT ID FROM {$this->db->wpdb->posts} 
-                 WHERE post_type = 'affiliate_product' 
+                 WHERE post_type = 'aps_product' 
                  AND post_author = 1
              )"
         );
@@ -362,9 +405,21 @@ class SampleProductsSeeder {
         // Remove sample products
         $removed += $this->db->wpdb->query(
             "DELETE FROM {$this->db->wpdb->posts} 
-             WHERE post_type = 'affiliate_product' 
+             WHERE post_type = 'aps_product' 
              AND post_author = 1"
         );
+        
+        // Remove sample taxonomy terms
+        foreach ($this->category_ids as $category_id) {
+            $term = get_term($category_id, Constants::TAX_CATEGORY);
+            if ($term && !is_wp_error($term)) {
+                wp_delete_term($category_id, Constants::TAX_CATEGORY);
+                $removed++;
+            }
+        }
+        
+        // Clear category IDs
+        $this->category_ids = [];
         
         // Clear seed option
         delete_option($this->seed_option);
@@ -386,15 +441,15 @@ class SampleProductsSeeder {
         
         for ($i = 0; $i < $count; $i++) {
             $template = $this->product_templates[$i % count($this->product_templates)];
-            $category = $this->categories[$i % count($this->categories)];
+            $category_name = $this->category_names[$i % count($this->category_names)];
             
             $fixtures[] = [
                 'name' => $template['name'],
                 'url' => $template['url'],
                 'price' => $template['price'],
                 'image' => $template['image'],
-                'category' => $category,
-                'description' => $this->generate_description($template['name'], $category),
+                'category' => $category_name,
+                'description' => $this->generate_description($template['name'], $category_name),
                 'meta' => [
                     'affiliate_url' => $template['url'],
                     'discount' => rand(5, 30),

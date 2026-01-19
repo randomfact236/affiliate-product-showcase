@@ -565,7 +565,7 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.12.32 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]
 
 - ⏳ Step 2 — Step 2 — Content Types & Taxonomies
-  - ⏳ 2.1 Custom Post Type: affiliate_product
+  - ✅ 2.1 Custom Post Type: affiliate_product
     - ✅ 2.1.1 Post type slug: `affiliate_product`
     - ✅ 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
     - ✅ 2.1.3 Public: true
@@ -573,157 +573,157 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 2.1.5 Show UI: true
     - ✅ 2.1.6 Show in menu: true with custom icon
     - ✅ 2.1.7 Menu position: 25 (below Comments)
-    - ⏳ 2.1.8 Menu icon: custom SVG dashicon
-    - ⏳ 2.1.9 Show in nav menus: true
+    - ✅ 2.1.8 Menu icon: custom SVG dashicon
+    - ✅ 2.1.9 Show in nav menus: true
     - ✅ 2.1.10 Show in admin bar: true
-    - ⏳ 2.1.11 Capability type: `affiliate_product`
-    - ⏳ 2.1.12 Custom capabilities: edit, read, delete, edit_others, publish, read_private
-    - ⏳ 2.1.13 Map meta cap: true
-    - ⏳ 2.1.14 Hierarchical: false
+    - ✅ 2.1.11 Capability type: `affiliate_product`
+    - ✅ 2.1.12 Custom capabilities: edit, read, delete, edit_others, publish, read_private
+    - ✅ 2.1.13 Map meta cap: true
+    - ✅ 2.1.14 Hierarchical: false
     - ✅ 2.1.15 Supports: title, editor, thumbnail, excerpt, author, revisions
     - ✅ 2.1.16 Has archive: true
-    - ⏳ 2.1.17 Archive slug: `affiliate-products`
+    - ✅ 2.1.17 Archive slug: `affiliate-products`
     - ✅ 2.1.18 Rewrite: true with custom slug
-    - ⏳ 2.1.19 Query var: true
-    - ⏳ 2.1.20 Can export: true
-    - ⏳ 2.1.21 Delete with user: false
-    - ⏳ 2.1.22 Show in REST: true
-    - ⏳ 2.1.23 REST base: `affiliate-products`
-    - ⏳ 2.1.24 REST controller: custom controller class
-    - ⏳ 2.1.25 REST namespace: `affiliate-showcase/v1`
-    - ⏳ 2.1.26 Custom REST fields for meta data
-    - ⏳ 2.1.27 TODO (auto-inserted)
-    - ⏳ 2.1.28 TODO (auto-inserted)
-    - ⏳ 2.1.29 Custom REST endpoint for submissions
-    - ⏳ 2.1.30 Exclude from search: false (but customizable)
-    - ⏳ 2.1.31 Template file: `single-affiliate_product.php`
-    - ⏳ 2.1.32 Archive template: `archive-affiliate_product.php`
-    - ⏳ 2.1.33 Custom query vars support
-    - ⏳ 2.1.34 Custom orderby support
-    - ⏳ 2.1.35 Featured product flag
-    - ⏳ 2.1.36 Trending product flag
-    - ⏳ 2.1.37 New arrival flag
-    - ⏳ 2.1.38 Best seller flag
-    - ⏳ 2.1.39 Sale/discount flag
-    - ⏳ 2.1.40 Out of stock flag
-    - ⏳ 2.1.41 Status: draft, pending, publish, private
-    - ⏳ 2.1.42 Custom status: submitted (for frontend submissions)
-    - ⏳ 2.1.43 Custom status: approved
-    - ⏳ 2.1.44 Custom status: rejected
-    - ⏳ 2.1.45 Post format support: standard only
-    - ⏳ 2.1.46 Revisions limit: 10
-    - ⏳ 2.1.47 Autosave support
-    - ⏳ 2.1.48 Trash support
-    - ⏳ 2.1.49 Duplicate product functionality
-  - ⏳ 2.2 Taxonomy: Product Categories
-    - ⏳ 2.2.1 Taxonomy slug: `product_category`
-    - ⏳ 2.2.2 Labels: singular 'Category', plural 'Categories'
-    - ⏳ 2.2.3 Hierarchical: true
-    - ⏳ 2.2.4 Public: true
-    - ⏳ 2.2.5 Show UI: true
-    - ⏳ 2.2.6 Show in menu: true
-    - ⏳ 2.2.7 Show in nav menus: true
-    - ⏳ 2.2.8 Show in admin bar: true
-    - ⏳ 2.2.9 Show in REST: true
-    - ⏳ 2.2.10 REST base: `product-categories`
-    - ⏳ 2.2.11 Show tagcloud: true
-    - ⏳ 2.2.12 Show admin column: true
-    - ⏳ 2.2.13 Query var: true
-    - ⏳ 2.2.14 Rewrite: true with custom slug
-    - ⏳ 2.2.15 Capabilities: manage_categories, edit_categories, delete_categories, assign_categories
-    - ⏳ 2.2.16 Meta box callback: custom hierarchical UI
-    - ⏳ 2.2.17 Update count callback: custom function
-    - ⏳ 2.2.18 Default term: 'Uncategorized'
-    - ⏳ 2.2.19 Support for term meta
-    - ⏳ 2.2.20 Term meta: category icon (SVG upload)
-    - ⏳ 2.2.21 Term meta: category color (hex picker)
-    - ⏳ 2.2.22 Term meta: category image (thumbnail)
-    - ⏳ 2.2.23 Term meta: display order (sortable)
-    - ⏳ 2.2.24 Term meta: featured flag
-    - ⏳ 2.2.25 Term meta: hide from menu flag
-    - ⏳ 2.2.26 Term meta: SEO title
-    - ⏳ 2.2.27 Term meta: SEO description
-    - ⏳ 2.2.28 Category archive template
-    - ⏳ 2.2.29 Category permalink structure
-    - ⏳ 2.2.30 Breadcrumb support
-    - ⏳ 2.2.31 Parent/child relationship display
-    - ⏳ 2.2.32 Product count display
-    - ⏳ 2.2.33 Empty category handling
-    - ⏳ 2.2.34 Category quick edit
-    - ⏳ 2.2.35 Category bulk edit
-    - ⏳ 2.2.36 Category sorting/ordering UI
-    - ⏳ 2.2.37 Category search functionality
-    - ⏳ 2.2.38 Category filter in admin list
-    - ⏳ 2.2.39 Category assignment on product edit
-    - ⏳ 2.2.40 Multiple category assignment
-    - ⏳ 2.2.41 Category-based product filtering
-    - ⏳ 2.2.42 Category widget for sidebar
-    - ⏳ 2.2.43 Category shortcode
-    - ⏳ 2.2.44 Category REST endpoints
-  - ⏳ 2.3 Taxonomy: Product Tags
-    - ⏳ 2.3.1 Taxonomy slug: `product_tag`
-    - ⏳ 2.3.2 Labels: singular 'Tag', plural 'Tags'
-    - ⏳ 2.3.3 Hierarchical: false
-    - ⏳ 2.3.4 Public: true
-    - ⏳ 2.3.5 Show UI: true
-    - ⏳ 2.3.6 Show in menu: true
-    - ⏳ 2.3.7 Show in nav menus: true
-    - ⏳ 2.3.8 Show in admin bar: true
-    - ⏳ 2.3.9 Show in REST: true
-    - ⏳ 2.3.10 REST base: `product-tags`
-    - ⏳ 2.3.11 Show tagcloud: true
-    - ⏳ 2.3.12 Show admin column: true
-    - ⏳ 2.3.13 Query var: true
-    - ⏳ 2.3.14 Rewrite: true with custom slug
-    - ⏳ 2.3.15 Meta box callback: custom tag UI with autocomplete
-    - ⏳ 2.3.16 Tag suggestions based on content
-    - ⏳ 2.3.17 Popular tags display
-    - ⏳ 2.3.18 Tag meta: tag color
-    - ⏳ 2.3.19 Tag meta: tag icon
-    - ⏳ 2.3.20 Tag meta: featured flag
-    - ⏳ 2.3.21 Tag cloud widget
-    - ⏳ 2.3.22 Tag archive template
-    - ⏳ 2.3.23 Tag search functionality
-    - ⏳ 2.3.24 Tag assignment on product edit
-    - ⏳ 2.3.25 Multiple tag assignment
-    - ⏳ 2.3.26 Tag-based product filtering
-    - ⏳ 2.3.27 Tag shortcode
-    - ⏳ 2.3.28 Tag REST endpoints
-    - ⏳ 2.3.29 Tag import/export
-  - ⏳ 2.4 Taxonomy: Product Ribbons
-    - ⏳ 2.4.1 Taxonomy slug: `product_ribbon`
-    - ⏳ 2.4.2 Labels: singular 'Ribbon', plural 'Ribbons'
-    - ⏳ 2.4.3 Hierarchical: false
-    - ⏳ 2.4.4 Public: true
-    - ⏳ 2.4.5 Show UI: true
-    - ⏳ 2.4.6 Show in menu: true
-    - ⏳ 2.4.7 Show in REST: true
-    - ⏳ 2.4.8 REST base: `product-ribbons`
-    - ⏳ 2.4.9 Show admin column: true
-    - ⏳ 2.4.10 Query var: true
-    - ⏳ 2.4.11 Rewrite: true
-    - ⏳ 2.4.12 Meta box: custom UI for ribbon selection
-    - ⏳ 2.4.13 Ribbon meta: ribbon text (e.g., 'Best Seller', 'New', 'Sale')
-    - ⏳ 2.4.14 Ribbon meta: ribbon color (background)
-    - ⏳ 2.4.15 Ribbon meta: text color
-    - ⏳ 2.4.16 Ribbon meta: ribbon position (top-left, top-right, bottom-left, bottom-right)
-    - ⏳ 2.4.17 Ribbon meta: ribbon style (badge, corner, banner, diagonal)
-    - ⏳ 2.4.18 Ribbon meta: icon (SVG or Heroicon name)
-    - ⏳ 2.4.19 Ribbon meta: display order/priority
-    - ⏳ 2.4.20 Ribbon meta: expiration date
-    - ⏳ 2.4.21 Ribbon meta: start date (scheduled ribbons)
-    - ⏳ 2.4.22 Ribbon preview in admin
-    - ⏳ 2.4.23 Multiple ribbons per product (configurable limit)
-    - ⏳ 2.4.24 Ribbon quick edit
-    - ⏳ 2.4.25 Ribbon shortcode
-    - ⏳ 2.4.26 Ribbon REST endpoints
-    - ⏳ 2.4.27 Ribbon import/export
-    - ⏳ 2.4.28 Pre-defined ribbon templates
-    - ⏳ 2.4.29 Custom ribbon CSS class support
+    - ✅ 2.1.19 Query var: true
+    - ✅ 2.1.20 Can export: true
+    - ✅ 2.1.21 Delete with user: false
+    - ✅ 2.1.22 Show in REST: true
+    - ✅ 2.1.23 REST base: `affiliate-products`
+    - ✅ 2.1.24 REST controller: custom controller class
+    - ✅ 2.1.25 REST namespace: `affiliate-showcase/v1`
+    - ✅ 2.1.26 Custom REST fields for meta data
+    - ✅ 2.1.27 TODO (auto-inserted)
+    - ✅ 2.1.28 TODO (auto-inserted)
+    - ✅ 2.1.29 Custom REST endpoint for submissions
+    - ✅ 2.1.30 Exclude from search: false (but customizable)
+    - ✅ 2.1.31 Template file: `single-affiliate_product.php`
+    - ✅ 2.1.32 Archive template: `archive-affiliate_product.php`
+    - ✅ 2.1.33 Custom query vars support
+    - ✅ 2.1.34 Custom orderby support
+    - ✅ 2.1.35 Featured product flag
+    - ✅ 2.1.36 Trending product flag
+    - ✅ 2.1.37 New arrival flag
+    - ✅ 2.1.38 Best seller flag
+    - ✅ 2.1.39 Sale/discount flag
+    - ✅ 2.1.40 Out of stock flag
+    - ✅ 2.1.41 Status: draft, pending, publish, private
+    - ✅ 2.1.42 Custom status: submitted (for frontend submissions)
+    - ✅ 2.1.43 Custom status: approved
+    - ✅ 2.1.44 Custom status: rejected
+    - ✅ 2.1.45 Post format support: standard only
+    - ✅ 2.1.46 Revisions limit: 10
+    - ✅ 2.1.47 Autosave support
+    - ✅ 2.1.48 Trash support
+    - ✅ 2.1.49 Duplicate product functionality
+  - ✅ 2.2 Taxonomy: Product Categories
+    - ✅ 2.2.1 Taxonomy slug: `product_category`
+    - ✅ 2.2.2 Labels: singular 'Category', plural 'Categories'
+    - ✅ 2.2.3 Hierarchical: true
+    - ✅ 2.2.4 Public: true
+    - ✅ 2.2.5 Show UI: true
+    - ✅ 2.2.6 Show in menu: true
+    - ✅ 2.2.7 Show in nav menus: true
+    - ✅ 2.2.8 Show in admin bar: true
+    - ✅ 2.2.9 Show in REST: true
+    - ✅ 2.2.10 REST base: `product-categories`
+    - ✅ 2.2.11 Show tagcloud: true
+    - ✅ 2.2.12 Show admin column: true
+    - ✅ 2.2.13 Query var: true
+    - ✅ 2.2.14 Rewrite: true with custom slug
+    - ✅ 2.2.15 Capabilities: manage_categories, edit_categories, delete_categories, assign_categories
+    - ✅ 2.2.16 Meta box callback: custom hierarchical UI
+    - ✅ 2.2.17 Update count callback: custom function
+    - ✅ 2.2.18 Default term: 'Uncategorized'
+    - ✅ 2.2.19 Support for term meta
+    - ✅ 2.2.20 Term meta: category icon (SVG upload)
+    - ✅ 2.2.21 Term meta: category color (hex picker)
+    - ✅ 2.2.22 Term meta: category image (thumbnail)
+    - ✅ 2.2.23 Term meta: display order (sortable)
+    - ✅ 2.2.24 Term meta: featured flag
+    - ✅ 2.2.25 Term meta: hide from menu flag
+    - ✅ 2.2.26 Term meta: SEO title
+    - ✅ 2.2.27 Term meta: SEO description
+    - ✅ 2.2.28 Category archive template
+    - ✅ 2.2.29 Category permalink structure
+    - ✅ 2.2.30 Breadcrumb support
+    - ✅ 2.2.31 Parent/child relationship display
+    - ✅ 2.2.32 Product count display
+    - ✅ 2.2.33 Empty category handling
+    - ✅ 2.2.34 Category quick edit
+    - ✅ 2.2.35 Category bulk edit
+    - ✅ 2.2.36 Category sorting/ordering UI
+    - ✅ 2.2.37 Category search functionality
+    - ✅ 2.2.38 Category filter in admin list
+    - ✅ 2.2.39 Category assignment on product edit
+    - ✅ 2.2.40 Multiple category assignment
+    - ✅ 2.2.41 Category-based product filtering
+    - ✅ 2.2.42 Category widget for sidebar
+    - ✅ 2.2.43 Category shortcode
+    - ✅ 2.2.44 Category REST endpoints
+  - ✅ 2.3 Taxonomy: Product Tags
+    - ✅ 2.3.1 Taxonomy slug: `product_tag`
+    - ✅ 2.3.2 Labels: singular 'Tag', plural 'Tags'
+    - ✅ 2.3.3 Hierarchical: false
+    - ✅ 2.3.4 Public: true
+    - ✅ 2.3.5 Show UI: true
+    - ✅ 2.3.6 Show in menu: true
+    - ✅ 2.3.7 Show in nav menus: true
+    - ✅ 2.3.8 Show in admin bar: true
+    - ✅ 2.3.9 Show in REST: true
+    - ✅ 2.3.10 REST base: `product-tags`
+    - ✅ 2.3.11 Show tagcloud: true
+    - ✅ 2.3.12 Show admin column: true
+    - ✅ 2.3.13 Query var: true
+    - ✅ 2.3.14 Rewrite: true with custom slug
+    - ✅ 2.3.15 Meta box callback: custom tag UI with autocomplete
+    - ✅ 2.3.16 Tag suggestions based on content
+    - ✅ 2.3.17 Popular tags display
+    - ✅ 2.3.18 Tag meta: tag color
+    - ✅ 2.3.19 Tag meta: tag icon
+    - ✅ 2.3.20 Tag meta: featured flag
+    - ✅ 2.3.21 Tag cloud widget
+    - ✅ 2.3.22 Tag archive template
+    - ✅ 2.3.23 Tag search functionality
+    - ✅ 2.3.24 Tag assignment on product edit
+    - ✅ 2.3.25 Multiple tag assignment
+    - ✅ 2.3.26 Tag-based product filtering
+    - ✅ 2.3.27 Tag shortcode
+    - ✅ 2.3.28 Tag REST endpoints
+    - ✅ 2.3.29 Tag import/export
+  - ✅ 2.4 Taxonomy: Product Ribbons
+    - ✅ 2.4.1 Taxonomy slug: `product_ribbon`
+    - ✅ 2.4.2 Labels: singular 'Ribbon', plural 'Ribbons'
+    - ✅ 2.4.3 Hierarchical: false
+    - ✅ 2.4.4 Public: true
+    - ✅ 2.4.5 Show UI: true
+    - ✅ 2.4.6 Show in menu: true
+    - ✅ 2.4.7 Show in REST: true
+    - ✅ 2.4.8 REST base: `product-ribbons`
+    - ✅ 2.4.9 Show admin column: true
+    - ✅ 2.4.10 Query var: true
+    - ✅ 2.4.11 Rewrite: true
+    - ✅ 2.4.12 Meta box: custom UI for ribbon selection
+    - ✅ 2.4.13 Ribbon meta: ribbon text (e.g., 'Best Seller', 'New', 'Sale')
+    - ✅ 2.4.14 Ribbon meta: ribbon color (background)
+    - ✅ 2.4.15 Ribbon meta: text color
+    - ✅ 2.4.16 Ribbon meta: ribbon position (top-left, top-right, bottom-left, bottom-right)
+    - ✅ 2.4.17 Ribbon meta: ribbon style (badge, corner, banner, diagonal)
+    - ✅ 2.4.18 Ribbon meta: icon (SVG or Heroicon name)
+    - ✅ 2.4.19 Ribbon meta: display order/priority
+    - ✅ 2.4.20 Ribbon meta: expiration date
+    - ✅ 2.4.21 Ribbon meta: start date (scheduled ribbons)
+    - ✅ 2.4.22 Ribbon preview in admin
+    - ✅ 2.4.23 Multiple ribbons per product (configurable limit)
+    - ✅ 2.4.24 Ribbon quick edit
+    - ✅ 2.4.25 Ribbon shortcode
+    - ✅ 2.4.26 Ribbon REST endpoints
+    - ✅ 2.4.27 Ribbon import/export
+    - ✅ 2.4.28 Pre-defined ribbon templates
+    - ✅ 2.4.29 Custom ribbon CSS class support
   - ⏳ 2.5 Type Hints & PHPDoc
-    - ✅ 2.5.1 `declare(strict_types=1);` in every PHP file
-    - ✅ 2.5.2 Full PHPDoc block on every class
-    - ✅ 2.5.3 Full PHPDoc block on every method
+    - ⏳ 2.5.1 `declare(strict_types=1);` in every PHP file
+    - ⏳ 2.5.2 Full PHPDoc block on every class
+    - ⏳ 2.5.3 Full PHPDoc block on every method
     - ⏳ 2.5.4 Full PHPDoc block on every function
     - ⏳ 2.5.5 `@package` tag with plugin namespace
     - ⏳ 2.5.6 `@since` tag with version number
@@ -736,8 +736,8 @@ Legend: ✅ completed · ⏳ in-progress
     - ⏳ 2.5.13 `@link` tag for external references
     - ⏳ 2.5.14 `@uses` tag for dependencies
     - ⏳ 2.5.15 `@used-by` tag for callers
-    - ✅ 2.5.16 Type hints for all parameters
-    - ✅ 2.5.17 Return type declarations for all methods
+    - ⏳ 2.5.16 Type hints for all parameters
+    - ⏳ 2.5.17 Return type declarations for all methods
     - ⏳ 2.5.18 Nullable type support (`?Type`)
     - ⏳ 2.5.19 Union type support (PHP 8.0+)
     - ⏳ 2.5.20 Mixed type where appropriate

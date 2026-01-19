@@ -20,9 +20,9 @@ class Columns {
      * Constructor
      */
     public function __construct() {
-        add_filter( 'manage_affiliate_product_posts_columns', [ $this, 'addCustomColumns' ] );
-        add_action( 'manage_affiliate_product_posts_custom_column', [ $this, 'renderCustomColumns' ], 10, 2 );
-        add_filter( 'manage_edit-affiliate_product_sortable_columns', [ $this, 'makeColumnsSortable' ] );
+        add_filter( 'manage_aps_product_posts_columns', [ $this, 'addCustomColumns' ] );
+        add_action( 'manage_aps_product_posts_custom_column', [ $this, 'renderCustomColumns' ], 10, 2 );
+        add_filter( 'manage_edit-aps_product_sortable_columns', [ $this, 'makeColumnsSortable' ] );
         add_action( 'restrict_manage_posts', [ $this, 'addFilters' ], 10, 2 );
     }
 
@@ -252,7 +252,7 @@ class Columns {
      * @return void
      */
     public function addFilters( string $post_type, string $which ): void {
-        if ( $post_type !== 'affiliate_product' || $which !== 'top' ) {
+        if ( $post_type !== 'aps_product' || $which !== 'top' ) {
             return;
         }
 

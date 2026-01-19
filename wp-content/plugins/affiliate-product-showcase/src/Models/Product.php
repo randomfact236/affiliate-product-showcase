@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-	final class Product {
+final class Product {
 	public function __construct(
 		public int $id,
 		public string $title,
@@ -20,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		public ?string $image_url = null,
 		public ?float $rating = null,
 		public ?string $badge = null,
-		public array $categories = []
+		public array $category_ids = [],
+		public array $tag_ids = []
 	) {}
 
 	public function to_array(): array {
@@ -37,7 +38,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 			'image_url'      => $this->image_url,
 			'rating'         => $this->rating,
 			'badge'          => $this->badge,
-			'categories'     => $this->categories,
+			'category_ids'   => $this->category_ids,
+			'categories'     => $this->category_ids, // Alias for backward compatibility
+			'tag_ids'        => $this->tag_ids,
+			'tags'           => $this->tag_ids, // Alias for backward compatibility
 		];
 	}
 }
