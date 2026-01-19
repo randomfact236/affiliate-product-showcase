@@ -599,24 +599,24 @@
 # ⏳ Step 2 — Step 2 — Content Types & Taxonomies
 
 ## ⏳ 2.1 Custom Post Type: affiliate_product
-⏳ 2.1.1 Post type slug: `affiliate_product`
-⏳ 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
-⏳ 2.1.3 Public: true
-⏳ 2.1.4 Publicly queryable: true
-⏳ 2.1.5 Show UI: true
-⏳ 2.1.6 Show in menu: true with custom icon
-⏳ 2.1.7 Menu position: 25 (below Comments)
+✅ 2.1.1 Post type slug: `affiliate_product`
+✅ 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
+✅ 2.1.3 Public: true
+✅ 2.1.4 Publicly queryable: true
+✅ 2.1.5 Show UI: true
+✅ 2.1.6 Show in menu: true with custom icon
+✅ 2.1.7 Menu position: 25 (below Comments)
 ⏳ 2.1.8 Menu icon: custom SVG dashicon
 ⏳ 2.1.9 Show in nav menus: true
-⏳ 2.1.10 Show in admin bar: true
+✅ 2.1.10 Show in admin bar: true
 ⏳ 2.1.11 Capability type: `affiliate_product`
 ⏳ 2.1.12 Custom capabilities: edit, read, delete, edit_others, publish, read_private
 ⏳ 2.1.13 Map meta cap: true
 ⏳ 2.1.14 Hierarchical: false
-⏳ 2.1.15 Supports: title, editor, thumbnail, excerpt, author, revisions
-⏳ 2.1.16 Has archive: true
+✅ 2.1.15 Supports: title, editor, thumbnail, excerpt, author, revisions
+✅ 2.1.16 Has archive: true
 ⏳ 2.1.17 Archive slug: `affiliate-products`
-⏳ 2.1.18 Rewrite: true with custom slug
+✅ 2.1.18 Rewrite: true with custom slug
 ⏳ 2.1.19 Query var: true
 ⏳ 2.1.20 Can export: true
 ⏳ 2.1.21 Delete with user: false
@@ -758,9 +758,9 @@
 ⏳ 2.4.29 Custom ribbon CSS class support
 
 ## ⏳ 2.5 Type Hints & PHPDoc
-⏳ 2.5.1 `declare(strict_types=1);` in every PHP file
-⏳ 2.5.2 Full PHPDoc block on every class
-⏳ 2.5.3 Full PHPDoc block on every method
+✅ 2.5.1 `declare(strict_types=1);` in every PHP file
+✅ 2.5.2 Full PHPDoc block on every class
+✅ 2.5.3 Full PHPDoc block on every method
 ⏳ 2.5.4 Full PHPDoc block on every function
 ⏳ 2.5.5 `@package` tag with plugin namespace
 ⏳ 2.5.6 `@since` tag with version number
@@ -773,8 +773,8 @@
 ⏳ 2.5.13 `@link` tag for external references
 ⏳ 2.5.14 `@uses` tag for dependencies
 ⏳ 2.5.15 `@used-by` tag for callers
-⏳ 2.5.16 Type hints for all parameters
-⏳ 2.5.17 Return type declarations for all methods
+✅ 2.5.16 Type hints for all parameters
+✅ 2.5.17 Return type declarations for all methods
 ⏳ 2.5.18 Nullable type support (`?Type`)
 ⏳ 2.5.19 Union type support (PHP 8.0+)
 ⏳ 2.5.20 Mixed type where appropriate
