@@ -1,3 +1,5 @@
+# Recent message(top) to bottom( previous messgae)- for storing chat history
+
 ## User Request
 "update chat history as per rule"
 

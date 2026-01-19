@@ -14,12 +14,12 @@ namespace AffiliateProductShowcase\Admin;
  */
 class Menu {
 
-    /**
-     * Menu slug
-     *
-     * @var string
-     */
-    public const MENU_SLUG = 'affiliate-product-showcase';
+	/**
+	 * Menu slug
+	 *
+	 * @var string
+	 */
+	public const MENU_SLUG = 'affiliate-manager';
 
     /**
      * Constructor
@@ -27,83 +27,67 @@ class Menu {
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'addMenuPages' ] );
         add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
+        add_filter( 'custom_menu_order', '__return_true' );
+        add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
     }
 
-    /**
-     * Add menu pages
-     *
-     * @return void
-     */
-    public function addMenuPages(): void {
-        // Main menu page
-        add_menu_page(
-            __( 'Affiliate Products', 'affiliate-product-showcase' ),
-            __( 'Affiliate Products', 'affiliate-product-showcase' ),
-            'manage_options',
-            self::MENU_SLUG,
-            [ $this, 'renderDashboardPage' ],
-            'dashicons-products',
-            30
-        );
+	/**
+	 * Add menu pages
+	 *
+	 * @return void
+	 */
+	public function addMenuPages(): void {
+		// Main menu page - Affiliate Manager (plugin settings)
+		add_menu_page(
+			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
+			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG,
+			[ $this, 'renderDashboardPage' ],
+			'dashicons-admin-generic',
+			55.1
+		);
 
-        // Dashboard submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'Dashboard', 'affiliate-product-showcase' ),
-            __( 'Dashboard', 'affiliate-product-showcase' ),
-            'manage_options',
-            self::MENU_SLUG,
-            [ $this, 'renderDashboardPage' ]
-        );
+		// Dashboard submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Dashboard', 'affiliate-product-showcase' ),
+			__( 'Dashboard', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG,
+			[ $this, 'renderDashboardPage' ]
+		);
 
-        // Products submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'All Products', 'affiliate-product-showcase' ),
-            __( 'All Products', 'affiliate-product-showcase' ),
-            'edit_affiliate_products',
-            'edit.php?post_type=aps_product'
-        );
+		// Analytics submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Analytics', 'affiliate-product-showcase' ),
+			__( 'Analytics', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG . '-analytics',
+			[ $this, 'renderAnalyticsPage' ]
+		);
 
-        // Add Product submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'Add Product', 'affiliate-product-showcase' ),
-            __( 'Add Product', 'affiliate-product-showcase' ),
-            'edit_affiliate_products',
-            'post-new.php?post_type=aps_product'
-        );
+		// Settings submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Settings', 'affiliate-product-showcase' ),
+			__( 'Settings', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG . '-settings',
+			[ $this, 'renderSettingsPage' ]
+		);
 
-        // Analytics submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'Analytics', 'affiliate-product-showcase' ),
-            __( 'Analytics', 'affiliate-product-showcase' ),
-            'manage_options',
-            self::MENU_SLUG . '-analytics',
-            [ $this, 'renderAnalyticsPage' ]
-        );
-
-        // Settings submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'Settings', 'affiliate-product-showcase' ),
-            __( 'Settings', 'affiliate-product-showcase' ),
-            'manage_options',
-            self::MENU_SLUG . '-settings',
-            [ $this, 'renderSettingsPage' ]
-        );
-
-        // Help submenu
-        add_submenu_page(
-            self::MENU_SLUG,
-            __( 'Help', 'affiliate-product-showcase' ),
-            __( 'Help', 'affiliate-product-showcase' ),
-            'manage_options',
-            self::MENU_SLUG . '-help',
-            [ $this, 'renderHelpPage' ]
-        );
-    }
+		// Help submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Help', 'affiliate-product-showcase' ),
+			__( 'Help', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG . '-help',
+			[ $this, 'renderHelpPage' ]
+		);
+	}
 
     /**
      * Render dashboard page
@@ -202,5 +186,30 @@ class Menu {
      */
     public static function getHelpUrl(): string {
         return self::getPageUrl( 'help' );
+    }
+
+    /**
+     * Reorder menus to position Affiliate Manager right after Affiliate Products
+     *
+     * @param array $menu_order Current menu order
+     * @return array Modified menu order
+     */
+    public function reorderMenus( $menu_order ) {
+        // Find positions of our menus
+        $products_key = array_search( 'edit.php?post_type=aps_product', $menu_order );
+        $manager_key = array_search( self::MENU_SLUG, $menu_order );
+        
+        // If either menu not found, return unchanged
+        if ( $products_key === false || $manager_key === false ) {
+            return $menu_order;
+        }
+        
+        // Remove Affiliate Manager from current position
+        unset( $menu_order[$manager_key] );
+        
+        // Insert Affiliate Manager right after Affiliate Products
+        array_splice( $menu_order, $products_key + 1, 0, [ self::MENU_SLUG ] );
+        
+        return $menu_order;
     }
 }

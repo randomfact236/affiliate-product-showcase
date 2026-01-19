@@ -66,7 +66,7 @@ final class Constants {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public const SLUG = 'affiliate-product-showcase';
+	public const SLUG = 'affiliate-manager';
 
 	/**
 	 * Custom Post Type: Product
@@ -107,7 +107,7 @@ final class Constants {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public const ADMIN_MENU_SLUG = 'affiliate-product-showcase';
+	public const ADMIN_MENU_SLUG = 'affiliate-manager';
 
 	/**
 	 * Main Plugin File Path

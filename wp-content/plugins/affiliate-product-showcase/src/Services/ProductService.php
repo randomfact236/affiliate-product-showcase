@@ -64,27 +64,29 @@ final class ProductService extends AbstractService {
 		register_post_type(
 			Constants::CPT_PRODUCT,
 			[
-				'labels' => [
-					'name'               => __( 'All Products', Constants::TEXTDOMAIN ),
-					'singular_name'      => __( 'Product', Constants::TEXTDOMAIN ),
-					'menu_name'          => __( 'Affiliate Products', Constants::TEXTDOMAIN ),
-					'add_new_item'       => __( 'Add Product', Constants::TEXTDOMAIN ),
-					'edit_item'          => __( 'Edit Product', Constants::TEXTDOMAIN ),
-					'new_item'           => __( 'New Product', Constants::TEXTDOMAIN ),
-					'view_item'          => __( 'View Product', Constants::TEXTDOMAIN ),
-					'search_items'       => __( 'Search Products', Constants::TEXTDOMAIN ),
-					'not_found'          => __( 'No products found', Constants::TEXTDOMAIN ),
-					'not_found_in_trash' => __( 'No products found in trash', Constants::TEXTDOMAIN ),
-				],
+			'labels' => [
+				'name'               => __( 'Products', Constants::TEXTDOMAIN ),
+				'singular_name'      => __( 'Product', Constants::TEXTDOMAIN ),
+				'menu_name'          => __( 'Affiliate Products', Constants::TEXTDOMAIN ),
+				'all_items'          => __( 'All Products', Constants::TEXTDOMAIN ),
+				'add_new_item'       => __( 'Add Product', Constants::TEXTDOMAIN ),
+				'edit_item'          => __( 'Edit Product', Constants::TEXTDOMAIN ),
+				'new_item'           => __( 'New Product', Constants::TEXTDOMAIN ),
+				'view_item'          => __( 'View Product', Constants::TEXTDOMAIN ),
+				'search_items'       => __( 'Search Products', Constants::TEXTDOMAIN ),
+				'not_found'          => __( 'No products found', Constants::TEXTDOMAIN ),
+				'not_found_in_trash' => __( 'No products found in trash', Constants::TEXTDOMAIN ),
+			],
 				'public'              => true,
 				'show_in_rest'        => true,
-				'menu_icon'           => 'dashicons-cart',
 				'supports'            => [ 'title', 'editor', 'thumbnail' ],
 				'rewrite'             => [ 'slug' => 'affiliate-product' ],
 				'has_archive'         => true,
 				'show_in_nav_menus'   => false,
 				'show_in_admin_bar'   => true,
 				'capability_type'     => 'post',
+				'show_in_menu'        => true,
+				'menu_position'       => 55,
 			]
 		);
 	}
