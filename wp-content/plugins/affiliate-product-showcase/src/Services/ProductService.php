@@ -87,7 +87,7 @@ final class ProductService extends AbstractService {
 				'capability_type'     => 'post',
 				'show_in_menu'        => true,
 				'menu_position'       => 55,
-				'taxonomies'          => [ Constants::TAX_CATEGORY, Constants::TAX_TAG ],
+				'taxonomies'          => [ Constants::TAX_CATEGORY, Constants::TAX_TAG, Constants::TAX_RIBBON ],
 			]
 		);
 	}
@@ -151,6 +151,33 @@ final class ProductService extends AbstractService {
 				'show_in_nav_menus'          => true,
 				'show_tagcloud'              => true,
 				'rewrite'                    => [ 'slug' => 'product-tag' ],
+			]
+		);
+
+		// Register Ribbon taxonomy (non-hierarchical, for badges/labels)
+		register_taxonomy(
+			Constants::TAX_RIBBON,
+			Constants::CPT_PRODUCT,
+			[
+				'labels' => [
+					'name'                       => __( 'Ribbons', Constants::TEXTDOMAIN ),
+					'singular_name'              => __( 'Ribbon', Constants::TEXTDOMAIN ),
+					'search_items'               => __( 'Search Ribbons', Constants::TEXTDOMAIN ),
+					'all_items'                  => __( 'All Ribbons', Constants::TEXTDOMAIN ),
+					'edit_item'                  => __( 'Edit Ribbon', Constants::TEXTDOMAIN ),
+					'update_item'                => __( 'Update Ribbon', Constants::TEXTDOMAIN ),
+					'add_new_item'               => __( 'Add New Ribbon', Constants::TEXTDOMAIN ),
+					'new_item_name'              => __( 'New Ribbon Name', Constants::TEXTDOMAIN ),
+					'menu_name'                  => __( 'Ribbons', Constants::TEXTDOMAIN ),
+				],
+				'hierarchical'               => false,
+				'public'                     => true,
+				'show_in_rest'               => true,
+				'show_ui'                    => true,
+				'show_admin_column'           => true,
+				'show_in_nav_menus'          => false,
+				'show_tagcloud'              => false,
+				'rewrite'                    => [ 'slug' => 'product-ribbon' ],
 			]
 		);
 	}

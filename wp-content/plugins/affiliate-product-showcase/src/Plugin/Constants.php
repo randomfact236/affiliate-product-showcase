@@ -99,6 +99,16 @@ final class Constants {
 	public const TAX_TAG = 'aps_tag';
 
 	/**
+	 * Taxonomy: Ribbon
+	 *
+	 * Taxonomy slug for product ribbons (badges/labels).
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public const TAX_RIBBON = 'aps_ribbon';
+
+	/**
 	 * Option Prefix
 	 *
 	 * Prefix for WordPress options stored by the plugin.
@@ -228,7 +238,7 @@ final class Constants {
 	 * Helper to get a full filesystem path for a template/view file.
 	 * Concatenates the plugin directory path with the relative path.
 	 *
-	 * @since  1.0.0
+	 * @since 1.0.0
 	 * @param string $relative The relative path to the view (e.g., 'templates/product-card.php').
 	 * @return string The full view file path.
 	 */
