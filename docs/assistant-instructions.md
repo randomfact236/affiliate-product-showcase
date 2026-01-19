@@ -141,73 +141,6 @@ The ONLY times you can make changes without asking:
   This will take 4-6 hours to complete.
   ```
 
----
-### Default Task Completion Format
-
-**Always use this format for EVERY attempt_completion - NO EXCEPTIONS!**
-
-```markdown
-## User Request
-"[Latest Message]"
-
-## Assistant Files Used
-- ✅ [filename].md (APPLIED)
-- ❌ [filename].md (NOT USED)
-
-## [Keep current format same]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
-**This applies to EVERY attempt_completion:**
-- ✅ **EVERY task completion message** - NO EXCEPTIONS
-- ✅ **EVERY chat history entry** - NO EXCEPTIONS
-
-**This does NOT apply to:**
-- ❌ Tool use requests (read_file, execute_command, etc.)
-- ❌ Intermediate progress updates
-- ❌ Clarification questions (ask_followup_question)
-
-**Assistant Files Used Section Requirements:**
-
-**🚨 CRITICAL: MANDATORY - List ALL Assistant Files with Status**
-
-**What to List:**
-- ONLY list assistant instruction/reference files (docs/assistant-*.md)
-- DO NOT list project files, source code, or files created during task
-- List ALL relevant assistant files, not just those used
-
-**Status Indicators:**
-- ✅ (APPLIED) - File was used/applied during the task
-- ❌ (NOT USED) - File was referenced but not applied
-
-**Example:**
-```markdown
-## Assistant Files Used
-- ✅ docs/assistant-instructions.md (APPLIED)
-- ✅ docs/assistant-rule.md (APPLIED)
-- ❌ docs/assistant-quality-standards.md (NOT USED)
-- ❌ docs/assistant-performance-optimization.md (NOT USED)
-```
-
-**This section is MANDATORY for EVERY attempt_completion - NO EXCEPTIONS.**
-
-**This format should be used in chat history file ONLY when explicitly requested:**
-- Read existing chat history file (if exists)
-- Add NEW entry at TOP (before previous entries)
-- Use write_to_file to save updated content
-- Verify file was saved successfully
-
-**NOTE:** Chat history is OPTIONAL - only create/update when user explicitly requests it.
-
-**Benefits:**
-- Faster workflow (only update when requested)
-- Reduced token usage (fewer automatic operations)
-- User control over documentation
-- Latest information immediately visible
-
----
 ### Default Chat History Rules
 
 **⚠️ OPTIONAL: Update chat history ONLY when explicitly requested.**
@@ -220,10 +153,10 @@ The ONLY times you can make changes without asking:
 - Example: `Chat-001-2026-01-17-2245.md`
 
 **Storage Strategy:**
-- **Latest message at the top** - Insert new entries at the beginning for easy access
-- **Old messages below** - Previous task summaries go below the latest message
-- **Exact task summary** - Store the exact task completed summary in the history file
-- **No matter how many messages** - Even if multiple messages in chat box, only store the latest message summary when requested
+- **Copy ALL output result of each message** - Copy the complete output from each message
+- **Top(latest) to bottom(previous message) order** - Arrange messages with latest at top, oldest at bottom
+- **Exact output** - Store the complete, exact output result (all sections) in the history file
+- **No matter how many messages** - Even if multiple messages in chat box, copy the latest message output when requested
 
 **When to Create/Update Chat History:**
 - User explicitly requests: "update chat history"
@@ -271,79 +204,20 @@ The ONLY times you can make changes without asking:
 ### Chat History File Format
 
 **Reverse Chronological Order (Latest → Oldest):**
+**Must match Standard Output Format exactly**
 
 ```markdown
 ## User Request
 "[Latest Message]"
 
 ## Assistant Files Used
-- ✅ [filename].md (APPLIED)
-- ❌ [filename].md (NOT USED)
+- ✅ docs/assistant-instructions.md (APPLIED)
+- ✅ docs/assistant-rule.md (APPLIED)
+- ❌ docs/assistant-quality-standards.md (NOT USED)
+- ❌ docs/assistant-performance-optimization.md (NOT USED)
 
 ## [Task summary content]
 
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-
-## User Request
-"[Next Message]"
-
-## Assistant Files Used
-- ✅ [filename].md (APPLIED)
-- ❌ [filename].md (NOT USED)
-
-## [Task summary content]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-
-## User Request
-"[Oldest Message]"
-
-## Assistant Files Used
-- ✅ [filename].md (APPLIED)
-- ❌ [filename].md (NOT USED)
-
-## [Task summary content]
-
----
-*Generated on: YYYY-MM-DD HH:MM:SS*
-```
-
----
-### Default Recommendations
-
-**Always provide proactive recommendations after code changes, file modifications, or feature implementations.**
-
-Include following sections in outputs:
-
-   - 1. Code Quality Suggestions
-- Refactoring opportunities
-- Performance optimizations
-- Security enhancements
-- Best practice improvements
-
-   - 2. Next Steps
-- Immediate follow-up actions
-- Related features to consider
-- Testing recommendations
-
-   - 3. Related Features
-- Features that complement current implementation
-- Edge cases to handle
-- Integrations to consider
-
-### Guidelines
-
-- **Keep recommendations concise**: Maximum 2-3 key points per section
-- **Make them actionable**: Specific, implementable suggestions
-- **Be context-aware**: Tailor suggestions to specific changes made
-- **Avoid redundancy**: Don't repeat same suggestions multiple times
-- **Prioritize value**: Only include genuinely useful recommendations
-
-### Example Output Structure
-
-```
 ---
 
 ## 💡 Recommendations
@@ -358,20 +232,212 @@ Include following sections in outputs:
 
 **Consider This:**
 - [Related feature or enhancement idea]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+
+## User Request
+"[Next Message]"
+
+## Assistant Files Used
+- ✅ docs/assistant-instructions.md (APPLIED)
+- ❌ docs/assistant-quality-standards.md (NOT USED)
+
+## [Task summary content]
+
+---
+
+## 💡 Recommendations
+
+**Code Quality:**
+- [Specific, actionable suggestion]
+
+**Next Steps:**
+- [Immediate next action]
+
+**Consider This:**
+- [Related feature]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+
+## User Request
+"[Oldest Message]"
+
+## Assistant Files Used
+- ✅ docs/assistant-instructions.md (APPLIED)
+- ❌ docs/assistant-performance-optimization.md (NOT USED)
+
+## [Task summary content]
+
+---
+
+## 💡 Recommendations
+
+**Code Quality:**
+- [Specific, actionable suggestion]
+
+**Next Steps:**
+- [Immediate next action]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
+```
+
+**IMPORTANT:** Every chat history entry MUST follow the complete Standard Output Format with:
+1. User Request
+2. Assistant Files Used
+3. Main Content
+4. Separator (---)
+5. 💡 Recommendations (with Code Quality, Next Steps, Consider This)
+6. Separator (---)
+7. Generated timestamp
+
+---
+### Standard Output Format
+
+**This format applies to ALL messages sent in the chat - NO EXCEPTIONS.**
+
+---
+
+### Mandatory Header Sections
+
+These sections appear at the TOP of EVERY message:
+
+**1. User Request (Mandatory - First Section)**
+- The exact message or task provided by user
+- Appears at the TOP of EVERY message
+- Format: `## User Request "[Latest Message]"`
+
+**2. Assistant Files Used (Mandatory - Second Section)**
+- List ALL assistant instruction/reference files (docs/assistant-*.md)
+- DO NOT list project files, source code, or files created during task
+- Status indicators are MANDATORY:
+  - ✅ (APPLIED) - File was used/applied during the task
+  - ❌ (NOT USED) - File was referenced/available but not directly applied
+- Even files marked as NOT USED must be listed to maintain complete context
+- Format: `## Assistant Files Used` with list of files and status
+
+---
+
+### Recommendation Sections (Mandatory - Appear at Bottom)
+
+These sections appear under "## 💡 Recommendations" at the BOTTOM of EVERY message:
+
+**3. Code Quality Suggestions**
+- Refactoring opportunities
+- Performance optimizations
+- Security enhancements
+- Best practice improvements
+
+**4. Next Steps**
+- Immediate follow-up actions
+- Related features to consider
+- Testing recommendations
+
+**5. Related Features**
+- Features that complement current implementation
+- Edge cases to handle
+- Integrations to consider
+
+---
+
+### Guidelines for Mandatory Header Sections
+
+**User Request Section:**
+- Must appear FIRST in EVERY message
+- Must contain the exact user message/task
+- Format: `## User Request "[Latest Message]"`
+
+**Assistant Files Used Section:**
+- Must appear SECOND (immediately after User Request) in EVERY message
+- List ALL assistant instruction/reference files (docs/assistant-*.md)
+- DO NOT list project files, source code, or files created during task
+- Status indicators are MANDATORY:
+  - ✅ (APPLIED) - File was used/applied during the task
+  - ❌ (NOT USED) - File was referenced/available but not directly applied
+- Even files marked as NOT USED must be listed to maintain complete context
+- Format: `## Assistant Files Used` with list of files and status
+
+---
+
+### Guidelines for Recommendations Sections
+
+- **Keep recommendations concise**: Maximum 2-3 key points per section
+- **Make them actionable**: Specific, implementable suggestions
+- **Be context-aware**: Tailor suggestions to specific message context
+- **Avoid redundancy**: Don't repeat same suggestions multiple times
+- **Prioritize value**: Only include genuinely useful recommendations
+- **Apply to**: Code Quality, Next Steps, and Related Features sections
+- **Mandatory in ALL messages**: Recommendations section must appear at BOTTOM of EVERY message
+
+---
+
+### Complete Output Structure Example
+
+```
+## User Request
+"[Latest Message]"
+
+## Assistant Files Used
+- ✅ docs/assistant-instructions.md (APPLIED)
+- ✅ docs/assistant-rule.md (APPLIED)
+- ❌ docs/assistant-quality-standards.md (NOT USED)
+- ❌ docs/assistant-performance-optimization.md (NOT USED)
+
+## [Main Task Summary/Results Content]
+
+---
+
+## 💡 Recommendations
+
+**Code Quality:**
+- [Specific, actionable suggestion 1]
+- [Specific, actionable suggestion 2]
+
+**Next Steps:**
+- [Immediate next action 1]
+- [Related task 2]
+
+**Consider This:**
+- [Related feature or enhancement idea]
+
+---
+*Generated on: YYYY-MM-DD HH:MM:SS*
 ```
 
 ### When to Skip Recommendations
 
-Skip recommendations only when:
+**IMPORTANT:** Recommendations are MANDATORY for ALL messages - NO EXCEPTIONS.
+
+**The ONLY time to skip recommendations is when:**
 - User explicitly says "no recommendations needed"
 - User provides clear instruction to omit recommendations
 
-**IMPORTANT:** For informational tasks (scans, reports, audits, etc.), ALWAYS provide recommendations in chat summary. Do not skip recommendations for informational tasks unless explicitly told to do so.
-
 **Recommendations Location Rule:**
-- ALWAYS provide recommendations in chat summary (attempt_completion result)
-- Recommendations should also be included in generated report files (when applicable)
+- ALWAYS provide recommendations in EVERY message
+- MUST appear at BOTTOM of message after main content
 - Use standard format: Code Quality, Next Steps, Consider This
+- MUST be included in chat summary entries
+- MUST be included in generated report files (when applicable)
+
+**No exceptions** - recommendations are required for all messages including:
+- Task completions
+- Casual conversations
+- Questions and answers
+- Clarifications
+- Informational responses
+- Tool use results
+
+**Assistant Files Used Section Rule (CRITICAL):**
+- **ALWAYS** include the "Assistant Files Used" section in EVERY task completion output
+- **List ALL assistant instruction files** that are relevant to the task context
+- **Status indicators are MANDATORY:**
+  - ✅ (APPLIED) - File was used/applied during the task
+  - ❌ (NOT USED) - File was referenced/available but not directly applied
+- **Even files marked as NOT USED must be listed** to maintain complete context
+- **This section appears in both:** chat history entries AND task completion outputs
+- **Purpose:** Maintain complete audit trail of which assistant guidelines were available, even if not all were directly used
 
 **Brutal Truth Rule:**
 - NEVER sugarcoat or make reports "nice" to satisfy user
