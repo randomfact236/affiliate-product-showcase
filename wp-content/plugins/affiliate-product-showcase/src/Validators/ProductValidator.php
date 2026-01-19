@@ -1,4 +1,18 @@
 <?php
+/**
+ * Product Validator
+ *
+ * Validates product data including:
+ * - Required fields (title, affiliate_url)
+ * - Category IDs validation
+ * - Tag IDs validation
+ * - Term existence verification
+ *
+ * @package AffiliateProductShowcase\Validators
+ * @since 1.0.0
+ */
+
+declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Validators;
 
@@ -9,7 +23,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AffiliateProductShowcase\Abstracts\AbstractValidator;
 use AffiliateProductShowcase\Exceptions\PluginException;
 
+/**
+ * Product Validator
+ *
+ * Validates product data including:
+ * - Required fields (title, affiliate_url)
+ * - Category IDs validation
+ * - Tag IDs validation
+ * - Term existence verification
+ *
+ * @package AffiliateProductShowcase\Validators
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class ProductValidator extends AbstractValidator {
+	/**
+	 * Validate product data
+	 *
+	 * Validates required fields and taxonomy term IDs.
+	 * Throws exception with error messages if validation fails.
+	 *
+	 * @param array<string, mixed> $data Product data to validate
+	 * @return array<string, mixed> Validated product data
+	 * @throws PluginException If validation fails
+	 * @since 1.0.0
+	 */
 	public function validate( array $data ): array {
 		$errors = [];
 

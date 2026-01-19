@@ -1,4 +1,16 @@
 <?php
+/**
+ * Product Service
+ *
+ * Core service for managing affiliate products including:
+ * - Product creation, retrieval, and deletion
+ * - Custom post type and taxonomy registration
+ * - Product data validation and formatting
+ * - Caching for improved performance
+ *
+ * @package AffiliateProductShowcase\Services
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
@@ -18,11 +30,68 @@ use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Repositories\ProductRepository;
 use AffiliateProductShowcase\Validators\ProductValidator;
 
+/**
+ * Product Service
+ *
+ * Core service for managing affiliate products including:
+ * - Product creation, retrieval, and deletion
+ * - Custom post type and taxonomy registration
+ * - Product data validation and formatting
+ * - Caching for improved performance
+ *
+ * @package AffiliateProductShowcase\Services
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class ProductService extends AbstractService {
+	/**
+	 * Product repository instance
+	 *
+	 * Handles database operations for products.
+	 *
+	 * @var ProductRepository
+	 * @since 1.0.0
+	 */
 	private ProductRepository $repository;
+
+	/**
+	 * Product validator instance
+	 *
+	 * Validates product data before saving.
+	 *
+	 * @var ProductValidator
+	 * @since 1.0.0
+	 */
 	private ProductValidator $validator;
+
+	/**
+	 * Product factory instance
+	 *
+	 * Creates Product objects from raw data.
+	 *
+	 * @var ProductFactory
+	 * @since 1.0.0
+	 */
 	private ProductFactory $factory;
+
+	/**
+	 * Price formatter instance
+	 *
+	 * Formats prices with currency symbols.
+	 *
+	 * @var PriceFormatter
+	 * @since 1.0.0
+	 */
 	private PriceFormatter $formatter;
+
+	/**
+	 * Cache instance
+	 *
+	 * Handles caching for product queries.
+	 *
+	 * @var Cache
+	 * @since 1.0.0
+	 */
 	private Cache $cache;
 
 	/**
@@ -51,14 +120,24 @@ final class ProductService extends AbstractService {
 	/**
 	 * Boot the service
 	 *
+	 * Initializes the service. Currently empty as all initialization
+	 * is handled in the constructor.
+	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function boot(): void {}
 
 	/**
 	 * Register the product post type
 	 *
+	 * Registers the 'aps_product' custom post type with WordPress.
+	 * Configures labels, capabilities, and REST API support.
+	 *
 	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action init
 	 */
 	public function register_post_type(): void {
 		register_post_type(
@@ -95,7 +174,15 @@ final class ProductService extends AbstractService {
 	/**
 	 * Register product taxonomies
 	 *
+	 * Registers three taxonomies for product organization:
+	 * - Category (hierarchical)
+	 * - Tag (non-hierarchical)
+	 * - Ribbon (non-hierarchical, for badges/labels)
+	 *
 	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action init
 	 */
 	public function register_taxonomies(): void {
 		// Register Category taxonomy (hierarchical)
@@ -185,8 +272,12 @@ final class ProductService extends AbstractService {
 	/**
 	 * Get a product by ID
 	 *
-	 * @param int $id Product ID
+	 * Retrieves a single product by its unique identifier.
+	 * Returns null if product is not found.
+	 *
+	 * @param int $id Unique product identifier
 	 * @return Product|null Product object or null if not found
+	 * @since 1.0.0
 	 */
 	public function get_product( int $id ): ?Product {
 		return $this->repository->find( $id );
@@ -195,8 +286,12 @@ final class ProductService extends AbstractService {
 	/**
 	 * Get list of products with caching
 	 *
-	 * @param array<string, mixed> $args Query arguments
-	 * @return array<int, Product> Array of products
+	 * Retrieves products with optional filtering and caching.
+	 * Caches results for 5 minutes to improve performance.
+	 *
+	 * @param array<string, mixed> $args Query arguments for filtering products
+	 * @return array<int, Product> Array of product objects
+	 * @since 1.0.0
 	 */
 	public function get_products( array $args = [] ): array {
 		// Generate cache key from arguments
@@ -220,9 +315,13 @@ final class ProductService extends AbstractService {
 	/**
 	 * Create or update a product
 	 *
-	 * @param array<string, mixed> $data Product data
-	 * @return Product Created or updated product
-	 * @throws PluginException If unable to save product
+	 * Validates and saves product data. Creates new product if ID not provided,
+	 * otherwise updates existing product.
+	 *
+	 * @param array<string, mixed> $data Product data including title, price, affiliate_url, etc.
+	 * @return Product Created or updated product object
+	 * @throws PluginException If validation fails or unable to save product
+	 * @since 1.0.0
 	 */
 	public function create_or_update( array $data ): Product {
 		$clean = $this->validator->validate( $data );
@@ -238,8 +337,12 @@ final class ProductService extends AbstractService {
 	/**
 	 * Delete a product
 	 *
-	 * @param int $id Product ID
-	 * @return bool True if deleted successfully
+	 * Permanently deletes a product from the database.
+	 * Returns false if product doesn't exist or deletion fails.
+	 *
+	 * @param int $id Unique product identifier
+	 * @return bool True if deleted successfully, false otherwise
+	 * @since 1.0.0
 	 */
 	public function delete( int $id ): bool {
 		return $this->repository->delete( $id );
@@ -248,9 +351,13 @@ final class ProductService extends AbstractService {
 	/**
 	 * Format price with currency
 	 *
-	 * @param float $price Price value
+	 * Formats a price value with appropriate currency symbol
+	 * and number formatting.
+	 *
+	 * @param float $price Price value to format
 	 * @param string $currency Currency code (default: USD)
-	 * @return string Formatted price
+	 * @return string Formatted price with currency symbol
+	 * @since 1.0.0
 	 */
 	public function format_price( float $price, string $currency = 'USD' ): string {
 		return $this->formatter->format( $price, $currency );

@@ -1,4 +1,16 @@
 <?php
+/**
+ * Product Factory
+ *
+ * Factory for creating Product objects from:
+ * - WordPress post objects
+ * - Associative arrays
+ * - Supports N+1 query prevention with meta cache
+ *
+ * @package AffiliateProductShowcase\Factories
+ * @since 1.0.0
+ */
+
 declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Factories;
@@ -9,13 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AffiliateProductShowcase\Models\Product;
 
+/**
+ * Product Factory
+ *
+ * Factory for creating Product objects from:
+ * - WordPress post objects
+ * - Associative arrays
+ * - Supports N+1 query prevention with meta cache
+ *
+ * @package AffiliateProductShowcase\Factories
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class ProductFactory {
 	/**
 	 * Create a Product from a WP_Post object
 	 *
+	 * Creates a Product instance from WordPress post object.
+	 * Supports optional meta cache to prevent N+1 queries.
+	 *
 	 * @param \WP_Post $post WordPress post object
 	 * @param array<string, array<string, mixed>>|null $meta_cache Optional pre-fetched meta data to avoid N+1 queries
 	 * @return Product Product instance
+	 * @since 1.0.0
 	 */
 	public function from_post( \WP_Post $post, ?array $meta_cache = null ): Product {
 		// Use provided cache if available (for batch operations), otherwise fetch
@@ -49,8 +77,12 @@ final class ProductFactory {
 	/**
 	 * Create a Product from an array
 	 *
+	 * Creates a Product instance from associative array.
+	 * Supports backward compatibility with legacy field names.
+	 *
 	 * @param array<string, mixed> $data Product data
 	 * @return Product Product instance
+	 * @since 1.0.0
 	 */
 	public function from_array( array $data ): Product {
 		// Support both 'category_ids' and 'categories' for backward compatibility

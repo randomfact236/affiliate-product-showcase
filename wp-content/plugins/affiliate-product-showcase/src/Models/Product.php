@@ -1,4 +1,14 @@
 <?php
+/**
+ * Product Model
+ *
+ * Represents an affiliate product with all its properties and methods.
+ * Handles product data structure and conversion to array format.
+ *
+ * @package AffiliateProductShowcase\Models
+ * @since 1.0.0
+ */
+
 declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Models;
@@ -7,7 +17,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Product Model
+ *
+ * Represents an affiliate product with all its properties and methods.
+ * Handles product data structure and conversion to array format.
+ *
+ * @package AffiliateProductShowcase\Models
+ * @since 1.0.0
+ */
 final class Product {
+	/**
+	 * Constructor
+	 *
+	 * Initializes a new Product instance with all required and optional properties.
+	 * Uses promoted constructor properties for type safety and immutability.
+	 *
+	 * @param int $id Unique product identifier
+	 * @param string $title Product title
+	 * @param string $slug URL-friendly slug for the product
+	 * @param string $description Product description content
+	 * @param string $currency Currency code (e.g., USD, EUR)
+	 * @param float $price Current product price
+	 * @param float|null $original_price Original price before discount (optional)
+	 * @param string $affiliate_url Affiliate link URL
+	 * @param string|null $image_url Product image URL (optional)
+	 * @param float|null $rating Product rating 0-5 (optional)
+	 * @param string|null $badge Badge/ribbon text (optional)
+	 * @param array<int, int> $category_ids Array of category IDs (optional)
+	 * @param array<int, int> $tag_ids Array of tag IDs (optional)
+	 * @since 1.0.0
+	 */
 	public function __construct(
 		public int $id,
 		public string $title,
@@ -24,6 +64,15 @@ final class Product {
 		public array $tag_ids = []
 	) {}
 
+	/**
+	 * Convert product to array
+	 *
+	 * Converts the Product object to an associative array format suitable for JSON responses.
+	 * Includes both canonical field names and backward-compatible aliases.
+	 *
+	 * @return array<string, mixed> Product data as associative array
+	 * @since 1.0.0
+	 */
 	public function to_array(): array {
 		return [
 			'id'             => $this->id,

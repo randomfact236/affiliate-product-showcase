@@ -1,13 +1,54 @@
 <?php
+/**
+ * Plugin Activator
+ *
+ * Handles plugin activation tasks including:
+ * - Registering custom post types
+ * - Registering taxonomies
+ * - Setting plugin version
+ * - Flushing rewrite rules
+ *
+ * @package AffiliateProductShowcase\Plugin
+ * @since 1.0.0
+ * @author Development Team
+ */
+
 declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Plugin;
+
+use AffiliateProductShowcase\Plugin\Constants;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Plugin Activator
+ *
+ * Handles plugin activation tasks including:
+ * - Registering custom post types
+ * - Registering taxonomies
+ * - Setting plugin version
+ * - Flushing rewrite rules
+ *
+ * @package AffiliateProductShowcase\Plugin
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class Activator {
+	/**
+	 * Activate plugin
+	 *
+	 * Registers all custom post types and taxonomies,
+	 * sets plugin version option, and flushes rewrite rules.
+	 * Called on plugin activation via register_activation_hook().
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action register_activation_hook
+	 */
 	public static function activate(): void {
 		// Register post type
 		register_post_type(

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Sanitizer
+ *
+ * Provides comprehensive input sanitization and output escaping
+ * to prevent XSS, SQL injection, and other security vulnerabilities.
+ *
+ * @package AffiliateProductShowcase\Security
+ * @since 1.0.0
+ */
 
 declare(strict_types=1);
 
@@ -14,15 +23,20 @@ use AffiliateProductShowcase\Helpers\Logger;
  *
  * @package AffiliateProductShowcase\Security
  * @since 1.0.0
+ * @author Development Team
  */
 class Sanitizer {
 
     /**
      * Sanitize a string value
      *
+     * Sanitizes string input based on specified type.
+     * Supports multiple sanitization types: text, textarea, url, email, etc.
+     *
      * @param string $value Value to sanitize
      * @param string $type Sanitization type (text, textarea, url, email, etc.)
-     * @return string
+     * @return string Sanitized string
+     * @since 1.0.0
      */
     public static function string( string $value, string $type = 'text' ): string {
         switch ( $type ) {
@@ -58,9 +72,13 @@ class Sanitizer {
     /**
      * Sanitize an integer value
      *
+     * Validates and converts value to integer.
+     * Returns default value if input is not numeric.
+     *
      * @param mixed $value Value to sanitize
      * @param int $default Default value if invalid
-     * @return int
+     * @return int Sanitized integer
+     * @since 1.0.0
      */
     public static function integer( $value, int $default = 0 ): int {
         return is_numeric( $value ) ? (int) $value : $default;
@@ -69,9 +87,13 @@ class Sanitizer {
     /**
      * Sanitize a float value
      *
+     * Validates and converts value to float.
+     * Returns default value if input is not numeric.
+     *
      * @param mixed $value Value to sanitize
      * @param float $default Default value if invalid
-     * @return float
+     * @return float Sanitized float
+     * @since 1.0.0
      */
     public static function float( $value, float $default = 0.0 ): float {
         return is_numeric( $value ) ? (float) $value : $default;
@@ -80,8 +102,12 @@ class Sanitizer {
     /**
      * Sanitize a boolean value
      *
+     * Converts value to boolean using PHP filter.
+     * Handles various input formats (strings, integers, etc.).
+     *
      * @param mixed $value Value to sanitize
-     * @return bool
+     * @return bool Sanitized boolean
+     * @since 1.0.0
      */
     public static function boolean( $value ): bool {
         return filter_var( $value, FILTER_VALIDATE_BOOLEAN );
@@ -90,9 +116,13 @@ class Sanitizer {
     /**
      * Sanitize an array of values
      *
+     * Recursively sanitizes all values in an array.
+     * Supports nested arrays for complex data structures.
+     *
      * @param array $array Array to sanitize
      * @param string $type Sanitization type for values
-     * @return array
+     * @return array Sanitized array
+     * @since 1.0.0
      */
     public static function array( array $array, string $type = 'text' ): array {
         return array_map(
@@ -108,8 +138,12 @@ class Sanitizer {
     /**
      * Sanitize product data
      *
-     * @param array $data Product data to sanitize
-     * @return array
+     * Sanitizes all product-related fields including
+     * title, description, price, URLs, and taxonomy IDs.
+     *
+     * @param array<string, mixed> $data Product data to sanitize
+     * @return array<string, mixed> Sanitized product data
+     * @since 1.0.0
      */
     public static function productData( array $data ): array {
         $sanitized = [];
@@ -168,8 +202,12 @@ class Sanitizer {
     /**
      * Sanitize settings data
      *
-     * @param array $data Settings data to sanitize
-     * @return array
+     * Sanitizes plugin settings including display mode,
+     * cache duration, and feature toggles.
+     *
+     * @param array<string, mixed> $data Settings data to sanitize
+     * @return array<string, mixed> Sanitized settings data
+     * @since 1.0.0
      */
     public static function settingsData( array $data ): array {
         $sanitized = [];
@@ -206,8 +244,12 @@ class Sanitizer {
     /**
      * Escape output for HTML
      *
+     * Escapes special characters for safe HTML output.
+     * Prevents XSS attacks when displaying user content.
+     *
      * @param string $value Value to escape
-     * @return string
+     * @return string Escaped HTML
+     * @since 1.0.0
      */
     public static function escapeHtml( string $value ): string {
         return esc_html( $value );
@@ -216,8 +258,12 @@ class Sanitizer {
     /**
      * Escape output for HTML attribute
      *
+     * Escapes special characters for safe use in HTML attributes.
+     * Prevents XSS attacks in attribute values.
+     *
      * @param string $value Value to escape
-     * @return string
+     * @return string Escaped attribute value
+     * @since 1.0.0
      */
     public static function escapeAttr( string $value ): string {
         return esc_attr( $value );
@@ -226,8 +272,12 @@ class Sanitizer {
     /**
      * Escape output for URL
      *
+     * Escapes special characters for safe URL display.
+     * Prevents XSS attacks in URLs.
+     *
      * @param string $value Value to escape
-     * @return string
+     * @return string Escaped URL
+     * @since 1.0.0
      */
     public static function escapeUrl( string $value ): string {
         return esc_url( $value );
@@ -236,8 +286,12 @@ class Sanitizer {
     /**
      * Escape output for JavaScript
      *
+     * Escapes special characters for safe JavaScript output.
+     * Prevents XSS attacks in JavaScript code.
+     *
      * @param string $value Value to escape
-     * @return string
+     * @return string Escaped JavaScript string
+     * @since 1.0.0
      */
     public static function escapeJs( string $value ): string {
         return esc_js( $value );
@@ -246,9 +300,13 @@ class Sanitizer {
     /**
      * Sanitize and escape a value for safe output
      *
+     * Combines sanitization and escaping for safe output.
+     * Automatically selects appropriate escaping based on context.
+     *
      * @param mixed $value Value to sanitize and escape
      * @param string $context Context (html, attr, url, js)
-     * @return string
+     * @return string Sanitized and escaped string
+     * @since 1.0.0
      */
     public static function safeOutput( $value, string $context = 'html' ): string {
         $sanitized = is_string( $value ) ? self::string( $value ) : '';
@@ -270,8 +328,12 @@ class Sanitizer {
     /**
      * Validate and sanitize email
      *
+     * Sanitizes and validates email address.
+     * Returns false if email is invalid.
+     *
      * @param string $email Email to validate
-     * @return string|false Valid email or false
+     * @return string|false Valid email or false if invalid
+     * @since 1.0.0
      */
     public static function email( string $email ) {
         $sanitized = sanitize_email( $email );
@@ -281,8 +343,12 @@ class Sanitizer {
     /**
      * Validate and sanitize URL
      *
+     * Sanitizes and validates URL.
+     * Returns false if URL is invalid.
+     *
      * @param string $url URL to validate
-     * @return string|false Valid URL or false
+     * @return string|false Valid URL or false if invalid
+     * @since 1.0.0
      */
     public static function url( string $url ) {
         $sanitized = esc_url_raw( $url );
@@ -292,8 +358,12 @@ class Sanitizer {
     /**
      * Sanitize JSON input
      *
+     * Decodes JSON string and sanitizes all values.
+     * Returns false if JSON is invalid.
+     *
      * @param string $json JSON string to sanitize
      * @return array|object|false Decoded and sanitized JSON or false
+     * @since 1.0.0
      */
     public static function json( string $json ) {
         $decoded = json_decode( $json, true );
@@ -308,8 +378,12 @@ class Sanitizer {
     /**
      * Remove potentially dangerous HTML
      *
+     * Removes all HTML except for safe tags.
+     * Allows basic formatting tags: a, b, strong, i, em, p, br, ul, ol, li.
+     *
      * @param string $html HTML to clean
-     * @return string
+     * @return string Sanitized HTML
+     * @since 1.0.0
      */
     public static function stripTags( string $html ): string {
         $allowed = [
@@ -331,8 +405,12 @@ class Sanitizer {
     /**
      * Sanitize a filename for upload
      *
+     * Sanitizes filename for secure file uploads.
+     * Removes special characters and ensures valid filename.
+     *
      * @param string $filename Filename to sanitize
-     * @return string
+     * @return string Sanitized filename
+     * @since 1.0.0
      */
     public static function filename( string $filename ): string {
         $filename = sanitize_file_name( $filename );
@@ -351,9 +429,13 @@ class Sanitizer {
     /**
      * Clean and normalize an array of input
      *
-     * @param array $input Input array to clean
-     * @param array $rules Sanitization rules per key
-     * @return array
+     * Sanitizes input array with custom rules per key.
+     * Useful for form submissions and API requests.
+     *
+     * @param array<string, mixed> $input Input array to clean
+     * @param array<string, string> $rules Sanitization rules per key
+     * @return array<string, mixed> Cleaned and sanitized array
+     * @since 1.0.0
      */
     public static function cleanInput( array $input, array $rules = [] ): array {
         $cleaned = [];

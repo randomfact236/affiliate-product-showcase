@@ -1,4 +1,18 @@
 <?php
+/**
+ * Products REST API Controller
+ *
+ * Handles REST API endpoints for product management including:
+ * - Listing products with pagination and filtering
+ * - Creating new products with validation
+ * - Rate limiting for API endpoints
+ * - CSRF protection via nonce verification
+ *
+ * @package AffiliateProductShowcase\Rest
+ * @since 1.0.0
+ * @author Development Team
+ */
+
 declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Rest;
@@ -10,16 +24,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Security\RateLimiter;
 use WP_REST_Server;
+use WP_REST_Request;
+use WP_REST_Response;
 
+/**
+ * Products REST API Controller
+ *
+ * Handles REST API endpoints for product management including:
+ * - Listing products with pagination and filtering
+ * - Creating new products with validation
+ * - Rate limiting for API endpoints
+ * - CSRF protection via nonce verification
+ *
+ * @package AffiliateProductShowcase\Rest
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class ProductsController extends RestController {
+	/**
+	 * Rate limiter instance
+	 *
+	 * @var RateLimiter
+	 * @since 1.0.0
+	 */
 	private RateLimiter $rate_limiter;
 
 	/**
 	 * Constructor
 	 *
-	 * @param ProductService $product_service Product service
+	 * Initializes rate limiter for API endpoint protection.
+	 *
+	 * @param ProductService $product_service Product service for business logic
+	 * @return void
+	 * @since 1.0.0
 	 */
-	public function __construct( 
+	public function __construct(
 		private ProductService $product_service
 	) {
 		$this->rate_limiter = new RateLimiter();
@@ -28,7 +67,14 @@ final class ProductsController extends RestController {
 	/**
 	 * Register REST API routes
 	 *
+	 * Registers /products endpoints for:
+	 * - GET /products - List products with pagination
+	 * - POST /products - Create new product
+	 *
 	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action rest_api_init
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -54,7 +100,11 @@ final class ProductsController extends RestController {
 	/**
 	 * Get validation schema for list endpoint
 	 *
-	 * @return array<string, mixed> Validation schema
+	 * Defines query parameters for products list:
+	 * - per_page: Number of products per page (1-100, default 12)
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
 	 */
 	private function get_list_args(): array {
 		return [
@@ -71,11 +121,22 @@ final class ProductsController extends RestController {
 	/**
 	 * Get validation schema for create endpoint
 	 *
-	 * @return array<string, mixed> Validation schema
+	 * Defines parameters for product creation:
+	 * - title: Product title (required, max 200 chars)
+	 * - description: Product description (optional)
+	 * - price: Product price (required, min 0)
+	 * - currency: Currency code (optional, default USD, enum: USD/EUR/GBP/JPY/CAD/AUD)
+	 * - affiliate_url: Affiliate link URL (required, URI format)
+	 * - image_url: Image URL (optional, URI format)
+	 * - badge: Badge/ribbon text (optional, max 50 chars)
+	 * - rating: Product rating (optional, 0-5)
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
 	 */
 	private function get_create_args(): array {
 		return [
-			'title'       => [
+			'title' => [
 				'required'          => true,
 				'type'              => 'string',
 				'minLength'         => 1,
@@ -87,13 +148,13 @@ final class ProductsController extends RestController {
 				'type'              => 'string',
 				'sanitize_callback' => 'wp_kses_post',
 			],
-			'price'       => [
+			'price' => [
 				'required'          => true,
 				'type'              => 'number',
 				'minimum'           => 0,
 				'sanitize_callback' => 'floatval',
 			],
-			'currency'    => [
+			'currency' => [
 				'required'          => true,
 				'type'              => 'string',
 				'default'           => 'USD',
@@ -106,19 +167,19 @@ final class ProductsController extends RestController {
 				'format'            => 'uri',
 				'sanitize_callback' => 'esc_url_raw',
 			],
-			'image_url'   => [
+			'image_url' => [
 				'required'          => false,
 				'type'              => 'string',
 				'format'            => 'uri',
 				'sanitize_callback' => 'esc_url_raw',
 			],
-			'badge'       => [
+			'badge' => [
 				'required'          => false,
 				'type'              => 'string',
 				'maxLength'         => 50,
 				'sanitize_callback' => 'sanitize_text_field',
 			],
-			'rating'      => [
+			'rating' => [
 				'required'          => false,
 				'type'              => 'number',
 				'minimum'           => 0,
@@ -131,10 +192,17 @@ final class ProductsController extends RestController {
 	/**
 	 * List products
 	 *
-	 * @param \WP_REST_Request $request Request object
-	 * @return \WP_REST_Response Response with products list
+	 * Returns paginated list of products with rate limiting.
+	 * Rate limit: 60 requests/minute for public, 120 for authenticated users.
+	 *
+	 * @param WP_REST_Request $request Request object containing query parameters
+	 * @return WP_REST_Response Response with products list or error
+	 * @throws RateLimitException If rate limit is exceeded
+	 * @since 1.0.0
+	 *
+	 * @route GET /affiliate-showcase/v1/products
 	 */
-	public function list( \WP_REST_Request $request ): \WP_REST_Response {
+	public function list( WP_REST_Request $request ): WP_REST_Response {
 		// Check rate limit
 		if ( ! $this->rate_limiter->check( 'products_list' ) ) {
 			return $this->respond( [
@@ -156,15 +224,25 @@ final class ProductsController extends RestController {
 	/**
 	 * Create a new product
 	 *
-	 * @param \WP_REST_Request $request Request object
-	 * @return \WP_REST_Response Response with created product
+	 * Creates a new product with CSRF protection and stricter rate limiting.
+	 * Rate limit: 20 requests/minute (stricter than list operations).
+	 * Nonce verification required in X-WP-Nonce header.
+	 *
+	 * @param WP_REST_Request $request Request object containing product data
+	 * @return WP_REST_Response Response with created product or error
+	 * @throws ValidationException If product data is invalid
+	 * @throws RateLimitException If rate limit is exceeded
+	 * @throws PluginException If product creation fails
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products
 	 */
-	public function create( \WP_REST_Request $request ): \WP_REST_Response {
+	public function create( WP_REST_Request $request ): WP_REST_Response {
 		// Verify nonce for CSRF protection
 		$nonce = $request->get_header( 'X-WP-Nonce' );
 		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh the page and try again.', 'affiliate-product-showcase' ),
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
 				'code'    => 'invalid_nonce',
 			], 403 );
 		}
@@ -199,7 +277,7 @@ final class ProductsController extends RestController {
 			
 		} catch ( \Throwable $e ) {
 			// Catch-all for unexpected errors
-			error_log('[APS] Unexpected error in product creation: ' . $e->getMessage());
+			error_log(sprintf('[APS] Unexpected error in product creation: %s', $e->getMessage()));
 			
 			return $this->respond([
 				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
