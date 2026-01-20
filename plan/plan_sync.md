@@ -657,26 +657,26 @@
 ✅ 2.2.5 Show UI: true
 ✅ 2.2.6 Show in menu: true
 ✅ 2.2.7 Show in nav menus: true
-⏳ 2.2.8 Show in admin bar: true
+✅ 2.2.8 Show in admin bar: true
 ✅ 2.2.9 Show in REST: true
 ✅ 2.2.10 REST base: `product-categories`
 ✅ 2.2.11 Show tagcloud: true
 ✅ 2.2.12 Show admin column: true
-⏳ 2.2.13 Query var: true
+✅ 2.2.13 Query var: true
 ✅ 2.2.14 Rewrite: true with custom slug
-⏳ 2.2.15 Capabilities: manage_categories, edit_categories, delete_categories, assign_categories
-⏳ 2.2.16 Meta box callback: custom hierarchical UI
-⏳ 2.2.17 Update count callback: custom function
-⏳ 2.2.18 Default term: 'Uncategorized'
-⏳ 2.2.19 Support for term meta
-⏳ 2.2.20 Term meta: category icon (SVG upload)
-⏳ 2.2.21 Term meta: category color (hex picker)
-⏳ 2.2.22 Term meta: category image (thumbnail)
-⏳ 2.2.23 Term meta: display order (sortable)
-⏳ 2.2.24 Term meta: featured flag
-⏳ 2.2.25 Term meta: hide from menu flag
-⏳ 2.2.26 Term meta: SEO title
-⏳ 2.2.27 Term meta: SEO description
+✅ 2.2.15 Capabilities: manage_categories, edit_categories, delete_categories, assign_categories
+✅ 2.2.16 Meta box callback: custom hierarchical UI
+✅ 2.2.17 Update count callback: custom function
+✅ 2.2.18 Default term: 'Uncategorized'
+✅ 2.2.19 Support for term meta
+✅ 2.2.20 Term meta: category icon (SVG upload)
+✅ 2.2.21 Term meta: category color (hex picker)
+✅ 2.2.22 Term meta: category image (thumbnail)
+✅ 2.2.23 Term meta: display order (sortable)
+✅ 2.2.24 Term meta: featured flag
+✅ 2.2.25 Term meta: hide from menu flag
+✅ 2.2.26 Term meta: SEO title
+✅ 2.2.27 Term meta: SEO description
 ⏳ 2.2.28 Category archive template
 ⏳ 2.2.29 Category permalink structure
 ⏳ 2.2.30 Breadcrumb support
@@ -713,9 +713,9 @@
 ⏳ 2.3.15 Meta box callback: custom tag UI with autocomplete
 ⏳ 2.3.16 Tag suggestions based on content
 ⏳ 2.3.17 Popular tags display
-⏳ 2.3.18 Tag meta: tag color
-⏳ 2.3.19 Tag meta: tag icon
-⏳ 2.3.20 Tag meta: featured flag
+✅ 2.3.18 Tag meta: tag color
+✅ 2.3.19 Tag meta: tag icon
+✅ 2.3.20 Tag meta: featured flag
 ✅ 2.3.21 Tag cloud widget
 ⏳ 2.3.22 Tag archive template
 ⏳ 2.3.23 Tag search functionality
@@ -736,18 +736,18 @@
 ✅ 2.4.7 Show in REST: true
 ✅ 2.4.8 REST base: `product-ribbons`
 ✅ 2.4.9 Show admin column: true
-⏳ 2.4.10 Query var: true
+✅ 2.4.10 Query var: true
 ✅ 2.4.11 Rewrite: true
 ⏳ 2.4.12 Meta box: custom UI for ribbon selection
-⏳ 2.4.13 Ribbon meta: ribbon text (e.g., 'Best Seller', 'New', 'Sale')
-⏳ 2.4.14 Ribbon meta: ribbon color (background)
-⏳ 2.4.15 Ribbon meta: text color
-⏳ 2.4.16 Ribbon meta: ribbon position (top-left, top-right, bottom-left, bottom-right)
-⏳ 2.4.17 Ribbon meta: ribbon style (badge, corner, banner, diagonal)
-⏳ 2.4.18 Ribbon meta: icon (SVG or Heroicon name)
-⏳ 2.4.19 Ribbon meta: display order/priority
-⏳ 2.4.20 Ribbon meta: expiration date
-⏳ 2.4.21 Ribbon meta: start date (scheduled ribbons)
+✅ 2.4.13 Ribbon meta: ribbon text (e.g., 'Best Seller', 'New', 'Sale')
+✅ 2.4.14 Ribbon meta: ribbon color (background)
+✅ 2.4.15 Ribbon meta: text color
+✅ 2.4.16 Ribbon meta: ribbon position (top-left, top-right, bottom-left, bottom-right)
+✅ 2.4.17 Ribbon meta: ribbon style (badge, corner, banner, diagonal)
+✅ 2.4.18 Ribbon meta: icon (SVG or Heroicon name)
+✅ 2.4.19 Ribbon meta: display order/priority
+✅ 2.4.20 Ribbon meta: expiration date
+✅ 2.4.21 Ribbon meta: start date (scheduled ribbons)
 ⏳ 2.4.22 Ribbon preview in admin
 ⏳ 2.4.23 Multiple ribbons per product (configurable limit)
 ⏳ 2.4.24 Ribbon quick edit

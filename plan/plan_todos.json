@@ -4965,9 +4965,9 @@
       "code": "2.2.8",
       "kind": "item",
       "title": "Show in admin bar: true",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.9",
@@ -5005,9 +5005,9 @@
       "code": "2.2.13",
       "kind": "item",
       "title": "Query var: true",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.14",
@@ -5021,105 +5021,105 @@
       "code": "2.2.15",
       "kind": "item",
       "title": "Capabilities: manage_categories, edit_categories, delete_categories, assign_categories",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.16",
       "kind": "item",
       "title": "Meta box callback: custom hierarchical UI",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.17",
       "kind": "item",
       "title": "Update count callback: custom function",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.18",
       "kind": "item",
       "title": "Default term: 'Uncategorized'",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.19",
       "kind": "item",
       "title": "Support for term meta",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.20",
       "kind": "item",
       "title": "Term meta: category icon (SVG upload)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.21",
       "kind": "item",
       "title": "Term meta: category color (hex picker)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.22",
       "kind": "item",
       "title": "Term meta: category image (thumbnail)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.23",
       "kind": "item",
       "title": "Term meta: display order (sortable)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.24",
       "kind": "item",
       "title": "Term meta: featured flag",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.25",
       "kind": "item",
       "title": "Term meta: hide from menu flag",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.26",
       "kind": "item",
       "title": "Term meta: SEO title",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.27",
       "kind": "item",
       "title": "Term meta: SEO description",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.2.28",
@@ -5405,25 +5405,25 @@
       "code": "2.3.18",
       "kind": "item",
       "title": "Tag meta: tag color",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.3.19",
       "kind": "item",
       "title": "Tag meta: tag icon",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.3.20",
       "kind": "item",
       "title": "Tag meta: featured flag",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.3.21",
@@ -5581,9 +5581,9 @@
       "code": "2.4.10",
       "kind": "item",
       "title": "Query var: true",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.11",
@@ -5605,73 +5605,73 @@
       "code": "2.4.13",
       "kind": "item",
       "title": "Ribbon meta: ribbon text (e.g., 'Best Seller', 'New', 'Sale')",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.14",
       "kind": "item",
       "title": "Ribbon meta: ribbon color (background)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.15",
       "kind": "item",
       "title": "Ribbon meta: text color",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.16",
       "kind": "item",
       "title": "Ribbon meta: ribbon position (top-left, top-right, bottom-left, bottom-right)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.17",
       "kind": "item",
       "title": "Ribbon meta: ribbon style (badge, corner, banner, diagonal)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.18",
       "kind": "item",
       "title": "Ribbon meta: icon (SVG or Heroicon name)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.19",
       "kind": "item",
       "title": "Ribbon meta: display order/priority",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.20",
       "kind": "item",
       "title": "Ribbon meta: expiration date",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.21",
       "kind": "item",
       "title": "Ribbon meta: start date (scheduled ribbons)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.4.22",
