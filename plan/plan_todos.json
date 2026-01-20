@@ -4501,9 +4501,9 @@
       "code": "2.1",
       "kind": "topic",
       "title": "Custom Post Type: affiliate_product",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.1",
@@ -4565,9 +4565,9 @@
       "code": "2.1.8",
       "kind": "item",
       "title": "Menu icon: custom SVG dashicon",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.9",
@@ -4589,9 +4589,9 @@
       "code": "2.1.11",
       "kind": "item",
       "title": "Capability type: `affiliate_product`",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.12",
@@ -4661,41 +4661,41 @@
       "code": "2.1.20",
       "kind": "item",
       "title": "Can export: true",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.21",
       "kind": "item",
       "title": "Delete with user: false",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.22",
       "kind": "item",
       "title": "Show in REST: true",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.23",
       "kind": "item",
       "title": "REST base: `affiliate-products`",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.24",
       "kind": "item",
       "title": "REST controller: custom controller class",
-      "status": "completed",
-      "derivedStatus": "completed",
-      "marker": "✅"
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "2.1.25",
@@ -5741,337 +5741,337 @@
       "code": "2.5",
       "kind": "topic",
       "title": "Type Hints & PHPDoc",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.1",
       "kind": "item",
       "title": "`declare(strict_types=1);` in every PHP file",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.2",
       "kind": "item",
       "title": "Full PHPDoc block on every class",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.3",
       "kind": "item",
       "title": "Full PHPDoc block on every method",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.4",
       "kind": "item",
       "title": "Full PHPDoc block on every function",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.5",
       "kind": "item",
       "title": "`@package` tag with plugin namespace",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.6",
       "kind": "item",
       "title": "`@since` tag with version number",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.7",
       "kind": "item",
       "title": "`@version` tag when updated",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.8",
       "kind": "item",
       "title": "`@param` tag with type, name, description",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.9",
       "kind": "item",
       "title": "`@return` tag with type and description",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.10",
       "kind": "item",
       "title": "`@throws` tag for all exceptions",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.11",
       "kind": "item",
       "title": "`@global` tag for global variables",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.12",
       "kind": "item",
       "title": "`@see` tag for related functions",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.13",
       "kind": "item",
       "title": "`@link` tag for external references",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.14",
       "kind": "item",
       "title": "`@uses` tag for dependencies",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.15",
       "kind": "item",
       "title": "`@used-by` tag for callers",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.16",
       "kind": "item",
       "title": "Type hints for all parameters",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.17",
       "kind": "item",
       "title": "Return type declarations for all methods",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.18",
       "kind": "item",
       "title": "Nullable type support (`?Type`)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.19",
       "kind": "item",
       "title": "Union type support (PHP 8.0+)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.20",
       "kind": "item",
       "title": "Mixed type where appropriate",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.21",
       "kind": "item",
       "title": "Void return type where applicable",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.22",
       "kind": "item",
       "title": "Array shape documentation in PHPDoc",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.23",
       "kind": "item",
       "title": "Generic type documentation with `@template`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.24",
       "kind": "item",
       "title": "PHPStan level 8 compliance",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.25",
       "kind": "item",
       "title": "Psalm errorLevel 1 compliance",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.26",
       "kind": "item",
       "title": "No `@suppressWarnings` without justification",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.27",
       "kind": "item",
       "title": "No `mixed` type without documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.28",
       "kind": "item",
       "title": "Interface documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.29",
       "kind": "item",
       "title": "Trait documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.30",
       "kind": "item",
       "title": "Abstract class documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.31",
       "kind": "item",
       "title": "Constant documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.32",
       "kind": "item",
       "title": "Property documentation",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.33",
       "kind": "item",
       "title": "Hook documentation (`@action`, `@filter`)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.34",
       "kind": "item",
       "title": "Example code in PHPDoc",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.35",
       "kind": "item",
       "title": "Deprecation notices with `@deprecated`",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.36",
       "kind": "item",
       "title": "TODO comments with ticket references",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.37",
       "kind": "item",
       "title": "FIXME comments with priority",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.38",
       "kind": "item",
       "title": "Code generation from PHPDoc (API docs)",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.39",
       "kind": "item",
       "title": "IDE autocomplete support",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "2.5.40",
       "kind": "item",
       "title": "Static analysis integration",
-      "status": "in-progress",
-      "derivedStatus": "in-progress",
-      "marker": "⏳"
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3",
       "kind": "step",
       "title": "Step 3 — Admin UI & Meta",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.1",
@@ -6373,881 +6373,881 @@
       "code": "3.4",
       "kind": "topic",
       "title": "Admin List Table Columns",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.1",
       "kind": "item",
       "title": "Checkbox (bulk actions)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.2",
       "kind": "item",
       "title": "Thumbnail (featured image, 50×50px)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.3",
       "kind": "item",
       "title": "Title (linked to edit)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.4",
       "kind": "item",
       "title": "Brand (sortable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.5",
       "kind": "item",
       "title": "Categories (filterable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.6",
       "kind": "item",
       "title": "Tags (filterable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.7",
       "kind": "item",
       "title": "Ribbons (visual badges)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.8",
       "kind": "item",
       "title": "Price (sortable, with sale indicator)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.9",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.10",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.11",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.12",
       "kind": "item",
       "title": "Rating (star display, sortable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.13",
       "kind": "item",
       "title": "Status (Published, Draft, Pending, etc.)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.14",
       "kind": "item",
       "title": "Author (filterable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.15",
       "kind": "item",
       "title": "Date (sortable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.16",
       "kind": "item",
       "title": "Actions (Edit, Quick Edit, Trash, View, Duplicate)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.17",
       "kind": "item",
       "title": "Featured flag (star icon, clickable toggle)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.18",
       "kind": "item",
       "title": "Trending flag (fire icon)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.4.19",
       "kind": "item",
       "title": "Stock status (color-coded)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "completed",
+      "derivedStatus": "completed",
+      "marker": "✅"
     },
     {
       "code": "3.5",
       "kind": "topic",
       "title": "Admin List Table Filters",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.1",
       "kind": "item",
       "title": "All / Published / Draft / Pending / Trash",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.2",
       "kind": "item",
       "title": "Filter by category (dropdown)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.3",
       "kind": "item",
       "title": "Filter by tag (dropdown)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.4",
       "kind": "item",
       "title": "Filter by ribbon (dropdown)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.5",
       "kind": "item",
       "title": "Filter by brand (dropdown, searchable)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.6",
       "kind": "item",
       "title": "Filter by price range (min-max inputs)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.7",
       "kind": "item",
       "title": "Filter by rating (select: 1-5 stars)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.8",
       "kind": "item",
       "title": "Filter by featured status",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.9",
       "kind": "item",
       "title": "Filter by stock status",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.10",
       "kind": "item",
       "title": "Filter by date range (date pickers)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.11",
       "kind": "item",
       "title": "Filter by author (for multi-author sites)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.12",
       "kind": "item",
       "title": "Filter by submission status",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.13",
       "kind": "item",
       "title": "Advanced filters toggle",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.5.14",
       "kind": "item",
       "title": "Save filter presets",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6",
       "kind": "topic",
       "title": "Admin List Table Sorting",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.1",
       "kind": "item",
       "title": "Sort by title (A-Z, Z-A)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.2",
       "kind": "item",
       "title": "Sort by brand",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.3",
       "kind": "item",
       "title": "Sort by price (low to high, high to low)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.4",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.5",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.6",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.7",
       "kind": "item",
       "title": "Sort by rating",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.8",
       "kind": "item",
       "title": "Sort by date added (newest, oldest)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.9",
       "kind": "item",
       "title": "Sort by last modified",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.10",
       "kind": "item",
       "title": "Sort by random (for testing)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.6.11",
       "kind": "item",
       "title": "Multi-level sorting (primary + secondary)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7",
       "kind": "topic",
       "title": "Quick Edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.1",
       "kind": "item",
       "title": "Title edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.2",
       "kind": "item",
       "title": "Brand edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.3",
       "kind": "item",
       "title": "Price edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.4",
       "kind": "item",
       "title": "Sale price edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.5",
       "kind": "item",
       "title": "Affiliate link edit",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.6",
       "kind": "item",
       "title": "Categories assignment",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.7",
       "kind": "item",
       "title": "Tags assignment",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.8",
       "kind": "item",
       "title": "Ribbons assignment",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.9",
       "kind": "item",
       "title": "Featured flag toggle",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.10",
       "kind": "item",
       "title": "Stock status change",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.11",
       "kind": "item",
       "title": "Status change (publish, draft, pending)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.12",
       "kind": "item",
       "title": "Save and continue editing",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.13",
       "kind": "item",
       "title": "Cancel button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.7.14",
       "kind": "item",
       "title": "AJAX save with feedback",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8",
       "kind": "topic",
       "title": "Bulk Actions",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.1",
       "kind": "item",
       "title": "Delete permanently",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.2",
       "kind": "item",
       "title": "Move to trash",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.3",
       "kind": "item",
       "title": "Restore from trash",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.4",
       "kind": "item",
       "title": "Mark as featured",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.5",
       "kind": "item",
       "title": "Remove featured flag",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.6",
       "kind": "item",
       "title": "Mark as trending",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.7",
       "kind": "item",
       "title": "Change stock status (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.8",
       "kind": "item",
       "title": "Assign categories (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.9",
       "kind": "item",
       "title": "Assign tags (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.10",
       "kind": "item",
       "title": "Assign ribbons (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.11",
       "kind": "item",
       "title": "Update price (bulk, with percentage or fixed increase/decrease)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.12",
       "kind": "item",
       "title": "Enable/disable sale (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.13",
       "kind": "item",
       "title": "Approve submissions (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.14",
       "kind": "item",
       "title": "Reject submissions (bulk)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.15",
       "kind": "item",
       "title": "Export selected (CSV, JSON)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.16",
       "kind": "item",
       "title": "Duplicate selected products",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.17",
       "kind": "item",
       "title": "Bulk action confirmation dialogs",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.18",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.8.19",
       "kind": "item",
       "title": "Bulk action progress indicator",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9",
       "kind": "topic",
       "title": "Admin Search",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.1",
       "kind": "item",
       "title": "Search by title",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.2",
       "kind": "item",
       "title": "Search by content",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.3",
       "kind": "item",
       "title": "Search by excerpt",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.4",
       "kind": "item",
       "title": "Search by brand",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.5",
       "kind": "item",
       "title": "Search by SKU",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.6",
       "kind": "item",
       "title": "Search by meta fields",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.7",
       "kind": "item",
       "title": "Search suggestions/autocomplete",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.8",
       "kind": "item",
       "title": "Recent searches",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.9",
       "kind": "item",
       "title": "Search result highlighting",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.10",
       "kind": "item",
       "title": "Advanced search form (modal)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.9.11",
       "kind": "item",
       "title": "Save search queries",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10",
       "kind": "topic",
       "title": "Admin Dashboard Widgets",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.1",
       "kind": "item",
       "title": "Widget: Overview Stats (total products, revenue)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.2",
       "kind": "item",
       "title": "Widget: Recent Products (last 5 added)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.3",
       "kind": "item",
       "title": "Widget: Pending Submissions (count + quick links)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.4",
       "kind": "item",
       "title": "Widget: Top Performers (admin-defined top products)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.5",
       "kind": "item",
       "title": "Widget: Recent Activity Log",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.6",
       "kind": "item",
       "title": "Widget: Quick Links (Add Product, View Submissions, Settings)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.7",
       "kind": "item",
       "title": "Widget: Revenue Summary (if tracked)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.8",
       "kind": "item",
       "title": "Widget: Low Stock Alerts",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.9",
       "kind": "item",
       "title": "Widget: Expiring Sales",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.10",
       "kind": "item",
       "title": "Widget configuration (show/hide, position)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.11",
       "kind": "item",
       "title": "Widget refresh button",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.12",
       "kind": "item",
       "title": "TODO (auto-inserted)",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.13",
       "kind": "item",
       "title": "Widget export data option",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.14",
       "kind": "item",
       "title": "Widget date range selector",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "3.10.15",
       "kind": "item",
       "title": "Widget full-screen view",
-      "status": "pending",
-      "derivedStatus": "pending",
-      "marker": ""
+      "status": "in-progress",
+      "derivedStatus": "in-progress",
+      "marker": "⏳"
     },
     {
       "code": "4",

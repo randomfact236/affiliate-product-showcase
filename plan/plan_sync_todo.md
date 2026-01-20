@@ -565,7 +565,7 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 1.12.32 `docs/privacy-policy-template.md` [DOCS - PLUGIN] — Privacy policy template for end users describing stored data, opt-outs, and assurance of no phone-home behavior. [Low]
 
 - ⏳ Step 2 — Step 2 — Content Types & Taxonomies
-  - ✅ 2.1 Custom Post Type: affiliate_product
+  - ⏳ 2.1 Custom Post Type: affiliate_product
     - ✅ 2.1.1 Post type slug: `affiliate_product`
     - ✅ 2.1.2 Labels: singular 'Affiliate Product', plural 'Affiliate Products'
     - ✅ 2.1.3 Public: true
@@ -573,10 +573,10 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 2.1.5 Show UI: true
     - ✅ 2.1.6 Show in menu: true with custom icon
     - ✅ 2.1.7 Menu position: 25 (below Comments)
-    - ✅ 2.1.8 Menu icon: custom SVG dashicon
+    - ⏳ 2.1.8 Menu icon: custom SVG dashicon
     - ✅ 2.1.9 Show in nav menus: true
     - ✅ 2.1.10 Show in admin bar: true
-    - ✅ 2.1.11 Capability type: `affiliate_product`
+    - ⏳ 2.1.11 Capability type: `affiliate_product`
     - ✅ 2.1.12 Custom capabilities: edit, read, delete, edit_others, publish, read_private
     - ✅ 2.1.13 Map meta cap: true
     - ✅ 2.1.14 Hierarchical: false
@@ -585,11 +585,11 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 2.1.17 Archive slug: `affiliate-products`
     - ✅ 2.1.18 Rewrite: true with custom slug
     - ✅ 2.1.19 Query var: true
-    - ✅ 2.1.20 Can export: true
-    - ✅ 2.1.21 Delete with user: false
-    - ✅ 2.1.22 Show in REST: true
-    - ✅ 2.1.23 REST base: `affiliate-products`
-    - ✅ 2.1.24 REST controller: custom controller class
+    - ⏳ 2.1.20 Can export: true
+    - ⏳ 2.1.21 Delete with user: false
+    - ⏳ 2.1.22 Show in REST: true
+    - ⏳ 2.1.23 REST base: `affiliate-products`
+    - ⏳ 2.1.24 REST controller: custom controller class
     - ✅ 2.1.25 REST namespace: `affiliate-showcase/v1`
     - ✅ 2.1.26 Custom REST fields for meta data
     - ✅ 2.1.27 TODO (auto-inserted)
@@ -720,49 +720,49 @@ Legend: ✅ completed · ⏳ in-progress
     - ✅ 2.4.27 Ribbon import/export
     - ✅ 2.4.28 Pre-defined ribbon templates
     - ✅ 2.4.29 Custom ribbon CSS class support
-  - ⏳ 2.5 Type Hints & PHPDoc
-    - ⏳ 2.5.1 `declare(strict_types=1);` in every PHP file
-    - ⏳ 2.5.2 Full PHPDoc block on every class
-    - ⏳ 2.5.3 Full PHPDoc block on every method
-    - ⏳ 2.5.4 Full PHPDoc block on every function
-    - ⏳ 2.5.5 `@package` tag with plugin namespace
-    - ⏳ 2.5.6 `@since` tag with version number
-    - ⏳ 2.5.7 `@version` tag when updated
-    - ⏳ 2.5.8 `@param` tag with type, name, description
-    - ⏳ 2.5.9 `@return` tag with type and description
-    - ⏳ 2.5.10 `@throws` tag for all exceptions
-    - ⏳ 2.5.11 `@global` tag for global variables
-    - ⏳ 2.5.12 `@see` tag for related functions
-    - ⏳ 2.5.13 `@link` tag for external references
-    - ⏳ 2.5.14 `@uses` tag for dependencies
-    - ⏳ 2.5.15 `@used-by` tag for callers
-    - ⏳ 2.5.16 Type hints for all parameters
-    - ⏳ 2.5.17 Return type declarations for all methods
-    - ⏳ 2.5.18 Nullable type support (`?Type`)
-    - ⏳ 2.5.19 Union type support (PHP 8.0+)
-    - ⏳ 2.5.20 Mixed type where appropriate
-    - ⏳ 2.5.21 Void return type where applicable
-    - ⏳ 2.5.22 Array shape documentation in PHPDoc
-    - ⏳ 2.5.23 Generic type documentation with `@template`
-    - ⏳ 2.5.24 PHPStan level 8 compliance
-    - ⏳ 2.5.25 Psalm errorLevel 1 compliance
-    - ⏳ 2.5.26 No `@suppressWarnings` without justification
-    - ⏳ 2.5.27 No `mixed` type without documentation
-    - ⏳ 2.5.28 Interface documentation
-    - ⏳ 2.5.29 Trait documentation
-    - ⏳ 2.5.30 Abstract class documentation
-    - ⏳ 2.5.31 Constant documentation
-    - ⏳ 2.5.32 Property documentation
-    - ⏳ 2.5.33 Hook documentation (`@action`, `@filter`)
-    - ⏳ 2.5.34 Example code in PHPDoc
-    - ⏳ 2.5.35 Deprecation notices with `@deprecated`
-    - ⏳ 2.5.36 TODO comments with ticket references
-    - ⏳ 2.5.37 FIXME comments with priority
-    - ⏳ 2.5.38 Code generation from PHPDoc (API docs)
-    - ⏳ 2.5.39 IDE autocomplete support
-    - ⏳ 2.5.40 Static analysis integration
+  - ✅ 2.5 Type Hints & PHPDoc
+    - ✅ 2.5.1 `declare(strict_types=1);` in every PHP file
+    - ✅ 2.5.2 Full PHPDoc block on every class
+    - ✅ 2.5.3 Full PHPDoc block on every method
+    - ✅ 2.5.4 Full PHPDoc block on every function
+    - ✅ 2.5.5 `@package` tag with plugin namespace
+    - ✅ 2.5.6 `@since` tag with version number
+    - ✅ 2.5.7 `@version` tag when updated
+    - ✅ 2.5.8 `@param` tag with type, name, description
+    - ✅ 2.5.9 `@return` tag with type and description
+    - ✅ 2.5.10 `@throws` tag for all exceptions
+    - ✅ 2.5.11 `@global` tag for global variables
+    - ✅ 2.5.12 `@see` tag for related functions
+    - ✅ 2.5.13 `@link` tag for external references
+    - ✅ 2.5.14 `@uses` tag for dependencies
+    - ✅ 2.5.15 `@used-by` tag for callers
+    - ✅ 2.5.16 Type hints for all parameters
+    - ✅ 2.5.17 Return type declarations for all methods
+    - ✅ 2.5.18 Nullable type support (`?Type`)
+    - ✅ 2.5.19 Union type support (PHP 8.0+)
+    - ✅ 2.5.20 Mixed type where appropriate
+    - ✅ 2.5.21 Void return type where applicable
+    - ✅ 2.5.22 Array shape documentation in PHPDoc
+    - ✅ 2.5.23 Generic type documentation with `@template`
+    - ✅ 2.5.24 PHPStan level 8 compliance
+    - ✅ 2.5.25 Psalm errorLevel 1 compliance
+    - ✅ 2.5.26 No `@suppressWarnings` without justification
+    - ✅ 2.5.27 No `mixed` type without documentation
+    - ✅ 2.5.28 Interface documentation
+    - ✅ 2.5.29 Trait documentation
+    - ✅ 2.5.30 Abstract class documentation
+    - ✅ 2.5.31 Constant documentation
+    - ✅ 2.5.32 Property documentation
+    - ✅ 2.5.33 Hook documentation (`@action`, `@filter`)
+    - ✅ 2.5.34 Example code in PHPDoc
+    - ✅ 2.5.35 Deprecation notices with `@deprecated`
+    - ✅ 2.5.36 TODO comments with ticket references
+    - ✅ 2.5.37 FIXME comments with priority
+    - ✅ 2.5.38 Code generation from PHPDoc (API docs)
+    - ✅ 2.5.39 IDE autocomplete support
+    - ✅ 2.5.40 Static analysis integration
 
-- Step 3 — Step 3 — Admin UI & Meta
+- ⏳ Step 3 — Step 3 — Admin UI & Meta
    - 3.1 Product Data Meta Box
    - 3.1.1 Meta box title: 'Product Information'
    - 3.1.2 Meta box context: normal
@@ -800,116 +800,116 @@ Legend: ✅ completed · ⏳ in-progress
    - 3.3.12 Submission history log
    - 3.3.13 Duplicate check results
    - 3.3.14 Auto-moderation flags
-   - 3.4 Admin List Table Columns
-   - 3.4.1 Checkbox (bulk actions)
-   - 3.4.2 Thumbnail (featured image, 50×50px)
-   - 3.4.3 Title (linked to edit)
-   - 3.4.4 Brand (sortable)
-   - 3.4.5 Categories (filterable)
-   - 3.4.6 Tags (filterable)
-   - 3.4.7 Ribbons (visual badges)
-   - 3.4.8 Price (sortable, with sale indicator)
-   - 3.4.9 TODO (auto-inserted)
-   - 3.4.10 TODO (auto-inserted)
-   - 3.4.11 TODO (auto-inserted)
-   - 3.4.12 Rating (star display, sortable)
-   - 3.4.13 Status (Published, Draft, Pending, etc.)
-   - 3.4.14 Author (filterable)
-   - 3.4.15 Date (sortable)
-   - 3.4.16 Actions (Edit, Quick Edit, Trash, View, Duplicate)
-   - 3.4.17 Featured flag (star icon, clickable toggle)
-   - 3.4.18 Trending flag (fire icon)
-   - 3.4.19 Stock status (color-coded)
-   - 3.5 Admin List Table Filters
-   - 3.5.1 All / Published / Draft / Pending / Trash
-   - 3.5.2 Filter by category (dropdown)
-   - 3.5.3 Filter by tag (dropdown)
-   - 3.5.4 Filter by ribbon (dropdown)
-   - 3.5.5 Filter by brand (dropdown, searchable)
-   - 3.5.6 Filter by price range (min-max inputs)
-   - 3.5.7 Filter by rating (select: 1-5 stars)
-   - 3.5.8 Filter by featured status
-   - 3.5.9 Filter by stock status
-   - 3.5.10 Filter by date range (date pickers)
-   - 3.5.11 Filter by author (for multi-author sites)
-   - 3.5.12 Filter by submission status
-   - 3.5.13 Advanced filters toggle
-   - 3.5.14 Save filter presets
-   - 3.6 Admin List Table Sorting
-   - 3.6.1 Sort by title (A-Z, Z-A)
-   - 3.6.2 Sort by brand
-   - 3.6.3 Sort by price (low to high, high to low)
-   - 3.6.4 TODO (auto-inserted)
-   - 3.6.5 TODO (auto-inserted)
-   - 3.6.6 TODO (auto-inserted)
-   - 3.6.7 Sort by rating
-   - 3.6.8 Sort by date added (newest, oldest)
-   - 3.6.9 Sort by last modified
-   - 3.6.10 Sort by random (for testing)
-   - 3.6.11 Multi-level sorting (primary + secondary)
-   - 3.7 Quick Edit
-   - 3.7.1 Title edit
-   - 3.7.2 Brand edit
-   - 3.7.3 Price edit
-   - 3.7.4 Sale price edit
-   - 3.7.5 Affiliate link edit
-   - 3.7.6 Categories assignment
-   - 3.7.7 Tags assignment
-   - 3.7.8 Ribbons assignment
-   - 3.7.9 Featured flag toggle
-   - 3.7.10 Stock status change
-   - 3.7.11 Status change (publish, draft, pending)
-   - 3.7.12 Save and continue editing
-   - 3.7.13 Cancel button
-   - 3.7.14 AJAX save with feedback
-   - 3.8 Bulk Actions
-   - 3.8.1 Delete permanently
-   - 3.8.2 Move to trash
-   - 3.8.3 Restore from trash
-   - 3.8.4 Mark as featured
-   - 3.8.5 Remove featured flag
-   - 3.8.6 Mark as trending
-   - 3.8.7 Change stock status (bulk)
-   - 3.8.8 Assign categories (bulk)
-   - 3.8.9 Assign tags (bulk)
-   - 3.8.10 Assign ribbons (bulk)
-   - 3.8.11 Update price (bulk, with percentage or fixed increase/decrease)
-   - 3.8.12 Enable/disable sale (bulk)
-   - 3.8.13 Approve submissions (bulk)
-   - 3.8.14 Reject submissions (bulk)
-   - 3.8.15 Export selected (CSV, JSON)
-   - 3.8.16 Duplicate selected products
-   - 3.8.17 Bulk action confirmation dialogs
-   - 3.8.18 TODO (auto-inserted)
-   - 3.8.19 Bulk action progress indicator
-   - 3.9 Admin Search
-   - 3.9.1 Search by title
-   - 3.9.2 Search by content
-   - 3.9.3 Search by excerpt
-   - 3.9.4 Search by brand
-   - 3.9.5 Search by SKU
-   - 3.9.6 Search by meta fields
-   - 3.9.7 Search suggestions/autocomplete
-   - 3.9.8 Recent searches
-   - 3.9.9 Search result highlighting
-   - 3.9.10 Advanced search form (modal)
-   - 3.9.11 Save search queries
-   - 3.10 Admin Dashboard Widgets
-   - 3.10.1 Widget: Overview Stats (total products, revenue)
-   - 3.10.2 Widget: Recent Products (last 5 added)
-   - 3.10.3 Widget: Pending Submissions (count + quick links)
-   - 3.10.4 Widget: Top Performers (admin-defined top products)
-   - 3.10.5 Widget: Recent Activity Log
-   - 3.10.6 Widget: Quick Links (Add Product, View Submissions, Settings)
-   - 3.10.7 Widget: Revenue Summary (if tracked)
-   - 3.10.8 Widget: Low Stock Alerts
-   - 3.10.9 Widget: Expiring Sales
-   - 3.10.10 Widget configuration (show/hide, position)
-   - 3.10.11 Widget refresh button
-   - 3.10.12 TODO (auto-inserted)
-   - 3.10.13 Widget export data option
-   - 3.10.14 Widget date range selector
-   - 3.10.15 Widget full-screen view
+  - ✅ 3.4 Admin List Table Columns
+    - ✅ 3.4.1 Checkbox (bulk actions)
+    - ✅ 3.4.2 Thumbnail (featured image, 50×50px)
+    - ✅ 3.4.3 Title (linked to edit)
+    - ✅ 3.4.4 Brand (sortable)
+    - ✅ 3.4.5 Categories (filterable)
+    - ✅ 3.4.6 Tags (filterable)
+    - ✅ 3.4.7 Ribbons (visual badges)
+    - ✅ 3.4.8 Price (sortable, with sale indicator)
+    - ✅ 3.4.9 TODO (auto-inserted)
+    - ✅ 3.4.10 TODO (auto-inserted)
+    - ✅ 3.4.11 TODO (auto-inserted)
+    - ✅ 3.4.12 Rating (star display, sortable)
+    - ✅ 3.4.13 Status (Published, Draft, Pending, etc.)
+    - ✅ 3.4.14 Author (filterable)
+    - ✅ 3.4.15 Date (sortable)
+    - ✅ 3.4.16 Actions (Edit, Quick Edit, Trash, View, Duplicate)
+    - ✅ 3.4.17 Featured flag (star icon, clickable toggle)
+    - ✅ 3.4.18 Trending flag (fire icon)
+    - ✅ 3.4.19 Stock status (color-coded)
+  - ⏳ 3.5 Admin List Table Filters
+    - ⏳ 3.5.1 All / Published / Draft / Pending / Trash
+    - ⏳ 3.5.2 Filter by category (dropdown)
+    - ⏳ 3.5.3 Filter by tag (dropdown)
+    - ⏳ 3.5.4 Filter by ribbon (dropdown)
+    - ⏳ 3.5.5 Filter by brand (dropdown, searchable)
+    - ⏳ 3.5.6 Filter by price range (min-max inputs)
+    - ⏳ 3.5.7 Filter by rating (select: 1-5 stars)
+    - ⏳ 3.5.8 Filter by featured status
+    - ⏳ 3.5.9 Filter by stock status
+    - ⏳ 3.5.10 Filter by date range (date pickers)
+    - ⏳ 3.5.11 Filter by author (for multi-author sites)
+    - ⏳ 3.5.12 Filter by submission status
+    - ⏳ 3.5.13 Advanced filters toggle
+    - ⏳ 3.5.14 Save filter presets
+  - ⏳ 3.6 Admin List Table Sorting
+    - ⏳ 3.6.1 Sort by title (A-Z, Z-A)
+    - ⏳ 3.6.2 Sort by brand
+    - ⏳ 3.6.3 Sort by price (low to high, high to low)
+    - ⏳ 3.6.4 TODO (auto-inserted)
+    - ⏳ 3.6.5 TODO (auto-inserted)
+    - ⏳ 3.6.6 TODO (auto-inserted)
+    - ⏳ 3.6.7 Sort by rating
+    - ⏳ 3.6.8 Sort by date added (newest, oldest)
+    - ⏳ 3.6.9 Sort by last modified
+    - ⏳ 3.6.10 Sort by random (for testing)
+    - ⏳ 3.6.11 Multi-level sorting (primary + secondary)
+  - ⏳ 3.7 Quick Edit
+    - ⏳ 3.7.1 Title edit
+    - ⏳ 3.7.2 Brand edit
+    - ⏳ 3.7.3 Price edit
+    - ⏳ 3.7.4 Sale price edit
+    - ⏳ 3.7.5 Affiliate link edit
+    - ⏳ 3.7.6 Categories assignment
+    - ⏳ 3.7.7 Tags assignment
+    - ⏳ 3.7.8 Ribbons assignment
+    - ⏳ 3.7.9 Featured flag toggle
+    - ⏳ 3.7.10 Stock status change
+    - ⏳ 3.7.11 Status change (publish, draft, pending)
+    - ⏳ 3.7.12 Save and continue editing
+    - ⏳ 3.7.13 Cancel button
+    - ⏳ 3.7.14 AJAX save with feedback
+  - ⏳ 3.8 Bulk Actions
+    - ⏳ 3.8.1 Delete permanently
+    - ⏳ 3.8.2 Move to trash
+    - ⏳ 3.8.3 Restore from trash
+    - ⏳ 3.8.4 Mark as featured
+    - ⏳ 3.8.5 Remove featured flag
+    - ⏳ 3.8.6 Mark as trending
+    - ⏳ 3.8.7 Change stock status (bulk)
+    - ⏳ 3.8.8 Assign categories (bulk)
+    - ⏳ 3.8.9 Assign tags (bulk)
+    - ⏳ 3.8.10 Assign ribbons (bulk)
+    - ⏳ 3.8.11 Update price (bulk, with percentage or fixed increase/decrease)
+    - ⏳ 3.8.12 Enable/disable sale (bulk)
+    - ⏳ 3.8.13 Approve submissions (bulk)
+    - ⏳ 3.8.14 Reject submissions (bulk)
+    - ⏳ 3.8.15 Export selected (CSV, JSON)
+    - ⏳ 3.8.16 Duplicate selected products
+    - ⏳ 3.8.17 Bulk action confirmation dialogs
+    - ⏳ 3.8.18 TODO (auto-inserted)
+    - ⏳ 3.8.19 Bulk action progress indicator
+  - ⏳ 3.9 Admin Search
+    - ⏳ 3.9.1 Search by title
+    - ⏳ 3.9.2 Search by content
+    - ⏳ 3.9.3 Search by excerpt
+    - ⏳ 3.9.4 Search by brand
+    - ⏳ 3.9.5 Search by SKU
+    - ⏳ 3.9.6 Search by meta fields
+    - ⏳ 3.9.7 Search suggestions/autocomplete
+    - ⏳ 3.9.8 Recent searches
+    - ⏳ 3.9.9 Search result highlighting
+    - ⏳ 3.9.10 Advanced search form (modal)
+    - ⏳ 3.9.11 Save search queries
+  - ⏳ 3.10 Admin Dashboard Widgets
+    - ⏳ 3.10.1 Widget: Overview Stats (total products, revenue)
+    - ⏳ 3.10.2 Widget: Recent Products (last 5 added)
+    - ⏳ 3.10.3 Widget: Pending Submissions (count + quick links)
+    - ⏳ 3.10.4 Widget: Top Performers (admin-defined top products)
+    - ⏳ 3.10.5 Widget: Recent Activity Log
+    - ⏳ 3.10.6 Widget: Quick Links (Add Product, View Submissions, Settings)
+    - ⏳ 3.10.7 Widget: Revenue Summary (if tracked)
+    - ⏳ 3.10.8 Widget: Low Stock Alerts
+    - ⏳ 3.10.9 Widget: Expiring Sales
+    - ⏳ 3.10.10 Widget configuration (show/hide, position)
+    - ⏳ 3.10.11 Widget refresh button
+    - ⏳ 3.10.12 TODO (auto-inserted)
+    - ⏳ 3.10.13 Widget export data option
+    - ⏳ 3.10.14 Widget date range selector
+    - ⏳ 3.10.15 Widget full-screen view
 
 - Step 4 — Step 4 — Submission Flow & Security
    - 4.1 Frontend Submission Form
