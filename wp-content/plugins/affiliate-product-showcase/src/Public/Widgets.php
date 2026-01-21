@@ -75,7 +75,7 @@ final class TagsWidget extends WP_Widget {
 	/**
 	 * Widget form
 	 *
-	 * Renders the widget settings form in WordPress admin.
+	 * Renders widget settings form in WordPress admin.
 	 *
 	 * @param array<string, mixed> $instance Current widget instance settings
 	 * @return void
@@ -232,7 +232,7 @@ final class TagsWidget extends WP_Widget {
 	/**
 	 * Generate widget content
 	 *
-	 * Generates the HTML content for the widget.
+	 * Generates HTML content for the widget.
 	 *
 	 * @param array<string, mixed> $args Widget display arguments
 	 * @param array<string, mixed> $instance Widget instance settings
@@ -440,7 +440,7 @@ final class FeaturedWidget extends WP_Widget {
 	/**
 	 * Widget form
 	 *
-	 * Renders the widget settings form in WordPress admin.
+	 * Renders widget settings form in WordPress admin.
 	 *
 	 * @param array<string, mixed> $instance Current widget instance settings
 	 * @return void
@@ -600,7 +600,7 @@ final class FeaturedWidget extends WP_Widget {
 	/**
 	 * Generate widget content
 	 *
-	 * Generates the HTML content for the widget.
+	 * Generates HTML content for the widget.
 	 *
 	 * @param array<string, mixed> $args Widget display arguments
 	 * @param array<string, mixed> $instance Widget instance settings
