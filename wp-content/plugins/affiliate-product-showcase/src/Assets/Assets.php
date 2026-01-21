@@ -5,10 +5,21 @@ namespace AffiliateProductShowcase\Assets;
 
 final class Assets {
 	private Manifest $manifest;
+	private bool $initialized = false;
 
 	public function __construct( Manifest $manifest ) {
 		$this->manifest = $manifest;
 		add_filter( 'script_loader_tag', [ $this, 'add_script_attributes' ], 10, 2 );
+	}
+
+	public function init(): void {
+		if ( $this->initialized ) {
+			return;
+		}
+		$this->initialized = true;
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend' ] );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor' ] );
 	}
 
 	public function enqueue_admin(): void {

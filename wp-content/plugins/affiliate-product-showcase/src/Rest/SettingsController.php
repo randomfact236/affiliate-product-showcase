@@ -6,6 +6,7 @@ namespace AffiliateProductShowcase\Rest;
 
 use AffiliateProductShowcase\Helpers\Logger;
 use AffiliateProductShowcase\Services\SettingsValidator;
+use WP_Error;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -45,7 +46,6 @@ class SettingsController extends RestController {
      * Constructor
      */
     public function __construct() {
-        parent::__construct();
         $this->validator = new SettingsValidator();
     }
 
@@ -55,6 +55,7 @@ class SettingsController extends RestController {
      * @return void
      */
     public function register_routes(): void {
+        // GET / POST all settings
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
@@ -73,6 +74,7 @@ class SettingsController extends RestController {
             ]
         );
 
+        // GET / POST single setting
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base . '/(?P<key>[a-zA-Z0-9_-]+)',
@@ -88,7 +90,6 @@ class SettingsController extends RestController {
                         ],
                     ],
                 ],
-            ],
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
                     'callback'            => [ $this, 'updateSetting' ],
@@ -122,52 +123,18 @@ class SettingsController extends RestController {
     }
 
     /**
-     * Get a single setting
-     *
-     * @param WP_REST_Request $request Request object
-     * @return WP_REST_Response|WP_Error
-     */
-    public function getSetting( WP_REST_Request $request ) {
-        $key = $request->get_param( 'key' );
-        $settings_repository = new \AffiliateProductShowcase\Repositories\SettingsRepository();
-        $value = $settings_repository->get( $key );
-
-        if ( $value === null ) {
-            return new WP_Error(
-                'setting_not_found',
-                __( 'Setting not found.', 'affiliate-product-showcase' ),
-                [ 'status' => 404 ]
-            );
-        }
-
-        return new WP_REST_Response(
-            [ 'key' => $key, 'value' => $value ],
-            200
-        );
-    }
-
-    /**
      * Update all settings
      *
      * @param WP_REST_Request $request Request object
      * @return WP_REST_Response|WP_Error
      */
-    public function updateSettings( WP_REST_Request $request ) {
-        $new_settings = $request->get_json_params();
-
-        if ( empty( $new_settings ) ) {
-            return new WP_Error(
-                'no_settings',
-                __( 'No settings provided.', 'affiliate-product-showcase' ),
-                [ 'status' => 400 ]
-            );
-        }
+    public function updateSettings( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        $settings = $request->get_json_params() ?? $request->get_params();
 
         $settings_repository = new \AffiliateProductShowcase\Repositories\SettingsRepository();
-        $current_settings = $settings_repository->getAll();
 
         // Validate settings
-        $validation = $this->validator->mergeSettings( $new_settings, $current_settings );
+        $validation = $this->validator->validate( $settings );
 
         if ( ! $validation['valid'] ) {
             return new WP_Error(
@@ -198,12 +165,41 @@ class SettingsController extends RestController {
     }
 
     /**
+     * Get a single setting
+     *
+     * @param WP_REST_Request $request Request object
+     * @return WP_REST_Response|WP_Error
+     */
+    public function getSetting( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        $key = $request->get_param( 'key' );
+
+        $settings_repository = new \AffiliateProductShowcase\Repositories\SettingsRepository();
+        $value = $settings_repository->get( $key );
+
+        if ( $value === null ) {
+            return new WP_Error(
+                'not_found',
+                __( 'Setting not found.', 'affiliate-product-showcase' ),
+                [ 'status' => 404 ]
+            );
+        }
+
+        return new WP_REST_Response(
+            [
+                'key'   => $key,
+                'value' => $value,
+            ],
+            200
+        );
+    }
+
+    /**
      * Update a single setting
      *
      * @param WP_REST_Request $request Request object
      * @return WP_REST_Response|WP_Error
      */
-    public function updateSetting( WP_REST_Request $request ) {
+    public function updateSetting( WP_REST_Request $request ): WP_REST_Response|WP_Error {
         $key = $request->get_param( 'key' );
         $value = $request->get_param( 'value' );
 
@@ -290,7 +286,6 @@ class SettingsController extends RestController {
                     'default' => '',
                 ],
             ],
-        ],
         ];
     }
 }

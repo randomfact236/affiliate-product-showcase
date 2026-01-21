@@ -1,0 +1,118 @@
+/**
+ * Admin Term UI Styles
+ *
+ * Styles for advanced term admin interface including:
+ * - Custom column styling
+ * - Color swatches
+ * - Image previews
+ * - Icon previews
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.0.0
+ */
+
+/* Category Image Thumbnail */
+.aps-term-image-thumbnail {
+    max-width: 50px;
+    height: auto;
+    display: inline-block;
+}
+
+/* Color Swatch - Square (for categories) */
+.aps-color-swatch {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+}
+
+/* Color Swatch - Circle (for tags) */
+.aps-color-swatch-circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+}
+
+/* Icon Preview */
+.aps-icon-preview {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Quick Search Box */
+.aps-quick-search {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.aps-quick-search label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Filter Dropdown */
+.aps-filter-dropdown {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.aps-filter-dropdown label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* View Options */
+.aps-view-options {
+    display: inline-block;
+}
+
+.aps-view-options input[type="checkbox"] {
+    margin-right: 5px;
+    margin-left: 15px;
+}
+
+.aps-view-options input[type="checkbox"]:first-child {
+    margin-left: 0;
+}
+
+/* Bulk Action Links */
+.aps-bulk-action {
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.aps-bulk-action:hover {
+    color: #135e96;
+}
+
+/* Custom Column Styling */
+.aps-column-value {
+    vertical-align: middle;
+}
+
+/* Featured Badge */
+.aps-featured-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #2271b1;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Order Number */
+.aps-order-number {
+    font-weight: 600;
+    color: #1d2327;
+}

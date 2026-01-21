@@ -34,7 +34,7 @@ class AffiliatesController extends RestController {
      * @var string
      * @since 1.0.0
      */
-    protected $namespace = 'affiliate-product-showcase/v1';
+    protected string $namespace = 'affiliate-product-showcase/v1';
 
     /**
      * Route base
@@ -44,7 +44,7 @@ class AffiliatesController extends RestController {
      * @var string
      * @since 1.0.0
      */
-    protected $rest_base = 'affiliates';
+    protected string $rest_base = 'affiliates';
 
     /**
      * Affiliate service
@@ -64,9 +64,8 @@ class AffiliatesController extends RestController {
      * @return void
      * @since 1.0.0
      */
-    public function __construct() {
-        parent::__construct();
-        $this->affiliate_service = new AffiliateService();
+    public function __construct( AffiliateService $affiliate_service ) {
+        $this->affiliate_service = $affiliate_service;
     }
 
     /**

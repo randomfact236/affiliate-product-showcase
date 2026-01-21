@@ -210,7 +210,15 @@ final class ProductService extends AbstractService {
 				'show_admin_column'           => true,
 				'show_in_nav_menus'          => true,
 				'show_tagcloud'              => true,
+				'show_in_admin_bar'           => true,
+				'query_var'                  => true,
 				'rewrite'                    => [ 'slug' => 'product-category' ],
+				'capabilities'                => [
+					'manage_terms' => 'manage_categories',
+					'edit_terms'   => 'edit_categories',
+					'delete_terms' => 'delete_categories',
+					'assign_terms' => 'assign_categories',
+				],
 			]
 		);
 
@@ -237,6 +245,7 @@ final class ProductService extends AbstractService {
 				'show_admin_column'           => true,
 				'show_in_nav_menus'          => true,
 				'show_tagcloud'              => true,
+				'query_var'                  => true,
 				'rewrite'                    => [ 'slug' => 'product-tag' ],
 			]
 		);
@@ -264,6 +273,7 @@ final class ProductService extends AbstractService {
 				'show_admin_column'           => true,
 				'show_in_nav_menus'          => false,
 				'show_tagcloud'              => false,
+				'query_var'                  => true,
 				'rewrite'                    => [ 'slug' => 'product-ribbon' ],
 			]
 		);

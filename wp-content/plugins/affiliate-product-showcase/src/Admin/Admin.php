@@ -1,4 +1,15 @@
 <?php
+/**
+ * Admin Bootstrapper
+ *
+ * Main admin class for the Affiliate Product Showcase plugin.
+ * Initializes admin menu, settings, meta boxes, and assets.
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.0.0
+ * @author Development Team
+ */
+
 declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Admin;
@@ -7,100 +18,187 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AffiliateProductShowcase\Admin\Menu;
+use AffiliateProductShowcase\Admin\Columns;
+use AffiliateProductShowcase\Admin\BulkActions;
+use AffiliateProductShowcase\Admin\TermMeta;
+use AffiliateProductShowcase\Admin\TermUI;
+use AffiliateProductShowcase\Admin\Settings;
+use AffiliateProductShowcase\Admin\MetaBoxes;
 use AffiliateProductShowcase\Assets\Assets;
-use AffiliateProductShowcase\Plugin\Constants;
-use AffiliateProductShowcase\Security\Headers;
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Services\AffiliateService;
+use AffiliateProductShowcase\Repositories\SettingsRepository;
+use AffiliateProductShowcase\Security\Headers;
 
+/**
+ * Admin Bootstrapper
+ *
+ * Main admin class that initializes all admin functionality.
+ * Coordinates admin menu, settings, meta boxes, and asset loading.
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.0.0
+ * @author Development Team
+ */
 final class Admin {
+	/**
+	 * Settings service instance
+	 *
+	 * @var Settings
+	 * @since 1.0.0
+	 */
 	private Settings $settings;
+
+	/**
+	 * MetaBoxes service instance
+	 *
+	 * @var MetaBoxes
+	 * @since 1.0.0
+	 */
 	private MetaBoxes $metaboxes;
 
-	public function __construct( private Assets $assets, private ProductService $product_service, private Headers $headers ) {
-		$this->settings  = new Settings();
-		$this->metaboxes = new MetaBoxes( $this->product_service );
+	/**
+	 * Assets service instance
+	 *
+	 * @var Assets
+	 * @since 1.0.0
+	 */
+	private Assets $assets;
+
+	/**
+	 * Headers service instance
+	 *
+	 * @var Headers
+	 * @since 1.0.0
+	 */
+	private Headers $headers;
+
+	/**
+	 * Product service instance
+	 *
+	 * @var ProductService
+	 * @since 1.0.0
+	 */
+	private ProductService $product_service;
+
+	/**
+	 * Settings repository instance
+	 *
+	 * @var SettingsRepository
+	 * @since 1.0.0
+	 */
+	private SettingsRepository $settings_repository;
+
+	/**
+	 * Affiliate service instance
+	 *
+	 * @var AffiliateService
+	 * @since 1.0.0
+	 */
+	private AffiliateService $affiliate_service;
+
+	/**
+	 * Constructor
+	 *
+	 * Initializes all admin services with their dependencies.
+	 *
+	 * @param Settings $settings Settings service instance
+	 * @param MetaBoxes $metaboxes Meta boxes service instance
+	 * @param Assets $assets Assets service instance
+	 * @param Headers $headers Security headers service instance
+	 * @param ProductService $product_service Product service instance
+	 * @param SettingsRepository $settings_repository Settings repository instance
+	 * @param AffiliateService $affiliate_service Affiliate service instance
+	 * @since 1.0.0
+	 */
+	public function __construct(
+		Settings $settings,
+		MetaBoxes $metaboxes,
+		Assets $assets,
+		Headers $headers,
+		ProductService $product_service,
+		SettingsRepository $settings_repository,
+		AffiliateService $affiliate_service
+	) {
+		$this->settings          = $settings;
+		$this->metaboxes         = $metaboxes;
+		$this->assets             = $assets;
+		$this->headers             = $headers;
+		$this->product_service     = $product_service;
+		$this->settings_repository = $settings_repository;
+		$this->affiliate_service   = $affiliate_service;
 	}
 
+	/**
+	 * Initialize admin
+	 *
+	 * Registers all admin hooks and menus.
+	 * Calls initialization methods on all admin services.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action admin_menu
+	 * @action admin_init
+	 * @action admin_enqueue_scripts
+	 */
 	public function init(): void {
-		add_action( 'admin_menu', [ $this, 'register_menu' ] );
-		add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
-		add_action( 'admin_init', [ $this, 'register_settings' ] );
-		add_action( 'add_meta_boxes', [ $this, 'metaboxes', 'register' ] );
-		add_action( 'save_post', [ $this, 'metaboxes', 'save_meta' ], 10, 2 );
-		add_filter( 'custom_menu_order', '__return_true' );
-		add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
-		// Initialize security headers
+		$this->settings->init();
+		$this->metaboxes->init();
+		$this->assets->init();
 		$this->headers->init();
 	}
 
-	public function register_menu(): void {
-		add_menu_page(
-			__( 'Affiliate Manager', Constants::TEXTDOMAIN ),
-			__( 'Affiliate Manager', Constants::TEXTDOMAIN ),
-			Constants::MENU_CAP,
-			Constants::SLUG,
-			[ $this, 'render_settings_page' ],
-			'dashicons-admin-generic',
-			55.1
-		);
-	}
-
-	public function render_settings_page(): void {
-		$settings = $this->settings->get();
-		require Constants::viewPath( 'src/Admin/partials/settings-page.php' );
-	}
-
-	public function register_settings(): void {
-		$this->settings->register();
-	}
-
-	public function enqueue_admin_assets( string $hook ): void {
-		if ( false !== strpos( $hook, Constants::SLUG ) ) {
-			$this->assets->enqueue_admin();
-		}
+	/**
+	 * Get settings service
+	 *
+	 * Returns the settings service instance.
+	 * Used by other admin components to access settings.
+	 *
+	 * @return Settings Settings service instance
+	 * @since 1.0.0
+	 */
+	public function settings(): Settings {
+		return $this->settings;
 	}
 
 	/**
-	 * Add custom menu icons
+	 * Get meta boxes service
 	 *
-	 * @return void
+	 * Returns the meta boxes service instance.
+	 * Used by other admin components to access meta box functionality.
+	 *
+	 * @return MetaBoxes Meta boxes service instance
+	 * @since 1.0.0
 	 */
-	public function addMenuIcons(): void {
-		?>
-		<style>
-			#adminmenu .toplevel_page_<?php echo Constants::SLUG; ?> .wp-menu-image img {
-				width: 20px;
-				height: 20px;
-				padding: 5px 0;
-			}
-		</style>
-		<?php
+	public function metaboxes(): MetaBoxes {
+		return $this->metaboxes;
 	}
 
 	/**
-	 * Reorder menus to position Affiliate Manager right after Affiliate Products
+	 * Get assets service
 	 *
-	 * @param array $menu_order Current menu order
-	 * @return array Modified menu order
+	 * Returns the assets service instance.
+	 * Used by other admin components to access asset functionality.
+	 *
+	 * @return Assets Assets service instance
+	 * @since 1.0.0
 	 */
-	public function reorderMenus( $menu_order ) {
-		// Find positions of our menus
-		$products_key = array_search( 'edit.php?post_type=aps_product', $menu_order );
-		$manager_key = array_search( Constants::SLUG, $menu_order );
-		
-		// If either menu not found, return unchanged
-		if ( $products_key === false || $manager_key === false ) {
-			return $menu_order;
-		}
-		
-		// Remove Affiliate Manager from current position
-		unset( $menu_order[$manager_key] );
-		
-		// Insert Affiliate Manager right after Affiliate Products
-		array_splice( $menu_order, $products_key + 1, 0, [ Constants::SLUG ] );
-		
-		return $menu_order;
+	public function assets(): Assets {
+		return $this->assets;
 	}
 
+	/**
+	 * Get headers service
+	 *
+	 * Returns the security headers service instance.
+	 * Used by other admin components to access security header functionality.
+	 *
+	 * @return Headers Security headers service instance
+	 * @since 1.0.0
+	 */
+	public function headers(): Headers {
+		return $this->headers;
+	}
 }

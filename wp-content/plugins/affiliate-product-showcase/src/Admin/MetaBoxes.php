@@ -11,7 +11,18 @@ use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Services\ProductService;
 
 final class MetaBoxes {
+	private bool $initialized = false;
+
 	public function __construct( private ProductService $product_service ) {}
+
+	public function init(): void {
+		if ( $this->initialized ) {
+			return;
+		}
+		$this->initialized = true;
+		add_action( 'add_meta_boxes', [ $this, 'register' ] );
+		add_action( 'save_post', [ $this, 'save_meta' ], 10, 2 );
+	}
 
 	public function register(): void {
 		add_meta_box(

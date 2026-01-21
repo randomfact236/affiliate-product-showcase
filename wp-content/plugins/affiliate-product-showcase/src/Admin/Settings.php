@@ -12,9 +12,18 @@ use AffiliateProductShowcase\Repositories\SettingsRepository;
 
 final class Settings {
 	private SettingsRepository $repository;
+	private bool $initialized = false;
 
 	public function __construct() {
 		$this->repository = new SettingsRepository();
+	}
+
+	public function init(): void {
+		if ( $this->initialized ) {
+			return;
+		}
+		$this->initialized = true;
+		add_action( 'admin_init', [ $this, 'register' ] );
 	}
 
 	public function register(): void {
