@@ -25,8 +25,8 @@ final class Admin {
 		add_action( 'admin_menu', [ $this, 'register_menu' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'addMenuIconsStyle' ] );
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
-		add_action( 'add_meta_boxes', [ $this, 'metaboxes', 'register' ] );
-		add_action( 'save_post', [ $this, 'metaboxes', 'save_meta' ], 10, 2 );
+		add_action( 'add_meta_boxes', [ $this->metaboxes, 'register' ] );
+		add_action( 'save_post', [ $this->metaboxes, 'save_meta' ], 10, 2 );
 		add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
 		$this->headers->init();
