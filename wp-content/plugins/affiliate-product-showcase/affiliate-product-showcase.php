@@ -207,10 +207,13 @@ if ( class_exists( 'AffiliateProductShowcase\\Plugin\\Deactivator' ) ) {
 // Plugin Initialization
 // ==============================================================================
 
-add_action( 'plugins_loaded', 'affiliate_product_showcase_init', 20 );
+add_action( 'plugins_loaded', 'affiliate_product_showcase_init', 10 );
+
+// Load textdomain at init hook (after plugins_loaded)
+add_action( 'init', 'affiliate_product_showcase_load_textdomain', 10 );
 
 /**
- * Initialize the plugin after WordPress is fully loaded.
+ * Initialize plugin after WordPress is fully loaded.
  *
  * Uses singleton pattern and graceful error handling to prevent site breakage.
  *
@@ -266,6 +269,22 @@ function affiliate_product_showcase_init(): void {
 			);
 		}
 	}
+}
+
+/**
+ * Load textdomain at proper time
+ *
+ * Loads translations on init hook to avoid "_load_textdomain_just_in_time" warning.
+ *
+ * @since 1.0.0
+ * @return void
+ */
+function affiliate_product_showcase_load_textdomain(): void {
+	load_plugin_textdomain(
+		'affiliate-product-showcase',
+		false,
+		dirname( AFFILIATE_PRODUCT_SHOWCASE_BASENAME ) . '/languages'
+	);
 }
 
 // ==============================================================================

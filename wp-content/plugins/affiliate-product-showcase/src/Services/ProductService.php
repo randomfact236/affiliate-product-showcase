@@ -190,18 +190,18 @@ final class ProductService extends AbstractService {
 			Constants::TAX_CATEGORY,
 			Constants::CPT_PRODUCT,
 			[
-				'labels' => [
-					'name'                       => __( 'Categories', Constants::TEXTDOMAIN ),
-					'singular_name'              => __( 'Category', Constants::TEXTDOMAIN ),
-					'search_items'               => __( 'Search Categories', Constants::TEXTDOMAIN ),
-					'all_items'                  => __( 'All Categories', Constants::TEXTDOMAIN ),
-					'parent_item'                => __( 'Parent Category', Constants::TEXTDOMAIN ),
-					'parent_item_colon'          => __( 'Parent Category:', Constants::TEXTDOMAIN ),
-					'edit_item'                  => __( 'Edit Category', Constants::TEXTDOMAIN ),
-					'update_item'                => __( 'Update Category', Constants::TEXTDOMAIN ),
-					'add_new_item'               => __( 'Add New Category', Constants::TEXTDOMAIN ),
-					'new_item_name'              => __( 'New Category Name', Constants::TEXTDOMAIN ),
-					'menu_name'                  => __( 'Categories', Constants::TEXTDOMAIN ),
+					'labels' => [
+						'name'                  => __( 'Categories', Constants::TEXTDOMAIN ),
+						'singular_name'         => __( 'Category', Constants::TEXTDOMAIN ),
+						'search_items'          => __( 'Search Categories', Constants::TEXTDOMAIN ),
+					'all_items'             => __( 'All Categories', Constants::TEXTDOMAIN ),
+					'parent_item'           => __( 'Parent Category', Constants::TEXTDOMAIN ),
+					'parent_item_colon'     => __( 'Parent Category:', Constants::TEXTDOMAIN ),
+					'edit_item'             => __( 'Edit Category', Constants::TEXTDOMAIN ),
+					'update_item'           => __( 'Update Category', Constants::TEXTDOMAIN ),
+					'add_new_item'          => __( 'Add New Category', Constants::TEXTDOMAIN ),
+					'new_item_name'         => __( 'New Category Name', Constants::TEXTDOMAIN ),
+					'menu_name'             => __( 'Categories', Constants::TEXTDOMAIN ),
 				],
 				'hierarchical'               => true,
 				'public'                     => true,
@@ -220,15 +220,15 @@ final class ProductService extends AbstractService {
 			Constants::CPT_PRODUCT,
 			[
 				'labels' => [
-					'name'                       => __( 'Tags', Constants::TEXTDOMAIN ),
-					'singular_name'              => __( 'Tag', Constants::TEXTDOMAIN ),
-					'search_items'               => __( 'Search Tags', Constants::TEXTDOMAIN ),
-					'all_items'                  => __( 'All Tags', Constants::TEXTDOMAIN ),
-					'edit_item'                  => __( 'Edit Tag', Constants::TEXTDOMAIN ),
-					'update_item'                => __( 'Update Tag', Constants::TEXTDOMAIN ),
-					'add_new_item'               => __( 'Add New Tag', Constants::TEXTDOMAIN ),
-					'new_item_name'              => __( 'New Tag Name', Constants::TEXTDOMAIN ),
-					'menu_name'                  => __( 'Tags', Constants::TEXTDOMAIN ),
+					'name'                  => __( 'Tags', Constants::TEXTDOMAIN ),
+					'singular_name'         => __( 'Tag', Constants::TEXTDOMAIN ),
+					'search_items'          => __( 'Search Tags', Constants::TEXTDOMAIN ),
+					'all_items'             => __( 'All Tags', Constants::TEXTDOMAIN ),
+					'edit_item'             => __( 'Edit Tag', Constants::TEXTDOMAIN ),
+					'update_item'           => __( 'Update Tag', Constants::TEXTDOMAIN ),
+					'add_new_item'          => __( 'Add New Tag', Constants::TEXTDOMAIN ),
+					'new_item_name'         => __( 'New Tag Name', Constants::TEXTDOMAIN ),
+					'menu_name'             => __( 'Tags', Constants::TEXTDOMAIN ),
 				],
 				'hierarchical'               => false,
 				'public'                     => true,
@@ -247,15 +247,15 @@ final class ProductService extends AbstractService {
 			Constants::CPT_PRODUCT,
 			[
 				'labels' => [
-					'name'                       => __( 'Ribbons', Constants::TEXTDOMAIN ),
-					'singular_name'              => __( 'Ribbon', Constants::TEXTDOMAIN ),
-					'search_items'               => __( 'Search Ribbons', Constants::TEXTDOMAIN ),
-					'all_items'                  => __( 'All Ribbons', Constants::TEXTDOMAIN ),
-					'edit_item'                  => __( 'Edit Ribbon', Constants::TEXTDOMAIN ),
-					'update_item'                => __( 'Update Ribbon', Constants::TEXTDOMAIN ),
-					'add_new_item'               => __( 'Add New Ribbon', Constants::TEXTDOMAIN ),
-					'new_item_name'              => __( 'New Ribbon Name', Constants::TEXTDOMAIN ),
-					'menu_name'                  => __( 'Ribbons', Constants::TEXTDOMAIN ),
+					'name'                  => __( 'Ribbons', Constants::TEXTDOMAIN ),
+					'singular_name'         => __( 'Ribbon', Constants::TEXTDOMAIN ),
+					'search_items'          => __( 'Search Ribbons', Constants::TEXTDOMAIN ),
+					'all_items'             => __( 'All Ribbons', Constants::TEXTDOMAIN ),
+					'edit_item'             => __( 'Edit Ribbon', Constants::TEXTDOMAIN ),
+					'update_item'           => __( 'Update Ribbon', Constants::TEXTDOMAIN ),
+					'add_new_item'          => __( 'Add New Ribbon', Constants::TEXTDOMAIN ),
+					'new_item_name'         => __( 'New Ribbon Name', Constants::TEXTDOMAIN ),
+					'menu_name'             => __( 'Ribbons', Constants::TEXTDOMAIN ),
 				],
 				'hierarchical'               => false,
 				'public'                     => true,
@@ -284,32 +284,46 @@ final class ProductService extends AbstractService {
 	}
 
 	/**
-	 * Get list of products with caching
+	 * Delete a product
 	 *
-	 * Retrieves products with optional filtering and caching.
-	 * Caches results for 5 minutes to improve performance.
+	 * Permanently deletes a product from database.
+	 * Returns false if product doesn't exist or deletion fails.
 	 *
-	 * @param array<string, mixed> $args Query arguments for filtering products
-	 * @return array<int, Product> Array of product objects
+	 * @param int $id Unique product identifier
+	 * @return bool True if deleted successfully, false otherwise
 	 * @since 1.0.0
 	 */
-	public function get_products( array $args = [] ): array {
-		// Generate cache key from arguments
-		$cache_key = 'products_' . md5( wp_json_encode( $args ) );
-		
-		// Try to get from cache first
-		$cached = $this->cache->get( $cache_key );
-		if ( false !== $cached && is_array( $cached ) ) {
-			return $cached;
-		}
-		
-		// Fetch from repository if not cached
-		$products = $this->repository->list( $args );
-		
-		// Cache results for 5 minutes (300 seconds)
-		$this->cache->set( $cache_key, $products, 300 );
-		
-		return $products;
+	public function delete( int $id ): bool {
+		return $this->repository->delete( $id );
+	}
+
+	/**
+	 * Restore a product from trash
+	 *
+	 * Restores a product that was previously trashed.
+	 * Returns false if product doesn't exist or restoration fails.
+	 *
+	 * @param int $id Unique product identifier
+	 * @return bool True if restored successfully, false otherwise
+	 * @since 1.0.0
+	 */
+	public function restore( int $id ): bool {
+		return $this->repository->restore( $id );
+	}
+
+	/**
+	 * Format price with currency
+	 *
+	 * Formats a price value with appropriate currency symbol
+	 * and number formatting.
+	 *
+	 * @param float $price Price value to format
+	 * @param string $currency Currency code (default: USD)
+	 * @return string Formatted price with currency symbol
+	 * @since 1.0.0
+	 */
+	public function format_price( float $price, string $currency = 'USD' ): string {
+		return $this->formatter->format( $price, $currency );
 	}
 
 	/**
@@ -332,34 +346,5 @@ final class ProductService extends AbstractService {
 		}
 
 		return $this->get_product( $id ) ?? $product;
-	}
-
-	/**
-	 * Delete a product
-	 *
-	 * Permanently deletes a product from the database.
-	 * Returns false if product doesn't exist or deletion fails.
-	 *
-	 * @param int $id Unique product identifier
-	 * @return bool True if deleted successfully, false otherwise
-	 * @since 1.0.0
-	 */
-	public function delete( int $id ): bool {
-		return $this->repository->delete( $id );
-	}
-
-	/**
-	 * Format price with currency
-	 *
-	 * Formats a price value with appropriate currency symbol
-	 * and number formatting.
-	 *
-	 * @param float $price Price value to format
-	 * @param string $currency Currency code (default: USD)
-	 * @return string Formatted price with currency symbol
-	 * @since 1.0.0
-	 */
-	public function format_price( float $price, string $currency = 'USD' ): string {
-		return $this->formatter->format( $price, $currency );
 	}
 }

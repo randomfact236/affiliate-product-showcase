@@ -53,8 +53,6 @@ final class Plugin {
 	}
 
 	private function bootstrap(): void {
-		$this->load_textdomain();
-
 		// Get DI container instance
 		$container = Container::get_instance();
 
@@ -115,14 +113,6 @@ final class Plugin {
 	 */
 	public function set_analytics_service( AnalyticsService $service ): void {
 		$this->analytics_service = $service;
-	}
-
-	private function load_textdomain(): void {
-		load_plugin_textdomain(
-			Constants::TEXTDOMAIN,
-			false,
-			Constants::languagesPath()
-		);
 	}
 
 	public function assets(): Assets {

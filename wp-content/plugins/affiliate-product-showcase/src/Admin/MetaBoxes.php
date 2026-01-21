@@ -11,7 +11,8 @@ use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Services\ProductService;
 
 final class MetaBoxes {
-	public function __construct( private ProductService $product_service ) {}
+	public function __construct( private ProductService $product_service ) {
+	}
 
 	public function register(): void {
 		add_meta_box(
@@ -25,15 +26,24 @@ final class MetaBoxes {
 	}
 
 	public function render( \WP_Post $post ): void {
+		// Only show meta box for affiliate_product CPT
+		$post_type = $post->post_type;
+		
+		if ( $post_type !== 'aps_product' ) {
+			return;
+		}
+		
+		// Get current meta values
 		$meta = [
-			'price'         => get_post_meta( $post->ID, 'aps_price', true ),
-			'currency'      => get_post_meta( $post->ID, 'aps_currency', true ),
-			'affiliate_url' => get_post_meta( $post->ID, 'aps_affiliate_url', true ),
-			'image_url'     => get_post_meta( $post->ID, 'aps_image_url', true ),
-			'rating'        => get_post_meta( $post->ID, 'aps_rating', true ),
-			'badge'         => get_post_meta( $post->ID, 'aps_badge', true ),
+			'price'         => get_post_meta( $post->ID, '_aps_price', true ),
+			'currency'      => get_post_meta( $post->ID, '_aps_currency', true ),
+			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
+			'image_url'     => get_post_meta( $post->ID, '_aps_image_url', true ),
+			'rating'        => get_post_meta( $post->ID, '_aps_rating', true ),
+			'badge'         => get_post_meta( $post->ID, '_aps_badge', true ),
 		];
-
+		
+		// Include meta box template
 		require Constants::viewPath( 'src/Admin/partials/product-meta-box.php' );
 	}
 
@@ -57,11 +67,11 @@ final class MetaBoxes {
 		$rating        = isset( $_POST['aps_rating'] ) ? (float) wp_unslash( $_POST['aps_rating'] ) : null;
 		$badge         = sanitize_text_field( wp_unslash( $_POST['aps_badge'] ?? '' ) );
 
-		update_post_meta( $post_id, 'aps_price', $price );
-		update_post_meta( $post_id, 'aps_currency', $currency );
-		update_post_meta( $post_id, 'aps_affiliate_url', $affiliate_url );
-		update_post_meta( $post_id, 'aps_image_url', $image_url );
-		update_post_meta( $post_id, 'aps_rating', $rating );
-		update_post_meta( $post_id, 'aps_badge', $badge );
+		update_post_meta( $post_id, '_aps_price', $price );
+		update_post_meta( $post_id, '_aps_currency', $currency );
+		update_post_meta( $post_id, '_aps_affiliate_url', $affiliate_url );
+		update_post_meta( $post_id, '_aps_image_url', $image_url );
+		update_post_meta( $post_id, '_aps_rating', $rating );
+		update_post_meta( $post_id, '_aps_badge', $badge );
 	}
 }
