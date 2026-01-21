@@ -1,0 +1,15 @@
+/**
+ * Admin Menu Styles
+ *
+ * Styles for the admin menu icon positioning.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* Admin menu icon sizing */
+#adminmenu .toplevel_page_affiliate-product-showcase .wp-menu-image img {
+	width: 20px;
+	height: 20px;
+	padding: 5px 0;
+}

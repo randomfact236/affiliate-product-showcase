@@ -27,7 +27,6 @@ class Enqueue {
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueStyles' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
-        add_action( 'admin_print_styles', [ $this, 'printInlineStyles' ] );
     }
 
     /**
@@ -55,6 +54,14 @@ class Enqueue {
             wp_enqueue_style(
                 'affiliate-product-showcase-dashboard',
                 AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/dashboard.css',
+                [],
+                self::VERSION
+            );
+
+            // Dashboard common styles
+            wp_enqueue_style(
+                'affiliate-product-showcase-admin-dashboard',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-dashboard.css',
                 [],
                 self::VERSION
             );
@@ -189,51 +196,6 @@ class Enqueue {
         }
     }
 
-    /**
-     * Print inline styles
-     *
-     * @return void
-     */
-    public function printInlineStyles(): void {
-        ?>
-        <style>
-            .affiliate-product-showcase-wrap {
-                max-width: 1200px;
-                margin: 20px;
-            }
-            .affiliate-product-showcase-card {
-                background: #fff;
-                border: 1px solid #ccd0d4;
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-            .affiliate-product-showcase-card h2 {
-                margin-top: 0;
-            }
-            .affiliate-product-showcase-stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px;
-                margin: 20px 0;
-            }
-            .affiliate-product-showcase-stat {
-                background: #f6f7f7;
-                padding: 20px;
-                border-radius: 4px;
-            }
-            .affiliate-product-showcase-stat-value {
-                font-size: 2em;
-                font-weight: bold;
-                color: #2271b1;
-            }
-            .affiliate-product-showcase-stat-label {
-                color: #646970;
-                margin-top: 5px;
-            }
-        </style>
-        <?php
-    }
 
     /**
      * Check if current page is a plugin page

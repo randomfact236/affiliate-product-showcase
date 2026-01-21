@@ -26,7 +26,7 @@ class Menu {
      */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'addMenuPages' ] );
-        add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueueMenuStyles' ] );
         add_filter( 'custom_menu_order', '__return_true' );
         add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
     }
@@ -126,20 +126,17 @@ class Menu {
     }
 
     /**
-     * Add custom menu icons
+     * Enqueue admin menu styles
      *
      * @return void
      */
-    public function addMenuIcons(): void {
-        ?>
-        <style>
-            #adminmenu .toplevel_page_affiliate-product-showcase .wp-menu-image img {
-                width: 20px;
-                height: 20px;
-                padding: 5px 0;
-            }
-        </style>
-        <?php
+    public function enqueueMenuStyles(): void {
+        wp_enqueue_style(
+            'affiliate-product-showcase-admin-menu',
+            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-menu.css',
+            [],
+            '1.0.0'
+        );
     }
 
     /**

@@ -1,0 +1,53 @@
+/**
+ * Admin Dashboard Styles
+ *
+ * Styles for admin dashboard pages.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* Main wrapper */
+.affiliate-product-showcase-wrap {
+	max-width: 1200px;
+	margin: 20px;
+}
+
+/* Card component */
+.affiliate-product-showcase-card {
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.affiliate-product-showcase-card h2 {
+	margin-top: 0;
+}
+
+/* Stats grid */
+.affiliate-product-showcase-stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px;
+	margin: 20px 0;
+}
+
+/* Stat card */
+.affiliate-product-showcase-stat {
+	background: #f6f7f7;
+	padding: 20px;
+	border-radius: 4px;
+}
+
+.affiliate-product-showcase-stat-value {
+	font-size: 2em;
+	font-weight: bold;
+	color: #2271b1;
+}
+
+.affiliate-product-showcase-stat-label {
+	color: #646970;
+	margin-top: 5px;
+}
