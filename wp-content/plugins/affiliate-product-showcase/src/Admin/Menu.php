@@ -62,7 +62,9 @@ class Menu {
 		$parent = 'edit.php?post_type=aps_product';
 		
 		if ( ! isset( $submenu[ $parent ] ) ) {
-			error_log('MENU REORDER: Parent submenu not found!');
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'MENU REORDER: Parent submenu not found!' );
+			}
 			return;
 		}
 		
@@ -111,7 +113,9 @@ class Menu {
 			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product'
 		);
 		
-		error_log('MENU REORDER: Submenu reordered successfully');
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'MENU REORDER: Submenu reordered successfully' );
+		}
 	}
 
     /**
@@ -183,7 +187,9 @@ class Menu {
             foreach ( $submenu[ $parent_slug ] as $index => $item ) {
                 if ( isset( $item[2] ) && $item[2] === $old_add_new_slug ) {
                     unset( $submenu[ $parent_slug ][ $index ] );
-                    error_log( '[APS] Default "Add New" submenu removed successfully' );
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( '[APS] Default "Add New" submenu removed successfully' );
+					}
                     break;
                 }
             }

@@ -140,8 +140,9 @@ final class ProductService extends AbstractService {
 	 * @action init
 	 */
 	public function register_post_type(): void {
-		// Debug: Log CPT registration
-		error_log( '[APS] Registering CPT: ' . Constants::CPT_PRODUCT );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( '[APS] Registering CPT: ' . Constants::CPT_PRODUCT );
+		}
 		
 		$result = register_post_type(
 			Constants::CPT_PRODUCT,
@@ -173,12 +174,13 @@ final class ProductService extends AbstractService {
 			]
 		);
 		
-		// Debug: Check if CPT registered successfully
-		$registered = post_type_exists( Constants::CPT_PRODUCT );
-		error_log( '[APS] CPT registered: ' . ( $registered ? 'YES' : 'NO' ) );
-		
-		if ( ! $registered ) {
-			error_log( '[APS] ERROR: CPT registration failed!' );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$registered = post_type_exists( Constants::CPT_PRODUCT );
+			error_log( '[APS] CPT registered: ' . ( $registered ? 'YES' : 'NO' ) );
+			
+			if ( ! $registered ) {
+				error_log( '[APS] ERROR: CPT registration failed!' );
+			}
 		}
 	}
 
