@@ -28,6 +28,7 @@ class Enqueue {
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueStyles' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
         add_action( 'admin_print_styles', [ $this, 'printInlineStyles' ] );
+        add_action( 'admin_footer', [ $this, 'printRedirectScript' ] );
     }
 
     /**
@@ -98,94 +99,111 @@ class Enqueue {
      * @return void
      */
     public function enqueueScripts( string $hook ): void {
-        // Only load on our plugin pages
-        if ( ! $this->isPluginPage( $hook ) ) {
-            return;
-        }
-
-        // Main admin JS
-        wp_enqueue_script(
-            'affiliate-product-showcase-admin',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin.js',
-            [ 'jquery' ],
-            self::VERSION,
-            true
-        );
-
-        // Localize script
-        wp_localize_script(
-            'affiliate-product-showcase-admin',
-            'affiliateProductShowcaseAdmin',
-            $this->getScriptData()
-        );
-
-        // Dashboard scripts
-        if ( $this->isDashboardPage( $hook ) ) {
-            wp_register_script(
-                'affiliate-product-showcase-dashboard',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
-                [ 'jquery', 'wp-util' ],
-                self::VERSION,
-                true
-            );
-            
-            // Add defer attribute for non-critical script (WordPress 6.3+)
-            wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
-            
-            wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
-        }
-
-        // Analytics scripts
-        if ( $this->isAnalyticsPage( $hook ) ) {
-            wp_register_script(
-                'affiliate-product-showcase-analytics',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
-                [ 'jquery', 'wp-util', 'chart.js' ],
-                self::VERSION,
-                true
-            );
-            
-            // Add defer attribute for non-critical script (WordPress 6.3+)
-            wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
-            
-            wp_enqueue_script( 'affiliate-product-showcase-analytics' );
-        }
-
-        // Settings scripts
-        if ( $this->isSettingsPage( $hook ) ) {
+        // Load on our plugin pages
+        if ( $this->isPluginPage( $hook ) ) {
+            // Main admin JS
             wp_enqueue_script(
-                'affiliate-product-showcase-settings',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
-                [ 'jquery', 'wp-util' ],
+                'affiliate-product-showcase-admin',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin.js',
+                [ 'jquery' ],
                 self::VERSION,
                 true
             );
-        }
 
-        // Product edit scripts
-        if ( $this->isProductEditPage( $hook ) ) {
+            // Localize script
+            wp_localize_script(
+                'affiliate-product-showcase-admin',
+                'affiliateProductShowcaseAdmin',
+                $this->getScriptData()
+            );
+
+            // Dashboard scripts
+            if ( $this->isDashboardPage( $hook ) ) {
+                wp_register_script(
+                    'affiliate-product-showcase-dashboard',
+                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
+                    [ 'jquery', 'wp-util' ],
+                    self::VERSION,
+                    true
+                );
+                
+                // Add defer attribute for non-critical script (WordPress 6.3+)
+                wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
+                
+                wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
+            }
+
+            // Analytics scripts
+            if ( $this->isAnalyticsPage( $hook ) ) {
+                wp_register_script(
+                    'affiliate-product-showcase-analytics',
+                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
+                    [ 'jquery', 'wp-util', 'chart.js' ],
+                    self::VERSION,
+                    true
+                );
+                
+                // Add defer attribute for non-critical script (WordPress 6.3+)
+                wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
+                
+                wp_enqueue_script( 'affiliate-product-showcase-analytics' );
+            }
+
+            // Settings scripts
+            if ( $this->isSettingsPage( $hook ) ) {
+                wp_enqueue_script(
+                    'affiliate-product-showcase-settings',
+                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
+                    [ 'jquery', 'wp-util' ],
+                    self::VERSION,
+                    true
+                );
+            }
+
+            // Product edit scripts
+            if ( $this->isProductEditPage( $hook ) ) {
+                wp_enqueue_script(
+                    'affiliate-product-showcase-product-edit',
+                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-edit.js',
+                    [ 'jquery', 'wp-util', 'media-upload' ],
+                    self::VERSION,
+                    true
+                );
+
+                // Media uploader
+                wp_enqueue_media();
+            }
+
+            // Color picker
+            if ( $this->isSettingsPage( $hook ) ) {
+                wp_enqueue_style( 'wp-color-picker' );
+                wp_enqueue_script( 'wp-color-picker' );
+            }
+
+            // Select2 for dropdowns
+            if ( $this->isProductEditPage( $hook ) ) {
+                wp_enqueue_style( 'select2' );
+                wp_enqueue_script( 'select2' );
+            }
+        }
+        
+        // Load on products list page to redirect "Add New" button
+        if ( $hook === 'edit-aps_product' ) {
             wp_enqueue_script(
-                'affiliate-product-showcase-product-edit',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-edit.js',
-                [ 'jquery', 'wp-util', 'media-upload' ],
+                'affiliate-product-showcase-products-redirect',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/products-redirect.js',
+                [ 'jquery' ],
                 self::VERSION,
                 true
             );
-
-            // Media uploader
-            wp_enqueue_media();
-        }
-
-        // Color picker
-        if ( $this->isSettingsPage( $hook ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-            wp_enqueue_script( 'wp-color-picker' );
-        }
-
-        // Select2 for dropdowns
-        if ( $this->isProductEditPage( $hook ) ) {
-            wp_enqueue_style( 'select2' );
-            wp_enqueue_script( 'select2' );
+            
+            wp_localize_script(
+                'affiliate-product-showcase-products-redirect',
+                'affiliateProductsRedirect',
+                [
+                    'customPageUrl' => admin_url( 'admin.php?page=affiliate-manager-add-product' )
+                ]
+            );
         }
     }
 
@@ -230,6 +248,260 @@ class Enqueue {
             .affiliate-product-showcase-stat-label {
                 color: #646970;
                 margin-top: 5px;
+            }
+            
+            /* WooCommerce-Style Product Form */
+            .aps-product-form {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            
+            /* Form Sections */
+            .aps-form-section {
+                background: #fff;
+                border: 1px solid #dcdcde;
+                border-radius: 4px;
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                overflow: hidden;
+            }
+            
+            .aps-section-title {
+                margin: 0;
+                padding: 12px 16px;
+                background: #f6f7f7;
+                border-bottom: 1px solid #dcdcde;
+                font-size: 14px;
+                font-weight: 600;
+                color: #1d2327;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .aps-section-title .dashicons {
+                width: 18px;
+                height: 18px;
+                font-size: 18px;
+                color: #646970;
+            }
+            
+            .aps-section-content {
+                padding: 20px;
+            }
+            
+            /* Grid Layout for 2-column sections */
+            .aps-grid-2 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            /* Field Styles */
+            .aps-field {
+                margin-bottom: 16px;
+            }
+            
+            .aps-field:last-child {
+                margin-bottom: 0;
+            }
+            
+            .aps-field label {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #1d2327;
+                line-height: 1.4;
+            }
+            
+            .aps-field-tip {
+                display: block;
+                font-size: 12px;
+                font-weight: 400;
+                color: #646970;
+                margin-top: 4px;
+                font-style: italic;
+            }
+            
+            .aps-field-required {
+                color: #d63638;
+                font-weight: 600;
+            }
+            
+            /* Input Styles */
+            .aps-input {
+                width: 100%;
+                padding: 8px 12px;
+                font-size: 14px;
+                line-height: 1.5;
+                color: #1d2327;
+                background: #fff;
+                border: 1px solid #8c8f94;
+                border-radius: 3px;
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                transition: all .2s;
+            }
+            
+            .aps-input:focus {
+                border-color: #2271b1;
+                box-shadow: 0 0 0 3px rgba(34, 113, 177, .1);
+                outline: none;
+            }
+            
+            .aps-input-required:focus {
+                border-color: #d63638;
+                box-shadow: 0 0 0 3px rgba(214, 99, 56, .1);
+            }
+            
+            /* Input Groups (for currency, percentage, etc.) */
+            .aps-input-group {
+                display: flex;
+                align-items: stretch;
+                width: 100%;
+            }
+            
+            .aps-input-group .aps-input {
+                flex: 1;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            
+            .aps-input-group .aps-input:focus {
+                z-index: 1;
+            }
+            
+            .aps-input-prefix,
+            .aps-input-suffix {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 12px;
+                background: #f6f7f7;
+                border: 1px solid #8c8f94;
+                color: #646970;
+                font-size: 13px;
+                font-weight: 500;
+                min-width: 50px;
+            }
+            
+            .aps-input-prefix {
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                border-right: none;
+            }
+            
+            .aps-input-suffix {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                border-left: none;
+            }
+            
+            /* Select Styles */
+            .aps-select {
+                width: 100%;
+                padding: 8px 36px 8px 12px;
+                font-size: 14px;
+                line-height: 1.5;
+                color: #1d2327;
+                background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23646970" d="M2 4l4 4 4-4"/></svg>') no-repeat right 12px center;
+                border: 1px solid #8c8f94;
+                border-radius: 3px;
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                appearance: none;
+                cursor: pointer;
+                transition: all .2s;
+            }
+            
+            .aps-select:focus {
+                border-color: #2271b1;
+                box-shadow: 0 0 0 3px rgba(34, 113, 177, .1);
+                outline: none;
+            }
+            
+            /* Checkbox Styles */
+            .aps-field-checkbox label {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+                user-select: none;
+            }
+            
+            .aps-field-checkbox input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                margin: 0;
+                cursor: pointer;
+            }
+            
+            /* Textarea Styles */
+            .aps-input-textarea {
+                min-height: 80px;
+                resize: vertical;
+                font-family: inherit;
+            }
+            
+            /* Dimensions Grid */
+            .aps-dimensions {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 16px;
+                margin-top: 16px;
+            }
+            
+            /* Section-specific styles */
+            .aps-dimensions .aps-field {
+                margin-bottom: 0;
+            }
+            
+            /* Responsive */
+            @media (max-width: 782px) {
+                .aps-grid-2 {
+                    grid-template-columns: 1fr;
+                    gap: 16px;
+                }
+                
+                .aps-dimensions {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                
+                .aps-form-section {
+                    margin-bottom: 16px;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .aps-dimensions {
+                    grid-template-columns: 1fr;
+                }
+                
+                .aps-input-group {
+                    flex-direction: column;
+                }
+                
+                .aps-input-group .aps-input {
+                    border-radius: 3px;
+                    border-top-left-radius: 3px;
+                    border-bottom-left-radius: 3px;
+                }
+                
+                .aps-input-prefix,
+                .aps-input-suffix {
+                    border-radius: 3px;
+                    width: 100%;
+                    padding: 6px 12px;
+                    border: 1px solid #8c8f94;
+                    background: #fff;
+                }
+            }
+            
+            /* Print styles */
+            @media print {
+                .aps-form-section {
+                    page-break-inside: avoid;
+                    box-shadow: none;
+                }
             }
         </style>
         <?php
@@ -313,17 +585,54 @@ class Enqueue {
             'restUrl'   => rest_url( 'affiliate-product-showcase/v1/' ),
             'restNonce' => wp_create_nonce( 'wp_rest' ),
             'strings'   => [
-                'confirmDelete'   => __( 'Are you sure you want to delete this item?', 'affiliate-product-showcase' ),
-                'saving'         => __( 'Saving...', 'affiliate-product-showcase' ),
-                'saved'          => __( 'Saved successfully!', 'affiliate-product-showcase' ),
-                'error'          => __( 'An error occurred. Please try again.', 'affiliate-product-showcase' ),
-                'uploadImage'    => __( 'Upload Image', 'affiliate-product-showcase' ),
-                'selectImage'    => __( 'Select Image', 'affiliate-product-showcase' ),
-                'removeImage'    => __( 'Remove Image', 'affiliate-product-showcase' ),
+                'confirmDelete' => __( 'Are you sure you want to delete this item?', 'affiliate-product-showcase' ),
+                'saving'       => __( 'Saving...', 'affiliate-product-showcase' ),
+                'saved'        => __( 'Saved successfully!', 'affiliate-product-showcase' ),
+                'error'         => __( 'An error occurred. Please try again.', 'affiliate-product-showcase' ),
+                'uploadImage'   => __( 'Upload Image', 'affiliate-product-showcase' ),
+                'selectImage'   => __( 'Select Image', 'affiliate-product-showcase' ),
+                'removeImage'   => __( 'Remove Image', 'affiliate-product-showcase' ),
             ],
             'settings'  => [
                 'restBase' => 'affiliate-product-showcase/v1',
             ],
         ];
+    }
+    
+    /**
+     * Print inline JavaScript to redirect "Add New" button
+     *
+     * @return void
+     */
+    public function printRedirectScript(): void {
+        global $pagenow;
+        
+        // Only on products list page
+        if ( $pagenow !== 'edit.php' || ! isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'aps_product' ) {
+            return;
+        }
+        ?>
+        <script>
+        jQuery(document).ready(function($) {
+            // Redirect "Add New" button to custom WooCommerce-style page
+            $('.page-title-action').each(function() {
+                const $button = $(this);
+                const href = $button.attr('href');
+                if (href && href.includes('post-new.php?post_type=aps_product')) {
+                    $button.attr('href', '<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-add-product')); ?>');
+                }
+            });
+            
+            // Also redirect top "Add New" link in admin menu
+            $('#menu-posts-aps_product .wp-submenu a').each(function() {
+                const $link = $(this);
+                const href = $link.attr('href');
+                if (href && href.includes('post-new.php?post_type=aps_product')) {
+                    $link.attr('href', '<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-add-product')); ?>');
+                }
+            });
+        });
+        </script>
+        <?php
     }
 }

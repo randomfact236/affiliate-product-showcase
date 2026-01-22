@@ -118,10 +118,10 @@ final class ProductService extends AbstractService {
 	}
 
 	/**
-	 * Boot the service
+	 * Boot service
 	 *
-	 * Initializes the service. Currently empty as all initialization
-	 * is handled in the constructor.
+	 * Initializes service. Currently empty as all initialization
+	 * is handled in constructor.
 	 *
 	 * @return void
 	 * @since 1.0.0
@@ -129,9 +129,9 @@ final class ProductService extends AbstractService {
 	public function boot(): void {}
 
 	/**
-	 * Register the product post type
+	 * Register product post type
 	 *
-	 * Registers the 'aps_product' custom post type with WordPress.
+	 * Registers 'aps_product' custom post type with WordPress.
 	 * Configures labels, capabilities, and REST API support.
 	 *
 	 * @return void
@@ -140,22 +140,25 @@ final class ProductService extends AbstractService {
 	 * @action init
 	 */
 	public function register_post_type(): void {
-		register_post_type(
+		// Debug: Log CPT registration
+		error_log( '[APS] Registering CPT: ' . Constants::CPT_PRODUCT );
+		
+		$result = register_post_type(
 			Constants::CPT_PRODUCT,
 			[
-			'labels' => [
-				'name'               => __( 'Products', Constants::TEXTDOMAIN ),
-				'singular_name'      => __( 'Product', Constants::TEXTDOMAIN ),
-				'menu_name'          => __( 'Affiliate Products', Constants::TEXTDOMAIN ),
-				'all_items'          => __( 'All Products', Constants::TEXTDOMAIN ),
-				'add_new_item'       => __( 'Add Product', Constants::TEXTDOMAIN ),
-				'edit_item'          => __( 'Edit Product', Constants::TEXTDOMAIN ),
-				'new_item'           => __( 'New Product', Constants::TEXTDOMAIN ),
-				'view_item'          => __( 'View Product', Constants::TEXTDOMAIN ),
-				'search_items'       => __( 'Search Products', Constants::TEXTDOMAIN ),
-				'not_found'          => __( 'No products found', Constants::TEXTDOMAIN ),
-				'not_found_in_trash' => __( 'No products found in trash', Constants::TEXTDOMAIN ),
-			],
+				'labels' => [
+					'name'               => __( 'Products', Constants::TEXTDOMAIN ),
+					'singular_name'      => __( 'Product', Constants::TEXTDOMAIN ),
+					'menu_name'          => __( 'Affiliate Products', Constants::TEXTDOMAIN ),
+					'all_items'          => __( 'All Products', Constants::TEXTDOMAIN ),
+					'add_new_item'       => __( 'Add Product', Constants::TEXTDOMAIN ),
+					'edit_item'          => __( 'Edit Product', Constants::TEXTDOMAIN ),
+					'new_item'           => __( 'New Product', Constants::TEXTDOMAIN ),
+					'view_item'          => __( 'View Product', Constants::TEXTDOMAIN ),
+					'search_items'       => __( 'Search Products', Constants::TEXTDOMAIN ),
+					'not_found'          => __( 'No products found', Constants::TEXTDOMAIN ),
+					'not_found_in_trash' => __( 'No products found in trash', Constants::TEXTDOMAIN ),
+				],
 				'public'              => true,
 				'show_in_rest'        => true,
 				'supports'            => [ 'title', 'editor', 'thumbnail' ],
@@ -169,6 +172,14 @@ final class ProductService extends AbstractService {
 				'taxonomies'          => [ Constants::TAX_CATEGORY, Constants::TAX_TAG, Constants::TAX_RIBBON ],
 			]
 		);
+		
+		// Debug: Check if CPT registered successfully
+		$registered = post_type_exists( Constants::CPT_PRODUCT );
+		error_log( '[APS] CPT registered: ' . ( $registered ? 'YES' : 'NO' ) );
+		
+		if ( ! $registered ) {
+			error_log( '[APS] ERROR: CPT registration failed!' );
+		}
 	}
 
 	/**
@@ -190,10 +201,10 @@ final class ProductService extends AbstractService {
 			Constants::TAX_CATEGORY,
 			Constants::CPT_PRODUCT,
 			[
-					'labels' => [
-						'name'                  => __( 'Categories', Constants::TEXTDOMAIN ),
-						'singular_name'         => __( 'Category', Constants::TEXTDOMAIN ),
-						'search_items'          => __( 'Search Categories', Constants::TEXTDOMAIN ),
+				'labels' => [
+					'name'                  => __( 'Categories', Constants::TEXTDOMAIN ),
+					'singular_name'         => __( 'Category', Constants::TEXTDOMAIN ),
+					'search_items'          => __( 'Search Categories', Constants::TEXTDOMAIN ),
 					'all_items'             => __( 'All Categories', Constants::TEXTDOMAIN ),
 					'parent_item'           => __( 'Parent Category', Constants::TEXTDOMAIN ),
 					'parent_item_colon'     => __( 'Parent Category:', Constants::TEXTDOMAIN ),
@@ -203,14 +214,14 @@ final class ProductService extends AbstractService {
 					'new_item_name'         => __( 'New Category Name', Constants::TEXTDOMAIN ),
 					'menu_name'             => __( 'Categories', Constants::TEXTDOMAIN ),
 				],
-				'hierarchical'               => true,
-				'public'                     => true,
-				'show_in_rest'               => true,
-				'show_ui'                    => true,
-				'show_admin_column'           => true,
-				'show_in_nav_menus'          => true,
-				'show_tagcloud'              => true,
-				'rewrite'                    => [ 'slug' => 'product-category' ],
+				'hierarchical'          => true,
+				'public'               => true,
+				'show_in_rest'         => true,
+				'show_ui'              => true,
+				'show_admin_column'      => true,
+				'show_in_nav_menus'     => true,
+				'show_tagcloud'         => true,
+				'rewrite'              => [ 'slug' => 'product-category' ],
 			]
 		);
 
@@ -230,14 +241,14 @@ final class ProductService extends AbstractService {
 					'new_item_name'         => __( 'New Tag Name', Constants::TEXTDOMAIN ),
 					'menu_name'             => __( 'Tags', Constants::TEXTDOMAIN ),
 				],
-				'hierarchical'               => false,
-				'public'                     => true,
-				'show_in_rest'               => true,
-				'show_ui'                    => true,
-				'show_admin_column'           => true,
-				'show_in_nav_menus'          => true,
-				'show_tagcloud'              => true,
-				'rewrite'                    => [ 'slug' => 'product-tag' ],
+				'hierarchical'          => false,
+				'public'               => true,
+				'show_in_rest'         => true,
+				'show_ui'              => true,
+				'show_admin_column'      => true,
+				'show_in_nav_menus'     => true,
+				'show_tagcloud'         => true,
+				'rewrite'              => [ 'slug' => 'product-tag' ],
 			]
 		);
 
@@ -257,14 +268,14 @@ final class ProductService extends AbstractService {
 					'new_item_name'         => __( 'New Ribbon Name', Constants::TEXTDOMAIN ),
 					'menu_name'             => __( 'Ribbons', Constants::TEXTDOMAIN ),
 				],
-				'hierarchical'               => false,
-				'public'                     => true,
-				'show_in_rest'               => true,
-				'show_ui'                    => true,
-				'show_admin_column'           => true,
-				'show_in_nav_menus'          => false,
-				'show_tagcloud'              => false,
-				'rewrite'                    => [ 'slug' => 'product-ribbon' ],
+				'hierarchical'          => false,
+				'public'               => true,
+				'show_in_rest'         => true,
+				'show_ui'              => true,
+				'show_admin_column'      => true,
+				'show_in_nav_menus'     => false,
+				'show_tagcloud'         => false,
+				'rewrite'              => [ 'slug' => 'product-ribbon' ],
 			]
 		);
 	}

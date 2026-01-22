@@ -136,6 +136,49 @@ After coding is complete:
 
 ---
 
+## 🔌 SEO Plugin Integration (Critical Requirement)
+
+**Status:** ⚠️ NOT STARTED - Must be implemented for all features
+
+**Important:** All product, category, tag, and ribbon features MUST be SEO-friendly and integrate seamlessly with popular SEO plugins.
+
+**Reference Document:** `plan/seo-plugin-integration-requirements.md`
+
+**Key Requirements:**
+- ✅ All post types SEO-friendly (standard WordPress fields)
+- ✅ SEO plugins auto-detect custom post types
+- ✅ Schema.org structured data generates automatically
+- ✅ Open Graph meta tags generate automatically
+- ✅ Twitter Card meta tags generate automatically
+- ✅ Integration hooks for SEO plugins work correctly
+- ✅ Semantic HTML structure on all templates
+- ✅ No conflicts with popular SEO plugins
+
+**Supported SEO Plugins:**
+- Yoast SEO
+- Rank Math SEO
+- All in One SEO Pack
+- SEOPress
+- The SEO Framework
+- Any WordPress-compliant SEO plugin
+
+**Implementation Files:**
+1. `src/Seo/SeoIntegration.php` (NEW)
+2. `src/Seo/SchemaGenerator.php` (NEW)
+3. `src/Seo/OpenGraphGenerator.php` (NEW)
+4. `src/Services/ProductService.php` (MODIFY)
+5. `src/Public/Public_.php` (MODIFY)
+6. `src/Public/SingleProduct.php` (MODIFY)
+
+**When to Implement:**
+- Before implementing product display features (Groups 12-15)
+- Before implementing category/tag display features
+- Before implementing product templates
+
+**See Full Details:** `plan/seo-plugin-integration-requirements.md`
+
+---
+
 ## 📋 Feature Groups (22 Groups)
 
 ### Group 1: Core Product Basics (Features 1-5)
