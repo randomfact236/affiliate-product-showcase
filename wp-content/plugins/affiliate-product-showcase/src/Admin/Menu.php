@@ -253,17 +253,19 @@ class Menu {
     public function reorderSubmenus(): void {
         global $submenu;
         
-        // Debug: Log that function is called
-        error_log( 'Menu::reorderSubmenus() called' );
-        
         // Check if our submenu exists
         if ( ! isset( $submenu['edit.php?post_type=aps_product'] ) ) {
-            error_log( 'Submenu not found for aps_product' );
             return;
         }
         
         $our_submenu = $submenu['edit.php?post_type=aps_product'];
-        error_log( 'Current submenu items: ' . print_r( $our_submenu, true ) );
+        
+        // DEBUG: Log all submenu items
+        error_log( '=== MENU REORDER DEBUG ===' );
+        error_log( 'Submenu items found: ' . count( $our_submenu ) );
+        foreach ( $our_submenu as $index => $item ) {
+            error_log( "Item {$index}: " . print_r( $item, true ) );
+        }
         
         $ordered_submenu = [];
         
@@ -283,43 +285,55 @@ class Menu {
             $url = $submenu_item[2];
             $title = $submenu_item[0] ?? '';
             
-            error_log( "Processing submenu item: {$title} -> {$url}" );
+            error_log( "Processing: {$title} -> {$url}" );
             
+            // All Products (main menu item)
             if ( $url === 'edit.php?post_type=aps_product' ) {
                 $all_products = $submenu_item;
-            } elseif ( strpos( $url, 'page=add-product' ) !== false ) {
+                error_log( "  → Matched: All Products" );
+            }
+            // Add Product (custom page)
+            elseif ( strpos( $url, 'page=add-product' ) !== false ) {
                 $add_product = $submenu_item;
-            } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_category' ) !== false ) {
+                error_log( "  → Matched: Add Product" );
+            }
+            // Category taxonomy
+            elseif ( strpos( $url, 'aps_category' ) !== false ) {
                 $category = $submenu_item;
-            } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_tag' ) !== false ) {
+                error_log( "  → Matched: Category" );
+            }
+            // Tags taxonomy
+            elseif ( strpos( $url, 'aps_tag' ) !== false ) {
                 $tags = $submenu_item;
-            } elseif ( strpos( $url, 'page=ribbon' ) !== false || strpos( $title, 'Ribbon' ) !== false ) {
+                error_log( "  → Matched: Tags" );
+            }
+            // Ribbon taxonomy
+            elseif ( strpos( $url, 'aps_ribbon' ) !== false ) {
                 $ribbon = $submenu_item;
-            } else {
+                error_log( "  → Matched: Ribbon" );
+            }
+            // Other items (keep at end)
+            else {
                 $other_items[] = $submenu_item;
+                error_log( "  → Other: {$title}" );
             }
         }
         
         // Build ordered submenu: All Products -> Add Product -> Category -> Tags -> Ribbon -> others
         if ( $all_products !== null ) {
             $ordered_submenu[] = $all_products;
-            error_log( 'Added All Products to ordered list' );
         }
         if ( $add_product !== null ) {
             $ordered_submenu[] = $add_product;
-            error_log( 'Added Add Product to ordered list' );
         }
         if ( $category !== null ) {
             $ordered_submenu[] = $category;
-            error_log( 'Added Category to ordered list' );
         }
         if ( $tags !== null ) {
             $ordered_submenu[] = $tags;
-            error_log( 'Added Tags to ordered list' );
         }
         if ( $ribbon !== null ) {
             $ordered_submenu[] = $ribbon;
-            error_log( 'Added Ribbon to ordered list' );
         }
         
         // Add remaining items
@@ -327,11 +341,10 @@ class Menu {
             $ordered_submenu[] = $other_item;
         }
         
-        error_log( 'Final ordered submenu: ' . print_r( $ordered_submenu, true ) );
+        error_log( 'Final ordered count: ' . count( $ordered_submenu ) );
+        error_log( '=== END MENU REORDER DEBUG ===' );
         
         // Update submenu with new order
         $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
-        
-        error_log( 'Submenu reordered successfully' );
     }
 }
