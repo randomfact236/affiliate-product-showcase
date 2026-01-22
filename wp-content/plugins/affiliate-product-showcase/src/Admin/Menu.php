@@ -116,7 +116,7 @@ class Menu {
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
 	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
-	 * Only adds custom "Add Product" menu, lets WordPress handle taxonomies
+	 * Reorders submenu array to match desired order
 	 *
 	 * @since 1.0.0
 	 * @return void
@@ -132,20 +132,44 @@ class Menu {
 			return;
 		}
 		
-		// Only add custom "Add Product" menu
-		// WordPress automatically handles Categories, Tags, and Ribbons
-		// from taxonomy registration - no need to remove/re-add them
+		// Get existing submenu items before any modifications
+		$existing_items = $submenu[ $parent ];
+		$reordered_items = [];
 		
-		// Check if "Add Product" already exists to avoid duplicates
-		$add_product_exists = false;
-		foreach ( $submenu[ $parent ] as $item ) {
-			if ( isset( $item[2] ) && $item[2] === 'add-product' ) {
-				$add_product_exists = true;
-				break;
+		// Debug: log current items
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$current_items = [];
+			foreach ( $existing_items as $item ) {
+				$current_items[] = isset( $item[2] ) ? $item[2] : 'unknown';
+			}
+			error_log( 'MENU REORDER: Current items: ' . implode( ', ', $current_items ) );
+		}
+		
+		// Define desired order with actual slugs
+		$desired_order = [
+			'edit.php?post_type=aps_product',                                        // All Products (main listing)
+			'add-product',                                                            // Add Product (custom)
+			'edit-tags.php?taxonomy=aps_category&post_type=aps_product',                // Categories
+			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product',                    // Tags
+			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product',                  // Ribbons
+		];
+		
+		// Build item lookup for faster access
+		$item_map = [];
+		foreach ( $existing_items as $item ) {
+			$slug = isset( $item[2] ) ? $item[2] : '';
+			$item_map[ $slug ] = $item;
+		}
+		
+		// Add items in desired order if they exist
+		foreach ( $desired_order as $slug ) {
+			if ( isset( $item_map[ $slug ] ) ) {
+				$reordered_items[] = $item_map[ $slug ];
 			}
 		}
 		
-		// Only add if not already present
+		// Add custom "Add Product" if not already present
+		$add_product_exists = isset( $item_map[ 'add-product' ] );
 		if ( ! $add_product_exists ) {
 			add_submenu_page(
 				$parent,
@@ -156,13 +180,26 @@ class Menu {
 				[ $this, 'renderAddProductPage' ]
 			);
 			
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'MENU REORDER: Add Product menu added successfully' );
+			// Re-fetch and add the new item
+			$existing_items = $submenu[ $parent ];
+			foreach ( $existing_items as $item ) {
+				if ( isset( $item[2] ) && $item[2] === 'add-product' ) {
+					// Insert Add Product after All Products (position 1)
+					array_splice( $reordered_items, 1, 0, [ $item ] );
+					break;
+				}
 			}
 		}
 		
+		// Update submenu with reordered items
+		$submenu[ $parent ] = $reordered_items;
+		
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'MENU REORDER: Total submenu items: ' . count( $submenu[ $parent ] ) );
+			$new_items = [];
+			foreach ( $reordered_items as $item ) {
+				$new_items[] = isset( $item[2] ) ? $item[2] : 'unknown';
+			}
+			error_log( 'MENU REORDER: Reordered items: ' . implode( ', ', $new_items ) );
 		}
 	}
 
