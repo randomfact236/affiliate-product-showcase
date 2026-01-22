@@ -20,6 +20,9 @@ class Menu {
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
 		
+		// Add custom "Add Product" submenu to Affiliate Products CPT (priority 10)
+		add_action( 'admin_menu', [ $this, 'addCustomSubmenus' ], 10 );
+		
 		// Redirect old form to new form
 		add_action( 'admin_init', [ $this, 'redirectOldAddNewForm' ] );
 		
@@ -29,7 +32,7 @@ class Menu {
 		// Also remove on submenu filter (extra protection)
 		add_filter( 'submenu_file', [ $this, 'removeDefaultAddNewFromSubmenu' ], 999 );
 		
-		// Reorder submenus - run last
+		// Reorder submenus - run last (after all menus registered)
 		add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], PHP_INT_MAX );
 		
 		// Add menu styling
@@ -113,10 +116,31 @@ class Menu {
 	}
 
 	/**
+	 * Add custom submenus to Affiliate Products CPT
+	 *
+	 * Registers custom "Add Product" submenu under Affiliate Products.
+	 * Called during admin_menu hook (priority 10) before reordering.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function addCustomSubmenus(): void {
+		// Add custom "Add Product" submenu to Affiliate Products CPT
+		add_submenu_page(
+			'edit.php?post_type=aps_product',
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			'edit_posts',
+			'add-product',
+			[ $this, 'renderAddProductPage' ]
+		);
+	}
+
+	/**
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
 	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
-	 * Keeps all items, just reorders them
+	 * Keeps all items, just reorders them (no adding/removing).
 	 *
 	 * @since 1.0.0
 	 * @return void
@@ -132,7 +156,7 @@ class Menu {
 			return;
 		}
 		
-		// Get existing submenu items
+		// Get existing submenu items (all already registered by this point)
 		$existing_items = $submenu[ $parent ];
 		
 		// Debug: log current items
@@ -158,20 +182,7 @@ class Menu {
 			}
 		}
 		
-		// 2. Add custom "Add Product" menu
-		add_submenu_page(
-			$parent,
-			__( 'Add Product', 'affiliate-product-showcase' ),
-			__( 'Add Product', 'affiliate-product-showcase' ),
-			'edit_posts',
-			'add-product',
-			[ $this, 'renderAddProductPage' ]
-		);
-		
-		// Re-fetch submenu after adding Add Product
-		$existing_items = $submenu[ $parent ];
-		
-		// Find and add Add Product item
+		// 2. Add custom "Add Product" menu (now already registered)
 		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
 			if ( $slug === 'add-product' && ! in_array( $index, $used_indices, true ) ) {
