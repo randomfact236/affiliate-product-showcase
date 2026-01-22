@@ -81,16 +81,6 @@ class Enqueue {
             );
         }
 
-        // Manage Products page styles
-        if ( $this->isManageProductsPage( $hook ) ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-admin-manage-products',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-manage-products.css',
-                [],
-                self::VERSION
-            );
-        }
-
         // Product edit styles
         if ( $this->isProductEditPage( $hook ) ) {
             wp_enqueue_style(
@@ -110,121 +100,126 @@ class Enqueue {
      */
     public function enqueueScripts( string $hook ): void {
         // Load on our plugin pages
-        if ( $this->isPluginPage( $hook ) ) {
-            // Main admin JS
-            wp_enqueue_script(
-                'affiliate-product-showcase-admin',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin.js',
-                [ 'jquery' ],
-                self::VERSION,
-                true
-            );
-
-            // Localize script
-            wp_localize_script(
-                'affiliate-product-showcase-admin',
-                'affiliateProductShowcaseAdmin',
-                $this->getScriptData()
-            );
-
-            // Dashboard scripts
-            if ( $this->isDashboardPage( $hook ) ) {
-                wp_register_script(
-                    'affiliate-product-showcase-dashboard',
-                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
-                    [ 'jquery', 'wp-util' ],
-                    self::VERSION,
-                    true
-                );
-                
-                // Add defer attribute for non-critical script (WordPress 6.3+)
-                wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
-                
-                wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
-            }
-
-            // Analytics scripts
-            if ( $this->isAnalyticsPage( $hook ) ) {
-                wp_register_script(
-                    'affiliate-product-showcase-analytics',
-                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
-                    [ 'jquery', 'wp-util', 'chart.js' ],
-                    self::VERSION,
-                    true
-                );
-                
-                // Add defer attribute for non-critical script (WordPress 6.3+)
-                wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
-                
-                wp_enqueue_script( 'affiliate-product-showcase-analytics' );
-            }
-
-            // Settings scripts
-            if ( $this->isSettingsPage( $hook ) ) {
-                wp_enqueue_script(
-                    'affiliate-product-showcase-settings',
-                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
-                    [ 'jquery', 'wp-util' ],
-                    self::VERSION,
-                    true
-                );
-            }
-
-            // Manage Products page scripts
-            if ( $this->isManageProductsPage( $hook ) ) {
-                wp_enqueue_script(
-                    'affiliate-product-showcase-admin-manage-products',
-                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin-manage-products.js',
-                    [ 'jquery' ],
-                    self::VERSION,
-                    true
-                );
-            }
-
-            // Product edit scripts
-            if ( $this->isProductEditPage( $hook ) ) {
-                wp_enqueue_script(
-                    'affiliate-product-showcase-product-edit',
-                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-edit.js',
-                    [ 'jquery', 'wp-util', 'media-upload' ],
-                    self::VERSION,
-                    true
-                );
-
-                // Media uploader
-                wp_enqueue_media();
-            }
-
-            // Color picker
-            if ( $this->isSettingsPage( $hook ) ) {
-                wp_enqueue_style( 'wp-color-picker' );
-                wp_enqueue_script( 'wp-color-picker' );
-            }
-
-            // Select2 for dropdowns
-            if ( $this->isProductEditPage( $hook ) ) {
-                wp_enqueue_style( 'select2' );
-                wp_enqueue_script( 'select2' );
-            }
+        if ( ! $this->isPluginPage( $hook ) ) {
+            return;
         }
-        
-        // Load on products list page to redirect "Add New" button
-        if ( $hook === 'edit-aps_product' ) {
-            wp_enqueue_script(
-                'affiliate-product-showcase-products-redirect',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/products-redirect.js',
-                [ 'jquery' ],
+
+        // Main admin JS
+        wp_enqueue_script(
+            'affiliate-product-showcase-admin',
+            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin.js',
+            [ 'jquery' ],
+            self::VERSION,
+            true
+        );
+
+        // Localize script
+        wp_localize_script(
+            'affiliate-product-showcase-admin',
+            'affiliateProductShowcaseAdmin',
+            $this->getScriptData()
+        );
+
+        // Dashboard scripts
+        if ( $this->isDashboardPage( $hook ) ) {
+            wp_register_script(
+                'affiliate-product-showcase-dashboard',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
+                [ 'jquery', 'wp-util' ],
                 self::VERSION,
                 true
             );
             
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
+        }
+
+        // Analytics scripts
+        if ( $this->isAnalyticsPage( $hook ) ) {
+            wp_register_script(
+                'affiliate-product-showcase-analytics',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
+                [ 'jquery', 'wp-util', 'chart.js' ],
+                self::VERSION,
+                true
+            );
+            
+            // Add defer attribute for non-critical script (WordPress 6.3+)
+            wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
+            
+            wp_enqueue_script( 'affiliate-product-showcase-analytics' );
+        }
+
+        // Settings scripts
+        if ( $this->isSettingsPage( $hook ) ) {
+            wp_enqueue_script(
+                'affiliate-product-showcase-settings',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
+                [ 'jquery', 'wp-util' ],
+                self::VERSION,
+                true
+            );
+        }
+
+        // Products list page scripts (enhanced "All Products" page)
+        if ( $this->isProductsListPage( $hook ) ) {
+            wp_enqueue_script(
+                'affiliate-product-showcase-admin-products-enhancer',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin-products-enhancer.js',
+                [ 'jquery' ],
+                self::VERSION,
+                true
+            );
+
             wp_localize_script(
-                'affiliate-product-showcase-products-redirect',
-                'affiliateProductsRedirect',
+                'affiliate-product-showcase-admin-products-enhancer',
+                'affiliateProductShowcaseAdminEnhancer',
                 [
-                    'customPageUrl' => admin_url( 'admin.php?page=affiliate-manager-add-product' )
+                    'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                    'nonce' => wp_create_nonce( 'affiliate-product-showcase-admin-bulk-action' ),
+                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
+                    'restNonce' => wp_create_nonce( 'wp_rest' ),
+                    'strings' => [
+                        'confirmDelete' => __( 'Are you sure you want to delete this item?', 'affiliate-product-showcase' ),
+                        'pleaseSelect' => __( 'Please select at least one product.', 'affiliate-product-showcase' ),
+                        'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
+                        'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
+                        'productDeleted' => __( 'Product deleted successfully.', 'affiliate-product-showcase' ),
+                        'deleteFailed' => __( 'Failed to delete product.', 'affiliate-product-showcase' ),
+                        'actionFailed' => __( 'Action failed.', 'affiliate-product-showcase' ),
+                        'requestFailed' => __( 'Request failed: ', 'affiliate-product-showcase' ),
+                        'dismissNotice' => __( 'Dismiss this notice.', 'affiliate-product-showcase' ),
+                    ],
                 ]
             );
+        }
+
+        // Product edit scripts
+        if ( $this->isProductEditPage( $hook ) ) {
+            wp_enqueue_script(
+                'affiliate-product-showcase-product-edit',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-edit.js',
+                [ 'jquery', 'wp-util', 'media-upload' ],
+                self::VERSION,
+                true
+            );
+
+            // Media uploader
+            wp_enqueue_media();
+        }
+
+        // Color picker
+        if ( $this->isSettingsPage( $hook ) ) {
+            wp_enqueue_style( 'wp-color-picker' );
+            wp_enqueue_script( 'wp-color-picker' );
+        }
+
+        // Select2 for dropdowns
+        if ( $this->isProductEditPage( $hook ) ) {
+            wp_enqueue_style( 'select2' );
+            wp_enqueue_script( 'select2' );
         }
     }
 
@@ -531,7 +526,7 @@ class Enqueue {
     /**
      * Check if current page is a plugin page
      *
-     * @param string $hook Current admin page hook
+     * @param string $hook Current page hook
      * @return bool
      */
     private function isPluginPage( string $hook ): bool {
@@ -595,13 +590,13 @@ class Enqueue {
     }
 
     /**
-     * Check if current page is manage products
+     * Check if current page is products list (for enhanced "All Products")
      *
      * @param string $hook Current admin page hook
      * @return bool
      */
-    private function isManageProductsPage( string $hook ): bool {
-        return isset( $_GET['page'] ) && $_GET['page'] === 'manage-products';
+    private function isProductsListPage( string $hook ): bool {
+        return $hook === 'edit-aps_product';
     }
 
     /**

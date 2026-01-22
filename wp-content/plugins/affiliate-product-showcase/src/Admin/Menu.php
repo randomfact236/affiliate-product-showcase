@@ -20,9 +20,6 @@ class Menu {
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
 		
-		// Add Manage Products page (under Affiliate Products CPT)
-		add_action( 'admin_menu', [ $this, 'addManageProductsPage' ], 10 );
-		
 		// Add custom "Add Product" submenu to Affiliate Products CPT (priority 10)
 		add_action( 'admin_menu', [ $this, 'addCustomSubmenus' ], 10 );
 		
@@ -105,27 +102,6 @@ class Menu {
 	}
 	
 	/**
-	 * Add Manage Products page to Affiliate Products CPT
-	 *
-	 * Registers custom "Manage Products" submenu under Affiliate Products.
-	 * This replaces the default WordPress "All Products" page with our custom table view.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function addManageProductsPage(): void {
-		// Add custom "Manage Products" submenu to Affiliate Products CPT
-		add_submenu_page(
-			'edit.php?post_type=aps_product',
-			__( 'Manage Products', 'affiliate-product-showcase' ),
-			__( 'Manage Products', 'affiliate-product-showcase' ),
-			'edit_posts',
-			'manage-products',
-			[ $this, 'renderManageProductsPage' ]
-		);
-	}
-	
-	/**
 	 * Redirect old default Add New form to our custom Add Product page
 	 *
 	 * @return void
@@ -134,7 +110,7 @@ class Menu {
 		global $pagenow, $typenow;
 		
 		if ( $pagenow === 'post-new.php' && $typenow === 'aps_product' ) {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=aps_product&page=add-product' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product' ) );
 			exit;
 		}
 	}
@@ -163,7 +139,7 @@ class Menu {
 	/**
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
-	 * Desired order: Manage Products, All Products, Add Product, Categories, Tags, Ribbons
+	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
 	 * Keeps all items, just reorders them (no adding/removing).
 	 *
 	 * @since 1.0.0
@@ -196,17 +172,7 @@ class Menu {
 		$reordered_items = [];
 		$used_indices = [];
 		
-		// 1. Keep "Manage Products" (manage-products) - it's our custom page
-		foreach ( $existing_items as $index => $item ) {
-			$slug = isset( $item[2] ) ? $item[2] : '';
-			if ( $slug === 'manage-products' ) {
-				$reordered_items[] = $item;
-				$used_indices[] = $index;
-				break;
-			}
-		}
-		
-		// 2. Keep "All Products" (edit.php?post_type=aps_product) - it's the main listing
+		// 1. Keep "All Products" (edit.php?post_type=aps_product) - it's the main listing
 		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
 			if ( $slug === 'edit.php?post_type=aps_product' ) {
@@ -216,7 +182,7 @@ class Menu {
 			}
 		}
 		
-		// 3. Add custom "Add Product" menu (now already registered)
+		// 2. Add custom "Add Product" menu (now already registered)
 		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
 			if ( $slug === 'add-product' && ! in_array( $index, $used_indices, true ) ) {
@@ -226,7 +192,7 @@ class Menu {
 			}
 		}
 		
-		// 4. Add remaining items in desired order (Categories, Tags, Ribbons)
+		// 3. Add remaining items in desired order (Categories, Tags, Ribbons)
 		$desired_taxonomy_order = [
 			'edit-tags.php?taxonomy=aps_category&post_type=aps_product', // Categories
 			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product',      // Tags
@@ -245,7 +211,7 @@ class Menu {
 			}
 		}
 		
-		// 5. Add any remaining items that weren't in desired order (don't lose anything)
+		// 4. Add any remaining items that weren't in desired order (don't lose anything)
 		foreach ( $existing_items as $index => $item ) {
 			if ( ! in_array( $index, $used_indices, true ) ) {
 				$reordered_items[] = $item;
@@ -285,18 +251,9 @@ class Menu {
     }
 
     /**
-     * Render manage products page (custom table view)
-     *
-     * @since 1.0.0
-     * @return void
-     */
-    public function renderManageProductsPage(): void {
-        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/manage-products-page.php' );
-    }
-
-    /**
      * Render add product page (custom WooCommerce-style editor)
      *
+     * @since 1.0.0
      * @return void
      */
     public function renderAddProductPage(): void {
@@ -306,6 +263,7 @@ class Menu {
     /**
      * Render help page
      *
+     * @since 1.0.0
      * @return void
      */
     public function renderHelpPage(): void {
@@ -423,15 +381,6 @@ class Menu {
      */
     public static function getHelpUrl(): string {
         return self::getPageUrl( 'help' );
-    }
-
-    /**
-     * Get manage products URL
-     *
-     * @return string
-     */
-    public static function getManageProductsUrl(): string {
-        return admin_url( 'edit.php?post_type=aps_product&page=manage-products' );
     }
 
     /**
