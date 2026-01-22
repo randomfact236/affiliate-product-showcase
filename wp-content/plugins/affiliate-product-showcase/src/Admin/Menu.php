@@ -17,11 +17,17 @@ class Menu {
 	const MENU_SLUG = 'affiliate-manager';
 
 	public function __construct() {
+		// Add top-level Affiliate Manager menu (priority 10)
+		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
+		
 		// Redirect old form to new form
 		add_action( 'admin_init', [ $this, 'redirectOldAddNewForm' ] );
 		
-		// Remove default Add New - run VERY late
+		// Remove default Add New - run VERY late after admin_menu
 		add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], PHP_INT_MAX );
+		
+		// Also remove on submenu filter (extra protection)
+		add_filter( 'submenu_file', [ $this, 'removeDefaultAddNewFromSubmenu' ], 999 );
 		
 		// Reorder submenus - run last
 		add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], PHP_INT_MAX );
@@ -32,6 +38,64 @@ class Menu {
 		// Enable custom menu ordering
 		add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
+	}
+
+	/**
+	 * Add top-level Affiliate Manager menu with subpages
+	 *
+	 * Creates separate "Affiliate Manager" menu for plugin management
+	 * separate from "Affiliate Products" (CPT) menu for content.
+	 *
+	 * Structure:
+	 * - Affiliate Manager (top-level)
+	 *   - Dashboard
+	 *   - Settings
+	 *   - Help
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function addMenuPages(): void {
+		// Main top-level menu: Affiliate Manager
+		add_menu_page(
+			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
+			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG,
+			[ $this, 'renderDashboardPage' ],
+			'dashicons-admin-generic',
+			56
+		);
+
+		// Dashboard submenu (same slug as parent = no duplicate)
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Dashboard', 'affiliate-product-showcase' ),
+			__( 'Dashboard', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG,
+			[ $this, 'renderDashboardPage' ]
+		);
+
+		// Settings submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Settings', 'affiliate-product-showcase' ),
+			__( 'Settings', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG . '-settings',
+			[ $this, 'renderSettingsPage' ]
+		);
+
+		// Help submenu
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Help', 'affiliate-product-showcase' ),
+			__( 'Help', 'affiliate-product-showcase' ),
+			'manage_options',
+			self::MENU_SLUG . '-help',
+			[ $this, 'renderHelpPage' ]
+		);
 	}
 	
 	/**
@@ -119,8 +183,19 @@ class Menu {
 	}
 
     /**
+     * Render dashboard page
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function renderDashboardPage(): void {
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/dashboard-page.php' );
+    }
+
+    /**
      * Render settings page
      *
+     * @since 1.0.0
      * @return void
      */
     public function renderSettingsPage(): void {
@@ -146,14 +221,15 @@ class Menu {
     }
 
     /**
-     * Add custom menu icons
+     * Add custom menu icons styling
      *
+     * @since 1.0.0
      * @return void
      */
     public function addMenuIcons(): void {
         ?>
         <style>
-            #adminmenu .toplevel_page_affiliate-product-showcase .wp-menu-image img {
+            #adminmenu .toplevel_page_affiliate-manager .wp-menu-image img {
                 width: 20px;
                 height: 20px;
                 padding: 5px 0;
@@ -169,7 +245,7 @@ class Menu {
      * created for custom post types. We have our custom "Add Product"
      * submenu instead (just like WooCommerce does).
      *
-     * Uses dual approach: WordPress helper + manual array cleanup
+     * Uses triple approach: WordPress helper + manual array cleanup + late execution
      *
      * @return void
      */
@@ -194,6 +270,30 @@ class Menu {
                 }
             }
         }
+        
+        // Re-index array to prevent gaps
+        if ( isset( $submenu[ $parent_slug ] ) ) {
+            $submenu[ $parent_slug ] = array_values( $submenu[ $parent_slug ] );
+        }
+    }
+    
+    /**
+     * Remove default "Add New" from submenu filter (extra protection)
+     *
+     * Additional layer to prevent default "Add New" from showing
+     * when WordPress renders the menu.
+     *
+     * @param string $submenu_file Current submenu file
+     * @return string Modified submenu file
+     */
+    public function removeDefaultAddNewFromSubmenu( $submenu_file ) {
+        // Check if we're on the Add New page
+        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'aps_product' ) {
+            if ( isset( $_GET['page'] ) && $_GET['page'] === 'add-product' ) {
+                return 'add-product'; // Force our custom Add Product
+            }
+        }
+        return $submenu_file;
     }
 
     /**
