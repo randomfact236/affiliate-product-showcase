@@ -45,7 +45,7 @@ class Menu {
 			$parent,
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
-			'manage_options',
+			'edit_posts',
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
