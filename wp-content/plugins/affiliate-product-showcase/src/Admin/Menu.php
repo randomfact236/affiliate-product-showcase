@@ -21,14 +21,17 @@ class Menu {
 	 */
 	public const MENU_SLUG = 'affiliate-manager';
 
-    /**
-     * Constructor
-     */
+	/**
+	 * Constructor
+	 */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'addMenuPages' ] );
         add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
         add_filter( 'custom_menu_order', '__return_true' );
         add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
+        
+        // Redirect default CPT "Add New" to our custom WooCommerce-style page
+        add_action( 'load-post-new.php', [ $this, 'redirectToCustomAddPage' ] );
     }
 
 	/**
@@ -37,6 +40,16 @@ class Menu {
 	 * @return void
 	 */
 	public function addMenuPages(): void {
+		// Add Product submenu under Affiliate Products CPT
+		add_submenu_page(
+			'edit.php?post_type=aps_product',
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			'manage_options',
+			'add-product',
+			[ $this, 'renderAddProductPage' ]
+		);
+
 		// Main menu page - Affiliate Manager (plugin settings)
 		add_menu_page(
 			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
@@ -56,16 +69,6 @@ class Menu {
 			'manage_options',
 			self::MENU_SLUG,
 			[ $this, 'renderDashboardPage' ]
-		);
-
-		// Analytics submenu
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Analytics', 'affiliate-product-showcase' ),
-			__( 'Analytics', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG . '-analytics',
-			[ $this, 'renderAnalyticsPage' ]
 		);
 
 		// Settings submenu
@@ -95,7 +98,7 @@ class Menu {
      * @return void
      */
     public function renderDashboardPage(): void {
-        include AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_DIR . 'src/Admin/partials/dashboard-page.php';
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/dashboard-page.php' );
     }
 
     /**
@@ -104,7 +107,7 @@ class Menu {
      * @return void
      */
     public function renderAnalyticsPage(): void {
-        include AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_DIR . 'src/Admin/partials/analytics-page.php';
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/analytics-page.php' );
     }
 
     /**
@@ -113,7 +116,16 @@ class Menu {
      * @return void
      */
     public function renderSettingsPage(): void {
-        include AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_DIR . 'src/Admin/partials/settings-page.php';
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/settings-page.php' );
+    }
+
+    /**
+     * Render add product page (custom WooCommerce-style editor)
+     *
+     * @return void
+     */
+    public function renderAddProductPage(): void {
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/add-product-page.php' );
     }
 
     /**
@@ -122,7 +134,7 @@ class Menu {
      * @return void
      */
     public function renderHelpPage(): void {
-        include AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_DIR . 'src/Admin/partials/help-page.php';
+        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/help-page.php' );
     }
 
     /**
@@ -162,15 +174,6 @@ class Menu {
     }
 
     /**
-     * Get analytics URL
-     *
-     * @return string
-     */
-    public static function getAnalyticsUrl(): string {
-        return self::getPageUrl( 'analytics' );
-    }
-
-    /**
      * Get settings URL
      *
      * @return string
@@ -186,6 +189,15 @@ class Menu {
      */
     public static function getHelpUrl(): string {
         return self::getPageUrl( 'help' );
+    }
+
+    /**
+     * Get add product URL (under Affiliate Products CPT menu)
+     *
+     * @return string
+     */
+    public static function getAddProductUrl(): string {
+        return admin_url( 'edit.php?post_type=aps_product&page=add-product' );
     }
 
     /**
@@ -211,5 +223,23 @@ class Menu {
         array_splice( $menu_order, $products_key + 1, 0, [ self::MENU_SLUG ] );
         
         return $menu_order;
+    }
+    
+    /**
+     * Redirect default CPT "Add New" page to our custom WooCommerce-style page
+     *
+     * This ensures users always see the beautiful new form instead of the
+     * WordPress default edit page when clicking "Add New" under Affiliate Products.
+     *
+     * @return void
+     */
+    public function redirectToCustomAddPage(): void {
+        // Check if this is aps_product CPT "Add New" page
+        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'aps_product' ) {
+            // Redirect to edit.php?post_type=aps_product&page=add-product
+            $custom_page_url = admin_url( 'edit.php?post_type=aps_product&page=add-product' );
+            wp_redirect( $custom_page_url );
+            exit;
+        }
     }
 }

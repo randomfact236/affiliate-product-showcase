@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Admin\Admin;
+use AffiliateProductShowcase\Admin\Menu;
+use AffiliateProductShowcase\Admin\ProductFormHandler;
 use AffiliateProductShowcase\Admin\Settings;
 use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Assets\Manifest;
@@ -109,6 +111,8 @@ final class ServiceProvider implements ServiceProviderInterface {
 
 			// Admin
 			Settings::class,
+			Menu::class,
+			ProductFormHandler::class,
 			Admin::class,
 
 			// Public
@@ -199,10 +203,16 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// Admin (Shared - Request Scope)
 		// ============================================================================
 		$this->getContainer()->addShared( Settings::class );
+		$this->getContainer()->addShared( Menu::class );
+		$this->getContainer()->addShared( ProductFormHandler::class )
+			->addArgument( ProductRepository::class )
+			->addArgument( ProductFactory::class );
 		$this->getContainer()->addShared( Admin::class )
 			->addArgument( Assets::class )
 			->addArgument( ProductService::class )
-			->addArgument( Headers::class );
+			->addArgument( Headers::class )
+			->addArgument( Menu::class )
+			->addArgument( ProductFormHandler::class );
 
 		// ============================================================================
 		// Public (Shared - Request Scope)
