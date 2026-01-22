@@ -155,7 +155,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<?php esc_html_e( 'Short Description', 'affiliate-product-showcase' ); ?>
 						<span class="required">*</span>
 					</label>
-					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea"
+					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea aps-full-page"
 							  rows="6" maxlength="200"
 							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required></textarea>
 					<div class="word-counter">
@@ -168,17 +168,12 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 			<section id="features" class="aps-section">
 				<h2 class="section-title"><?php esc_html_e( 'FEATURE LIST', 'affiliate-product-showcase' ); ?></h2>
 				
-				<div class="aps-grid-2">
-					<div class="aps-field-group">
-						<label for="aps-new-feature"><?php esc_html_e( 'Add new feature', 'affiliate-product-showcase' ); ?></label>
-						<input type="text" id="aps-new-feature" class="aps-input"
-							   placeholder="<?php esc_attr_e( 'Enter feature...', 'affiliate-product-showcase' ); ?>">
-					</div>
-					<div class="aps-field-group" style="display:flex; align-items:flex-end;">
-						<button type="button" class="aps-btn aps-btn-secondary" id="aps-add-feature">
-							<i class="fas fa-plus"></i> <?php esc_html_e( 'Add', 'affiliate-product-showcase' ); ?>
-						</button>
-					</div>
+				<div class="aps-feature-list-input-group">
+					<input type="text" id="aps-new-feature" class="aps-input"
+						   placeholder="<?php esc_attr_e( 'Add new feature...', 'affiliate-product-showcase' ); ?>">
+					<button type="button" class="aps-btn aps-btn-primary" id="aps-add-feature">
+						<i class="fas fa-plus"></i> <?php esc_html_e( 'Add', 'affiliate-product-showcase' ); ?>
+					</button>
 				</div>
 				
 				<div class="aps-features-list" id="aps-features-list">
@@ -505,8 +500,36 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 }
 
 .aps-textarea {
-	min-height: 120px;
+	min-height: 200px;
 	resize: vertical;
+	width: 100%;
+}
+
+/* Full Page Textarea - Responsive */
+.aps-textarea.aps-full-page {
+	width: 100%;
+	min-height: 200px;
+	resize: vertical;
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.6;
+	padding: 12px;
+}
+
+@media (max-width: 768px) {
+	.aps-textarea.aps-full-page {
+		min-height: 150px;
+		font-size: 13px;
+		padding: 10px;
+	}
+}
+
+@media (max-width: 480px) {
+	.aps-textarea.aps-full-page {
+		min-height: 120px;
+		font-size: 12px;
+		padding: 8px;
+	}
 }
 
 .aps-select {
@@ -542,9 +565,14 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 }
 
 .aps-tags-group {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-	gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-top: 10px;
+}
+
+.aps-tags-group .aps-checkbox-label {
+	flex: 0 0 auto;
 }
 
 /* Grid Layouts */
@@ -697,36 +725,59 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 }
 
 /* Features List */
+.aps-feature-list-input-group {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+
+.aps-feature-list-input-group .aps-input {
+	flex-grow: 1;
+}
+
 .aps-features-list {
-	margin-top: 15px;
+	border: 1px solid var(--aps-border);
+	border-radius: 4px;
+	background: #fff;
 	max-height: 300px;
 	overflow-y: auto;
+	margin-top: 15px;
 }
 
 .aps-feature-item {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding: 12px 15px;
-	background: #f9f9f9;
-	border: 1px solid var(--aps-border);
-	border-radius: 4px;
-	margin-bottom: 10px;
-	transition: all .2s;
+	justify-content: space-between;
+	padding: 10px 15px;
+	border-bottom: 1px solid #eee;
+	background: #fff;
+	transition: background .2s;
+}
+
+.aps-feature-item:last-child {
+	border-bottom: none;
 }
 
 .aps-feature-item:hover {
-	background: #f6f7f7;
+	background: #f8f9f9;
 }
 
 .aps-feature-item.highlighted {
 	background: #e6f0f5;
-	border-color: var(--aps-primary);
-	font-weight: 600;
+}
+
+.aps-feature-item.highlighted .feature-text {
+	font-weight: bold;
+	color: var(--aps-primary);
+	background: #e6f0f5;
+	padding: 2px 6px;
+	border-radius: 3px;
 }
 
 .aps-feature-item .feature-text {
-	flex: 1;
+	flex-grow: 1;
+	margin-right: 15px;
+	font-size: 14px;
 }
 
 .aps-feature-item .feature-actions {
@@ -736,23 +787,33 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 
 .aps-feature-item .feature-actions button {
 	background: none;
-	border: none;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
-	padding: 5px;
 	color: var(--aps-muted);
-	transition: color .2s;
+	transition: all .2s;
 }
 
 .aps-feature-item .feature-actions button:hover {
-	color: var(--aps-primary);
+	background: #e0e0e0;
+	color: var(--aps-text);
 }
 
 .aps-feature-item .feature-actions button.highlight-btn:hover {
-	color: var(--aps-primary);
+	background: var(--aps-primary);
+	color: #fff;
+	border-color: var(--aps-primary);
 }
 
 .aps-feature-item .feature-actions button.delete-btn:hover {
+	background: #fee;
 	color: var(--aps-danger);
+	border-color: #fcc;
 }
 
 /* Word Counter */
