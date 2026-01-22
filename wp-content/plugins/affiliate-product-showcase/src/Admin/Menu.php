@@ -116,7 +116,7 @@ class Menu {
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
 	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
-	 * Reorders submenu array to match desired order
+	 * Keeps all items, just reorders them
 	 *
 	 * @since 1.0.0
 	 * @return void
@@ -132,9 +132,8 @@ class Menu {
 			return;
 		}
 		
-		// Get existing submenu items before any modifications
+		// Get existing submenu items
 		$existing_items = $submenu[ $parent ];
-		$reordered_items = [];
 		
 		// Debug: log current items
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -145,31 +144,30 @@ class Menu {
 			error_log( 'MENU REORDER: Current items: ' . implode( ', ', $current_items ) );
 		}
 		
-		// Define desired order with actual slugs
-		$desired_order = [
-			'edit.php?post_type=aps_product',                                        // All Products (main listing)
-			'add-product',                                                            // Add Product (custom)
-			'edit-tags.php?taxonomy=aps_category&post_type=aps_product',                // Categories
-			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product',                    // Tags
-			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product',                  // Ribbons
-		];
+		// Keep ALL existing items, just reorder them
+		$reordered_items = [];
+		$used_indices = [];
 		
-		// Build item lookup for faster access
-		$item_map = [];
-		foreach ( $existing_items as $item ) {
+		// 1. Keep "All Products" (edit.php?post_type=aps_product) - it's the main listing
+		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
-			$item_map[ $slug ] = $item;
-		}
-		
-		// Add items in desired order if they exist
-		foreach ( $desired_order as $slug ) {
-			if ( isset( $item_map[ $slug ] ) ) {
-				$reordered_items[] = $item_map[ $slug ];
+			if ( $slug === 'edit.php?post_type=aps_product' ) {
+				$reordered_items[] = $item;
+				$used_indices[] = $index;
+				break;
 			}
 		}
 		
-		// Add custom "Add Product" if not already present
-		$add_product_exists = isset( $item_map[ 'add-product' ] );
+		// 2. Add custom "Add Product" if not already present
+		$add_product_exists = false;
+		foreach ( $existing_items as $item ) {
+			$slug = isset( $item[2] ) ? $item[2] : '';
+			if ( $slug === 'add-product' ) {
+				$add_product_exists = true;
+				break;
+			}
+		}
+		
 		if ( ! $add_product_exists ) {
 			add_submenu_page(
 				$parent,
@@ -179,15 +177,31 @@ class Menu {
 				'add-product',
 				[ $this, 'renderAddProductPage' ]
 			);
-			
-			// Re-fetch and add the new item
-			$existing_items = $submenu[ $parent ];
-			foreach ( $existing_items as $item ) {
-				if ( isset( $item[2] ) && $item[2] === 'add-product' ) {
-					// Insert Add Product after All Products (position 1)
-					array_splice( $reordered_items, 1, 0, [ $item ] );
+		}
+		
+		// 3. Add remaining items in desired order (Categories, Tags, Ribbons)
+		$desired_taxonomy_order = [
+			'edit-tags.php?taxonomy=aps_category&post_type=aps_product', // Categories
+			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product',      // Tags
+			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product',    // Ribbons
+		];
+		
+		foreach ( $desired_taxonomy_order as $desired_slug ) {
+			foreach ( $existing_items as $index => $item ) {
+				$slug = isset( $item[2] ) ? $item[2] : '';
+				// Match if slug starts with desired slug (handles query string variations)
+				if ( $slug === $desired_slug && ! in_array( $index, $used_indices, true ) ) {
+					$reordered_items[] = $item;
+					$used_indices[] = $index;
 					break;
 				}
+			}
+		}
+		
+		// 4. Add any remaining items that weren't in desired order (don't lose anything)
+		foreach ( $existing_items as $index => $item ) {
+			if ( ! in_array( $index, $used_indices, true ) ) {
+				$reordered_items[] = $item;
 			}
 		}
 		
