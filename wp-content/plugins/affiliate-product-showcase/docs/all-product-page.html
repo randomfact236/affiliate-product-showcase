@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eaeaea;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+        .content {
+            padding: 25px 30px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3451d1;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Counts Section */
+        .counts-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .count-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            font-weight: 500;
+        }
+
+        .count-number {
+            font-weight: 700;
+            font-size: 18px;
+            color: #4361ee;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-control {
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            min-width: 160px;
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .search-input {
+            min-width: 250px;
+        }
+
+        .select-action {
+            min-width: 150px;
+        }
+
+        .sort-select {
+            min-width: 180px;
+        }
+
+        .btn-clear {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-clear:hover {
+            background-color: #5a6268;
+        }
+
+        /* Table Section */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .products-table thead {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .products-table th {
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            white-space: nowrap;
+        }
+
+        .products-table tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s;
+        }
+
+        .products-table tbody tr:hover {
+            background-color: #f8fbff;
+        }
+
+        .products-table td {
+            padding: 14px 12px;
+            vertical-align: middle;
+        }
+
+        .checkbox-cell {
+            width: 30px;
+            text-align: center;
+        }
+
+        .checkbox-cell input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .num-cell {
+            width: 50px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .logo-cell {
+            width: 70px;
+            text-align: center;
+        }
+
+        .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            margin: 0 auto;
+        }
+
+        .product-cell {
+            min-width: 200px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #212529;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .product-actions a {
+            color: #4361ee;
+            text-decoration: none;
+        }
+
+        .product-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .product-actions a.delete {
+            color: #dc3545;
+        }
+
+        .category-cell, .tags-cell, .ribbon-cell {
+            min-width: 120px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .badge-default {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .badge-featured {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .featured-cell {
+            text-align: center;
+            font-size: 18px;
+            color: #ffc107;
+        }
+
+        .price-cell {
+            min-width: 120px;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .price-discounted {
+            font-weight: 600;
+            color: #dc3545;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        .status-cell {
+            min-width: 120px;
+        }
+
+        .status-published {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .status-draft {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        .status-trash {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        /* Sample Row Styling */
+        .sample-row {
+            background-color: #f8fbff;
+        }
+
+        .sample-row:hover {
+            background-color: #edf5ff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .action-buttons, .counts-section, .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .filter-control, .btn-clear {
+                width: 100%;
+            }
+
+            .btn-clear {
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px 15px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .products-table {
+                font-size: 13px;
+            }
+
+            .products-table th, .products-table td {
+                padding: 10px 8px;
+            }
+
+            .product-name {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Manage Products</h1>
+            <p>Quick overview of your catalog with actions, filters, and bulk selection.</p>
+        </div>
+
+        <div class="content">
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <span>+</span> Add New Product
+                </button>
+                <button class="btn btn-danger">
+                    <span>🗑️</span> Trash
+                </button>
+                <button class="btn btn-secondary">
+                    <span>📤</span> Bulk Upload
+                </button>
+                <button class="btn btn-secondary">
+                    <span>🔗</span> Check Links
+                </button>
+            </div>
+
+            <!-- Counts Section -->
+            <div class="counts-section">
+                <div class="count-item">
+                    <span class="count-number">5</span> ALL
+                </div>
+                <div class="count-item">
+                    <span class="count-number">1</span> PUBLISHED
+                </div>
+                <div class="count-item">
+                    <span class="count-number">2</span> DRAFT
+                </div>
+                <div class="count-item">
+                    <span class="count-number">0</span> TRASH
+                </div>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <select class="filter-control select-action">
+                        <option>Select action</option>
+                        <option>Edit</option>
+                        <option>Delete</option>
+                        <option>Export</option>
+                    </select>
+                    <input type="text" class="filter-control search-input" placeholder="Search products...">
+                    <select class="filter-control">
+                        <option>All Categories</option>
+                        <option>Electronics</option>
+                        <option>Clothing</option>
+                        <option>Home & Garden</option>
+                    </select>
+                    <select class="filter-control sort-select">
+                        <option>Latest <- Oldest</option>
+                        <option>Oldest <- Latest</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                    <select class="filter-control">
+                        <option>Show Featured</option>
+                        <option>Show All</option>
+                        <option>Featured Only</option>
+                    </select>
+                </div>
+                <button class="btn-clear">Clear filters</button>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-container">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"><input type="checkbox"></th>
+                            <th class="num-cell">#</th>
+                            <th class="logo-cell">Logo</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Tags</th>
+                            <th>Ribbon</th>
+                            <th class="featured-cell">Featured</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample Row -->
+                        <tr class="sample-row">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td class="num-cell">2</td>
+                            <td class="logo-cell">
+                                <div class="logo-placeholder">IMG</div>
+                            </td>
+                            <td class="product-cell">
+                                <div class="product-name">demo2 five</div>
+                                <div class="product-actions">
+                                    <a href="#">ID #2</a> • 
+                                    <a href="#">Edit</a> • 
+                                    <a href="#" class="delete">Delete</a>
+                                </div>
+                            </td>
+                            <td class="category-cell">
+                                <span class="badge badge-default">xsacsac</span>
+                            </td>
+                            <td class="tags-cell">
+                                <span class="badge badge-default">cewer</span>
+                                <span class="badge badge-default">Default</span>
+                            </td>
+                            <td class="ribbon-cell">
+                                <span class="badge badge-featured">7777</span>
+                            </td>
+                            <td class="featured-cell">★</td>
+                            <td class="price-cell">
+                                <div class="price-original">$50</div>
+                                <div class="price-discounted">$55 <span class="discount-badge">9% OFF</span></div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="status-published">PUBLISHED</span>
+                            </td>
+                        </tr>
+                        <!-- Additional Sample Rows -->
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td class="num-cell">3</td>
+                            <td class="logo-cell">
+                                <div class="logo-placeholder">IMG</div>
+                            </td>
+                            <td class="product-cell">
+                                <div class="product-name">Product Alpha</div>
+                                <div class="product-actions">
+                                    <a href="#">ID #3</a> • 
+                                    <a href="#">Edit</a> • 
+                                    <a href="#" class="delete">Delete</a>
+                                </div>
+                            </td>
+                            <td class="category-cell">
+                                <span class="badge badge-default">Electronics</span>
+                            </td>
+                            <td class="tags-cell">
+                                <span class="badge badge-default">New</span>
+                                <span class="badge badge-default">Sale</span>
+                            </td>
+                            <td class="ribbon-cell">
+                                <span class="badge badge-default">Limited</span>
+                            </td>
+                            <td class="featured-cell"></td>
+                            <td class="price-cell">
+                                <div class="price-discounted">$120</div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="status-draft">DRAFT</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td class="num-cell">4</td>
+                            <td class="logo-cell">
+                                <div class="logo-placeholder">IMG</div>
+                            </td>
+                            <td class="product-cell">
+                                <div class="product-name">Product Beta</div>
+                                <div class="product-actions">
+                                    <a href="#">ID #4</a> • 
+                                    <a href="#">Edit</a> • 
+                                    <a href="#" class="delete">Delete</a>
+                                </div>
+                            </td>
+                            <td class="category-cell">
+                                <span class="badge badge-default">Clothing</span>
+                            </td>
+                            <td class="tags-cell">
+                                <span class="badge badge-default">Men</span>
+                                <span class="badge badge-default">Summer</span>
+                            </td>
+                            <td class="ribbon-cell">
+                                <span class="badge badge-featured">New Arrival</span>
+                            </td>
+                            <td class="featured-cell">★</td>
+                            <td class="price-cell">
+                                <div class="price-discounted">$45</div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="status-published">PUBLISHED</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td class="num-cell">5</td>
+                            <td class="logo-cell">
+                                <div class="logo-placeholder">IMG</div>
+                            </td>
+                            <td class="product-cell">
+                                <div class="product-name">Product Gamma</div>
+                                <div class="product-actions">
+                                    <a href="#">ID #5</a> • 
+                                    <a href="#">Edit</a> • 
+                                    <a href="#" class="delete">Delete</a>
+                                </div>
+                            </td>
+                            <td class="category-cell">
+                                <span class="badge badge-default">Home</span>
+                            </td>
+                            <td class="tags-cell">
+                                <span class="badge badge-default">Decor</span>
+                                <span class="badge badge-default">Modern</span>
+                            </td>
+                            <td class="ribbon-cell">
+                                <span class="badge badge-default">Best Seller</span>
+                            </td>
+                            <td class="featured-cell"></td>
+                            <td class="price-cell">
+                                <div class="price-original">$80</div>
+                                <div class="price-discounted">$68 <span class="discount-badge">15% OFF</span></div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="status-draft">DRAFT</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interactive functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add functionality to clear filters button
+            const clearFiltersBtn = document.querySelector('.btn-clear');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', function() {
+                    const inputs = document.querySelectorAll('.filter-control');
+                    inputs.forEach(input => {
+                        if (input.tagName === 'INPUT') {
+                            input.value = '';
+                        } else if (input.tagName === 'SELECT') {
+                            input.selectedIndex = 0;
+                        }
+                    });
+                });
+            }
+
+            // Add functionality to checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const row = this.closest('tr');
+                    if (this.checked) {
+                        row.style.backgroundColor = '#e7f1ff';
+                    } else {
+                        row.style.backgroundColor = '';
+                    }
+                });
+            });
+
+            // Add hover effect to table rows
+            const tableRows = document.querySelectorAll('.products-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('sample-row')) {
+                        this.style.backgroundColor = '#f8fbff';
+                    }
+                });
+                row.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('sample-row')) {
+                        this.style.backgroundColor = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
