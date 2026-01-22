@@ -40,14 +40,15 @@ class Menu {
 	 * @return void
 	 */
 	public function addMenuPages(): void {
-		// Add Product submenu under Affiliate Products CPT
+		// Add Product submenu under Affiliate Products CPT (positioned above Category)
 		add_submenu_page(
 			'edit.php?post_type=aps_product',
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			'manage_options',
 			'add-product',
-			[ $this, 'renderAddProductPage' ]
+			[ $this, 'renderAddProductPage' ],
+			5  // Position above Category (which defaults to 10)
 		);
 
 		// Main menu page - Affiliate Manager (plugin settings)
