@@ -35,8 +35,6 @@ final class Admin {
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
 		add_action( 'add_meta_boxes', [ $this->metaboxes, 'register' ] );
 		add_action( 'save_post', [ $this->metaboxes, 'save_meta' ], 10, 2 );
-		add_action( 'admin_menu', [ $this->menu, 'reorderSubmenus' ], 999 );
-		add_action( 'admin_menu', [ $this->menu, 'removeDefaultAddNewMenu' ], 999 );
 		$this->headers->init();
 	}
 

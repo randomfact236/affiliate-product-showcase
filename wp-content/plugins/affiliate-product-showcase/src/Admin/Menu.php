@@ -13,6 +13,40 @@ namespace AffiliateProductShowcase\Admin;
  * @since 1.0.0
  */
 class Menu {
+	
+	const MENU_SLUG = 'affiliate-manager';
+
+	public function __construct() {
+		// Redirect old form to new form
+		add_action( 'admin_init', [ $this, 'redirectOldAddNewForm' ] );
+		
+		// Remove default Add New - run VERY late
+		add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], PHP_INT_MAX );
+		
+		// Reorder submenus - run last
+		add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], PHP_INT_MAX );
+		
+		// Add menu styling
+		add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
+		
+		// Enable custom menu ordering
+		add_filter( 'custom_menu_order', '__return_true' );
+		add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
+	}
+	
+	/**
+	 * Redirect old default Add New form to our custom Add Product page
+	 *
+	 * @return void
+	 */
+	public function redirectOldAddNewForm(): void {
+		global $pagenow, $typenow;
+		
+		if ( $pagenow === 'post-new.php' && $typenow === 'aps_product' ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=aps_product&page=add-product' ) );
+			exit;
+		}
+	}
 
 	/**
 	 * Reorder submenus under Affiliate Products CPT
@@ -131,10 +165,29 @@ class Menu {
      * created for custom post types. We have our custom "Add Product"
      * submenu instead (just like WooCommerce does).
      *
+     * Uses dual approach: WordPress helper + manual array cleanup
+     *
      * @return void
      */
     public function removeDefaultAddNewMenu(): void {
-        remove_submenu_page( 'edit.php?post_type=aps_product', 'post-new.php?post_type=aps_product' );
+        global $submenu;
+
+        $parent_slug = 'edit.php?post_type=aps_product';
+        $old_add_new_slug = 'post-new.php?post_type=aps_product';
+
+        // Remove using WordPress helper (most reliable)
+        remove_submenu_page( $parent_slug, $old_add_new_slug );
+
+        // Also manually clean submenu array (fallback)
+        if ( isset( $submenu[ $parent_slug ] ) ) {
+            foreach ( $submenu[ $parent_slug ] as $index => $item ) {
+                if ( isset( $item[2] ) && $item[2] === $old_add_new_slug ) {
+                    unset( $submenu[ $parent_slug ][ $index ] );
+                    error_log( '[APS] Default "Add New" submenu removed successfully' );
+                    break;
+                }
+            }
+        }
     }
 
     /**
