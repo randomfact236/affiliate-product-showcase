@@ -33,8 +33,8 @@ class Menu {
         // Remove WordPress default "Add New" menu (we have custom "Add Product" instead)
         add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], 999 );
         
-        // Reorder submenus under Affiliate Products CPT (must run after admin_menu)
-        add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], 9999 );
+        // Re-register Category submenu to position it below Add Product
+        add_action( 'admin_menu', [ $this, 'reorderCategoryMenu' ], 9999 );
     }
 
 	/**
@@ -243,64 +243,26 @@ class Menu {
     }
 
     /**
-     * Reorder submenus under Affiliate Products CPT
+     * Reorder Category submenu to appear below Add Product
      *
-     * Moves "Add Product" submenu to appear before "Category" submenu.
+     * Removes the Category submenu and re-adds it with a position value
+     * that places it after our custom Add Product menu (position 5).
      *
      * @return void
      */
-    public function reorderSubmenus(): void {
-        global $submenu;
+    public function reorderCategoryMenu(): void {
+        // Remove WordPress default Category submenu
+        remove_submenu_page( 'edit.php?post_type=aps_product', 'edit-tags.php?taxonomy=aps_product_category&post_type=aps_product' );
         
-        // Check if our submenu exists
-        if ( ! isset( $submenu['edit.php?post_type=aps_product'] ) ) {
-            return;
-        }
-        
-        $our_submenu = $submenu['edit.php?post_type=aps_product'];
-        $ordered_submenu = [];
-        
-        // Separate items by type
-        $all_products = null;
-        $add_product = null;
-        $category = null;
-        $other_items = [];
-        
-        foreach ( $our_submenu as $item ) {
-            if ( ! isset( $item[2] ) ) {
-                continue;
-            }
-            
-            $url = $item[2];
-            
-            if ( $url === 'edit.php?post_type=aps_product' ) {
-                $all_products = $item;
-            } elseif ( strpos( $url, 'page=add-product' ) !== false ) {
-                $add_product = $item;
-            } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_category' ) !== false ) {
-                $category = $item;
-            } else {
-                $other_items[] = $item;
-            }
-        }
-        
-        // Build ordered submenu: All Products -> Add Product -> Category -> others
-        if ( $all_products !== null ) {
-            $ordered_submenu[] = $all_products;
-        }
-        if ( $add_product !== null ) {
-            $ordered_submenu[] = $add_product;
-        }
-        if ( $category !== null ) {
-            $ordered_submenu[] = $category;
-        }
-        
-        // Add remaining items
-        foreach ( $other_items as $item ) {
-            $ordered_submenu[] = $item;
-        }
-        
-        // Update submenu with new order
-        $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
+        // Re-add Category submenu with higher position (20, after Add Product's 5)
+        add_submenu_page(
+            'edit.php?post_type=aps_product',
+            __( 'Categories', 'affiliate-product-showcase' ),
+            __( 'Category', 'affiliate-product-showcase' ),
+            'manage_categories',
+            'edit-tags.php?taxonomy=aps_product_category&post_type=aps_product',
+            '', // WordPress will handle the default taxonomy edit page
+            20  // Position below Add Product (which is at 5)
+        );
     }
 }
