@@ -1,0 +1,611 @@
+/**
+ * Manage Products Admin Page Styles
+ *
+ * Styles for the custom Manage Products admin table page.
+ * Matches WordPress admin table styling with modern improvements.
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.0.0
+ */
+
+/* Overview Section */
+.aps-overview-section {
+    margin: 20px 0;
+    padding: 0;
+}
+
+.aps-overview-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.aps-overview-card {
+    flex: 1;
+    min-width: 150px;
+    max-width: 200px;
+    background: #fff;
+    border: 1px solid #dcdcdb;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.aps-overview-card:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    border-color: #2271b1;
+    transform: translateY(-2px);
+}
+
+.aps-count-number {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2271b1;
+    line-height: 1.2;
+}
+
+.aps-count-label {
+    display: block;
+    font-size: 13px;
+    color: #646970;
+    margin-top: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Action Buttons */
+.aps-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.aps-action-buttons .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.aps-action-buttons .dashicons {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+}
+
+/* Filters Section */
+.aps-filters-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+    background: #f9f9f9;
+    border: 1px solid #dcdcdb;
+    border-radius: 4px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.aps-filter-select {
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid #dcdcdb;
+    border-radius: 3px;
+    background: #fff;
+    min-width: 150px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.aps-filter-select:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.2);
+    outline: none;
+}
+
+.aps-search-input {
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid #dcdcdb;
+    border-radius: 3px;
+    background: #fff;
+    min-width: 250px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.aps-search-input:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.2);
+    outline: none;
+}
+
+.aps-filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #1d2327;
+    cursor: pointer;
+}
+
+.aps-filter-checkbox input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Active Filters */
+.aps-active-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    background: #e7f3ff;
+    border: 1px solid #c6e1ff;
+    border-radius: 4px;
+    margin: 0 0 20px 0;
+    flex-wrap: wrap;
+}
+
+.aps-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #2271b1;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.aps-filter-tag-remove {
+    cursor: pointer;
+    opacity: 0.9;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1;
+    margin-left: 2px;
+}
+
+.aps-filter-tag-remove:hover {
+    opacity: 1;
+}
+
+.aps-active-filters .button {
+    margin-left: 10px;
+}
+
+/* Products Table */
+.wp-list-table.widefat.fixed.striped {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.wp-list-table.widefat.fixed.striped th {
+    background: #f6f7f7;
+    color: #1d2327;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #dcdcdb;
+}
+
+.wp-list-table.widefat.fixed.striped td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #dcdcdb;
+    vertical-align: middle;
+}
+
+.wp-list-table.widefat.fixed.striped tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.wp-list-table.widefat.fixed.striped tbody tr:hover {
+    background-color: #f0f0f1;
+}
+
+.aps-product-row {
+    transition: all 0.2s ease;
+}
+
+.aps-product-checkbox {
+    cursor: pointer;
+}
+
+.aps-product-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.aps-product-no-logo {
+    width: 40px;
+    height: 40px;
+    background: #f0f0f1;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #646970;
+}
+
+.aps-product-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aps-product-name strong {
+    margin: 0;
+    font-size: 14px;
+    color: #1d2327;
+    display: block;
+}
+
+.aps-product-id {
+    color: #646970;
+    font-size: 11px;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.aps-row-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.aps-row-actions .button-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.aps-row-actions .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+.aps-row-actions .button-link-delete {
+    color: #d63638;
+    text-decoration: none;
+}
+
+.aps-row-actions .button-link-delete:hover {
+    color: #b32d2e;
+}
+
+.aps-category-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f0f0f1;
+    color: #1d2327;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.aps-category-tag-remove {
+    cursor: pointer;
+    color: #646970;
+    margin-left: 4px;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.aps-category-tag-remove:hover {
+    color: #d63638;
+}
+
+.aps-no-category,
+.aps-no-tags,
+.aps-no-ribbon {
+    color: #646970;
+    font-style: italic;
+}
+
+.aps-tag-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #f0f0f1;
+    color: #1d2327;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 4px;
+}
+
+.aps-ribbon-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aps-ribbon-hot {
+    background: #dc3545;
+    color: #fff;
+}
+
+.aps-ribbon-new {
+    background: #2271b1;
+    color: #fff;
+}
+
+.aps-ribbon-sale {
+    background: #6a11cb;
+    color: #fff;
+}
+
+.aps-featured {
+    color: #ffc107;
+    font-size: 16px;
+}
+
+.aps-no-ribbon {
+    color: #646970;
+}
+
+.aps-current-price {
+    color: #1d2327;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.aps-original-price {
+    color: #646970;
+    text-decoration: line-through;
+    margin-left: 8px;
+    font-size: 13px;
+}
+
+.aps-discount-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: #00a32a;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.aps-no-price {
+    color: #646970;
+    font-style: italic;
+}
+
+.aps-status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.aps-status-published {
+    background: #00a32a;
+    color: #fff;
+}
+
+.aps-status-draft {
+    background: #646970;
+    color: #fff;
+}
+
+.aps-status-trash {
+    background: #dc3545;
+    color: #fff;
+}
+
+.aps-empty-message {
+    text-align: center;
+    padding: 40px;
+    color: #646970;
+    font-size: 14px;
+}
+
+/* Pagination */
+.aps-pagination-section {
+    margin: 20px 0;
+}
+
+.aps-pagination-section .tablenav.top {
+    margin-bottom: 20px;
+}
+
+.aps-pagination-section .alignleft.actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.aps-pagination-section .displaying-num {
+    font-size: 13px;
+    color: #646970;
+}
+
+.aps-pagination-section .alignright {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.aps-per-page-select {
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #dcdcdb;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.aps-per-page-select:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.2);
+    outline: none;
+}
+
+/* Footer */
+.aps-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-top: 1px solid #dcdcdb;
+    margin-top: 20px;
+}
+
+.aps-footer .button-secondary {
+    margin: 0;
+}
+
+.aps-total-count {
+    font-size: 13px;
+    color: #646970;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .aps-overview-cards {
+        justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    }
+    
+    .aps-overview-card {
+        min-width: 140px;
+        max-width: 180px;
+    }
+    
+    .aps-count-number {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 782px) {
+    .aps-action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .aps-filters-section {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+    }
+    
+    .aps-filter-select,
+    .aps-search-input {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .aps-active-filters {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+    
+    .aps-pagination-section {
+        margin: 15px 0;
+    }
+    
+    .aps-pagination-section .tablenav.top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .aps-pagination-section .alignleft.actions,
+    .aps-pagination-section .alignright {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .aps-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .wp-list-table.widefat.fixed {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .wp-list-table.widefat.fixed thead,
+    .wp-list-table.widefat.fixed tfoot {
+        position: static;
+    }
+    
+    .wp-list-table.widefat.fixed tbody {
+        display: block;
+        border-bottom: 1px solid #dcdcdb;
+    }
+    
+    .wp-list-table.widefat.fixed tr {
+        display: block;
+        border-bottom: 1px solid #dcdcdb;
+        padding: 10px;
+    }
+    
+    .wp-list-table.widefat.fixed td {
+        display: block;
+        padding: 5px 0;
+        border: none;
+    }
+    
+    .wp-list-table.widefat.fixed td:not(:first-child) {
+        margin-top: 10px;
+    }
+    
+    /* Stack table cells on mobile */
+    .wp-list-table.widefat.fixed .manage-column.column-cb,
+    .wp-list-table.widefat.fixed .manage-column.column-logo {
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .wp-list-table.widefat.fixed .manage-column.column-cb input,
+    .wp-list-table.widefat.fixed .manage-column.column-logo .aps-product-logo {
+        display: block;
+        margin: 0 auto;
+    }
+    
+    /* Hide some columns on mobile */
+    .wp-list-table.widefat.fixed .manage-column.column-category,
+    .wp-list-table.widefat.fixed .manage-column.column-tags {
+        display: none;
+    }
+}
