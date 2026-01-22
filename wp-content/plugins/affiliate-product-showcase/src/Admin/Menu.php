@@ -15,104 +15,70 @@ namespace AffiliateProductShowcase\Admin;
 class Menu {
 
 	/**
-	 * Menu slug
+	 * Reorder submenus under Affiliate Products CPT
+	 * 
+	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
+	 * Uses remove/add approach for guaranteed ordering
 	 *
-	 * @var string
-	 */
-	public const MENU_SLUG = 'affiliate-manager';
-
-	/**
-	 * Constructor
-	 */
-    public function __construct() {
-        add_action( 'admin_menu', [ $this, 'addMenuPages' ] );
-        add_action( 'admin_head', [ $this, 'addMenuIcons' ] );
-        add_filter( 'custom_menu_order', '__return_true' );
-        add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
-        
-        // Remove WordPress default "Add New" menu (we have custom "Add Product" instead)
-        add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], 999 );
-        
-        // Reorder submenus under Affiliate Products CPT (must run after admin_menu)
-        add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], 9999 );
-    }
-
-	/**
-	 * Add menu pages
-	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
-	public function addMenuPages(): void {
-		// Add Product submenu under Affiliate Products CPT (positioned above Category)
+	public function reorderSubmenus(): void {
+		global $submenu;
+		$parent = 'edit.php?post_type=aps_product';
+		
+		if ( ! isset( $submenu[ $parent ] ) ) {
+			error_log('MENU REORDER: Parent submenu not found!');
+			return;
+		}
+		
+		// Remove custom submenu items
+		remove_submenu_page( $parent, 'add-product' );
+		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_category&post_type=aps_product' );
+		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_tag&post_type=aps_product' );
+		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product' );
+		
+		// Re-add in desired order (All Products stays at top - it's core)
+		
+		// 1. Add Product
 		add_submenu_page(
-			'edit.php?post_type=aps_product',
+			$parent,
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			'manage_options',
 			'add-product',
-			[ $this, 'renderAddProductPage' ],
-			5  // Position above Category (which defaults to 10)
+			[ $this, 'renderAddProductPage' ]
 		);
-
-		// Main menu page - Affiliate Manager (plugin settings)
-		add_menu_page(
-			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
-			__( 'Affiliate Manager', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG,
-			[ $this, 'renderDashboardPage' ],
-			'dashicons-admin-generic',
-			55.1
-		);
-
-		// Dashboard submenu
+		
+		// 2. Categories
 		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Dashboard', 'affiliate-product-showcase' ),
-			__( 'Dashboard', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG,
-			[ $this, 'renderDashboardPage' ]
+			$parent,
+			__( 'Categories', 'affiliate-product-showcase' ),
+			__( 'Categories', 'affiliate-product-showcase' ),
+			'manage_categories',
+			'edit-tags.php?taxonomy=aps_category&post_type=aps_product'
 		);
-
-		// Settings submenu
+		
+		// 3. Tags
 		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Settings', 'affiliate-product-showcase' ),
-			__( 'Settings', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG . '-settings',
-			[ $this, 'renderSettingsPage' ]
+			$parent,
+			__( 'Tags', 'affiliate-product-showcase' ),
+			__( 'Tags', 'affiliate-product-showcase' ),
+			'manage_categories',
+			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product'
 		);
-
-		// Help submenu
+		
+		// 4. Ribbons
 		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Help', 'affiliate-product-showcase' ),
-			__( 'Help', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG . '-help',
-			[ $this, 'renderHelpPage' ]
+			$parent,
+			__( 'Ribbons', 'affiliate-product-showcase' ),
+			__( 'Ribbons', 'affiliate-product-showcase' ),
+			'manage_categories',
+			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product'
 		);
+		
+		error_log('MENU REORDER: Submenu reordered successfully');
 	}
-
-    /**
-     * Render dashboard page
-     *
-     * @return void
-     */
-    public function renderDashboardPage(): void {
-        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/dashboard-page.php' );
-    }
-
-    /**
-     * Render analytics page
-     *
-     * @return void
-     */
-    public function renderAnalyticsPage(): void {
-        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/analytics-page.php' );
-    }
 
     /**
      * Render settings page
@@ -242,109 +208,4 @@ class Menu {
         return $menu_order;
     }
 
-    /**
-     * Reorder submenus under Affiliate Products CPT
-     *
-     * Moves submenus in specific order: All Products -> Add Product -> Category -> Tags -> Ribbon
-     * This simply rearranges existing items without creating duplicates.
-     *
-     * @return void
-     */
-    public function reorderSubmenus(): void {
-        global $submenu;
-        
-        // Check if our submenu exists
-        if ( ! isset( $submenu['edit.php?post_type=aps_product'] ) ) {
-            return;
-        }
-        
-        $our_submenu = $submenu['edit.php?post_type=aps_product'];
-        
-        // DEBUG: Log all submenu items
-        error_log( '=== MENU REORDER DEBUG ===' );
-        error_log( 'Submenu items found: ' . count( $our_submenu ) );
-        foreach ( $our_submenu as $index => $item ) {
-            error_log( "Item {$index}: " . print_r( $item, true ) );
-        }
-        
-        $ordered_submenu = [];
-        
-        // Separate items by type
-        $all_products = null;
-        $add_product = null;
-        $category = null;
-        $tags = null;
-        $ribbon = null;
-        $other_items = [];
-        
-        foreach ( $our_submenu as $submenu_item ) {
-            if ( ! isset( $submenu_item[2] ) ) {
-                continue;
-            }
-            
-            $url = $submenu_item[2];
-            $title = $submenu_item[0] ?? '';
-            
-            error_log( "Processing: {$title} -> {$url}" );
-            
-            // All Products (main menu item)
-            if ( $url === 'edit.php?post_type=aps_product' ) {
-                $all_products = $submenu_item;
-                error_log( "  → Matched: All Products" );
-            }
-            // Add Product (custom page)
-            elseif ( strpos( $url, 'page=add-product' ) !== false ) {
-                $add_product = $submenu_item;
-                error_log( "  → Matched: Add Product" );
-            }
-            // Category taxonomy
-            elseif ( strpos( $url, 'aps_category' ) !== false ) {
-                $category = $submenu_item;
-                error_log( "  → Matched: Category" );
-            }
-            // Tags taxonomy
-            elseif ( strpos( $url, 'aps_tag' ) !== false ) {
-                $tags = $submenu_item;
-                error_log( "  → Matched: Tags" );
-            }
-            // Ribbon taxonomy
-            elseif ( strpos( $url, 'aps_ribbon' ) !== false ) {
-                $ribbon = $submenu_item;
-                error_log( "  → Matched: Ribbon" );
-            }
-            // Other items (keep at end)
-            else {
-                $other_items[] = $submenu_item;
-                error_log( "  → Other: {$title}" );
-            }
-        }
-        
-        // Build ordered submenu: All Products -> Add Product -> Category -> Tags -> Ribbon -> others
-        if ( $all_products !== null ) {
-            $ordered_submenu[] = $all_products;
-        }
-        if ( $add_product !== null ) {
-            $ordered_submenu[] = $add_product;
-        }
-        if ( $category !== null ) {
-            $ordered_submenu[] = $category;
-        }
-        if ( $tags !== null ) {
-            $ordered_submenu[] = $tags;
-        }
-        if ( $ribbon !== null ) {
-            $ordered_submenu[] = $ribbon;
-        }
-        
-        // Add remaining items
-        foreach ( $other_items as $other_item ) {
-            $ordered_submenu[] = $other_item;
-        }
-        
-        error_log( 'Final ordered count: ' . count( $ordered_submenu ) );
-        error_log( '=== END MENU REORDER DEBUG ===' );
-        
-        // Update submenu with new order
-        $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
-    }
 }
