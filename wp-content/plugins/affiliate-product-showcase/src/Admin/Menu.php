@@ -245,7 +245,7 @@ class Menu {
     /**
      * Reorder submenus under Affiliate Products CPT
      *
-     * Moves "Add Product" submenu to appear before "Category" submenu.
+     * Moves submenus in specific order: All Products -> Add Product -> Category -> Tags -> Ribbon
      * This simply rearranges existing items without creating duplicates.
      *
      * @return void
@@ -253,18 +253,26 @@ class Menu {
     public function reorderSubmenus(): void {
         global $submenu;
         
+        // Debug: Log that function is called
+        error_log( 'Menu::reorderSubmenus() called' );
+        
         // Check if our submenu exists
         if ( ! isset( $submenu['edit.php?post_type=aps_product'] ) ) {
+            error_log( 'Submenu not found for aps_product' );
             return;
         }
         
         $our_submenu = $submenu['edit.php?post_type=aps_product'];
+        error_log( 'Current submenu items: ' . print_r( $our_submenu, true ) );
+        
         $ordered_submenu = [];
         
         // Separate items by type
         $all_products = null;
         $add_product = null;
         $category = null;
+        $tags = null;
+        $ribbon = null;
         $other_items = [];
         
         foreach ( $our_submenu as $submenu_item ) {
@@ -273,6 +281,9 @@ class Menu {
             }
             
             $url = $submenu_item[2];
+            $title = $submenu_item[0] ?? '';
+            
+            error_log( "Processing submenu item: {$title} -> {$url}" );
             
             if ( $url === 'edit.php?post_type=aps_product' ) {
                 $all_products = $submenu_item;
@@ -280,20 +291,35 @@ class Menu {
                 $add_product = $submenu_item;
             } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_category' ) !== false ) {
                 $category = $submenu_item;
+            } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_tag' ) !== false ) {
+                $tags = $submenu_item;
+            } elseif ( strpos( $url, 'page=ribbon' ) !== false || strpos( $title, 'Ribbon' ) !== false ) {
+                $ribbon = $submenu_item;
             } else {
                 $other_items[] = $submenu_item;
             }
         }
         
-        // Build ordered submenu: All Products -> Add Product -> Category -> others
+        // Build ordered submenu: All Products -> Add Product -> Category -> Tags -> Ribbon -> others
         if ( $all_products !== null ) {
             $ordered_submenu[] = $all_products;
+            error_log( 'Added All Products to ordered list' );
         }
         if ( $add_product !== null ) {
             $ordered_submenu[] = $add_product;
+            error_log( 'Added Add Product to ordered list' );
         }
         if ( $category !== null ) {
             $ordered_submenu[] = $category;
+            error_log( 'Added Category to ordered list' );
+        }
+        if ( $tags !== null ) {
+            $ordered_submenu[] = $tags;
+            error_log( 'Added Tags to ordered list' );
+        }
+        if ( $ribbon !== null ) {
+            $ordered_submenu[] = $ribbon;
+            error_log( 'Added Ribbon to ordered list' );
         }
         
         // Add remaining items
@@ -301,7 +327,11 @@ class Menu {
             $ordered_submenu[] = $other_item;
         }
         
+        error_log( 'Final ordered submenu: ' . print_r( $ordered_submenu, true ) );
+        
         // Update submenu with new order
         $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
+        
+        error_log( 'Submenu reordered successfully' );
     }
 }
