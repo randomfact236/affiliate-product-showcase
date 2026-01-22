@@ -116,7 +116,7 @@ class Menu {
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
 	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
-	 * Uses remove/add approach for guaranteed ordering
+	 * Only adds custom "Add Product" menu, lets WordPress handle taxonomies
 	 *
 	 * @since 1.0.0
 	 * @return void
@@ -132,53 +132,37 @@ class Menu {
 			return;
 		}
 		
-		// Remove custom submenu items
-		remove_submenu_page( $parent, 'add-product' );
-		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_category&post_type=aps_product' );
-		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_tag&post_type=aps_product' );
-		remove_submenu_page( $parent, 'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product' );
+		// Only add custom "Add Product" menu
+		// WordPress automatically handles Categories, Tags, and Ribbons
+		// from taxonomy registration - no need to remove/re-add them
 		
-		// Re-add in desired order (All Products stays at top - it's core)
+		// Check if "Add Product" already exists to avoid duplicates
+		$add_product_exists = false;
+		foreach ( $submenu[ $parent ] as $item ) {
+			if ( isset( $item[2] ) && $item[2] === 'add-product' ) {
+				$add_product_exists = true;
+				break;
+			}
+		}
 		
-		// 1. Add Product
-		add_submenu_page(
-			$parent,
-			__( 'Add Product', 'affiliate-product-showcase' ),
-			__( 'Add Product', 'affiliate-product-showcase' ),
-			'edit_posts',
-			'add-product',
-			[ $this, 'renderAddProductPage' ]
-		);
-		
-		// 2. Categories
-		add_submenu_page(
-			$parent,
-			__( 'Categories', 'affiliate-product-showcase' ),
-			__( 'Categories', 'affiliate-product-showcase' ),
-			'manage_categories',
-			'edit-tags.php?taxonomy=aps_category&post_type=aps_product'
-		);
-		
-		// 3. Tags
-		add_submenu_page(
-			$parent,
-			__( 'Tags', 'affiliate-product-showcase' ),
-			__( 'Tags', 'affiliate-product-showcase' ),
-			'manage_categories',
-			'edit-tags.php?taxonomy=aps_tag&post_type=aps_product'
-		);
-		
-		// 4. Ribbons
-		add_submenu_page(
-			$parent,
-			__( 'Ribbons', 'affiliate-product-showcase' ),
-			__( 'Ribbons', 'affiliate-product-showcase' ),
-			'manage_categories',
-			'edit-tags.php?taxonomy=aps_ribbon&post_type=aps_product'
-		);
+		// Only add if not already present
+		if ( ! $add_product_exists ) {
+			add_submenu_page(
+				$parent,
+				__( 'Add Product', 'affiliate-product-showcase' ),
+				__( 'Add Product', 'affiliate-product-showcase' ),
+				'edit_posts',
+				'add-product',
+				[ $this, 'renderAddProductPage' ]
+			);
+			
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'MENU REORDER: Add Product menu added successfully' );
+			}
+		}
 		
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'MENU REORDER: Submenu reordered successfully' );
+			error_log( 'MENU REORDER: Total submenu items: ' . count( $submenu[ $parent ] ) );
 		}
 	}
 
