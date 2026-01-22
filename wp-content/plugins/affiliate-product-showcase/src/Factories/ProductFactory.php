@@ -57,6 +57,10 @@ final class ProductFactory {
 		$tag_terms = wp_get_object_terms( $post->ID, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG, [ 'fields' => 'ids' ] );
 		$tag_ids = ! is_wp_error( $tag_terms ) ? array_map( 'intval', $tag_terms ) : [];
 
+		// Get featured status
+		$featured_meta = $meta['aps_featured'][0] ?? '';
+		$is_featured = ! empty( $featured_meta ) && $featured_meta === '1';
+
 		return new Product(
 			$post->ID,
 			$post->post_title,
@@ -69,6 +73,8 @@ final class ProductFactory {
 			esc_url_raw( $meta['aps_image_url'][0] ?? '' ) ?: null,
 			isset( $meta['aps_rating'][0] ) ? (float) $meta['aps_rating'][0] : null,
 			sanitize_text_field( $meta['aps_badge'][0] ?? '' ) ?: null,
+			$is_featured,
+			$post->post_status,
 			$category_ids,
 			$tag_ids
 		);
@@ -97,6 +103,9 @@ final class ProductFactory {
 			$tag_ids = array_map( 'intval', (array) $tag_ids );
 		}
 
+		// Get featured status with proper type conversion
+		$is_featured = isset( $data['featured'] ) ? (bool) $data['featured'] : false;
+
 		return new Product(
 			(int) ( $data['id'] ?? 0 ),
 			sanitize_text_field( $data['title'] ?? '' ),
@@ -109,6 +118,8 @@ final class ProductFactory {
 			esc_url_raw( $data['image_url'] ?? '' ) ?: null,
 			isset( $data['rating'] ) ? (float) $data['rating'] : null,
 			sanitize_text_field( $data['badge'] ?? '' ) ?: null,
+			$is_featured,
+			sanitize_text_field( $data['status'] ?? 'publish' ),
 			$category_ids,
 			$tag_ids
 		);

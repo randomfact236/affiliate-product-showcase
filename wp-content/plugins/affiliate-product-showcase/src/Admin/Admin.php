@@ -17,6 +17,7 @@ final class Admin {
 	private MetaBoxes $metaboxes;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
+	private Columns $columns;
 
 	public function __construct(
 		private Assets $assets,
@@ -29,6 +30,7 @@ final class Admin {
 		$this->metaboxes = new MetaBoxes( $this->product_service );
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
+		$this->columns = new Columns();
 	}
 
 	public function init(): void {

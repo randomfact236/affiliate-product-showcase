@@ -127,9 +127,12 @@ final class ProductsController extends RestController {
 	 * - price: Product price (required, min 0)
 	 * - currency: Currency code (optional, default USD, enum: USD/EUR/GBP/JPY/CAD/AUD)
 	 * - affiliate_url: Affiliate link URL (required, URI format)
-	 * - image_url: Image URL (optional, URI format)
+	 * - image_url: Image/logo URL (optional, URI format)
 	 * - badge: Badge/ribbon text (optional, max 50 chars)
+	 * - featured: Whether product is featured (optional, default: false)
 	 * - rating: Product rating (optional, 0-5)
+	 * - category_ids: Array of category IDs (optional)
+	 * - tag_ids: Array of tag IDs (optional)
 	 *
 	 * @return array<string, mixed> Validation schema for WordPress REST API
 	 * @since 1.0.0
@@ -179,12 +182,40 @@ final class ProductsController extends RestController {
 				'maxLength'         => 50,
 				'sanitize_callback' => 'sanitize_text_field',
 			],
+			'featured' => [
+				'required'          => false,
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => function( $value ) {
+					return (bool) rest_sanitize_boolean( $value );
+				},
+			],
 			'rating' => [
 				'required'          => false,
 				'type'              => 'number',
 				'minimum'           => 0,
 				'maximum'           => 5,
 				'sanitize_callback' => 'floatval',
+			],
+			'category_ids' => [
+				'required'          => false,
+				'type'              => 'array',
+				'items'             => [
+					'type' => 'integer',
+				],
+				'sanitize_callback' => function( $value ) {
+					return array_map( 'intval', (array) $value );
+				},
+			],
+			'tag_ids' => [
+				'required'          => false,
+				'type'              => 'array',
+				'items'             => [
+					'type' => 'integer',
+				],
+				'sanitize_callback' => function( $value ) {
+					return array_map( 'intval', (array) $value );
+				},
 			],
 		];
 	}
