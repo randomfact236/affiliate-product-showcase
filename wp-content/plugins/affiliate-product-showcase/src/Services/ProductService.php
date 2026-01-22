@@ -129,22 +129,40 @@ final class ProductService extends AbstractService {
 	public function boot(): void {}
 
 	/**
-	 * Register product post type
+	 * Register all CPT and taxonomies (static method for activation)
 	 *
-	 * Registers 'aps_product' custom post type with WordPress.
-	 * Configures labels, capabilities, and REST API support.
+	 * Static method to register custom post type and taxonomies without
+	 * requiring DI container. Used by Activator during plugin activation.
+	 * Also called by instance methods during normal operation (init hook).
+	 *
+	 * This eliminates code duplication between Activator and ProductService
+	 * while maintaining WordPress best practices.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @action init
+	 * @see register_activation_hook
+	 * @see init
 	 */
-	public function register_post_type(): void {
+	public static function register_all(): void {
+		self::register_post_type_static();
+		self::register_taxonomies_static();
+	}
+
+	/**
+	 * Register product post type (static)
+	 *
+	 * Static version for use during activation without DI container.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private static function register_post_type_static(): void {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( '[APS] Registering CPT: ' . Constants::CPT_PRODUCT );
 		}
 		
-		$result = register_post_type(
+		register_post_type(
 			Constants::CPT_PRODUCT,
 			[
 				'labels' => [
@@ -185,8 +203,9 @@ final class ProductService extends AbstractService {
 	}
 
 	/**
-	 * Register product taxonomies
+	 * Register product taxonomies (static)
 	 *
+	 * Static version for use during activation without DI container.
 	 * Registers three taxonomies for product organization:
 	 * - Category (hierarchical)
 	 * - Tag (non-hierarchical)
@@ -194,10 +213,8 @@ final class ProductService extends AbstractService {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
-	 * @action init
 	 */
-	public function register_taxonomies(): void {
+	private static function register_taxonomies_static(): void {
 		// Register Category taxonomy (hierarchical)
 		register_taxonomy(
 			Constants::TAX_CATEGORY,
@@ -280,6 +297,36 @@ final class ProductService extends AbstractService {
 				'rewrite'              => [ 'slug' => 'product-ribbon' ],
 			]
 		);
+	}
+
+	/**
+	 * Register product post type (instance method)
+	 *
+	 * Registers 'aps_product' custom post type with WordPress.
+	 * Delegates to static implementation to avoid code duplication.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action init
+	 */
+	public function register_post_type(): void {
+		self::register_post_type_static();
+	}
+
+	/**
+	 * Register product taxonomies (instance method)
+	 *
+	 * Calls static registration method. Delegates to static implementation
+	 * to avoid code duplication.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action init
+	 */
+	public function register_taxonomies(): void {
+		self::register_taxonomies_static();
 	}
 
 	/**
