@@ -177,7 +177,41 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 				
 				<div class="aps-features-list" id="aps-features-list">
-					<!-- Features will be added dynamically here -->
+					<!-- Sample feature (for demo purposes) -->
+					<div class="aps-feature-item" id="feat-1">
+						<span class="feature-text">erfgergh rgntht</span>
+						<div class="feature-actions">
+							<button type="button" class="feature-btn active-highlight" onclick="toggleHighlight(this)" title="Highlight">
+								<i class="fas fa-bold"></i>
+							</button>
+							<button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up">
+								<i class="fas fa-arrow-up"></i>
+							</button>
+							<button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down">
+								<i class="fas fa-arrow-down"></i>
+							</button>
+							<button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete">
+								<i class="fas fa-trash"></i>
+							</button>
+						</div>
+					</div>
+					<div class="aps-feature-item" id="feat-2">
+						<span class="feature-text">htrgre rtgrtgrt</span>
+						<div class="feature-actions">
+							<button type="button" class="feature-btn" onclick="toggleHighlight(this)" title="Highlight">
+								<i class="fas fa-bold"></i>
+							</button>
+							<button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up">
+								<i class="fas fa-arrow-up"></i>
+							</button>
+							<button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down">
+								<i class="fas fa-arrow-down"></i>
+							</button>
+							<button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete">
+								<i class="fas fa-trash"></i>
+							</button>
+						</div>
+					</div>
 				</div>
 				<input type="hidden" name="aps_features" id="aps-features-input">
 			</section>
@@ -220,7 +254,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<label><?php esc_html_e( 'Category', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-multi-select" id="aps-categories-select">
 							<div class="aps-selected-tags" id="aps-selected-categories">
-								<!-- Selected categories as tags -->
+								<span class="multi-select-placeholder">Select categories...</span>
 							</div>
 							<input type="text" class="aps-multiselect-input" 
 								   placeholder="<?php esc_attr_e( 'Select categories...', 'affiliate-product-showcase' ); ?>">
@@ -246,7 +280,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<label><?php esc_html_e( 'Ribbon Badge', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-multi-select" id="aps-ribbons-select">
 							<div class="aps-selected-tags" id="aps-selected-ribbons">
-								<!-- Selected ribbons as tags -->
+								<span class="multi-select-placeholder">Select ribbons...</span>
 							</div>
 							<input type="text" class="aps-multiselect-input"
 								   placeholder="<?php esc_attr_e( 'Select ribbons...', 'affiliate-product-showcase' ); ?>">
@@ -659,17 +693,24 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 
 /* Multi-Select */
 .aps-multi-select {
-	border: 1px solid var(--aps-border);
-	border-radius: 4px;
-	padding: 8px;
-	min-height: 42px;
-	cursor: text;
+	position: relative;
 }
 
 .aps-selected-tags {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
+	border: 1px solid var(--aps-border);
+	border-radius: 4px;
+	padding: 4px 8px;
+	min-height: 38px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.aps-selected-tags:focus-within {
+	border-color: var(--aps-primary);
+	box-shadow: 0 0 0 1px var(--aps-primary);
 }
 
 .aps-tag {
@@ -1055,6 +1096,12 @@ jQuery(document).ready(function($) {
 				</span>
 			`);
 		});
+		
+		// Toggle placeholder visibility
+		const placeholder = container.find('.multi-select-placeholder');
+		if (placeholder.length) {
+			placeholder.toggle(selectedCategories.length === 0);
+		}
 	}
 	
 	$(document).on('click', '#aps-selected-categories .remove-tag', function() {
@@ -1091,6 +1138,12 @@ jQuery(document).ready(function($) {
 				</span>
 			`);
 		});
+		
+		// Toggle placeholder visibility
+		const placeholder = container.find('.multi-select-placeholder');
+		if (placeholder.length) {
+			placeholder.toggle(selectedRibbons.length === 0);
+		}
 	}
 	
 	$(document).on('click', '#aps-selected-ribbons .remove-tag', function() {
