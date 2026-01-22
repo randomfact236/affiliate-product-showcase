@@ -156,7 +156,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<span class="required">*</span>
 					</label>
 					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea"
-							  rows="4" maxlength="200"
+							  rows="6" maxlength="200"
 							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required></textarea>
 					<div class="word-counter">
 						<span id="aps-word-count">0</span>/40 <?php esc_html_e( 'Words', 'affiliate-product-showcase' ); ?>
@@ -699,6 +699,8 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 /* Features List */
 .aps-features-list {
 	margin-top: 15px;
+	max-height: 300px;
+	overflow-y: auto;
 }
 
 .aps-feature-item {
