@@ -32,6 +32,9 @@ class Menu {
         
         // Remove WordPress default "Add New" menu (we have custom "Add Product" instead)
         add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], 999 );
+        
+        // Reorder submenus under Affiliate Products CPT (must run after admin_menu)
+        add_action( 'admin_menu', [ $this, 'reorderSubmenus' ], 9999 );
     }
 
 	/**
@@ -237,5 +240,54 @@ class Menu {
         array_splice( $menu_order, $products_key + 1, 0, [ self::MENU_SLUG ] );
         
         return $menu_order;
+    }
+
+    /**
+     * Reorder submenus under Affiliate Products CPT
+     *
+     * Moves "Add Product" submenu to appear before "Category" submenu.
+     *
+     * @return void
+     */
+    public function reorderSubmenus(): void {
+        global $submenu;
+        
+        // Check if our submenu exists
+        if ( ! isset( $submenu['edit.php?post_type=aps_product'] ) ) {
+            return;
+        }
+        
+        $our_submenu = $submenu['edit.php?post_type=aps_product'];
+        $ordered_submenu = [];
+        $add_product_found = false;
+        
+        // Define desired order
+        $desired_order = [
+            'add-product',      // Our custom Add Product
+            'edit-tags.php?taxonomy=aps_product_category&post_type=aps_product', // Category
+        ];
+        
+        // First, add items in desired order
+        foreach ( $desired_order as $slug ) {
+            foreach ( $our_submenu as $index => $item ) {
+                if ( isset( $item[2] ) && strpos( $item[2], $slug ) !== false ) {
+                    $ordered_submenu[] = $item;
+                    unset( $our_submenu[$index] );
+                    if ( $slug === 'add-product' ) {
+                        $add_product_found = true;
+                    }
+                }
+            }
+        }
+        
+        // Add remaining items
+        foreach ( $our_submenu as $item ) {
+            $ordered_submenu[] = $item;
+        }
+        
+        // Update submenu with new order
+        if ( $add_product_found ) {
+            $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
+        }
     }
 }
