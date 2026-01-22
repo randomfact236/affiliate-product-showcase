@@ -158,25 +158,27 @@ class Menu {
 			}
 		}
 		
-		// 2. Add custom "Add Product" if not already present
-		$add_product_exists = false;
-		foreach ( $existing_items as $item ) {
+		// 2. Add custom "Add Product" menu
+		add_submenu_page(
+			$parent,
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			__( 'Add Product', 'affiliate-product-showcase' ),
+			'edit_posts',
+			'add-product',
+			[ $this, 'renderAddProductPage' ]
+		);
+		
+		// Re-fetch submenu after adding Add Product
+		$existing_items = $submenu[ $parent ];
+		
+		// Find and add Add Product item
+		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
-			if ( $slug === 'add-product' ) {
-				$add_product_exists = true;
+			if ( $slug === 'add-product' && ! in_array( $index, $used_indices, true ) ) {
+				$reordered_items[] = $item;
+				$used_indices[] = $index;
 				break;
 			}
-		}
-		
-		if ( ! $add_product_exists ) {
-			add_submenu_page(
-				$parent,
-				__( 'Add Product', 'affiliate-product-showcase' ),
-				__( 'Add Product', 'affiliate-product-showcase' ),
-				'edit_posts',
-				'add-product',
-				[ $this, 'renderAddProductPage' ]
-			);
 		}
 		
 		// 3. Add remaining items in desired order (Categories, Tags, Ribbons)
