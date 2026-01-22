@@ -3,524 +3,869 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product Form - Visual Mockup</title>
+    <title>Add Product</title>
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            --primary-color: #2271b1;
+            --primary-hover: #135e96;
+            --bg-body: #f0f0f1;
+            --bg-card: #ffffff;
+            --text-main: #1d2327;
+            --text-muted: #646970;
+            --border-color: #c3c4c7;
+            --input-bg: #ffffff;
+            --danger: #d63638;
+            --success: #00a32a;
+            --radius: 4px;
+            --shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-            background: #f0f0f1;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
             padding: 20px;
+            line-height: 1.5;
         }
 
-        .mockup-container {
-            max-width: 1400px;
+        .wrap.product-editor {
+            max-width: 1000px; /* Slightly wider for inline pricing */
             margin: 0 auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
             overflow: hidden;
         }
 
-        /* Header */
-        .mockup-header {
-            background: #2271b1;
-            padding: 20px 30px;
-            color: #fff;
-        }
-
-        .mockup-header h1 {
-            font-size: 23px;
-            font-weight: 400;
+        /* =========================================
+           HEADER
+           ========================================= */
+        .editor-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            padding: 15px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .mockup-badge {
-            background: #135e96;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+        .editor-header h1 {
+            font-size: 20px;
             font-weight: 600;
-            text-transform: uppercase;
+            margin: 0;
+            color: var(--text-main);
         }
 
-        /* Tabs */
-        .nav-tab-wrapper {
-            margin: 20px 0 30px 0;
-            padding: 0 30px;
-            border-bottom: 1px solid #dcdcde;
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-tab {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #f6f7f7;
-            border: 1px solid #dcdcde;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: #1d2327;
-            text-decoration: none;
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
 
-        .nav-tab:hover {
-            background: #fff;
-            border-color: #2271b1;
-            color: #2271b1;
-        }
+        .close-btn:hover { color: var(--danger); }
+        .editor-body { padding: 20px; }
 
-        .nav-tab-active {
-            background: #fff;
-            border-color: #2271b1;
-            border-bottom: 2px solid #fff;
-            margin-bottom: -1px;
-            font-weight: 600;
-            color: #2271b1;
-        }
-
-        /* Form Container */
-        .woocommerce-product-form-container {
-            padding: 0 30px 30px;
-        }
-
-        .product-tab-content {
-            padding: 30px 0;
-        }
-
-        /* Data Panels */
-        .woocommerce-data-panel {
-            border: 1px solid #dcdcde;
-            border-radius: 4px;
-            margin-bottom: 24px;
-            overflow: hidden;
-        }
-
-        .panel-header {
-            background: #f6f7f7;
-            padding: 14px 20px;
-            border-bottom: 1px solid #dcdcde;
-            font-weight: 600;
-            font-size: 14px;
-            color: #1d2327;
+        /* =========================================
+           QUICK NAV (ADDED)
+           ========================================= */
+        .quick-nav {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .panel-header .dashicon {
-            color: #646970;
-        }
-
-        .panel-body {
-            padding: 24px 20px;
-            background: #fff;
-        }
-
-        /* Inputs */
-        .woocommerce-input-wrapper {
+            gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-
-        .woocommerce-input-wrapper label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
+        
+        .quick-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             font-size: 13px;
-            color: #1d2327;
-        }
-
-        .woocommerce-input-wrapper .description {
-            display: block;
-            margin-top: 6px;
-            font-size: 12px;
-            font-style: italic;
-            color: #646970;
-        }
-
-        .woocommerce-input {
-            width: 100%;
-            max-width: 500px;
-            padding: 10px 12px;
-            font-size: 14px;
-            border: 1px solid #8c8f94;
-            border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            text-decoration: none;
+            color: var(--text-main);
             transition: all 0.2s;
         }
+        
+        .quick-nav a:hover {
+            background: #f0f0f1;
+            border-color: #a7aaad;
+        }
+        
+        .quick-nav a i {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
 
-        .woocommerce-input:focus {
-            border-color: #2271b1;
-            box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.1);
+        /* =========================================
+           FORM ELEMENTS
+           ========================================= */
+        .form-group { margin-bottom: 25px; }
+        
+        .form-row {
+            display: grid;
+            gap: 20px;
+        }
+        
+        /* 3-column grid for pricing */
+        .form-row.pricing-row { grid-template-columns: 1fr 1fr 1fr; }
+        
+        /* 2-column grid for others */
+        .form-row.grid-2 { grid-template-columns: 1fr 1fr; }
+        
+        @media (max-width: 768px) {
+            .form-row.pricing-row, .form-row.grid-2, .image-row { grid-template-columns: 1fr; }
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .woocommerce-input, 
+        .woocommerce-select, 
+        .woocommerce-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-main);
+            background-color: var(--input-bg);
+            border: 1px solid #8c8f94;
+            border-radius: var(--radius);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .woocommerce-input:focus, 
+        .woocommerce-select:focus, 
+        .woocommerce-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 1px var(--primary-color);
             outline: none;
         }
 
-        .woocommerce-textarea {
-            min-height: 120px;
-            resize: vertical;
+        .woocommerce-input[readonly] {
+            background-color: #f0f0f1;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .woocommerce-select {
-            width: 100%;
-            max-width: 500px;
-            padding: 10px 36px 10px 12px;
-            font-size: 14px;
-            border: 1px solid #8c8f94;
-            border-radius: 3px;
-            background: #fff;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        /* =========================================
+           IMAGE UPLOAD (Side by Side)
+           ========================================= */
+        .image-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .image-upload-box {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius);
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
             cursor: pointer;
-            appearance: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
         }
 
-        /* Price Wrapper */
-        .woocommerce-price-wrapper {
+        .image-upload-box:hover { border-color: var(--primary-color); background: #f0f6fc; }
+        .image-upload-box input[type="file"] {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer;
+        }
+        .upload-icon { color: var(--text-muted); font-size: 24px; margin-bottom: 8px; }
+        .upload-text { font-size: 12px; color: var(--text-muted); }
+        .preview-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; z-index: 5; display: none; }
+
+        /* =========================================
+           MULTI-SELECT COMPONENT (CATEGORY)
+           ========================================= */
+        .multi-select-container {
+            position: relative;
+        }
+
+        .multi-select-box {
+            min-height: 38px;
+            border: 1px solid #8c8f94;
+            border-radius: var(--radius);
+            padding: 4px 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background: #fff;
+            cursor: pointer;
+            align-items: center;
+        }
+        
+        .multi-select-box:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+
+        .multi-select-tag {
+            background: #e6f0f5;
+            color: var(--primary-color);
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            max-width: 500px;
+            gap: 5px;
         }
 
-        .woocommerce-price-wrapper .woocommerce-input {
-            flex: 1;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+        .multi-select-tag i { cursor: pointer; }
+        .multi-select-tag i:hover { color: var(--danger); }
+
+        .multi-select-placeholder {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-left: 4px;
         }
 
-        .woocommerce-price-symbol {
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .multi-select-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .multi-select-option:hover { background-color: #f0f0f1; }
+        .multi-select-option.selected { background-color: #e6f0f5; color: var(--primary-color); }
+
+        /* =========================================
+           FEATURE LIST STYLES (EXTRACTED FROM 2ND SNIPPET)
+           ========================================= */
+        .feature-list-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-list-input-group .woocommerce-input {
+            flex-grow: 1;
+        }
+
+        .feature-list-container {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: #fff;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            transition: background 0.2s;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-item:hover {
+            background: #f8f9f9;
+        }
+
+        .feature-text {
+            flex-grow: 1;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .feature-item.highlighted .feature-text {
+            font-weight: bold;
+            color: var(--primary-color);
+            background: #e6f0f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .feature-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .feature-btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 16px;
-            background: #f6f7f7;
-            border: 1px solid #8c8f94;
-            border-left: none;
-            color: #646970;
-            font-weight: 600;
-            font-size: 14px;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-            min-width: 60px;
-            height: 42px;
-        }
-
-        /* Checkbox */
-        .woocommerce-checkbox-wrapper {
-            margin-bottom: 20px;
-        }
-
-        .woocommerce-checkbox-wrapper label {
-            display: flex;
-            align-items: center;
-            gap: 12px;
             cursor: pointer;
-            font-weight: 400;
-        }
-
-        .woocommerce-checkbox-wrapper input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin: 0;
-            cursor: pointer;
-        }
-
-        /* Required indicator */
-        .required {
-            color: #d63638;
-            margin-left: 2px;
-        }
-
-        /* Action Buttons */
-        .product-form-actions {
-            padding: 20px 30px;
-            background: #f6f7f7;
-            border-top: 1px solid #dcdcde;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .product-form-actions .button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 24px;
-            height: 42px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 3px;
+            color: var(--text-muted);
             transition: all 0.2s;
-            cursor: pointer;
-            border: none;
         }
 
-        .product-form-actions .button-primary {
-            background: #2271b1;
+        .feature-btn:hover {
+            background: #e0e0e0;
+            color: var(--text-main);
+        }
+
+        .feature-btn.delete:hover {
+            background: #fee;
+            color: var(--danger);
+            border-color: #fcc;
+        }
+
+        .feature-btn.active-highlight {
+            background: var(--primary-color);
             color: #fff;
+            border-color: var(--primary-color);
         }
 
-        .product-form-actions .button-primary:hover {
-            background: #135e96;
+        /* =========================================
+           BUTTONS & UI
+           ========================================= */
+        .editor-footer {
+            background: #fff; padding: 20px; border-top: 1px solid var(--border-color);
+            display: flex; justify-content: flex-end; gap: 12px;
         }
 
-        .product-form-actions .button-secondary {
-            background: #fff;
-            border: 1px solid #8c8f94;
-            color: #1d2327;
+        .button {
+            display: inline-flex; align-items: center; justify-content: center;
+            height: 36px; padding: 0 20px; font-size: 13px; font-weight: 600;
+            text-decoration: none; cursor: pointer; border: 1px solid transparent; border-radius: var(--radius);
         }
 
-        .product-form-actions .button-secondary:hover {
-            background: #f6f7f7;
-            border-color: #2271b1;
+        .button-primary { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .button-primary:hover { background-color: var(--primary-hover); }
+        .button-secondary { background-color: #f6f7f7; color: var(--text-main); border-color: #dcdcde; }
+        .button-secondary:hover { background-color: #f0f0f1; }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .checkbox-wrapper input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+        .checkbox-wrapper label { margin: 0; cursor: pointer; font-weight: 500; }
+        .tags-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+
+        .word-count { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 4px; }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
+        .toast {
+            background: #fff; border-left: 4px solid var(--success); padding: 12px 20px;
+            border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-top: 10px;
+            display: flex; align-items: center; min-width: 250px; font-size: 13px;
         }
+        .toast.error { border-left-color: var(--danger); }
+        .toast-icon { margin-right: 10px; color: var(--success); }
+        .toast.error .toast-icon { color: var(--danger); }
 
-        /* Section Titles */
-        .woocommerce-section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1d2327;
-            margin: 0 0 16px 0;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #dcdcde;
-        }
-
-        /* Grid */
-        .woocommerce-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        /* Color Legend */
-        .color-legend {
-            display: flex;
-            gap: 20px;
-            padding: 15px 30px;
-            background: #f0f6fc;
-            border-left: 4px solid #2271b1;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-        }
-
-        .legend-required {
-            background: #d63638;
-        }
-
-        .legend-optional {
-            background: #8c8f94;
-        }
-
-        /* Mockup Label */
-        .mockup-label {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #2271b1;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-
-        /* Responsive */
-        @media (max-width: 782px) {
-            .woocommerce-grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .mockup-container {
-                border-radius: 0;
-            }
-
-            .nav-tab-wrapper {
-                flex-wrap: wrap;
-            }
-
-            .nav-tab {
-                margin-bottom: 4px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="mockup-label">📸 VISUAL MOCKUP - NOT FUNCTIONAL</div>
 
-    <div class="mockup-container">
-        <!-- Header -->
-        <div class="mockup-header">
-            <h1>
-                <span>Add New Affiliate Product</span>
-                <span class="mockup-badge">WooCommerce-Style</span>
-            </h1>
-        </div>
-
-        <!-- Color Legend -->
-        <div class="color-legend">
-            <div class="legend-item">
-                <div class="legend-color legend-required"></div>
-                <span>= Required Field</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color legend-optional"></div>
-                <span>= Optional Field</span>
-            </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="nav-tab-wrapper">
-            <a class="nav-tab nav-tab-active">General</a>
-            <a class="nav-tab">Product Details</a>
-            <a class="nav-tab">Advanced</a>
-        </div>
-
-        <!-- Form Container -->
-        <div class="woocommerce-product-form-container">
-            <div class="product-tab-content">
-                
-                <!-- Product Information Panel -->
-                <div class="woocommerce-data-panel">
-                    <div class="panel-header">
-                        <span>📝</span>
-                        <span>Product Information</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="woocommerce-input-wrapper">
-                            <label>Product Name <span class="required">*</span></label>
-                            <input type="text" class="woocommerce-input" placeholder="e.g., Apple MacBook Pro 14-inch" disabled>
-                            <span class="description">The name of your affiliate product</span>
-                        </div>
-
-                        <div class="woocommerce-input-wrapper">
-                            <label>Product Description</label>
-                            <textarea class="woocommerce-input woocommerce-textarea" placeholder="Describe your product features and benefits..." disabled></textarea>
-                            <span class="description">Detailed description for product page and SEO</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pricing Panel -->
-                <div class="woocommerce-data-panel">
-                    <div class="panel-header">
-                        <span>💰</span>
-                        <span>Pricing</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="woocommerce-grid-2">
-                            <div class="woocommerce-input-wrapper">
-                                <label>Regular Price <span class="required">*</span></label>
-                                <div class="woocommerce-price-wrapper">
-                                    <input type="number" class="woocommerce-input" placeholder="0.00" step="0.01" disabled>
-                                    <div class="woocommerce-price-symbol">USD</div>
-                                </div>
-                                <span class="description">Standard price for this product</span>
-                            </div>
-
-                            <div class="woocommerce-input-wrapper">
-                                <label>Sale Price</label>
-                                <div class="woocommerce-price-wrapper">
-                                    <input type="number" class="woocommerce-input" placeholder="0.00" step="0.01" disabled>
-                                    <div class="woocommerce-price-symbol">USD</div>
-                                </div>
-                                <span class="description">Discounted price (optional)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Affiliate Link Panel -->
-                <div class="woocommerce-data-panel">
-                    <div class="panel-header">
-                        <span>🔗</span>
-                        <span>Affiliate Link</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="woocommerce-input-wrapper">
-                            <label>Affiliate URL <span class="required">*</span></label>
-                            <input type="url" class="woocommerce-input" placeholder="https://amazon.com/..." disabled>
-                            <span class="description">Your affiliate tracking link for this product</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Image Preview Panel -->
-                <div class="woocommerce-data-panel">
-                    <div class="panel-header">
-                        <span>🖼️</span>
-                        <span>Product Image</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="woocommerce-input-wrapper">
-                            <label>Image URL</label>
-                            <input type="url" class="woocommerce-input" placeholder="https://example.com/product-image.jpg" disabled>
-                            <span class="description">Direct link to product image (will download to media library)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rating Panel -->
-                <div class="woocommerce-data-panel">
-                    <div class="panel-header">
-                        <span>⭐</span>
-                        <span>Product Rating</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="woocommerce-input-wrapper">
-                            <label>Rating (0-5 stars)</label>
-                            <input type="number" class="woocommerce-input" placeholder="4.5" min="0" max="5" step="0.1" disabled>
-                            <span class="description">Average customer rating</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="product-form-actions">
-                <button class="button button-primary" disabled>
-                    <span>✓</span>
-                    Publish Product
-                </button>
-                <button class="button button-secondary" disabled>
-                    <span>💾</span>
-                    Save Draft
-                </button>
-                <a href="#" class="button" style="text-decoration: none; color: #1d2327;">Cancel</a>
-            </div>
-        </div>
+<div class="wrap product-editor">
+    
+    <!-- HEADER -->
+    <div class="editor-header">
+        <h1>Edit Product</h1>
+        <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <script>
-        // Simple tab switching for demo
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab-active'));
-                this.classList.add('nav-tab-active');
-            });
+    <!-- ========================================== -->
+    <!-- QUICK NAVIGATION HEADER (ADDED)
+    <!-- ========================================== -->
+    <div class="quick-nav">
+        <a href="#product-info"><i class="fa-solid fa-pen-to-square"></i> Product Info</a>
+        <a href="#images"><i class="fa-solid fa-images"></i> Images</a>
+        <a href="#affiliate"><i class="fa-solid fa-link"></i> Affiliate</a>
+        <a href="#features"><i class="fa-solid fa-list"></i> Features</a>
+        <a href="#pricing"><i class="fa-solid fa-tag"></i> Pricing</a>
+        <a href="#taxonomy"><i class="fa-solid fa-tags"></i> Categories & Tags</a>
+        <a href="#stats"><i class="fa-solid fa-chart-bar"></i> Stats</a>
+    </div>
+
+    <div class="editor-body">
+        <form id="product-form">
+            
+            <!-- TITLE & STATUS -->
+            <div class="form-group" id="product-info">
+                <div class="form-row grid-2">
+                    <div>
+                        <label for="prod_title">Product Title <span style="color:var(--danger)">*</span></label>
+                        <input type="text" id="prod_title" class="woocommerce-input" placeholder="Enter product title..." required>
+                    </div>
+                    <div>
+                        <label for="prod_status">Status</label>
+                        <select id="prod_status" class="woocommerce-select">
+                            <option value="draft">Draft</option>
+                            <option value="publish" selected>Published</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row grid-2">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="is_featured" name="is_featured">
+                        <label for="is_featured">Featured Product</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMAGES (SIDE BY SIDE) -->
+            <div class="form-group" id="images">
+                <label>Product Images</label>
+                <div class="image-row">
+                    <div>
+                        <div class="image-upload-box" id="logo-box">
+                            <input type="file" id="logo_file" accept="image/*" onchange="previewImage(this, 'logo-preview')">
+                            <div class="upload-content">
+                                <i class="fa-solid fa-image upload-icon"></i><span class="upload-text">Upload Logo</span>
+                            </div>
+                            <img id="logo-preview" class="preview-img">
+                        </div>
+                        <input type="text" id="logo_url" class="woocommerce-input" placeholder="Logo URL" style="margin-top: 10px;">
+                    </div>
+                    <div>
+                        <div class="image-upload-box" id="brand-box">
+                            <input type="file" id="brand_file" accept="image/*" onchange="previewImage(this, 'brand-preview')">
+                            <div class="upload-content">
+                                <i class="fa-solid fa-shirt upload-icon"></i><span class="upload-text">Brand Image</span>
+                            </div>
+                            <img id="brand-preview" class="preview-img">
+                        </div>
+                        <input type="text" id="brand_url" class="woocommerce-input" placeholder="Brand Image URL" style="margin-top: 10px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- AFFILIATE URL & BUTTON NAME (MODIFIED) -->
+            <div class="form-group" id="affiliate">
+                <label>Affiliate Details</label>
+                <div class="form-row grid-2">
+                    <!-- Left: URL -->
+                    <div>
+                        <label for="affiliate_url">Affiliate URL</label>
+                        <input type="url" id="affiliate_url" class="woocommerce-input" placeholder="https://example.com/product">
+                    </div>
+                    <!-- Right: Button Name (ADDED) -->
+                    <div>
+                        <label for="affiliate_btn_name">Button Name</label>
+                        <input type="text" id="affiliate_btn_name" class="woocommerce-input" placeholder="e.g. Buy Now">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SHORT DESCRIPTION -->
+            <div class="form-group" id="short-desc">
+                <label for="short_desc">Short Description</label>
+                <textarea id="short_desc" class="woocommerce-textarea" rows="3" maxlength="200" oninput="countWords(this)"></textarea>
+                <div class="word-count" id="word-counter">0/40 Words</div>
+            </div>
+
+            <!-- FEATURE LIST (REPLACED WITH SNIPPET 2 CODE) -->
+            <div class="form-group" id="features">
+                <label>Feature List</label>
+                
+                <div class="feature-list-input-group">
+                    <input type="text" id="feature-input" class="woocommerce-input" placeholder="Add new feature..." onkeypress="handleEnter(event)">
+                    <button type="button" class="button button-primary" onclick="addFeature()">
+                        <i class="fa-solid fa-plus"></i> Add
+                    </button>
+                </div>
+
+                <div class="feature-list-container" id="feature-list-container">
+                    <!-- Features will be added here dynamically -->
+                    <!-- Example Item (Hardcoded for initial look) -->
+                    <div class="feature-item" id="feat-1">
+                        <span class="feature-text">erfgergh rgntht</span>
+                        <div class="feature-actions">
+                            <button type="button" class="feature-btn active-highlight" onclick="toggleHighlight(this)" title="Highlight"><i class="fa-solid fa-bold"></i></button>
+                            <button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="feature-item" id="feat-2">
+                        <span class="feature-text">htrgre rtgrtgrt</span>
+                        <div class="feature-actions">
+                            <button type="button" class="feature-btn" onclick="toggleHighlight(this)" title="Highlight"><i class="fa-solid fa-bold"></i></button>
+                            <button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRICING (3 COL INLINE) -->
+            <div class="form-group" id="pricing">
+                <label>Pricing</label>
+                <div class="form-row pricing-row">
+                    <div>
+                        <label for="price_current">Current Price</label>
+                        <input type="number" id="price_current" class="woocommerce-input" placeholder="30.00" oninput="calculateDiscount()">
+                    </div>
+                    <div>
+                        <label for="price_original">Original Price</label>
+                        <input type="number" id="price_original" class="woocommerce-input" placeholder="60.00" oninput="calculateDiscount()">
+                    </div>
+                    <div>
+                        <label for="price_discount">Discount</label>
+                        <input type="text" id="price_discount" class="woocommerce-input" placeholder="0% OFF" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY (MULTI-SELECT) & RIBBON (MULTI-SELECT) -->
+            <div class="form-group" id="taxonomy">
+                <div class="form-row grid-2">
+                    <!-- Multi-Select Category -->
+                    <div>
+                        <label>Category (Multiple Selection)</label>
+                        <div class="multi-select-container" id="category-container">
+                            <input type="hidden" id="category_input_hidden" name="categories">
+                            <div class="multi-select-box" id="category-box">
+                                <span class="multi-select-placeholder">Select categories...</span>
+                            </div>
+                            <div class="multi-select-dropdown" id="category-dropdown">
+                                <div class="multi-select-option" data-value="electronics">Electronics</div>
+                                <div class="multi-select-option" data-value="fashion">Fashion</div>
+                                <div class="multi-select-option" data-value="home">Home & Garden</div>
+                                <div class="multi-select-option" data-value="beauty">Beauty</div>
+                                <div class="multi-select-option" data-value="sports">Sports</div>
+                                <div class="multi-select-option" data-value="books">Books</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Multi-Select Ribbon -->
+                    <div>
+                        <label>Ribbon Badge (Multiple Selection)</label>
+                        <div class="multi-select-container" id="ribbon-container">
+                            <input type="hidden" id="ribbon_input_hidden" name="ribbons">
+                            <div class="multi-select-box" id="ribbon-box">
+                                <span class="multi-select-placeholder">Select ribbons...</span>
+                            </div>
+                            <div class="multi-select-dropdown" id="ribbon-dropdown">
+                                <div class="multi-select-option" data-value="hot">HOT</div>
+                                <div class="multi-select-option" data-value="new">NEW ARRIVAL</div>
+                                <div class="multi-select-option" data-value="sale">SALE</div>
+                                <div class="multi-select-option" data-value="limited">LIMITED</div>
+                                <div class="multi-select-option" data-value="best">BEST SELLER</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAGS -->
+            <div class="form-group" id="tags">
+                <label>Product Tags</label>
+                <div class="tags-group">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="tag_new" name="tags" value="new"><label for="tag_new">New Arrival</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" id="tag_best" name="tags" value="bestseller"><label for="tag_best">Best Seller</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" id="tag_sale" name="tags" value="onsale"><label for="tag_sale">On Sale</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" id="tag_limited" name="tags" value="limited"><label for="tag_limited">Limited Edition</label></div>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="form-group" id="stats">
+                <label>Product Statistics</label>
+                <div class="form-row grid-2">
+                    <div><label for="rating">Rating</label><input type="number" id="rating" class="woocommerce-input" placeholder="4.5" step="0.1" min="0" max="5"></div>
+                    <div><label for="views">Product Views</label><input type="number" id="views" class="woocommerce-input" placeholder="325"></div>
+                    <div><label for="user_count">User Count (K/M)</label><input type="text" id="user_count" class="woocommerce-input" placeholder="e.g. 1.5K"></div>
+                    <div><label for="reviews">No. of Reviews</label><input type="number" id="reviews" class="woocommerce-input" placeholder="12"></div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- FOOTER BUTTONS -->
+    <div class="editor-footer">
+        <button type="button" class="button button-secondary" onclick="window.location.reload()">Cancel</button>
+        <button type="button" class="button button-primary" onclick="submitProduct()">Update Product</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+    /* =========================================
+       1. IMAGE PREVIEW
+       ========================================= */
+    function previewImage(input, imgId) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById(imgId);
+                const content = input.parentElement.querySelector('.upload-content');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                content.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    /* =========================================
+       2. MULTI-SELECT LOGIC (CATEGORY)
+       ========================================= */
+    const categoryContainer = document.getElementById('category-container');
+    const categoryBox = document.getElementById('category-box');
+    const categoryDropdown = document.getElementById('category-dropdown');
+    const categoryHiddenInput = document.getElementById('category_input_hidden');
+    const categoryOptions = document.querySelectorAll('#category-dropdown .multi-select-option');
+    let selectedCategories = [];
+
+    // Toggle Dropdown
+    categoryBox.addEventListener('click', () => {
+        categoryDropdown.style.display = categoryDropdown.style.display === 'block' ? 'none' : 'block';
+        // Close ribbon if category is open
+        document.getElementById('ribbon-dropdown').style.display = 'none';
+    });
+
+    // Select Option
+    categoryOptions.forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const value = option.getAttribute('data-value');
+            if (selectedCategories.includes(value)) return;
+
+            selectedCategories.push(value);
+            updateMultiSelectUI('category', selectedCategories, categoryBox, categoryOptions);
         });
-    </script>
+    });
+
+    /* =========================================
+       2.5 MULTI-SELECT LOGIC (RIBBON)
+       ========================================= */
+    const ribbonContainer = document.getElementById('ribbon-container');
+    const ribbonBox = document.getElementById('ribbon-box');
+    const ribbonDropdown = document.getElementById('ribbon-dropdown');
+    const ribbonHiddenInput = document.getElementById('ribbon_input_hidden');
+    const ribbonOptions = document.querySelectorAll('#ribbon-dropdown .multi-select-option');
+    let selectedRibbons = [];
+
+    // Toggle Dropdown
+    ribbonBox.addEventListener('click', () => {
+        ribbonDropdown.style.display = ribbonDropdown.style.display === 'block' ? 'none' : 'block';
+        // Close category if ribbon is open
+        document.getElementById('category-dropdown').style.display = 'none';
+    });
+
+    // Select Option
+    ribbonOptions.forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const value = option.getAttribute('data-value');
+            if (selectedRibbons.includes(value)) return;
+
+            selectedRibbons.push(value);
+            updateMultiSelectUI('ribbon', selectedRibbons, ribbonBox, ribbonOptions);
+        });
+    });
+
+    // Global Click to Close Dropdowns
+    document.addEventListener('click', (e) => {
+        if (!categoryContainer.contains(e.target) && !ribbonContainer.contains(e.target)) {
+            categoryDropdown.style.display = 'none';
+            ribbonDropdown.style.display = 'none';
+        }
+    });
+
+    /* Generic Multi-Select Updater */
+    function updateMultiSelectUI(type, selectedArray, box, optionList) {
+        // Clear current tags
+        const existingTags = box.querySelectorAll('.multi-select-tag');
+        existingTags.forEach(t => t.remove());
+
+        // Rebuild tags
+        selectedArray.forEach(val => {
+            // Find text based on value in options list
+            const optElement = Array.from(optionList).find(opt => opt.getAttribute('data-value') === val);
+            if(!optElement) return;
+            const text = optElement.textContent;
+
+            const tag = document.createElement('div');
+            tag.className = 'multi-select-tag';
+            tag.innerHTML = `${text} <i class="fa-solid fa-xmark"></i>`;
+            
+            // Remove functionality
+            tag.querySelector('i').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (type === 'category') {
+                    selectedCategories = selectedCategories.filter(item => item !== val);
+                } else {
+                    selectedRibbons = selectedRibbons.filter(item => item !== val);
+                }
+                updateMultiSelectUI(type, (type === 'category' ? selectedCategories : selectedRibbons), box, optionList);
+            });
+
+            // Insert before placeholder
+            const placeholder = box.querySelector('.multi-select-placeholder');
+            box.insertBefore(tag, placeholder);
+        });
+
+        // Toggle Placeholder
+        const placeholder = box.querySelector('.multi-select-placeholder');
+        placeholder.style.display = selectedArray.length > 0 ? 'none' : 'block';
+
+        // Update Hidden Input
+        const hiddenInput = document.getElementById(type === 'category' ? 'category_input_hidden' : 'ribbon_input_hidden');
+        hiddenInput.value = selectedArray.join(',');
+    }
+
+    /* =========================================
+       3. PRICING
+       ========================================= */
+    function calculateDiscount() {
+        const current = parseFloat(document.getElementById('price_current').value) || 0;
+        const original = parseFloat(document.getElementById('price_original').value) || 0;
+        const discountField = document.getElementById('price_discount');
+        if (original > 0 && current < original) {
+            const percent = ((original - current) / original) * 100;
+            discountField.value = Math.round(percent) + '% OFF';
+        } else {
+            discountField.value = '0% OFF';
+        }
+    }
+
+    /* =========================================
+       4. FEATURE LIST LOGIC (EXTRACTED FROM SNIPPET 2)
+       ========================================= */
+    function handleEnter(e) {
+        if(e.key === 'Enter') addFeature();
+    }
+
+    function addFeature() {
+        const input = document.getElementById('feature-input');
+        const container = document.getElementById('feature-list-container');
+        const text = input.value.trim();
+        
+        if (!text) return;
+
+        const id = 'feat-' + Date.now();
+
+        const div = document.createElement('div');
+        div.className = 'feature-item';
+        div.id = id;
+        div.innerHTML = `
+            <span class="feature-text">${text}</span>
+            <div class="feature-actions">
+                <button type="button" class="feature-btn" onclick="toggleHighlight(this)" title="Highlight"><i class="fa-solid fa-bold"></i></button>
+                <button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                <button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+
+        container.appendChild(div);
+        input.value = ''; 
+    }
+
+    function deleteFeature(btn) {
+        const item = btn.closest('.feature-item');
+        item.remove();
+    }
+
+    function toggleHighlight(btn) {
+        const item = btn.closest('.feature-item');
+        item.classList.toggle('highlighted');
+        btn.classList.toggle('active-highlight');
+    }
+
+    function moveFeature(btn, direction) {
+        const item = btn.closest('.feature-item');
+        const container = document.getElementById('feature-list-container');
+        
+        if (direction === -1) {
+            // Move Up
+            const prev = item.previousElementSibling;
+            if (prev && !prev.classList.contains('input-group-wrapper')) { // Don't go above input wrapper if it was structured differently, but here just checking sibling
+                container.insertBefore(item, prev);
+            }
+        } else {
+            // Move Down
+            const next = item.nextElementSibling;
+            if (next) {
+                container.insertBefore(next, item);
+            }
+        }
+    }
+
+    /* =========================================
+       5. UTILS
+       ========================================= */
+    function countWords(txt) {
+        const words = txt.value.trim() === '' ? 0 : txt.value.trim().split(/\s+/).length;
+        document.getElementById('word-counter').textContent = `${words}/40 Words`;
+    }
+
+    function showToast(msg, type='success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icon = type==='success'?'fa-circle-check':'fa-circle-exclamation';
+        
+        toast.innerHTML = `<i class="fa-solid ${icon} toast-icon"></i><span>${msg}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(()=>{ toast.style.opacity='0'; setTimeout(()=>toast.remove(),300); },3000);
+    }
+
+    function closeModal() { if(confirm("Close? Unsaved changes will be lost.")) window.location.reload(); }
+    function submitProduct() { showToast('Product updated successfully!'); }
+</script>
+
 </body>
 </html>
