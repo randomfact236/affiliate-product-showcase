@@ -30,8 +30,8 @@ class Menu {
         add_filter( 'custom_menu_order', '__return_true' );
         add_filter( 'menu_order', [ $this, 'reorderMenus' ], 999 );
         
-        // Redirect default CPT "Add New" to our custom WooCommerce-style page
-        add_action( 'load-post-new.php', [ $this, 'redirectToCustomAddPage' ] );
+        // Remove WordPress default "Add New" menu (we have custom "Add Product" instead)
+        add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], 999 );
     }
 
 	/**
@@ -155,6 +155,19 @@ class Menu {
     }
 
     /**
+     * Remove WordPress default "Add New" menu
+     *
+     * Removes the default WordPress "Add New" submenu that's automatically
+     * created for custom post types. We have our custom "Add Product"
+     * submenu instead (just like WooCommerce does).
+     *
+     * @return void
+     */
+    public function removeDefaultAddNewMenu(): void {
+        remove_submenu_page( 'edit.php?post_type=aps_product', 'post-new.php?post_type=aps_product' );
+    }
+
+    /**
      * Get menu page URL
      *
      * @param string $page Page slug
@@ -223,23 +236,5 @@ class Menu {
         array_splice( $menu_order, $products_key + 1, 0, [ self::MENU_SLUG ] );
         
         return $menu_order;
-    }
-    
-    /**
-     * Redirect default CPT "Add New" page to our custom WooCommerce-style page
-     *
-     * This ensures users always see the beautiful new form instead of the
-     * WordPress default edit page when clicking "Add New" under Affiliate Products.
-     *
-     * @return void
-     */
-    public function redirectToCustomAddPage(): void {
-        // Check if this is aps_product CPT "Add New" page
-        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'aps_product' ) {
-            // Redirect to edit.php?post_type=aps_product&page=add-product
-            $custom_page_url = admin_url( 'edit.php?post_type=aps_product&page=add-product' );
-            wp_redirect( $custom_page_url );
-            exit;
-        }
     }
 }
