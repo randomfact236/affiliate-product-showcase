@@ -24,11 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<span class="description"><?php esc_html_e( 'The name of your affiliate product', 'affiliate-product-showcase' ); ?></span>
 		</div>
 
-		<div class="woocommerce-input-wrapper">
+	<div class="woocommerce-input-wrapper">
 			<label for="aps_description"><?php esc_html_e( 'Product Description', 'affiliate-product-showcase' ); ?></label>
-			<textarea id="aps_description" name="aps_description" class="woocommerce-input woocommerce-textarea" rows="5" placeholder="<?php esc_attr_e( 'Describe your product features and benefits...', 'affiliate-product-showcase' ); ?>"></textarea>
+			<textarea id="aps_description" name="aps_description" class="woocommerce-input woocommerce-textarea woocommerce-full-page-textarea" placeholder="<?php esc_attr_e( 'Describe your product features and benefits...', 'affiliate-product-showcase' ); ?>"></textarea>
 			<span class="description"><?php esc_html_e( 'Detailed description for product page and SEO', 'affiliate-product-showcase' ); ?></span>
-		</div>
+	</div>
 	</div>
 </div>
 
@@ -120,5 +120,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 		border-bottom-right-radius: 3px;
 		min-width: 60px;
 		height: 42px;
+	}
+
+	/* Full Page Textarea - Responsive */
+	.woocommerce-full-page-textarea {
+		width: 100%;
+		min-height: 200px;
+		resize: vertical;
+		font-family: inherit;
+		font-size: 14px;
+		line-height: 1.6;
+		padding: 12px;
+	}
+
+	/* Responsive adjustments for textarea */
+	@media (max-width: 768px) {
+		.woocommerce-full-page-textarea {
+			min-height: 150px;
+			font-size: 13px;
+			padding: 10px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.woocommerce-full-page-textarea {
+			min-height: 120px;
+			font-size: 12px;
+			padding: 8px;
+		}
 	}
 </style>

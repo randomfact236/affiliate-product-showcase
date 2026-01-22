@@ -90,11 +90,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<span class="description"><?php esc_html_e( 'Custom SEO title (leave empty to use product name)', 'affiliate-product-showcase' ); ?></span>
 		</div>
 		
-		<div class="woocommerce-input-wrapper">
+	<div class="woocommerce-input-wrapper">
 			<label for="aps_seo_description"><?php esc_html_e( 'SEO Description', 'affiliate-product-showcase' ); ?></label>
-			<textarea id="aps_seo_description" name="aps_seo_description" class="woocommerce-input woocommerce-textarea" rows="3" maxlength="160" placeholder="<?php esc_attr_e( 'Brief description for search engines...', 'affiliate-product-showcase' ); ?>"></textarea>
+			<textarea id="aps_seo_description" name="aps_seo_description" class="woocommerce-input woocommerce-textarea woocommerce-full-page-textarea" maxlength="160" placeholder="<?php esc_attr_e( 'Brief description for search engines...', 'affiliate-product-showcase' ); ?>"></textarea>
 			<span class="description"><?php esc_html_e( 'Meta description for search engines (max 160 characters)', 'affiliate-product-showcase' ); ?></span>
-		</div>
+	</div>
 	</div>
 </div>
 
@@ -103,5 +103,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	.panel-icon {
 		font-size: 16px;
 		margin-right: 8px;
+	}
+
+	/* Full Page Textarea - Responsive */
+	.woocommerce-full-page-textarea {
+		width: 100%;
+		min-height: 100px;
+		resize: vertical;
+		font-family: inherit;
+		font-size: 14px;
+		line-height: 1.6;
+		padding: 12px;
+	}
+
+	/* Responsive adjustments for textarea */
+	@media (max-width: 768px) {
+		.woocommerce-full-page-textarea {
+			min-height: 80px;
+			font-size: 13px;
+			padding: 10px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.woocommerce-full-page-textarea {
+			min-height: 60px;
+			font-size: 12px;
+			padding: 8px;
+		}
 	}
 </style>
