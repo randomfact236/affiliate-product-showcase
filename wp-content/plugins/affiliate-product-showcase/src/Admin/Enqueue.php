@@ -81,6 +81,16 @@ class Enqueue {
             );
         }
 
+        // Manage Products page styles
+        if ( $this->isManageProductsPage( $hook ) ) {
+            wp_enqueue_style(
+                'affiliate-product-showcase-admin-manage-products',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-manage-products.css',
+                [],
+                self::VERSION
+            );
+        }
+
         // Product edit styles
         if ( $this->isProductEditPage( $hook ) ) {
             wp_enqueue_style(
@@ -155,6 +165,17 @@ class Enqueue {
                     'affiliate-product-showcase-settings',
                     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
                     [ 'jquery', 'wp-util' ],
+                    self::VERSION,
+                    true
+                );
+            }
+
+            // Manage Products page scripts
+            if ( $this->isManageProductsPage( $hook ) ) {
+                wp_enqueue_script(
+                    'affiliate-product-showcase-admin-manage-products',
+                    AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin-manage-products.js',
+                    [ 'jquery' ],
                     self::VERSION,
                     true
                 );
@@ -510,7 +531,7 @@ class Enqueue {
     /**
      * Check if current page is a plugin page
      *
-     * @param string $hook Current page hook
+     * @param string $hook Current admin page hook
      * @return bool
      */
     private function isPluginPage( string $hook ): bool {
@@ -534,7 +555,7 @@ class Enqueue {
     /**
      * Check if current page is dashboard
      *
-     * @param string $hook Current page hook
+     * @param string $hook Current admin page hook
      * @return bool
      */
     private function isDashboardPage( string $hook ): bool {
@@ -545,7 +566,7 @@ class Enqueue {
     /**
      * Check if current page is analytics
      *
-     * @param string $hook Current page hook
+     * @param string $hook Current admin page hook
      * @return bool
      */
     private function isAnalyticsPage( string $hook ): bool {
@@ -555,7 +576,7 @@ class Enqueue {
     /**
      * Check if current page is settings
      *
-     * @param string $hook Current page hook
+     * @param string $hook Current admin page hook
      * @return bool
      */
     private function isSettingsPage( string $hook ): bool {
@@ -565,12 +586,22 @@ class Enqueue {
     /**
      * Check if current page is product edit
      *
-     * @param string $hook Current page hook
+     * @param string $hook Current admin page hook
      * @return bool
      */
     private function isProductEditPage( string $hook ): bool {
         return $hook === 'post.php'
             || $hook === 'post-new.php';
+    }
+
+    /**
+     * Check if current page is manage products
+     *
+     * @param string $hook Current admin page hook
+     * @return bool
+     */
+    private function isManageProductsPage( string $hook ): bool {
+        return isset( $_GET['page'] ) && $_GET['page'] === 'manage-products';
     }
 
     /**
