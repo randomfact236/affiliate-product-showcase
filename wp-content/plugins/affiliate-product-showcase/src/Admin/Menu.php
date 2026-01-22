@@ -259,35 +259,48 @@ class Menu {
         
         $our_submenu = $submenu['edit.php?post_type=aps_product'];
         $ordered_submenu = [];
-        $add_product_found = false;
         
-        // Define desired order
-        $desired_order = [
-            'add-product',      // Our custom Add Product
-            'edit-tags.php?taxonomy=aps_product_category&post_type=aps_product', // Category
-        ];
+        // Separate items by type
+        $all_products = null;
+        $add_product = null;
+        $category = null;
+        $other_items = [];
         
-        // First, add items in desired order
-        foreach ( $desired_order as $slug ) {
-            foreach ( $our_submenu as $index => $item ) {
-                if ( isset( $item[2] ) && strpos( $item[2], $slug ) !== false ) {
-                    $ordered_submenu[] = $item;
-                    unset( $our_submenu[$index] );
-                    if ( $slug === 'add-product' ) {
-                        $add_product_found = true;
-                    }
-                }
+        foreach ( $our_submenu as $item ) {
+            if ( ! isset( $item[2] ) ) {
+                continue;
+            }
+            
+            $url = $item[2];
+            
+            if ( $url === 'edit.php?post_type=aps_product' ) {
+                $all_products = $item;
+            } elseif ( strpos( $url, 'page=add-product' ) !== false ) {
+                $add_product = $item;
+            } elseif ( strpos( $url, 'edit-tags.php?taxonomy=aps_product_category' ) !== false ) {
+                $category = $item;
+            } else {
+                $other_items[] = $item;
             }
         }
         
+        // Build ordered submenu: All Products -> Add Product -> Category -> others
+        if ( $all_products !== null ) {
+            $ordered_submenu[] = $all_products;
+        }
+        if ( $add_product !== null ) {
+            $ordered_submenu[] = $add_product;
+        }
+        if ( $category !== null ) {
+            $ordered_submenu[] = $category;
+        }
+        
         // Add remaining items
-        foreach ( $our_submenu as $item ) {
+        foreach ( $other_items as $item ) {
             $ordered_submenu[] = $item;
         }
         
         // Update submenu with new order
-        if ( $add_product_found ) {
-            $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
-        }
+        $submenu['edit.php?post_type=aps_product'] = $ordered_submenu;
     }
 }
