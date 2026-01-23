@@ -417,13 +417,19 @@ These sections appear under "## 💡 Recommendations" at the BOTTOM of EVERY mes
 
 **Assistant Files Used Section:**
 - Must appear SECOND (immediately after User Request) in EVERY message
-- List ALL assistant instruction/reference files (docs/assistant-*.md)
+- List **ALL** assistant instruction/reference files (docs/assistant-*.md)
+- Required files to **ALWAYS** include:
+  ✅ docs/assistant-instructions.md (or .clinerules/assistant-instructions.md)
+  ✅ docs/assistant-quality-standards.md
+  ✅ docs/assistant-performance-optimization.md
 - DO NOT list project files, source code, or files created during task
 - Status indicators are MANDATORY:
   - ✅ (APPLIED) - File was used/applied during the task
   - ❌ (NOT USED) - File was referenced/available but not directly applied
 - Even files marked as NOT USED must be listed to maintain complete context
 - Format: `## Assistant Files Used` with list of files and status
+
+⚠️ **CRITICAL: Do NOT skip listing any assistant file.** Even if a file was not used, it MUST be listed with status ❌ (NOT USED).
 
 ---
 
