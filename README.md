@@ -566,6 +566,15 @@ Report vulnerabilities responsibly: [SECURITY.md](SECURITY.md)
 
 **See:** [CHANGELOG.md](CHANGELOG.md) for detailed version history
 
+### Recent Updates
+
+**January 23, 2026 - Architecture Cleanup**
+- ✅ Removed `Columns.php` to eliminate duplicate column rendering
+- ✅ Achieved 100% compliance with true hybrid approach
+- ✅ Established `ProductsTable` as single source of truth for column rendering
+- ✅ Improved maintainability and performance
+- **See:** [Columns.php Migration Note](docs/columns-php-migration-note.md) for details
+
 ---
 
 ## 🙏 Credits & Acknowledgments

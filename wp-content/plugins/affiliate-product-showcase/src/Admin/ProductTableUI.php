@@ -220,6 +220,9 @@ class ProductTableUI {
 	/**
 	 * Render the WP_List_Table instance
 	 *
+	 * Delegates column rendering to ProductsTable which extends WP_List_Table.
+	 * ProductsTable is the single source of truth for column display.
+	 *
 	 * @return void
 	 */
 	private function renderTable(): void {

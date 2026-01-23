@@ -12,6 +12,9 @@ use AffiliateProductShowcase\Plugin\Constants;
  * Extends WordPress WP_List_Table to display products with custom columns.
  * Provides native pagination, sorting, and bulk actions.
  *
+ * This is the SINGLE source of truth for column rendering in the true hybrid approach.
+ * Custom UI is rendered by ProductTableUI, column rendering is handled here.
+ *
  * @package AffiliateProductShowcase\Admin
  * @since 1.0.0
  */

@@ -17,7 +17,6 @@ final class Admin {
 	private MetaBoxes $metaboxes;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
-	private Columns $columns;
 	private ProductTableUI $product_table_ui;
 
 	public function __construct(
@@ -31,7 +30,6 @@ final class Admin {
 		$this->metaboxes = new MetaBoxes( $this->product_service );
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
-		$this->columns = new Columns();
 		$this->product_table_ui = new ProductTableUI();
 	}
 

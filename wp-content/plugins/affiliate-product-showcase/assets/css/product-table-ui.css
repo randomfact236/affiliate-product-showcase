@@ -38,6 +38,8 @@ body.post-type-aps_product.edit-php .updated {
 
 .aps-products-page {
     margin: 20px 0;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* ============================================
@@ -50,6 +52,8 @@ body.post-type-aps_product.edit-php .updated {
     background: #ffffff;
     border: 1px solid #dcdcde;
     border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .aps-page-title {
@@ -85,6 +89,9 @@ body.post-type-aps_product.edit-php .updated {
     background: #f6f7f7;
     border-radius: 4px;
     border-left: 4px solid #2271b1;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .aps-count-item {
@@ -97,7 +104,7 @@ body.post-type-aps_product.edit-php .updated {
     border-radius: 4px;
     text-decoration: none;
     transition: all 0.2s ease;
-    min-width: 80px;
+    flex: 1;
 }
 
 .aps-count-item:hover {
@@ -144,12 +151,15 @@ body.post-type-aps_product.edit-php .updated {
     display: flex;
     gap: 12px;
     align-items: center;
-    margin: 20px 0;
+    margin: 8px 0;
     padding: 16px;
     background: #ffffff;
     border: 1px solid #dcdcde;
     border-radius: 4px;
     flex-wrap: wrap;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 /* Slightly tighter filter controls (matches flowchart density) */
