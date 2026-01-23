@@ -114,13 +114,13 @@ class Columns {
 
         if ( $image_url ) {
             printf(
-                '<img src="%s" alt="%s" class="product-logo" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />',
+                '<img src="%s" alt="%s" class="aps-product-logo" />',
                 esc_url( $image_url ),
                 esc_attr( $title )
             );
         } else {
             printf(
-                '<div class="product-logo-placeholder" style="width: 50px; height: 50px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #666;">%s</div>',
+                '<div class="aps-product-logo-placeholder">%s</div>',
                 esc_html( substr( $title, 0, 1 ) )
             );
         }
@@ -139,7 +139,7 @@ class Columns {
             $output = '';
             foreach ( $categories as $category ) {
                 $output .= sprintf(
-                    '<span class="product-category">%s</span><br>',
+                    '<span class="aps-product-category">%s</span>',
                     esc_html( $category->name )
                 );
             }
@@ -160,7 +160,7 @@ class Columns {
             $output = '';
             foreach ( $tags as $tag ) {
                 $output .= sprintf(
-                    '<span class="product-tag">%s</span> ',
+                    '<span class="aps-product-tag">%s</span>',
                     esc_html( $tag->name )
                 );
             }
@@ -179,7 +179,7 @@ class Columns {
 
         if ( $badge ) {
             printf(
-                '<span class="product-badge">%s</span>',
+                '<span class="aps-product-badge">%s</span>',
                 esc_html( $badge )
             );
         }
@@ -196,7 +196,7 @@ class Columns {
         $is_featured = ! empty( $featured ) && $featured === '1';
 
         if ( $is_featured ) {
-            echo '<span class="product-featured" style="color: #f59e0b; font-size: 18px;">★</span>';
+            echo '<span class="aps-product-featured">★</span>';
         }
     }
 
@@ -213,7 +213,7 @@ class Columns {
 
         if ( $price ) {
             $formatted_price = number_format( (float) $price, 2 );
-            echo '<span class="product-price">';
+            echo '<div class="aps-product-price">';
             
             // Show original price and discount if available
             if ( $original_price && $original_price > $price ) {
@@ -221,7 +221,7 @@ class Columns {
                 $discount = round( ( ( $original_price - $price ) / $original_price ) * 100 );
                 
                 printf(
-                    '%s<br><span style="text-decoration: line-through; color: #999;">%s</span><br><span style="color: #ef4444; font-weight: bold;">%d%% OFF</span>',
+                    '%s<span class="aps-product-price-original">%s</span><span class="aps-product-price-discount">%d%% OFF</span>',
                     esc_html( $currency . ' ' . $formatted_price ),
                     esc_html( $currency . ' ' . $formatted_original ),
                     esc_html( $discount )
@@ -233,7 +233,7 @@ class Columns {
                 );
             }
             
-            echo '</span>';
+            echo '</div>';
         }
     }
 
@@ -249,19 +249,15 @@ class Columns {
             'publish' => __( 'PUBLISHED', 'affiliate-product-showcase' ),
             'draft' => __( 'DRAFT', 'affiliate-product-showcase' ),
             'trash' => __( 'TRASH', 'affiliate-product-showcase' ),
+            'pending' => __( 'PENDING', 'affiliate-product-showcase' ),
         ];
 
         $status_text = $status_map[ $status ] ?? strtoupper( $status );
-        $color_map = [
-            'publish' => '#10b981', // Green
-            'draft' => '#6b7280', // Gray
-            'trash' => '#ef4444', // Red
-        ];
-        $color = $color_map[ $status ] ?? '#6b7280';
+        $status_class = 'aps-product-status-' . $status;
 
         printf(
-            '<span class="product-status" style="color: %s; font-weight: 500;">%s</span>',
-            esc_attr( $color ),
+            '<span class="aps-product-status %s">%s</span>',
+            esc_attr( $status_class ),
             esc_html( $status_text )
         );
     }

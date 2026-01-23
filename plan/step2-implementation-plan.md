@@ -265,6 +265,44 @@ node plan/plan_sync_todos.cjs
 
 ---
 
+## 📋 CSS Classes Reference
+
+### Product Admin Table CSS Classes
+
+**Location:** `wp-content/plugins/affiliate-product-showcase/assets/css/admin-table.css`
+
+**All CSS Classes Used (Single Set - BEM Pattern):**
+
+```css
+/* Block: aps-product-table */
+.aps-product-table                    /* Main table container */
+.aps-product-table__title            /* Product title */
+.aps-product-table__meta             /* Product metadata */
+.aps-product-table__price            /* Current price */
+.aps-product-table__price--original  /* Original/strikethrough price */
+.aps-product-table__price--discount  /* Discounted price styling */
+.aps-product-table__currency         /* Currency symbol */
+.aps-product-table__price-group      /* Price container */
+.aps-product-table__stock            /* Stock status */
+.aps-product-table__stock--in-stock /* In stock modifier */
+.aps-product-table__stock--out-of-stock /* Out of stock modifier */
+.aps-product-table__thumbnail        /* Thumbnail container */
+.aps-product-table__thumbnail--empty /* Empty state modifier */
+.aps-product-table__thumbnail-image /* Thumbnail image */
+.aps-product-table__empty-icon      /* Empty state icon */
+.aps-product-table__actions         /* Actions container */
+.aps-product-table__action-link     /* Action links */
+.aps-product-table__view-link       /* View product link */
+```
+
+**Usage:** These classes are used in `src/Admin/Columns.php` for the admin product table display.
+
+**Naming Convention:** BEM (Block Element Modifier) with `aps-` prefix to avoid WordPress conflicts.
+
+**Implementation:** Zero inline styles - all styling in dedicated CSS file.
+
+---
+
 ## Success Criteria
 
 Phase 1 complete when:

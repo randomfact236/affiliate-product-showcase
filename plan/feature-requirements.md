@@ -779,6 +779,59 @@
 - [ ] 217. Code quality checks (PHPCS, PHPStan, Psalm)
 - [ ] 218. Code coverage reporting
 
+
+## 🎨 CSS Classes Reference for Product Table
+
+## Complete CSS Classes List (14 Total)
+
+### Class Naming Convention
+All admin table classes follow this pattern:
+```
+aps-product-[element]-[modifier]
+```
+
+### By Column
+
+#### 1. Logo Column (2 classes)
+- `aps-product-logo` - Product image display
+- `aps-product-logo-placeholder` - Fallback placeholder
+
+#### 2. Category Column (1 class)
+- `aps-product-category` - Category badge styling
+
+#### 3. Tags Column (1 class)
+- `aps-product-tag` - Tag pill styling
+
+#### 4. Ribbon/Badge Column (1 class)
+- `aps-product-badge` - Product ribbon/badge styling
+
+#### 5. Featured Column (1 class)
+- `aps-product-featured` - Featured star icon styling
+
+#### 6. Price Column (3 classes)
+- `aps-product-price` - Main price container and display
+- `aps-product-price-original` - Original price with strikethrough
+- `aps-product-price-discount` - Discount percentage display
+
+#### 7. Status Column (5 classes)
+- `aps-product-status` - Base status styling
+- `aps-product-status-published` - Published status (green)
+- `aps-product-status-draft` - Draft status (gray)
+- `aps-product-status-trash` - Trashed status (red)
+- `aps-product-status-pending` - Pending review status (yellow)
+
+## Implementation Files
+- **CSS Styles:** `assets/css/admin-table.css`
+- **PHP Implementation:** `src/Admin/Columns.php`
+- **Enqueue Script:** `src/Admin/Enqueue.php`
+
+## Developer Guidelines
+- ✅ Use ONLY these 14 approved CSS classes
+- ✅ Follow `aps-product-` prefix convention
+- ✅ No inline styles in HTML
+- ✅ Document any new classes in this file
+- ❌ Do NOT create new classes without updating this reference
+
 ---
 
 **Status Tracking:**
