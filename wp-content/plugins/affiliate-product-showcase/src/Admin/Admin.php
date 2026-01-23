@@ -18,6 +18,7 @@ final class Admin {
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
 	private Columns $columns;
+	private ProductTableUI $product_table_ui;
 
 	public function __construct(
 		private Assets $assets,
@@ -31,6 +32,7 @@ final class Admin {
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
 		$this->columns = new Columns();
+		$this->product_table_ui = new ProductTableUI();
 	}
 
 	public function init(): void {
