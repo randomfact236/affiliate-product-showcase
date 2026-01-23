@@ -11,6 +11,7 @@ use AffiliateProductShowcase\Admin\Admin;
 use AffiliateProductShowcase\Admin\AjaxHandler;
 use AffiliateProductShowcase\Admin\Menu;
 use AffiliateProductShowcase\Admin\ProductFormHandler;
+use AffiliateProductShowcase\Admin\ProductsPageHooks;
 use AffiliateProductShowcase\Admin\Settings;
 use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Assets\Manifest;
@@ -114,6 +115,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 			Settings::class,
 			Menu::class,
 			ProductFormHandler::class,
+			ProductsPageHooks::class,
 			Admin::class,
 			AjaxHandler::class,
 
@@ -229,6 +231,8 @@ final class ServiceProvider implements ServiceProviderInterface {
 			->addArgument( ProductFormHandler::class );
 		$this->getContainer()->addShared( AjaxHandler::class )
 			->addArgument( ProductService::class )
+			->addArgument( ProductRepository::class );
+		$this->getContainer()->addShared( ProductsPageHooks::class )
 			->addArgument( ProductRepository::class );
 
 		// ============================================================================
