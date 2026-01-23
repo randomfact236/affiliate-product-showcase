@@ -299,6 +299,8 @@ class ProductTableUI {
                 'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
                 'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
                 'done' => __( 'Done!', 'affiliate-product-showcase' ),
+                'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
+                'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
             ],
         ]);
     }

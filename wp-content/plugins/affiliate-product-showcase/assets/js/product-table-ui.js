@@ -1,11 +1,14 @@
 /**
- * Affiliate Product Showcase - Product Table UI JavaScript
+ * Affiliate Product Showcase - Product Table UI JavaScript (Enhanced)
  *
- * Handles interactions for product table UI:
- * - Bulk upload products
- * - Check product links
- * - Filter interactions
- * - Toggle featured filter
+ * Handles interactions for product table UI with AJAX:
+ * - AJAX-based filtering (no page reloads)
+ * - Client-side sorting (instant)
+ * - Smooth animations and transitions
+ * - Live status updates
+ * - Search highlighting
+ * - Bulk actions
+ * - Link checking
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
@@ -20,13 +23,43 @@
     const APSTableUI = {
         
         /**
+         * Cached products data
+         */
+        products: [],
+
+        /**
+         * Current sort state
+         */
+        sortState: {
+            column: 'date',
+            direction: 'desc'
+        },
+
+        /**
+         * Current filter state
+         */
+        filterState: {
+            search: '',
+            category: 0,
+            featured: false,
+            status: 'all',
+            per_page: 20,
+            page: 1
+        },
+
+        /**
          * Initialize
          */
         init: function() {
+            // Don't load initial products via AJAX
+            // WordPress already loads them on page load
+            // We only use AJAX for filtering/sorting after user interaction
+            
             this.bindEvents();
             this.initSearch();
             this.initFilters();
             this.initFeaturedToggle();
+            this.initSorting();
         },
 
         /**
@@ -45,39 +78,17 @@
             const searchInput = $('#aps_search_products');
             
             if (searchInput.length) {
-                // Search on Enter key
-                searchInput.on('keypress', function(e) {
-                    if (e.which === 13) {
-                        e.preventDefault();
-                        APSTableUI.performSearch();
-                    }
-                });
-
                 // Auto-search with debounce
                 let searchTimeout;
                 searchInput.on('input', function() {
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(function() {
-                        APSTableUI.performSearch();
-                    }, 500);
+                        APSTableUI.filterState.search = $(this).val();
+                        APSTableUI.filterState.page = 1;
+                        APSTableUI.filterProducts();
+                    }, 300);
                 });
             }
-        },
-
-        /**
-         * Perform search
-         */
-        performSearch: function() {
-            const searchTerm = $('#aps_search_products').val();
-            const url = new URL(window.location.href);
-            
-            if (searchTerm) {
-                url.searchParams.set('aps_search', searchTerm);
-            } else {
-                url.searchParams.delete('aps_search');
-            }
-            
-            window.location.href = url.toString();
         },
 
         /**
@@ -86,24 +97,16 @@
         initFilters: function() {
             // Category filter
             $('#aps_category_filter').on('change', function() {
-                const category = $(this).val();
-                const url = new URL(window.location.href);
-                
-                if (category) {
-                    url.searchParams.set('aps_category_filter', category);
-                } else {
-                    url.searchParams.delete('aps_category_filter');
-                }
-                
-                window.location.href = url.toString();
+                APSTableUI.filterState.category = $(this).val();
+                APSTableUI.filterState.page = 1;
+                APSTableUI.filterProducts();
             });
 
             // Sort order
             $('#aps_sort_order').on('change', function() {
                 const order = $(this).val();
-                const url = new URL(window.location.href);
-                url.searchParams.set('order', order);
-                window.location.href = url.toString();
+                APSTableUI.sortState.direction = order;
+                APSTableUI.sortProducts();
             });
 
             // Bulk action
@@ -125,6 +128,19 @@
                 }
                 APSTableUI.applyBulkAction(action);
             });
+
+            // Status count links
+            $('.aps-count-item').on('click', function(e) {
+                e.preventDefault();
+                const status = $(this).data('status');
+                APSTableUI.filterState.status = status;
+                APSTableUI.filterState.page = 1;
+                APSTableUI.filterProducts();
+                
+                // Update active state
+                $('.aps-count-item').removeClass('active');
+                $(this).addClass('active');
+            });
         },
 
         /**
@@ -132,17 +148,375 @@
          */
         initFeaturedToggle: function() {
             $('#aps_show_featured').on('change', function() {
-                const isChecked = $(this).prop('checked');
-                const url = new URL(window.location.href);
+                APSTableUI.filterState.featured = $(this).prop('checked');
+                APSTableUI.filterState.page = 1;
+                APSTableUI.filterProducts();
+            });
+        },
+
+        /**
+         * Initialize sorting
+         */
+        initSorting: function() {
+            // Add click handlers to table headers
+            $('.wp-list-table th.sortable').on('click', function() {
+                const column = $(this).data('sort-column');
                 
-                if (isChecked) {
-                    url.searchParams.set('featured_filter', '1');
+                // Toggle direction if clicking same column
+                if (APSTableUI.sortState.column === column) {
+                    APSTableUI.sortState.direction = APSTableUI.sortState.direction === 'asc' ? 'desc' : 'asc';
                 } else {
-                    url.searchParams.delete('featured_filter');
+                    APSTableUI.sortState.column = column;
+                    APSTableUI.sortState.direction = 'asc';
                 }
                 
-                window.location.href = url.toString();
+                APSTableUI.sortProducts();
+                
+                // Update sort indicator
+                $('.wp-list-table th.sortable').removeClass('sorted-asc sorted-desc');
+                $(this).addClass('sorted-' + APSTableUI.sortState.direction);
             });
+        },
+
+        /**
+         * Filter products via AJAX
+         */
+        filterProducts: function() {
+            // Show loading state
+            APSTableUI.showTableLoading();
+
+            $.ajax({
+                url: apsProductTableUI.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'aps_filter_products',
+                    nonce: apsProductTableUI.nonce,
+                    search: this.filterState.search,
+                    category: this.filterState.category,
+                    featured: this.filterState.featured,
+                    status: this.filterState.status,
+                    per_page: this.filterState.per_page,
+                    page: this.filterState.page,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        APSTableUI.products = response.data.products;
+                        APSTableUI.updateTable(response.data.products);
+                        APSTableUI.updatePagination(response.data);
+                        APSTableUI.highlightSearchTerms();
+                    } else {
+                        console.error('Filter error:', response.data);
+                        alert('Error: ' + (response.data.message || 'Unknown error'));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Filter error:', error);
+                    console.error('Response:', xhr.responseText);
+                    console.error('Status:', status);
+                    alert('An error occurred while filtering products. Please try again.');
+                },
+                complete: function() {
+                    APSTableUI.hideTableLoading();
+                }
+            });
+        },
+
+        /**
+         * Sort products client-side
+         */
+        sortProducts: function() {
+            const column = this.sortState.column;
+            const direction = this.sortState.direction;
+
+            this.products.sort((a, b) => {
+                let valA = a[column];
+                let valB = b[column];
+
+                // Handle nested properties
+                if (column.includes('.')) {
+                    const parts = column.split('.');
+                    valA = a;
+                    valB = b;
+                    for (const part of parts) {
+                        valA = valA?.[part];
+                        valB = valB?.[part];
+                    }
+                }
+
+                // Handle undefined/null values
+                if (valA == null) valA = '';
+                if (valB == null) valB = '';
+
+                // String comparison
+                if (typeof valA === 'string' && typeof valB === 'string') {
+                    if (direction === 'asc') {
+                        return valA.localeCompare(valB);
+                    } else {
+                        return valB.localeCompare(valA);
+                    }
+                }
+
+                // Number comparison
+                if (typeof valA === 'number' && typeof valB === 'number') {
+                    if (direction === 'asc') {
+                        return valA - valB;
+                    } else {
+                        return valB - valA;
+                    }
+                }
+
+                // Boolean comparison
+                if (typeof valA === 'boolean' && typeof valB === 'boolean') {
+                    if (direction === 'asc') {
+                        return valA === valB ? 0 : (valA ? 1 : -1);
+                    } else {
+                        return valA === valB ? 0 : (valA ? -1 : 1);
+                    }
+                }
+
+                return 0;
+            });
+
+            this.updateTable(this.products);
+        },
+
+        /**
+         * Update table with new data
+         */
+        updateTable: function(products) {
+            const $tbody = $('#the-list');
+            
+            // Animate out
+            $tbody.fadeOut(150, function() {
+                $(this).empty();
+                
+                if (products.length === 0) {
+                    $(this).append(`
+                        <tr class="no-items">
+                            <td colspan="8">
+                                <p>${apsProductTableUI.strings.noProducts || 'No products found.'}</p>
+                            </td>
+                        </tr>
+                    `);
+                } else {
+                    // Render each product row
+                    products.forEach(product => {
+                        const row = APSTableUI.renderProductRow(product);
+                        $(this).append(row);
+                    });
+                }
+                
+                // Animate in
+                $(this).fadeIn(150);
+                
+                // Rebind event handlers
+                APSTableUI.bindRowEvents();
+            });
+        },
+
+        /**
+         * Render single product row
+         */
+        renderProductRow: function(product) {
+            const logoHtml = product.logo 
+                ? `<img src="${product.logo}" alt="${escAttr(product.title)}" class="aps-product-logo">`
+                : `<div class="aps-product-logo-placeholder">${product.title.charAt(0).toUpperCase()}</div>`;
+
+            const categoriesHtml = product.categories.map(cat => 
+                `<span class="aps-product-category">${escHtml(cat)}</span>`
+            ).join(' ');
+
+            const tagsHtml = product.tags.map(tag => 
+                `<span class="aps-product-tag">${escHtml(tag)}</span>`
+            ).join(' ');
+
+            const ribbonHtml = product.ribbon 
+                ? `<span class="aps-product-badge">${escHtml(product.ribbon)}</span>`
+                : '-';
+
+            const featuredHtml = product.featured 
+                ? `<span class="aps-product-featured">★</span>`
+                : '-';
+
+            let priceHtml = `<span class="aps-product-price">$${parseFloat(product.price).toFixed(2)}</span>`;
+            if (product.original_price > 0 && product.original_price > product.price) {
+                priceHtml += `
+                    <span class="aps-product-price-original">$${parseFloat(product.original_price).toFixed(2)}</span>
+                    <span class="aps-product-price-discount">${product.discount_percentage}% OFF</span>
+                `;
+            }
+
+            const statusClasses = {
+                'publish': 'aps-product-status-published',
+                'draft': 'aps-product-status-draft',
+                'trash': 'aps-product-status-trash',
+                'pending': 'aps-product-status-pending',
+            };
+            const statusClass = statusClasses[product.status] || '';
+            const statusHtml = `<span class="aps-product-status ${statusClass}">${product.status.toUpperCase()}</span>`;
+
+            const editUrl = `${window.location.href.split('&')[0]}&post_type=aps_product&page=add-product&id=${product.id}`;
+
+            return `
+                <tr id="product-${product.id}" class="iedit" data-id="${product.id}">
+                    <th class="check-column" scope="row">
+                        <input type="checkbox" name="post[]" value="${product.id}">
+                    </th>
+                    <td class="logo-column">${logoHtml}</td>
+                    <td class="product-column">
+                        <strong class="row-title"><a href="${editUrl}">${escHtml(product.title)}</a></strong>
+                        <div class="row-actions">
+                            <span class="inline">
+                                <a href="${editUrl}" class="editinline">Edit</a> |
+                            </span>
+                            <span class="trash">
+                                <a href="#" onclick="APSTableUI.deleteProduct(${product.id}); return false;" class="submitdelete">Trash</a>
+                            </span>
+                        </div>
+                    </td>
+                    <td class="category-column">${categoriesHtml}</td>
+                    <td class="tags-column">${tagsHtml}</td>
+                    <td class="ribbon-column">${ribbonHtml}</td>
+                    <td class="featured-column">${featuredHtml}</td>
+                    <td class="price-column">${priceHtml}</td>
+                    <td class="status-column">${statusHtml}</td>
+                </tr>
+            `;
+        },
+
+        /**
+         * Bind row-specific events
+         */
+        bindRowEvents: function() {
+            // Status badge click for quick toggle
+            $('.aps-product-status').on('click', function() {
+                const $row = $(this).closest('tr');
+                const productId = $row.data('id');
+                const currentStatus = $(this).text().toLowerCase();
+                
+                // Toggle between published and draft
+                const newStatus = currentStatus === 'published' ? 'draft' : 'publish';
+                APSTableUI.updateProductStatus(productId, newStatus);
+            });
+        },
+
+        /**
+         * Update product status via AJAX
+         */
+        updateProductStatus: function(productId, newStatus) {
+            $.ajax({
+                url: apsProductTableUI.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'aps_update_status',
+                    nonce: apsProductTableUI.nonce,
+                    product_id: productId,
+                    status: newStatus,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        APSTableUI.updateStatusBadge(productId, newStatus);
+                        APSTableUI.updateStatusCount();
+                    } else {
+                        alert('Error: ' + (response.data.message || 'Failed to update status'));
+                    }
+                },
+                error: function() {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        },
+
+        /**
+         * Update status badge in table
+         */
+        updateStatusBadge: function(productId, newStatus) {
+            const $badge = $(`#product-${productId} .aps-product-status`);
+            
+            if ($badge.length) {
+                $badge.fadeOut(150, function() {
+                    const statusClasses = {
+                        'publish': 'aps-product-status-published',
+                        'draft': 'aps-product-status-draft',
+                        'trash': 'aps-product-status-trash',
+                        'pending': 'aps-product-status-pending',
+                    };
+                    
+                    $(this).removeClass('aps-product-status-published aps-product-status-draft aps-product-status-trash aps-product-status-pending')
+                           .addClass(statusClasses[newStatus])
+                           .text(newStatus.toUpperCase())
+                           .fadeIn(150);
+                });
+            }
+        },
+
+        /**
+         * Update status count
+         */
+        updateStatusCount: function() {
+            const newStatus = this.filterState.status === 'all' ? 'all' : this.filterState.status;
+            const $countItem = $(`.aps-count-${newStatus} .aps-count-number`);
+            
+            if ($countItem.length) {
+                const currentCount = parseInt($countItem.text());
+                $countItem.text(currentCount + 1);
+            }
+        },
+
+        /**
+         * Highlight search terms
+         */
+        highlightSearchTerms: function() {
+            const searchTerm = this.filterState.search.trim();
+            
+            if (searchTerm.length < 2) {
+                // Remove all highlights
+                $('.row-title mark').contents().unwrap();
+                return;
+            }
+
+            // Remove old highlights
+            $('.row-title mark').contents().unwrap();
+
+            // Add new highlights
+            $('.row-title a').each(function() {
+                const $element = $(this);
+                const text = $element.text();
+                const regex = new RegExp(`(${APSTableUI.escapeRegex(searchTerm)})`, 'gi');
+                
+                if (regex.test(text)) {
+                    const highlighted = text.replace(regex, '<mark>$1</mark>');
+                    $element.html(highlighted);
+                }
+            });
+        },
+
+        /**
+         * Escape regex special characters
+         */
+        escapeRegex: function(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        },
+
+        /**
+         * Update pagination
+         */
+        updatePagination: function(data) {
+            // Update pagination info
+            $('.displaying-num').text(`Showing ${data.current_page} of ${data.pages} pages`);
+            
+            // Disable/enable pagination buttons
+            if (data.current_page >= data.pages) {
+                $('.tablenav-pages .next-page').addClass('disabled');
+            } else {
+                $('.tablenav-pages .next-page').removeClass('disabled');
+            }
+            
+            if (data.current_page <= 1) {
+                $('.tablenav-pages .prev-page').addClass('disabled');
+            } else {
+                $('.tablenav-pages .prev-page').removeClass('disabled');
+            }
         },
 
         /**
@@ -173,15 +547,30 @@
             $btn.prop('disabled', true)
                .html('<span class="dashicons dashicons-update dashicons-spin"></span> ' + apsProductTableUI.strings.processing);
 
-            // Simulate link checking
-            setTimeout(function() {
-                // Reset button
-                $btn.prop('disabled', false)
-                   .html(originalText);
-                
-                // Show results (placeholder)
-                alert('Link check complete!\n\n✓ All links are working correctly.');
-            }, 2000);
+            // AJAX link check
+            $.ajax({
+                url: apsProductTableUI.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'aps_check_links',
+                    nonce: apsProductTableUI.nonce,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(`${response.data.message}\n\n✓ Valid: ${response.data.valid_count}\n✗ Invalid: ${response.data.invalid_count}`);
+                    } else {
+                        alert('Error: ' + (response.data.message || 'Failed to check links'));
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while checking links. Please try again.');
+                },
+                complete: function() {
+                    // Reset button
+                    $btn.prop('disabled', false)
+                       .html(originalText);
+                }
+            });
         },
 
         /**
@@ -206,24 +595,57 @@
                     action: 'aps_bulk_action',
                     nonce: apsProductTableUI.nonce,
                     bulk_action: action,
-                    product_ids: selectedProducts
+                    product_ids: selectedProducts,
                 },
                 beforeSend: function() {
-                    // Show loading overlay
                     APSTableUI.showLoading();
                 },
                 success: function(response) {
                     APSTableUI.hideLoading();
                     
                     if (response.success) {
-                        // Reload page to see changes
-                        window.location.reload();
+                        alert(response.data.message);
+                        // Reload table to see changes
+                        APSTableUI.filterProducts();
                     } else {
                         alert('Error: ' + response.data.message);
                     }
                 },
                 error: function() {
                     APSTableUI.hideLoading();
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        },
+
+        /**
+         * Delete product
+         */
+        deleteProduct: function(productId) {
+            if (!confirm('Are you sure you want to move this product to trash?')) {
+                return;
+            }
+
+            $.ajax({
+                url: apsProductTableUI.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'aps_bulk_action',
+                    nonce: apsProductTableUI.nonce,
+                    bulk_action: 'delete',
+                    product_ids: [productId],
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Animate row removal
+                        $(`#product-${productId}`).fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert('Error: ' + response.data.message);
+                    }
+                },
+                error: function() {
                     alert('An error occurred. Please try again.');
                 }
             });
@@ -253,8 +675,39 @@
             $('#aps-loading-overlay').fadeOut(200, function() {
                 $(this).remove();
             });
-        }
+        },
+
+        /**
+         * Show table loading state
+         */
+        showTableLoading: function() {
+            $('#the-list').addClass('loading');
+        },
+
+        /**
+         * Hide table loading state
+         */
+        hideTableLoading: function() {
+            $('#the-list').removeClass('loading');
+        },
     };
+
+    // Utility functions
+    function escHtml(text) {
+        return text.replace(/&/g, '&')
+                  .replace(/</g, '<')
+                  .replace(/>/g, '>')
+                  .replace(/"/g, '"')
+                  .replace(/'/g, '&#039;');
+    }
+
+    function escAttr(text) {
+        return text.replace(/&/g, '&')
+                  .replace(/"/g, '"')
+                  .replace(/'/g, '&#039;')
+                  .replace(/</g, '<')
+                  .replace(/>/g, '>');
+    }
 
     // Initialize on document ready
     $(document).ready(function() {
@@ -311,6 +764,27 @@ const apsLoadingStyles = `
             100% {
                 transform: rotate(360deg);
             }
+        }
+        #the-list.loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        #the-list.loading tr {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        mark {
+            background-color: #fff59d;
+            color: #1d2327;
+            padding: 2px 4px;
+            border-radius: 2px;
         }
     </style>
 `;
