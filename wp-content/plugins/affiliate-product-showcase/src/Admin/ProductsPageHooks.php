@@ -81,74 +81,76 @@ class ProductsPageHooks {
         <div class="wrap" id="aps-products-page">
             
             <!-- Custom UI Above Table -->
-            <div class="aps-products-ui-header">
+            <div class="aps-product-table-actions">
                 
                 <!-- Page Title -->
-                <h1 class="wp-heading-inline">
+                <h1 class="aps-page-title">
                     <?php echo esc_html( get_admin_page_title() ); ?>
                 </h1>
                 
-                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&page=add-product' ) ); ?>" 
-                   class="page-title-action">
-                    <?php echo esc_html( __( 'Add New Product', 'affiliate-product-showcase' ) ); ?>
-                </a>
-                
-                <hr class="wp-header-end">
-                
-                <!-- Status Counts -->
-                <div class="aps-status-counts">
-                    <a href="#" class="aps-count-item active" data-status="all">
-                        <span class="aps-count-label"><?php echo esc_html( __( 'All', 'affiliate-product-showcase' ) ); ?></span>
-                        <span class="aps-count-number"><?php echo esc_html( $counts['all'] ); ?></span>
-                    </a>
-                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=publish' ) ); ?>" 
-                       class="aps-count-item" data-status="publish">
-                        <span class="aps-count-label"><?php echo esc_html( __( 'Published', 'affiliate-product-showcase' ) ); ?></span>
-                        <span class="aps-count-number"><?php echo esc_html( $counts['publish'] ); ?></span>
-                    </a>
-                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=draft' ) ); ?>" 
-                       class="aps-count-item" data-status="draft">
-                        <span class="aps-count-label"><?php echo esc_html( __( 'Draft', 'affiliate-product-showcase' ) ); ?></span>
-                        <span class="aps-count-number"><?php echo esc_html( $counts['draft'] ); ?></span>
-                    </a>
-                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=trash' ) ); ?>" 
-                       class="aps-count-item" data-status="trash">
-                        <span class="aps-count-label"><?php echo esc_html( __( 'Trash', 'affiliate-product-showcase' ) ); ?></span>
-                        <span class="aps-count-number"><?php echo esc_html( $counts['trash'] ); ?></span>
-                    </a>
-                </div>
+                <p class="aps-page-description">
+                    <?php echo esc_html( __( 'Manage all your affiliate products. Use the filters below to find specific products.', 'affiliate-product-showcase' ) ); ?>
+                </p>
                 
                 <!-- Action Buttons -->
-                <div class="aps-actions">
-                    <button type="button" class="button button-primary" onclick="apsBulkUploadProducts()">
+                <div class="aps-action-buttons">
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&page=add-product' ) ); ?>" 
+                       class="aps-btn aps-btn-primary">
+                        <span class="dashicons dashicons-plus-alt"></span>
+                        <?php echo esc_html( __( 'Add New Product', 'affiliate-product-showcase' ) ); ?>
+                    </a>
+                    <button type="button" class="aps-btn aps-btn-secondary" onclick="apsBulkUploadProducts()">
                         <span class="dashicons dashicons-upload"></span>
                         <?php echo esc_html( __( 'Bulk Upload', 'affiliate-product-showcase' ) ); ?>
                     </button>
-                    <button type="button" class="button" onclick="apsCheckProductLinks()">
+                    <button type="button" class="aps-btn aps-btn-secondary" onclick="apsCheckProductLinks()">
                         <span class="dashicons dashicons-admin-links"></span>
                         <?php echo esc_html( __( 'Check Links', 'affiliate-product-showcase' ) ); ?>
                     </button>
                 </div>
                 
+                <!-- Status Counts -->
+                <div class="aps-product-counts">
+                    <a href="#" class="aps-count-item active" data-status="all">
+                        <span class="aps-count-number"><?php echo esc_html( $counts['all'] ); ?></span>
+                        <span class="aps-count-label"><?php echo esc_html( __( 'All', 'affiliate-product-showcase' ) ); ?></span>
+                    </a>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=publish' ) ); ?>" 
+                       class="aps-count-item" data-status="publish">
+                        <span class="aps-count-number"><?php echo esc_html( $counts['publish'] ); ?></span>
+                        <span class="aps-count-label"><?php echo esc_html( __( 'Published', 'affiliate-product-showcase' ) ); ?></span>
+                    </a>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=draft' ) ); ?>" 
+                       class="aps-count-item" data-status="draft">
+                        <span class="aps-count-number"><?php echo esc_html( $counts['draft'] ); ?></span>
+                        <span class="aps-count-label"><?php echo esc_html( __( 'Draft', 'affiliate-product-showcase' ) ); ?></span>
+                    </a>
+                    <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product&post_status=trash' ) ); ?>" 
+                       class="aps-count-item" data-status="trash">
+                        <span class="aps-count-number"><?php echo esc_html( $counts['trash'] ); ?></span>
+                        <span class="aps-count-label"><?php echo esc_html( __( 'Trash', 'affiliate-product-showcase' ) ); ?></span>
+                    </a>
+                </div>
+                
             </div>
             
             <!-- Filters Section -->
-            <div class="aps-products-filters">
+            <div class="aps-product-filters">
                 
                 <!-- Search -->
-                <div class="aps-filter-group">
-                    <label for="aps_search_products"><?php echo esc_html( __( 'Search:', 'affiliate-product-showcase' ) ); ?></label>
+                <div class="aps-filter-group aps-filter-search">
+                    <label for="aps_search_products"><?php echo esc_html( __( 'Search Products', 'affiliate-product-showcase' ) ); ?></label>
                     <input type="text" 
                            id="aps_search_products" 
-                           class="regular-text" 
+                           class="aps-filter-input" 
                            placeholder="<?php echo esc_attr( __( 'Search products...', 'affiliate-product-showcase' ) ); ?>" 
                            autocomplete="off" />
                 </div>
                 
                 <!-- Category Filter -->
                 <div class="aps-filter-group">
-                    <label for="aps_category_filter"><?php echo esc_html( __( 'Category:', 'affiliate-product-showcase' ) ); ?></label>
-                    <select id="aps_category_filter" class="regular-text">
+                    <label for="aps_category_filter"><?php echo esc_html( __( 'Category', 'affiliate-product-showcase' ) ); ?></label>
+                    <select id="aps_category_filter" class="aps-filter-select">
                         <option value="0"><?php echo esc_html( __( 'All Categories', 'affiliate-product-showcase' ) ); ?></option>
                         <?php
                         $categories = get_terms( [ 
@@ -165,20 +167,28 @@ class ProductsPageHooks {
                 </div>
                 
                 <!-- Featured Filter -->
-                <div class="aps-filter-group">
-                    <label>
+                <div class="aps-filter-group aps-filter-toggle">
+                    <label class="aps-toggle-label">
                         <input type="checkbox" id="aps_show_featured" />
-                        <?php echo esc_html( __( 'Show Featured Only', 'affiliate-product-showcase' ) ); ?>
+                        <span class="aps-toggle-slider"></span>
+                        <span class="aps-toggle-text"><?php echo esc_html( __( 'Featured Only', 'affiliate-product-showcase' ) ); ?></span>
                     </label>
                 </div>
                 
                 <!-- Sort Order -->
                 <div class="aps-filter-group">
-                    <label for="aps_sort_order"><?php echo esc_html( __( 'Sort Order:', 'affiliate-product-showcase' ) ); ?></label>
-                    <select id="aps_sort_order" class="regular-text">
+                    <label for="aps_sort_order"><?php echo esc_html( __( 'Sort Order', 'affiliate-product-showcase' ) ); ?></label>
+                    <select id="aps_sort_order" class="aps-filter-select">
                         <option value="asc"><?php echo esc_html( __( 'Ascending', 'affiliate-product-showcase' ) ); ?></option>
                         <option value="desc" selected><?php echo esc_html( __( 'Descending', 'affiliate-product-showcase' ) ); ?></option>
                     </select>
+                </div>
+                
+                <!-- Clear Filters Button -->
+                <div class="aps-filter-group">
+                    <button type="button" class="aps-btn aps-btn-clear" id="aps_clear_filters">
+                        <?php echo esc_html( __( 'Clear Filters', 'affiliate-product-showcase' ) ); ?>
+                    </button>
                 </div>
                 
             </div>
@@ -238,86 +248,6 @@ class ProductsPageHooks {
             
             .wp-list-table tbody tr:hover {
                 background: #f1f5f9;
-            }
-            
-            /* Custom UI styles */
-            .aps-products-ui-header {
-                background: #ffffff;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            }
-            
-            .aps-status-counts {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 15px;
-            }
-            
-            .aps-count-item {
-                display: flex;
-                flex-direction: column;
-                padding: 10px 15px;
-                border: 1px solid #e2e8f0;
-                border-radius: 6px;
-                text-decoration: none;
-                color: #64748b;
-                transition: all 0.2s;
-            }
-            
-            .aps-count-item:hover {
-                border-color: #3b82f6;
-                color: #3b82f6;
-            }
-            
-            .aps-count-item.active {
-                border-color: #3b82f6;
-                background: #eff6ff;
-                color: #3b82f6;
-            }
-            
-            .aps-count-label {
-                font-size: 12px;
-                font-weight: 600;
-                text-transform: uppercase;
-            }
-            
-            .aps-count-number {
-                font-size: 24px;
-                font-weight: 700;
-                color: #1e293b;
-            }
-            
-            .aps-actions {
-                display: flex;
-                gap: 10px;
-                margin-top: 15px;
-            }
-            
-            .aps-products-filters {
-                background: #ffffff;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
-                align-items: center;
-            }
-            
-            .aps-filter-group {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .aps-filter-group label {
-                font-size: 12px;
-                font-weight: 600;
-                color: #64748b;
             }
         </style>
         <?php

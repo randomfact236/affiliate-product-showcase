@@ -99,6 +99,14 @@ class Enqueue {
                 [],
                 self::VERSION
             );
+
+            // Product table UI styles (custom filters, counts, etc.)
+            wp_enqueue_style(
+                'affiliate-product-showcase-product-table-ui',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-table-ui.css',
+                [],
+                self::VERSION
+            );
         }
     }
 
@@ -183,6 +191,15 @@ class Enqueue {
                 true
             );
 
+            // Product table UI scripts (AJAX filtering, sorting, etc.)
+            wp_enqueue_script(
+                'affiliate-product-showcase-product-table-ui',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-table-ui.js',
+                [ 'jquery' ],
+                self::VERSION,
+                true
+            );
+
             wp_localize_script(
                 'affiliate-product-showcase-admin-products-enhancer',
                 'affiliateProductShowcaseAdminEnhancer',
@@ -201,6 +218,25 @@ class Enqueue {
                         'actionFailed' => __( 'Action failed.', 'affiliate-product-showcase' ),
                         'requestFailed' => __( 'Request failed: ', 'affiliate-product-showcase' ),
                         'dismissNotice' => __( 'Dismiss this notice.', 'affiliate-product-showcase' ),
+                    ],
+                ]
+            );
+
+            // Localize product-table-ui.js
+            wp_localize_script(
+                'affiliate-product-showcase-product-table-ui',
+                'apsProductTableUI',
+                [
+                    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                    'nonce' => wp_create_nonce( 'aps_table_actions' ),
+                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
+                    'restNonce' => wp_create_nonce( 'wp_rest' ),
+                    'strings' => [
+                        'confirmBulkUpload' => __( 'Are you sure you want to bulk upload products?', 'affiliate-product-showcase' ),
+                        'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
+                        'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
+                        'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
+                        'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
                     ],
                 ]
             );
