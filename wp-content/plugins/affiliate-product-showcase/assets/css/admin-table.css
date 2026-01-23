@@ -1,0 +1,202 @@
+/**
+ * Affiliate Product Showcase - Admin Table Styles
+ *
+ * Styles for the products list table in the admin area.
+ * Follows WordPress admin design patterns with consistent branding.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* ============================================
+   Product Logo Column
+   ============================================ */
+
+.aps-product-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.aps-product-logo-placeholder {
+    width: 50px;
+    height: 50px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #666;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   Product Category Column
+   ============================================ */
+
+.aps-product-category {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 2px 4px 2px 0;
+}
+
+.aps-product-category:last-child {
+    margin-right: 0;
+}
+
+/* ============================================
+   Product Tags Column
+   ============================================ */
+
+.aps-product-tag {
+    display: inline-block;
+    background: #f3f4f6;
+    color: #4b5563;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    margin: 2px 4px 2px 0;
+}
+
+.aps-product-tag:last-child {
+    margin-right: 0;
+}
+
+/* ============================================
+   Product Badge/Ribbon Column
+   ============================================ */
+
+.aps-product-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+/* ============================================
+   Product Featured Column
+   ============================================ */
+
+.aps-product-featured {
+    display: inline-block;
+    color: #f59e0b;
+    font-size: 18px;
+    line-height: 1;
+    text-align: center;
+    animation: star-pulse 2s ease-in-out infinite;
+}
+
+@keyframes star-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ============================================
+   Product Price Column
+   ============================================ */
+
+.aps-product-price {
+    font-weight: 600;
+    color: #1d2327;
+    font-size: 14px;
+}
+
+.aps-product-price-original {
+    display: block;
+    text-decoration: line-through;
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+.aps-product-price-discount {
+    display: block;
+    color: #ef4444;
+    font-weight: 700;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* ============================================
+   Product Status Column
+   ============================================ */
+
+.aps-product-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aps-product-status-published {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.aps-product-status-draft {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.aps-product-status-trash {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.aps-product-status-pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media screen and (max-width: 782px) {
+    .aps-product-logo,
+    .aps-product-logo-placeholder {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .aps-product-featured {
+        font-size: 16px;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    .aps-product-logo,
+    .aps-product-logo-placeholder {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

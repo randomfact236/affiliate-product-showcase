@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Admin\Admin;
+use AffiliateProductShowcase\Admin\AjaxHandler;
 use AffiliateProductShowcase\Admin\Menu;
 use AffiliateProductShowcase\Admin\ProductFormHandler;
 use AffiliateProductShowcase\Admin\Settings;
@@ -114,6 +115,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 			Menu::class,
 			ProductFormHandler::class,
 			Admin::class,
+			AjaxHandler::class,
 
 			// Public
 			Public_::class,
@@ -135,6 +137,18 @@ final class ServiceProvider implements ServiceProviderInterface {
 		];
 
 		return in_array( $id, $services );
+	}
+
+	/**
+	 * Boot services
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		// Initialize AjaxHandler which registers its own hooks
+		if ( $this->getContainer()->has( AjaxHandler::class ) ) {
+			$this->getContainer()->get( AjaxHandler::class );
+		}
 	}
 
 	/**
@@ -213,6 +227,9 @@ final class ServiceProvider implements ServiceProviderInterface {
 			->addArgument( Headers::class )
 			->addArgument( Menu::class )
 			->addArgument( ProductFormHandler::class );
+		$this->getContainer()->addShared( AjaxHandler::class )
+			->addArgument( ProductService::class )
+			->addArgument( ProductRepository::class );
 
 		// ============================================================================
 		// Public (Shared - Request Scope)

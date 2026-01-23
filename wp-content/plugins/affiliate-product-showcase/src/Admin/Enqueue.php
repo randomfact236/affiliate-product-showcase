@@ -90,6 +90,16 @@ class Enqueue {
                 self::VERSION
             );
         }
+
+        // Products list table styles
+        if ( $hook === 'edit-aps_product' ) {
+            wp_enqueue_style(
+                'affiliate-product-showcase-admin-table',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table.css',
+                [],
+                self::VERSION
+            );
+        }
     }
 
     /**

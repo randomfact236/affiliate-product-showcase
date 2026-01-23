@@ -31,6 +31,73 @@
 - Essential standards at 10/10, performance goals as targets
 
 ---
+## All Product Page
+
+graph TD
+    subgraph MainContent[Main Content]
+        direction TB
+        ManageProducts[Manage Products] --> Overview[Quick overview of your catalog with actions, filters, and bulk selection.]
+        Overview --> Buttons
+        subgraph Buttons
+            direction LR
+            AddNew[Add New Product] --> TrashBtn[Trash]
+            TrashBtn --> BulkUpload[Bulk Upload]
+            BulkUpload --> CheckLinks[Check Links]
+        end
+
+        Buttons --> Counts
+        subgraph Counts
+            direction LR
+            All[5 ALL] --> Published[1 PUBLISHED]
+            Published --> Draft[2 DRAFT]
+            Draft --> Trash[0 TRASH]
+        end
+
+        Counts --> Filters
+        subgraph Filters
+            direction LR
+            SelectAction[Select action] --> Search[Search products...]
+            Search --> AllCategories[All Categories]
+            AllCategories --> Sort[Latest <- Oldest]
+            Sort --> ShowFeatured[Show Featured]
+            ShowFeatured --> ClearFilters[Clear filters]
+        end
+
+        Filters --> Table
+        subgraph Table
+            direction TB
+            Headers --> Rows
+            subgraph Headers
+                direction LR
+                CheckboxHeader[ ] --> Num[#]
+                Num --> Logo[Logo]
+                Logo --> Product[Product]
+                Product --> Category[Category]
+                Category --> Tags[Tags]
+                Tags --> Ribbon[Ribbon]
+                Ribbon --> Featured[Featured]
+                Featured --> Price[Price]
+                Price --> Status[Status]
+            end
+
+            subgraph Rows
+                direction TB
+                Row1
+                subgraph Row1
+                    direction LR
+                    Checkbox[ ] --> RowNum[2]
+                    RowNum --> ImgLogo[IMG]
+                    ImgLogo --> ProdName[demo2 five <br> ID #2 Edit Delete]
+                    ProdName --> Cat[xsacsac ×]
+                    Cat --> RowTags[cewer × Default ×]
+                    RowTags --> Rib[7777 ×]
+                    Rib --> Feat[★]
+                    Feat --> RowPrice[$50 <br> $55 9% OFF]
+                    RowPrice --> Pub[PUBLISHED]
+                end
+            end
+        end
+    end
 
 ## 📊 User Flow - All Products Page
 
@@ -779,6 +846,60 @@
 - **Social Sharing:** Share products on social media
 - **Email Notifications:** Email when products in favorite categories go on sale
 - **Product Recommendations:** AI-powered product suggestions
+
+---
+
+## 🎨 CSS Classes Reference for Product Table
+
+## Complete CSS Classes List (14 Total)
+
+### Class Naming Convention
+All admin table classes follow this pattern:
+```
+aps-product-[element]-[modifier]
+```
+
+### By Column
+
+#### 1. Logo Column (2 classes)
+- `aps-product-logo` - Product image display
+- `aps-product-logo-placeholder` - Fallback placeholder
+
+#### 2. Category Column (1 class)
+- `aps-product-category` - Category badge styling
+
+#### 3. Tags Column (1 class)
+- `aps-product-tag` - Tag pill styling
+
+#### 4. Ribbon/Badge Column (1 class)
+- `aps-product-badge` - Product ribbon/badge styling
+
+#### 5. Featured Column (1 class)
+- `aps-product-featured` - Featured star icon styling
+
+#### 6. Price Column (3 classes)
+- `aps-product-price` - Main price container and display
+- `aps-product-price-original` - Original price with strikethrough
+- `aps-product-price-discount` - Discount percentage display
+
+#### 7. Status Column (5 classes)
+- `aps-product-status` - Base status styling
+- `aps-product-status-published` - Published status (green)
+- `aps-product-status-draft` - Draft status (gray)
+- `aps-product-status-trash` - Trashed status (red)
+- `aps-product-status-pending` - Pending review status (yellow)
+
+## Implementation Files
+- **CSS Styles:** `assets/css/admin-table.css`
+- **PHP Implementation:** `src/Admin/Columns.php`
+- **Enqueue Script:** `src/Admin/Enqueue.php`
+
+## Developer Guidelines
+- ✅ Use ONLY these 14 approved CSS classes
+- ✅ Follow `aps-product-` prefix convention
+- ✅ No inline styles in HTML
+- ✅ Document any new classes in this file
+- ❌ Do NOT create new classes without updating this reference
 
 ---
 

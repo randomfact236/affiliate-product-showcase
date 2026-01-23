@@ -6,6 +6,7 @@ Welcome to the Affiliate Product Showcase plugin developer guide. This guide pro
 
 - [Environment Configuration](#environment-configuration)
 - [Options Management](#options-management)
+- [CSS Standards and Classes](#css-standards-and-classes)
 - [Security Best Practices](#security-best-practices)
 - [Development Workflow](#development-workflow)
 - [Testing Guidelines](#testing-guidelines)
@@ -169,6 +170,112 @@ All options are automatically prefixed with the plugin's option prefix to avoid 
 // Internally stored as: affiliate_product_showcase_dev_mode
 Options::get_plugin_option( 'dev_mode', false );
 ```
+
+---
+
+## CSS Standards and Classes
+
+### Admin Table CSS Classes
+
+For styling the products list table in the admin area, the plugin uses a **standardized set of CSS classes**. **All developers MUST use only these approved classes** when working with the admin table.
+
+**Reference Document:** [Admin Table CSS Classes Reference](admin-table-css-classes-reference.md)
+
+### Class Naming Convention
+
+All admin table classes follow this pattern:
+
+```
+aps-product-[element]-[modifier]
+```
+
+**Examples:**
+- `aps-product-logo`
+- `aps-product-status-published`
+- `aps-product-price-original`
+
+### Complete Class List
+
+#### Logo Column (2 classes)
+- `aps-product-logo` - Product image display
+- `aps-product-logo-placeholder` - Fallback placeholder
+
+#### Category Column (1 class)
+- `aps-product-category` - Category badge styling
+
+#### Tags Column (1 class)
+- `aps-product-tag` - Tag pill styling
+
+#### Ribbon/Badge Column (1 class)
+- `aps-product-badge` - Product ribbon/badge styling
+
+#### Featured Column (1 class)
+- `aps-product-featured` - Featured star icon styling
+
+#### Price Column (3 classes)
+- `aps-product-price` - Main price container and display
+- `aps-product-price-original` - Original price with strikethrough
+- `aps-product-price-discount` - Discount percentage display
+
+#### Status Column (5 classes)
+- `aps-product-status` - Base status styling
+- `aps-product-status-published` - Published status (green)
+- `aps-product-status-draft` - Draft status (gray)
+- `aps-product-status-trash` - Trashed status (red)
+- `aps-product-status-pending` - Pending review status (yellow)
+
+**Total Classes:** 14 approved classes
+
+### CSS Best Practices
+
+#### ✅ DO
+
+- Use ONLY classes listed in [Admin Table CSS Classes Reference](admin-table-css-classes-reference.md)
+- Follow the `aps-product-` prefix convention
+- Add new classes to the reference document when created
+- Keep styling in `assets/css/admin-table.css`
+- Use semantic class names that describe the element
+
+#### ❌ DO NOT
+
+- Add inline styles (use CSS classes instead)
+- Create new classes without updating the reference document
+- Use WordPress core classes for product-specific elements
+- Break the `aps-product-` naming convention
+- Use generic class names like `.badge`, `.price`, etc.
+
+### Adding New Classes
+
+If you need to add a new CSS class:
+
+1. **Add class to CSS file:** `assets/css/admin-table.css`
+2. **Update reference document:** Add to [Admin Table CSS Classes Reference](admin-table-css-classes-reference.md)
+3. **Update version number:** Increment version in reference document
+4. **Update last updated date:** Change date to current date
+5. **Test:** Verify class works in all browsers and responsive views
+
+### Validation Checklist
+
+Before committing any changes to admin table styling:
+
+- [ ] Only use classes listed in reference document
+- [ ] No inline styles added
+- [ ] All new classes documented in reference
+- [ ] Version number updated in reference
+- [ ] Last updated date changed in reference
+- [ ] Tested in Chrome, Firefox, Safari
+- [ ] Tested on mobile (max-width: 782px)
+- [ ] Accessibility verified (color contrast, screen reader)
+- [ ] No conflicts with WordPress core styles
+
+### File Reference
+
+- **CSS Styles:** `assets/css/admin-table.css`
+- **Enqueued in:** `src/Admin/Enqueue.php`
+- **PHP Implementation:** `src/Admin/Columns.php`
+- **Reference Document:** `docs/admin-table-css-classes-reference.md`
+
+For complete details, usage examples, and guidelines, see the [Admin Table CSS Classes Reference](admin-table-css-classes-reference.md) document.
 
 ---
 

@@ -35,15 +35,17 @@ final class Product {
 	 *
 	 * @param int $id Unique product identifier
 	 * @param string $title Product title
-	 * @param string $slug URL-friendly slug for the product
+	 * @param string $slug URL-friendly slug for product
 	 * @param string $description Product description content
 	 * @param string $currency Currency code (e.g., USD, EUR)
 	 * @param float $price Current product price
 	 * @param float|null $original_price Original price before discount (optional)
 	 * @param string $affiliate_url Affiliate link URL
-	 * @param string|null $image_url Product image URL (optional)
+	 * @param string|null $image_url Product image/logo URL (optional)
 	 * @param float|null $rating Product rating 0-5 (optional)
 	 * @param string|null $badge Badge/ribbon text (optional)
+	 * @param bool $featured Whether product is featured (default: false)
+	 * @param string $status Product status (publish, draft, trash)
 	 * @param array<int, int> $category_ids Array of category IDs (optional)
 	 * @param array<int, int> $tag_ids Array of tag IDs (optional)
 	 * @since 1.0.0
@@ -60,6 +62,8 @@ final class Product {
 		public ?string $image_url = null,
 		public ?float $rating = null,
 		public ?string $badge = null,
+		public bool $featured = false,
+		public string $status = 'publish',
 		public array $category_ids = [],
 		public array $tag_ids = []
 	) {}
@@ -87,6 +91,8 @@ final class Product {
 			'image_url'      => $this->image_url,
 			'rating'         => $this->rating,
 			'badge'          => $this->badge,
+			'featured'       => $this->featured,
+			'status'         => $this->status,
 			'category_ids'   => $this->category_ids,
 			'categories'     => $this->category_ids, // Alias for backward compatibility
 			'tag_ids'        => $this->tag_ids,

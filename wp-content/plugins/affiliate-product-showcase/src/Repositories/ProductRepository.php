@@ -367,7 +367,7 @@ final class ProductRepository extends AbstractRepository {
 			'post_name'    => $model->slug ?? sanitize_title( $model->title ),
 			'post_content' => $model->description ?? '',
 			'post_type'    => Constants::CPT_PRODUCT,
-			'post_status'  => 'publish',
+			'post_status'  => $model->status ?? 'publish',
 		];
 
 		$stored_id = wp_insert_post( $postarr, true );
@@ -460,6 +460,7 @@ final class ProductRepository extends AbstractRepository {
 			'aps_image_url'    => $product->image_url,
 			'aps_rating'       => $product->rating,
 			'aps_badge'        => $product->badge,
+			'aps_featured'      => $product->featured ? '1' : '',
 		];
 	}
 
