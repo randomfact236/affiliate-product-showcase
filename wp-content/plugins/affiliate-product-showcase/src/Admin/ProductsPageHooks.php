@@ -40,8 +40,8 @@ class ProductsPageHooks {
         // Add custom UI above WordPress table
         add_action( 'all_admin_notices', [ $this, 'renderCustomUI' ], 10 );
         
-        // Enqueue custom CSS/JS
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ], 10, 1 );
+        // Enqueue custom CSS/JS (not needed for simple hybrid - using default WP table)
+        // add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ], 10, 1 );
         
         // Hide WordPress search and filters (we have custom ones)
         add_action( 'admin_head', [ $this, 'hideWordPressUI' ], 10 );
@@ -191,34 +191,6 @@ class ProductsPageHooks {
         <?php
     }
 
-    /**
-     * Enqueue custom assets
-     *
-     * @param string $hook Current admin hook
-     * @return void
-     */
-    public function enqueueAssets( string $hook ): void {
-        if ( ! $this->isProductsPage() ) {
-            return;
-        }
-
-        // CSS
-        wp_enqueue_style(
-            'aps-products-page',
-            plugins_url( 'assets/css/products-page.css', APS_PLUGIN_FILE ),
-            [],
-            APS_VERSION
-        );
-
-        // JavaScript
-        wp_enqueue_script(
-            'aps-products-page',
-            plugins_url( 'assets/js/products-page.js', APS_PLUGIN_FILE ),
-            [ 'jquery' ],
-            APS_VERSION,
-            true
-        );
-    }
 
     /**
      * Hide WordPress default UI elements
