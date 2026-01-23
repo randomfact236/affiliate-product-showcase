@@ -35,7 +35,7 @@
 graph TD
     subgraph MainContent[Main Content]
         direction TB
-        ManageProducts[Manage Products] --> Overview[Quick overview of your catalog with actions, filters, and bulk selection.]
+        ManageProducts[Products] --> Overview[Quick overview of your catalog with actions, filters, and bulk selection.]
         Overview --> Buttons
         subgraph Buttons
             direction LR

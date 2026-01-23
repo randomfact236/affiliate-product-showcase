@@ -89,7 +89,7 @@ class ProductTableUI {
 
 			<div class="aps-product-table-actions">
 				<h1 class="aps-page-title">
-					<?php echo esc_html( __( 'Manage Products', 'affiliate-product-showcase' ) ); ?>
+					<?php echo esc_html( __( 'Products', 'affiliate-product-showcase' ) ); ?>
 				</h1>
 
 				<p class="aps-page-description">

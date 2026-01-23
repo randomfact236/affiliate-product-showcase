@@ -8,7 +8,7 @@
 
 ---
 
-# Manage Products Admin Table - Visual Design Diagram
+# Products Admin Table - Visual Design Diagram
 # Feature Requirements: Affiliate Product Showcase
 
 > **IMPORTANT RULE: NEVER DELETE THIS FILE**
