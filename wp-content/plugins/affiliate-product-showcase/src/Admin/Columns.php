@@ -23,7 +23,6 @@ class Columns {
         add_action( 'manage_aps_product_posts_custom_column', [ $this, 'renderCustomColumns' ], 10, 2 );
         add_filter( 'manage_edit-aps_product_sortable_columns', [ $this, 'makeColumnsSortable' ] );
         add_action( 'pre_get_posts', [ $this, 'handleCustomSorting' ] );
-        add_action( 'restrict_manage_posts', [ $this, 'addFilters' ], 10, 2 );
     }
 
     /**
@@ -299,46 +298,4 @@ class Columns {
         }
     }
 
-    /**
-     * Add filters to products list
-     *
-     * @param string $post_type Post type
-     * @param string $which Which table (top or bottom)
-     * @return void
-     */
-    public function addFilters( string $post_type, string $which ): void {
-        if ( $post_type !== 'aps_product' || $which !== 'top' ) {
-            return;
-        }
-
-        // Category filter
-        $categories = get_terms( [
-            'taxonomy' => 'aps_category',
-            'hide_empty' => false,
-        ] );
-
-        if ( $categories && ! is_wp_error( $categories ) ) {
-            echo '<select name="aps_category_filter" id="aps_category_filter">';
-            echo '<option value="">' . esc_html__( 'All Categories', 'affiliate-product-showcase' ) . '</option>';
-            
-            foreach ( $categories as $category ) {
-                $selected = isset( $_GET['aps_category_filter'] ) && $_GET['aps_category_filter'] == $category->term_id ? 'selected' : '';
-                printf(
-                    '<option value="%s" %s>%s</option>',
-                    esc_attr( $category->term_id ),
-                    esc_attr( $selected ),
-                    esc_html( $category->name )
-                );
-            }
-            
-            echo '</select>';
-        }
-
-        // Featured filter
-        $featured_filter = isset( $_GET['featured_filter'] ) ? $_GET['featured_filter'] : '';
-        echo '<select name="featured_filter" id="featured_filter">';
-        echo '<option value="">' . esc_html__( 'All Products', 'affiliate-product-showcase' ) . '</option>';
-        echo '<option value="1" ' . selected( $featured_filter, '1', false ) . '>' . esc_html__( 'Featured Only', 'affiliate-product-showcase' ) . '</option>';
-        echo '</select>';
-    }
 }

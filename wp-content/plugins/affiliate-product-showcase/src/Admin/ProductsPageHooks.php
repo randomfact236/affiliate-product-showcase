@@ -230,13 +230,18 @@ class ProductsPageHooks {
                 display: none !important;
             }
             
-            /* Hide WordPress pagination top (keep bottom) */
-            .tablenav.top .tablenav-pages {
-                display: none !important;
-            }
-            
-            /* Style WordPress table to match our design */
-            .wp-list-table {
+        /* Hide WordPress pagination top (keep bottom) */
+        .tablenav.top .tablenav-pages {
+            display: none !important;
+        }
+        
+        /* Hide WordPress status counts (subsubsub) */
+        .subsubsub {
+            display: none !important;
+        }
+        
+        /* Style WordPress table */
+        .wp-list-table {
                 margin-top: 20px;
             }
             
