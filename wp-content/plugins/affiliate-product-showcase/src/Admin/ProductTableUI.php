@@ -107,9 +107,14 @@ class ProductTableUI {
 						<?php echo esc_html( __( 'Trash', 'affiliate-product-showcase' ) ); ?>
 					</a>
 
-					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsBulkUploadProducts === 'function') { apsBulkUploadProducts(); }">
+					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsImportProducts === 'function') { apsImportProducts(); }">
+						<span class="dashicons dashicons-download"></span>
+						<?php echo esc_html( __( 'Import', 'affiliate-product-showcase' ) ); ?>
+					</button>
+
+					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsExportProducts === 'function') { apsExportProducts(); }">
 						<span class="dashicons dashicons-upload"></span>
-						<?php echo esc_html( __( 'Bulk Upload', 'affiliate-product-showcase' ) ); ?>
+						<?php echo esc_html( __( 'Export', 'affiliate-product-showcase' ) ); ?>
 					</button>
 
 					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsCheckProductLinks === 'function') { apsCheckProductLinks(); }">
@@ -144,11 +149,13 @@ class ProductTableUI {
 				<div class="aps-filter-group">
 					<label class="screen-reader-text" for="aps_bulk_action"><?php echo esc_html( __( 'Select action', 'affiliate-product-showcase' ) ); ?></label>
 					<select name="aps_bulk_action" id="aps_bulk_action" class="aps-filter-select">
-						<option value="-1"><?php echo esc_html( __( 'Select action', 'affiliate-product-showcase' ) ); ?></option>
-						<option value="set_featured"><?php echo esc_html( __( 'Set Featured', 'affiliate-product-showcase' ) ); ?></option>
-						<option value="unset_featured"><?php echo esc_html( __( 'Unset Featured', 'affiliate-product-showcase' ) ); ?></option>
-						<option value="export_csv"><?php echo esc_html( __( 'Export to CSV', 'affiliate-product-showcase' ) ); ?></option>
+						<option value=""><?php echo esc_html( __( 'Select action', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="move_to_draft"><?php echo esc_html( __( 'Move to Draft', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="publish"><?php echo esc_html( __( 'Publish', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="move_to_trash"><?php echo esc_html( __( 'Move to Trash', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="delete_permanent"><?php echo esc_html( __( 'Delete Permanently', 'affiliate-product-showcase' ) ); ?></option>
 					</select>
+					<button type="button" id="aps_action_apply" class="aps-btn aps-btn-apply" style="display:none; margin-left:8px;"><?php echo esc_html( __( 'Apply', 'affiliate-product-showcase' ) ); ?></button>
 				</div>
 
 				<div class="aps-filter-group aps-filter-search">
@@ -276,6 +283,10 @@ class ProductTableUI {
 			'enableAjax' => false,
 			'strings' => [
 				'confirmBulkUpload' => __( 'Are you sure you want to bulk upload products?', 'affiliate-product-showcase' ),
+				'confirmBulk' => __( 'Are you sure you want to apply this action to the selected products?', 'affiliate-product-showcase' ),
+				'confirmImport' => __( 'Open import page to import products?', 'affiliate-product-showcase' ),
+				'confirmExport' => __( 'Export products to CSV?', 'affiliate-product-showcase' ),
+				'selectAction' => __( 'Please select at least one product.', 'affiliate-product-showcase' ),
 				'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
 				'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
 				'done' => __( 'Done!', 'affiliate-product-showcase' ),

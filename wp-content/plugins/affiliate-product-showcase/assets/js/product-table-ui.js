@@ -36,6 +36,28 @@
         },
 
         /**
+         * Import products stub
+         */
+        importProducts: function() {
+            const proceed = confirm(apsProductTableUI.strings.confirmImport || 'Open import dialog?');
+            if (!proceed) return;
+            // Minimal behavior: redirect to admin import page or alert (full import implementation is out of scope)
+            const importUrl = window.location.href.split('?')[0] + '?post_type=aps_product&page=import-products';
+            window.location.href = importUrl;
+        },
+
+        /**
+         * Export products stub
+         */
+        exportProducts: function() {
+            const proceed = confirm(apsProductTableUI.strings.confirmExport || 'Export products to CSV?');
+            if (!proceed) return;
+            // Trigger a simple export endpoint (could be implemented server-side)
+            const exportUrl = apsProductTableUI.ajaxUrl + '?action=aps_export_products&_wpnonce=' + apsProductTableUI.nonce;
+            window.location.href = exportUrl;
+        },
+
+        /**
          * Current filter state
          */
         filterState: {
@@ -74,8 +96,41 @@
          */
         bindEvents: function() {
             // Make global functions available
-            window.apsBulkUploadProducts = this.bulkUploadProducts.bind(this);
+            window.apsBulkUploadProducts = this.bulkUploadProducts ? this.bulkUploadProducts.bind(this) : function() { alert('Bulk upload not available. Use Import instead.'); };
+            window.apsImportProducts = this.importProducts.bind(this);
+            window.apsExportProducts = this.exportProducts.bind(this);
             window.apsCheckProductLinks = this.checkProductLinks.bind(this);
+
+            // Show/hide Apply button when select changes
+            $('#aps_bulk_action').on('change', function() {
+                const val = $(this).val();
+                if (val && val !== '') {
+                    $('#aps_action_apply').show();
+                } else {
+                    $('#aps_action_apply').hide();
+                }
+            });
+
+            // Apply button click handler (moved from initFilters to here)
+            $('#aps_action_apply').on('click', function() {
+                const action = $('#aps_bulk_action').val();
+                const selectedProducts = [];
+                $('input[name="post[]"]:checked').each(function() {
+                    selectedProducts.push($(this).val());
+                });
+
+                if (selectedProducts.length === 0) {
+                    alert(apsProductTableUI.strings.selectAction || 'Please select at least one product.');
+                    return;
+                }
+
+                const actionText = $('#aps_bulk_action option:selected').text();
+                if (!confirm(`${apsProductTableUI.strings.confirmBulk || 'Are you sure?'}\n\n` + actionText + ' — ' + selectedProducts.length + ' product(s)')) {
+                    return;
+                }
+
+                APSTableUI.applyBulkAction(action, selectedProducts);
+            });
         },
 
         /**

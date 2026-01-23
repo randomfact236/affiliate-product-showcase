@@ -20,6 +20,11 @@ body.post-type-aps_product.edit-php #posts-filter {
     display: none !important;
 }
 
+/* Hide WordPress default bulk actions at the top for products screen */
+body.post-type-aps_product.edit-php .tablenav.top .bulkactions {
+    display: none !important;
+}
+
 /* Keep admin notices visible */
 body.post-type-aps_product.edit-php .notice,
 body.post-type-aps_product.edit-php .error,
