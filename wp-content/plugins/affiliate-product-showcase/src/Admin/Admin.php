@@ -39,6 +39,7 @@ final class Admin {
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
 		add_action( 'add_meta_boxes', [ $this->metaboxes, 'register' ] );
 		add_action( 'save_post', [ $this->metaboxes, 'save_meta' ], 10, 2 );
+		add_action( 'all_admin_notices', [ $this->product_table_ui, 'render' ], 10 );
 		$this->headers->init();
 	}
 

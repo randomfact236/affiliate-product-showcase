@@ -51,6 +51,13 @@
          * Initialize
          */
         init: function() {
+            // Layout-first mode: unless explicitly enabled, avoid AJAX filtering/sorting.
+            // This keeps the server-rendered WP_List_Table stable and matches the flowchart design.
+            if (!window.apsProductTableUI || window.apsProductTableUI.enableAjax !== true) {
+                this.bindEvents();
+                return;
+            }
+
             // Don't load initial products via AJAX
             // WordPress already loads them on page load
             // We only use AJAX for filtering/sorting after user interaction
@@ -109,23 +116,25 @@
                 APSTableUI.sortProducts();
             });
 
-            // Bulk action
-            $('#aps_bulk_action').on('change', function() {
-                const action = $(this).val();
-                if (action) {
-                    $(this).siblings('.aps-btn-apply').prop('disabled', false);
-                } else {
-                    $(this).siblings('.aps-btn-apply').prop('disabled', true);
-                }
-            });
-
             // Apply bulk action
             $('.aps-btn-apply').on('click', function() {
                 const action = $('#aps_bulk_action').val();
-                if (!action) {
-                    alert(apsProductTableUI.strings.selectAction);
+                const selectedProducts = [];
+                $('input[name="post[]"]:checked').each(function() {
+                    selectedProducts.push($(this).val());
+                });
+
+                if (selectedProducts.length === 0) {
+                    alert('Please select at least one product.');
                     return;
                 }
+
+                // Confirmation dialog for safety
+                const actionText = $('#aps_bulk_action option:selected').text();
+                if (!confirm(`Are you sure you want to perform "${actionText}" on ${selectedProducts.length} product(s)?`)) {
+                    return;
+                }
+
                 APSTableUI.applyBulkAction(action);
             });
 
@@ -585,6 +594,14 @@
             if (selectedProducts.length === 0) {
                 alert('Please select at least one product.');
                 return;
+            }
+
+            // Additional confirmation for destructive actions
+            if (action === 'delete' || action === 'set_out_of_stock') {
+                const actionText = $('#aps_bulk_action option:selected').text();
+                if (!confirm(`Warning: This action will ${actionText} for ${selectedProducts.length} product(s). Continue?`)) {
+                    return;
+                }
             }
 
             // Send AJAX request

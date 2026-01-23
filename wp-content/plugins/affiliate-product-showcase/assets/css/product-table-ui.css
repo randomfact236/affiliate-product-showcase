@@ -11,6 +11,31 @@
  */
 
 /* ============================================
+   Hide default WordPress UI on Products screen
+   ============================================ */
+
+body.post-type-aps_product.edit-php .wrap > h1.wp-heading-inline,
+body.post-type-aps_product.edit-php .wrap > a.page-title-action,
+body.post-type-aps_product.edit-php #posts-filter {
+    display: none !important;
+}
+
+/* Keep admin notices visible */
+body.post-type-aps_product.edit-php .notice,
+body.post-type-aps_product.edit-php .error,
+body.post-type-aps_product.edit-php .updated {
+    display: block;
+}
+
+/* ============================================
+   Products Page Container
+   ============================================ */
+
+.aps-products-page {
+    margin: 20px 0;
+}
+
+/* ============================================
    Product Table Actions Section
    ============================================ */
 
@@ -120,6 +145,23 @@
     border: 1px solid #dcdcde;
     border-radius: 4px;
     flex-wrap: wrap;
+}
+
+/* Slightly tighter filter controls (matches flowchart density) */
+.aps-product-filters .aps-filter-select,
+.aps-product-filters .aps-filter-input {
+    height: 34px;
+}
+
+.aps-products-table-form {
+    margin-top: 12px;
+}
+
+/* Product cell subline */
+.aps-product-cell .aps-product-sub {
+    margin-top: 2px;
+    color: #646970;
+    font-size: 12px;
 }
 
 .aps-filter-group {

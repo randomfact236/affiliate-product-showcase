@@ -7,301 +7,280 @@ namespace AffiliateProductShowcase\Admin;
 /**
  * Product Table UI
  *
- * Manages UI elements for products list table:
- * - Action buttons (Add New Product, Trash, Bulk Upload, Check Links)
- * - Status counts (All, Published, Draft, Trash)
- * - Enhanced filters (Search, Categories, Sort, Featured toggle, Clear filters)
+ * Manages UI elements above to products list table.
+ * Renders action buttons, custom filters, and displays ProductsTable.
  *
  * @package AffiliateProductShowcase\Admin
  * @since 1.0.0
  */
 class ProductTableUI {
 
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        // Add UI elements above product list table
-        add_action( 'admin_notices', [ $this, 'renderProductTableUI' ], 5 );
-        
-        // Add custom styles for UI elements
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueueStyles' ] );
-    }
+	/**
+	 * Product table instance
+	 *
+	 * @var ProductsTable
+	 */
+	private ProductsTable $product_table;
 
-    /**
-     * Render product table UI elements
-     *
-     * Renders action buttons, status counts, and filters
-     * as shown in backend-all-product-design-diagram.md
-     *
-     * @return void
-     */
-    public function renderProductTableUI(): void {
-        // Only show on products list page
-        if ( ! $this->isProductsPage() ) {
-            return;
-        }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		// Enqueue styles and scripts
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueStyles' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
+	}
 
-        $this->renderActionButtons();
-        $this->renderStatusCounts();
-        $this->renderFilters();
-    }
+	/**
+	 * Render product table page
+	 *
+	 * @return void
+	 */
+	public function render(): void {
+		// Only show on products list page
+		if ( ! $this->isProductsPage() ) {
+			return;
+		}
 
-    /**
-     * Check if current page is products list
-     *
-     * @return bool
-     */
-    private function isProductsPage(): bool {
-        return isset( $_GET['post_type'] ) && 
-               $_GET['post_type'] === 'aps_product' && 
-               ! isset( $_GET['page'] );
-    }
+		// Initialize products table
+		$this->product_table = new ProductsTable(
+			new \AffiliateProductShowcase\Repositories\ProductRepository()
+		);
 
-    /**
-     * Render action buttons section
-     *
-     * Buttons: Add New Product, Trash, Bulk Upload, Check Links
-     *
-     * @return void
-     */
-    private function renderActionButtons(): void {
-        $add_product_url = admin_url( 'edit.php?post_type=aps_product&page=add-product' );
-        $trash_url = admin_url( 'edit.php?post_type=aps_product&post_status=trash' );
-        
-        ?>
-        <div class="aps-product-table-actions">
-            <h2 class="aps-page-title"><?php esc_html_e( 'Manage Products', 'affiliate-product-showcase' ); ?></h2>
-            <p class="aps-page-description"><?php esc_html_e( 'Quick overview of your catalog with actions, filters, and bulk selection.', 'affiliate-product-showcase' ); ?></p>
-            
-            <div class="aps-action-buttons">
-                <a href="<?php echo esc_url( $add_product_url ); ?>" class="aps-btn aps-btn-primary">
-                    <span class="dashicons dashicons-plus"></span>
-                    <?php esc_html_e( 'Add New Product', 'affiliate-product-showcase' ); ?>
-                </a>
-                
-                <a href="<?php echo esc_url( $trash_url ); ?>" class="aps-btn aps-btn-secondary">
-                    <span class="dashicons dashicons-trash"></span>
-                    <?php esc_html_e( 'Trash', 'affiliate-product-showcase' ); ?>
-                </a>
-                
-                <button type="button" class="aps-btn aps-btn-secondary" onclick="apsBulkUploadProducts()">
-                    <span class="dashicons dashicons-upload"></span>
-                    <?php esc_html_e( 'Bulk Upload', 'affiliate-product-showcase' ); ?>
-                </button>
-                
-                <button type="button" class="aps-btn aps-btn-secondary" onclick="apsCheckProductLinks()">
-                    <span class="dashicons dashicons-admin-links"></span>
-                    <?php esc_html_e( 'Check Links', 'affiliate-product-showcase' ); ?>
-                </button>
-            </div>
-        </div>
-        <?php
-    }
+		$this->product_table->prepare_items();
+		$this->renderCustomUI();
+		$this->renderTable();
+	}
 
-    /**
-     * Render status counts section
-     *
-     * Shows: All, Published, Draft, Trash counts
-     *
-     * @return void
-     */
-    private function renderStatusCounts(): void {
-        $count_all = wp_count_posts( 'aps_product' );
-        $total = array_sum( (array) $count_all );
-        
-        $counts = [
-            'all' => [
-                'label' => __( 'All', 'affiliate-product-showcase' ),
-                'count' => $total,
-                'url' => admin_url( 'edit.php?post_type=aps_product' ),
-                'class' => 'aps-count-all',
-            ],
-            'publish' => [
-                'label' => __( 'Published', 'affiliate-product-showcase' ),
-                'count' => $count_all->publish ?? 0,
-                'url' => admin_url( 'edit.php?post_type=aps_product&post_status=publish' ),
-                'class' => 'aps-count-published',
-            ],
-            'draft' => [
-                'label' => __( 'Draft', 'affiliate-product-showcase' ),
-                'count' => $count_all->draft ?? 0,
-                'url' => admin_url( 'edit.php?post_type=aps_product&post_status=draft' ),
-                'class' => 'aps-count-draft',
-            ],
-            'trash' => [
-                'label' => __( 'Trash', 'affiliate-product-showcase' ),
-                'count' => $count_all->trash ?? 0,
-                'url' => admin_url( 'edit.php?post_type=aps_product&post_status=trash' ),
-                'class' => 'aps-count-trash',
-            ],
-        ];
+	/**
+	 * Check if current page is products list
+	 *
+	 * @return bool
+	 */
+	private function isProductsPage(): bool {
+		return isset( $_GET['post_type'] ) &&
+		       $_GET['post_type'] === 'aps_product' &&
+		       ! isset( $_GET['page'] );
+	}
 
-        $current_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
+	/**
+	 * Render custom UI above table
+	 *
+	 * @return void
+	 */
+	private function renderCustomUI(): void {
+		$add_product_url = admin_url( 'edit.php?post_type=aps_product&page=add-product' );
+		$trash_url = admin_url( 'edit.php?post_type=aps_product&post_status=trash' );
+		$base_url = admin_url( 'edit.php?post_type=aps_product' );
 
-        ?>
-        <div class="aps-product-counts">
-            <?php foreach ( $counts as $status => $data ): ?>
-                <a href="<?php echo esc_url( $data['url'] ); ?>" 
-                   class="aps-count-item <?php echo esc_attr( $data['class'] ); ?> <?php echo $current_status === $status ? 'active' : ''; ?>">
-                    <span class="aps-count-number"><?php echo esc_html( $data['count'] ); ?></span>
-                    <span class="aps-count-label"><?php echo esc_html( $data['label'] ); ?></span>
-                </a>
-            <?php endforeach; ?>
-        </div>
-        <?php
-    }
+		$counts = wp_count_posts( 'aps_product' );
+		$publish_count = isset( $counts->publish ) ? (int) $counts->publish : 0;
+		$draft_count = isset( $counts->draft ) ? (int) $counts->draft : 0;
+		$trash_count = isset( $counts->trash ) ? (int) $counts->trash : 0;
+		$all_count = $publish_count + $draft_count + $trash_count;
 
-    /**
-     * Render filters section
-     *
-     * Filters: Select action, Search, Categories dropdown, Sort dropdown, 
-     * Show Featured toggle, Clear filters
-     *
-     * @return void
-     */
-    private function renderFilters(): void {
-        $categories = get_terms( [
-            'taxonomy' => 'aps_category',
-            'hide_empty' => false,
-        ] );
+		$current_status = isset( $_GET['post_status'] ) ? sanitize_key( (string) $_GET['post_status'] ) : 'all';
+		if ( '' === $current_status ) {
+			$current_status = 'all';
+		}
 
-        $featured_filter = isset( $_GET['featured_filter'] ) ? $_GET['featured_filter'] : '';
-        $sort_order = isset( $_GET['order'] ) ? $_GET['order'] : 'desc';
-        
-        ?>
-        <div class="aps-product-filters">
-            <!-- Select Action Dropdown -->
-            <div class="aps-filter-group">
-                <label for="aps_bulk_action" class="screen-reader-text"><?php esc_html_e( 'Select action', 'affiliate-product-showcase' ); ?></label>
-                <select name="aps_bulk_action" id="aps_bulk_action" class="aps-filter-select">
-                    <option value=""><?php esc_html_e( 'Select action', 'affiliate-product-showcase' ); ?></option>
-                    <option value="set_in_stock"><?php esc_html_e( 'Set In Stock', 'affiliate-product-showcase' ); ?></option>
-                    <option value="set_out_of_stock"><?php esc_html_e( 'Set Out of Stock', 'affiliate-product-showcase' ); ?></option>
-                    <option value="set_featured"><?php esc_html_e( 'Set Featured', 'affiliate-product-showcase' ); ?></option>
-                    <option value="unset_featured"><?php esc_html_e( 'Unset Featured', 'affiliate-product-showcase' ); ?></option>
-                    <option value="reset_clicks"><?php esc_html_e( 'Reset Clicks', 'affiliate-product-showcase' ); ?></option>
-                    <option value="export_csv"><?php esc_html_e( 'Export to CSV', 'affiliate-product-showcase' ); ?></option>
-                </select>
-                <button type="submit" class="aps-btn aps-btn-apply">
-                    <?php esc_html_e( 'Apply', 'affiliate-product-showcase' ); ?>
-                </button>
-            </div>
+		?>
+		<div class="aps-products-page" id="aps-products-page">
 
-            <!-- Search -->
-            <div class="aps-filter-group aps-filter-search">
-                <label for="aps_search_products" class="screen-reader-text"><?php esc_html_e( 'Search products', 'affiliate-product-showcase' ); ?></label>
-                <input type="text" 
-                       name="aps_search" 
-                       id="aps_search_products" 
-                       class="aps-filter-input"
-                       placeholder="<?php esc_attr_e( 'Search products...', 'affiliate-product-showcase' ); ?>"
-                       value="<?php echo isset( $_GET['aps_search'] ) ? esc_attr( $_GET['aps_search'] ) : ''; ?>">
-            </div>
+			<div class="aps-product-table-actions">
+				<h1 class="aps-page-title">
+					<?php echo esc_html( __( 'Manage Products', 'affiliate-product-showcase' ) ); ?>
+				</h1>
 
-            <!-- Categories Dropdown -->
-            <div class="aps-filter-group">
-                <label for="aps_category_filter" class="screen-reader-text"><?php esc_html_e( 'Filter by category', 'affiliate-product-showcase' ); ?></label>
-                <select name="aps_category_filter" id="aps_category_filter" class="aps-filter-select">
-                    <option value=""><?php esc_html_e( 'All Categories', 'affiliate-product-showcase' ); ?></option>
-                    <?php if ( $categories && ! is_wp_error( $categories ) ): ?>
-                        <?php foreach ( $categories as $category ): ?>
-                            <option value="<?php echo esc_attr( $category->term_id ); ?>"
-                                <?php selected( isset( $_GET['aps_category_filter'] ) ? $_GET['aps_category_filter'] : '', $category->term_id ); ?>>
-                                <?php echo esc_html( $category->name ); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
-            </div>
+				<p class="aps-page-description">
+					<?php echo esc_html( __( 'Quick overview of your catalog with actions, filters, and bulk selection.', 'affiliate-product-showcase' ) ); ?>
+				</p>
 
-            <!-- Sort Dropdown -->
-            <div class="aps-filter-group">
-                <label for="aps_sort_order" class="screen-reader-text"><?php esc_html_e( 'Sort products', 'affiliate-product-showcase' ); ?></label>
-                <select name="order" id="aps_sort_order" class="aps-filter-select">
-                    <option value="desc" <?php selected( $sort_order, 'desc' ); ?>>
-                        <?php esc_html_e( 'Latest ← Oldest', 'affiliate-product-showcase' ); ?>
-                    </option>
-                    <option value="asc" <?php selected( $sort_order, 'asc' ); ?>>
-                        <?php esc_html_e( 'Oldest ← Latest', 'affiliate-product-showcase' ); ?>
-                    </option>
-                </select>
-            </div>
+				<div class="aps-action-buttons">
+					<a href="<?php echo esc_url( $add_product_url ); ?>" class="aps-btn aps-btn-primary">
+						<span class="dashicons dashicons-plus"></span>
+						<?php echo esc_html( __( 'Add New Product', 'affiliate-product-showcase' ) ); ?>
+					</a>
 
-            <!-- Show Featured Toggle -->
-            <div class="aps-filter-group aps-filter-toggle">
-                <label for="aps_show_featured" class="aps-toggle-label">
-                    <input type="checkbox" 
-                           name="featured_filter" 
-                           id="aps_show_featured" 
-                           value="1"
-                           <?php checked( $featured_filter, '1' ); ?>>
-                    <span class="aps-toggle-slider"></span>
-                    <span class="aps-toggle-text"><?php esc_html_e( 'Show Featured', 'affiliate-product-showcase' ); ?></span>
-                </label>
-            </div>
+					<a href="<?php echo esc_url( $trash_url ); ?>" class="aps-btn aps-btn-secondary">
+						<span class="dashicons dashicons-trash"></span>
+						<?php echo esc_html( __( 'Trash', 'affiliate-product-showcase' ) ); ?>
+					</a>
 
-            <!-- Clear Filters Button -->
-            <div class="aps-filter-group">
-                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>" 
-                   class="aps-btn aps-btn-clear">
-                    <span class="dashicons dashicons-no"></span>
-                    <?php esc_html_e( 'Clear filters', 'affiliate-product-showcase' ); ?>
-                </a>
-            </div>
-        </div>
-        <?php
-    }
+					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsBulkUploadProducts === 'function') { apsBulkUploadProducts(); }">
+						<span class="dashicons dashicons-upload"></span>
+						<?php echo esc_html( __( 'Bulk Upload', 'affiliate-product-showcase' ) ); ?>
+					</button>
 
-    /**
-     * Enqueue styles for product table UI
-     *
-     * @param string $hook Current admin hook
-     * @return void
-     */
-    public function enqueueStyles( string $hook ): void {
-        // Only enqueue on products list page
-        if ( ! $this->isProductsPage() ) {
-            return;
-        }
+					<button type="button" class="aps-btn aps-btn-secondary" onclick="if (typeof apsCheckProductLinks === 'function') { apsCheckProductLinks(); }">
+						<span class="dashicons dashicons-admin-links"></span>
+						<?php echo esc_html( __( 'Check Links', 'affiliate-product-showcase' ) ); ?>
+					</button>
+				</div>
 
-        // Enqueue admin table CSS
-        wp_enqueue_style(
-            'aps-admin-table',
-            \AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/css/admin-table.css',
-            [],
-            \AffiliateProductShowcase\Plugin\Constants::VERSION
-        );
+				<div class="aps-product-counts">
+					<a href="<?php echo esc_url( $base_url ); ?>" class="aps-count-item <?php echo ( 'all' === $current_status ) ? 'active' : ''; ?>" data-status="all">
+						<span class="aps-count-number"><?php echo esc_html( (string) $all_count ); ?></span>
+						<span class="aps-count-label"><?php echo esc_html( __( 'All', 'affiliate-product-showcase' ) ); ?></span>
+					</a>
+					<a href="<?php echo esc_url( add_query_arg( 'post_status', 'publish', $base_url ) ); ?>" class="aps-count-item <?php echo ( 'publish' === $current_status ) ? 'active' : ''; ?>" data-status="publish">
+						<span class="aps-count-number"><?php echo esc_html( (string) $publish_count ); ?></span>
+						<span class="aps-count-label"><?php echo esc_html( __( 'Published', 'affiliate-product-showcase' ) ); ?></span>
+					</a>
+					<a href="<?php echo esc_url( add_query_arg( 'post_status', 'draft', $base_url ) ); ?>" class="aps-count-item <?php echo ( 'draft' === $current_status ) ? 'active' : ''; ?>" data-status="draft">
+						<span class="aps-count-number"><?php echo esc_html( (string) $draft_count ); ?></span>
+						<span class="aps-count-label"><?php echo esc_html( __( 'Draft', 'affiliate-product-showcase' ) ); ?></span>
+					</a>
+					<a href="<?php echo esc_url( add_query_arg( 'post_status', 'trash', $base_url ) ); ?>" class="aps-count-item <?php echo ( 'trash' === $current_status ) ? 'active' : ''; ?>" data-status="trash">
+						<span class="aps-count-number"><?php echo esc_html( (string) $trash_count ); ?></span>
+						<span class="aps-count-label"><?php echo esc_html( __( 'Trash', 'affiliate-product-showcase' ) ); ?></span>
+					</a>
+				</div>
+			</div>
 
-        // Enqueue product table UI CSS
-        wp_enqueue_style(
-            'aps-product-table-ui',
-            \AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/css/product-table-ui.css',
-            ['aps-admin-table'],
-            \AffiliateProductShowcase\Plugin\Constants::VERSION
-        );
+			<form method="get" action="<?php echo esc_url( admin_url( 'edit.php' ) ); ?>" class="aps-product-filters">
+				<input type="hidden" name="post_type" value="aps_product" />
 
-        // Enqueue product table UI JS
-        wp_enqueue_script(
-            'aps-product-table-ui',
-            \AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/js/product-table-ui.js',
-            ['jquery'],
-            \AffiliateProductShowcase\Plugin\Constants::VERSION,
-            true
-        );
+				<div class="aps-filter-group">
+					<label class="screen-reader-text" for="aps_bulk_action"><?php echo esc_html( __( 'Select action', 'affiliate-product-showcase' ) ); ?></label>
+					<select name="aps_bulk_action" id="aps_bulk_action" class="aps-filter-select">
+						<option value="-1"><?php echo esc_html( __( 'Select action', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="set_featured"><?php echo esc_html( __( 'Set Featured', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="unset_featured"><?php echo esc_html( __( 'Unset Featured', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="export_csv"><?php echo esc_html( __( 'Export to CSV', 'affiliate-product-showcase' ) ); ?></option>
+					</select>
+				</div>
 
-        // Localize script
-        wp_localize_script( 'aps-product-table-ui', 'apsProductTableUI', [
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'nonce' => wp_create_nonce( 'aps_product_table_ui' ),
-            'strings' => [
-                'confirmBulkUpload' => __( 'Are you sure you want to bulk upload products?', 'affiliate-product-showcase' ),
-                'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
-                'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
-                'done' => __( 'Done!', 'affiliate-product-showcase' ),
-                'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
-                'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
-            ],
-        ]);
-    }
+				<div class="aps-filter-group aps-filter-search">
+					<label class="screen-reader-text" for="aps_search_products"><?php echo esc_html( __( 'Search products', 'affiliate-product-showcase' ) ); ?></label>
+					<input type="text" name="aps_search" id="aps_search_products" class="aps-filter-input" placeholder="<?php echo esc_attr( __( 'Search products...', 'affiliate-product-showcase' ) ); ?>" value="<?php echo isset( $_GET['aps_search'] ) ? esc_attr( wp_unslash( $_GET['aps_search'] ) ) : ''; ?>" />
+				</div>
+
+				<div class="aps-filter-group">
+					<label class="screen-reader-text" for="aps_category_filter"><?php echo esc_html( __( 'All Categories', 'affiliate-product-showcase' ) ); ?></label>
+					<select name="aps_category_filter" id="aps_category_filter" class="aps-filter-select">
+						<option value="0"><?php echo esc_html( __( 'All Categories', 'affiliate-product-showcase' ) ); ?></option>
+						<?php
+						$categories = get_terms( [
+							'taxonomy' => \AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY,
+							'hide_empty' => false,
+						] );
+						if ( ! is_wp_error( $categories ) ) :
+							foreach ( $categories as $category ) :
+								$selected = isset( $_GET['aps_category_filter'] ) ? (int) $_GET['aps_category_filter'] : 0;
+								?>
+								<option value="<?php echo esc_attr( (string) $category->term_id ); ?>" <?php selected( $selected, (int) $category->term_id ); ?>>
+									<?php echo esc_html( $category->name ); ?>
+								</option>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</select>
+				</div>
+
+				<div class="aps-filter-group">
+					<label class="screen-reader-text" for="aps_sort_order"><?php echo esc_html( __( 'Sort', 'affiliate-product-showcase' ) ); ?></label>
+					<select name="order" id="aps_sort_order" class="aps-filter-select">
+						<option value="desc" <?php selected( isset( $_GET['order'] ) ? (string) $_GET['order'] : 'desc', 'desc' ); ?>>
+							<?php echo esc_html( __( 'Latest', 'affiliate-product-showcase' ) ); ?>
+						</option>
+						<option value="asc" <?php selected( isset( $_GET['order'] ) ? (string) $_GET['order'] : 'desc', 'asc' ); ?>>
+							<?php echo esc_html( __( 'Oldest', 'affiliate-product-showcase' ) ); ?>
+						</option>
+					</select>
+				</div>
+
+				<div class="aps-filter-group aps-filter-toggle">
+					<label class="aps-toggle-label">
+						<input type="checkbox" name="featured_filter" id="aps_show_featured" value="1" <?php checked( isset( $_GET['featured_filter'] ) ? (string) $_GET['featured_filter'] : '', '1' ); ?> />
+						<span class="aps-toggle-slider"></span>
+						<span class="aps-toggle-text"><?php echo esc_html( __( 'Show Featured', 'affiliate-product-showcase' ) ); ?></span>
+					</label>
+				</div>
+
+				<div class="aps-filter-group">
+					<button type="submit" class="aps-btn aps-btn-apply"><?php echo esc_html( __( 'Apply', 'affiliate-product-showcase' ) ); ?></button>
+				</div>
+
+				<div class="aps-filter-group">
+					<a href="<?php echo esc_url( $base_url ); ?>" class="aps-btn aps-btn-clear"><?php echo esc_html( __( 'Clear filters', 'affiliate-product-showcase' ) ); ?></a>
+				</div>
+			</form>
+
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the WP_List_Table instance
+	 *
+	 * @return void
+	 */
+	private function renderTable(): void {
+		?>
+		<form method="post" class="aps-products-table-form">
+			<?php $this->product_table->display(); ?>
+		</form>
+		<?php
+	}
+
+	/**
+	 * Enqueue styles
+	 *
+	 * @param string $hook Current admin hook
+	 * @return void
+	 */
+	public function enqueueStyles( string $hook ): void {
+		if ( ! $this->isProductsPage() ) {
+			return;
+		}
+
+		// Enqueue admin table CSS
+		wp_enqueue_style(
+			'aps-admin-table',
+			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/css/admin-table.css',
+			[],
+			\AffiliateProductShowcase\Plugin\Constants::VERSION
+		);
+
+		// Enqueue product table UI CSS
+		wp_enqueue_style(
+			'aps-product-table-ui',
+			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/css/product-table-ui.css',
+			['aps-admin-table'],
+			\AffiliateProductShowcase\Plugin\Constants::VERSION
+		);
+	}
+
+	/**
+	 * Enqueue scripts
+	 *
+	 * @param string $hook Current admin hook
+	 * @return void
+	 */
+	public function enqueueScripts( string $hook ): void {
+		if ( ! $this->isProductsPage() ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'aps-product-table-ui',
+			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/js/product-table-ui.js',
+			['jquery'],
+			\AffiliateProductShowcase\Plugin\Constants::VERSION,
+			true
+		);
+
+		wp_localize_script( 'aps-product-table-ui', 'apsProductTableUI', [
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'aps_product_table_ui' ),
+			'enableAjax' => false,
+			'strings' => [
+				'confirmBulkUpload' => __( 'Are you sure you want to bulk upload products?', 'affiliate-product-showcase' ),
+				'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
+				'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
+				'done' => __( 'Done!', 'affiliate-product-showcase' ),
+				'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
+			],
+		]);
+	}
 }
