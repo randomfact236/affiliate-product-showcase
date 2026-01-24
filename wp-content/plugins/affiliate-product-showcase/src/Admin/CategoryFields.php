@@ -110,15 +110,14 @@ final class CategoryFields {
 		ob_start();
 		?>
 		jQuery(document).ready(function($) {
-			// Handle status toggle clicks in table
-			$(document).on('click', '.aps-category-status-toggle', function(e) {
-				e.preventDefault();
+			// Handle status dropdown changes in table
+			$(document).on('change', '.aps-category-status-select', function() {
 				var $this = $(this);
 				var termId = $this.data('term-id');
-				var currentStatus = $this.data('current-status');
-				var newStatus = currentStatus === 'published' ? 'draft' : 'published';
+				var newStatus = $this.val();
+				var originalStatus = $this.find('option:selected').text();
 
-				// Toggle status via AJAX
+				// Update status via AJAX
 				$.ajax({
 					url: ajaxurl,
 					type: 'POST',
@@ -129,28 +128,30 @@ final class CategoryFields {
 						status: newStatus
 					},
 					beforeSend: function() {
-						$this.addClass('updating');
+						$this.prop('disabled', true);
 					},
 					success: function(response) {
 						if (response.success) {
-							// Update status display
-							if (newStatus === 'published') {
-								$this.html('<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' + aps_admin_vars.published_text);
-								$this.attr('data-current-status', 'published');
-								$this.removeClass('status-draft').addClass('status-published');
-							} else {
-								$this.html('<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' + aps_admin_vars.draft_text);
-								$this.attr('data-current-status', 'draft');
-								$this.removeClass('status-published').addClass('status-draft');
+							$this.prop('disabled', false);
+							// Show success notice
+							if ($('.notice-success.aps-status-notice').length) {
+								$('.notice-success.aps-status-notice').remove();
 							}
-							$this.removeClass('updating');
+							$('.wrap h1').after('<div class="notice notice-success is-dismissible aps-status-notice"><p>' + aps_admin_vars.success_text + '</p></div>');
+							setTimeout(function() {
+								$('.aps-status-notice').fadeOut();
+							}, 3000);
 						} else if (response.data && response.data.message) {
-							$this.removeClass('updating');
+							$this.prop('disabled', false);
+							// Revert to original status
+							$this.val(originalStatus === 'Published' ? 'published' : 'draft');
 							alert(response.data.message);
 						}
 					},
 					error: function() {
-						$this.removeClass('updating');
+						$this.prop('disabled', false);
+						// Revert to original status
+						$this.val(originalStatus === 'Published' ? 'published' : 'draft');
 						alert(aps_admin_vars.error_text);
 					}
 				});
@@ -171,6 +172,7 @@ final class CategoryFields {
 			'nonce' => wp_create_nonce( 'aps_toggle_category_status' ),
 			'published_text' => esc_html__( 'Published', 'affiliate-product-showcase' ),
 			'draft_text' => esc_html__( 'Draft', 'affiliate-product-showcase' ),
+			'success_text' => esc_html__( 'Category status updated successfully.', 'affiliate-product-showcase' ),
 			'error_text' => esc_html__( 'An error occurred. Please try again.', 'affiliate-product-showcase' ),
 		] );
 	}
@@ -567,27 +569,38 @@ final class CategoryFields {
 			$status = $this->get_category_meta( $term_id, 'status' );
 			$is_default = $this->get_category_meta( $term_id, 'is_default' );
 			
-			// Make status clickable for inline toggle
+			// Make status editable with dropdown
 			if ( $is_default === '1' ) {
 				// Default category - read-only status
-				if ( $status === 'published' ) {
-					return '<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' . esc_html__( 'Published', 'affiliate-product-showcase' ) . ' <span class="aps-status-note">(' . esc_html__( 'Default', 'affiliate-product-showcase' ) . ')</span>';
-				} else {
-					return '<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' . esc_html__( 'Draft', 'affiliate-product-showcase' ) . ' <span class="aps-status-note">(' . esc_html__( 'Default', 'affiliate-product-showcase' ) . ')</span>';
-				}
-			} else {
-				// Non-default category - clickable toggle
-				$toggle_class = $status === 'published' ? 'status-published' : 'status-draft';
-				$status_text = $status === 'published' ? esc_html__( 'Published', 'affiliate-product-showcase' ) : esc_html__( 'Draft', 'affiliate-product-showcase' );
-				$icon = $status === 'published' ? '<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span>' : '<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span>';
+				$icon = $status === 'published' 
+					? '<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span>' 
+					: '<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span>';
+				$status_text = $status === 'published' 
+					? esc_html__( 'Published', 'affiliate-product-showcase' ) 
+					: esc_html__( 'Draft', 'affiliate-product-showcase' );
 				
 				return sprintf(
-					'<a href="#" class="aps-category-status-toggle %s" data-term-id="%d" data-current-status="%s">%s %s</a>',
-					esc_attr( $toggle_class ),
-					$term_id,
-					esc_attr( $status ),
+					'<span class="aps-category-status-readonly">%s %s <span class="aps-status-note">(%s)</span></span>',
 					$icon,
-					$status_text
+					$status_text,
+					esc_html__( 'Default', 'affiliate-product-showcase' )
+				);
+			} else {
+				// Non-default category - editable dropdown
+				$selected_published = $status === 'published' ? 'selected' : '';
+				$selected_draft = $status === 'draft' ? 'selected' : '';
+				
+				return sprintf(
+					'<select class="aps-category-status-select" data-term-id="%d" aria-label="%s">
+						<option value="published" %s>%s</option>
+						<option value="draft" %s>%s</option>
+					</select>',
+					$term_id,
+					esc_attr__( 'Change category status', 'affiliate-product-showcase' ),
+					$selected_published,
+					esc_html__( 'Published', 'affiliate-product-showcase' ),
+					$selected_draft,
+					esc_html__( 'Draft', 'affiliate-product-showcase' )
 				);
 			}
 		}
