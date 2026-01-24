@@ -1,5 +1,10 @@
 # Future Improvements: Affiliate Digital Product Showcase
 
+> **⚠️ IMPORTANT: DO NOT DELETE THIS FILE**
+> This file is authoritative documentation for all future improvements planned for the plugin.
+> It should be preserved as reference and never deleted.
+> **Rule:** DO NOT DELETE ANY DOCUMENTATION FILES
+
 > **Purpose:** This document contains all planned future enhancements and improvements for the plugin.
 > **Status:** NOT FOR IMPLEMENTATION - Reference only for future development phases
 
