@@ -196,6 +196,7 @@
 - [x] 52. Quick edit (name, slug, description) (WordPress native)
 - [x] 53. Drag-and-drop reordering (WordPress native)
 - [x] 54. Category search
+- [x] 54a. Inline Status Editing - Edit category status directly from table with dropdown (Published/Draft)
 - [x] 64. Bulk actions: Move to Draft (set category to draft status)
 - [x] 65. Bulk actions: Move to Trash (safe delete - sets status to draft)
 - [x] 66. Bulk actions: Delete Permanently (removed for safety - use Trash instead)
