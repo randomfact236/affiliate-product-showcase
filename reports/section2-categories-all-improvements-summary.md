@@ -1,5 +1,9 @@
 # Section 2: Categories - Complete Implementation Summary
 
+> **⚠️ IMPORTANT: DO NOT DELETE THIS FILE**  
+> This file is the authoritative documentation for Section 2 (Categories) implementation.  
+> It should be preserved as reference and never deleted.
+
 **Project:** Affiliate Digital Product Showcase WordPress Plugin  
 **Section:** Section 2: Categories  
 **Status:** ✅ 32/32 Features Complete (100%) - TRUE HYBRID IMPLEMENTATION  
