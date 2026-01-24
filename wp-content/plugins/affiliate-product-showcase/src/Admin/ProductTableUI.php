@@ -186,6 +186,27 @@ class ProductTableUI {
 				</div>
 
 				<div class="aps-filter-group">
+					<label class="screen-reader-text" for="aps_tag_filter"><?php echo esc_html( __( 'All Tags', 'affiliate-product-showcase' ) ); ?></label>
+					<select name="aps_tag_filter" id="aps_tag_filter" class="aps-filter-select">
+						<option value="0"><?php echo esc_html( __( 'All Tags', 'affiliate-product-showcase' ) ); ?></option>
+						<?php
+						$tags = get_terms( [
+							'taxonomy' => \AffiliateProductShowcase\Plugin\Constants::TAX_TAG,
+							'hide_empty' => false,
+						] );
+						if ( ! is_wp_error( $tags ) ) :
+							foreach ( $tags as $tag_item ) :
+								$selected = isset( $_GET['aps_tag_filter'] ) ? (int) $_GET['aps_tag_filter'] : 0;
+								?>
+								<option value="<?php echo esc_attr( (string) $tag_item->term_id ); ?>" <?php selected( $selected, (int) $tag_item->term_id ); ?>>
+									<?php echo esc_html( $tag_item->name ); ?>
+								</option>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</select>
+				</div>
+
+				<div class="aps-filter-group">
 					<label class="screen-reader-text" for="aps_sort_order"><?php echo esc_html( __( 'Sort', 'affiliate-product-showcase' ) ); ?></label>
 					<select name="order" id="aps_sort_order" class="aps-filter-select">
 						<option value="desc" <?php selected( isset( $_GET['order'] ) ? (string) $_GET['order'] : 'desc', 'desc' ); ?>>

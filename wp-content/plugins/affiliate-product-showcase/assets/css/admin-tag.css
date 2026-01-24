@@ -1,0 +1,58 @@
+/**
+ * Admin Tag Styles
+ *
+ * Styles for tag management in WordPress admin
+ * including color badges and icon displays.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* Tag Color Badge */
+.aps-tag-color-badge {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	vertical-align: middle;
+	margin-right: 8px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Tag Icon Display */
+.aps-tag-icon-display {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.2em;
+	vertical-align: middle;
+}
+
+/* Tag Color Field */
+.aps-tag-color input.color-picker {
+	width: 80px;
+	padding: 4px 8px;
+	font-family: monospace;
+}
+
+/* Tag Icon Field */
+.aps-tag-icon input.regular-text {
+	min-width: 200px;
+}
+
+/* Color Picker Preview */
+.wp-picker-container {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 782px) {
+	.aps-tag-color input.color-picker {
+		width: 60px;
+	}
+	
+	.aps-tag-icon input.regular-text {
+		min-width: 150px;
+	}
+}

@@ -19,6 +19,7 @@ final class Admin {
 	private Menu $menu;
 	private ProductTableUI $product_table_ui;
 	private CategoryFields $category_fields;
+	private TagFields $tag_fields;
 
 	public function __construct(
 		private Assets $assets,
@@ -33,6 +34,7 @@ final class Admin {
 		$this->menu = $menu;
 		$this->product_table_ui = new ProductTableUI();
 		$this->category_fields = new CategoryFields();
+		$this->tag_fields = new TagFields();
 	}
 
 	public function init(): void {
@@ -43,6 +45,9 @@ final class Admin {
 		
 		// Initialize category components (WordPress native + custom enhancements)
 		$this->category_fields->init();
+		
+		// Initialize tag components (WordPress native + custom enhancements)
+		$this->tag_fields->init();
 		
 		$this->headers->init();
 	}

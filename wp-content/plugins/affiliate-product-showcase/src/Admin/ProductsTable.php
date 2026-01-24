@@ -427,6 +427,7 @@ class ProductsTable extends \WP_List_Table {
 		// Get filter values
 		$search = isset( $_GET['aps_search'] ) ? sanitize_text_field( wp_unslash( $_GET['aps_search'] ) ) : '';
 		$category = isset( $_GET['aps_category_filter'] ) ? intval( $_GET['aps_category_filter'] ) : 0;
+		$tag = isset( $_GET['aps_tag_filter'] ) ? intval( $_GET['aps_tag_filter'] ) : 0;
 		$featured = isset( $_GET['featured_filter'] ) ? ( '1' === (string) $_GET['featured_filter'] ) : false;
 		$order = isset( $_GET['order'] ) ? sanitize_key( (string) $_GET['order'] ) : 'desc';
 		$orderby = isset( $_GET['orderby'] ) ? sanitize_key( (string) $_GET['orderby'] ) : 'date';
@@ -451,14 +452,30 @@ class ProductsTable extends \WP_List_Table {
 			$args['s'] = $search;
 		}
 
+		// Build tax_query for category and tag filters
+		$tax_query = [];
+
 		// Add category filter
 		if ( $category > 0 ) {
-			$args['tax_query'] = [
-				[
-					'taxonomy' => Constants::TAX_CATEGORY,
-					'terms'    => $category,
-				],
+			$tax_query[] = [
+				'taxonomy' => Constants::TAX_CATEGORY,
+				'terms'    => $category,
 			];
+		}
+
+		// Add tag filter
+		if ( $tag > 0 ) {
+			$tax_query[] = [
+				'taxonomy' => Constants::TAX_TAG,
+				'terms'    => $tag,
+			];
+		}
+
+		// Apply tax_query if we have filters
+		if ( ! empty( $tax_query ) ) {
+			// Set relation to AND so products must match both category and tag if both are selected
+			$tax_query['relation'] = 'AND';
+			$args['tax_query'] = $tax_query;
 		}
 
 		// Add featured filter
