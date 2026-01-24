@@ -12,7 +12,7 @@ use AffiliateProductShowcase\Plugin\Constants;
  * Extends WordPress WP_List_Table to display products with custom columns.
  * Provides native pagination, sorting, and bulk actions.
  *
- * This is the SINGLE source of truth for column rendering in the true hybrid approach.
+ * This is SINGLE source of truth for column rendering in true hybrid approach.
  * Custom UI is rendered by ProductTableUI, column rendering is handled here.
  *
  * @package AffiliateProductShowcase\Admin
@@ -166,12 +166,36 @@ class ProductsTable extends \WP_List_Table {
 			);
 		}
 
-		if ( $can_delete_post ) {
-			$actions['trash'] = sprintf(
-				'<a href="%s">%s</a>',
-				esc_url( get_delete_post_link( $item->ID ) ),
-				__( 'Trash', 'affiliate-product-showcase' )
-			);
+		// Add Restore or Trash/Delete Permanently action based on post status
+		$post_status = get_post_status( $item->ID );
+		
+		if ( 'trash' === $post_status ) {
+			// Show Restore and Delete Permanently for trashed items
+			if ( $can_delete_post ) {
+				$actions['untrash'] = sprintf(
+					'<a href="%s" aria-label="%s">%s</a>',
+					esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=untrash', $item->ID ) ), 'untrash-post_' . $item->ID ) ),
+					esc_attr( sprintf( __( 'Restore "%s" from trash', 'affiliate-product-showcase' ), $title ) ),
+					__( 'Restore', 'affiliate-product-showcase' )
+				);
+				
+				$actions['delete'] = sprintf(
+					'<a href="%s" class="submitdelete" aria-label="%s">%s</a>',
+					esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=delete', $item->ID ) ), 'delete-post_' . $item->ID ) ),
+					esc_attr( sprintf( __( 'Delete "%s" permanently', 'affiliate-product-showcase' ), $title ) ),
+					__( 'Delete Permanently', 'affiliate-product-showcase' )
+				);
+			}
+		} else {
+			// Show Trash for non-trashed items
+			if ( $can_delete_post ) {
+				$actions['trash'] = sprintf(
+					'<a href="%s" aria-label="%s">%s</a>',
+					esc_url( get_delete_post_link( $item->ID ) ),
+					esc_attr( sprintf( __( 'Move "%s" to trash', 'affiliate-product-showcase' ), $title ) ),
+					__( 'Trash', 'affiliate-product-showcase' )
+				);
+			}
 		}
 
 		return sprintf(
@@ -462,5 +486,5 @@ class ProductsTable extends \WP_List_Table {
 	}
 
 	// Intentionally not rendering WP-style views here.
-	// Status counts are rendered in ProductTableUI to match the custom design.
+	// Status counts are rendered in ProductTableUI to match custom design.
 }

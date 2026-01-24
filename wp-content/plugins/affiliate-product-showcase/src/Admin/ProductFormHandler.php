@@ -104,16 +104,22 @@ class ProductFormHandler {
 		$data = [];
 
 		// Basic fields
-		$data['title']         = isset( $raw_data['aps_title'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_title'] ) ) : '';
-		$data['description']   = isset( $raw_data['aps_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_description'] ) ) : '';
-		$data['affiliate_url'] = isset( $raw_data['aps_affiliate_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_affiliate_url'] ) ) : '';
+		$data['title']             = isset( $raw_data['aps_title'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_title'] ) ) : '';
+		$data['description']       = isset( $raw_data['aps_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_description'] ) ) : '';
+		$data['short_description'] = isset( $raw_data['aps_short_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_short_description'] ) ) : '';
+		$data['affiliate_url']     = isset( $raw_data['aps_affiliate_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_affiliate_url'] ) ) : '';
 		$data['image_url']     = isset( $raw_data['aps_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_image_url'] ) ) : '';
 		$data['video_url']     = isset( $raw_data['aps_video_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_video_url'] ) ) : '';
 
 		// Pricing
-		$data['regular_price'] = isset( $raw_data['aps_regular_price'] ) ? floatval( $raw_data['aps_regular_price'] ) : 0.0;
-		$data['sale_price']    = isset( $raw_data['aps_sale_price'] ) && ! empty( $raw_data['aps_sale_price'] ) ? floatval( $raw_data['aps_sale_price'] ) : null;
-		$data['currency']      = isset( $raw_data['aps_currency'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_currency'] ) ) : 'USD';
+		$data['regular_price']     = isset( $raw_data['aps_regular_price'] ) ? floatval( $raw_data['aps_regular_price'] ) : 0.0;
+		$data['sale_price']        = isset( $raw_data['aps_sale_price'] ) && ! empty( $raw_data['aps_sale_price'] ) ? floatval( $raw_data['aps_sale_price'] ) : null;
+		$data['discount_percentage'] = isset( $raw_data['aps_discount_percentage'] ) && ! empty( $raw_data['aps_discount_percentage'] ) ? floatval( $raw_data['aps_discount_percentage'] ) : null;
+		$data['currency']           = isset( $raw_data['aps_currency'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_currency'] ) ) : 'USD';
+
+		// Digital product info
+		$data['platform_requirements'] = isset( $raw_data['aps_platform_requirements'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_platform_requirements'] ) ) : '';
+		$data['version_number']       = isset( $raw_data['aps_version_number'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_version_number'] ) ) : '';
 
 		// Rating
 		$data['rating'] = isset( $raw_data['aps_rating'] ) && ! empty( $raw_data['aps_rating'] ) ? floatval( $raw_data['aps_rating'] ) : null;
@@ -210,6 +216,11 @@ class ProductFormHandler {
 			$errors['rating'] = __( 'Rating must be between 0 and 5.', 'affiliate-product-showcase' );
 		}
 
+		// Validate short description length
+		if ( strlen( $data['short_description'] ) > 200 ) {
+			$errors['short_description'] = __( 'Short description must be less than 200 characters.', 'affiliate-product-showcase' );
+		}
+
 		return $errors;
 	}
 
@@ -245,11 +256,12 @@ class ProductFormHandler {
 		// Create product post
 		$post_id = wp_insert_post(
 			[
-				'post_title'   => $data['title'],
-				'post_content' => $data['description'],
-				'post_status'  => $data['is_draft'] ? 'draft' : $data['status'],
-				'post_type'    => 'aps_product',
-				'post_author'  => get_current_user_id(),
+				'post_title'    => $data['title'],
+				'post_content'  => $data['description'],
+				'post_excerpt'   => $data['short_description'],
+				'post_status'   => $data['is_draft'] ? 'draft' : $data['status'],
+				'post_type'     => 'aps_product',
+				'post_author'   => get_current_user_id(),
 			],
 			true // Return WP_Error on failure
 		);
@@ -275,6 +287,15 @@ class ProductFormHandler {
 			update_post_meta( $post_id, '_aps_original_price', $data['regular_price'] );
 			update_post_meta( $post_id, '_aps_price', $data['sale_price'] );
 		}
+
+		// Save discount percentage if provided
+		if ( null !== $data['discount_percentage'] ) {
+			update_post_meta( $post_id, '_aps_discount_percentage', $data['discount_percentage'] );
+		}
+
+		// Save digital product info
+		update_post_meta( $post_id, '_aps_platform_requirements', $data['platform_requirements'] );
+		update_post_meta( $post_id, '_aps_version_number', $data['version_number'] );
 
 		// Save gallery
 		update_post_meta( $post_id, '_aps_gallery', $data['gallery'] );

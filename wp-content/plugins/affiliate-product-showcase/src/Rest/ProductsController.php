@@ -95,6 +95,67 @@ final class ProductsController extends RestController {
 				],
 			]
 		);
+
+		// Single product routes
+		register_rest_route(
+			$this->namespace,
+			'/products/(?P<id>[\d]+)',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_item' ],
+					'permission_callback' => '__return_true',
+				],
+				[
+					'methods'             => WP_REST_Server::CREATABLE | WP_REST_Server::EDITABLE,
+					'callback'            => [ $this, 'update' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_update_args(),
+				],
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		// Product action routes
+		register_rest_route(
+			$this->namespace,
+			'/products/(?P<id>[\d]+)/trash',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'trash' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/products/(?P<id>[\d]+)/restore',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'restore' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/products/(?P<id>[\d]+)/delete-permanently',
+			[
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete_permanently' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
 	}
 
 	/**
@@ -125,6 +186,8 @@ final class ProductsController extends RestController {
 	 * - title: Product title (required, max 200 chars)
 	 * - description: Product description (optional)
 	 * - price: Product price (required, min 0)
+	 * - original_price: Original price before discount (optional)
+	 * - discount_percentage: Discount percentage (optional, 0-100)
 	 * - currency: Currency code (optional, default USD, enum: USD/EUR/GBP/JPY/CAD/AUD)
 	 * - affiliate_url: Affiliate link URL (required, URI format)
 	 * - image_url: Image/logo URL (optional, URI format)
@@ -133,6 +196,8 @@ final class ProductsController extends RestController {
 	 * - rating: Product rating (optional, 0-5)
 	 * - category_ids: Array of category IDs (optional)
 	 * - tag_ids: Array of tag IDs (optional)
+	 * - platform_requirements: Platform requirements text (optional)
+	 * - version_number: Version number string (optional)
 	 *
 	 * @return array<string, mixed> Validation schema for WordPress REST API
 	 * @since 1.0.0
@@ -151,10 +216,29 @@ final class ProductsController extends RestController {
 				'type'              => 'string',
 				'sanitize_callback' => 'wp_kses_post',
 			],
+			'short_description' => [
+				'required'          => false,
+				'type'              => 'string',
+				'maxLength'         => 200,
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
 			'price' => [
 				'required'          => true,
 				'type'              => 'number',
 				'minimum'           => 0,
+				'sanitize_callback' => 'floatval',
+			],
+			'original_price' => [
+				'required'          => false,
+				'type'              => 'number',
+				'minimum'           => 0,
+				'sanitize_callback' => 'floatval',
+			],
+			'discount_percentage' => [
+				'required'          => false,
+				'type'              => 'number',
+				'minimum'           => 0,
+				'maximum'           => 100,
 				'sanitize_callback' => 'floatval',
 			],
 			'currency' => [
@@ -217,7 +301,366 @@ final class ProductsController extends RestController {
 					return array_map( 'intval', (array) $value );
 				},
 			],
+			'platform_requirements' => [
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'version_number' => [
+				'required'          => false,
+				'type'              => 'string',
+				'maxLength'         => 50,
+				'sanitize_callback' => 'sanitize_text_field',
+			],
 		];
+	}
+
+	/**
+	 * Get validation schema for update endpoint
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_update_args(): array {
+		$args = $this->get_create_args();
+		
+		// Make all fields optional for update
+		foreach ( $args as $key => $arg ) {
+			$args[ $key ]['required'] = false;
+		}
+		
+		return $args;
+	}
+
+	/**
+	 * Get single product
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with product data or error
+	 * @since 1.0.0
+	 *
+	 * @route GET /affiliate-showcase/v1/products/{id}
+	 */
+	public function get_item( WP_REST_Request $request ): WP_REST_Response {
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		$product = $this->product_service->get_product( (int) $product_id );
+		
+		if ( null === $product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		return $this->respond( $product->to_array(), 200 );
+	}
+
+	/**
+	 * Update a product
+	 *
+	 * @param WP_REST_Request $request Request object containing product data
+	 * @return WP_REST_Response Response with updated product or error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products/{id}
+	 */
+	public function update( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		// Verify product exists
+		$existing_product = $this->product_service->get_product( (int) $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		try {
+			// Merge existing product data with updates
+			$updates = array_merge( $existing_product->to_array(), $request->get_params() );
+			$updates['id'] = (int) $product_id;
+			
+			$product = $this->product_service->create_or_update( $updates );
+			return $this->respond( $product->to_array(), 200 );
+			
+		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
+			error_log(sprintf(
+				'[APS] Product update failed: %s in %s:%d',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+			
+			return $this->respond([
+				'message' => __('Failed to update product', 'affiliate-product-showcase'),
+				'code' => 'product_update_error',
+			], 400);
+		}
+	}
+
+	/**
+	 * Delete a product (move to trash)
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route DELETE /affiliate-showcase/v1/products/{id}
+	 */
+	public function delete( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		$existing_product = $this->product_service->get_product( (int) $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		try {
+			$result = wp_trash_post( (int) $product_id );
+			
+			if ( ! $result ) {
+				return $this->respond( [
+					'message' => __( 'Failed to move product to trash.', 'affiliate-product-showcase' ),
+					'code'    => 'trash_failed',
+				], 500 );
+			}
+			
+			return $this->respond( [
+				'message' => __( 'Product moved to trash successfully.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Product delete failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Restore product from trash
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products/{id}/restore
+	 */
+	public function restore( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		try {
+			$result = wp_untrash_post( (int) $product_id );
+			
+			if ( ! $result ) {
+				return $this->respond( [
+					'message' => __( 'Failed to restore product from trash.', 'affiliate-product-showcase' ),
+					'code'    => 'restore_failed',
+				], 500 );
+			}
+			
+			$product = $this->product_service->get_product( (int) $product_id );
+			$product_array = $product ? $product->to_array() : null;
+			
+			return $this->respond( [
+				'message' => __( 'Product restored successfully.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+				'product'  => $product_array,
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Product restore failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Delete product permanently
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route DELETE /affiliate-showcase/v1/products/{id}/delete-permanently
+	 */
+	public function delete_permanently( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		$existing_product = $this->product_service->get_product( (int) $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		try {
+			$result = wp_delete_post( (int) $product_id, true );
+			
+			if ( ! $result ) {
+				return $this->respond( [
+					'message' => __( 'Failed to delete product permanently.', 'affiliate-product-showcase' ),
+					'code'    => 'delete_permanently_failed',
+				], 500 );
+			}
+			
+			return $this->respond( [
+				'message' => __( 'Product deleted permanently.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Product permanent delete failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Trash product (move to trash)
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products/{id}/trash
+	 */
+	public function trash( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		$existing_product = $this->product_service->get_product( (int) $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		try {
+			$result = wp_trash_post( (int) $product_id );
+			
+			if ( ! $result ) {
+				return $this->respond( [
+					'message' => __( 'Failed to move product to trash.', 'affiliate-product-showcase' ),
+					'code'    => 'trash_failed',
+				], 500 );
+			}
+			
+			return $this->respond( [
+				'message' => __( 'Product moved to trash successfully.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Product trash failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
 	}
 
 	/**

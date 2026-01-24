@@ -153,6 +153,7 @@ class ProductTableUI {
 						<option value="move_to_draft"><?php echo esc_html( __( 'Move to Draft', 'affiliate-product-showcase' ) ); ?></option>
 						<option value="publish"><?php echo esc_html( __( 'Publish', 'affiliate-product-showcase' ) ); ?></option>
 						<option value="move_to_trash"><?php echo esc_html( __( 'Move to Trash', 'affiliate-product-showcase' ) ); ?></option>
+						<option value="restore"><?php echo esc_html( __( 'Restore from Trash', 'affiliate-product-showcase' ) ); ?></option>
 						<option value="delete_permanent"><?php echo esc_html( __( 'Delete Permanently', 'affiliate-product-showcase' ) ); ?></option>
 					</select>
 					<button type="button" id="aps_action_apply" class="aps-btn aps-btn-apply" style="display:none; margin-left:8px;"><?php echo esc_html( __( 'Apply', 'affiliate-product-showcase' ) ); ?></button>

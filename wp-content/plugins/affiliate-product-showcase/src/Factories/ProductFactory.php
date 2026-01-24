@@ -66,9 +66,11 @@ final class ProductFactory {
 			$post->post_title,
 			$post->post_name,
 			wp_kses_post( $post->post_content ),
+			wp_kses_post( $post->post_excerpt ?? '' ),
 			$meta['aps_currency'][0] ?? 'USD',
 			(float) ( $meta['aps_price'][0] ?? 0 ),
 			isset( $meta['aps_original_price'][0] ) ? (float) $meta['aps_original_price'][0] : null,
+			isset( $meta['aps_discount_percentage'][0] ) ? (float) $meta['aps_discount_percentage'][0] : null,
 			esc_url_raw( $meta['aps_affiliate_url'][0] ?? '' ),
 			esc_url_raw( $meta['aps_image_url'][0] ?? '' ) ?: null,
 			isset( $meta['aps_rating'][0] ) ? (float) $meta['aps_rating'][0] : null,
@@ -76,7 +78,9 @@ final class ProductFactory {
 			$is_featured,
 			$post->post_status,
 			$category_ids,
-			$tag_ids
+			$tag_ids,
+			sanitize_text_field( $meta['aps_platform_requirements'][0] ?? '' ) ?: null,
+			sanitize_text_field( $meta['aps_version_number'][0] ?? '' ) ?: null
 		);
 	}
 
@@ -111,9 +115,11 @@ final class ProductFactory {
 			sanitize_text_field( $data['title'] ?? '' ),
 			sanitize_title( $data['slug'] ?? ( $data['title'] ?? '' ) ),
 			wp_kses_post( $data['description'] ?? '' ),
+			sanitize_textarea_field( $data['short_description'] ?? '' ),
 			sanitize_text_field( $data['currency'] ?? 'USD' ),
 			(float) ( $data['price'] ?? 0 ),
 			isset( $data['original_price'] ) ? (float) $data['original_price'] : null,
+			isset( $data['discount_percentage'] ) ? (float) $data['discount_percentage'] : null,
 			esc_url_raw( $data['affiliate_url'] ?? '' ),
 			esc_url_raw( $data['image_url'] ?? '' ) ?: null,
 			isset( $data['rating'] ) ? (float) $data['rating'] : null,
@@ -121,7 +127,9 @@ final class ProductFactory {
 			$is_featured,
 			sanitize_text_field( $data['status'] ?? 'publish' ),
 			$category_ids,
-			$tag_ids
+			$tag_ids,
+			sanitize_text_field( $data['platform_requirements'] ?? '' ) ?: null,
+			sanitize_text_field( $data['version_number'] ?? '' ) ?: null
 		);
 	}
 }

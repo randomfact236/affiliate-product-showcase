@@ -25,37 +25,22 @@ wp_nonce_field( 'aps_meta_box', 'aps_meta_box_nonce' );
         </h2>
         
         <div class="aps-section-content">
-            <div class="aps-field aps-field-text">
-                <label for="aps_sku">
-                    <?php esc_html_e( 'SKU / Product ID', 'affiliate-product-showcase' ); ?>
-                    <span class="aps-field-tip"><?php esc_html_e( 'Unique identifier for this product', 'affiliate-product-showcase' ); ?></span>
+            <div class="aps-field aps-field-textarea">
+                <label for="aps_short_description">
+                    <?php esc_html_e( 'Short Description', 'affiliate-product-showcase' ); ?>
+                    <span class="aps-field-tip"><?php esc_html_e( 'Brief description displayed in product cards (max 200 characters)', 'affiliate-product-showcase' ); ?></span>
                 </label>
-                <input type="text" 
-                       name="aps_sku" 
-                       id="aps_sku" 
-                       value="<?php echo esc_attr( $meta['sku'] ?? '' ); ?>" 
-                       class="regular-text aps-input"
-                       placeholder="<?php esc_attr_e( 'e.g., PROD-001', 'affiliate-product-showcase' ); ?>" />
-            </div>
-            
-            <div class="aps-field aps-field-select">
-                <label for="aps_brand">
-                    <?php esc_html_e( 'Brand / Manufacturer', 'affiliate-product-showcase' ); ?>
-                </label>
-                <select name="aps_brand" id="aps_brand" class="aps-select">
-                    <option value=""><?php esc_html_e( 'Select brand...', 'affiliate-product-showcase' ); ?></option>
-                    <?php
-                    $brands = get_terms( array(
-                        'taxonomy' => 'aps_brand',
-                        'hide_empty' => false,
-                    ) );
-                    foreach ( $brands as $brand ) :
-                    ?>
-                    <option value="<?php echo esc_attr( $brand->term_id ); ?>" <?php selected( $meta['brand'] ?? '', $brand->term_id ); ?>>
-                        <?php echo esc_html( $brand->name ); ?>
-                    </option>
-                    <?php endforeach; ?>
-                </select>
+                <textarea 
+                    name="aps_short_description" 
+                    id="aps_short_description" 
+                    rows="3" 
+                    class="large-text aps-input aps-input-textarea"
+                    maxlength="200"
+                    placeholder="<?php esc_attr_e( 'Brief product description...', 'affiliate-product-showcase' ); ?>"
+                ><?php echo esc_textarea( $meta['short_description'] ?? '' ); ?></textarea>
+                <p class="description">
+                    <?php esc_html_e( 'This will appear in product cards and search results.', 'affiliate-product-showcase' ); ?>
+                </p>
             </div>
         </div>
     </div>
@@ -176,34 +161,42 @@ wp_nonce_field( 'aps_meta_box', 'aps_meta_box_nonce' );
                        value="<?php echo esc_attr( $meta['availability_date'] ?? '' ); ?>" 
                        class="regular-text aps-input aps-input-date" />
             </div>
-            
-            <div class="aps-field aps-field-number">
-                <label for="aps_rating">
-                    <?php esc_html_e( 'Rating', 'affiliate-product-showcase' ); ?>
-                    <span class="aps-field-tip"><?php esc_html_e( '0-5 stars', 'affiliate-product-showcase' ); ?></span>
+        </div>
+    </div>
+
+    <!-- Group 3b: Digital Product Information (NEW) -->
+    <div class="aps-form-section aps-section-digital-product">
+        <h2 class="aps-section-title">
+            <span class="dashicons dashicons-download"></span>
+            <?php esc_html_e( 'Digital Product Information', 'affiliate-product-showcase' ); ?>
+        </h2>
+        
+        <div class="aps-section-content">
+            <div class="aps-field aps-field-text">
+                <label for="aps_version_number">
+                    <?php esc_html_e( 'Version Number', 'affiliate-product-showcase' ); ?>
+                    <span class="aps-field-tip"><?php esc_html_e( 'Software/app version (e.g., 1.0.0)', 'affiliate-product-showcase' ); ?></span>
                 </label>
-                <input type="number" 
-                       name="aps_rating" 
-                       id="aps_rating" 
-                       min="0" 
-                       max="5" 
-                       step="0.1" 
-                       value="<?php echo esc_attr( $meta['rating'] ?? '' ); ?>" 
-                       class="regular-text aps-input aps-input-number"
-                       placeholder="4.5" />
+                <input type="text" 
+                       name="aps_version_number" 
+                       id="aps_version_number" 
+                       value="<?php echo esc_attr( $meta['version_number'] ?? '' ); ?>" 
+                       class="regular-text aps-input"
+                       placeholder="<?php esc_attr_e( 'e.g., 1.0.0, 2.1.3', 'affiliate-product-showcase' ); ?>" />
             </div>
-            
-            <div class="aps-field aps-field-number">
-                <label for="aps_review_count">
-                    <?php esc_html_e( 'Review Count', 'affiliate-product-showcase' ); ?>
+
+            <div class="aps-field aps-field-textarea">
+                <label for="aps_platform_requirements">
+                    <?php esc_html_e( 'Platform Requirements', 'affiliate-product-showcase' ); ?>
+                    <span class="aps-field-tip"><?php esc_html_e( 'Required OS, hardware, or dependencies', 'affiliate-product-showcase' ); ?></span>
                 </label>
-                <input type="number" 
-                       name="aps_review_count" 
-                       id="aps_review_count" 
-                       min="0" 
-                       value="<?php echo esc_attr( $meta['review_count'] ?? '' ); ?>" 
-                       class="regular-text aps-input aps-input-number"
-                       placeholder="0" />
+                <textarea 
+                    name="aps_platform_requirements" 
+                    id="aps_platform_requirements" 
+                    rows="4" 
+                    class="large-text aps-input aps-input-textarea"
+                    placeholder="<?php esc_attr_e( 'e.g., Windows 10/11, 4GB RAM, 2GB disk space, .NET Framework 4.8', 'affiliate-product-showcase' ); ?>"
+                ><?php echo esc_textarea( $meta['platform_requirements'] ?? '' ); ?></textarea>
             </div>
         </div>
     </div>

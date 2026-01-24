@@ -1,0 +1,454 @@
+/**
+ * Product Card Styles
+ *
+ * Styles for individual product cards including:
+ * - Version badge display
+ * - Discount badges
+ * - Price comparison (original vs sale)
+ * - Platform requirements section
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* ==========================================
+   Product Card Layout
+   ========================================== */
+
+.aps-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.aps-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: #2271b1;
+}
+
+/* ==========================================
+   Card Media (Image)
+   ========================================== */
+
+.aps-card__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f0f0f1;
+}
+
+.aps-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.aps-card:hover .aps-card__media img {
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   Card Body
+   ========================================== */
+
+.aps-card__body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.aps-card__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #1d2327;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.aps-card__short-description {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #50575e;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==========================================
+   Card Meta (Badge, Rating, Version)
+   ========================================== */
+
+.aps-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Badge */
+.aps-card__badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Rating */
+.aps-card__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #fff8e5;
+    border: 1px solid #ffd700;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #b84a00;
+    font-weight: 500;
+}
+
+.aps-card__rating span[aria-hidden="true"] {
+    color: #ffd700;
+}
+
+/* Version Badge (NEW) */
+.aps-card__version {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #f0f6ff;
+    border: 1px solid #b3d7ff;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #2271b1;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    transition: all 0.2s ease;
+}
+
+.aps-card__version:hover {
+    background: #2271b1;
+    color: #ffffff;
+    border-color: #2271b1;
+}
+
+.aps-card__version .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* ==========================================
+   Card Footer (Price + CTA)
+   ========================================== */
+
+.aps-card__footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid #f0f0f1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Price Display */
+.aps-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d2327;
+    line-height: 1;
+}
+
+.aps-card__price-currency {
+    font-size: 14px;
+    font-weight: 500;
+    color: #646970;
+}
+
+.aps-card__price-value {
+    color: #1d2327;
+}
+
+/* Price Container for Discount (NEW) */
+.aps-card__price-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.aps-card__price--original {
+    font-size: 16px;
+    color: #646970;
+}
+
+.aps-card__price--original .aps-card__price-value {
+    text-decoration: line-through;
+    color: #646970;
+}
+
+/* Discount Badge (NEW) */
+.aps-card__discount {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: #dc3232;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(220, 50, 50, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* CTA Button */
+.aps-card__cta {
+    padding: 10px 20px;
+    background: #2271b1;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.aps-card__cta:hover {
+    background: #135e96;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.aps-card__cta:active {
+    transform: translateY(0);
+}
+
+/* ==========================================
+   Platform Requirements (NEW)
+   ========================================== */
+
+.aps-card__platform {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.aps-card__platform-details {
+    transition: all 0.3s ease;
+}
+
+.aps-card__platform-details[open] {
+    background: #ffffff;
+}
+
+.aps-card__platform-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    color: #2271b1;
+    padding: 4px 0;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.aps-card__platform-toggle:hover {
+    color: #135e96;
+}
+
+.aps-card__platform-toggle:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.aps-card__platform-toggle .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.aps-card__platform-details[open] .aps-card__platform-toggle .dashicons {
+    transform: rotate(90deg);
+}
+
+.aps-card__platform-content {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #50575e;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   Disclosure Notice
+   ========================================== */
+
+.aps-disclosure {
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #50575e;
+    background: #f0f0f1;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.aps-disclosure--top {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.aps-disclosure--bottom {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 768px) {
+    .aps-card__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .aps-card__cta {
+        width: 100%;
+        text-align: center;
+    }
+
+    .aps-card__price-container {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .aps-card__title {
+        font-size: 16px;
+    }
+
+    .aps-card__price {
+        font-size: 20px;
+    }
+
+    .aps-card__platform {
+        font-size: 12px;
+    }
+}
+
+/* ==========================================
+   Print Styles
+   ========================================== */
+
+@media print {
+    .aps-card {
+        break-inside: avoid;
+        border: 1px solid #000;
+        box-shadow: none;
+    }
+
+    .aps-card__cta {
+        display: none;
+    }
+
+    .aps-card__platform-details {
+        display: none;
+    }
+}
+
+/* ==========================================
+   Accessibility Enhancements
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .aps-card,
+    .aps-card:hover .aps-card__media img,
+    .aps-card__platform-details,
+    .aps-card__platform-toggle .dashicons,
+    .aps-card__discount {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.aps-card:focus-within {
+    outline: 3px solid #2271b1;
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .aps-card {
+        border-width: 2px;
+    }
+
+    .aps-card__badge,
+    .aps-card__discount {
+        border: 2px solid #000;
+    }
+}
