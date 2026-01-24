@@ -174,21 +174,593 @@ Section 3 (Tags) is **NOT IMPLEMENTED** - complete feature implementation requir
 
 ---
 
+## Implementation Strategy: Default vs Custom
+
+### What WordPress Provides by Default (✅ ALREADY IMPLEMENTED)
+
+**Native Taxonomy Features:**
+- ✅ Taxonomy registration system (`register_taxonomy()`)
+- ✅ CRUD operations for terms (create, read, update, delete)
+- ✅ Native admin page (`edit-tags.php`)
+- ✅ Table rendering and pagination
+- ✅ Quick edit functionality
+- ✅ Bulk actions (delete, etc.)
+- ✅ Search and filtering
+- ✅ Tag cloud view
+- ✅ Term meta API (`get_term_meta()`, `update_term_meta()`)
+- ✅ REST API endpoints for taxonomies
+- ✅ Non-hierarchical structure (flat, like post tags)
+- ✅ Rewrite rules and permalinks
+- ✅ Permission checks and capabilities
+
+**What This Means:**
+- WordPress handles ALL core taxonomy functionality
+- We DON'T need to build CRUD operations from scratch
+- We DON'T need to create admin pages from scratch
+- We DON'T need to build table rendering from scratch
+- We ONLY need to add custom enhancements via hooks
+
+---
+
+### What We Need to Implement (🟩 CUSTOM ENHANCEMENTS)
+
+**Layer 1: Model Layer (Business Logic)**
+```
+📁 Files to Create:
+├── src/Models/Tag.php                    ✏️ Tag model with readonly properties
+├── src/Factories/TagFactory.php          ✏️ Factory to create Tag instances
+└── src/Repositories/TagRepository.php     ✏️ Repository for CRUD operations
+
+What Each File Does:
+────────────────────────────────────────────
+Tag.php:
+  - Wraps WordPress WP_Term object
+  - Adds readonly properties for custom fields
+  - Provides from_wp_term() and to_array() methods
+  
+TagFactory.php:
+  - Creates Tag instances from WP_Term or array
+  - Handles data conversion
+  
+TagRepository.php:
+  - Wraps WordPress CRUD functions
+  - Adds metadata management
+  - Provides clean API for tag operations
+```
+
+**Layer 2: Taxonomy Registration (Configuration)**
+```
+📁 Files to Create:
+└── src/Taxonomies/TagTaxonomy.php      ✏️ Register aps_tag taxonomy
+
+What This File Does:
+────────────────────────────────────────────
+TagTaxonomy.php:
+  - Calls register_taxonomy() with configuration
+  - Sets non-hierarchical = true (flat structure)
+  - Configures labels and rewrite rules
+  - Hooks into WordPress init action
+```
+
+**Layer 3: Admin Layer (User Interface)**
+```
+📁 Files to Create:
+├── src/Admin/TagFields.php              ✏️ Add custom fields to tag edit screen
+└── src/Admin/TagTable.php              ✏️ Custom columns in tag listing table
+
+What Each File Does:
+────────────────────────────────────────────
+TagFields.php:
+  - Hooks into tag add/edit forms
+  - Renders custom fields (Color, Icon)
+  - Saves custom metadata via Term Meta API
+  - Handles nonce verification and sanitization
+  
+TagTable.php:
+  - Hooks into tag table columns
+  - Adds custom columns (Color, Icon)
+  - Renders custom column content
+  - WordPress handles table rendering, pagination, sorting
+```
+
+**Layer 4: API Layer (REST API)**
+```
+📁 Files to Create:
+└── src/Rest/TagsController.php        ✏️ REST API endpoints
+
+What This File Does:
+────────────────────────────────────────────
+TagsController.php:
+  - Extends WP_REST_Controller
+  - Registers custom REST routes
+  - Returns Tag model (with custom properties)
+  - WordPress provides base taxonomy REST API
+```
+
+**Layer 5: Integration Layer (Wiring)**
+```
+📁 Files to Modify:
+├── src/Plugin/ServiceProvider.php      ✏️ Register services in DI container
+├── src/Plugin/Loader.php              ✏️ Load components
+└── src/Admin/Menu.php                 ✏️ Add Tags menu item
+
+What Each File Does:
+────────────────────────────────────────────
+ServiceProvider.php:
+  - Registers TagRepository in DI container
+  - Registers TagsController with dependencies
+  - Allows dependency injection
+  
+Loader.php:
+  - Instantiates TagTaxonomy
+  - Instantiates TagFields
+  - Instantiates TagsController
+  - Ensures all components load
+  
+Menu.php:
+  - Adds Tags submenu item under main menu
+  - Renders tag table on admin page
+```
+
+---
+
+### Detailed Implementation Breakdown
+
+#### Phase 1: Tag Model (🔴 CRITICAL)
+
+**What We're Building:**
+A PHP class that wraps WordPress WP_Term and adds custom properties.
+
+**Why We Need This:**
+- WordPress WP_Term doesn't have our custom fields (color, icon)
+- We need type safety and readonly properties
+- We need consistent data structure across the application
+
+**Implementation Steps:**
+1. Create `src/Models/Tag.php`
+2. Add readonly properties: id, name, slug, description, count, color, icon
+3. Add `from_wp_term()` static method to convert WP_Term to Tag
+4. Add `to_array()` method to convert Tag to array
+5. Use `get_term_meta()` to load custom metadata with `_aps_tag_*` prefix
+
+**Key Implementation Details:**
+```php
+// Load custom metadata with underscore prefix
+$color = get_term_meta( $term->term_id, '_aps_tag_color', true );
+$icon = get_term_meta( $term->term_id, '_aps_tag_icon', true );
+
+// Create Tag instance
+return new Tag(
+    id: $term->term_id,
+    name: $term->name,
+    slug: $term->slug,
+    description: $term->description,
+    count: $term->count,
+    color: $color,
+    icon: $icon
+);
+```
+
+**Dependencies:** None (standalone model)
+
+---
+
+#### Phase 2: TagFactory (🟠 HIGH)
+
+**What We're Building:**
+A factory class that creates Tag instances from different data sources.
+
+**Why We Need This:**
+- We receive data from multiple sources (WP_Term, array, REST API)
+- We need consistent way to create Tag instances
+- Separates creation logic from business logic
+
+**Implementation Steps:**
+1. Create `src/Factories/TagFactory.php`
+2. Add `from_wp_term()` method (delegates to Tag::from_wp_term())
+3. Add `from_array()` method to create from associative array
+4. Add `from_array_many()` method to create multiple tags
+5. Handle missing data with defaults
+
+**Key Implementation Details:**
+```php
+public static function from_array( array $data ): Tag {
+    return new Tag(
+        id: $data['id'] ?? 0,
+        name: $data['name'] ?? '',
+        slug: $data['slug'] ?? sanitize_title( $data['name'] ?? '' ),
+        description: $data['description'] ?? '',
+        count: $data['count'] ?? 0,
+        color: $data['color'] ?? null,
+        icon: $data['icon'] ?? null
+    );
+}
+```
+
+**Dependencies:** Tag model
+
+---
+
+#### Phase 3: TagRepository (🟠 HIGH)
+
+**What We're Building:**
+A repository that wraps WordPress taxonomy CRUD functions and adds metadata handling.
+
+**Why We Need This:**
+- WordPress CRUD functions don't handle our custom metadata automatically
+- We need a clean API for tag operations
+- Centralizes all tag data access logic
+
+**Implementation Steps:**
+1. Create `src/Repositories/TagRepository.php`
+2. Add `create()` method: calls `wp_insert_term()` + saves metadata
+3. Add `find()` method: calls `get_term()` + loads metadata
+4. Add `update()` method: calls `wp_update_term()` + updates metadata
+5. Add `delete()` method: calls `wp_delete_term()` + deletes metadata
+6. Add `all()` method: calls `get_terms()` + converts to Tag instances
+7. Add private `save_metadata()` method: saves custom metadata with `_aps_tag_*` prefix
+8. Add private `delete_metadata()` method: deletes custom metadata
+
+**Key Implementation Details:**
+```php
+public function create( Tag $tag ): Tag {
+    // WordPress handles term creation
+    $result = wp_insert_term(
+        $tag->name,
+        'aps_tag',
+        ['slug' => $tag->slug, 'description' => $tag->description]
+    );
+    
+    // We handle custom metadata
+    $this->save_metadata( $result['term_id'], $tag );
+    
+    return $this->find( $result['term_id'] );
+}
+
+private function save_metadata( int $term_id, Tag $tag ): void {
+    // Use underscore prefix for custom meta
+    update_term_meta( $term_id, '_aps_tag_color', $tag->color );
+    update_term_meta( $term_id, '_aps_tag_icon', $tag->icon );
+}
+```
+
+**What WordPress Does:** CRUD operations for terms
+**What We Do:** Handle custom metadata with underscore prefix
+
+**Dependencies:** Tag model, TagFactory, WordPress taxonomy functions
+
+---
+
+#### Phase 4: Tag Taxonomy Registration (🟠 HIGH)
+
+**What We're Building:**
+A class that registers the `aps_tag` taxonomy with WordPress.
+
+**Why We Need This:**
+- WordPress needs to know about our taxonomy
+- We need to configure taxonomy settings (non-hierarchical, labels, etc.)
+- Must happen on `init` hook
+
+**Implementation Steps:**
+1. Create `src/Taxonomies/TagTaxonomy.php`
+2. Add `register()` method that calls `register_taxonomy()`
+3. Configure labels (singular, plural, menu name, etc.)
+4. Configure arguments:
+   - `hierarchical => false` (flat structure)
+   - `public => true` (visible on frontend)
+   - `show_in_rest => true` (REST API access)
+   - `rewrite => true` (pretty permalinks)
+5. Hook into `init` action
+
+**Key Implementation Details:**
+```php
+public function register(): void {
+    $labels = [
+        'name' => 'Tags',
+        'singular_name' => 'Tag',
+        'menu_name' => 'Tags',
+        // ... more labels
+    ];
+
+    $args = [
+        'labels' => $labels,
+        'hierarchical' => false, // Non-hierarchical (flat)
+        'public' => true,
+        'show_in_rest' => true,
+        'rewrite' => ['slug' => 'tag'],
+    ];
+
+    register_taxonomy( 'aps_tag', 'aps_product', $args );
+}
+
+// Hook into WordPress
+add_action( 'init', [ new TagTaxonomy(), 'register' ] );
+```
+
+**What WordPress Does:** Provides taxonomy system, admin pages, tables
+**What We Do:** Configure taxonomy settings
+
+**Dependencies:** None (uses WordPress API)
+
+---
+
+#### Phase 5: TagFields (🟡 MEDIUM)
+
+**What We're Building:**
+A component that adds custom fields to the tag add/edit screens.
+
+**Why We Need This:**
+- WordPress doesn't know about our custom fields (color, icon)
+- We need to render fields in the admin UI
+- We need to save custom metadata when tag is saved
+
+**Implementation Steps:**
+1. Create `src/Admin/TagFields.php`
+2. Hook into `aps_tag_add_form_fields` (add new tag form)
+3. Hook into `aps_tag_edit_form_fields` (edit existing tag form)
+4. Hook into `created_aps_tag` (save on create)
+5. Hook into `edited_aps_tag` (save on update)
+6. Add nonce verification in save handler
+7. Add input sanitization in save handler
+8. Render fields: Color picker (input type="color"), Icon (input type="text")
+
+**Key Implementation Details:**
+```php
+// Hook to add fields to add form
+add_action( 'aps_tag_add_form_fields', [ $this, 'add_form_fields' ] );
+
+// Hook to add fields to edit form
+add_action( 'aps_tag_edit_form_fields', [ $this, 'edit_form_fields' ] );
+
+// Hook to save fields
+add_action( 'created_aps_tag', [ $this, 'save_fields' ] );
+add_action( 'edited_aps_tag', [ $this, 'save_fields' ] );
+
+public function save_fields( int $term_id ): void {
+    // Verify nonce
+    if ( ! isset( $_POST['_wpnonce_add-tag'] ) ) {
+        return;
+    }
+    
+    // Sanitize input
+    $color = sanitize_hex_color( $_POST['_aps_tag_color'] ?? '' );
+    $icon = sanitize_text_field( $_POST['_aps_tag_icon'] ?? '' );
+    
+    // Save with underscore prefix
+    update_term_meta( $term_id, '_aps_tag_color', $color );
+    update_term_meta( $term_id, '_aps_tag_icon', $icon );
+}
+```
+
+**What WordPress Does:** Provides form rendering, nonce handling, save process
+**What We Do:** Add custom fields, sanitize input, save custom metadata
+
+**Dependencies:** WordPress term meta API
+
+---
+
+#### Phase 6: TagTable (🟡 MEDIUM)
+
+**What We're Building:**
+A component that adds custom columns to the tag listing table.
+
+**Why We Need This:**
+- WordPress default table only shows: Name, Slug, Description, Count
+- We need to show our custom fields: Color, Icon
+- We need visual indicators for color and icon
+
+**Implementation Steps:**
+1. Create `src/Admin/TagTable.php` (extends WP_List_Table)
+2. Hook into `manage_aps_tag_columns` to add custom columns
+3. Hook into `manage_aps_tag_custom_column` to render column content
+4. Add columns: Color (shows color swatch + hex), Icon (shows icon class)
+5. Render color swatch with inline style
+6. Use WordPress table rendering, pagination, sorting
+
+**Key Implementation Details:**
+```php
+// Add custom columns
+add_filter( 'manage_aps_tag_columns', function( $columns ) {
+    $columns['color'] = 'Color';
+    $columns['icon'] = 'Icon';
+    return $columns;
+} );
+
+// Render custom column content
+add_action( 'manage_aps_tag_custom_column', function( $content, $column_name, $term_id ) {
+    if ( $column_name === 'color' ) {
+        $color = get_term_meta( $term_id, '_aps_tag_color', true );
+        if ( $color ) {
+            echo '<span style="display:inline-block;width:20px;height:20px;background-color:' . esc_attr( $color ) . ';"></span> ' . esc_html( $color );
+        }
+    }
+    if ( $column_name === 'icon' ) {
+        $icon = get_term_meta( $term_id, '_aps_tag_icon', true );
+        echo esc_html( $icon );
+    }
+}, 10, 3 );
+```
+
+**What WordPress Does:** Table rendering, pagination, sorting, row actions
+**What We Do:** Add custom columns, render column content
+
+**Dependencies:** WordPress list table API, term meta API
+
+---
+
+#### Phase 7: TagsController (🟡 MEDIUM)
+
+**What We're Building:**
+A REST API controller that returns Tag models with custom properties.
+
+**Why We Need This:**
+- WordPress default taxonomy REST API doesn't include custom metadata
+- We need to return Tag model (with color, icon) in API responses
+- We need permission checks for API endpoints
+
+**Implementation Steps:**
+1. Create `src/Rest/TagsController.php` (extends WP_REST_Controller)
+2. Register routes: GET /tags, GET /tags/{id}, POST /tags, POST /tags/{id}, DELETE /tags/{id}
+3. Implement `get_items()`: returns all tags using TagRepository
+4. Implement `get_item()`: returns single tag using TagRepository
+5. Implement `create_item()`: creates tag using TagRepository
+6. Implement `update_item()`: updates tag using TagRepository
+7. Implement `delete_item()`: deletes tag using TagRepository
+8. Add permission checks: `current_user_can('manage_options')`
+9. Return Tag model in responses
+
+**Key Implementation Details:**
+```php
+public function register_routes(): void {
+    register_rest_route( 'affiliate-product-showcase/v1', '/tags', [
+        [
+            'methods' => 'GET',
+            'callback' => [ $this, 'get_items' ],
+            'permission_callback' => [ $this, 'get_items_permissions_check' ],
+        ],
+        [
+            'methods' => 'POST',
+            'callback' => [ $this, 'create_item' ],
+            'permission_callback' => [ $this, 'create_item_permissions_check' ],
+        ],
+    ] );
+}
+
+public function get_items( $request ): WP_REST_Response {
+    $tags = $this->repository->all();
+    return new WP_REST_Response( $tags, 200 );
+}
+
+public function get_items_permissions_check(): bool {
+    return current_user_can( 'manage_options' );
+}
+```
+
+**What WordPress Does:** REST API framework, routing, authentication
+**What We Do:** Register custom routes, handle requests, return Tag model
+
+**Dependencies:** TagRepository, WP_REST_Controller
+
+---
+
+#### Phase 8: DI Container Registration (🟡 MEDIUM)
+
+**What We're Building:**
+Register TagRepository and TagsController in DI container.
+
+**Why We Need This:**
+- Allows dependency injection
+- Makes testing easier (can mock dependencies)
+- Centralizes service configuration
+
+**Implementation Steps:**
+1. Open `src/Plugin/ServiceProvider.php`
+2. Register TagRepository:
+   ```php
+   $this->container->set(
+       AffiliateProductShowcase\Repositories\TagRepository::class,
+       fn() => new AffiliateProductShowcase\Repositories\TagRepository()
+   );
+   ```
+3. Register TagsController with TagRepository dependency:
+   ```php
+   $this->container->set(
+       AffiliateProductShowcase\Rest\TagsController::class,
+       fn( $container ) => new AffiliateProductShowcase\Rest\TagsController(
+           $container->get( AffiliateProductShowcase\Repositories\TagRepository::class )
+       )
+   );
+   ```
+
+**What This Does:** Makes dependencies available throughout the application
+
+**Dependencies:** DI container
+
+---
+
+#### Phase 9: Update Loader (🟡 MEDIUM)
+
+**What We're Building:**
+Load all tag-related components in the application.
+
+**Why We Need This:**
+- Components won't work if not loaded
+- Ensures proper initialization order
+- Centralizes component loading
+
+**Implementation Steps:**
+1. Open `src/Plugin/Loader.php`
+2. Add TagTaxonomy load:
+   ```php
+   $this->load( AffiliateProductShowcase\Taxonomies\TagTaxonomy::class );
+   ```
+3. Add TagFields load:
+   ```php
+   $this->load( AffiliateProductShowcase\Admin\TagFields::class );
+   ```
+4. Add TagsController load:
+   ```php
+   $this->load( AffiliateProductShowcase\Rest\TagsController::class );
+   ```
+5. Verify all components load without errors
+
+**What This Does:** Instantiates and initializes all tag components
+
+**Dependencies:** All tag components
+
+---
+
+#### Phase 10: Add to Menu (🟢 LOW)
+
+**What We're Building:**
+Add Tags menu item to WordPress admin.
+
+**Why We Need This:**
+- Users need access to tag management
+- Provides navigation to tag admin page
+
+**Implementation Steps:**
+1. Open `src/Admin/Menu.php`
+2. Add Tags submenu item under main plugin menu:
+   ```php
+   add_submenu_page(
+       'affiliate-product-showcase',
+       __( 'Tags', 'affiliate-product-showcase' ),
+       __( 'Tags', 'affiliate-product-showcase' ),
+       'manage_options',
+       'aps-tags',
+       function() {
+           // WordPress native tag page
+           echo '<div class="wrap"><h1>' . esc_html__( 'Tags', 'affiliate-product-showcase' ) . '</h1>';
+           // WordPress renders table automatically
+           // We just provide the wrapper
+           echo '</div>';
+       }
+   );
+   ```
+
+**What WordPress Does:** Renders full tag admin page (table, pagination, etc.)
+**What We Do:** Add menu item, provide page wrapper
+
+**Dependencies:** Menu component
+
+---
+
 ## Implementation Phases Overview
 
-| Phase | Priority | Description |
-|--------|----------|-------------|
-| Phase 1: Create Tag Model | 🔴 CRITICAL | Tag model with readonly properties |
-| Phase 2: Create TagFactory | 🟠 HIGH | Factory with from_wp_term() and from_array() |
-| Phase 3: Create TagRepository | 🟠 HIGH | Full CRUD operations |
-| Phase 4: Register Tag Taxonomy | 🟠 HIGH | Taxonomy registration in WordPress |
-| Phase 5: Create TagFields | 🟡 MEDIUM | Admin component for tag management |
-| Phase 6: Create TagTable | 🟡 MEDIUM | Admin listing for tags |
-| Phase 7: Create TagsController | 🟡 MEDIUM | REST API endpoints |
-| Phase 8: DI Container Registration | 🟡 MEDIUM | Register services in DI container |
-| Phase 9: Update Loader | 🟡 MEDIUM | Load new components |
-| Phase 10: Add to Menu | 🟢 LOW | Add Tags menu item |
-| Phase 11: Testing & Verification | 🟡 REQUIRED | Comprehensive testing |
+| Phase | Priority | Description | Dependencies |
+|--------|----------|-------------|----------------|
+| Phase 1: Create Tag Model | 🔴 CRITICAL | Tag model with readonly properties | None |
+| Phase 2: Create TagFactory | 🟠 HIGH | Factory with from_wp_term() and from_array() | Phase 1 |
+| Phase 3: Create TagRepository | 🟠 HIGH | Full CRUD operations | Phase 1, 2 |
+| Phase 4: Register Tag Taxonomy | 🟠 HIGH | Taxonomy registration | None |
+| Phase 5: Create TagFields | 🟡 MEDIUM | Admin component for tag management | Phase 4 |
+| Phase 6: Create TagTable | 🟡 MEDIUM | Admin listing for tags | Phase 4 |
+| Phase 7: Create TagsController | 🟡 MEDIUM | REST API endpoints | Phase 3 |
+| Phase 8: DI Container Registration | 🟡 MEDIUM | Register services in DI container | Phase 3, 7 |
+| Phase 9: Update Loader | 🟡 MEDIUM | Load new components | Phase 4, 5, 7 |
+| Phase 10: Add to Menu | 🟢 LOW | Add Tags menu item | Phase 9 |
+| Phase 11: Testing & Verification | 🟡 REQUIRED | Comprehensive testing | All phases |
 
 ---
 
