@@ -293,6 +293,11 @@ final class CategoryRepository {
 			throw new PluginException( 'Category not found.' );
 		}
 
+		// Prevent deleting default category
+		if ( $category->is_default ) {
+			throw new PluginException( 'Cannot delete the default category. Please select another default category first.' );
+		}
+
 		$result = wp_delete_term( $category_id, Constants::TAX_CATEGORY );
 
 		if ( is_wp_error( $result ) ) {
@@ -348,6 +353,11 @@ final class CategoryRepository {
 		$category = $this->find( $category_id );
 		if ( ! $category ) {
 			throw new PluginException( 'Category not found.' );
+		}
+
+		// Prevent deleting default category
+		if ( $category->is_default ) {
+			throw new PluginException( 'Cannot delete the default category. Please select another default category first.' );
 		}
 
 		$result = wp_delete_term( $category_id, Constants::TAX_CATEGORY );
@@ -459,17 +469,102 @@ final class CategoryRepository {
 	 */
 	private function save_metadata( int $term_id, Category $category ): void {
 		// Featured
-		update_term_meta( $term_id, 'aps_category_featured', $category->featured ? 1 : 0 );
+		update_term_meta( $term_id, '_aps_category_featured', $category->featured ? 1 : 0 );
+		// Delete legacy key
+		delete_term_meta( $term_id, 'aps_category_featured' );
 
 		// Image URL
 		if ( $category->image_url ) {
-			update_term_meta( $term_id, 'aps_category_image', $category->image_url );
+			update_term_meta( $term_id, '_aps_category_image', $category->image_url );
+			// Delete legacy key
+			delete_term_meta( $term_id, 'aps_category_image' );
 		} else {
+			delete_term_meta( $term_id, '_aps_category_image' );
 			delete_term_meta( $term_id, 'aps_category_image' );
 		}
 
 		// Sort order
-		update_term_meta( $term_id, 'aps_category_sort_order', $category->sort_order );
+		update_term_meta( $term_id, '_aps_category_sort_order', $category->sort_order );
+		// Delete legacy key
+		delete_term_meta( $term_id, 'aps_category_sort_order' );
+
+		// Status (published/draft)
+		update_term_meta( $term_id, '_aps_category_status', $category->status );
+		// Delete legacy key
+		delete_term_meta( $term_id, 'aps_category_status' );
+
+		// Is default category
+		if ( $category->is_default ) {
+			// Remove default flag from other categories
+			$this->remove_default_from_all_categories();
+			// Set this category as default
+			update_term_meta( $term_id, '_aps_category_is_default', 1 );
+			// Delete legacy key
+			delete_term_meta( $term_id, 'aps_category_is_default' );
+			// Update global default category option
+			update_option( 'aps_default_category_id', $term_id );
+		}
+	}
+
+	/**
+	 * Remove default flag from all categories
+	 *
+	 * @return void
+	 * @since 1.1.0
+	 */
+	private function remove_default_from_all_categories(): void {
+		$categories = $this->all();
+		foreach ( $categories as $category ) {
+			delete_term_meta( $category->id, '_aps_category_is_default' );
+			delete_term_meta( $category->id, 'aps_category_is_default' );
+		}
+	}
+
+	/**
+	 * Get default category
+	 *
+	 * @return Category|null Default category or null if not set
+	 * @since 1.1.0
+	 */
+	public function get_default(): ?Category {
+		$default_id = get_option( 'aps_default_category_id', 0 );
+		if ( $default_id > 0 ) {
+			return $this->find( $default_id );
+		}
+		return null;
+	}
+
+	/**
+	 * Set category status to draft
+	 *
+	 * @param int $category_id Category ID
+	 * @return bool True on success
+	 * @throws PluginException If update fails
+	 * @since 1.1.0
+	 */
+	public function set_draft( int $category_id ): bool {
+		$category = $this->find( $category_id );
+		if ( ! $category ) {
+			throw new PluginException( 'Category not found.' );
+		}
+
+		$updated = new Category(
+			$category->id,
+			$category->name,
+			$category->slug,
+			$category->description,
+			$category->parent_id,
+			$category->count,
+			$category->featured,
+			$category->image_url,
+			$category->sort_order,
+			$category->created_at,
+			'draft',
+			$category->is_default
+		);
+
+		$this->update( $updated );
+		return true;
 	}
 
 	/**
@@ -480,8 +575,18 @@ final class CategoryRepository {
 	 * @since 1.0.0
 	 */
 	private function delete_metadata( int $term_id ): void {
+		// Delete new format keys
+		delete_term_meta( $term_id, '_aps_category_featured' );
+		delete_term_meta( $term_id, '_aps_category_image' );
+		delete_term_meta( $term_id, '_aps_category_sort_order' );
+		delete_term_meta( $term_id, '_aps_category_status' );
+		delete_term_meta( $term_id, '_aps_category_is_default' );
+		
+		// Delete legacy format keys
 		delete_term_meta( $term_id, 'aps_category_featured' );
 		delete_term_meta( $term_id, 'aps_category_image' );
 		delete_term_meta( $term_id, 'aps_category_sort_order' );
+		delete_term_meta( $term_id, 'aps_category_status' );
+		delete_term_meta( $term_id, 'aps_category_is_default' );
 	}
 }

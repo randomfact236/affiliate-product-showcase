@@ -108,6 +108,22 @@ final class Category {
 	public readonly string $created_at;
 
 	/**
+	 * Category status (published, draft)
+	 *
+	 * @var string
+	 * @since 1.1.0
+	 */
+	public readonly string $status;
+
+	/**
+	 * Whether category is the default category
+	 *
+	 * @var bool
+	 * @since 1.1.0
+	 */
+	public readonly bool $is_default;
+
+	/**
 	 * Constructor
 	 *
 	 * @param int    $id           Category ID (term_id)
@@ -120,6 +136,8 @@ final class Category {
 	 * @param string|null $image_url   Category image URL (optional)
 	 * @param string $sort_order   Default sort order for products
 	 * @param string $created_at   Category creation date
+	 * @param string $status       Category status (published, draft)
+	 * @param bool   $is_default   Whether category is default
 	 *
 	 * @since 1.0.0
 	 */
@@ -133,7 +151,9 @@ final class Category {
 		bool $featured = false,
 		?string $image_url = null,
 		string $sort_order = 'date',
-		string $created_at = ''
+		string $created_at = '',
+		string $status = 'published',
+		bool $is_default = false
 	) {
 		$this->id = $id;
 		$this->name = $name;
@@ -145,6 +165,8 @@ final class Category {
 		$this->image_url = $image_url;
 		$this->sort_order = $sort_order;
 		$this->created_at = $created_at ?: current_time( 'mysql' );
+		$this->status = in_array( $status, [ 'published', 'draft' ], true ) ? $status : 'published';
+		$this->is_default = $is_default;
 	}
 
 	/**
@@ -167,8 +189,32 @@ final class Category {
 			'image_url'    => $this->image_url,
 			'sort_order'   => $this->sort_order,
 			'created_at'   => $this->created_at,
+			'status'       => $this->status,
+			'is_default'   => $this->is_default,
 			'taxonomy'     => Constants::TAX_CATEGORY,
 		];
+	}
+
+	/**
+	 * Get category meta with legacy fallback
+	 *
+	 * Retrieves meta value with fallback to old key format.
+	 *
+	 * @param int $term_id Term ID
+	 * @param string $meta_key Meta key (without _aps_category_ prefix)
+	 * @return mixed Meta value
+	 * @since 1.2.0
+	 */
+	private static function get_category_meta( int $term_id, string $meta_key ) {
+		// Try new format with underscore prefix
+		$value = get_term_meta( $term_id, '_aps_category_' . $meta_key, true );
+		
+		// If empty, try legacy format without underscore
+		if ( $value === '' || $value === false ) {
+			$value = get_term_meta( $term_id, 'aps_category_' . $meta_key, true );
+		}
+		
+		return $value;
 	}
 
 	/**
@@ -197,10 +243,16 @@ final class Category {
 			);
 		}
 
-		// Get category metadata
-		$featured = (bool) get_term_meta( $term->term_id, 'aps_category_featured', true );
-		$image_url = get_term_meta( $term->term_id, 'aps_category_image', true ) ?: null;
-		$sort_order = get_term_meta( $term->term_id, 'aps_category_sort_order', true ) ?: 'date';
+		// Get category metadata with legacy fallback
+		$featured = (bool) self::get_category_meta( $term->term_id, 'featured' );
+		$image_url = self::get_category_meta( $term->term_id, 'image' ) ?: null;
+		$sort_order = self::get_category_meta( $term->term_id, 'sort_order' ) ?: 'date';
+		$status = self::get_category_meta( $term->term_id, 'status' ) ?: 'published';
+		$is_default = (bool) self::get_category_meta( $term->term_id, 'is_default' );
+
+		// Check if this is the global default category
+		$global_default_id = get_option( 'aps_default_category_id', 0 );
+		$is_default = $is_default || ( (int) $global_default_id === (int) $term->term_id );
 
 		return new self(
 			(int) $term->term_id,
@@ -212,7 +264,9 @@ final class Category {
 			$featured,
 			$image_url,
 			$sort_order,
-			$term->term_group ? date( 'Y-m-d H:i:s', $term->term_group ) : current_time( 'mysql' )
+			$term->term_group ? date( 'Y-m-d H:i:s', $term->term_group ) : current_time( 'mysql' ),
+			$status,
+			$is_default
 		);
 	}
 
@@ -259,7 +313,11 @@ final class Category {
 			in_array( $data['sort_order'] ?? 'date', [ 'name', 'price', 'date', 'popularity', 'random' ], true )
 				? $data['sort_order']
 				: 'date',
-			$data['created_at'] ?? ''
+			$data['created_at'] ?? '',
+			in_array( $data['status'] ?? 'published', [ 'published', 'draft' ], true )
+				? $data['status']
+				: 'published',
+			(bool) ( $data['is_default'] ?? false )
 		);
 	}
 

@@ -11,8 +11,6 @@ use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Security\Headers;
 use AffiliateProductShowcase\Services\ProductService;
-use AffiliateProductShowcase\Repositories\CategoryRepository;
-use AffiliateProductShowcase\Factories\CategoryFactory;
 
 final class Admin {
 	private Settings $settings;
@@ -21,16 +19,13 @@ final class Admin {
 	private Menu $menu;
 	private ProductTableUI $product_table_ui;
 	private CategoryFields $category_fields;
-	private CategoryTable $category_table;
 
 	public function __construct(
 		private Assets $assets,
 		private ProductService $product_service,
 		private Headers $headers,
 		Menu $menu,
-		ProductFormHandler $form_handler,
-		CategoryRepository $category_repository,
-		CategoryFactory $category_factory
+		ProductFormHandler $form_handler
 	) {
 		$this->settings = new Settings();
 		$this->metaboxes = new MetaBoxes( $this->product_service );
@@ -38,7 +33,6 @@ final class Admin {
 		$this->menu = $menu;
 		$this->product_table_ui = new ProductTableUI();
 		$this->category_fields = new CategoryFields();
-		$this->category_table = new CategoryTable( $category_repository, $category_factory );
 	}
 
 	public function init(): void {
@@ -47,9 +41,8 @@ final class Admin {
 		add_action( 'save_post', [ $this->metaboxes, 'save_meta' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'render_product_table_on_products_page' ], 10 );
 		
-		// Initialize category components
+		// Initialize category components (WordPress native + custom enhancements)
 		$this->category_fields->init();
-		$this->category_table->init();
 		
 		$this->headers->init();
 	}

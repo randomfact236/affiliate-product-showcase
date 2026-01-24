@@ -303,6 +303,12 @@ class ProductFormHandler {
 		// Save categories
 		if ( ! empty( $data['categories'] ) ) {
 			wp_set_object_terms( $post_id, $data['categories'], 'aps_category', false );
+		} else {
+			// Auto-assign default category if no categories specified
+			$default_category_id = get_option( 'aps_default_category_id', 0 );
+			if ( $default_category_id > 0 ) {
+				wp_set_object_terms( $post_id, [ (int) $default_category_id ], 'aps_category', false );
+			}
 		}
 
 		// Save tags

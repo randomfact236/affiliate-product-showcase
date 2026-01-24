@@ -1,0 +1,94 @@
+/**
+ * Admin Category Styles
+ *
+ * Styles for category management interface
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.2.0
+ */
+
+/* Featured and Default Category Side-by-Side Layout */
+.aps-category-checkboxes-wrapper {
+	clear: both;
+	margin-bottom: 20px;
+}
+
+.aps-category-featured,
+.aps-category-default {
+	float: left;
+	width: 48%;
+	margin-bottom: 0;
+}
+
+.aps-category-featured {
+	margin-right: 4%;
+}
+
+.aps-category-default {
+	margin-right: 0;
+}
+
+/* Clear floats after checkboxes */
+.aps-category-checkboxes-wrapper::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/* Category Status Toggle Styles */
+.aps-category-status-toggle {
+	text-decoration: none;
+	color: inherit;
+	display: inline-block;
+	transition: color 0.2s ease;
+}
+
+.aps-category-status-toggle:hover {
+	color: #2271b1;
+}
+
+.aps-category-status-toggle.updating {
+	opacity: 0.5;
+	cursor: wait;
+}
+
+/* Status states */
+.status-published {
+	color: #00a32a;
+}
+
+.status-draft {
+	color: #646970;
+}
+
+/* Default category note */
+.aps-status-note {
+	font-size: 11px;
+	color: #646970;
+	font-style: italic;
+	margin-left: 5px;
+}
+
+/* Category Settings Section */
+.aps-category-fields {
+	clear: both;
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.aps-category-fields h3 {
+	margin-top: 0;
+	margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+	.aps-category-featured,
+	.aps-category-default {
+		float: none;
+		width: 100%;
+		margin-right: 0;
+		margin-bottom: 15px;
+	}
+}
