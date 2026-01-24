@@ -242,6 +242,7 @@ final class CategoryFields {
 	 * Add sort order filter HTML above categories table
 	 *
 	 * Checks if we're on the category management page and adds filter.
+	 * Aligns sort filter with bulk action dropdown.
 	 *
 	 * @return void
 	 * @since 1.2.0
@@ -260,13 +261,29 @@ final class CategoryFields {
 		$current_sort_order = isset( $_GET['aps_sort_order'] ) ? sanitize_text_field( $_GET['aps_sort_order'] ) : 'date';
 
 		?>
+		<style>
+			/* Ensure sort filter and bulk actions are side by side */
+			.aps-sort-filter {
+				display: inline-block;
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+			.aps-sort-filter .postform {
+				margin-right: 5px;
+			}
+			.bulkactions {
+				display: inline-block;
+			}
+		</style>
 		<script>
 		jQuery(document).ready(function($) {
-			// Find the search form above the categories table
+			// Find the bulk actions container and search form
+			var $bulkActions = $('.bulkactions');
 			var $searchForm = $('form#posts-filter');
-			if ($searchForm.length) {
-				// Insert sort order filter before the search form
-				$searchForm.before(`
+			
+			if ($bulkActions.length && $searchForm.length) {
+				// Insert sort order filter before bulk actions
+				$bulkActions.before(`
 					<div class="alignleft actions aps-sort-filter">
 						<label for="aps_sort_order" class="screen-reader-text">
 							<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
@@ -276,9 +293,12 @@ final class CategoryFields {
 								<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
 							</option>
 						</select>
-						<input type="submit" id="query-submit" class="button" value="<?php esc_attr_e( 'Filter', 'affiliate-product-showcase' ); ?>" />
 					</div>
 				`);
+				
+				// Ensure both are aligned properly
+				$('.aps-sort-filter').css('float', 'left');
+				$bulkActions.css('float', 'left');
 			}
 		});
 		</script>
