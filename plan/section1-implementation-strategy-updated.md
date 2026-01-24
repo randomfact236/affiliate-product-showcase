@@ -240,7 +240,28 @@ After coding is complete:
 - [x] 8. Product Status (Draft, Published, Pending Review, Private)
 - [x] 9. Publish Date (date picker)
 
-**Implementation Note:** Feature #4 needs to be completed. All others are done. This is a small batch (1 feature).
+**Implementation Tasks:**
+
+**Feature #4. Product Short Description (short excerpt):**
+- Add `post_excerpt` support to product post type registration
+- Update Product model to include short description property
+- Update ProductFactory to handle excerpt in `from_post()` and `from_array()`
+- Add excerpt field to product form (classic editor)
+- Display excerpt in product card (below title, above price)
+- Include excerpt in REST API product responses
+- Add excerpt to product search results
+- Validate excerpt length (max 200 characters)
+
+**Files to Modify:**
+- `src/Models/Product.php` - Add short description property
+- `src/Factories/ProductFactory.php` - Handle excerpt in factory methods
+- `src/Admin/ProductForm.php` - Add excerpt field to form
+- `src/Public/ProductCard.php` - Display excerpt in product card
+- `src/API/ProductController.php` - Include excerpt in API responses
+- `templates/single-product.php` - Display excerpt in single product view
+
+**Database Changes:**
+- No schema changes needed (uses WordPress `post_excerpt` built-in field)
 
 ---
 
@@ -274,7 +295,38 @@ After coding is complete:
 - [x] 22. Search products by title/description
 - [x] 23. Filter by status, brand
 
-**Implementation Note:** Features #19 and #20 need to be implemented. Small batch (2 features).
+**Implementation Tasks:**
+
+**Feature #19. Restore product from trash:**
+- Add "Restore" action to trashed products in admin list
+- Implement `wp_untrash_post()` to restore product
+- Update product status from "trash" to previous status
+- Add nonce verification for restore action
+- Show success message after restore
+- Restore product relationships (categories, tags, ribbons)
+
+**Feature #20. Delete permanently:**
+- Add "Delete Permanently" action to trashed products
+- Implement `wp_delete_post($post_id, true)` with force delete
+- Add nonce verification for delete action
+- Show confirmation dialog before permanent delete
+- Display warning about permanent data loss
+- Log permanent deletion action
+
+**Files to Modify:**
+- `src/Admin/ProductsList.php` - Add restore and delete permanently row actions
+- `src/Services/ProductService.php` - Add restore and permanent delete methods
+- `assets/js/admin-products.js` - Add confirmation dialogs
+- `src/API/ProductController.php` - Add REST API endpoints
+
+**REST API Endpoints:**
+- POST `/v1/products/{id}/restore` - Restore trashed product
+- DELETE `/v1/products/{id}/delete-permanently` - Permanent delete
+
+**WordPress Hooks:**
+- `wp_trash_post` - Trigger on trash
+- `untrash_post` - Trigger on restore
+- `before_delete_post` - Trigger before permanent delete
 
 ---
 
@@ -292,7 +344,73 @@ After coding is complete:
 - [ ] 30. POST `/v1/products/{id}/restore` - Restore product ⭐ **PRIORITY 7**
 - [ ] 31. DELETE `/v1/products/{id}/delete-permanently` - Permanent delete ⭐ **PRIORITY 8**
 
-**Implementation Note:** Medium batch (5 features). These are REST API endpoints with similar complexity.
+**Implementation Tasks:**
+
+**Feature #27. POST `/v1/products/{id}` - Update product:**
+- Implement update endpoint with ID validation
+- Parse and validate incoming JSON data
+- Update WordPress post with `wp_update_post()`
+- Update product meta fields (price, affiliate_url, etc.)
+- Update taxonomy terms (categories, tags, ribbons)
+- Add permission checks (current_user_can)
+- Return updated product in response
+- Handle validation errors (400 Bad Request)
+- Handle not found errors (404 Not Found)
+
+**Feature #28. DELETE `/v1/products/{id}` - Delete product:**
+- Implement delete endpoint with ID validation
+- Move product to trash using `wp_trash_post()`
+- Add permission checks (current_user_can)
+- Add nonce verification for security
+- Return success message
+- Handle not found errors (404 Not Found)
+- Log deletion action
+
+**Feature #29. POST `/v1/products/{id}/trash` - Trash product:**
+- Implement trash endpoint with ID validation
+- Move product to trash using `wp_trash_post()`
+- Add permission checks (current_user_can)
+- Add nonce verification for security
+- Return success message
+- Handle not found errors (404 Not Found)
+
+**Feature #30. POST `/v1/products/{id}/restore` - Restore product:**
+- Implement restore endpoint with ID validation
+- Restore product using `wp_untrash_post()`
+- Add permission checks (current_user_can)
+- Add nonce verification for security
+- Restore product relationships
+- Return restored product in response
+- Handle not found errors (404 Not Found)
+
+**Feature #31. DELETE `/v1/products/{id}/delete-permanently` - Permanent delete:**
+- Implement permanent delete endpoint with ID validation
+- Delete product using `wp_delete_post($id, true)` with force=true
+- Add permission checks (current_user_can)
+- Add nonce verification for security
+- Display warning about permanent data loss
+- Return success message
+- Handle not found errors (404 Not Found)
+- Log permanent deletion action
+
+**Files to Modify:**
+- `src/API/ProductController.php` - Add REST API endpoints
+- `src/Services/ProductService.php` - Add service methods
+- `src/Validators/ProductValidator.php` - Add validation logic
+- `tests/Integration/API/ProductControllerTest.php` - Add integration tests
+
+**REST API Endpoints:**
+- POST `/v1/products/{id}` - Update product (with JSON body)
+- DELETE `/v1/products/{id}` - Move to trash
+- POST `/v1/products/{id}/trash` - Move to trash (alternative)
+- POST `/v1/products/{id}/restore` - Restore from trash
+- DELETE `/v1/products/{id}/delete-permanently` - Permanent delete
+
+**WordPress Permissions:**
+- `edit_aps_products` - Edit own products
+- `edit_others_aps_products` - Edit others' products
+- `delete_aps_products` - Delete own products
+- `delete_others_aps_products` - Delete others' products
 
 ---
 
@@ -310,7 +428,101 @@ After coding is complete:
 - [ ] A27. Product tabs (Description, Specs, FAQ, Requirements)
 - [ ] A29. Lazy loading for images
 
-**Implementation Note:** Medium batch (8 features). Price/currency are critical, others are display features.
+**Implementation Tasks:**
+
+**Feature A1. Original Price (for discount calculation):**
+- Add `original_price` meta field to products
+- Update Product model to include original price property
+- Add original price input to product form
+- Calculate discount percentage: `((original - price) / original) * 100`
+- Display original price with strikethrough
+- Display discount percentage badge
+- Add original price to REST API responses
+
+**Feature A2. Discount Percentage (auto-calculated):**
+- Calculate discount automatically from original and current price
+- Format as percentage with % symbol
+- Only show when original price > current price
+- Add discount badge styling
+- Store in post meta for filtering
+- Include in REST API responses
+
+**Feature A3. Currency Selection (USD, EUR, GBP, etc.):**
+- Add `currency` meta field to products
+- Create currency selector dropdown in product form
+- Supported currencies: USD, EUR, GBP, JPY, CAD, AUD, etc.
+- Add currency symbols: $, €, £, ¥, etc.
+- Format price with currency symbol
+- Store as ISO 4217 currency code (USD, EUR, etc.)
+- Include in REST API responses
+
+**Feature A5. Platform Requirements (e.g., "WordPress 6.0+", "Python 3.8+", etc.):**
+- Add `platform_requirements` meta field to products
+- Add text input for platform requirements
+- Display requirements in product card
+- Show requirements in product details tab
+- Validate format (optional: structured JSON or text)
+- Include in REST API responses
+
+**Feature A7. Version Number (e.g., "1.0.0", "v2.5.1"):**
+- Add `version` meta field to products
+- Add version input to product form
+- Validate version format (semver: X.Y.Z)
+- Display version in product card
+- Show version in product details tab
+- Include in REST API responses
+
+**Feature A26. Product share buttons (social media):**
+- Add social share buttons to product page
+- Supported platforms: Facebook, Twitter, LinkedIn, Pinterest, WhatsApp
+- Generate share URLs with product title and description
+- Add share button icons (SVG or emoji)
+- Open share in new window/tab
+- Track share clicks (analytics)
+- Include in product template
+
+**Feature A27. Product tabs (Description, Specs, FAQ, Requirements):**
+- Create tabbed interface for single product page
+- Default tabs: Description, Specs, Requirements, Reviews
+- Use JavaScript for tab switching
+- Add tab navigation buttons
+- Load tab content dynamically or all at once
+- Store tab content in meta fields or custom fields
+- Add ARIA attributes for accessibility
+- Include in single product template
+
+**Feature A29. Lazy loading for images:**
+- Add `loading="lazy"` attribute to product images
+- Implement Intersection Observer for better control
+- Add placeholder image while loading
+- Load images when in viewport
+- Add fade-in animation for loaded images
+- Test performance impact
+- Include in product card template
+
+**Files to Modify:**
+- `src/Models/Product.php` - Add new properties (original_price, currency, version, etc.)
+- `src/Factories/ProductFactory.php` - Handle new fields in factory methods
+- `src/Admin/ProductForm.php` - Add new input fields to form
+- `src/Public/ProductCard.php` - Display original price, currency, version
+- `src/Public/SingleProduct.php` - Add tabs, share buttons
+- `src/Public/LazyLoader.js` (NEW) - Implement lazy loading logic
+- `src/API/ProductController.php` - Include new fields in API responses
+- `templates/single-product.php` - Update with tabs and share buttons
+- `templates/product-card.php` - Update with price display and lazy loading
+
+**Database Changes:**
+- Add meta fields:
+  - `aps_product_original_price` (DECIMAL)
+  - `aps_product_currency` (VARCHAR 3) - ISO 4217 code
+  - `aps_product_platform_requirements` (TEXT)
+  - `aps_product_version` (VARCHAR 20)
+  - `aps_product_tabs_content` (TEXT/JSON for tab content)
+
+**Files to Create:**
+- `src/Public/LazyLoader.js` - Intersection Observer lazy loading
+- `assets/js/product-tabs.js` - Tab switching logic
+- `assets/js/product-share.js` - Share button functionality
 
 ---
 
