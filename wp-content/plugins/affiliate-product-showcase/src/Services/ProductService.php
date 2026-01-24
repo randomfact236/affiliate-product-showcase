@@ -215,8 +215,12 @@ final class ProductService extends AbstractService {
 	 * @since 1.0.0
 	 */
 	private static function register_taxonomies_static(): void {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( '[APS] Registering taxonomy: ' . Constants::TAX_CATEGORY );
+		}
+
 		// Register Category taxonomy (hierarchical)
-		register_taxonomy(
+		$result = register_taxonomy(
 			Constants::TAX_CATEGORY,
 			Constants::CPT_PRODUCT,
 			[
@@ -243,6 +247,15 @@ final class ProductService extends AbstractService {
 				'rewrite'              => [ 'slug' => 'product-category' ],
 			]
 		);
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$registered = taxonomy_exists( Constants::TAX_CATEGORY );
+			error_log( '[APS] Taxonomy ' . Constants::TAX_CATEGORY . ' registered: ' . ( $registered ? 'YES' : 'NO' ) );
+			
+			if ( ! $registered ) {
+				error_log( '[APS] ERROR: Category taxonomy registration failed!' );
+			}
+		}
 
 		// Register Tag taxonomy (non-hierarchical)
 		register_taxonomy(

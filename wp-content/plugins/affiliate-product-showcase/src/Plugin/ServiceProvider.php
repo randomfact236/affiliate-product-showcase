@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AffiliateProductShowcase\Admin\Admin;
 use AffiliateProductShowcase\Admin\AjaxHandler;
+use AffiliateProductShowcase\Admin\CategoryFields;
+use AffiliateProductShowcase\Admin\CategoryFormHandler;
+use AffiliateProductShowcase\Admin\CategoryTable;
 use AffiliateProductShowcase\Admin\Menu;
 use AffiliateProductShowcase\Admin\ProductFormHandler;
 use AffiliateProductShowcase\Admin\Settings;
@@ -20,12 +23,15 @@ use AffiliateProductShowcase\Cache\Cache;
 use AffiliateProductShowcase\Cli\ProductsCommand;
 use AffiliateProductShowcase\Formatters\PriceFormatter;
 use AffiliateProductShowcase\Factories\ProductFactory;
+use AffiliateProductShowcase\Factories\CategoryFactory;
 use AffiliateProductShowcase\Privacy\GDPR;
 use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Repositories\ProductRepository;
+use AffiliateProductShowcase\Repositories\CategoryRepository;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 use AffiliateProductShowcase\Rest\AffiliatesController;
 use AffiliateProductShowcase\Rest\AnalyticsController;
+use AffiliateProductShowcase\Rest\CategoriesController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Rest\ProductsController;
 use AffiliateProductShowcase\Security\Headers;
@@ -86,6 +92,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 
 			// Repositories
 			ProductRepository::class,
+			CategoryRepository::class,
 			SettingsRepository::class,
 
 			// Validators
@@ -114,6 +121,9 @@ final class ServiceProvider implements ServiceProviderInterface {
 			Settings::class,
 			Menu::class,
 			ProductFormHandler::class,
+			CategoryFormHandler::class,
+			CategoryFields::class,
+			CategoryTable::class,
 			Admin::class,
 			AjaxHandler::class,
 
@@ -125,6 +135,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 
 			// REST Controllers
 			ProductsController::class,
+			CategoriesController::class,
 			AnalyticsController::class,
 			HealthController::class,
 			AffiliatesController::class,
@@ -166,6 +177,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// Repositories (Shared - Performance Critical)
 		// ============================================================================
 		$this->getContainer()->addShared( ProductRepository::class );
+		$this->getContainer()->addShared( CategoryRepository::class );
 		$this->getContainer()->addShared( SettingsRepository::class );
 
 		// ============================================================================
@@ -177,6 +189,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// Factories (Shared - Performance Critical)
 		// ============================================================================
 		$this->getContainer()->addShared( ProductFactory::class );
+		$this->getContainer()->addShared( CategoryFactory::class );
 
 		// ============================================================================
 		// Formatters (Shared - Performance Critical)
@@ -221,12 +234,20 @@ final class ServiceProvider implements ServiceProviderInterface {
 		$this->getContainer()->addShared( ProductFormHandler::class )
 			->addArgument( ProductRepository::class )
 			->addArgument( ProductFactory::class );
+		$this->getContainer()->addShared( CategoryFormHandler::class )
+			->addArgument( CategoryRepository::class );
+		$this->getContainer()->addShared( CategoryFields::class );
+		$this->getContainer()->addShared( CategoryTable::class )
+			->addArgument( CategoryRepository::class )
+			->addArgument( CategoryFactory::class );
 		$this->getContainer()->addShared( Admin::class )
 			->addArgument( Assets::class )
 			->addArgument( ProductService::class )
 			->addArgument( Headers::class )
 			->addArgument( Menu::class )
-			->addArgument( ProductFormHandler::class );
+			->addArgument( ProductFormHandler::class )
+			->addArgument( CategoryRepository::class )
+			->addArgument( CategoryFactory::class );
 		$this->getContainer()->addShared( AjaxHandler::class )
 			->addArgument( ProductService::class )
 			->addArgument( ProductRepository::class );
@@ -251,6 +272,9 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// ============================================================================
 		$this->getContainer()->addShared( ProductsController::class )
 			->addArgument( ProductService::class );
+
+		$this->getContainer()->addShared( CategoriesController::class )
+			->addArgument( CategoryRepository::class );
 
 		$this->getContainer()->addShared( AnalyticsController::class )
 			->addArgument( AnalyticsService::class );

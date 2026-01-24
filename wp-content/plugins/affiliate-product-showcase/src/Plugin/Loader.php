@@ -12,6 +12,7 @@ use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\ProductsController;
+use AffiliateProductShowcase\Rest\CategoriesController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Cli\ProductsCommand;
 use AffiliateProductShowcase\Services\ProductService;
@@ -26,6 +27,7 @@ final class Loader {
 		private Public_ $public,
 		private Blocks $blocks,
 		private ProductsController $products_controller,
+		private CategoriesController $categories_controller,
 		private AnalyticsController $analytics_controller,
 		private HealthController $health_controller,
 		private ProductsCommand $products_command
@@ -42,8 +44,9 @@ final class Loader {
 
 	protected function actions(): array {
 		return [
-			[ 'init', 'register_product_cpt' ],
-			[ 'init', 'register_taxonomies' ],
+			// CRITICAL: Register CPT and taxonomies BEFORE rest_api_init
+			[ 'init', 'register_product_cpt', 0 ], // Priority 0 - earliest
+			[ 'init', 'register_taxonomies', 0 ], // Priority 0 - earliest
 			[ 'init', 'register_blocks' ],
 			[ 'init', 'register_shortcodes' ],
 			[ 'widgets_init', 'register_widgets' ],
@@ -51,7 +54,8 @@ final class Loader {
 			[ 'enqueue_block_editor_assets', 'enqueue_block_editor_assets', 9 ],
 			// IMPORTANT: ensure block front-end handles exist before core enqueues them.
 			[ 'enqueue_block_assets', 'enqueue_block_assets', 9 ],
-			[ 'rest_api_init', 'register_rest_controllers' ],
+			// CRITICAL: Register REST API AFTER taxonomies are registered (priority 10)
+			[ 'rest_api_init', 'register_rest_controllers', 10 ],
 			[ 'cli_init', 'register_cli' ],
 		];
 	}
@@ -86,6 +90,7 @@ final class Loader {
 
 	public function register_rest_controllers(): void {
 		$this->products_controller->register_routes();
+		$this->categories_controller->register_routes();
 		$this->analytics_controller->register_routes();
 		$this->health_controller->register_routes();
 	}

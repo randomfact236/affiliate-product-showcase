@@ -1,0 +1,819 @@
+<?php
+/**
+ * Categories REST API Controller
+ *
+ * Handles REST API endpoints for category management including:
+ * - Listing categories with pagination and filtering
+ * - Creating new categories with validation
+ * - Rate limiting for API endpoints
+ * - CSRF protection via nonce verification
+ *
+ * @package AffiliateProductShowcase\Rest
+ * @since 1.0.0
+ * @author Development Team
+ */
+
+declare(strict_types=1);
+
+namespace AffiliateProductShowcase\Rest;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use AffiliateProductShowcase\Repositories\CategoryRepository;
+use AffiliateProductShowcase\Security\RateLimiter;
+use AffiliateProductShowcase\Factories\CategoryFactory;
+use AffiliateProductShowcase\Models\Category;
+use AffiliateProductShowcase\Plugin\Constants;
+use WP_REST_Server;
+use WP_REST_Request;
+use WP_REST_Response;
+
+/**
+ * Categories REST API Controller
+ *
+ * Handles REST API endpoints for category management including:
+ * - Listing categories with pagination and filtering
+ * - Creating new categories with validation
+ * - Rate limiting for API endpoints
+ * - CSRF protection via nonce verification
+ *
+ * @package AffiliateProductShowcase\Rest
+ * @since 1.0.0
+ * @author Development Team
+ */
+final class CategoriesController extends RestController {
+	/**
+	 * Rate limiter instance
+	 *
+	 * @var RateLimiter
+	 * @since 1.0.0
+	 */
+	private RateLimiter $rate_limiter;
+
+	/**
+	 * Category repository
+	 *
+	 * @var CategoryRepository
+	 * @since 1.0.0
+	 */
+	private CategoryRepository $repository;
+
+	/**
+	 * Constructor
+	 *
+	 * Initializes rate limiter and repository for API endpoint protection.
+	 *
+	 * @param CategoryRepository $repository Category repository for data access
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function __construct( CategoryRepository $repository ) {
+		$this->rate_limiter = new RateLimiter();
+		$this->repository = $repository;
+	}
+
+	/**
+	 * Register REST API routes
+	 *
+	 * Registers /categories endpoints for:
+	 * - GET /categories - List categories with pagination
+	 * - POST /categories - Create new category
+	 * - GET /categories/{id} - Get single category
+	 * - POST /categories/{id} - Update category
+	 * - DELETE /categories/{id} - Delete category
+	 * - POST /categories/{id}/trash - Trash category
+	 * - POST /categories/{id}/restore - Restore category
+	 * - DELETE /categories/{id}/delete-permanently - Permanent delete
+	 * - POST /categories/trash/empty - Empty trash
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 *
+	 * @action rest_api_init
+	 */
+	public function register_routes(): void {
+		// Categories list and create
+		register_rest_route(
+			$this->namespace,
+			'/categories',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'list' ],
+					'permission_callback' => '__return_true',
+					'args'                => $this->get_list_args(),
+				],
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'create' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_create_args(),
+				],
+			]
+		);
+
+		// Single category routes
+		register_rest_route(
+			$this->namespace,
+			'/categories/(?P<id>[\d]+)',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_item' ],
+					'permission_callback' => '__return_true',
+				],
+				[
+					'methods'             => WP_REST_Server::CREATABLE | WP_REST_Server::EDITABLE,
+					'callback'            => [ $this, 'update' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_update_args(),
+				],
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		// Category action routes
+		register_rest_route(
+			$this->namespace,
+			'/categories/(?P<id>[\d]+)/trash',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'trash' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/categories/(?P<id>[\d]+)/restore',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'restore' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/categories/(?P<id>[\d]+)/delete-permanently',
+			[
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete_permanently' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/categories/trash/empty',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'empty_trash' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+	}
+
+	/**
+	 * Get validation schema for list endpoint
+	 *
+	 * Defines query parameters for categories list:
+	 * - per_page: Number of categories per page (1-100, default 10)
+	 * - page: Page number (default 1)
+	 * - search: Search term for name/description
+	 * - parent: Parent category ID filter
+	 * - hide_empty: Hide empty categories (default false)
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_list_args(): array {
+		return [
+			'per_page' => [
+				'type'              => 'integer',
+				'default'           => 10,
+				'minimum'           => 1,
+				'maximum'           => 100,
+				'sanitize_callback' => 'absint',
+			],
+			'page' => [
+				'type'              => 'integer',
+				'default'           => 1,
+				'minimum'           => 1,
+				'sanitize_callback' => 'absint',
+			],
+			'search' => [
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'parent' => [
+				'required'          => false,
+				'type'              => 'integer',
+				'default'           => 0,
+				'sanitize_callback' => 'absint',
+			],
+			'hide_empty' => [
+				'required'          => false,
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => 'rest_sanitize_boolean',
+			],
+		];
+	}
+
+	/**
+	 * Get validation schema for create endpoint
+	 *
+	 * Defines parameters for category creation:
+	 * - name: Category name (required, max 200 chars)
+	 * - slug: Category slug (optional, auto-generated from name)
+	 * - description: Category description (optional)
+	 * - parent_id: Parent category ID (optional, default 0)
+	 * - featured: Whether category is featured (optional, default false)
+	 * - image_url: Category image URL (optional, URI format)
+	 * - sort_order: Default sort order (optional, default 'date')
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_create_args(): array {
+		return [
+			'name' => [
+				'required'          => true,
+				'type'              => 'string',
+				'minLength'         => 1,
+				'maxLength'         => 200,
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'slug' => [
+				'required'          => false,
+				'type'              => 'string',
+				'maxLength'         => 200,
+				'sanitize_callback' => 'sanitize_title',
+			],
+			'description' => [
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'parent_id' => [
+				'required'          => false,
+				'type'              => 'integer',
+				'default'           => 0,
+				'minimum'           => 0,
+				'sanitize_callback' => 'absint',
+			],
+			'featured' => [
+				'required'          => false,
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => 'rest_sanitize_boolean',
+			],
+			'image_url' => [
+				'required'          => false,
+				'type'              => 'string',
+				'format'            => 'uri',
+				'sanitize_callback' => 'esc_url_raw',
+			],
+			'sort_order' => [
+				'required'          => false,
+				'type'              => 'string',
+				'default'           => 'date',
+				'enum'              => ['name', 'price', 'date', 'popularity', 'random'],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+		];
+	}
+
+	/**
+	 * Get validation schema for update endpoint
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_update_args(): array {
+		$args = $this->get_create_args();
+		
+		// Make all fields optional for update
+		foreach ( $args as $key => $arg ) {
+			$args[ $key ]['required'] = false;
+		}
+		
+		return $args;
+	}
+
+	/**
+	 * Get single category
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with category data or error
+	 * @since 1.0.0
+	 *
+	 * @route GET /affiliate-showcase/v1/categories/{id}
+	 */
+	public function get_item( WP_REST_Request $request ): WP_REST_Response {
+		// Check if taxonomy exists
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf( 
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+
+		$category_id = $request->get_param( 'id' );
+		
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+
+		$category = $this->repository->find( (int) $category_id );
+		
+		if ( null === $category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+
+		return $this->respond( $category->to_array(), 200 );
+	}
+
+	/**
+	 * Update a category
+	 *
+	 * @param WP_REST_Request $request Request object containing category data
+	 * @return WP_REST_Response Response with updated category or error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/categories/{id}
+	 */
+	public function update( WP_REST_Request $request ): WP_REST_Response {
+		// Check if taxonomy exists
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf( 
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$category_id = $request->get_param( 'id' );
+		
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+
+		// Verify category exists
+		$existing_category = $this->repository->find( (int) $category_id );
+		if ( null === $existing_category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+
+		try {
+			// Merge existing category data with updates
+			$data = $request->get_params();
+			$data['id'] = (int) $category_id;
+			
+			$category = Category::from_array( $data );
+			$updated = $this->repository->update( $category );
+			
+			return $this->respond( $updated->to_array(), 200 );
+			
+		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
+			error_log(sprintf(
+				'[APS] Category update failed: %s in %s:%d',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+			
+			return $this->respond([
+				'message' => __('Failed to update category', 'affiliate-product-showcase'),
+				'code' => 'category_update_error',
+				'errors' => $e->getMessage(),
+			], 400);
+		}
+	}
+
+	/**
+	 * Delete a category (move to trash)
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route DELETE /affiliate-showcase/v1/categories/{id}
+	 */
+	public function delete( WP_REST_Request $request ): WP_REST_Response {
+		// Check if taxonomy exists
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf( 
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$category_id = $request->get_param( 'id' );
+		
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+
+		$existing_category = $this->repository->find( (int) $category_id );
+		if ( null === $existing_category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+
+		try {
+			$this->repository->delete( (int) $category_id );
+			
+			return $this->respond( [
+				'message' => __( 'Category deleted successfully.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Category delete failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Trash category (move to trash)
+	 *
+	 * Note: WordPress doesn't have native trash for terms.
+	 * This endpoint deletes the category permanently.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/categories/{id}/trash
+	 */
+	public function trash( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$category_id = $request->get_param( 'id' );
+		
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+
+		$existing_category = $this->repository->find( (int) $category_id );
+		if ( null === $existing_category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+
+		try {
+			// WordPress doesn't have native trash for terms
+			// We'll delete permanently but notify user
+			$this->repository->delete_permanently( (int) $category_id );
+			
+			return $this->respond( [
+				'message' => __( 'Category deleted. Note: WordPress does not support trash for categories.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Category trash failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Restore category from trash
+	 *
+	 * Note: WordPress doesn't have native trash for terms.
+	 * This endpoint returns an error.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/categories/{id}/restore
+	 */
+	public function restore( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		return $this->respond( [
+			'message' => __( 'Category trash/restore is not supported in WordPress core.', 'affiliate-product-showcase' ),
+			'code'    => 'not_supported',
+		], 501 );
+	}
+
+	/**
+	 * Delete category permanently
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route DELETE /affiliate-showcase/v1/categories/{id}/delete-permanently
+	 */
+	public function delete_permanently( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$category_id = $request->get_param( 'id' );
+		
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+
+		$existing_category = $this->repository->find( (int) $category_id );
+		if ( null === $existing_category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+
+		try {
+			$this->repository->delete_permanently( (int) $category_id );
+			
+			return $this->respond( [
+				'message' => __( 'Category deleted permanently.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+			], 200 );
+			
+		} catch ( \Throwable $e ) {
+			error_log(sprintf('[APS] Category permanent delete failed: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+
+	/**
+	 * Empty trash
+	 *
+	 * Note: WordPress doesn't have native trash for terms.
+	 * This endpoint returns an error.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/categories/trash/empty
+	 */
+	public function empty_trash( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		return $this->respond( [
+			'message' => __( 'Category trash/empty is not supported in WordPress core.', 'affiliate-product-showcase' ),
+			'code'    => 'not_supported',
+		], 501 );
+	}
+
+	/**
+	 * List categories
+	 *
+	 * Returns paginated list of categories with rate limiting.
+	 * Rate limit: 60 requests/minute for public, 120 for authenticated users.
+	 *
+	 * @param WP_REST_Request $request Request object containing query parameters
+	 * @return WP_REST_Response Response with categories list or error
+	 * @throws RateLimitException If rate limit is exceeded
+	 * @since 1.0.0
+	 *
+	 * @route GET /affiliate-showcase/v1/categories
+	 */
+	public function list( WP_REST_Request $request ): WP_REST_Response {
+		// Check if taxonomy exists
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf( 
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+
+		// Check rate limit
+		if ( ! $this->rate_limiter->check( 'categories_list' ) ) {
+			return $this->respond( [
+				'message' => __( 'Too many requests. Please try again later.', 'affiliate-product-showcase' ),
+				'code'    => 'rate_limit_exceeded',
+			], 429, $this->rate_limiter->get_headers( 'categories_list' ) );
+		}
+
+		// Build query arguments
+		$args = [];
+		$per_page = $request->get_param( 'per_page' );
+		$page = $request->get_param( 'page' );
+		$search = $request->get_param( 'search' );
+		$parent = $request->get_param( 'parent' );
+		$hide_empty = $request->get_param( 'hide_empty' );
+
+		if ( ! empty( $per_page ) ) {
+			$args['number'] = (int) $per_page;
+		}
+
+		if ( ! empty( $page ) && $page > 1 ) {
+			$args['offset'] = ( (int) $page - 1 ) * (int) $per_page;
+		}
+
+		if ( ! empty( $search ) ) {
+			$args['search'] = $search;
+		}
+
+		if ( isset( $parent ) ) {
+			$args['parent'] = (int) $parent;
+		}
+
+		if ( isset( $hide_empty ) ) {
+			$args['hide_empty'] = (bool) $hide_empty;
+		}
+
+		// Get paginated results
+		$result = $this->repository->paginate( $args );
+
+		return $this->respond( [
+			'categories' => array_map( fn( $c ) => $c->to_array(), $result['categories'] ),
+			'total'      => $result['total'],
+			'pages'      => $result['pages'],
+		], 200, $this->rate_limiter->get_headers( 'categories_list' ) );
+	}
+
+	/**
+	 * Create a new category
+	 *
+	 * Creates a new category with CSRF protection and stricter rate limiting.
+	 * Rate limit: 20 requests/minute (stricter than list operations).
+	 * Nonce verification required in X-WP-Nonce header.
+	 *
+	 * @param WP_REST_Request $request Request object containing category data
+	 * @return WP_REST_Response Response with created category or error
+	 * @throws ValidationException If category data is invalid
+	 * @throws RateLimitException If rate limit is exceeded
+	 * @throws PluginException If category creation fails
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/categories
+	 */
+	public function create( WP_REST_Request $request ): WP_REST_Response {
+		// Check if taxonomy exists
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf( 
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		// Check rate limit (stricter for create operations)
+		if ( ! $this->rate_limiter->check( 'categories_create', 20 ) ) {
+			return $this->respond( [
+				'message' => __( 'Too many creation requests. Please try again later.', 'affiliate-product-showcase' ),
+				'code'    => 'rate_limit_exceeded',
+			], 429, $this->rate_limiter->get_headers( 'categories_create', 20 ) );
+		}
+
+		try {
+			// Parameters are already validated by REST API args
+			$category = Category::from_array( $request->get_params() );
+			$created = $this->repository->create( $category );
+			
+			return $this->respond( $created->to_array(), 201, $this->rate_limiter->get_headers( 'categories_create', 20 ) );
+			
+		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
+			// Log full error internally (includes details)
+			error_log(sprintf(
+				'[APS] Category creation failed: %s in %s:%d',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+			
+			// Return safe message to client
+			return $this->respond([
+				'message' => __('Failed to create category', 'affiliate-product-showcase'),
+				'code' => 'category_creation_error',
+				'errors' => $e->getMessage(),
+			], 400);
+			
+		} catch ( \Throwable $e ) {
+			// Catch-all for unexpected errors
+			error_log(sprintf('[APS] Unexpected error in category creation: %s', $e->getMessage()));
+			
+			return $this->respond([
+				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'code' => 'server_error',
+			], 500);
+		}
+	}
+}

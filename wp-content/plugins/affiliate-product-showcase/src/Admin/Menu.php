@@ -134,12 +134,16 @@ class Menu {
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
+		
+		// Note: Using WordPress native Categories menu (auto-created for taxonomy)
+		// No custom submenu needed - WordPress handles all category management
 	}
 
 	/**
 	 * Reorder submenus under Affiliate Products CPT
 	 * 
 	 * Desired order: All Products, Add Product, Categories, Tags, Ribbons
+	 * Uses WordPress native Categories/Tabs/Ribbons menus (auto-created for taxonomies).
 	 * Keeps all items, just reorders them (no adding/removing).
 	 *
 	 * @since 1.0.0
