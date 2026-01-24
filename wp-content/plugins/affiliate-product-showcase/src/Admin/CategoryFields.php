@@ -55,6 +55,12 @@ final class CategoryFields {
 		// Add sort order filter above categories table
 		add_action( 'admin_footer-edit-tags.php', [ $this, 'add_sort_order_html' ] );
 
+		// Add view tabs (All | Published | Draft | Trash)
+		add_filter( 'views_edit-aps_category', [ $this, 'add_status_view_tabs' ], 10, 2 );
+
+		// Filter categories by status
+		add_filter( 'get_terms', [ $this, 'filter_categories_by_status' ], 10, 3 );
+
 		// Protect default category from permanent deletion
 		add_filter( 'pre_delete_term', [ $this, 'protect_default_category' ], 10, 2 );
 
@@ -178,6 +184,174 @@ final class CategoryFields {
 	}
 
 	/**
+	 * Add status view tabs to categories page
+	 *
+	 * Adds "All | Published | Draft | Trash" tabs similar to WordPress posts.
+	 *
+	 * @param array $views Existing views
+	 * @param string $current_screen Current screen ID
+	 * @return array Modified views
+	 * @since 1.3.0
+	 *
+	 * @filter views_edit-aps_category
+	 */
+	public function add_status_view_tabs( array $views, string $current_screen ): array {
+		if ( $current_screen !== 'edit-aps_category' ) {
+			return $views;
+		}
+
+		// Count categories by status
+		$all_count = $this->count_categories_by_status( 'all' );
+		$published_count = $this->count_categories_by_status( 'published' );
+		$draft_count = $this->count_categories_by_status( 'draft' );
+		$trash_count = $this->count_categories_by_status( 'trashed' );
+
+		// Get current status from URL
+		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+
+		// Build new views
+		$new_views = [];
+
+		// All tab
+		$all_class = $current_status === 'all' ? 'class="current"' : '';
+		$all_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product' );
+		$new_views['all'] = sprintf(
+			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
+			esc_url( $all_url ),
+			$all_class,
+			esc_html__( 'All', 'affiliate-product-showcase' ),
+			$all_count
+		);
+
+		// Published tab
+		$published_class = $current_status === 'published' ? 'class="current"' : '';
+		$published_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=published' );
+		$new_views['published'] = sprintf(
+			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
+			esc_url( $published_url ),
+			$published_class,
+			esc_html__( 'Published', 'affiliate-product-showcase' ),
+			$published_count
+		);
+
+		// Draft tab
+		$draft_class = $current_status === 'draft' ? 'class="current"' : '';
+		$draft_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=draft' );
+		$new_views['draft'] = sprintf(
+			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
+			esc_url( $draft_url ),
+			$draft_class,
+			esc_html__( 'Draft', 'affiliate-product-showcase' ),
+			$draft_count
+		);
+
+		// Trash tab
+		$trash_class = $current_status === 'trashed' ? 'class="current"' : '';
+		$trash_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=trashed' );
+		$new_views['trash'] = sprintf(
+			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
+			esc_url( $trash_url ),
+			$trash_class,
+			esc_html__( 'Trash', 'affiliate-product-showcase' ),
+			$trash_count
+		);
+
+		return $new_views;
+	}
+
+	/**
+	 * Filter categories by status
+	 *
+	 * Filters categories based on status parameter in URL.
+	 *
+	 * @param array $terms Terms array
+	 * @param array $taxonomies Taxonomies
+	 * @param array $args Query arguments
+	 * @return array Filtered terms
+	 * @since 1.3.0
+	 *
+	 * @filter get_terms
+	 */
+	public function filter_categories_by_status( array $terms, array $taxonomies, array $args ): array {
+		// Only filter for aps_category taxonomy
+		if ( ! in_array( 'aps_category', $taxonomies, true ) ) {
+			return $terms;
+		}
+
+		// Only filter on admin category list page
+		$screen = get_current_screen();
+		if ( ! $screen || $screen->taxonomy !== 'aps_category' || $screen->base !== 'edit-tags' ) {
+			return $terms;
+		}
+
+		// Get status from URL
+		$status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+
+		// If showing all, no filtering
+		if ( $status === 'all' ) {
+			return $terms;
+		}
+
+		// Filter terms by status
+		$filtered_terms = [];
+		foreach ( $terms as $term ) {
+			if ( ! is_object( $term ) ) {
+				continue;
+			}
+
+			$term_id = is_numeric( $term ) ? $term : $term->term_id;
+			$term_status = $this->get_category_meta( $term_id, 'status' );
+
+			// Default to published if not set
+			if ( empty( $term_status ) || ! in_array( $term_status, [ 'published', 'draft', 'trashed' ], true ) ) {
+				$term_status = 'published';
+			}
+
+			// Include term if status matches
+			if ( $term_status === $status ) {
+				$filtered_terms[] = $term;
+			}
+		}
+
+		return $filtered_terms;
+	}
+
+	/**
+	 * Count categories by status
+	 *
+	 * @param string $status Status to count ('all', 'published', 'draft', 'trashed')
+	 * @return int Count of categories
+	 * @since 1.3.0
+	 */
+	private function count_categories_by_status( string $status ): int {
+		$terms = get_terms( [
+			'taxonomy'   => 'aps_category',
+			'hide_empty' => false,
+			'fields'     => 'ids',
+		] );
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ( $terms as $term_id ) {
+			$term_status = $this->get_category_meta( $term_id, 'status' );
+
+			// Default to published if not set
+			if ( empty( $term_status ) || ! in_array( $term_status, [ 'published', 'draft', 'trashed' ], true ) ) {
+				$term_status = 'published';
+			}
+
+			if ( $status === 'all' || $term_status === $status ) {
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	/**
 	 * Display bulk action notices
 	 *
 	 * @return void
@@ -194,7 +368,21 @@ final class CategoryFields {
 		if ( isset( $_GET['moved_to_trash'] ) ) {
 			$count = intval( $_GET['moved_to_trash'] );
 			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d categories moved to trash (set to draft).', 'affiliate-product-showcase' ), $count );
+			printf( esc_html__( '%d categories moved to trash.', 'affiliate-product-showcase' ), $count );
+			echo '</p></div>';
+		}
+
+		if ( isset( $_GET['restored_from_trash'] ) ) {
+			$count = intval( $_GET['restored_from_trash'] );
+			echo '<div class="notice notice-success is-dismissible"><p>';
+			printf( esc_html__( '%d categories restored from trash.', 'affiliate-product-showcase' ), $count );
+			echo '</p></div>';
+		}
+
+		if ( isset( $_GET['permanently_deleted'] ) ) {
+			$count = intval( $_GET['permanently_deleted'] );
+			echo '<div class="notice notice-success is-dismissible"><p>';
+			printf( esc_html__( '%d categories permanently deleted.', 'affiliate-product-showcase' ), $count );
 			echo '</p></div>';
 		}
 	}
@@ -720,7 +908,7 @@ final class CategoryFields {
 	/**
 	 * Add custom bulk actions to categories table
 	 *
-	 * Adds "Move to Draft" and "Move to Trash" bulk actions.
+	 * Adds bulk actions based on current view (Draft, Trash, Restore, etc.).
 	 *
 	 * @param array $bulk_actions Existing bulk actions
 	 * @return array Modified bulk actions
@@ -729,10 +917,18 @@ final class CategoryFields {
 	 * @filter bulk_actions-edit-aps_category
 	 */
 	public function add_custom_bulk_actions( array $bulk_actions ): array {
-		// Add "Move to Draft" bulk action
+		// Get current status from URL
+		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+
+		// If in Trash view, add Restore and Permanently Delete
+		if ( $current_status === 'trashed' ) {
+			$bulk_actions['restore'] = __( 'Restore', 'affiliate-product-showcase' );
+			$bulk_actions['delete_permanently'] = __( 'Delete Permanently', 'affiliate-product-showcase' );
+			return $bulk_actions;
+		}
+
+		// If not in Trash view, add Move to Draft and Move to Trash
 		$bulk_actions['move_to_draft'] = __( 'Move to Draft', 'affiliate-product-showcase' );
-		
-		// Add "Move to Trash" bulk action (sets status to draft, safe delete)
 		$bulk_actions['move_to_trash'] = __( 'Move to Trash', 'affiliate-product-showcase' );
 		
 		return $bulk_actions;
@@ -741,8 +937,7 @@ final class CategoryFields {
 	/**
 	 * Handle custom bulk actions for categories
 	 *
-	 * Processes "Move to Draft" and "Move to Trash" bulk actions.
-	 * Displays success/error notices inline instead of redirecting.
+	 * Processes bulk actions: Move to Draft, Move to Trash, Restore, Delete Permanently.
 	 *
 	 * @param string $redirect_url Redirect URL after processing
 	 * @param string $action_name Action name being processed
@@ -758,7 +953,6 @@ final class CategoryFields {
 		}
 		
 		$count = 0;
-		$error = false;
 		
 		// Handle "Move to Draft" action
 		if ( $action_name === 'move_to_draft' ) {
@@ -778,7 +972,7 @@ final class CategoryFields {
 				}
 			}
 			
-			// Add success/error message to redirect URL
+			// Add success message to redirect URL
 			if ( $count > 0 ) {
 				$redirect_url = add_query_arg( [
 					'moved_to_draft' => $count,
@@ -786,7 +980,7 @@ final class CategoryFields {
 			}
 		}
 		
-		// Handle "Move to Trash" action (sets status to draft)
+		// Handle "Move to Trash" action (sets status to trashed)
 		if ( $action_name === 'move_to_trash' ) {
 			foreach ( $term_ids as $term_id ) {
 				// Check if this is default category (cannot be trashed)
@@ -796,18 +990,63 @@ final class CategoryFields {
 					continue; // Skip default category
 				}
 				
-				// Set status to draft (safe delete - not permanent)
-				$result = update_term_meta( $term_id, '_aps_category_status', 'draft' );
+				// Set status to trashed
+				$result = update_term_meta( $term_id, '_aps_category_status', 'trashed' );
 				
 				if ( $result !== false ) {
 					$count++;
 				}
 			}
 			
-			// Add success/error message to redirect URL
+			// Add success message to redirect URL
 			if ( $count > 0 ) {
 				$redirect_url = add_query_arg( [
 					'moved_to_trash' => $count,
+				], $redirect_url );
+			}
+		}
+
+		// Handle "Restore" action
+		if ( $action_name === 'restore' ) {
+			foreach ( $term_ids as $term_id ) {
+				// Restore by setting status to published
+				$result = update_term_meta( $term_id, '_aps_category_status', 'published' );
+				
+				if ( $result !== false ) {
+					$count++;
+				}
+			}
+			
+			// Add success message to redirect URL
+			if ( $count > 0 ) {
+				$redirect_url = add_query_arg( [
+					'restored_from_trash' => $count,
+				], $redirect_url );
+			}
+		}
+
+		// Handle "Delete Permanently" action
+		if ( $action_name === 'delete_permanently' ) {
+			foreach ( $term_ids as $term_id ) {
+				// Check if this is default category (cannot be permanently deleted)
+				$is_default = $this->get_category_meta( $term_id, 'is_default' );
+				
+				if ( $is_default === '1' ) {
+					continue; // Skip default category
+				}
+				
+				// Permanently delete term
+				$result = wp_delete_term( $term_id, 'aps_category' );
+				
+				if ( $result && ! is_wp_error( $result ) ) {
+					$count++;
+				}
+			}
+			
+			// Add success message to redirect URL
+			if ( $count > 0 ) {
+				$redirect_url = add_query_arg( [
+					'permanently_deleted' => $count,
 				], $redirect_url );
 			}
 		}
