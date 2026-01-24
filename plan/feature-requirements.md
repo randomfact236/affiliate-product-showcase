@@ -244,11 +244,11 @@
 - [ ] 83. Tag merging
 
 ### 12. Basic REST API - Tags
-- [ ] 84. GET `/v1/tags` - List tags
-- [ ] 85. GET `/v1/tags/{id}` - Get single tag
-- [ ] 86. POST `/v1/tags` - Create tag
-- [ ] 87. POST `/v1/tags/{id}` - Update tag
-- [ ] 88. DELETE `/v1/tags/{id}` - Delete tag
+- [x] 84. GET `/v1/tags` - List tags
+- [x] 85. GET `/v1/tags/{id}` - Get single tag
+- [x] 86. POST `/v1/tags` - Create tag
+- [x] 87. POST `/v1/tags/{id}` - Update tag
+- [x] 88. DELETE `/v1/tags/{id}` - Delete tag
 
 ---
 
@@ -905,7 +905,8 @@ aps-product-[element]-[modifier]
   - ✅ Tag Model Infrastructure (5/5 complete)
   - ✅ TagFactory Infrastructure (7/7 complete)
   - ✅ TagRepository Infrastructure (11/11 complete)
-  - ⏸️ Tag Display, Management, REST API (19 remaining)
+  - ✅ TagsController Infrastructure (5/5 complete)
+  - ⏸️ Tag Display, Management (14 remaining)
 - **Section 4: Ribbons:** [0]/23 complete (0%) for Phase 1
 - **Section 5: Cross-Features:** 18/66 complete (~27%) for Phase 1
 - **Section 6: Quality & Launch:** [0]/20 complete (0%) for Phase 1
