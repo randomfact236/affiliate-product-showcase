@@ -53,7 +53,7 @@ final class CategoryFields {
 		add_filter( 'manage_aps_category_custom_column', [ $this, 'render_custom_columns' ], 10, 3 );
 
 		// Add sort order filter above categories table
-		add_action( 'restrict_manage_posts', [ $this, 'add_sort_order_filter' ] );
+		add_action( 'restrict_manage_terms', [ $this, 'add_sort_order_filter' ], 10, 2 );
 
 		// Protect default category from permanent deletion
 		add_filter( 'pre_delete_term', [ $this, 'protect_default_category' ], 10, 2 );
@@ -241,15 +241,16 @@ final class CategoryFields {
 	/**
 	 * Add sort order filter above categories table
 	 *
+	 * @param string $taxonomy Taxonomy name
+	 * @param string $post_type Post type
 	 * @return void
 	 * @since 1.2.0
 	 *
-	 * @action restrict_manage_posts
+	 * @action restrict_manage_terms
 	 */
-	public function add_sort_order_filter(): void {
+	public function add_sort_order_filter( string $taxonomy, string $post_type ): void {
 		// Only show on category management page
-		$screen = get_current_screen();
-		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
+		if ( $taxonomy !== 'aps_category' ) {
 			return;
 		}
 
@@ -329,13 +330,8 @@ final class CategoryFields {
 		// Get current values with legacy fallback
 		$featured    = $this->get_category_meta( $category_id, 'featured' );
 		$image_url   = $this->get_category_meta( $category_id, 'image' );
-		$sort_order  = $this->get_category_meta( $category_id, 'sort_order' );
 		$status      = $this->get_category_meta( $category_id, 'status' );
 		$is_default  = $this->get_category_meta( $category_id, 'is_default' );
-
-		if ( empty( $sort_order ) ) {
-			$sort_order = 'date';
-		}
 
 		if ( empty( $status ) ) {
 			$status = 'published';
@@ -382,7 +378,7 @@ final class CategoryFields {
 		<div class="form-field aps-category-fields">
 			<h3><?php esc_html_e( 'Category Settings', 'affiliate-product-showcase' ); ?></h3>
 
-			<!-- Image URL -->
+		<!-- Image URL -->
 			<div class="form-field">
 				<label for="_aps_category_image">
 					<?php esc_html_e( 'Category Image URL', 'affiliate-product-showcase' ); ?>
@@ -397,25 +393,6 @@ final class CategoryFields {
 				/>
 				<p class="description">
 					<?php esc_html_e( 'Enter URL for category image.', 'affiliate-product-showcase' ); ?>
-				</p>
-			</div>
-
-			<!-- Sort Order -->
-			<div class="form-field">
-				<label for="_aps_category_sort_order">
-					<?php esc_html_e( 'Default Sort Order', 'affiliate-product-showcase' ); ?>
-				</label>
-				<select
-					id="_aps_category_sort_order"
-					name="_aps_category_sort_order"
-					class="postform"
-				>
-					<option value="date" <?php selected( $sort_order, 'date' ); ?>>
-						<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
-					</option>
-				</select>
-				<p class="description">
-					<?php esc_html_e( 'Default sort order for products in this category. Categories are sorted by date created.', 'affiliate-product-showcase' ); ?>
 				</p>
 			</div>
 		</div>
@@ -469,14 +446,6 @@ final class CategoryFields {
 		update_term_meta( $category_id, '_aps_category_image', $image_url );
 		// Delete legacy key
 		delete_term_meta( $category_id, 'aps_category_image' );
-
-		// Sanitize and save sort order
-		$sort_order = isset( $_POST['_aps_category_sort_order'] )
-			? sanitize_text_field( wp_unslash( $_POST['_aps_category_sort_order'] ) )
-			: 'date';
-		update_term_meta( $category_id, '_aps_category_sort_order', $sort_order );
-		// Delete legacy key
-		delete_term_meta( $category_id, 'aps_category_sort_order' );
 
 		// Sanitize and save status (default to published if not set)
 		$status = isset( $_POST['_aps_category_status'] )
