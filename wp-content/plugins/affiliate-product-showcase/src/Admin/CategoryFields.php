@@ -56,7 +56,7 @@ final class CategoryFields {
 		add_action( 'admin_footer-edit-tags.php', [ $this, 'add_sort_order_html' ] );
 
 		// Add view tabs (All | Published | Draft | Trash)
-		add_filter( 'views_edit-aps_category', [ $this, 'add_status_view_tabs' ], 10, 2 );
+		add_filter( 'views_edit-aps_category', [ $this, 'add_status_view_tabs' ] );
 
 		// Filter categories by status
 		add_filter( 'get_terms', [ $this, 'filter_categories_by_status' ], 10, 3 );
@@ -189,14 +189,15 @@ final class CategoryFields {
 	 * Adds "All | Published | Draft | Trash" tabs similar to WordPress posts.
 	 *
 	 * @param array $views Existing views
-	 * @param string $current_screen Current screen ID
 	 * @return array Modified views
 	 * @since 1.3.0
 	 *
 	 * @filter views_edit-aps_category
 	 */
-	public function add_status_view_tabs( array $views, string $current_screen ): array {
-		if ( $current_screen !== 'edit-aps_category' ) {
+	public function add_status_view_tabs( array $views ): array {
+		// Only filter on aps_category taxonomy
+		$screen = get_current_screen();
+		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
 			return $views;
 		}
 
