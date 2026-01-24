@@ -53,7 +53,7 @@ final class CategoryFields {
 		add_filter( 'manage_aps_category_custom_column', [ $this, 'render_custom_columns' ], 10, 3 );
 
 		// Add sort order filter above categories table
-		add_action( 'restrict_manage_terms', [ $this, 'add_sort_order_filter' ], 10, 2 );
+		add_action( 'admin_footer-edit-tags.php', [ $this, 'add_sort_order_html' ] );
 
 		// Protect default category from permanent deletion
 		add_filter( 'pre_delete_term', [ $this, 'protect_default_category' ], 10, 2 );
@@ -134,15 +134,15 @@ final class CategoryFields {
 					success: function(response) {
 						if (response.success) {
 							// Update status display
-						if (newStatus === 'published') {
-							$this.html('<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' + aps_admin_vars.published_text);
-							$this.attr('data-current-status', 'published');
-							$this.removeClass('status-draft').addClass('status-published');
-						} else {
-							$this.html('<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' + aps_admin_vars.draft_text);
-							$this.attr('data-current-status', 'draft');
-							$this.removeClass('status-published').addClass('status-draft');
-						}
+							if (newStatus === 'published') {
+								$this.html('<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' + aps_admin_vars.published_text);
+								$this.attr('data-current-status', 'published');
+								$this.removeClass('status-draft').addClass('status-published');
+							} else {
+								$this.html('<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' + aps_admin_vars.draft_text);
+								$this.attr('data-current-status', 'draft');
+								$this.removeClass('status-published').addClass('status-draft');
+							}
 							$this.removeClass('updating');
 						} else if (response.data && response.data.message) {
 							$this.removeClass('updating');
@@ -239,18 +239,20 @@ final class CategoryFields {
 	}
 
 	/**
-	 * Add sort order filter above categories table
+	 * Add sort order filter HTML above categories table
 	 *
-	 * @param string $taxonomy Taxonomy name
-	 * @param string $post_type Post type
+	 * Checks if we're on the category management page and adds filter.
+	 *
 	 * @return void
 	 * @since 1.2.0
 	 *
-	 * @action restrict_manage_terms
+	 * @action admin_footer-edit-tags.php
 	 */
-	public function add_sort_order_filter( string $taxonomy, string $post_type ): void {
+	public function add_sort_order_html(): void {
+		$screen = get_current_screen();
+		
 		// Only show on category management page
-		if ( $taxonomy !== 'aps_category' ) {
+		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
 			return;
 		}
 
@@ -258,17 +260,28 @@ final class CategoryFields {
 		$current_sort_order = isset( $_GET['aps_sort_order'] ) ? sanitize_text_field( $_GET['aps_sort_order'] ) : 'date';
 
 		?>
-		<div class="alignleft actions">
-			<label for="aps_sort_order" class="screen-reader-text">
-				<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
-			</label>
-			<select name="aps_sort_order" id="aps_sort_order" class="postform">
-				<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
-					<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
-				</option>
-			</select>
-			<input type="submit" id="query-submit" class="button" value="<?php esc_attr_e( 'Filter', 'affiliate-product-showcase' ); ?>" />
-		</div>
+		<script>
+		jQuery(document).ready(function($) {
+			// Find the search form above the categories table
+			var $searchForm = $('form#posts-filter');
+			if ($searchForm.length) {
+				// Insert sort order filter before the search form
+				$searchForm.before(`
+					<div class="alignleft actions aps-sort-filter">
+						<label for="aps_sort_order" class="screen-reader-text">
+							<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
+						</label>
+						<select name="aps_sort_order" id="aps_sort_order" class="postform">
+							<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
+								<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
+							</option>
+						</select>
+						<input type="submit" id="query-submit" class="button" value="<?php esc_attr_e( 'Filter', 'affiliate-product-showcase' ); ?>" />
+					</div>
+				`);
+			}
+		});
+		</script>
 		<?php
 	}
 
