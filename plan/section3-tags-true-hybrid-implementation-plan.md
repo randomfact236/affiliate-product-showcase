@@ -41,6 +41,28 @@
 
 ---
 
+## 🎯 Implementation Approach
+
+### Strategy: Copy & Adapt from Section 2 (Categories)
+
+**Reference Implementation:** Section 2 (Categories) - ✅ **100% TRUE HYBRID COMPLIANT**
+
+**Why Use Categories as Base:**
+- ✅ **Proven Pattern:** Categories implementation is fully tested and verified (32/32 features working)
+- ✅ **Consistency:** Same structure across all taxonomies (Categories, Tags, future)
+- ✅ **Faster Development:** Copy structure, adapt names, add Tag-specific fields
+- ✅ **Less Risk:** Proven pattern with known issues and solutions
+- ✅ **No Refactoring Needed:** Categories already exists, no base classes required
+
+**Implementation Method:**
+1. Copy structure from Category files
+2. Adapt for Tags (change taxonomy name, remove Category-specific fields)
+3. Add Tag-specific fields (Color, Icon)
+4. Follow exact same hooks, methods, patterns
+5. Use Categories as reference for TRUE HYBRID pattern
+
+---
+
 ## Executive Summary
 
 Section 3 (Tags) is **NOT IMPLEMENTED** - complete feature implementation required to achieve true hybrid compliance.
@@ -54,7 +76,13 @@ Section 3 (Tags) is **NOT IMPLEMENTED** - complete feature implementation requir
 - ❌ No TagsController REST API exists
 - ❌ Tag taxonomy not registered
 
-**Impact:** Need to implement complete tag feature from scratch following true hybrid patterns.
+**Implementation Approach:**
+- ✅ Use Section 2 (Categories) as base pattern (proven TRUE HYBRID)
+- ✅ Copy structure from Category files and adapt for Tags
+- ✅ Follow exact same hooks, methods, and security patterns
+- ✅ Replace taxonomy-specific names and fields
+
+**Impact:** Need to implement complete tag feature following proven true hybrid patterns from Categories.
 
 ---
 
@@ -316,12 +344,19 @@ A PHP class that wraps WordPress WP_Term and adds custom properties.
 - We need type safety and readonly properties
 - We need consistent data structure across the application
 
+**Reference Implementation:** `src/Models/Category.php`
+
 **Implementation Steps:**
-1. Create `src/Models/Tag.php`
-2. Add readonly properties: id, name, slug, description, count, color, icon
-3. Add `from_wp_term()` static method to convert WP_Term to Tag
-4. Add `to_array()` method to convert Tag to array
-5. Use `get_term_meta()` to load custom metadata with `_aps_tag_*` prefix
+1. **Copy structure** from `src/Models/Category.php`
+2. Create `src/Models/Tag.php`
+3. **Adapt for Tags:**
+   - Remove Category-specific properties (parent_id, is_featured, is_default, image_url, sort_order, status)
+   - Add Tag-specific properties (color, icon)
+   - Update meta keys from `_aps_category_*` to `_aps_tag_*`
+   - Update PHPDoc comments for Tags
+4. **Remove hierarchical logic** (Tags are flat, Categories are hierarchical)
+5. Verify all properties are readonly
+6. Verify all type hints are present
 
 **Key Implementation Details:**
 ```php
@@ -355,12 +390,37 @@ A factory class that creates Tag instances from different data sources.
 - We need consistent way to create Tag instances
 - Separates creation logic from business logic
 
+**Reference Implementation:** `src/Factories/CategoryFactory.php`
+
 **Implementation Steps:**
-1. Create `src/Factories/TagFactory.php`
-2. Add `from_wp_term()` method (delegates to Tag::from_wp_term())
-3. Add `from_array()` method to create from associative array
-4. Add `from_array_many()` method to create multiple tags
-5. Handle missing data with defaults
+1. **Copy structure** from `src/Factories/CategoryFactory.php`
+2. Create `src/Factories/TagFactory.php`
+3. **Adapt for Tags:**
+   - Update class name to TagFactory
+   - Update to create Tag instances
+   - Update from_wp_term() to delegate to Tag::from_wp_term()
+   - Update all PHPDoc comments for Tags
+4. Verify all factory methods exist
+5. Verify type hints are correct
+
+**Key Implementation Details:**
+```php
+public static function from_array( array $data ): Tag {
+    return new Tag(
+        id: $data['id'] ?? 0,
+        name: $data['name'] ?? '',
+        slug: $data['slug'] ?? sanitize_title( $data['name'] ?? '' ),
+        description: $data['description'] ?? '',
+        count: $data['count'] ?? 0,
+        color: $data['color'] ?? null,
+        icon: $data['icon'] ?? null,
+        created_at: $data['created_at'] ?? null,
+        updated_at: $data['updated_at'] ?? null
+    );
+}
+```
+
+**Dependencies:** Tag model
 
 **Key Implementation Details:**
 ```php
