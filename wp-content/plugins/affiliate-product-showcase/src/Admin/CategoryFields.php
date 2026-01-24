@@ -134,15 +134,15 @@ final class CategoryFields {
 					success: function(response) {
 						if (response.success) {
 							// Update status display
-							if (newStatus === 'published') {
-								$this.html('<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' + aps_admin_vars.published_text);
-								$this.attr('data-current-status', 'published');
-								$this.removeClass('status-draft').addClass('status-published');
-							} else {
-								$this.html('<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' + aps_admin_vars.draft_text);
-								$this.attr('data-current-status', 'draft');
-								$this.removeClass('status-published').addClass('status-draft');
-							}
+						if (newStatus === 'published') {
+							$this.html('<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span> ' + aps_admin_vars.published_text);
+							$this.attr('data-current-status', 'published');
+							$this.removeClass('status-draft').addClass('status-published');
+						} else {
+							$this.html('<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span> ' + aps_admin_vars.draft_text);
+							$this.attr('data-current-status', 'draft');
+							$this.removeClass('status-published').addClass('status-draft');
+						}
 							$this.removeClass('updating');
 						} else if (response.data && response.data.message) {
 							$this.removeClass('updating');
