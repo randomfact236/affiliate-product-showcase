@@ -310,6 +310,50 @@ final class ProductService extends AbstractService {
 				'rewrite'              => [ 'slug' => 'product-ribbon' ],
 			]
 		);
+
+		// Register Tag Visibility taxonomy (for status: published, draft, trash)
+		// This is a non-public taxonomy used internally for tag status management
+		register_taxonomy(
+			'aps_tag_visibility',
+			Constants::CPT_PRODUCT,
+			[
+				'labels' => [
+					'name'                  => __( 'Tag Visibility', Constants::TEXTDOMAIN ),
+					'singular_name'         => __( 'Tag Visibility', Constants::TEXTDOMAIN ),
+				],
+				'hierarchical'          => false,
+				'public'               => false,  // Don't show on frontend
+				'show_ui'              => false,  // Don't show in admin UI
+				'show_in_rest'         => false,
+				'show_in_nav_menus'     => false,
+				'show_tagcloud'         => false,
+				'show_admin_column'      => false,
+				'meta_box_cb'          => false,  // Don't show meta box
+				'rewrite'              => false,
+			]
+		);
+
+		// Register Tag Flags taxonomy (for featured flag: featured, none)
+		// This is a non-public taxonomy used internally for tag flags management
+		register_taxonomy(
+			'aps_tag_flags',
+			Constants::CPT_PRODUCT,
+			[
+				'labels' => [
+					'name'                  => __( 'Tag Flags', Constants::TEXTDOMAIN ),
+					'singular_name'         => __( 'Tag Flag', Constants::TEXTDOMAIN ),
+				],
+				'hierarchical'          => false,
+				'public'               => false,  // Don't show on frontend
+				'show_ui'              => false,  // Don't show in admin UI
+				'show_in_rest'         => false,
+				'show_in_nav_menus'     => false,
+				'show_tagcloud'         => false,
+				'show_admin_column'      => false,
+				'meta_box_cb'          => false,  // Don't show meta box
+				'rewrite'              => false,
+			]
+		);
 	}
 
 	/**

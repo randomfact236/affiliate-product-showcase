@@ -18,6 +18,8 @@ use AffiliateProductShowcase\Factories\TagFactory;
 use AffiliateProductShowcase\Models\Tag;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Exceptions\PluginException;
+use AffiliateProductShowcase\Admin\TagStatus;
+use AffiliateProductShowcase\Admin\TagFlags;
 use WP_Error;
 
 /**
@@ -188,7 +190,9 @@ final class TagRepository {
 	 *     'Products on sale',
 	 *     0,
 	 *     '#ff0000',
-	 *     'dashicons-tag'
+	 *     'dashicons-tag',
+	 *     'published',
+	 *     false
 	 * );
 	 * $created = $repository->create($tag);
 	 * ```
@@ -217,6 +221,13 @@ final class TagRepository {
 		// Save metadata
 		$this->save_metadata( $term_id, $tag );
 
+		// Set status (default to published)
+		TagStatus::set_visibility( $term_id, $tag->status );
+
+		// Set featured flag (default to none)
+		$featured_flag = $tag->featured ? 'featured' : 'none';
+		TagFlags::set_featured( $term_id, $featured_flag );
+
 		// Return tag with ID
 		return $this->find( $term_id );
 	}
@@ -239,7 +250,9 @@ final class TagRepository {
 	 *     'Updated description',
 	 *     0,
 	 *     '#00ff00',
-	 *     'dashicons-tag-updated'
+	 *     'dashicons-tag-updated',
+	 *     'published',
+	 *     true
 	 * );
 	 * $updated = $repository->update($tag);
 	 * ```
@@ -270,6 +283,13 @@ final class TagRepository {
 
 		// Save metadata
 		$this->save_metadata( $tag->id, $tag );
+
+		// Update status
+		TagStatus::set_visibility( $tag->id, $tag->status );
+
+		// Update featured flag
+		$featured_flag = $tag->featured ? 'featured' : 'none';
+		TagFlags::set_featured( $tag->id, $featured_flag );
 
 		return $this->find( $tag->id );
 	}
@@ -378,5 +398,127 @@ final class TagRepository {
 	private function delete_metadata( int $term_id ): void {
 		delete_term_meta( $term_id, '_aps_tag_color' );
 		delete_term_meta( $term_id, '_aps_tag_icon' );
+	}
+
+	/**
+	 * Set tag visibility status
+	 *
+	 * @param int $tag_id Tag ID
+	 * @param string $status Status: 'published', 'draft', or 'trash'
+	 * @return bool True if status set successfully
+	 * @since 1.0.0
+	 */
+	public function set_visibility( int $tag_id, string $status ): bool {
+		$term = TagStatus::get_term_cached( $status );
+		if ( ! $term ) {
+			return false;
+		}
+
+		$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_visibility' );
+		return ! is_wp_error( $result );
+	}
+
+	/**
+	 * Set tag featured flag
+	 *
+	 * @param int $tag_id Tag ID
+	 * @param bool $featured Whether tag is featured
+	 * @return bool True if flag set successfully
+	 * @since 1.0.0
+	 */
+	public function set_featured( int $tag_id, bool $featured ): bool {
+		$flag_slug = $featured ? 'featured' : 'none';
+		$term = TagFlags::get_term_cached( $flag_slug );
+		if ( ! $term ) {
+			return false;
+		}
+
+		$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_flags' );
+		return ! is_wp_error( $result );
+	}
+
+	/**
+	 * Change status for multiple tags
+	 *
+	 * @param array<int, int> $tag_ids Array of tag IDs
+	 * @param string $status Status: 'published', 'draft', or 'trash'
+	 * @return int Number of tags updated
+	 * @since 1.0.0
+	 */
+	public function change_status( array $tag_ids, string $status ): int {
+		$term = TagStatus::get_term_cached( $status );
+		if ( ! $term ) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ( $tag_ids as $tag_id ) {
+			$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_visibility' );
+			if ( ! is_wp_error( $result ) ) {
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	/**
+	 * Change featured flag for multiple tags
+	 *
+	 * @param array<int, int> $tag_ids Array of tag IDs
+	 * @param bool $featured Whether tags are featured
+	 * @return int Number of tags updated
+	 * @since 1.0.0
+	 */
+	public function change_featured( array $tag_ids, bool $featured ): int {
+		$flag_slug = $featured ? 'featured' : 'none';
+		$term = TagFlags::get_term_cached( $flag_slug );
+		if ( ! $term ) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ( $tag_ids as $tag_id ) {
+			$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_flags' );
+			if ( ! is_wp_error( $result ) ) {
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	/**
+	 * Get tags by status
+	 *
+	 * @param string $status Status: 'published', 'draft', or 'trash'
+	 * @return array<int, Tag> Tags with specified status
+	 * @since 1.0.0
+	 */
+	public function get_by_status( string $status ): array {
+		$term = TagStatus::get_term_cached( $status );
+		if ( ! $term ) {
+			return [];
+		}
+
+		$args = [
+			'taxonomy'   => Constants::TAX_TAG,
+			'hide_empty' => false,
+			'meta_query' => [
+				[
+					'key'     => 'term_id',
+					'value'   => $term->term_id,
+					'taxonomy' => 'aps_tag_visibility',
+				],
+			],
+		];
+
+		$terms = get_terms( $args );
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return [];
+		}
+
+		return TagFactory::from_wp_terms( $terms );
 	}
 }

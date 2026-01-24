@@ -2,12 +2,107 @@
  * Admin Tag Styles
  *
  * Styles for tag management in WordPress admin
- * including color badges and icon displays.
+ * including color badges, status indicators, featured badges,
+ * status links, and bulk actions.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
  */
 
+/* ============ Status Links (Above Table) ============ */
+
+.aps-tag-status-links-wrapper {
+	margin: 20px 0;
+	padding: 15px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.aps-tag-status-links {
+	display: flex;
+	gap: 5px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.aps-tag-status-links li {
+	margin: 0;
+}
+
+.aps-tag-status-links li a {
+	display: inline-block;
+	padding: 6px 12px;
+	text-decoration: none;
+	color: #2271b1;
+	border-radius: 3px;
+	transition: all 0.2s ease;
+	font-size: 13px;
+}
+
+.aps-tag-status-links li a:hover {
+	background-color: #f0f0f1;
+	color: #135e96;
+}
+
+.aps-tag-status-links li.current a {
+	background-color: #2271b1;
+	color: #fff;
+}
+
+.aps-tag-status-links li.current a:hover {
+	background-color: #135e96;
+	color: #fff;
+}
+
+/* ============ Status Column ============ */
+
+.aps-tag-status {
+	display: inline-block;
+	padding: 4px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.aps-tag-status-published {
+	background-color: #edfaef;
+	color: #00a32a;
+	border: 1px solid #ccecdf;
+}
+
+.aps-tag-status-draft {
+	background-color: #f0f0f1;
+	color: #646970;
+	border: 1px solid #dcdcde;
+}
+
+.aps-tag-status-trash {
+	background-color: #f7edf0;
+	color: #d63638;
+	border: 1px solid #ffacaa;
+}
+
+/* ============ Featured Badge ============ */
+
+.aps-tag-featured-badge {
+	display: inline-block;
+	padding: 4px 8px;
+	background-color: #fff8e5;
+	color: #d63638;
+	border: 1px solid #f0f0f1;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.aps-tag-featured-badge::before {
+	content: '★ ';
+	font-size: 14px;
+}
+
+/* ============ Tag Color Badge ============ */
 /* Tag Color Badge */
 .aps-tag-color-badge {
 	display: inline-block;
@@ -17,6 +112,7 @@
 	vertical-align: middle;
 	margin-right: 8px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Tag Icon Display */
@@ -46,13 +142,149 @@
 	vertical-align: middle;
 }
 
-/* Responsive adjustments */
+/* ============ Bulk Actions ============ */
+
+/* Custom bulk actions dropdown */
+.select#bulk-action-selector-top {
+	min-width: 200px;
+}
+
+/* ============ Form Field Styling ============ */
+
+.aps-tag-status,
+.aps-tag-featured,
+.aps-tag-color,
+.aps-tag-icon {
+	margin-bottom: 15px;
+}
+
+.aps-tag-status label,
+.aps-tag-featured label,
+.aps-tag-color label,
+.aps-tag-icon label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.aps-tag-status select {
+	min-width: 200px;
+}
+
+.aps-tag-featured input[type="checkbox"] {
+	margin-right: 8px;
+}
+
+/* ============ Table Column Styling ============ */
+
+/* Status column */
+.fixed .column-status {
+	width: 120px;
+}
+
+/* Featured column */
+.fixed .column-featured {
+	width: 100px;
+}
+
+/* Color column */
+.fixed .column-color {
+	width: 150px;
+}
+
+/* Icon column */
+.fixed .column-icon {
+	width: 100px;
+	text-align: center;
+}
+
+/* ============ Responsive Design ============ */
+
+/* Tablet and mobile */
 @media (max-width: 782px) {
-	.aps-tag-color input.color-picker {
+	.aps-tag-status-links {
+		flex-wrap: wrap;
+	}
+	
+	.aps-tag-status-links li a {
+		padding: 5px 10px;
+		font-size: 12px;
+	}
+	
+	.aps-tag-status input.color-picker {
 		width: 60px;
 	}
 	
 	.aps-tag-icon input.regular-text {
 		min-width: 150px;
+	}
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+	.aps-tag-status-links-wrapper {
+		margin: 10px 0;
+		padding: 10px;
+	}
+	
+	.aps-tag-status-links {
+		gap: 3px;
+	}
+	
+	.aps-tag-status-links li a {
+		padding: 4px 8px;
+		font-size: 11px;
+	}
+	
+	.aps-tag-status,
+	.aps-tag-featured {
+		margin-bottom: 10px;
+	}
+}
+
+/* ============ Accessibility ============ */
+
+/* Focus styles for keyboard navigation */
+.aps-tag-status-links li a:focus,
+.aps-tag-status select:focus,
+.aps-tag-featured input:focus,
+.aps-tag-color input:focus,
+.aps-tag-icon input:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	.aps-tag-status-published {
+		background-color: #000;
+		color: #fff;
+		border: 2px solid #fff;
+	}
+	
+	.aps-tag-status-draft {
+		background-color: #666;
+		color: #fff;
+		border: 2px solid #fff;
+	}
+	
+	.aps-tag-status-trash {
+		background-color: #d63638;
+		color: #fff;
+		border: 2px solid #fff;
+	}
+	
+	.aps-tag-featured-badge {
+		background-color: #000;
+		color: #fff;
+		border: 2px solid #fff;
+	}
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	.aps-tag-status-links li a {
+		transition: none;
 	}
 }

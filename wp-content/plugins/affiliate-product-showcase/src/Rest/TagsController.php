@@ -187,6 +187,8 @@ final class TagsController extends RestController {
 	 * - description: Tag description (optional)
 	 * - color: Tag color (hex format, optional)
 	 * - icon: Tag icon (emoji or SVG, optional)
+	 * - status: Tag status (published/draft, default published)
+	 * - featured: Tag featured flag (boolean, default false)
 	 *
 	 * @return array<string, mixed> Validation schema for WordPress REST API
 	 * @since 1.0.0
@@ -221,6 +223,19 @@ final class TagsController extends RestController {
 				'required'          => false,
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'status' => [
+				'required'          => false,
+				'type'              => 'string',
+				'default'           => 'published',
+				'enum'              => ['published', 'draft'],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'featured' => [
+				'required'          => false,
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => 'rest_sanitize_boolean',
 			],
 		];
 	}

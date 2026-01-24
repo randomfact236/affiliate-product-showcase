@@ -92,6 +92,22 @@ final class Tag {
 	public readonly string $created_at;
 
 	/**
+	 * Tag visibility status
+	 *
+	 * @var string
+	 * @since 1.0.0
+	 */
+	public readonly string $status;
+
+	/**
+	 * Featured flag
+	 *
+	 * @var bool
+	 * @since 1.0.0
+	 */
+	public readonly bool $featured;
+
+	/**
 	 * Constructor
 	 *
 	 * @param int    $id          Tag ID (term_id)
@@ -102,6 +118,8 @@ final class Tag {
 	 * @param string|null $color  Display color (hex code)
 	 * @param string|null $icon   Icon identifier/class
 	 * @param string $created_at  Tag creation date
+	 * @param string $status      Tag visibility status
+	 * @param bool   $featured    Featured flag
 	 *
 	 * @since 1.0.0
 	 */
@@ -113,7 +131,9 @@ final class Tag {
 		int $count = 0,
 		?string $color = null,
 		?string $icon = null,
-		string $created_at = ''
+		string $created_at = '',
+		string $status = 'published',
+		bool $featured = false
 	) {
 		$this->id = $id;
 		$this->name = $name;
@@ -123,6 +143,8 @@ final class Tag {
 		$this->color = $color;
 		$this->icon = $icon;
 		$this->created_at = $created_at ?: current_time( 'mysql' );
+		$this->status = $status;
+		$this->featured = $featured;
 	}
 
 	/**
@@ -144,6 +166,8 @@ final class Tag {
 			'icon'        => $this->icon,
 			'created_at'  => $this->created_at,
 			'taxonomy'    => Constants::TAX_TAG,
+			'status'      => $this->status,
+			'featured'    => $this->featured,
 		];
 	}
 
@@ -165,6 +189,7 @@ final class Tag {
 	 * Create Tag from WP_Term
 	 *
 	 * Factory method to create Tag instance from WP_Term object.
+	 * Includes status and featured flag from taxonomies.
 	 *
 	 * @param \WP_Term $term WordPress term object
 	 * @return self Tag instance
@@ -191,6 +216,14 @@ final class Tag {
 		$color = self::get_tag_meta( $term->term_id, 'color' );
 		$icon = self::get_tag_meta( $term->term_id, 'icon' );
 
+		// Get status from aps_tag_visibility taxonomy
+		$visibility_terms = wp_get_object_terms( $term->term_id, 'aps_tag_visibility' );
+		$status = ! empty( $visibility_terms ) ? $visibility_terms[0]->slug : 'published';
+
+		// Get featured flag from aps_tag_flags taxonomy
+		$flag_terms = wp_get_object_terms( $term->term_id, 'aps_tag_flags' );
+		$featured = ! empty( $flag_terms ) && $flag_terms[0]->slug === 'featured';
+
 		return new self(
 			(int) $term->term_id,
 			$term->name,
@@ -199,7 +232,9 @@ final class Tag {
 			(int) $term->count,
 			$color ?: null,
 			$icon ?: null,
-			$term->term_group ? date( 'Y-m-d H:i:s', $term->term_group ) : current_time( 'mysql' )
+			$term->term_group ? date( 'Y-m-d H:i:s', $term->term_group ) : current_time( 'mysql' ),
+			$status,
+			$featured
 		);
 	}
 
@@ -221,6 +256,8 @@ final class Tag {
 	 *     'slug' => 'sale',
 	 *     'color' => '#ff0000',
 	 *     'icon' => 'dashicons-tag',
+	 *     'status' => 'published',
+	 *     'featured' => true,
 	 * ]);
 	 * ```
 	 */
@@ -235,6 +272,12 @@ final class Tag {
 		// Ensure unique slug
 		$slug = wp_unique_term_slug( $slug, Constants::TAX_TAG );
 
+		// Validate status
+		$status = $data['status'] ?? 'published';
+		if ( ! in_array( $status, [ 'published', 'draft', 'trash' ], true ) ) {
+			$status = 'published';
+		}
+
 		return new self(
 			(int) ( $data['id'] ?? 0 ),
 			sanitize_text_field( $data['name'] ),
@@ -243,7 +286,9 @@ final class Tag {
 			(int) ( $data['count'] ?? 0 ),
 			! empty( $data['color'] ) ? sanitize_hex_color( $data['color'] ) : null,
 			! empty( $data['icon'] ) ? sanitize_text_field( $data['icon'] ) : null,
-			$data['created_at'] ?? ''
+			$data['created_at'] ?? '',
+			$status,
+			(bool) ( $data['featured'] ?? false )
 		);
 	}
 
