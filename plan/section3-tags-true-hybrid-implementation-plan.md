@@ -1,5 +1,40 @@
 # Section 3: Tags - True Hybrid Implementation Plan
 
+# Feature Requirements: Affiliate Digital Product Showcase
+
+> **IMPORTANT RULE: NEVER DELETE THIS FILE**
+> This file contains complete feature requirements for digital affiliate product plugin. All features must be implemented according to this plan.
+
+> **SCOPE:** Digital products only (software, e-books, courses, templates, plugins, themes, digital art, etc.)
+
+---
+
+# 📝 STRICT DEVELOPMENT RULES
+
+**⚠️ MANDATORY:** Always use all assistant instruction files when writing code for feature development and issue resolution.
+
+### Project Context
+
+**Project:** Affiliate Digital Product Showcase WordPress Plugin  
+**Framework:** Modern WordPress Plugin Boilerplate (Tailwind + Vite + PSR-4 + Security & Cache Ready)  
+**Quality Standard:** Hybrid Quality Matrix - Enterprise-grade where it matters, practical everywhere  
+**Architecture:** DI container, event-driven architecture, REST API, Gutenberg blocks  
+**Tech Stack:** PHP 8.1+, JavaScript/React, Vite, Tailwind CSS  
+**Code Quality:** PHPUnit, PHPCS (WPCS), PHPStan, Psalm  
+**Product Type:** Digital products only (software, e-books, courses, templates, plugins, themes, digital art, etc.)
+
+### Required Reference Files (ALWAYS USE):
+
+1. **docs/assistant-instructions.md** - Project context, code change policy, git rules
+2. **docs/assistant-quality-standards.md** - Enterprise-grade code quality requirements
+3. **docs/assistant-performance-optimization.md** - Performance optimization guidelines
+
+### Quality Standard: 10/10 Enterprise-Grade
+- Fully/highly optimized, no compromises
+- All code must meet hybrid quality matrix standards
+- Essential standards at 10/10, performance goals as targets
+
+
 **Created:** January 24, 2026  
 **Priority:** 🟠 HIGH - Complete new feature implementation  
 **Scope:** Basic Level Features Only (24 features)
@@ -39,6 +74,103 @@ Section 3 (Tags) is **NOT IMPLEMENTED** - complete feature implementation requir
 - Tags are stored as WordPress taxonomy (like Categories)
 - Tag metadata stored as term meta with `_aps_tag_*` prefix
 - Non-hierarchical (flat structure, unlike categories)
+
+---
+
+## 🎨 TRUE HYBRID Architecture Diagram
+
+### Visual Breakdown: Custom vs Default WordPress Components
+
+```
+┌────────────────────────────────────────┐
+│  WORDPRESS NATIVE TAGS PAGE      │  ← ONE PAGE ONLY
+│  (edit-tags.php)                  │
+│                                    │
+│  URL: edit-tags.php?taxonomy=aps_tag
+│                                    │
+│  ✅ WordPress Native Features:        │
+│  - Tag CRUD                     │
+│  - Table rendering                │
+│  - Quick edit                   │
+│  - Bulk actions                 │
+│  - Search & filtering            │
+│  - Tag cloud view                │
+│  - Flat structure (non-hierarchical)
+├────────────────────────────────────┤
+│  ✅ Custom Enhancements (Hooks):   │
+│  - Custom meta fields (add/edit)  │
+│  - Custom columns (Color, Icon)    │
+│  - Color picker field               │
+│  - Icon text input field           │
+│  - Admin notices                  │
+│  - Meta sanitization              │
+└────────────────────────────────────────┘
+```
+
+### TRUE HYBRID Features List
+
+**🟦 DEFAULT (WordPress Built-in):**
+- Tag taxonomy registration
+- Tag CRUD operations (create, read, update, delete)
+- Table rendering and pagination
+- Quick edit functionality
+- Bulk actions
+- Search and filtering
+- Tag cloud view
+- Non-hierarchical structure
+
+**🟩 CUSTOM (Our Implementation - TRUE HYBRID):**
+
+**Model Layer:**
+- Tag model with readonly properties
+- TagFactory with from_wp_term() and from_array() methods
+- TagRepository with full CRUD operations
+
+**Admin Layer:**
+- TagFields component (hook enhancements)
+- Custom meta fields (Color, Icon)
+- Color picker field (input type="color")
+- Icon text input field
+- Nonce verification
+- Input sanitization
+- Custom table columns (Color, Icon)
+
+**API Layer:**
+- TagsController REST API
+- Permission checks
+- CRUD endpoints
+- JSON responses with Tag model
+
+**Meta Keys (TRUE HYBRID Pattern):**
+- _aps_tag_color ⭐ (hex color code)
+- _aps_tag_icon ⭐ (icon class)
+- _aps_tag_created_at (creation timestamp)
+- _aps_tag_updated_at (last update timestamp)
+
+### Key Differences: Categories vs Tags
+
+**✅ Categories (Hierarchical):**
+- Has parent/child relationships
+- Uses term_taxonomy_id for hierarchy
+- Can be nested (subcategory → category)
+
+**✅ Tags (Non-Hierarchical):**
+- NO parent/child relationships
+- Simple flat list
+- Cannot be nested
+- Like post tags in WordPress
+
+### TRUE HYBRID Characteristics
+
+✅ **What Makes This TRUE HYBRID:**
+1. Uses WordPress native taxonomy system (DEFAULT)
+2. Adds custom meta fields via hooks (CUSTOM)
+3. Model wraps WP_Term with readonly properties (CUSTOM)
+4. Factory converts between WP_Term and Model (CUSTOM)
+5. Repository handles CRUD operations (CUSTOM)
+6. REST API extends WordPress REST API (CUSTOM)
+7. Single admin page with WordPress + Custom (HYBRID)
+8. Consistent underscore prefix pattern (_aps_tag_*) (TRUE HYBRID)
 
 ---
 
