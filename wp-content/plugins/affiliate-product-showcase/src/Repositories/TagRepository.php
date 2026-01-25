@@ -18,8 +18,6 @@ use AffiliateProductShowcase\Factories\TagFactory;
 use AffiliateProductShowcase\Models\Tag;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Exceptions\PluginException;
-use AffiliateProductShowcase\Admin\TagStatus;
-use AffiliateProductShowcase\Admin\TagFlags;
 use WP_Error;
 
 /**
@@ -221,13 +219,6 @@ final class TagRepository {
 		// Save metadata
 		$this->save_metadata( $term_id, $tag );
 
-		// Set status (default to published)
-		TagStatus::set_visibility( $term_id, $tag->status );
-
-		// Set featured flag (default to none)
-		$featured_flag = $tag->featured ? 'featured' : 'none';
-		TagFlags::set_featured( $term_id, $featured_flag );
-
 		// Return tag with ID
 		return $this->find( $term_id );
 	}
@@ -283,13 +274,6 @@ final class TagRepository {
 
 		// Save metadata
 		$this->save_metadata( $tag->id, $tag );
-
-		// Update status
-		TagStatus::set_visibility( $tag->id, $tag->status );
-
-		// Update featured flag
-		$featured_flag = $tag->featured ? 'featured' : 'none';
-		TagFlags::set_featured( $tag->id, $featured_flag );
 
 		return $this->find( $tag->id );
 	}
@@ -386,6 +370,12 @@ final class TagRepository {
 		} else {
 			delete_term_meta( $term_id, '_aps_tag_icon' );
 		}
+
+		// Status (TRUE HYBRID: use term meta)
+		update_term_meta( $term_id, '_aps_tag_status', $tag->status );
+
+		// Featured (TRUE HYBRID: use term meta)
+		update_term_meta( $term_id, '_aps_tag_featured', $tag->featured ? '1' : '0' );
 	}
 
 	/**
@@ -398,10 +388,12 @@ final class TagRepository {
 	private function delete_metadata( int $term_id ): void {
 		delete_term_meta( $term_id, '_aps_tag_color' );
 		delete_term_meta( $term_id, '_aps_tag_icon' );
+		delete_term_meta( $term_id, '_aps_tag_status' );
+		delete_term_meta( $term_id, '_aps_tag_featured' );
 	}
 
 	/**
-	 * Set tag visibility status
+	 * Set tag visibility status (TRUE HYBRID: use term meta)
 	 *
 	 * @param int $tag_id Tag ID
 	 * @param string $status Status: 'published', 'draft', or 'trash'
@@ -409,17 +401,11 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	public function set_visibility( int $tag_id, string $status ): bool {
-		$term = TagStatus::get_term_cached( $status );
-		if ( ! $term ) {
-			return false;
-		}
-
-		$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_visibility' );
-		return ! is_wp_error( $result );
+		return update_term_meta( $tag_id, '_aps_tag_status', $status ) !== false;
 	}
 
 	/**
-	 * Set tag featured flag
+	 * Set tag featured flag (TRUE HYBRID: use term meta)
 	 *
 	 * @param int $tag_id Tag ID
 	 * @param bool $featured Whether tag is featured
@@ -427,18 +413,11 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	public function set_featured( int $tag_id, bool $featured ): bool {
-		$flag_slug = $featured ? 'featured' : 'none';
-		$term = TagFlags::get_term_cached( $flag_slug );
-		if ( ! $term ) {
-			return false;
-		}
-
-		$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_flags' );
-		return ! is_wp_error( $result );
+		return update_term_meta( $tag_id, '_aps_tag_featured', $featured ? '1' : '0' ) !== false;
 	}
 
 	/**
-	 * Change status for multiple tags
+	 * Change status for multiple tags (TRUE HYBRID: use term meta)
 	 *
 	 * @param array<int, int> $tag_ids Array of tag IDs
 	 * @param string $status Status: 'published', 'draft', or 'trash'
@@ -446,24 +425,17 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	public function change_status( array $tag_ids, string $status ): int {
-		$term = TagStatus::get_term_cached( $status );
-		if ( ! $term ) {
-			return 0;
-		}
-
 		$count = 0;
 		foreach ( $tag_ids as $tag_id ) {
-			$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_visibility' );
-			if ( ! is_wp_error( $result ) ) {
+			if ( $this->set_visibility( $tag_id, $status ) ) {
 				$count++;
 			}
 		}
-
 		return $count;
 	}
 
 	/**
-	 * Change featured flag for multiple tags
+	 * Change featured flag for multiple tags (TRUE HYBRID: use term meta)
 	 *
 	 * @param array<int, int> $tag_ids Array of tag IDs
 	 * @param bool $featured Whether tags are featured
@@ -471,44 +443,31 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	public function change_featured( array $tag_ids, bool $featured ): int {
-		$flag_slug = $featured ? 'featured' : 'none';
-		$term = TagFlags::get_term_cached( $flag_slug );
-		if ( ! $term ) {
-			return 0;
-		}
-
 		$count = 0;
 		foreach ( $tag_ids as $tag_id ) {
-			$result = wp_set_object_terms( $tag_id, [$term->term_id], 'aps_tag_flags' );
-			if ( ! is_wp_error( $result ) ) {
+			if ( $this->set_featured( $tag_id, $featured ) ) {
 				$count++;
 			}
 		}
-
 		return $count;
 	}
 
 	/**
-	 * Get tags by status
+	 * Get tags by status (TRUE HYBRID: use term meta)
 	 *
 	 * @param string $status Status: 'published', 'draft', or 'trash'
 	 * @return array<int, Tag> Tags with specified status
 	 * @since 1.0.0
 	 */
 	public function get_by_status( string $status ): array {
-		$term = TagStatus::get_term_cached( $status );
-		if ( ! $term ) {
-			return [];
-		}
-
 		$args = [
 			'taxonomy'   => Constants::TAX_TAG,
 			'hide_empty' => false,
 			'meta_query' => [
 				[
-					'key'     => 'term_id',
-					'value'   => $term->term_id,
-					'taxonomy' => 'aps_tag_visibility',
+					'key'     => '_aps_tag_status',
+					'value'   => $status,
+					'compare' => '=',
 				],
 			],
 		];

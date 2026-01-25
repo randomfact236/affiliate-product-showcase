@@ -2,21 +2,61 @@
  * Admin Tag Styles
  *
  * Styles for tag management in WordPress admin
- * including color badges, status indicators, featured badges,
- * status links, and bulk actions.
+ * following standard taxonomy design pattern.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
  */
 
-/* ============ Status Links (Above Table) ============ */
+/* ============ Two-Column Layout ============ */
 
-.aps-tag-status-links-wrapper {
-	margin: 20px 0;
+/* Tags page wrapper */
+body.taxonomy-aps_tag #col-container {
+	display: flex;
+	gap: 30px;
+}
+
+/* Left side: Form (40%) */
+body.taxonomy-aps_tag #col-left {
+	flex: 0 0 40%;
+}
+
+/* Right side: Table (60%) */
+body.taxonomy-aps_tag #col-right {
+	flex: 0 0 60%;
+}
+
+/* ============ Top Controls (Above Table) ============ */
+
+/* Ensure top controls appear in right column above table */
+body.taxonomy-aps_tag #col-right .aps-tag-top-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	margin: 20px 0 15px 0;
 	padding: 15px;
 	background: #fff;
 	border: 1px solid #c3c4c7;
 	border-radius: 4px;
+}
+
+/* Fallback for broader selector */
+.aps-tag-top-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	margin: 20px 0 15px 0;
+	padding: 15px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+/* Status Links Wrapper */
+.aps-tag-status-links-wrapper {
+	flex: 1;
 }
 
 .aps-tag-status-links {
@@ -56,155 +96,276 @@
 	color: #fff;
 }
 
-/* ============ Status Column ============ */
-
-.aps-tag-status {
-	display: inline-block;
-	padding: 4px 8px;
-	border-radius: 3px;
-	font-size: 12px;
-	font-weight: 500;
-}
-
-.aps-tag-status-published {
-	background-color: #edfaef;
-	color: #00a32a;
-	border: 1px solid #ccecdf;
-}
-
-.aps-tag-status-draft {
-	background-color: #f0f0f1;
-	color: #646970;
-	border: 1px solid #dcdcde;
-}
-
-.aps-tag-status-trash {
-	background-color: #f7edf0;
-	color: #d63638;
-	border: 1px solid #ffacaa;
-}
-
-/* ============ Featured Badge ============ */
-
-.aps-tag-featured-badge {
-	display: inline-block;
-	padding: 4px 8px;
-	background-color: #fff8e5;
-	color: #d63638;
-	border: 1px solid #f0f0f1;
-	border-radius: 3px;
-	font-size: 12px;
-	font-weight: 500;
-}
-
-.aps-tag-featured-badge::before {
-	content: '★ ';
-	font-size: 14px;
-}
-
-/* ============ Tag Color Badge ============ */
-/* Tag Color Badge */
-.aps-tag-color-badge {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	border-radius: 4px;
-	vertical-align: middle;
-	margin-right: 8px;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* Tag Icon Display */
-.aps-tag-icon-display {
-	display: inline-flex;
+/* Sort Controls */
+.aps-tag-sort-controls {
+	display: flex;
 	align-items: center;
-	justify-content: center;
-	font-size: 1.2em;
-	vertical-align: middle;
+	gap: 10px;
 }
 
-/* Tag Color Field */
-.aps-tag-color input.color-picker {
-	width: 80px;
-	padding: 4px 8px;
-	font-family: monospace;
+.aps-tag-sort-controls label {
+	font-size: 13px;
+	font-weight: 600;
+	color: #1d2327;
 }
 
-/* Tag Icon Field */
-.aps-tag-icon input.regular-text {
+.aps-tag-date-sort {
 	min-width: 200px;
+	padding: 5px 10px;
+	font-size: 13px;
+	border: 1px solid #8c8f94;
+	border-radius: 3px;
+	background: #fff;
+	cursor: pointer;
 }
 
-/* Color Picker Preview */
-.wp-picker-container {
-	display: inline-block;
-	vertical-align: middle;
+.aps-tag-date-sort:hover {
+	border-color: #2271b1;
 }
 
-/* ============ Bulk Actions ============ */
-
-/* Custom bulk actions dropdown */
-.select#bulk-action-selector-top {
-	min-width: 200px;
+.aps-tag-date-sort:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
 }
 
 /* ============ Form Field Styling ============ */
 
-.aps-tag-status,
-.aps-tag-featured,
-.aps-tag-color,
-.aps-tag-icon {
+/* Featured checkbox */
+.aps-tag-featured {
 	margin-bottom: 15px;
 }
 
-.aps-tag-status label,
-.aps-tag-featured label,
-.aps-tag-color label,
-.aps-tag-icon label {
+.aps-tag-featured label {
 	display: block;
 	margin-bottom: 5px;
 	font-weight: 600;
 	color: #1d2327;
 }
 
-.aps-tag-status select {
-	min-width: 200px;
-}
-
 .aps-tag-featured input[type="checkbox"] {
 	margin-right: 8px;
 }
 
+/* Settings divider */
+.aps-tag-settings-divider {
+	margin: 20px 0 15px;
+	padding: 10px 0;
+	border-top: 2px solid #c3c4c7;
+	border-bottom: 2px solid #c3c4c7;
+	text-align: center;
+}
+
+.aps-tag-settings-divider h3 {
+	margin: 0;
+	padding: 0 15px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+	background: #fff;
+	display: inline-block;
+}
+
+/* Image URL field */
+.aps-tag-image-url {
+	margin-bottom: 15px;
+}
+
+.aps-tag-image-url label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.aps-tag-image-url input[type="url"] {
+	width: 100%;
+	max-width: 300px;
+	padding: 8px 12px;
+	font-size: 13px;
+	border: 1px solid #8c8f94;
+	border-radius: 3px;
+}
+
+.aps-tag-image-url input[type="url"]:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.aps-tag-image-url .description {
+	margin-top: 5px;
+	font-size: 12px;
+	color: #646970;
+}
+
 /* ============ Table Column Styling ============ */
 
-/* Status column */
+/* Name column (WordPress native) */
+.fixed .column-name {
+	width: 25%;
+}
+
+/* Description column (WordPress native) */
+.fixed .column-description {
+	width: 30%;
+}
+
+/* Slug column (WordPress native) */
+.fixed .column-slug {
+	width: 15%;
+	font-family: monospace;
+}
+
+/* Status column (inline editable) */
 .fixed .column-status {
-	width: 120px;
+	width: 15%;
 }
 
-/* Featured column */
-.fixed .column-featured {
-	width: 100px;
+/* Count column */
+.fixed .column-count {
+	width: 15%;
+	text-align: right;
 }
 
-/* Color column */
-.fixed .column-color {
-	width: 150px;
+/* ============ Inline Status Dropdown ============ */
+
+.aps-tag-status-inline {
+	min-width: 120px;
+	padding: 5px 8px;
+	font-size: 12px;
+	border: 1px solid #8c8f94;
+	border-radius: 3px;
+	background: #fff;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
-/* Icon column */
-.fixed .column-icon {
-	width: 100px;
-	text-align: center;
+.aps-tag-status-inline:hover {
+	border-color: #2271b1;
+}
+
+.aps-tag-status-inline:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+/* Status dropdown states */
+.aps-tag-status-inline.updating {
+	opacity: 0.6;
+	cursor: wait;
+}
+
+.aps-tag-status-inline.updated {
+	background-color: #edfaef;
+	border-color: #00a32a;
+	color: #00a32a;
+}
+
+.aps-tag-status-inline.error {
+	background-color: #f7edf0;
+	border-color: #d63638;
+	color: #d63638;
+}
+
+/* Status count display */
+.aps-tag-count {
+	display: inline-block;
+	padding: 2px 8px;
+	background-color: #f0f0f1;
+	border-radius: 3px;
+	font-weight: 600;
+	font-size: 12px;
+}
+
+/* ============ Bulk Actions ============ */
+
+/* Bulk actions dropdown */
+.select#bulk-action-selector-top {
+	min-width: 200px;
+	margin-right: 10px;
+}
+
+/* Apply button */
+button.button.action {
+	height: 30px;
+	padding: 0 15px;
+	font-size: 13px;
+	line-height: 28px;
 }
 
 /* ============ Responsive Design ============ */
 
-/* Tablet and mobile */
-@media (max-width: 782px) {
+/* Desktop (>1200px) */
+@media (min-width: 1201px) {
+	body.taxonomy-aps_tag #col-container {
+		display: flex;
+	}
+	
+	body.taxonomy-aps_tag #col-left {
+		flex: 0 0 40%;
+	}
+	
+	body.taxonomy-aps_tag #col-right {
+		flex: 0 0 60%;
+	}
+}
+
+/* Tablet (768px-1200px) */
+@media (max-width: 1200px) and (min-width: 769px) {
+	body.taxonomy-aps_tag #col-container {
+		gap: 15px;
+	}
+	
+	body.taxonomy-aps_tag #col-left {
+		flex: 0 0 45%;
+	}
+	
+	body.taxonomy-aps_tag #col-right {
+		flex: 0 0 55%;
+	}
+	
+	.aps-tag-top-controls {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+	
+	.aps-tag-sort-controls {
+		width: 100%;
+		justify-content: space-between;
+	}
+	
+	.aps-tag-date-sort {
+		flex: 1;
+		max-width: 300px;
+	}
+}
+
+/* Mobile (<768px) */
+@media (max-width: 768px) {
+	body.taxonomy-aps_tag #col-container {
+		flex-direction: column;
+	}
+	
+	body.taxonomy-aps_tag #col-left {
+		flex: 0 0 auto;
+		width: 100%;
+	}
+	
+	body.taxonomy-aps_tag #col-right {
+		flex: 0 0 auto;
+		width: 100%;
+	}
+	
+	.aps-tag-top-controls {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+		padding: 10px;
+	}
+	
 	.aps-tag-status-links {
 		flex-wrap: wrap;
+		gap: 3px;
 	}
 	
 	.aps-tag-status-links li a {
@@ -212,24 +373,50 @@
 		font-size: 12px;
 	}
 	
-	.aps-tag-status input.color-picker {
-		width: 60px;
+	.aps-tag-sort-controls {
+		width: 100%;
 	}
 	
-	.aps-tag-icon input.regular-text {
-		min-width: 150px;
+	.aps-tag-sort-controls label {
+		display: block;
+		margin-bottom: 5px;
+	}
+	
+	.aps-tag-date-sort {
+		width: 100%;
+		max-width: none;
+	}
+	
+	.aps-tag-image-url input[type="url"] {
+		max-width: 100%;
+	}
+	
+	/* Table horizontal scroll on mobile */
+	.wp-list-table {
+		display: block;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+	
+	.aps-tag-status-inline {
+		min-width: 100px;
+		font-size: 11px;
+	}
+	
+	.aps-tag-count {
+		font-size: 11px;
 	}
 }
 
-/* Mobile */
+/* Small mobile (<480px) */
 @media (max-width: 480px) {
-	.aps-tag-status-links-wrapper {
+	.aps-tag-top-controls {
 		margin: 10px 0;
-		padding: 10px;
+		padding: 8px;
 	}
 	
 	.aps-tag-status-links {
-		gap: 3px;
+		gap: 2px;
 	}
 	
 	.aps-tag-status-links li a {
@@ -237,9 +424,19 @@
 		font-size: 11px;
 	}
 	
-	.aps-tag-status,
-	.aps-tag-featured {
-		margin-bottom: 10px;
+	.aps-tag-featured,
+	.aps-tag-image-url {
+		margin-bottom: 12px;
+	}
+	
+	.aps-tag-settings-divider {
+		margin: 15px 0 12px;
+		padding: 8px 0;
+	}
+	
+	.aps-tag-settings-divider h3 {
+		font-size: 13px;
+		padding: 0 10px;
 	}
 }
 
@@ -247,44 +444,84 @@
 
 /* Focus styles for keyboard navigation */
 .aps-tag-status-links li a:focus,
-.aps-tag-status select:focus,
-.aps-tag-featured input:focus,
-.aps-tag-color input:focus,
-.aps-tag-icon input:focus {
+.aps-tag-date-sort:focus,
+.aps-tag-status-inline:focus,
+.aps-tag-image-url input[type="url"]:focus,
+.aps-tag-featured input[type="checkbox"]:focus {
 	outline: 2px solid #2271b1;
 	outline-offset: 2px;
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-	.aps-tag-status-published {
+	.aps-tag-status-links li a {
+		border: 2px solid currentColor;
+	}
+	
+	.aps-tag-status-links li.current a {
 		background-color: #000;
 		color: #fff;
-		border: 2px solid #fff;
+		border-color: #000;
 	}
 	
-	.aps-tag-status-draft {
-		background-color: #666;
+	.aps-tag-status-inline {
+		border: 2px solid #000;
+	}
+	
+	.aps-tag-status-inline.updated {
+		background-color: #000;
 		color: #fff;
-		border: 2px solid #fff;
+		border-color: #000;
 	}
 	
-	.aps-tag-status-trash {
+	.aps-tag-status-inline.error {
 		background-color: #d63638;
 		color: #fff;
-		border: 2px solid #fff;
+		border-color: #000;
 	}
 	
-	.aps-tag-featured-badge {
+	.aps-tag-count {
 		background-color: #000;
 		color: #fff;
-		border: 2px solid #fff;
+		border: 2px solid #000;
+	}
+	
+	.aps-tag-settings-divider {
+		border-top: 3px solid #000;
+		border-bottom: 3px solid #000;
 	}
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-	.aps-tag-status-links li a {
+	.aps-tag-status-links li a,
+	.aps-tag-status-inline {
 		transition: none;
+	}
+}
+
+/* Screen reader only content */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+/* ============ Print Styles ============ */
+
+@media print {
+	.aps-tag-top-controls,
+	.aps-tag-settings-divider {
+		display: none;
+	}
+	
+	.aps-tag-status-inline {
+		border: 1px solid #000;
 	}
 }

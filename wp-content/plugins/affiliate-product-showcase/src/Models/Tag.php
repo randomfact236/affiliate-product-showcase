@@ -189,7 +189,7 @@ final class Tag {
 	 * Create Tag from WP_Term
 	 *
 	 * Factory method to create Tag instance from WP_Term object.
-	 * Includes status and featured flag from taxonomies.
+	 * Includes status and featured flag from term meta (TRUE HYBRID).
 	 *
 	 * @param \WP_Term $term WordPress term object
 	 * @return self Tag instance
@@ -216,13 +216,11 @@ final class Tag {
 		$color = self::get_tag_meta( $term->term_id, 'color' );
 		$icon = self::get_tag_meta( $term->term_id, 'icon' );
 
-		// Get status from aps_tag_visibility taxonomy
-		$visibility_terms = wp_get_object_terms( $term->term_id, 'aps_tag_visibility' );
-		$status = ! empty( $visibility_terms ) ? $visibility_terms[0]->slug : 'published';
+		// Get status from term meta (_aps_tag_status)
+		$status = self::get_tag_meta( $term->term_id, 'status' ) ?: 'published';
 
-		// Get featured flag from aps_tag_flags taxonomy
-		$flag_terms = wp_get_object_terms( $term->term_id, 'aps_tag_flags' );
-		$featured = ! empty( $flag_terms ) && $flag_terms[0]->slug === 'featured';
+		// Get featured flag from term meta (_aps_tag_featured)
+		$featured = (bool) self::get_tag_meta( $term->term_id, 'featured' );
 
 		return new self(
 			(int) $term->term_id,
