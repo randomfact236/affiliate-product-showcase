@@ -66,7 +66,8 @@ final class MetaBoxes {
 			
 			// Group 7: Product Ribbons
 			'featured'    => get_post_meta( $post->ID, '_aps_featured', true ),
-			'ribbon'      => get_post_meta( $post->ID, '_aps_ribbon', true ),
+			// TRUE HYBRID: Get ribbon from taxonomy, not post meta
+			'ribbon'      => $this->get_product_ribbon( $post->ID ),
 			'badge_text'  => get_post_meta( $post->ID, '_aps_badge_text', true ),
 			
 			// Group 8: Additional Information
@@ -162,12 +163,51 @@ final class MetaBoxes {
 		update_post_meta( $post_id, '_aps_affiliate_url', $affiliate_url );
 		update_post_meta( $post_id, '_aps_coupon_url', $coupon_url );
 		update_post_meta( $post_id, '_aps_featured', $featured );
-		update_post_meta( $post_id, '_aps_ribbon', $ribbon );
+		// TRUE HYBRID: Save ribbon to taxonomy, not post meta
+		$this->save_product_ribbon( $post_id, $ribbon );
 		update_post_meta( $post_id, '_aps_badge_text', $badge_text );
 		update_post_meta( $post_id, '_aps_warranty', $warranty );
 		update_post_meta( $post_id, '_aps_release_date', $release_date );
 		update_post_meta( $post_id, '_aps_expiration_date', $expiration_date );
 		update_post_meta( $post_id, '_aps_display_order', $display_order );
 		update_post_meta( $post_id, '_aps_hide_from_home', $hide_from_home );
+	}
+
+	/**
+	 * Get product ribbon from taxonomy
+	 *
+	 * TRUE HYBRID: Retrieves ribbon from taxonomy relationship,
+	 * not from post meta.
+	 *
+	 * @param int $product_id Product ID
+	 * @return int Ribbon term ID or 0
+	 */
+	private function get_product_ribbon( int $product_id ): int {
+		$terms = wp_get_object_terms( $product_id, Constants::TAX_RIBBON );
+		
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return 0;
+		}
+		
+		return (int) $terms[0]->term_id;
+	}
+
+	/**
+	 * Save product ribbon to taxonomy
+	 *
+	 * TRUE HYBRID: Saves ribbon to taxonomy relationship,
+	 * not to post meta.
+	 *
+	 * @param int $product_id Product ID
+	 * @param int $ribbon_id Ribbon term ID
+	 */
+	private function save_product_ribbon( int $product_id, int $ribbon_id ): void {
+		if ( $ribbon_id > 0 ) {
+			// Set taxonomy relationship
+			wp_set_object_terms( $product_id, [ $ribbon_id ], Constants::TAX_RIBBON );
+		} else {
+			// Remove all ribbon relationships
+			wp_set_object_terms( $product_id, [], Constants::TAX_RIBBON );
+		}
 	}
 }

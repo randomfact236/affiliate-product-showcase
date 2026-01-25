@@ -256,27 +256,23 @@ class ProductsTable extends \WP_List_Table {
 	/**
 	 * Column: Ribbon
 	 *
+	 * TRUE HYBRID: Retrieves ribbon from taxonomy relationship only.
+	 *
 	 * @param \WP_Post $item
 	 * @return string
 	 */
 	public function column_ribbon( $item ): string {
 		$ribbons = get_the_terms( $item->ID, Constants::TAX_RIBBON );
-		if ( ! empty( $ribbons ) && ! is_wp_error( $ribbons ) ) {
-			$labels = array_map( static function( $term ) {
-				return sprintf( '<span class="aps-product-badge">%s</span>', esc_html( $term->name ) );
-			}, $ribbons );
-			return implode( ' ', $labels );
+		
+		if ( empty( $ribbons ) || is_wp_error( $ribbons ) ) {
+			return '—';
 		}
 
-		$ribbon_term_id = (int) get_post_meta( $item->ID, '_aps_ribbon', true );
-		if ( $ribbon_term_id > 0 ) {
-			$term = get_term( $ribbon_term_id, Constants::TAX_RIBBON );
-			if ( $term && ! is_wp_error( $term ) ) {
-				return sprintf( '<span class="aps-product-badge">%s</span>', esc_html( $term->name ) );
-			}
-		}
+		$badges = array_map( static function( $ribbon ) {
+			return sprintf( '<span class="aps-product-badge">%s</span>', esc_html( $ribbon->name ) );
+		}, $ribbons );
 
-		return '—';
+		return implode( ' ', $badges );
 	}
 
 	/**

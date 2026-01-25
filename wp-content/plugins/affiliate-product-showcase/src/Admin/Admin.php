@@ -11,6 +11,9 @@ use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Security\Headers;
 use AffiliateProductShowcase\Services\ProductService;
+use AffiliateProductShowcase\Admin\CategoryFields;
+use AffiliateProductShowcase\Admin\TagFields;
+use AffiliateProductShowcase\Admin\RibbonFields;
 
 final class Admin {
 	private Settings $settings;
@@ -20,13 +23,15 @@ final class Admin {
 	private ProductTableUI $product_table_ui;
 	private CategoryFields $category_fields;
 	private TagFields $tag_fields;
+	private RibbonFields $ribbon_fields;
 
 	public function __construct(
 		private Assets $assets,
 		private ProductService $product_service,
 		private Headers $headers,
 		Menu $menu,
-		ProductFormHandler $form_handler
+		ProductFormHandler $form_handler,
+		RibbonFields $ribbon_fields
 	) {
 		$this->settings = new Settings();
 		$this->metaboxes = new MetaBoxes( $this->product_service );
@@ -35,6 +40,7 @@ final class Admin {
 		$this->product_table_ui = new ProductTableUI();
 		$this->category_fields = new CategoryFields();
 		$this->tag_fields = new TagFields();
+		$this->ribbon_fields = $ribbon_fields;
 	}
 
 	public function init(): void {
@@ -48,6 +54,9 @@ final class Admin {
 		
 		// Initialize tag components (WordPress native + custom enhancements)
 		$this->tag_fields->init();
+		
+		// Initialize ribbon components (WordPress native + custom enhancements)
+		$this->ribbon_fields->init();
 		
 		$this->headers->init();
 	}

@@ -13,6 +13,7 @@ use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\ProductsController;
 use AffiliateProductShowcase\Rest\CategoriesController;
+use AffiliateProductShowcase\Rest\RibbonsController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Cli\ProductsCommand;
 use AffiliateProductShowcase\Services\ProductService;
@@ -28,6 +29,7 @@ final class Loader {
 		private Blocks $blocks,
 		private ProductsController $products_controller,
 		private CategoriesController $categories_controller,
+		private RibbonsController $ribbons_controller,
 		private AnalyticsController $analytics_controller,
 		private HealthController $health_controller,
 		private ProductsCommand $products_command
@@ -91,6 +93,7 @@ final class Loader {
 	public function register_rest_controllers(): void {
 		$this->products_controller->register_routes();
 		$this->categories_controller->register_routes();
+		$this->ribbons_controller->register_routes();
 		$this->analytics_controller->register_routes();
 		$this->health_controller->register_routes();
 	}

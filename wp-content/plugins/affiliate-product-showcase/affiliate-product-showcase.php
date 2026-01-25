@@ -203,6 +203,21 @@ if ( class_exists( 'AffiliateProductShowcase\\Plugin\\Deactivator' ) ) {
 	);
 }
 
+// Ribbon taxonomy activation/deactivation hooks
+if ( class_exists( 'AffiliateProductShowcase\\RibbonActivator' ) ) {
+	register_activation_hook(
+		AFFILIATE_PRODUCT_SHOWCASE_FILE,
+		[ 'AffiliateProductShowcase\\RibbonActivator', 'activate' ]
+	);
+}
+
+if ( class_exists( 'AffiliateProductShowcase\\RibbonActivator' ) ) {
+	register_deactivation_hook(
+		AFFILIATE_PRODUCT_SHOWCASE_FILE,
+		[ 'AffiliateProductShowcase\\RibbonActivator', 'deactivate' ]
+	);
+}
+
 // ==============================================================================
 // Plugin Initialization
 // ==============================================================================
