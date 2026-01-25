@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Plugin;
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -69,7 +69,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 	 * @return string
 	 */
 	public function getIdentifier(): string {
-		return $this->identifier ?? get_class( $this );
+		return $this->identifier ?? get_class($this);
 	}
 
 	/**
@@ -78,7 +78,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 	 * @param string $id The identifier to set
 	 * @return ServiceProviderInterface
 	 */
-	public function setIdentifier( string $id ): ServiceProviderInterface {
+	public function setIdentifier(string $id): ServiceProviderInterface {
 		$this->identifier = $id;
 		return $this;
 	}
@@ -89,7 +89,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 	 * @param string $id The service identifier to check
 	 * @return bool
 	 */
-	public function provides( string $id ): bool {
+	public function provides(string $id): bool {
 		$services = [
 			// Cache
 			Cache::class,
@@ -156,7 +156,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 			GDPR::class,
 		];
 
-		return in_array( $id, $services );
+		return in_array($id, $services);
 	}
 
 	/**
@@ -166,8 +166,8 @@ final class ServiceProvider implements ServiceProviderInterface {
 	 */
 	public function boot(): void {
 		// Initialize AjaxHandler which registers its own hooks
-		if ( $this->getContainer()->has( AjaxHandler::class ) ) {
-			$this->getContainer()->get( AjaxHandler::class );
+		if ($this->getContainer()->has(AjaxHandler::class)) {
+			$this->getContainer()->get(AjaxHandler::class);
 		}
 	}
 
@@ -180,133 +180,142 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// ============================================================================
 		// Cache Layer (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( Cache::class );
+		$this->getContainer()->addShared(Cache::class);
 
 		// ============================================================================
 		// Repositories (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductRepository::class );
-		$this->getContainer()->addShared( CategoryRepository::class );
-		$this->getContainer()->addShared( RibbonRepository::class );
-		$this->getContainer()->addShared( SettingsRepository::class );
+		$this->getContainer()->addShared(ProductRepository::class);
+		$this->getContainer()->addShared(CategoryRepository::class);
+		$this->getContainer()->addShared(RibbonRepository::class);
+		$this->getContainer()->addShared(SettingsRepository::class);
 
 		// ============================================================================
 		// Validators (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductValidator::class );
+		$this->getContainer()->addShared(ProductValidator::class);
 
 		// ============================================================================
 		// Factories (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductFactory::class );
-		$this->getContainer()->addShared( CategoryFactory::class );
-		$this->getContainer()->addShared( RibbonFactory::class );
+		$this->getContainer()->addShared(ProductFactory::class);
+		$this->getContainer()->addShared(CategoryFactory::class);
+		$this->getContainer()->addShared(RibbonFactory::class);
 
 		// ============================================================================
 		// Formatters (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( PriceFormatter::class );
+		$this->getContainer()->addShared(PriceFormatter::class);
 
 		// ============================================================================
 		// Services (Shared - Business Logic Layer)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductService::class )
-			->addArgument( ProductRepository::class )
-			->addArgument( ProductValidator::class )
-			->addArgument( ProductFactory::class )
-			->addArgument( PriceFormatter::class )
-			->addArgument( Cache::class );
+		$this->getContainer()->addShared(ProductService::class)
+			->addArgument(ProductRepository::class)
+			->addArgument(ProductValidator::class)
+			->addArgument(ProductFactory::class)
+			->addArgument(PriceFormatter::class)
+			->addArgument(Cache::class);
 
-		$this->getContainer()->addShared( AffiliateService::class )
-			->addArgument( SettingsRepository::class );
+		$this->getContainer()->addShared(AffiliateService::class)
+			->addArgument(SettingsRepository::class);
 
-		$this->getContainer()->addShared( AnalyticsService::class )
-			->addArgument( Cache::class );
+		$this->getContainer()->addShared(AnalyticsService::class)
+			->addArgument(Cache::class);
 
 		// ============================================================================
 		// Assets (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( Manifest::class );
-		$this->getContainer()->addShared( SRI::class )
-			->addArgument( Manifest::class );
-		$this->getContainer()->addShared( Assets::class )
-			->addArgument( Manifest::class );
+		$this->getContainer()->addShared(Manifest::class);
+		$this->getContainer()->addShared(SRI::class)
+			->addArgument(Manifest::class);
+		$this->getContainer()->addShared(Assets::class)
+			->addArgument(Manifest::class);
 
 		// ============================================================================
 		// Security (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared( Headers::class );
+		$this->getContainer()->addShared(Headers::class);
 
 		// ============================================================================
 		// Admin (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( Settings::class );
-		$this->getContainer()->addShared( Menu::class );
-		$this->getContainer()->addShared( ProductFormHandler::class )
-			->addArgument( ProductRepository::class )
-			->addArgument( ProductFactory::class );
-		$this->getContainer()->addShared( CategoryFormHandler::class )
-			->addArgument( CategoryRepository::class );
-		$this->getContainer()->addShared( CategoryFields::class );
-		$this->getContainer()->addShared( RibbonFields::class );
-		$this->getContainer()->addShared( CategoryTable::class )
-			->addArgument( CategoryRepository::class )
-			->addArgument( CategoryFactory::class );
-		$this->getContainer()->addShared( Admin::class )
-			->addArgument( Assets::class )
-			->addArgument( ProductService::class )
-			->addArgument( Headers::class )
-			->addArgument( Menu::class )
-			->addArgument( ProductFormHandler::class )
-			->addArgument( RibbonFields::class );
-		$this->getContainer()->addShared( AjaxHandler::class )
-			->addArgument( ProductService::class )
-			->addArgument( ProductRepository::class );
+		$this->getContainer()->addShared(Settings::class);
+
+		$this->getContainer()->addShared(Menu::class);
+
+		$this->getContainer()->addShared(ProductFormHandler::class)
+			->addArgument(ProductRepository::class)
+			->addArgument(ProductFactory::class);
+
+		$this->getContainer()->addShared(CategoryFormHandler::class)
+			->addArgument(CategoryRepository::class);
+
+		$this->getContainer()->addShared(CategoryFields::class);
+
+		$this->getContainer()->addShared(RibbonFields::class);
+
+		$this->getContainer()->addShared(CategoryTable::class)
+			->addArgument(CategoryRepository::class)
+			->addArgument(CategoryFactory::class);
+
+		$this->getContainer()->addShared(Admin::class)
+			->addArgument(Assets::class)
+			->addArgument(ProductService::class)
+			->addArgument(Headers::class)
+			->addArgument(Menu::class)
+			->addArgument(ProductFormHandler::class)
+			->addArgument(RibbonFields::class)
+			->addArgument(Settings::class);
+
+		$this->getContainer()->addShared(AjaxHandler::class)
+			->addArgument(ProductService::class)
+			->addArgument(ProductRepository::class);
 
 		// ============================================================================
 		// Public (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( Public_::class )
-			->addArgument( Assets::class )
-			->addArgument( ProductService::class )
-			->addArgument( SettingsRepository::class )
-			->addArgument( AffiliateService::class );
+		$this->getContainer()->addShared(Public_::class)
+			->addArgument(Assets::class)
+			->addArgument(ProductService::class)
+			->addArgument(SettingsRepository::class)
+			->addArgument(AffiliateService::class);
 
 		// ============================================================================
 		// Blocks (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( Blocks::class )
-			->addArgument( ProductService::class );
+		$this->getContainer()->addShared(Blocks::class)
+			->addArgument(ProductService::class);
 
 		// ============================================================================
 		// REST Controllers (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductsController::class )
-			->addArgument( ProductService::class );
+		$this->getContainer()->addShared(ProductsController::class)
+			->addArgument(ProductService::class);
 
-		$this->getContainer()->addShared( CategoriesController::class )
-			->addArgument( CategoryRepository::class );
+		$this->getContainer()->addShared(CategoriesController::class)
+			->addArgument(CategoryRepository::class);
 
-		$this->getContainer()->addShared( RibbonsController::class )
-			->addArgument( RibbonRepository::class );
+		$this->getContainer()->addShared(RibbonsController::class)
+			->addArgument(RibbonRepository::class);
 
-		$this->getContainer()->addShared( AnalyticsController::class )
-			->addArgument( AnalyticsService::class );
+		$this->getContainer()->addShared(AnalyticsController::class)
+			->addArgument(AnalyticsService::class);
 
-		$this->getContainer()->addShared( HealthController::class );
+		$this->getContainer()->addShared(HealthController::class);
 
-		$this->getContainer()->addShared( AffiliatesController::class )
-			->addArgument( AffiliateService::class );
+		$this->getContainer()->addShared(AffiliatesController::class)
+			->addArgument(AffiliateService::class);
 
 		// ============================================================================
 		// CLI (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( ProductsCommand::class )
-			->addArgument( ProductService::class );
+		$this->getContainer()->addShared(ProductsCommand::class)
+			->addArgument(ProductService::class);
 
 		// ============================================================================
 		// Privacy (Shared - Request Scope)
 		// ============================================================================
-		$this->getContainer()->addShared( GDPR::class );
+		$this->getContainer()->addShared(GDPR::class);
 	}
 }

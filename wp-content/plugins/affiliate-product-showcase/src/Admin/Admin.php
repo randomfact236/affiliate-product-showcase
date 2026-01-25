@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Admin;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 use AffiliateProductShowcase\Assets\Assets;
 use AffiliateProductShowcase\Plugin\Constants;
 use AffiliateProductShowcase\Security\Headers;
@@ -14,10 +10,11 @@ use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Admin\CategoryFields;
 use AffiliateProductShowcase\Admin\TagFields;
 use AffiliateProductShowcase\Admin\RibbonFields;
+use AffiliateProductShowcase\Admin\Settings;
 
 final class Admin {
-	private Settings $settings;
 	private MetaBoxes $metaboxes;
+	private Settings $settings;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
 	private ProductTableUI $product_table_ui;
@@ -31,10 +28,11 @@ final class Admin {
 		private Headers $headers,
 		Menu $menu,
 		ProductFormHandler $form_handler,
-		RibbonFields $ribbon_fields
+		RibbonFields $ribbon_fields,
+		Settings $settings
 	) {
-		$this->settings = new Settings();
-		$this->metaboxes = new MetaBoxes( $this->product_service );
+		$this->metaboxes = new MetaBoxes($this->product_service);
+		$this->settings = $settings;
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
 		$this->product_table_ui = new ProductTableUI();
@@ -44,10 +42,12 @@ final class Admin {
 	}
 
 	public function init(): void {
-		add_action( 'admin_init', [ $this, 'register_settings' ] );
-		add_action( 'add_meta_boxes', [ $this->metaboxes, 'register' ] );
-		add_action( 'save_post', [ $this->metaboxes, 'save_meta' ], 10, 2 );
-		add_action( 'admin_notices', [ $this, 'render_product_table_on_products_page' ], 10 );
+		// Initialize settings
+		$this->settings->init();
+		
+		add_action('add_meta_boxes', [$this->metaboxes, 'register']);
+		add_action('save_post', [$this->metaboxes, 'save_meta'], 10, 2);
+		add_action('admin_notices', [$this, 'render_product_table_on_products_page'], 10);
 		
 		// Initialize category components (WordPress native + custom enhancements)
 		$this->category_fields->init();
@@ -74,17 +74,13 @@ final class Admin {
 		$screen = get_current_screen();
 		
 		// Only render on products listing page (edit.php?post_type=aps_product)
-		if ( $screen && $screen->id === 'edit-aps_product' ) {
+		if ($screen && $screen->id === 'edit-aps_product') {
 			$this->product_table_ui->render();
 		}
 	}
 
-	public function register_settings(): void {
-		$this->settings->register();
-	}
-
-	public function enqueue_admin_assets( string $hook ): void {
-		if ( false !== strpos( $hook, Constants::SLUG ) ) {
+	public function enqueue_admin_assets(string $hook): void {
+		if (false !== strpos($hook, Constants::SLUG)) {
 			$this->assets->enqueue_admin();
 		}
 	}

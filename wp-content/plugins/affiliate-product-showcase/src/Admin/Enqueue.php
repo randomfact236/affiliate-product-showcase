@@ -578,6 +578,7 @@ class Enqueue {
     private function isPluginPage( string $hook ): bool {
         $plugin_pages = [
             'affiliate-product-showcase',
+            'affiliate-manager',
             'affiliate-product-showcase-analytics',
             'affiliate-product-showcase-settings',
             'affiliate-product-showcase-help',
@@ -621,7 +622,7 @@ class Enqueue {
      * @return bool
      */
     private function isSettingsPage( string $hook ): bool {
-        return strpos( $hook, 'affiliate-product-showcase-settings' ) !== false;
+        return strpos( $hook, 'affiliate-manager-settings' ) !== false;
     }
 
     /**
