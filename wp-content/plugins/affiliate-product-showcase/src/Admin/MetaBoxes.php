@@ -36,8 +36,9 @@ final class MetaBoxes {
 		// Get current meta values
 		$meta = [
 			// Group 1: Product Information
-			'sku'           => get_post_meta( $post->ID, '_aps_sku', true ),
-			'brand'         => get_post_meta( $post->ID, '_aps_brand', true ),
+			'sku'                => get_post_meta( $post->ID, '_aps_sku', true ),
+			'brand'              => get_post_meta( $post->ID, '_aps_brand', true ),
+			'short_description'   => get_post_meta( $post->ID, '_aps_short_description', true ),
 			
 			// Group 2: Pricing
 			'regular_price'       => get_post_meta( $post->ID, '_aps_regular_price', true ),
@@ -46,10 +47,14 @@ final class MetaBoxes {
 			'currency'            => get_post_meta( $post->ID, '_aps_currency', true ),
 			
 			// Group 3: Product Data
-			'stock_status'       => get_post_meta( $post->ID, '_aps_stock_status', true ),
-			'availability_date'  => get_post_meta( $post->ID, '_aps_availability_date', true ),
-			'rating'            => get_post_meta( $post->ID, '_aps_rating', true ),
-			'review_count'      => get_post_meta( $post->ID, '_aps_review_count', true ),
+			'stock_status'          => get_post_meta( $post->ID, '_aps_stock_status', true ),
+			'availability_date'     => get_post_meta( $post->ID, '_aps_availability_date', true ),
+			'rating'               => get_post_meta( $post->ID, '_aps_rating', true ),
+			'review_count'         => get_post_meta( $post->ID, '_aps_review_count', true ),
+			
+			// Group 3b: Digital Product Information
+			'version_number'       => get_post_meta( $post->ID, '_aps_version_number', true ),
+			'platform_requirements' => get_post_meta( $post->ID, '_aps_platform_requirements', true ),
 			
 			// Group 4: Product Media
 			'video_url'     => get_post_meta( $post->ID, '_aps_video_url', true ),
@@ -102,6 +107,7 @@ final class MetaBoxes {
 		// Group 1: Product Information
 		$sku = sanitize_text_field( wp_unslash( $_POST['aps_sku'] ?? '' ) );
 		$brand = isset( $_POST['aps_brand'] ) ? intval( wp_unslash( $_POST['aps_brand'] ) ) : 0;
+		$short_description = sanitize_textarea_field( wp_unslash( $_POST['aps_short_description'] ?? '' ) );
 
 		// Group 2: Pricing
 		$regular_price = isset( $_POST['aps_regular_price'] ) ? (float) wp_unslash( $_POST['aps_regular_price'] ) : 0;
@@ -114,6 +120,10 @@ final class MetaBoxes {
 		$availability_date = sanitize_text_field( wp_unslash( $_POST['aps_availability_date'] ?? '' ) );
 		$rating = isset( $_POST['aps_rating'] ) ? (float) wp_unslash( $_POST['aps_rating'] ) : null;
 		$review_count = isset( $_POST['aps_review_count'] ) ? intval( wp_unslash( $_POST['aps_review_count'] ) ) : 0;
+
+		// Group 3b: Digital Product Information
+		$version_number = sanitize_text_field( wp_unslash( $_POST['aps_version_number'] ?? '' ) );
+		$platform_requirements = sanitize_textarea_field( wp_unslash( $_POST['aps_platform_requirements'] ?? '' ) );
 
 		// Group 4: Product Media
 		$video_url = esc_url_raw( wp_unslash( $_POST['aps_video_url'] ?? '' ) );
@@ -147,6 +157,7 @@ final class MetaBoxes {
 		// Save all meta fields
 		update_post_meta( $post_id, '_aps_sku', $sku );
 		update_post_meta( $post_id, '_aps_brand', $brand );
+		update_post_meta( $post_id, '_aps_short_description', $short_description );
 		update_post_meta( $post_id, '_aps_regular_price', $regular_price );
 		update_post_meta( $post_id, '_aps_sale_price', $sale_price );
 		update_post_meta( $post_id, '_aps_discount_percentage', $discount_percentage );
@@ -155,6 +166,8 @@ final class MetaBoxes {
 		update_post_meta( $post_id, '_aps_availability_date', $availability_date );
 		update_post_meta( $post_id, '_aps_rating', $rating );
 		update_post_meta( $post_id, '_aps_review_count', $review_count );
+		update_post_meta( $post_id, '_aps_version_number', $version_number );
+		update_post_meta( $post_id, '_aps_platform_requirements', $platform_requirements );
 		update_post_meta( $post_id, '_aps_video_url', $video_url );
 		update_post_meta( $post_id, '_aps_weight', $weight );
 		update_post_meta( $post_id, '_aps_length', $length );
