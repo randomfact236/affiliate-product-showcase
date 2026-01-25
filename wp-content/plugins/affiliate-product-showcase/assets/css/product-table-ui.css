@@ -25,6 +25,12 @@ body.post-type-aps_product.edit-php .tablenav.top .bulkactions {
     display: none !important;
 }
 
+/* Hide WordPress default status views (All, Published, Drafts, etc.) */
+body.post-type-aps_product.edit-php .tablenav .views,
+body.post-type-aps_product.edit-php .subsubsub {
+    display: none !important;
+}
+
 /* Keep admin notices visible */
 body.post-type-aps_product.edit-php .notice,
 body.post-type-aps_product.edit-php .error,

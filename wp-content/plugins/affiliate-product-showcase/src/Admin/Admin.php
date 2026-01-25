@@ -73,8 +73,8 @@ final class Admin {
 	public function render_product_table_on_products_page(): void {
 		$screen = get_current_screen();
 		
-		// Only render on our custom products page
-		if ( $screen && $screen->id === 'affiliate-product-showcase_page_aps-products' ) {
+		// Only render on products listing page (edit.php?post_type=aps_product)
+		if ( $screen && $screen->id === 'edit-aps_product' ) {
 			$this->product_table_ui->render();
 		}
 	}

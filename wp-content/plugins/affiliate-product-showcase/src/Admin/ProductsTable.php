@@ -399,6 +399,19 @@ class ProductsTable extends \WP_List_Table {
 	}
 
 	/**
+	 * Override views to prevent WP status links from appearing
+	 *
+	 * This removes the default WordPress status views (All, Published, Drafts, etc.)
+	 * from appearing at the top and bottom of the table.
+	 * Custom status counts are rendered in ProductTableUI instead.
+	 *
+	 * @return array|false Return false to disable views
+	 */
+	public function views(): array|false {
+		return false;
+	}
+
+	/**
 	 * Hidden columns
 	 *
 	 * @return array
