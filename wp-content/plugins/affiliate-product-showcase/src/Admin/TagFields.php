@@ -88,10 +88,6 @@ final class TagFields {
 	public function enqueue_admin_assets( string $hook_suffix ): void {
 		$screen = get_current_screen();
 		if ( $screen && $screen->taxonomy === 'aps_tag' ) {
-			// Enqueue WordPress color picker
-			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_script( 'wp-color-picker' );
-			
 			wp_enqueue_style(
 				'aps-admin-tag',
 				Constants::assetUrl( 'assets/css/admin-tag.css' ),
@@ -101,39 +97,9 @@ final class TagFields {
 			
 			// Add inline script for status toggle
 			wp_add_inline_script( 'jquery', $this->get_inline_script() );
-			
-			// Add inline script for color picker
-			wp_add_inline_script( 'wp-color-picker', $this->get_color_picker_script() );
 		}
 	}
 
-	/**
-	 * Get inline JavaScript for color picker
-	 *
-	 * @return string Inline script
-	 * @since 1.4.0
-	 */
-	private function get_color_picker_script(): string {
-		ob_start();
-		?>
-		jQuery(document).ready(function($) {
-			// Initialize color picker
-			if ( $('.aps-color-picker').length ) {
-				$('.aps-color-picker').wpColorPicker({
-					change: function(event, ui) {
-						// Update value when color changes
-						$(this).val(ui.color.toString());
-					},
-					clear: function() {
-						// Clear value when clear button clicked
-						$(this).val('');
-					}
-				});
-			}
-		});
-		<?php
-		return ob_get_clean();
-	}
 
 	/**
 	 * Get inline JavaScript for status toggle
@@ -555,7 +521,6 @@ final class TagFields {
 		$image_url = get_term_meta( $tag_id, '_aps_tag_image_url', true );
 		$featured = get_term_meta( $tag_id, '_aps_tag_featured', true ) === '1';
 		$is_default = get_term_meta( $tag_id, '_aps_tag_is_default', true ) === '1';
-		$color = get_term_meta( $tag_id, '_aps_tag_color', true );
 		$icon = get_term_meta( $tag_id, '_aps_tag_icon', true );
 
 		?>
@@ -604,26 +569,6 @@ final class TagFields {
 
 		<div class="form-field aps-tag-settings">
 			<h3><?php esc_html_e( '=== Tag Settings ===', 'affiliate-product-showcase' ); ?></h3>
-
-			<!-- Tag Color -->
-			<div class="form-field">
-				<label for="_aps_tag_color">
-					<?php esc_html_e( 'Tag Color', 'affiliate-product-showcase' ); ?>
-				</label>
-				<input
-					type="text"
-					id="_aps_tag_color"
-					name="_aps_tag_color"
-					value="<?php echo esc_attr( $color ); ?>"
-					class="aps-color-picker regular-text"
-					placeholder="#2271b1"
-					pattern="^#[0-9a-fA-F]{6}$"
-					maxlength="7"
-				/>
-				<p class="description">
-					<?php esc_html_e( 'Enter hex color code for tag (e.g., #2271b1).', 'affiliate-product-showcase' ); ?>
-				</p>
-			</div>
 
 			<!-- Tag Icon -->
 			<div class="form-field">
@@ -775,17 +720,6 @@ final class TagFields {
 			update_term_meta( $tag_id, '_aps_tag_is_default', '0' );
 		}
 
-		// Sanitize and save color
-		$color = isset( $_POST['_aps_tag_color'] ) 
-			? sanitize_text_field( wp_unslash( $_POST['_aps_tag_color'] ) ) 
-			: '';
-		if ( ! empty( $color ) ) {
-			// Validate hex color format
-			if ( ! preg_match( '/^#[0-9a-fA-F]{6}$/', $color ) ) {
-				$color = '';
-			}
-		}
-		update_term_meta( $tag_id, '_aps_tag_color', $color );
 
 		// Sanitize and save icon
 		$icon = isset( $_POST['_aps_tag_icon'] ) 
@@ -819,7 +753,6 @@ final class TagFields {
 			
 			// Add custom columns after slug
 			if ( $key === 'slug' ) {
-				$new_columns['color'] = __( 'Color', 'affiliate-product-showcase' );
 				$new_columns['icon'] = __( 'Icon', 'affiliate-product-showcase' );
 				$new_columns['status'] = __( 'Status', 'affiliate-product-showcase' );
 				$new_columns['count'] = __( 'Count', 'affiliate-product-showcase' );
@@ -841,21 +774,6 @@ final class TagFields {
 	 * @filter manage_aps_tag_custom_column
 	 */
 	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
-		// Render color column
-		if ( $column_name === 'color' ) {
-			$color = get_term_meta( $term_id, '_aps_tag_color', true );
-			
-			if ( ! empty( $color ) ) {
-				return sprintf(
-					'<span class="aps-tag-color-swatch" style="background-color: %s;" title="%s"></span>',
-					esc_attr( $color ),
-					esc_attr( $color )
-				);
-			}
-			
-			return '<span class="aps-tag-color-empty">-</span>';
-		}
-
 		// Render icon column
 		if ( $column_name === 'icon' ) {
 			$icon = get_term_meta( $term_id, '_aps_tag_icon', true );

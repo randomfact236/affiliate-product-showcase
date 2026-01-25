@@ -58,7 +58,6 @@ final class TagFactory {
 	 * $tag = TagFactory::from_array([
 	 *     'name' => 'Sale',
 	 *     'slug' => 'sale',
-	 *     'color' => '#ff0000',
 	 * ]);
 	 * ```
 	 */
@@ -145,7 +144,6 @@ final class TagFactory {
 		}
 
 		// Get tag metadata
-		$color = get_term_meta( (int) $row->term_id, '_aps_tag_color', true ) ?: null;
 		$icon = get_term_meta( (int) $row->term_id, '_aps_tag_icon', true ) ?: null;
 
 		return new Tag(
@@ -154,7 +152,6 @@ final class TagFactory {
 			$row->slug ?? sanitize_title( $row->name ),
 			$row->description ?? '',
 			(int) ( $row->count ?? 0 ),
-			$color,
 			$icon,
 			$row->term_group ? date( 'Y-m-d H:i:s', (int) $row->term_group ) : current_time( 'mysql' )
 		);

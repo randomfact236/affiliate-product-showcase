@@ -185,7 +185,6 @@ final class TagsController extends RestController {
 	 * - name: Tag name (required, max 200 chars)
 	 * - slug: Tag slug (optional, auto-generated from name)
 	 * - description: Tag description (optional)
-	 * - color: Tag color (hex format, optional)
 	 * - icon: Tag icon (emoji or SVG, optional)
 	 * - status: Tag status (published/draft, default published)
 	 * - featured: Tag featured flag (boolean, default false)
@@ -212,12 +211,6 @@ final class TagsController extends RestController {
 				'required'          => false,
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_textarea_field',
-			],
-			'color' => [
-				'required'          => false,
-				'type'              => 'string',
-				'format'            => 'hex-color',
-				'sanitize_callback' => 'sanitize_hex_color',
 			],
 			'icon' => [
 				'required'          => false,

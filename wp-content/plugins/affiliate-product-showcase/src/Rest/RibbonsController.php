@@ -122,33 +122,9 @@ final class RibbonsController {
             $args['search'] = $params['search'];
         }
 
-        // Status filter
-        if ( ! empty( $params['status'] ) ) {
-            // TRUE HYBRID: Filter by status from term meta
-            $args['meta_key'] = '_aps_ribbon_status';
-            $args['meta_value'] = $params['status'];
-        }
-
-        // Featured filter
-        if ( isset( $params['featured'] ) ) {
-            // TRUE HYBRID: Filter by featured from term meta
-            $args['meta_query'] = [
-                [
-                    'key'   => '_aps_ribbon_featured',
-                    'value' => $params['featured'] ? '1' : '0',
-                ],
-            ];
-        }
-
         // Order
         if ( ! empty( $params['orderby'] ) ) {
-            if ( 'priority' === $params['orderby'] ) {
-                // TRUE HYBRID: Order by priority from term meta
-                $args['orderby'] = 'meta_value_num';
-                $args['meta_key'] = '_aps_ribbon_priority';
-            } else {
-                $args['orderby'] = $params['orderby'];
-            }
+            $args['orderby'] = $params['orderby'];
         }
 
         if ( ! empty( $params['order'] ) ) {
@@ -370,20 +346,11 @@ final class RibbonsController {
                 'description' => __( 'Limit results to those matching a string.', 'affiliate-product-showcase' ),
                 'type'        => 'string',
             ],
-            'status' => [
-                'description' => __( 'Limit results to ribbons with a specific status.', 'affiliate-product-showcase' ),
-                'type'        => 'string',
-                'enum'        => [ 'published', 'draft' ],
-            ],
-            'featured' => [
-                'description' => __( 'Limit results to featured ribbons.', 'affiliate-product-showcase' ),
-                'type'        => 'boolean',
-            ],
             'orderby' => [
                 'description' => __( 'Sort collection by object attribute.', 'affiliate-product-showcase' ),
                 'type'        => 'string',
                 'default'     => 'name',
-                'enum'        => [ 'id', 'name', 'count', 'priority' ],
+                'enum'        => [ 'id', 'name', 'count' ],
             ],
             'order' => [
                 'description' => __( 'Order sort attribute ascending or descending.', 'affiliate-product-showcase' ),
@@ -435,11 +402,6 @@ final class RibbonsController {
                     'type'        => 'string',
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'description' => [
-                    'description' => __( 'Ribbon description.', 'affiliate-product-showcase' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
                 'count'       => [
                     'description' => __( 'Number of products with this ribbon.', 'affiliate-product-showcase' ),
                     'type'        => 'integer',
@@ -456,31 +418,12 @@ final class RibbonsController {
                     'type'        => 'string',
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'priority'    => [
-                    'description' => __( 'Display priority.', 'affiliate-product-showcase' ),
-                    'type'        => 'integer',
-                    'context'     => [ 'view', 'edit' ],
-                ],
                 'status'      => [
-                    'description' => __( 'Visibility status.', 'affiliate-product-showcase' ),
+                    'description' => __( 'Ribbon status (published/draft/trashed).', 'affiliate-product-showcase' ),
                     'type'        => 'string',
                     'context'     => [ 'view', 'edit' ],
-                    'enum'        => [ 'published', 'draft' ],
-                ],
-                'featured'    => [
-                    'description' => __( 'Featured flag.', 'affiliate-product-showcase' ),
-                    'type'        => 'boolean',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'is_default'  => [
-                    'description' => __( 'Default ribbon flag.', 'affiliate-product-showcase' ),
-                    'type'        => 'boolean',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'image_url'   => [
-                    'description' => __( 'Image URL.', 'affiliate-product-showcase' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
+                    'enum'        => [ 'published', 'draft', 'trashed' ],
+                    'default'     => 'published',
                 ],
                 'created_at'  => [
                     'description' => __( 'Creation timestamp.', 'affiliate-product-showcase' ),

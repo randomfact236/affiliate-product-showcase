@@ -68,14 +68,6 @@ final class Tag {
 	public readonly int $count;
 
 	/**
-	 * Display color (hex color code)
-	 *
-	 * @var string|null
-	 * @since 1.0.0
-	 */
-	public readonly ?string $color;
-
-	/**
 	 * Icon identifier/class
 	 *
 	 * @var string|null
@@ -115,7 +107,6 @@ final class Tag {
 	 * @param string $slug        Tag slug
 	 * @param string $description Tag description
 	 * @param int    $count       Product count with this tag
-	 * @param string|null $color  Display color (hex code)
 	 * @param string|null $icon   Icon identifier/class
 	 * @param string $created_at  Tag creation date
 	 * @param string $status      Tag visibility status
@@ -129,7 +120,6 @@ final class Tag {
 		string $slug,
 		string $description = '',
 		int $count = 0,
-		?string $color = null,
 		?string $icon = null,
 		string $created_at = '',
 		string $status = 'published',
@@ -140,7 +130,6 @@ final class Tag {
 		$this->slug = $slug;
 		$this->description = $description;
 		$this->count = $count;
-		$this->color = $color;
 		$this->icon = $icon;
 		$this->created_at = $created_at ?: current_time( 'mysql' );
 		$this->status = $status;
@@ -162,7 +151,6 @@ final class Tag {
 			'slug'        => $this->slug,
 			'description' => $this->description,
 			'count'       => $this->count,
-			'color'       => $this->color,
 			'icon'        => $this->icon,
 			'created_at'  => $this->created_at,
 			'taxonomy'    => Constants::TAX_TAG,
@@ -213,7 +201,6 @@ final class Tag {
 		}
 
 		// Get tag metadata
-		$color = self::get_tag_meta( $term->term_id, 'color' );
 		$icon = self::get_tag_meta( $term->term_id, 'icon' );
 
 		// Get status from term meta (_aps_tag_status)
@@ -228,7 +215,6 @@ final class Tag {
 			$term->slug,
 			$term->description ?? '',
 			(int) $term->count,
-			$color ?: null,
 			$icon ?: null,
 			$term->term_group ? date( 'Y-m-d H:i:s', $term->term_group ) : current_time( 'mysql' ),
 			$status,
@@ -282,7 +268,6 @@ final class Tag {
 			sanitize_title( $slug ),
 			sanitize_textarea_field( $data['description'] ?? '' ),
 			(int) ( $data['count'] ?? 0 ),
-			! empty( $data['color'] ) ? sanitize_hex_color( $data['color'] ) : null,
 			! empty( $data['icon'] ) ? sanitize_text_field( $data['icon'] ) : null,
 			$data['created_at'] ?? '',
 			$status,

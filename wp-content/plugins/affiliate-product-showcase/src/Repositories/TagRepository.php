@@ -187,7 +187,6 @@ final class TagRepository {
 	 *     'sale',
 	 *     'Products on sale',
 	 *     0,
-	 *     '#ff0000',
 	 *     'dashicons-tag',
 	 *     'published',
 	 *     false
@@ -240,7 +239,6 @@ final class TagRepository {
 	 *     'sale-updated',
 	 *     'Updated description',
 	 *     0,
-	 *     '#00ff00',
 	 *     'dashicons-tag-updated',
 	 *     'published',
 	 *     true
@@ -357,13 +355,6 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	private function save_metadata( int $term_id, Tag $tag ): void {
-		// Color
-		if ( $tag->color ) {
-			update_term_meta( $term_id, '_aps_tag_color', $tag->color );
-		} else {
-			delete_term_meta( $term_id, '_aps_tag_color' );
-		}
-
 		// Icon
 		if ( $tag->icon ) {
 			update_term_meta( $term_id, '_aps_tag_icon', $tag->icon );
@@ -386,7 +377,6 @@ final class TagRepository {
 	 * @since 1.0.0
 	 */
 	private function delete_metadata( int $term_id ): void {
-		delete_term_meta( $term_id, '_aps_tag_color' );
 		delete_term_meta( $term_id, '_aps_tag_icon' );
 		delete_term_meta( $term_id, '_aps_tag_status' );
 		delete_term_meta( $term_id, '_aps_tag_featured' );

@@ -215,12 +215,6 @@ body.taxonomy-aps_tag #col-right .aps-tag-top-controls {
 	font-family: monospace;
 }
 
-/* Color column */
-.fixed .column-color {
-	width: 10%;
-	text-align: center;
-}
-
 /* Icon column */
 .fixed .column-icon {
 	width: 10%;
@@ -286,41 +280,6 @@ body.taxonomy-aps_tag #col-right .aps-tag-top-controls {
 	border-radius: 3px;
 	font-weight: 600;
 	font-size: 12px;
-}
-
-/* ============ Color Column Styling ============ */
-
-/* Color swatch display */
-.aps-tag-color-swatch {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	border-radius: 3px;
-	border: 2px solid #c3c4c7;
-	vertical-align: middle;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.aps-tag-color-swatch:hover {
-	border-color: #2271b1;
-	cursor: help;
-	transform: scale(1.1);
-	transition: transform 0.2s ease;
-}
-
-/* Empty color state */
-.aps-tag-color-empty {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	border-radius: 3px;
-	border: 1px dashed #c3c4c7;
-	background-color: #f6f7f7;
-	vertical-align: middle;
-	text-align: center;
-	line-height: 24px;
-	font-size: 12px;
-	color: #646970;
 }
 
 /* ============ Icon Column Styling ============ */

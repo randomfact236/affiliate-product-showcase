@@ -33,18 +33,13 @@ final class RibbonFactory {
      */
     public static function from_array( array $data ): Ribbon {
         return new Ribbon(
-            id: $data['id'] ?? 0,
+            id: isset( $data['id'] ) ? (int) $data['id'] : 0,
             name: $data['name'] ?? '',
-            slug: $data['slug'] ?? sanitize_title( $data['name'] ?? '' ),
-            description: $data['description'] ?? '',
+            slug: $data['slug'] ?? '',
             count: $data['count'] ?? 0,
             color: $data['color'] ?? null,
             icon: $data['icon'] ?? null,
-            priority: $data['priority'] ?? 10,
             status: $data['status'] ?? 'published',
-            featured: $data['featured'] ?? false,
-            is_default: $data['is_default'] ?? false,
-            image_url: $data['image_url'] ?? null,
             created_at: $data['created_at'] ?? null,
             updated_at: $data['updated_at'] ?? null
         );
