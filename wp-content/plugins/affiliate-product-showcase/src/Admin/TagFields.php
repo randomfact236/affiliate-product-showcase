@@ -67,6 +67,9 @@ final class TagFields {
 		// Add admin notices for bulk actions
 		add_action( 'admin_notices', [ $this, 'display_bulk_action_notices' ] );
 
+		// Register AJAX handler for inline status toggle
+		add_action( 'wp_ajax_aps_toggle_tag_status', [ $this, 'ajax_toggle_tag_status' ] );
+
 		// Enqueue admin scripts and styles
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
 		
