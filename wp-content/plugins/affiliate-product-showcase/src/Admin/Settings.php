@@ -9,6 +9,7 @@ use AffiliateProductShowcase\Admin\Settings\CategoriesSettings;
 use AffiliateProductShowcase\Admin\Settings\TagsSettings;
 use AffiliateProductShowcase\Admin\Settings\RibbonsSettings;
 use AffiliateProductShowcase\Admin\Settings\DisplaySettings;
+use AffiliateProductShowcase\Admin\Settings\SecuritySettings;
 
 /**
  * Settings Manager
@@ -31,6 +32,7 @@ class Settings {
 	const SECTION_CATEGORIES = 'affiliate_product_showcase_categories';
 	const SECTION_TAGS = 'affiliate_product_showcase_tags';
 	const SECTION_RIBBONS = 'affiliate_product_showcase_ribbons';
+	const SECTION_SECURITY = 'affiliate_product_showcase_security';
 	
 	/**
 	 * @var GeneralSettings
@@ -63,6 +65,11 @@ class Settings {
 	private DisplaySettings $display_settings;
 	
 	/**
+	 * @var SecuritySettings
+	 */
+	private SecuritySettings $security_settings;
+	
+	/**
 	 * @var array
 	 */
 	private array $defaults;
@@ -87,6 +94,7 @@ class Settings {
 		$this->tags_settings = new TagsSettings(self::OPTION_NAME);
 		$this->ribbons_settings = new RibbonsSettings(self::OPTION_NAME);
 		$this->display_settings = new DisplaySettings(self::OPTION_NAME);
+		$this->security_settings = new SecuritySettings(self::OPTION_NAME);
 	}
 	
 	/**
@@ -101,7 +109,8 @@ class Settings {
 			$this->categories_settings->get_defaults(),
 			$this->tags_settings->get_defaults(),
 			$this->ribbons_settings->get_defaults(),
-			$this->display_settings->get_defaults()
+			$this->display_settings->get_defaults(),
+			$this->security_settings->get_defaults()
 		);
 	}
 	
@@ -143,6 +152,7 @@ class Settings {
 		$this->tags_settings->register_section_and_fields();
 		$this->ribbons_settings->register_section_and_fields();
 		$this->display_settings->register_section_and_fields();
+		$this->security_settings->register_section_and_fields();
 	}
 	
 	/**
@@ -183,6 +193,7 @@ class Settings {
 		$sanitized = array_merge($sanitized, $this->tags_settings->sanitize_options($input));
 		$sanitized = array_merge($sanitized, $this->ribbons_settings->sanitize_options($input));
 		$sanitized = array_merge($sanitized, $this->display_settings->sanitize_options($input));
+		$sanitized = array_merge($sanitized, $this->security_settings->sanitize_options($input));
 		
 		return $sanitized;
 	}
@@ -200,6 +211,7 @@ class Settings {
 			TagsSettings::SECTION_ID => TagsSettings::SECTION_TITLE,
 			RibbonsSettings::SECTION_ID => RibbonsSettings::SECTION_TITLE,
 			DisplaySettings::SECTION_ID => DisplaySettings::SECTION_TITLE,
+			SecuritySettings::SECTION_ID => SecuritySettings::SECTION_TITLE,
 		];
 	}
 }

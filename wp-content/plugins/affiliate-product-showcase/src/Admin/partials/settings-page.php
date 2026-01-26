@@ -62,16 +62,15 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=security')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?> disabled">
+           class="aps-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>">
             <span class="aps-tab-icon">🔒</span>
             <span class="aps-tab-text"><?php esc_html_e('Security', 'affiliate-product-showcase'); ?></span>
-            <span class="aps-tab-badge">Coming Soon</span>
         </a>
     </div>
 
     <!-- Settings Form -->
     <div class="aps-settings-content">
-        <?php if (in_array($active_tab, ['general', 'products', 'categories', 'tags', 'ribbons', 'display'])): ?>
+        <?php if (in_array($active_tab, ['general', 'products', 'categories', 'tags', 'ribbons', 'display', 'security'])): ?>
             <form action="options.php" method="post">
                 <?php
                 settings_fields(\AffiliateProductShowcase\Admin\Settings::OPTION_GROUP);
@@ -130,6 +129,15 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
                     // Render ribbon settings fields table
                     echo '<table class="form-table" role="presentation">';
                     do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_RIBBONS);
+                    echo '</table>';
+                } elseif ($active_tab === 'security') {
+                    // Render security section manually with heading
+                    echo '<h2>' . esc_html__('Security Settings', 'affiliate-product-showcase') . '</h2>';
+                    echo '<p>' . esc_html__('Configure security settings including nonce verification, rate limiting, and security headers.', 'affiliate-product-showcase') . '</p>';
+                    
+                    // Render security settings fields table
+                    echo '<table class="form-table" role="presentation">';
+                    do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_SECURITY);
                     echo '</table>';
                 }
                 
