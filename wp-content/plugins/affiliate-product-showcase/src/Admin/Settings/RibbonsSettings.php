@@ -6,7 +6,8 @@ namespace AffiliateProductShowcase\Admin\Settings;
 /**
  * Ribbons Settings Section
  *
- * Handles ribbon settings including position, colors, animations, and limits.
+	 * Handles ribbon settings including position, animations, and limits.
+	 * Note: Ribbon colors are controlled per-ribbon in the Ribbon management tab.
  *
  * @package AffiliateProductShowcase\Admin\Settings
  * @since 1.0.0
@@ -25,8 +26,6 @@ final class RibbonsSettings extends AbstractSettingsSection {
 		return [
 			'enable_ribbons' => true,
 			'ribbon_position' => 'top-right',
-			'ribbon_color' => '#ff0000',
-			'ribbon_text_color' => '#ffffff',
 			'enable_ribbon_animations' => true,
 			'ribbon_animation_type' => 'fade-in',
 			'ribbon_size' => 'medium',
@@ -65,24 +64,6 @@ final class RibbonsSettings extends AbstractSettingsSection {
 			'affiliate-product-showcase',
 			self::SECTION_ID,
 			['label_for' => 'ribbon_position']
-		);
-		
-		\add_settings_field(
-			'ribbon_color',
-			__('Ribbon Color', 'affiliate-product-showcase'),
-			[$this, 'render_ribbon_color_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'ribbon_color']
-		);
-		
-		\add_settings_field(
-			'ribbon_text_color',
-			__('Ribbon Text Color', 'affiliate-product-showcase'),
-			[$this, 'render_ribbon_text_color_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'ribbon_text_color']
 		);
 		
 		\add_settings_field(
@@ -142,8 +123,6 @@ final class RibbonsSettings extends AbstractSettingsSection {
 		
 		$sanitized['enable_ribbons'] = isset($input['enable_ribbons']);
 		$sanitized['ribbon_position'] = in_array($input['ribbon_position'] ?? 'top-right', ['top-left', 'top-right', 'bottom-left', 'bottom-right']) ? $input['ribbon_position'] : 'top-right';
-		$sanitized['ribbon_color'] = sanitize_hex_color($input['ribbon_color'] ?? $this->get_default('ribbon_color'));
-		$sanitized['ribbon_text_color'] = sanitize_hex_color($input['ribbon_text_color'] ?? $this->get_default('ribbon_text_color'));
 		$sanitized['enable_ribbon_animations'] = isset($input['enable_ribbon_animations']);
 		$sanitized['ribbon_animation_type'] = in_array($input['ribbon_animation_type'] ?? 'fade-in', ['fade-in', 'slide-in', 'bounce', 'none']) ? $input['ribbon_animation_type'] : 'fade-in';
 		$sanitized['ribbon_size'] = in_array($input['ribbon_size'] ?? 'medium', ['small', 'medium', 'large']) ? $input['ribbon_size'] : 'medium';
@@ -160,7 +139,8 @@ final class RibbonsSettings extends AbstractSettingsSection {
 	 * @return void
 	 */
 	public function render_section_description(): void {
-		echo '<p>' . esc_html__('Configure ribbon position, colors, animations, and display limits.', 'affiliate-product-showcase') . '</p>';
+		echo '<p>' . esc_html__('Configure ribbon position, animations, and display limits.', 'affiliate-product-showcase') . '</p>';
+		echo '<p class="description">' . esc_html__('Note: Ribbon colors are controlled per-ribbon in the Ribbon management tab.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -197,28 +177,6 @@ final class RibbonsSettings extends AbstractSettingsSection {
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
 		echo '</select>';
-	}
-	
-	/**
-	 * Render ribbon color field
-	 *
-	 * @return void
-	 */
-	public function render_ribbon_color_field(): void {
-		$settings = $this->get_settings();
-		echo '<input type="color" name="' . esc_attr($this->option_name) . '[ribbon_color]" value="' . esc_attr($settings['ribbon_color']) . '" class="color-picker">';
-		echo '<p class="description">' . esc_html__('Default ribbon background color.', 'affiliate-product-showcase') . '</p>';
-	}
-	
-	/**
-	 * Render ribbon text color field
-	 *
-	 * @return void
-	 */
-	public function render_ribbon_text_color_field(): void {
-		$settings = $this->get_settings();
-		echo '<input type="color" name="' . esc_attr($this->option_name) . '[ribbon_text_color]" value="' . esc_attr($settings['ribbon_text_color']) . '" class="color-picker">';
-		echo '<p class="description">' . esc_html__('Default ribbon text color.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**

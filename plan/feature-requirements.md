@@ -915,14 +915,20 @@ aps-product-[element]-[modifier]
 - **Overall Progress:** ~86/363 complete (~24%) for Phase 1 launch
 
 **Last Updated:** 2026-01-26
-**Version:** 5.1.0 (Section 7 Settings Updated - 105 Settings, External Plugin Delegation)
+**Version:** 5.3.0 (Section 7 Settings Updated - 102 Settings, Removed Ribbon Color Settings)
 **Maintainer:** Development Team
 **Recent Changes:**
-- ✅ **UPDATED SECTION 7:** Reduced from 138 to 105 settings
+- ✅ **UPDATED SECTION 7:** Reduced from 138 to 102 settings
+- ✅ **UPDATED SECTION 7:** Reduced from 138 to 102 settings
 - ✅ **REMOVED SECTIONS:** Performance (12 settings), Analytics (10 settings), Integration/SEO (11 settings)
 - ✅ **EXTERNAL PLUGIN DELEGATION:**
-  - Performance → LiteSpeed/LS Cache (handles caching, optimization, minification)
-  - SEO/Integration → Rank Math (handles schema, Open Graph, Twitter Cards)
+  - Performance → LiteSpeed/LS Cache (handles caching, optimization, minification, WebP, CDN)
+  - SEO/Integration → Rank Math (handles schema, Open Graph, Twitter Cards, JSON-LD, rich snippets)
+- ✅ **ADDED MISSING IMPORT/EXPORT SETTINGS:** 6 additional settings (export_include_metadata, export_delimiter, export_enclosure, export_line_ending, enable_auto_backup, backup_frequency, backup_retention)
+- ✅ **REMOVED UNUSED CONSTANTS:** SECTION_PERFORMANCE, SECTION_ANALYTICS, SECTION_INTEGRATION from SettingsManager
+- ✅ **REMOVED RIBBON COLOR SETTINGS:** Background and text colors controlled per-ribbon in Ribbon management tab
+- ✅ **REMOVED PRODUCT_PERMALINK_STRUCTURE:** Handled by WordPress permalinks settings
+- ✅ **ENHANCED EXTERNAL PLUGIN DOCUMENTATION:** Detailed feature lists for LiteSpeed and Rank Math
 - ✅ **SHORTCODE SETTINGS REORDERED:** Grouped by shortcode type (ID + Products Per Page)
 - ✅ **GRANULAR SHORTCODE CONTROL:** Split products_per_page into 3 separate settings
   - product_grid_products_per_page (6, 12, 18, 24, 36, 48)
@@ -951,7 +957,7 @@ aps-product-[element]-[modifier]
 - ✅ Settings architecture design
 - ✅ Settings validation and sanitization
 - ✅ REST API for settings management
-- ✅ **Total:** 105 settings across all features (NO ANALYTICS, NO PERFORMANCE, NO SEO, NO CACHE)
+- ✅ **Total:** 102 settings across all features (NO ANALYTICS, NO PERFORMANCE, NO SEO, NO CACHE)
 
 **Milestone:** Fully dynamic settings system for complete plugin configuration
 
@@ -990,18 +996,18 @@ aps-product-[element]-[modifier]
 | Section | Settings Count | Status |
 |----------|----------------|---------|
 | **7.1 General** | 4 | ⏸️ Not Started |
-| **7.2 Products** | 13 | ⏸️ Not Started |
+| **7.2 Products** | 12 | ⏸️ Not Started |
 | **7.3 Categories** | 11 | ⏸️ Not Started |
 | **7.4 Tags** | 10 | ⏸️ Not Started |
-| **7.5 Ribbons** | 9 | ⏸️ Not Started |
+| **7.5 Ribbons** | 7 | ⏸️ Not Started |
 | **7.6 Display** | 20 | ⏸️ Not Started |
 | **7.7 Performance** | 0 | ⏸️ SKIPPED (LiteSpeed/LS Cache) |
 | **7.8 Security** | 11 | ⏸️ Not Started |
 | **7.9 Integration/SEO** | 0 | ⏸️ SKIPPED (Rank Math) |
-| **7.10 Import/Export** | 9 | ⏸️ Not Started |
+| **7.10 Import/Export** | 10 | ⏸️ Not Started |
 | **7.11 Shortcodes** | 8 | ⏸️ Not Started |
 | **7.12 Widgets** | 7 | ⏸️ Not Started |
-| **TOTAL** | **105** | ⏸️ Not Started |
+| **TOTAL** | **102** | ⏸️ Not Started |
 
 **Note:** Performance, SEO, and Integration settings handled by external plugins (LiteSpeed/LS Cache, Rank Math)
 
@@ -1032,17 +1038,17 @@ final class SettingsManager {
     private array $settings = [];
     private array $defaults = [];
     
-    // Settings sections
+    // Settings sections (Performance, Analytics, Integration handled by external plugins)
     public const SECTION_GENERAL = 'general';
     public const SECTION_PRODUCTS = 'products';
     public const SECTION_CATEGORIES = 'categories';
     public const SECTION_TAGS = 'tags';
     public const SECTION_RIBBONS = 'ribbons';
     public const SECTION_DISPLAY = 'display';
-    public const SECTION_PERFORMANCE = 'performance';
     public const SECTION_SECURITY = 'security';
-    public const SECTION_ANALYTICS = 'analytics';
-    public const SECTION_INTEGRATION = 'integration';
+    public const SECTION_IMPORT_EXPORT = 'import_export';
+    public const SECTION_SHORTCODES = 'shortcodes';
+    public const SECTION_WIDGETS = 'widgets';
     
     public function __construct() {
         $this->init_defaults();
@@ -1061,7 +1067,6 @@ final class SettingsManager {
             'time_format' => get_option('time_format'),
             
             // Product Settings
-            'product_permalink_structure' => '/product/%product_slug%/',
             'auto_generate_slugs' => true,
             'enable_click_tracking' => true,
             'enable_conversion_tracking' => true,
@@ -1087,8 +1092,6 @@ final class SettingsManager {
             // Ribbon Settings
             'enable_ribbons' => true,
             'ribbon_default_position' => 'top-right',
-            'ribbon_default_bg_color' => '#ff6b6b',
-            'ribbon_default_text_color' => '#ffffff',
             'enable_ribbon_animation' => true,
             
             // Display Settings
@@ -1119,6 +1122,13 @@ final class SettingsManager {
             'import_encoding' => 'UTF-8',
             'export_format' => 'csv',
             'export_include_images' => false,
+            'export_include_metadata' => true,
+            'export_delimiter' => ',',
+            'export_enclosure' => '"',
+            'export_line_ending' => 'CRLF',
+            'enable_auto_backup' => false,
+            'backup_frequency' => 'daily',
+            'backup_retention' => 7,
             
             // Shortcode Settings
             'product_grid_shortcode_id' => 'affiliate_product_grid',
@@ -1272,7 +1282,6 @@ final class SettingsManager {
             'default_currency' => 'text',
             'date_format' => 'text',
             'time_format' => 'text',
-            'product_permalink_structure' => 'text',
             'auto_generate_slugs' => 'boolean',
             'enable_click_tracking' => 'boolean',
             'enable_conversion_tracking' => 'boolean',
@@ -1292,8 +1301,6 @@ final class SettingsManager {
             'tag_cloud_orderby' => 'text',
             'enable_ribbons' => 'boolean',
             'ribbon_default_position' => 'text',
-            'ribbon_default_bg_color' => 'text',
-            'ribbon_default_text_color' => 'text',
             'enable_ribbon_animation' => 'boolean',
             'products_per_page' => 'integer',
             'default_view_mode' => 'text',
@@ -1318,6 +1325,13 @@ final class SettingsManager {
             'import_encoding' => 'text',
             'export_format' => 'text',
             'export_include_images' => 'boolean',
+            'export_include_metadata' => 'boolean',
+            'export_delimiter' => 'text',
+            'export_enclosure' => 'text',
+            'export_line_ending' => 'text',
+            'enable_auto_backup' => 'boolean',
+            'backup_frequency' => 'text',
+            'backup_retention' => 'integer',
             'product_grid_shortcode_id' => 'text',
             'featured_products_shortcode_id' => 'text',
             'product_slider_shortcode_id' => 'text',
@@ -1345,6 +1359,7 @@ final class SettingsManager {
 # 📊 COMPLETE SETTINGS LIST
 
 ## SECTION 7.1: GENERAL SETTINGS (4 Settings)
+**Total Settings in Section:** 4
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
@@ -1355,11 +1370,12 @@ final class SettingsManager {
 
 ---
 
-## SECTION 7.2: PRODUCT SETTINGS (13 Settings)
+## SECTION 7.2: PRODUCT SETTINGS (12 Settings)
+**Total Settings in Section:** 12
+**Note:** Removed `product_permalink_structure` setting (handled by WordPress permalinks)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `product_permalink_structure` | text | '/product/%product_slug%/' | URL structure for single products | Customizable |
 | `auto_generate_slugs` | checkbox | true | Automatically generate slugs from titles | - |
 | `enable_click_tracking` | checkbox | true | Track affiliate link clicks | - |
 | `enable_conversion_tracking` | checkbox | true | Track product conversions | - |
@@ -1412,14 +1428,13 @@ final class SettingsManager {
 
 ---
 
-## SECTION 7.5: RIBBON SETTINGS (9 Settings)
+## SECTION 7.5: RIBBON SETTINGS (7 Settings)
+**Note:** Ribbon colors (background and text) are controlled per-ribbon in the Ribbon management tab, not in global settings.
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
 | `enable_ribbons` | checkbox | true | Enable ribbon/badge system | - |
 | `ribbon_default_position` | select | 'top-right' | Default ribbon position | top-left, top-right, bottom-left, bottom-right |
-| `ribbon_default_bg_color` | color | '#ff6b6b' | Default ribbon background color | Any hex color |
-| `ribbon_default_text_color` | color | '#ffffff' | Default ribbon text color | Any hex color |
 | `enable_ribbon_animation` | checkbox | true | Enable ribbon hover animations | - |
 | `ribbon_animation_type` | select | 'pulse' | Ribbon animation type | pulse, bounce, shake, none |
 | `ribbon_size` | select | 'medium' | Ribbon badge size | small, medium, large |
@@ -1459,21 +1474,24 @@ final class SettingsManager {
 **Status:** ⏸️ SKIPPED - LiteSpeed/LS Cache handles all performance optimization
 
 **Reason:** You're using LiteSpeed server with LS Cache plugin, which provides:
-- Page caching
-- Object caching
-- Database caching
-- Image optimization
-- WebP conversion
-- Critical CSS
-- Lazy loading
-- Minification (CSS/JS)
-- CDN integration
+- Page caching (HTML output)
+- Object caching (WordPress objects, queries)
+- Database caching (query results)
+- Image optimization (compression, resizing)
+- WebP conversion (automatic format conversion)
+- Critical CSS (above-the-fold styles)
+- Lazy loading (images, iframes)
+- Minification (CSS, JavaScript, HTML)
+- CDN integration (asset delivery)
+- Browser caching (static assets)
+- Gzip/Brotli compression
+
+**LiteSpeed Cache Configuration:**
+- Configure in LiteSpeed Cache plugin settings
+- Your plugin automatically benefits from all optimizations
+- No duplicate functionality needed
 
 **No settings needed in your plugin** - rely on LiteSpeed/LS Cache for all performance optimization.
-
-
-| Setting Key | Type | Default | Description | Options |
-|-------------|------|----------|-------------|----------|
 
 ---
 
@@ -1500,32 +1518,41 @@ final class SettingsManager {
 **Status:** ⏸️ SKIPPED - Rank Math handles all SEO
 
 **Reason:** You're using Rank Math SEO plugin, which provides:
-- Schema markup (Product, Course, etc.)
-- Open Graph tags
-- Twitter Cards
-- Canonical URLs
-- JSON-LD
-- Breadcrumb schema
-- Rating/Review schema
+- Schema markup (Product, Course, Article, Review schemas)
+- Open Graph tags (Facebook, LinkedIn sharing)
+- Twitter Cards (Twitter sharing)
+- Canonical URLs (prevent duplicate content)
+- JSON-LD structured data (rich snippets)
+- Breadcrumb schema (navigation)
+- Rating/Review schema (star ratings)
+- FAQ schema (FAQ rich snippets)
+- Product schema (price, availability, offers)
+- Local Business schema (if applicable)
+- Image optimization (alt tags, file names)
 
-**Your Plugin Should Do:**
-- Let Rank Math handle ALL SEO
-- Your plugin just creates/manages frontend content
-- Rank Math automatically picks it up
+**Rank Math Configuration:**
+- Configure in Rank Math settings
+- Your plugin creates standard WordPress content
+- Rank Math automatically detects and optimizes all content
+- Schema generates automatically for products, categories, tags
+
+**Your Plugin Responsibilities:**
+- Create semantic HTML structure
+- Use proper heading hierarchy (h1, h2, h3)
+- Include alt text on all images
+- Provide descriptive titles and descriptions
+- Let Rank Math handle ALL SEO meta tags
 
 **Optional Enhancement:**
-- Detect if Rank Math is active
+- Detect if Rank Math is active with `is_plugin_active('rank-math/rank-math.php')`
 - Show notice in settings: "SEO handled by Rank Math ✓"
+- Add link to Rank Math settings page
 
 **No settings needed in your plugin** - rely on Rank Math for all SEO functionality.
 
-
-| Setting Key | Type | Default | Description | Options |
-|-------------|------|----------|-------------|----------|
-
 ---
 
-## SECTION 7.10: IMPORT/EXPORT SETTINGS (9 Settings)
+## SECTION 7.10: IMPORT/EXPORT SETTINGS (10 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
@@ -1762,7 +1789,7 @@ Import settings from file
 
 **Status Tracking:**
 
-- **Section 7: Settings:** 0/105 complete (0%) for Phase 1
+- **Section 7: Settings:** 0/102 complete (0%) for Phase 1
   - ❌ Settings Infrastructure (0/6 complete)
   - ❌ Settings Page UI (0/6 complete)
   - ❌ Settings REST API (0/6 complete)
