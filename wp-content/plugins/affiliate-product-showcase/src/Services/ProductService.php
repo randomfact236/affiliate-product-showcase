@@ -214,7 +214,7 @@ final class ProductService extends AbstractService {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private static function register_taxonomies_static(): void {
+	public static function register_taxonomies_static(): void {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( '[APS] Registering taxonomy: ' . Constants::TAX_CATEGORY );
 		}

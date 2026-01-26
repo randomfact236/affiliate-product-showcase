@@ -164,18 +164,29 @@ class ProductFormHandler {
 	}
 
 	/**
-	 * Sanitize comma-separated list
+	 * Sanitize comma-separated list or array
 	 *
-	 * @param string $list_text List text
+	 * @param string|array $list_text List text or array of items
 	 * @return array<string> Sanitized items
 	 */
-	private function sanitize_comma_list( string $list_text ): array {
-		$items = array_filter(
-			array_map( 'trim', explode( ',', $list_text ) ),
-			fn( $item ) => ! empty( $item )
-		);
+	private function sanitize_comma_list( $list_text ): array {
+		// If it's already an array, sanitize each item
+		if ( is_array( $list_text ) ) {
+			return array_map( 'sanitize_text_field', array_filter( $list_text ) );
+		}
+		
+		// If it's a string, split by comma
+		if ( is_string( $list_text ) ) {
+			$items = array_filter(
+				array_map( 'trim', explode( ',', $list_text ) ),
+				fn( $item ) => ! empty( $item )
+			);
 
-		return array_map( 'sanitize_text_field', $items );
+			return array_map( 'sanitize_text_field', $items );
+		}
+		
+		// Return empty array for any other type
+		return [];
 	}
 
 	/**

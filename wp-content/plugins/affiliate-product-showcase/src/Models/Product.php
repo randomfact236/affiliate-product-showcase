@@ -49,6 +49,7 @@ final class Product {
 	 * @param string $status Product status (publish, draft, trash)
 	 * @param array<int, int> $category_ids Array of category IDs (optional)
 	 * @param array<int, int> $tag_ids Array of tag IDs (optional)
+	 * @param array<int, int> $ribbon_ids Array of ribbon IDs (optional)
 	 * @since 1.0.0
 	 */
 	public function __construct(
@@ -69,6 +70,7 @@ final class Product {
 		public string $status = 'publish',
 		public array $category_ids = [],
 		public array $tag_ids = [],
+		public array $ribbon_ids = [],
 		public ?string $platform_requirements = null,
 		public ?string $version_number = null
 	) {}
@@ -104,6 +106,8 @@ final class Product {
 			'categories'             => $this->category_ids, // Alias for backward compatibility
 			'tag_ids'                => $this->tag_ids,
 			'tags'                   => $this->tag_ids, // Alias for backward compatibility
+			'ribbon_ids'             => $this->ribbon_ids,
+			'ribbons'                => $this->ribbon_ids, // Alias for backward compatibility
 			'platform_requirements'   => $this->platform_requirements,
 			'version_number'         => $this->version_number,
 		];

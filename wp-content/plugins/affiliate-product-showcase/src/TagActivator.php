@@ -2,9 +2,7 @@
 /**
  * Tag Activation Handler
  *
- * Placeholder for future tag-related activation tasks.
- * Since tags now use TRUE HYBRID approach with term meta for
- * status and flags, no auxiliary taxonomy terms are needed.
+ * Handles plugin activation/deactivation for the Tag taxonomy.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
@@ -21,9 +19,7 @@ if (!defined('ABSPATH')) {
 /**
  * Tag Activation Handler
  *
- * Placeholder for future tag-related activation tasks.
- * TRUE HYBRID approach uses term meta for status and flags,
- * so no auxiliary taxonomy terms are needed.
+ * Handles activation and deactivation of the Tag taxonomy.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
@@ -33,20 +29,32 @@ final class TagActivator {
 	/**
 	 * Activate tag taxonomies
 	 *
-	 * Placeholder for future activation tasks.
-	 * TRUE HYBRID approach: Status and flags are stored in term meta,
-	 * so no auxiliary taxonomy terms are needed.
+	 * Registers the Tag taxonomy during plugin activation.
 	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
 	public static function activate(): void {
-		// TRUE HYBRID: No auxiliary taxonomy terms needed
-		// Status and flags are stored in term meta:
-		// - _aps_tag_status: 'published', 'draft', 'trash'
-		// - _aps_tag_featured: '1' or '0'
+		// Register the Tag taxonomy
+		\AffiliateProductShowcase\Services\ProductService::register_taxonomies_static();
 		
-		// Future activation tasks can be added here
+		// Run any migration tasks
 		do_action('aps_tag_activated');
+	}
+
+	/**
+	 * Deactivate tag taxonomies
+	 *
+	 * Cleans up tag-related data during plugin deactivation.
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public static function deactivate(): void {
+		// Clean up any transient data or options
+		// Note: We don't unregister taxonomies on deactivation
+		// as WordPress handles this automatically
+		
+		do_action('aps_tag_deactivated');
 	}
 }

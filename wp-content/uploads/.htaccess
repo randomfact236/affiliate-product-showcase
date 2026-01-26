@@ -1,0 +1,23 @@
+# BEGIN WordPress Uploads
+# Protect uploads directory
+<FilesMatch "\.(?php|phtml|php3|php4|php5|phps|inc|pl|py|jsp|asp|sh|cgi)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Allow only image files to be accessed
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|webp|svg|pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar)$ [NC]
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Prevent access to sensitive files
+<FilesMatch "^(.htaccess|.htpasswd|error_log|readme|changelog)\.(.*)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+# END WordPress Uploads

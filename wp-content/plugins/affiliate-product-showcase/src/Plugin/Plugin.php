@@ -19,6 +19,7 @@ use AffiliateProductShowcase\Privacy\GDPR;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\CategoriesController;
 use AffiliateProductShowcase\Rest\ProductsController;
+use AffiliateProductShowcase\Rest\TagsController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Rest\RibbonsController;
 use AffiliateProductShowcase\Security\Headers;
@@ -44,6 +45,7 @@ final class Plugin {
 	private Blocks $blocks;
 	private ProductsController $products_controller;
 	private CategoriesController $categories_controller;
+	private TagsController $tags_controller;
 	private RibbonsController $ribbons_controller;
 	private AnalyticsController $analytics_controller;
 	private HealthController $health_controller;
@@ -74,6 +76,7 @@ final class Plugin {
 		$this->blocks              = $container->get( Blocks::class );
 		$this->products_controller  = $container->get( ProductsController::class );
 		$this->categories_controller = $container->get( CategoriesController::class );
+		$this->tags_controller      = $container->get( TagsController::class );
 		$this->ribbons_controller   = $container->get( RibbonsController::class );
 		$this->analytics_controller = $container->get( AnalyticsController::class );
 		$this->health_controller   = $container->get( HealthController::class );
@@ -89,6 +92,7 @@ final class Plugin {
 			$this->blocks,
 			$this->products_controller,
 			$this->categories_controller,
+			$this->tags_controller,
 			$this->ribbons_controller,
 			$this->analytics_controller,
 			$this->health_controller,

@@ -224,12 +224,19 @@ final class Constants {
 	 * Helper to get a full URL for an asset file.
 	 * Concatenates the plugin directory URL with the relative path.
 	 *
-	 * @since  1.0.0
+	 * @since 1.0.0
 	 * @param string $relative The relative path to the asset (e.g., 'assets/css/style.css').
 	 * @return string The full asset URL.
 	 */
 	public static function assetUrl( string $relative ): string {
-		return self::dirUrl() . ltrim( $relative, '/\\' );
+		$plugin_dir = plugin_dir_path( self::FILE );
+		$plugin_url = plugin_dir_url( self::FILE );
+		
+		// Normalize the relative path
+		$relative_path = ltrim( $relative, '/\\' );
+		
+		// Construct the full asset URL
+		return $plugin_url . $relative_path;
 	}
 
 	/**

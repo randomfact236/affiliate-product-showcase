@@ -203,6 +203,21 @@ if ( class_exists( 'AffiliateProductShowcase\\Plugin\\Deactivator' ) ) {
 	);
 }
 
+// Tag taxonomy activation/deactivation hooks
+if ( class_exists( 'AffiliateProductShowcase\\TagActivator' ) ) {
+	register_activation_hook(
+		AFFILIATE_PRODUCT_SHOWCASE_FILE,
+		[ 'AffiliateProductShowcase\\TagActivator', 'activate' ]
+	);
+}
+
+if ( class_exists( 'AffiliateProductShowcase\\TagActivator' ) ) {
+	register_deactivation_hook(
+		AFFILIATE_PRODUCT_SHOWCASE_FILE,
+		[ 'AffiliateProductShowcase\\TagActivator', 'deactivate' ]
+	);
+}
+
 // Ribbon taxonomy activation/deactivation hooks
 if ( class_exists( 'AffiliateProductShowcase\\RibbonActivator' ) ) {
 	register_activation_hook(

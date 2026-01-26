@@ -1,94 +1,57 @@
 /**
  * Admin Category Styles
  *
- * Styles for category management interface
+ * Styles for category management interface including:
+ * - Status dropdown styling
+ * - Cancel button styling
+ * - Bulk action improvements
  *
- * @package AffiliateProductShowcase\Admin
+ * @package AffiliateProductShowcase
  * @since 1.2.0
  */
 
-/* Featured and Default Category Side-by-Side Layout */
-.aps-category-checkboxes-wrapper {
-	clear: both;
-	margin-bottom: 20px;
+/* Status dropdown styling */
+.aps-category-status-select {
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background-color: #fff;
+	cursor: pointer;
+	min-width: 120px;
 }
 
-.aps-category-featured,
-.aps-category-default {
-	float: left;
-	width: 48%;
-	margin-bottom: 0;
+.aps-category-status-select:focus {
+	outline: 2px solid #2271b1;
+	border-color: #2271b1;
 }
 
-.aps-category-featured {
-	margin-right: 4%;
+/* Read-only status for default category */
+.aps-category-status-readonly {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: #666;
 }
 
-.aps-category-default {
-	margin-right: 0;
+.aps-category-status-readonly .dashicons {
+	font-size: 16px;
 }
 
-/* Clear floats after checkboxes */
-.aps-category-checkboxes-wrapper::after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-/* Category Status Toggle Styles */
-.aps-category-status-toggle {
-	text-decoration: none;
-	color: inherit;
-	display: inline-block;
-	transition: color 0.2s ease;
-}
-
-.aps-category-status-toggle:hover {
-	color: #2271b1;
-}
-
-.aps-category-status-toggle.updating {
-	opacity: 0.5;
-	cursor: wait;
-}
-
-/* Status states */
-.status-published {
-	color: #00a32a;
-}
-
-.status-draft {
-	color: #646970;
-}
-
-/* Default category note */
 .aps-status-note {
+	background-color: #e5f5fa;
+	color: #1e40af;
+	padding: 2px 6px;
+	border-radius: 3px;
 	font-size: 11px;
-	color: #646970;
-	font-style: italic;
-	margin-left: 5px;
+	font-weight: 500;
 }
 
-/* Category Settings Section */
-.aps-category-fields {
-	clear: both;
-	margin-top: 20px;
-	padding-top: 20px;
-	border-top: 1px solid #e0e0e0;
+/* Cancel button styling */
+.edittag p.submit a.button {
+	margin-left: 10px;
+	text-decoration: none;
 }
 
-.aps-category-fields h3 {
-	margin-top: 0;
-	margin-bottom: 15px;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 782px) {
-	.aps-category-featured,
-	.aps-category-default {
-		float: none;
-		width: 100%;
-		margin-right: 0;
-		margin-bottom: 15px;
-	}
+.edittag p.submit a.button:hover {
+	background-color: #f0f0f1;
 }

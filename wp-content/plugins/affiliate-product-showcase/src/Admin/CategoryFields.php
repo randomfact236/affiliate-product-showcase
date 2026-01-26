@@ -5,11 +5,11 @@
  * Adds custom fields to category edit/add forms including:
  * - Featured checkbox
  * - Image URL field
- * - Sort order dropdown
- * - Parent category dropdown
+ * - Default category checkbox
+ * - Auto-assignment to products without category
  *
  * @package AffiliateProductShowcase\Admin
- * @since 1.0.0
+ * @since 2.0.0
  * @author Development Team
  */
 
@@ -26,543 +26,64 @@ use AffiliateProductShowcase\Plugin\Constants;
 /**
  * Category Fields
  *
- * Adds custom fields to category edit/add forms.
+ * Adds custom fields to category taxonomy edit/add forms.
+ * Extends TaxonomyFieldsAbstract for shared functionality.
  *
  * @package AffiliateProductShowcase\Admin
- * @since 1.0.0
+ * @since 2.0.0
  * @author Development Team
  */
-final class CategoryFields {
+final class CategoryFields extends TaxonomyFieldsAbstract {
+	/**
+	 * Get taxonomy name
+	 *
+	 * @return string Taxonomy name
+	 * @since 2.0.0
+	 */
+	protected function get_taxonomy(): string {
+		return 'aps_category';
+	}
+	
+	/**
+	 * Get taxonomy label
+	 *
+	 * @return string Human-readable label
+	 * @since 2.0.0
+	 */
+	protected function get_taxonomy_label(): string {
+		return 'Category';
+	}
+	
 	/**
 	 * Initialize category fields
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	public function init(): void {
-		// Add form fields to category edit/add pages
-		add_action( 'aps_category_add_form_fields', [ $this, 'add_category_fields' ] );
-		add_action( 'aps_category_edit_form_fields', [ $this, 'edit_category_fields' ] );
-
-		// Save category meta fields
-		add_action( 'created_aps_category', [ $this, 'save_category_fields' ], 10, 2 );
-		add_action( 'edited_aps_category', [ $this, 'save_category_fields' ], 10, 2 );
-
-		// Add custom columns to WordPress native categories table
-		add_filter( 'manage_edit-aps_category_columns', [ $this, 'add_custom_columns' ] );
-		add_filter( 'manage_aps_category_custom_column', [ $this, 'render_custom_columns' ], 10, 3 );
-
-		// Add sort order filter above categories table
-		add_action( 'admin_footer-edit-tags.php', [ $this, 'add_sort_order_html' ] );
-
-		// Add view tabs (All | Published | Draft | Trash)
-		add_filter( 'views_edit-aps_category', [ $this, 'add_status_view_tabs' ] );
-
-		// Filter categories by status
-		add_filter( 'get_terms', [ $this, 'filter_categories_by_status' ], 10, 3 );
-
-		// Protect default category from permanent deletion
-		add_filter( 'pre_delete_term', [ $this, 'protect_default_category' ], 10, 2 );
-
-		// Auto-assign default category to products without category
+		// Call parent to initialize shared functionality
+		parent::init();
+		
+		// Add category-specific hooks
 		add_action( 'save_post_aps_product', [ $this, 'auto_assign_default_category' ], 10, 3 );
-
-		// Add bulk actions for status management
-		add_filter( 'bulk_actions-edit-aps_category', [ $this, 'add_custom_bulk_actions' ] );
-		add_filter( 'handle_bulk_actions-edit-aps_category', [ $this, 'handle_custom_bulk_actions' ], 10, 3 );
-		
-		// Add admin notices for bulk actions
-		add_action( 'admin_notices', [ $this, 'display_bulk_action_notices' ] );
-		
-		// Enqueue admin scripts and styles
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
-		
-		// Localize script with needed variables
-		add_action( 'admin_head-edit-tags.php', [ $this, 'localize_admin_script' ] );
-		add_action( 'admin_head-term.php', [ $this, 'localize_admin_script' ] );
-		
-		// AJAX handler for inline status toggle
-		add_action( 'wp_ajax_aps_toggle_category_status', [ $this, 'ajax_toggle_category_status' ] );
+		add_action( 'admin_footer-edit-tags.php', [ $this, 'add_sort_order_html' ] );
 	}
-
+	
 	/**
-	 * Enqueue admin assets
-	 *
-	 * @return void
-	 * @since 1.2.0
-	 */
-	public function enqueue_admin_assets(): void {
-		$screen = get_current_screen();
-		if ( $screen && $screen->taxonomy === 'aps_category' ) {
-			wp_enqueue_style(
-				'aps-admin-category',
-				Constants::assetUrl( 'assets/css/admin-category.css' ),
-				[],
-				Constants::VERSION
-			);
-			
-			// Add inline script for status toggle
-			wp_add_inline_script( 'jquery', $this->get_inline_script() );
-		}
-	}
-
-	/**
-	 * Get inline JavaScript for status toggle
-	 *
-	 * @return string Inline script
-	 * @since 1.2.0
-	 */
-	private function get_inline_script(): string {
-		ob_start();
-		?>
-		jQuery(document).ready(function($) {
-			// Handle status dropdown changes in table
-			$(document).on('change', '.aps-category-status-select', function() {
-				var $this = $(this);
-				var termId = $this.data('term-id');
-				var newStatus = $this.val();
-				var originalStatus = $this.find('option:selected').text();
-
-				// Update status via AJAX
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'aps_toggle_category_status',
-						nonce: aps_admin_vars.nonce,
-						term_id: termId,
-						status: newStatus
-					},
-					beforeSend: function() {
-						$this.prop('disabled', true);
-					},
-					success: function(response) {
-						if (response.success) {
-							$this.prop('disabled', false);
-							// Show success notice
-							if ($('.notice-success.aps-status-notice').length) {
-								$('.notice-success.aps-status-notice').remove();
-							}
-							$('.wrap h1').after('<div class="notice notice-success is-dismissible aps-status-notice"><p>' + aps_admin_vars.success_text + '</p></div>');
-							setTimeout(function() {
-								$('.aps-status-notice').fadeOut();
-							}, 3000);
-						} else if (response.data && response.data.message) {
-							$this.prop('disabled', false);
-							// Revert to original status
-							$this.val(originalStatus === 'Published' ? 'published' : 'draft');
-							alert(response.data.message);
-						}
-					},
-					error: function() {
-						$this.prop('disabled', false);
-						// Revert to original status
-						$this.val(originalStatus === 'Published' ? 'published' : 'draft');
-						alert(aps_admin_vars.error_text);
-					}
-				});
-			});
-		});
-		<?php
-		return ob_get_clean();
-	}
-
-	/**
-	 * Localize admin script with needed variables
-	 *
-	 * @return void
-	 * @since 1.2.0
-	 */
-	public function localize_admin_script(): void {
-		wp_localize_script( 'jquery', 'aps_admin_vars', [
-			'nonce' => wp_create_nonce( 'aps_toggle_category_status' ),
-			'published_text' => esc_html__( 'Published', 'affiliate-product-showcase' ),
-			'draft_text' => esc_html__( 'Draft', 'affiliate-product-showcase' ),
-			'success_text' => esc_html__( 'Category status updated successfully.', 'affiliate-product-showcase' ),
-			'error_text' => esc_html__( 'An error occurred. Please try again.', 'affiliate-product-showcase' ),
-		] );
-	}
-
-	/**
-	 * Add status view tabs to categories page
-	 *
-	 * Adds "All | Published | Draft | Trash" tabs similar to WordPress posts.
-	 *
-	 * @param array $views Existing views
-	 * @return array Modified views
-	 * @since 1.3.0
-	 *
-	 * @filter views_edit-aps_category
-	 */
-	public function add_status_view_tabs( array $views ): array {
-		// Only filter on aps_category taxonomy
-		$screen = get_current_screen();
-		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
-			return $views;
-		}
-
-		// Count categories by status
-		$all_count = $this->count_categories_by_status( 'all' );
-		$published_count = $this->count_categories_by_status( 'published' );
-		$draft_count = $this->count_categories_by_status( 'draft' );
-		$trash_count = $this->count_categories_by_status( 'trashed' );
-
-		// Get current status from URL
-		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
-
-		// Build new views
-		$new_views = [];
-
-		// All tab
-		$all_class = $current_status === 'all' ? 'class="current"' : '';
-		$all_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product' );
-		$new_views['all'] = sprintf(
-			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
-			esc_url( $all_url ),
-			$all_class,
-			esc_html__( 'All', 'affiliate-product-showcase' ),
-			$all_count
-		);
-
-		// Published tab
-		$published_class = $current_status === 'published' ? 'class="current"' : '';
-		$published_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=published' );
-		$new_views['published'] = sprintf(
-			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
-			esc_url( $published_url ),
-			$published_class,
-			esc_html__( 'Published', 'affiliate-product-showcase' ),
-			$published_count
-		);
-
-		// Draft tab
-		$draft_class = $current_status === 'draft' ? 'class="current"' : '';
-		$draft_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=draft' );
-		$new_views['draft'] = sprintf(
-			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
-			esc_url( $draft_url ),
-			$draft_class,
-			esc_html__( 'Draft', 'affiliate-product-showcase' ),
-			$draft_count
-		);
-
-		// Trash tab
-		$trash_class = $current_status === 'trashed' ? 'class="current"' : '';
-		$trash_url = admin_url( 'edit-tags.php?taxonomy=aps_category&post_type=aps_product&status=trashed' );
-		$new_views['trash'] = sprintf(
-			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
-			esc_url( $trash_url ),
-			$trash_class,
-			esc_html__( 'Trash', 'affiliate-product-showcase' ),
-			$trash_count
-		);
-
-		return $new_views;
-	}
-
-	/**
-	 * Filter categories by status
-	 *
-	 * Filters categories based on status parameter in URL.
-	 *
-	 * @param array $terms Terms array
-	 * @param array $taxonomies Taxonomies
-	 * @param array $args Query arguments
-	 * @return array Filtered terms
-	 * @since 1.3.0
-	 *
-	 * @filter get_terms
-	 */
-	public function filter_categories_by_status( array $terms, array $taxonomies, array $args ): array {
-		// Only filter for aps_category taxonomy
-		if ( ! in_array( 'aps_category', $taxonomies, true ) ) {
-			return $terms;
-		}
-
-		// Only filter on admin category list page
-		$screen = get_current_screen();
-		if ( ! $screen || $screen->taxonomy !== 'aps_category' || $screen->base !== 'edit-tags' ) {
-			return $terms;
-		}
-
-		// Get status from URL
-		$status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
-
-		// If showing all, no filtering
-		if ( $status === 'all' ) {
-			return $terms;
-		}
-
-		// Filter terms by status
-		$filtered_terms = [];
-		foreach ( $terms as $term ) {
-			if ( ! is_object( $term ) ) {
-				continue;
-			}
-
-			$term_id = is_numeric( $term ) ? $term : $term->term_id;
-			$term_status = $this->get_category_meta( $term_id, 'status' );
-
-			// Default to published if not set
-			if ( empty( $term_status ) || ! in_array( $term_status, [ 'published', 'draft', 'trashed' ], true ) ) {
-				$term_status = 'published';
-			}
-
-			// Include term if status matches
-			if ( $term_status === $status ) {
-				$filtered_terms[] = $term;
-			}
-		}
-
-		return $filtered_terms;
-	}
-
-	/**
-	 * Count categories by status
-	 *
-	 * @param string $status Status to count ('all', 'published', 'draft', 'trashed')
-	 * @return int Count of categories
-	 * @since 1.3.0
-	 */
-	private function count_categories_by_status( string $status ): int {
-		$terms = get_terms( [
-			'taxonomy'   => 'aps_category',
-			'hide_empty' => false,
-			'fields'     => 'ids',
-		] );
-
-		if ( is_wp_error( $terms ) || empty( $terms ) ) {
-			return 0;
-		}
-
-		$count = 0;
-		foreach ( $terms as $term_id ) {
-			$term_status = $this->get_category_meta( $term_id, 'status' );
-
-			// Default to published if not set
-			if ( empty( $term_status ) || ! in_array( $term_status, [ 'published', 'draft', 'trashed' ], true ) ) {
-				$term_status = 'published';
-			}
-
-			if ( $status === 'all' || $term_status === $status ) {
-				$count++;
-			}
-		}
-
-		return $count;
-	}
-
-	/**
-	 * Display bulk action notices
-	 *
-	 * @return void
-	 * @since 1.2.0
-	 */
-	public function display_bulk_action_notices(): void {
-		if ( isset( $_GET['moved_to_draft'] ) ) {
-			$count = intval( $_GET['moved_to_draft'] );
-			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d categories moved to draft.', 'affiliate-product-showcase' ), $count );
-			echo '</p></div>';
-		}
-		
-		if ( isset( $_GET['moved_to_trash'] ) ) {
-			$count = intval( $_GET['moved_to_trash'] );
-			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d categories moved to trash.', 'affiliate-product-showcase' ), $count );
-			echo '</p></div>';
-		}
-
-		if ( isset( $_GET['restored_from_trash'] ) ) {
-			$count = intval( $_GET['restored_from_trash'] );
-			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d categories restored from trash.', 'affiliate-product-showcase' ), $count );
-			echo '</p></div>';
-		}
-
-		if ( isset( $_GET['permanently_deleted'] ) ) {
-			$count = intval( $_GET['permanently_deleted'] );
-			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d categories permanently deleted.', 'affiliate-product-showcase' ), $count );
-			echo '</p></div>';
-		}
-	}
-
-	/**
-	 * AJAX handler for inline status toggle
-	 *
-	 * @return void
-	 * @since 1.2.0
-	 */
-	public function ajax_toggle_category_status(): void {
-		// Check nonce
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'aps_toggle_category_status' ) ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'Security check failed.', 'affiliate-product-showcase' ) ] );
-		}
-		
-		// Check permissions
-		if ( ! current_user_can( 'manage_categories' ) ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'You do not have permission to perform this action.', 'affiliate-product-showcase' ) ] );
-		}
-		
-		// Get term ID and new status
-		$term_id = isset( $_POST['term_id'] ) ? intval( $_POST['term_id'] ) : 0;
-		$new_status = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : 'published';
-		
-		if ( empty( $term_id ) ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'Invalid category ID.', 'affiliate-product-showcase' ) ] );
-		}
-		
-		// Check if this is default category (cannot change status)
-		$is_default = get_term_meta( $term_id, '_aps_category_is_default', true );
-		if ( $is_default === '1' ) {
-			wp_send_json_error( [ 'message' => esc_html__( 'Cannot change status of default category.', 'affiliate-product-showcase' ) ] );
-		}
-		
-		// Update category status
-		$result = update_term_meta( $term_id, '_aps_category_status', $new_status );
-		
-		if ( $result !== false ) {
-			wp_send_json_success( [ 'status' => $new_status ] );
-		} else {
-			wp_send_json_error( [ 'message' => esc_html__( 'Failed to update category status.', 'affiliate-product-showcase' ) ] );
-		}
-	}
-
-	/**
-	 * Add sort order filter HTML above categories table
-	 *
-	 * Checks if we're on the category management page and adds filter.
-	 * Aligns sort filter with bulk action dropdown.
-	 *
-	 * @return void
-	 * @since 1.2.0
-	 *
-	 * @action admin_footer-edit-tags.php
-	 */
-	public function add_sort_order_html(): void {
-		$screen = get_current_screen();
-		
-		// Only show on category management page
-		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
-			return;
-		}
-
-		// Get current sort order from URL
-		$current_sort_order = isset( $_GET['aps_sort_order'] ) ? sanitize_text_field( $_GET['aps_sort_order'] ) : 'date';
-
-		?>
-		<style>
-			/* Ensure sort filter and bulk actions are side by side */
-			.aps-sort-filter {
-				display: inline-block;
-				margin-right: 10px;
-				margin-bottom: 10px;
-			}
-			.aps-sort-filter .postform {
-				margin-right: 5px;
-			}
-			.bulkactions {
-				display: inline-block;
-			}
-		</style>
-		<script>
-		jQuery(document).ready(function($) {
-			// Find the bulk actions container and search form
-			var $bulkActions = $('.bulkactions');
-			var $searchForm = $('form#posts-filter');
-			
-			if ($bulkActions.length && $searchForm.length) {
-				// Insert sort order filter before bulk actions
-				$bulkActions.before(`
-					<div class="alignleft actions aps-sort-filter">
-						<label for="aps_sort_order" class="screen-reader-text">
-							<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
-						</label>
-						<select name="aps_sort_order" id="aps_sort_order" class="postform">
-							<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
-								<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
-							</option>
-						</select>
-					</div>
-				`);
-				
-				// Ensure both are aligned properly
-				$('.aps-sort-filter').css('float', 'left');
-				$bulkActions.css('float', 'left');
-			}
-		});
-		</script>
-		<?php
-	}
-
-	/**
-	 * Add fields to category add form
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 *
-	 * @action aps_category_add_form_fields
-	 */
-	public function add_category_fields(): void {
-		$this->render_category_fields( 0 );
-	}
-
-	/**
-	 * Add fields to category edit form
-	 *
-	 * @param \WP_Term $category Category term object
-	 * @return void
-	 * @since 1.0.0
-	 *
-	 * @action aps_category_edit_form_fields
-	 */
-	public function edit_category_fields( \WP_Term $category ): void {
-		$this->render_category_fields( $category->term_id );
-	}
-
-	/**
-	 * Get category meta with legacy fallback
-	 *
-	 * Retrieves meta value with fallback to old key format.
-	 *
-	 * @param int $term_id Term ID
-	 * @param string $meta_key Meta key (without _aps_category_ prefix)
-	 * @return mixed Meta value
-	 * @since 1.2.0
-	 */
-	private function get_category_meta( int $term_id, string $meta_key ) {
-		// Try new format with underscore prefix
-		$value = get_term_meta( $term_id, '_aps_category_' . $meta_key, true );
-		
-		// If empty, try legacy format without underscore
-		if ( $value === '' || $value === false ) {
-			$value = get_term_meta( $term_id, 'aps_category_' . $meta_key, true );
-		}
-		
-		return $value;
-	}
-
-	/**
-	 * Render category fields
-	 *
+	 * Render category-specific fields
+	 * 
 	 * @param int $category_id Category ID (0 for new category)
 	 * @return void
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	private function render_category_fields( int $category_id ): void {
+	protected function render_taxonomy_specific_fields( int $category_id ): void {
 		// Get current values with legacy fallback
-		$featured    = $this->get_category_meta( $category_id, 'featured' );
-		$image_url   = $this->get_category_meta( $category_id, 'image' );
-		$status      = $this->get_category_meta( $category_id, 'status' );
-		$is_default  = $this->get_category_meta( $category_id, 'is_default' );
-
-		if ( empty( $status ) ) {
-			$status = 'published';
-		}
+		$featured = $this->get_category_meta( $category_id, 'featured' );
+		$image_url = $this->get_category_meta( $category_id, 'image' );
+		$is_default = $this->get_is_default( $category_id ) === '1';
 
 		?>
-		<!-- Featured and Default Checkbox (side by side) -->
+		<!-- Featured and Default Checkboxes (side by side) -->
 		<div class="aps-category-checkboxes-wrapper" style="display:none;">
 			<!-- Featured Checkbox -->
 			<div class="form-field aps-category-featured">
@@ -574,7 +95,7 @@ final class CategoryFields {
 					id="_aps_category_featured"
 					name="_aps_category_featured"
 					value="1"
-					<?php checked( $featured, '1' ); ?>
+					<?php checked( $featured, true ); ?>
 				/>
 				<p class="description">
 					<?php esc_html_e( 'Display this category prominently on frontend.', 'affiliate-product-showcase' ); ?>
@@ -591,7 +112,7 @@ final class CategoryFields {
 					id="_aps_category_is_default"
 					name="_aps_category_is_default"
 					value="1"
-					<?php checked( $is_default, '1' ); ?>
+					<?php checked( $is_default, true ); ?>
 				/>
 				<p class="description">
 					<?php esc_html_e( 'Products without a category will be assigned to this category automatically.', 'affiliate-product-showcase' ); ?>
@@ -602,7 +123,7 @@ final class CategoryFields {
 		<div class="form-field aps-category-fields">
 			<h3><?php esc_html_e( 'Category Settings', 'affiliate-product-showcase' ); ?></h3>
 
-		<!-- Image URL -->
+			<!-- Image URL -->
 			<div class="form-field">
 				<label for="_aps_category_image">
 					<?php esc_html_e( 'Category Image URL', 'affiliate-product-showcase' ); ?>
@@ -630,33 +151,18 @@ final class CategoryFields {
 		</script>
 
 		<?php
-		// Nonce field for security
+		// Nonce field for security (base class handles saving)
 		wp_nonce_field( 'aps_category_fields', 'aps_category_fields_nonce' );
 	}
-
+	
 	/**
-	 * Save category fields
-	 *
+	 * Save category-specific fields
+	 * 
 	 * @param int $category_id Category ID
-	 * @param int $term_id Term ID (same as category_id)
 	 * @return void
-	 * @since 1.0.0
-	 *
-	 * @action created_aps_category
-	 * @action edited_aps_category
+	 * @since 2.0.0
 	 */
-	public function save_category_fields( int $category_id, int $term_id ): void {
-		// Check nonce
-		if ( ! isset( $_POST['aps_category_fields_nonce'] ) || 
-		     ! wp_verify_nonce( $_POST['aps_category_fields_nonce'], 'aps_category_fields' ) ) {
-			return;
-		}
-
-		// Check permissions
-		if ( ! current_user_can( 'manage_categories' ) ) {
-			return;
-		}
-
+	protected function save_taxonomy_specific_fields( int $category_id ): void {
 		// Sanitize and save featured
 		$featured = isset( $_POST['_aps_category_featured'] ) ? '1' : '0';
 		update_term_meta( $category_id, '_aps_category_featured', $featured );
@@ -671,23 +177,13 @@ final class CategoryFields {
 		// Delete legacy key
 		delete_term_meta( $category_id, 'aps_category_image' );
 
-		// Sanitize and save status (default to published if not set)
-		$status = isset( $_POST['_aps_category_status'] )
-			? sanitize_text_field( wp_unslash( $_POST['_aps_category_status'] ) )
-			: 'published';
-		update_term_meta( $category_id, '_aps_category_status', $status );
-		// Delete legacy key
-		delete_term_meta( $category_id, 'aps_category_status' );
-
 		// Handle default category
 		$is_default = isset( $_POST['_aps_category_is_default'] ) ? '1' : '0';
 		if ( $is_default === '1' ) {
 			// Remove default flag from all other categories
 			$this->remove_default_from_all_categories();
 			// Set this category as default
-			update_term_meta( $category_id, '_aps_category_is_default', '1' );
-			// Delete legacy key
-			delete_term_meta( $category_id, 'aps_category_is_default' );
+			$this->set_is_default( $category_id, true );
 			// Update global option
 			update_option( 'aps_default_category_id', $category_id );
 			
@@ -705,10 +201,9 @@ final class CategoryFields {
 			} );
 		} else {
 			// Remove default flag from this category
-			update_term_meta( $category_id, '_aps_category_is_default', '0' );
-			delete_term_meta( $category_id, 'aps_category_is_default' );
-			// Delete legacy key
-			delete_term_meta( $category_id, 'aps_category_is_default' );
+			$this->set_is_default( $category_id, false );
+			delete_term_meta( $category_id, '_aps_category_is_default' );
+			
 			// Clear global option if this was default
 			$current_default = get_option( 'aps_default_category_id', 0 );
 			if ( (int) $current_default === $category_id ) {
@@ -716,92 +211,32 @@ final class CategoryFields {
 			}
 		}
 	}
-
+	
 	/**
-	 * Add custom columns to WordPress native categories table
+	 * Get category meta with legacy fallback
 	 *
-	 * @param array $columns Existing columns
-	 * @return array Modified columns
-	 * @since 1.1.0
-	 *
-	 * @filter manage_edit-aps_category_columns
+	 * @param int $category_id Category ID
+	 * @param string $meta_key Meta key (without _aps_category_ prefix)
+	 * @return mixed Meta value
+	 * @since 2.0.0
 	 */
-	public function add_custom_columns( array $columns ): array {
-		// Insert custom columns after 'slug' column
-		$new_columns = [];
+	private function get_category_meta( int $category_id, string $meta_key ): mixed {
+		// Try new format with underscore prefix
+		$value = get_term_meta( $category_id, '_aps_category_' . $meta_key, true );
 		
-		foreach ( $columns as $key => $value ) {
-			$new_columns[ $key ] = $value;
-			
-			// Add custom columns after slug (status only)
-			if ( $key === 'slug' ) {
-				$new_columns['status'] = __( 'Status', 'affiliate-product-showcase' );
-			}
+		// If empty, try legacy format without underscore
+		if ( $value === '' || $value === false ) {
+			$value = get_term_meta( $category_id, 'aps_category_' . $meta_key, true );
 		}
 		
-		return $new_columns;
+		return $value;
 	}
-
-	/**
-	 * Render custom column content
-	 *
-	 * @param string $content Column content
-	 * @param string $column_name Column name
-	 * @param int $term_id Term ID
-	 * @return string Column content
-	 * @since 1.1.0
-	 *
-	 * @filter manage_aps_category_custom_column
-	 */
-	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
-		if ( $column_name === 'status' ) {
-			$status = $this->get_category_meta( $term_id, 'status' );
-			$is_default = $this->get_category_meta( $term_id, 'is_default' );
-			
-			// Make status editable with dropdown
-			if ( $is_default === '1' ) {
-				// Default category - read-only status
-				$icon = $status === 'published' 
-					? '<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span>' 
-					: '<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span>';
-				$status_text = $status === 'published' 
-					? esc_html__( 'Published', 'affiliate-product-showcase' ) 
-					: esc_html__( 'Draft', 'affiliate-product-showcase' );
-				
-				return sprintf(
-					'<span class="aps-category-status-readonly">%s %s <span class="aps-status-note">(%s)</span></span>',
-					$icon,
-					$status_text,
-					esc_html__( 'Default', 'affiliate-product-showcase' )
-				);
-			} else {
-				// Non-default category - editable dropdown
-				$selected_published = $status === 'published' ? 'selected' : '';
-				$selected_draft = $status === 'draft' ? 'selected' : '';
-				
-				return sprintf(
-					'<select class="aps-category-status-select" data-term-id="%d" aria-label="%s">
-						<option value="published" %s>%s</option>
-						<option value="draft" %s>%s</option>
-					</select>',
-					$term_id,
-					esc_attr__( 'Change category status', 'affiliate-product-showcase' ),
-					$selected_published,
-					esc_html__( 'Published', 'affiliate-product-showcase' ),
-					$selected_draft,
-					esc_html__( 'Draft', 'affiliate-product-showcase' )
-				);
-			}
-		}
-		
-		return $content;
-	}
-
+	
 	/**
 	 * Remove default flag from all categories
 	 *
 	 * @return void
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	private function remove_default_from_all_categories(): void {
 		$terms = get_terms( [
@@ -817,39 +252,7 @@ final class CategoryFields {
 			}
 		}
 	}
-
-	/**
-	 * Protect default category from permanent deletion
-	 *
-	 * Prevents default category from being deleted permanently.
-	 * Users can still move it to trash but not delete forever.
-	 *
-	 * @param mixed $delete_term Whether to delete term
-	 * @param int $term_id Term ID
-	 * @return mixed False if default category (prevents deletion), otherwise original value
-	 * @since 1.1.0
-	 *
-	 * @filter pre_delete_term
-	 */
-	public function protect_default_category( $delete_term, int $term_id ) {
-		// Check if this is default category
-		$is_default = $this->get_category_meta( $term_id, 'is_default' );
-		
-		if ( $is_default === '1' ) {
-			// Prevent deletion of default category
-			wp_die(
-				sprintf(
-					esc_html__( 'Cannot delete default category. Please set a different category as default first.', 'affiliate-product-showcase' ),
-					esc_html( get_term( $term_id )->name ?? '#' . $term_id )
-				),
-				esc_html__( 'Default Category Protected', 'affiliate-product-showcase' ),
-				[ 'back_link' => true ]
-			);
-		}
-		
-		return $delete_term;
-	}
-
+	
 	/**
 	 * Auto-assign default category to products without category
 	 *
@@ -860,7 +263,7 @@ final class CategoryFields {
 	 * @param \WP_Post $post Post object
 	 * @param bool $update Whether this is an update (true) or new post (false)
 	 * @return void
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @action save_post_aps_product
 	 */
@@ -905,153 +308,117 @@ final class CategoryFields {
 			) );
 		}
 	}
-
+	
 	/**
-	 * Add custom bulk actions to categories table
+	 * Add sort order filter HTML above categories table
 	 *
-	 * Adds bulk actions based on current view (Draft, Trash, Restore, etc.).
+	 * Checks if we're on a category management page and adds filter.
+	 * Aligns sort filter with bulk action dropdown.
 	 *
-	 * @param array $bulk_actions Existing bulk actions
-	 * @return array Modified bulk actions
-	 * @since 1.1.0
+	 * @return void
+	 * @since 2.0.0
 	 *
-	 * @filter bulk_actions-edit-aps_category
+	 * @action admin_footer-edit-tags.php
 	 */
-	public function add_custom_bulk_actions( array $bulk_actions ): array {
-		// Get current status from URL
-		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
-
-		// If in Trash view, add Restore and Permanently Delete
-		if ( $current_status === 'trashed' ) {
-			$bulk_actions['restore'] = __( 'Restore', 'affiliate-product-showcase' );
-			$bulk_actions['delete_permanently'] = __( 'Delete Permanently', 'affiliate-product-showcase' );
-			return $bulk_actions;
+	public function add_sort_order_html(): void {
+		$screen = get_current_screen();
+		
+		// Only show on category management page
+		if ( ! $screen || $screen->taxonomy !== 'aps_category' ) {
+			return;
 		}
 
-		// If not in Trash view, add Move to Draft and Move to Trash
-		$bulk_actions['move_to_draft'] = __( 'Move to Draft', 'affiliate-product-showcase' );
-		$bulk_actions['move_to_trash'] = __( 'Move to Trash', 'affiliate-product-showcase' );
-		
-		return $bulk_actions;
+		// Get current sort order from URL
+		$current_sort_order = isset( $_GET['aps_sort_order'] ) ? sanitize_text_field( $_GET['aps_sort_order'] ) : 'date';
+
+		?>
+		<style>
+			/* Ensure sort filter and bulk actions are side by side */
+			.aps-sort-filter {
+				display: inline-block;
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+			.aps-sort-filter .postform {
+				margin-right: 5px;
+			}
+			.bulkactions {
+				display: inline-block;
+			}
+		</style>
+		<script>
+		jQuery(document).ready(function($) {
+			// Find form that contains bulk actions
+			var $searchForm = $('form#posts-filter');
+			
+			if ($searchForm.length) {
+				// Insert sort order filter before bulk actions
+				$searchForm.find('.tablenav.top').find('.actions').before(`
+					<div class="alignleft actions aps-sort-filter">
+						<label for="aps_sort_order" class="screen-reader-text">
+							<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
+						</label>
+						<select name="aps_sort_order" id="aps_sort_order" class="postform">
+							<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
+								<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
+							</option>
+						</select>
+					</div>
+				`);
+				
+				// Ensure alignment
+				$('.aps-sort-filter').css('float', 'left');
+			}
+		});
+		</script>
+		<?php
 	}
-
+	
 	/**
-	 * Handle custom bulk actions for categories
+	 * Override add_custom_columns to add sort order column
 	 *
-	 * Processes bulk actions: Move to Draft, Move to Trash, Restore, Delete Permanently.
-	 *
-	 * @param string $redirect_url Redirect URL after processing
-	 * @param string $action_name Action name being processed
-	 * @param array $term_ids Array of term IDs
-	 * @return string Modified redirect URL (with query parameters for notices)
-	 * @since 1.1.0
-	 *
-	 * @filter handle_bulk_actions-edit-aps_category
+	 * @param array $columns Existing columns
+	 * @return array Modified columns
+	 * @since 2.0.0
 	 */
-	public function handle_custom_bulk_actions( string $redirect_url, string $action_name, array $term_ids ): string {
-		if ( empty( $term_ids ) ) {
-			return $redirect_url;
-		}
+	public function add_custom_columns( array $columns ): array {
+		// Call parent for shared columns
+		$columns = parent::add_custom_columns( $columns );
 		
-		$count = 0;
-		
-		// Handle "Move to Draft" action
-		if ( $action_name === 'move_to_draft' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default category (cannot be changed to draft)
-				$is_default = $this->get_category_meta( $term_id, 'is_default' );
-				
-				if ( $is_default === '1' ) {
-					continue; // Skip default category
-				}
-				
-				// Update category status to draft
-				$result = update_term_meta( $term_id, '_aps_category_status', 'draft' );
-				
-				if ( $result !== false ) {
-					$count++;
-				}
-			}
+		// Add sort order column before status
+		$new_columns = [];
+		foreach ( $columns as $key => $value ) {
+			$new_columns[ $key ] = $value;
 			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'moved_to_draft' => $count,
-				], $redirect_url );
+			// Add sort order column before status
+			if ( $key === 'status' ) {
+				$new_columns['sort_order'] = __( 'Sort Order', 'affiliate-product-showcase' );
 			}
 		}
 		
-		// Handle "Move to Trash" action (sets status to trashed)
-		if ( $action_name === 'move_to_trash' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default category (cannot be trashed)
-				$is_default = $this->get_category_meta( $term_id, 'is_default' );
-				
-				if ( $is_default === '1' ) {
-					continue; // Skip default category
-				}
-				
-				// Set status to trashed
-				$result = update_term_meta( $term_id, '_aps_category_status', 'trashed' );
-				
-				if ( $result !== false ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'moved_to_trash' => $count,
-				], $redirect_url );
-			}
-		}
-
-		// Handle "Restore" action
-		if ( $action_name === 'restore' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Restore by setting status to published
-				$result = update_term_meta( $term_id, '_aps_category_status', 'published' );
-				
-				if ( $result !== false ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'restored_from_trash' => $count,
-				], $redirect_url );
-			}
-		}
-
-		// Handle "Delete Permanently" action
-		if ( $action_name === 'delete_permanently' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default category (cannot be permanently deleted)
-				$is_default = $this->get_category_meta( $term_id, 'is_default' );
-				
-				if ( $is_default === '1' ) {
-					continue; // Skip default category
-				}
-				
-				// Permanently delete term
-				$result = wp_delete_term( $term_id, 'aps_category' );
-				
-				if ( $result && ! is_wp_error( $result ) ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'permanently_deleted' => $count,
-				], $redirect_url );
-			}
+		return $new_columns;
+	}
+	
+	/**
+	 * Override render_custom_columns to add sort order column content
+	 *
+	 * @param string $content Column content
+	 * @param string $column_name Column name
+	 * @param int $term_id Term ID
+	 * @return string Column content
+	 * @since 2.0.0
+	 */
+	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
+		// Call parent for shared columns
+		if ( in_array( $column_name, [ 'status', 'count' ], true ) ) {
+			return parent::render_custom_columns( $content, $column_name, $term_id );
 		}
 		
-		return $redirect_url;
+		// Render sort order column
+		if ( $column_name === 'sort_order' ) {
+			return '<span class="aps-category-sort-order">-</span>';
+		}
+		
+		return $content;
 	}
 }

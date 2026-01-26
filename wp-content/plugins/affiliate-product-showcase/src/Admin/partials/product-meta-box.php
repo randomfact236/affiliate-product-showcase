@@ -17,6 +17,60 @@ wp_nonce_field( 'aps_meta_box', 'aps_meta_box_nonce' );
 ?>
 
 <div class="aps-product-form">
+    <!-- Group 0: Categories & Tags -->
+    <div class="aps-form-section aps-section-taxonomies">
+        <h2 class="aps-section-title">
+            <span class="dashicons dashicons-category"></span>
+            <?php esc_html_e( 'Categories & Tags', 'affiliate-product-showcase' ); ?>
+        </h2>
+        
+        <div class="aps-section-content">
+        <div class="aps-field aps-field-checkbox">
+            <label><?php esc_html_e( 'Categories', 'affiliate-product-showcase' ); ?></label>
+            <div class="aps-checkboxes-grid">
+                <?php
+                $categories = get_terms( array(
+                    'taxonomy' => \AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY,
+                    'hide_empty' => false,
+                ) );
+                foreach ( $categories as $cat ) :
+                    $checked = has_term( $cat->term_id, \AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY, $post->ID ) ? 'checked' : '';
+                    ?>
+                        <label class="aps-checkbox-inline">
+                            <input type="checkbox" 
+                                   name="aps_categories[]" 
+                                   value="<?php echo esc_attr( $cat->term_id ); ?>" 
+                                   <?php echo $checked; ?> />
+                            <?php echo esc_html( $cat->name ); ?>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+        <div class="aps-field aps-field-checkbox">
+            <label><?php esc_html_e( 'Tags', 'affiliate-product-showcase' ); ?></label>
+            <div class="aps-checkboxes-grid">
+                <?php
+                $tags = get_terms( array(
+                    'taxonomy' => \AffiliateProductShowcase\Plugin\Constants::TAX_TAG,
+                    'hide_empty' => false,
+                ) );
+                foreach ( $tags as $tag ) :
+                    $checked = has_term( $tag->term_id, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG, $post->ID ) ? 'checked' : '';
+                    ?>
+                        <label class="aps-checkbox-inline">
+                            <input type="checkbox" 
+                                   name="aps_tags[]" 
+                                   value="<?php echo esc_attr( $tag->term_id ); ?>" 
+                                   <?php echo $checked; ?> />
+                            <?php echo esc_html( $tag->name ); ?>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Group 1: Product Information (Basic) -->
     <div class="aps-form-section aps-section-product-info">
         <h2 class="aps-section-title">
@@ -350,24 +404,26 @@ wp_nonce_field( 'aps_meta_box', 'aps_meta_box_nonce' );
                 </label>
             </div>
             
-            <div class="aps-field aps-field-select">
-                <label for="aps_ribbon">
-                    <?php esc_html_e( 'Ribbon', 'affiliate-product-showcase' ); ?>
-                </label>
-                <select name="aps_ribbon" id="aps_ribbon" class="aps-select">
-                    <option value=""><?php esc_html_e( 'Select ribbon...', 'affiliate-product-showcase' ); ?></option>
+            <div class="aps-field aps-field-checkbox">
+                <label><?php esc_html_e( 'Ribbons', 'affiliate-product-showcase' ); ?></label>
+                <div class="aps-checkboxes-grid">
                     <?php
                     $ribbons = get_terms( array(
-                        'taxonomy' => 'aps_ribbon',
+                        'taxonomy' => \AffiliateProductShowcase\Plugin\Constants::TAX_RIBBON,
                         'hide_empty' => false,
                     ) );
                     foreach ( $ribbons as $ribbon ) :
+                        $checked = has_term( $ribbon->term_id, \AffiliateProductShowcase\Plugin\Constants::TAX_RIBBON, $post->ID ) ? 'checked' : '';
                     ?>
-                    <option value="<?php echo esc_attr( $ribbon->term_id ); ?>" <?php selected( $meta['ribbon'] ?? '', $ribbon->term_id ); ?>>
-                        <?php echo esc_html( $ribbon->name ); ?>
-                    </option>
+                        <label class="aps-checkbox-inline">
+                            <input type="checkbox" 
+                                   name="aps_ribbons[]" 
+                                   value="<?php echo esc_attr( $ribbon->term_id ); ?>" 
+                                   <?php echo $checked; ?> />
+                            <?php echo esc_html( $ribbon->name ); ?>
+                        </label>
                     <?php endforeach; ?>
-                </select>
+                </div>
             </div>
             
             <div class="aps-field aps-field-text">

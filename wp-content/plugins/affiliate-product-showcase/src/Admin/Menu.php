@@ -261,6 +261,9 @@ class Menu {
      * @return void
      */
     public function renderAddProductPage(): void {
+        // Enqueue WordPress media library scripts
+        wp_enqueue_media();
+        
         include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/add-product-page.php' );
     }
 

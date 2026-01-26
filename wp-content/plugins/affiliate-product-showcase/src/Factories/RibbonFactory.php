@@ -37,6 +37,7 @@ final class RibbonFactory {
             name: $data['name'] ?? '',
             slug: $data['slug'] ?? '',
             count: $data['count'] ?? 0,
+            priority: (int) ( $data['priority'] ?? 10 ),
             color: $data['color'] ?? null,
             icon: $data['icon'] ?? null,
             status: $data['status'] ?? 'published',

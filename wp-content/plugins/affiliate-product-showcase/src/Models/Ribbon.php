@@ -36,6 +36,11 @@ final class Ribbon {
     public readonly int $count;
 
     /**
+     * Display priority (lower = higher priority)
+     */
+    public readonly int $priority;
+
+    /**
      * Display color (hex code)
      */
     public readonly ?string $color;
@@ -67,6 +72,7 @@ final class Ribbon {
      * @param string $name Ribbon name
      * @param string $slug Ribbon slug
      * @param int $count Product count
+     * @param int $priority Display priority (lower = higher priority)
      * @param string|null $color Display color
      * @param string|null $icon Icon identifier
      * @param string $status Status (published/draft/trashed)
@@ -78,6 +84,7 @@ final class Ribbon {
         string $name,
         string $slug,
         int $count,
+        int $priority = 10,
         ?string $color = null,
         ?string $icon = null,
         string $status = 'published',
@@ -88,6 +95,7 @@ final class Ribbon {
         $this->name = $name;
         $this->slug = $slug;
         $this->count = $count;
+        $this->priority = $priority;
         $this->color = $color;
         $this->icon = $icon;
         $this->status = $status;
@@ -116,6 +124,7 @@ final class Ribbon {
      */
     public static function from_wp_term( WP_Term $term ): self {
         // Get ribbon metadata (with underscore prefix)
+        $priority = (int) self::get_ribbon_meta( $term->term_id, 'priority' ) ?: 10;
         $color = self::get_ribbon_meta( $term->term_id, 'color' );
         $icon = self::get_ribbon_meta( $term->term_id, 'icon' );
         $status = self::get_ribbon_meta( $term->term_id, 'status' ) ?: 'published';
@@ -127,6 +136,7 @@ final class Ribbon {
             name: $term->name,
             slug: $term->slug,
             count: $term->count,
+            priority: $priority,
             color: $color ?: null,
             icon: $icon ?: null,
             status: $status,
@@ -146,6 +156,7 @@ final class Ribbon {
             'name' => $this->name,
             'slug' => $this->slug,
             'count' => $this->count,
+            'priority' => $this->priority,
             'color' => $this->color,
             'icon' => $this->icon,
             'status' => $this->status,

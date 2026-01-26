@@ -10,6 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Ensure WordPress media scripts are loaded
+wp_enqueue_media();
+// Ensure jQuery is loaded
+wp_enqueue_script( 'jquery' );
+
 // Load Font Awesome
 wp_enqueue_style( 'aps-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', [], '6.4.0' );
 // Load Google Fonts - Inter
@@ -65,13 +70,13 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<?php esc_html_e( 'Product Title', 'affiliate-product-showcase' ); ?>
 							<span class="required">*</span>
 						</label>
-						<input type="text" id="aps-product-title" name="aps_product_title" class="aps-input"
+						<input type="text" id="aps-product-title" name="aps_title" class="aps-input"
 							   placeholder="<?php esc_attr_e( 'Enter title...', 'affiliate-product-showcase' ); ?>" required>
 					</div>
 					
 					<div class="aps-field-group">
 						<label for="aps-product-status"><?php esc_html_e( 'Status', 'affiliate-product-showcase' ); ?></label>
-						<select id="aps-product-status" name="aps_product_status" class="aps-select">
+						<select id="aps-product-status" name="aps_status" class="aps-select">
 							<option value="draft"><?php esc_html_e( 'Draft', 'affiliate-product-showcase' ); ?></option>
 							<option value="publish"><?php esc_html_e( 'Published', 'affiliate-product-showcase' ); ?></option>
 						</select>
@@ -93,18 +98,21 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				<div class="aps-grid-2">
 					<!-- Logo Upload -->
 					<div class="aps-upload-group">
-						<label><?php esc_html_e( 'Upload Logo', 'affiliate-product-showcase' ); ?></label>
-						<div class="aps-upload-area" id="aps-logo-upload">
+						<label><?php esc_html_e( 'Product Image (Featured)', 'affiliate-product-showcase' ); ?></label>
+						<div class="aps-upload-area" id="aps-image-upload">
 							<div class="upload-placeholder">
 								<i class="fas fa-camera"></i>
-								<p><?php esc_html_e( 'Drag & Drop', 'affiliate-product-showcase' ); ?></p>
+								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
-							<div class="image-preview" id="aps-logo-preview"></div>
-							<input type="file" name="aps_logo_image" id="aps-logo-input" accept="image/*" style="display:none;">
+							<div class="image-preview" id="aps-image-preview"></div>
+							<input type="hidden" name="aps_image_url" id="aps-image-url" value="">
+							<button type="button" class="aps-upload-btn" id="aps-upload-image-btn">
+								<i class="fas fa-upload"></i> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
+							</button>
 						</div>
 						<div class="aps-url-input">
-							<input type="url" name="aps_logo_url" class="aps-input"
-								   placeholder="https://..." id="aps-logo-url-input">
+							<input type="url" name="aps_image_url_input" class="aps-input"
+								   placeholder="https://..." id="aps-image-url-input">
 						</div>
 					</div>
 					
@@ -114,13 +122,16 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<div class="aps-upload-area" id="aps-brand-upload">
 							<div class="upload-placeholder">
 								<i class="fas fa-tshirt"></i>
-								<p><?php esc_html_e( 'Drag & Drop', 'affiliate-product-showcase' ); ?></p>
+								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
 							<div class="image-preview" id="aps-brand-preview"></div>
-							<input type="file" name="aps_brand_image" id="aps-brand-input" accept="image/*" style="display:none;">
+							<input type="hidden" name="aps_brand_image_url" id="aps-brand-image-url" value="">
+							<button type="button" class="aps-upload-btn" id="aps-upload-brand-btn">
+								<i class="fas fa-upload"></i> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
+							</button>
 						</div>
 						<div class="aps-url-input">
-							<input type="url" name="aps_brand_url" class="aps-input"
+							<input type="url" name="aps_brand_url_input" class="aps-input"
 								   placeholder="https://..." id="aps-brand-url-input">
 						</div>
 					</div>
@@ -222,17 +233,17 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				
 				<div class="aps-grid-3">
 					<div class="aps-field-group">
-						<label for="aps-current-price">
-							<?php esc_html_e( 'Current Price', 'affiliate-product-showcase' ); ?>
+						<label for="aps-regular-price">
+							<?php esc_html_e( 'Regular Price', 'affiliate-product-showcase' ); ?>
 							<span class="required">*</span>
 						</label>
-						<input type="number" id="aps-current-price" name="aps_current_price" class="aps-input"
+						<input type="number" id="aps-regular-price" name="aps_regular_price" class="aps-input"
 							   step="0.01" min="0" placeholder="30.00" required>
 					</div>
 					
 					<div class="aps-field-group">
-						<label for="aps-original-price"><?php esc_html_e( 'Original Price', 'affiliate-product-showcase' ); ?></label>
-						<input type="number" id="aps-original-price" name="aps_original_price" class="aps-input"
+						<label for="aps-sale-price"><?php esc_html_e( 'Sale Price', 'affiliate-product-showcase' ); ?></label>
+						<input type="number" id="aps-sale-price" name="aps_sale_price" class="aps-input"
 							   step="0.01" min="0" placeholder="60.00">
 					</div>
 					
@@ -285,11 +296,17 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<input type="text" class="aps-multiselect-input"
 								   placeholder="<?php esc_attr_e( 'Select ribbons...', 'affiliate-product-showcase' ); ?>">
 							<div class="aps-dropdown" id="aps-ribbons-dropdown" style="display:none;">
-								<div class="dropdown-item" data-value="hot"><?php esc_html_e( 'HOT', 'affiliate-product-showcase' ); ?></div>
-								<div class="dropdown-item" data-value="new"><?php esc_html_e( 'NEW ARRIVAL', 'affiliate-product-showcase' ); ?></div>
-								<div class="dropdown-item" data-value="sale"><?php esc_html_e( 'SALE', 'affiliate-product-showcase' ); ?></div>
-								<div class="dropdown-item" data-value="limited"><?php esc_html_e( 'LIMITED', 'affiliate-product-showcase' ); ?></div>
-								<div class="dropdown-item" data-value="bestseller"><?php esc_html_e( 'BEST SELLER', 'affiliate-product-showcase' ); ?></div>
+								<?php
+								$ribbons = get_terms( [
+									'taxonomy'   => 'aps_ribbon',
+									'hide_empty' => false,
+								] );
+								foreach ( $ribbons as $ribbon ) :
+								?>
+									<div class="dropdown-item" data-value="<?php echo esc_attr( $ribbon->slug ); ?>">
+										<?php echo esc_html( $ribbon->name ); ?>
+									</div>
+								<?php endforeach; ?>
 							</div>
 						</div>
 						<input type="hidden" name="aps_ribbons" id="aps-ribbons-input">
@@ -302,22 +319,18 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				<h2 class="section-title"><?php esc_html_e( 'PRODUCT TAGS', 'affiliate-product-showcase' ); ?></h2>
 				
 				<div class="aps-tags-group">
-					<label class="aps-checkbox-label">
-						<input type="checkbox" name="aps_tags[]" value="new-arrival">
-						<span><?php esc_html_e( 'New Arrival', 'affiliate-product-showcase' ); ?></span>
-					</label>
-					<label class="aps-checkbox-label">
-						<input type="checkbox" name="aps_tags[]" value="best-seller">
-						<span><?php esc_html_e( 'Best Seller', 'affiliate-product-showcase' ); ?></span>
-					</label>
-					<label class="aps-checkbox-label">
-						<input type="checkbox" name="aps_tags[]" value="on-sale">
-						<span><?php esc_html_e( 'On Sale', 'affiliate-product-showcase' ); ?></span>
-					</label>
-					<label class="aps-checkbox-label">
-						<input type="checkbox" name="aps_tags[]" value="limited-edition">
-						<span><?php esc_html_e( 'Limited Edition', 'affiliate-product-showcase' ); ?></span>
-					</label>
+					<?php
+					$tags = get_terms( [
+						'taxonomy'   => 'aps_tag',
+						'hide_empty' => false,
+					] );
+					foreach ( $tags as $tag ) :
+					?>
+						<label class="aps-checkbox-label">
+							<input type="checkbox" name="aps_tags[]" value="<?php echo esc_attr( $tag->slug ); ?>">
+							<span><?php echo esc_html( $tag->name ); ?></span>
+						</label>
+					<?php endforeach; ?>
 				</div>
 			</section>
 			
@@ -691,6 +704,31 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 	margin-top: 15px;
 }
 
+/* Upload Button */
+.aps-upload-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: var(--aps-primary);
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all .2s;
+	margin-top: 10px;
+}
+
+.aps-upload-btn:hover {
+	background: var(--aps-primary-hover);
+}
+
+.aps-upload-btn i {
+	font-size: 14px;
+}
+
 /* Multi-Select */
 .aps-multi-select {
 	position: relative;
@@ -944,6 +982,11 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 
 <script>
 jQuery(document).ready(function($) {
+	// Debug: Check if required libraries are loaded
+	console.log('jQuery loaded:', typeof jQuery !== 'undefined');
+	console.log('wp object loaded:', typeof wp !== 'undefined');
+	console.log('wp.media loaded:', typeof wp !== 'undefined' && typeof wp.media !== 'undefined');
+	
 	// Quick Navigation - Smooth scroll
 	$('.aps-quick-nav .nav-link').on('click', function(e) {
 		e.preventDefault();
@@ -961,12 +1004,12 @@ jQuery(document).ready(function($) {
 	});
 	
 	// Discount Calculator
-	$('#aps-current-price, #aps-original-price').on('input', function() {
-		const current = parseFloat($('#aps-current-price').val()) || 0;
-		const original = parseFloat($('#aps-original-price').val()) || 0;
+	$('#aps-regular-price, #aps-sale-price').on('input', function() {
+		const regular = parseFloat($('#aps-regular-price').val()) || 0;
+		const sale = parseFloat($('#aps-sale-price').val()) || 0;
 		
-		if (original > 0 && current < original) {
-			const discount = ((original - current) / original * 100).toFixed(0);
+		if (regular > 0 && sale > 0 && sale < regular) {
+			const discount = ((regular - sale) / regular * 100).toFixed(0);
 			$('#aps-discount').val(discount + '% OFF');
 		} else {
 			$('#aps-discount').val('0% OFF');
@@ -1153,79 +1196,93 @@ jQuery(document).ready(function($) {
 		$('#aps-ribbons-input').val(selectedRibbons.join(','));
 	});
 	
-	// Image Upload Preview
-	$('#aps-logo-upload, #aps-brand-upload').on('click', function() {
-		$(this).find('input[type="file"]').click();
+	// WordPress Media Library Upload
+	$('#aps-upload-image-btn').on('click', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		console.log('Product Image button clicked');
+		
+		// Check if wp.media is available
+		if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+			console.error('WordPress media library is not loaded');
+			alert('WordPress media library is not loaded. Please refresh the page.');
+			return;
+		}
+		
+		const mediaUploader = wp.media({
+			title: 'Select Image',
+			button: { text: 'Use This Image' },
+			multiple: false
+		});
+		
+		mediaUploader.on('select', function() {
+			const attachment = mediaUploader.state().get('selection').first().toJSON();
+			console.log('Image selected:', attachment);
+			$('#aps-image-url').val(attachment.url);
+			$('#aps-image-url-input').val(attachment.url);
+			$('#aps-image-preview')
+				.css('background-image', 'url(' + attachment.url + ')')
+				.show();
+			$('#aps-image-upload .upload-placeholder').hide();
+		});
+		
+		mediaUploader.open();
 	});
 	
-	$('#aps-logo-input').on('change', function(e) {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				$('#aps-logo-preview')
-					.css('background-image', 'url(' + e.target.result + ')')
-					.show();
-				$('#aps-logo-upload .upload-placeholder').hide();
-			};
-			reader.readAsDataURL(file);
+	$('#aps-upload-brand-btn').on('click', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		console.log('Brand Image button clicked');
+		
+		// Check if wp.media is available
+		if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+			console.error('WordPress media library is not loaded');
+			alert('WordPress media library is not loaded. Please refresh the page.');
+			return;
 		}
-	});
-	
-	$('#aps-brand-input').on('change', function(e) {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				$('#aps-brand-preview')
-					.css('background-image', 'url(' + e.target.result + ')')
-					.show();
-				$('#aps-brand-upload .upload-placeholder').hide();
-			};
-			reader.readAsDataURL(file);
-		}
+		
+		const mediaUploader = wp.media({
+			title: 'Select Brand Image',
+			button: { text: 'Use This Image' },
+			multiple: false
+		});
+		
+		mediaUploader.on('select', function() {
+			const attachment = mediaUploader.state().get('selection').first().toJSON();
+			console.log('Brand image selected:', attachment);
+			$('#aps-brand-image-url').val(attachment.url);
+			$('#aps-brand-url-input').val(attachment.url);
+			$('#aps-brand-preview')
+				.css('background-image', 'url(' + attachment.url + ')')
+				.show();
+			$('#aps-brand-upload .upload-placeholder').hide();
+		});
+		
+		mediaUploader.open();
 	});
 	
 	// URL input for images
-	$('#aps-logo-url-input').on('blur', function() {
+	$('#aps-image-url-input').on('blur', function() {
 		const url = $(this).val();
 		if (url) {
-			$('#aps-logo-preview')
+			$('#aps-image-url').val(url);
+			$('#aps-image-preview')
 				.css('background-image', 'url(' + url + ')')
 				.show();
-			$('#aps-logo-upload .upload-placeholder').hide();
+			$('#aps-image-upload .upload-placeholder').hide();
 		}
 	});
 	
 	$('#aps-brand-url-input').on('blur', function() {
 		const url = $(this).val();
 		if (url) {
+			$('#aps-brand-image-url').val(url);
 			$('#aps-brand-preview')
 				.css('background-image', 'url(' + url + ')')
 				.show();
 			$('#aps-brand-upload .upload-placeholder').hide();
-		}
-	});
-	
-	// Drag & Drop
-	$('.aps-upload-area').on('dragover', function(e) {
-		e.preventDefault();
-		$(this).css('border-color', '#2271b1');
-	}).on('dragleave', function(e) {
-		e.preventDefault();
-		$(this).css('border-color', '#c3c4c7');
-	}).on('drop', function(e) {
-		e.preventDefault();
-		$(this).css('border-color', '#c3c4c7');
-		
-		const file = e.originalEvent.dataTransfer.files[0];
-		const input = $(this).find('input[type="file"]');
-		
-		if (file) {
-			const dataTransfer = new DataTransfer();
-			dataTransfer.items.add(file);
-			input[0].files = dataTransfer.files;
-			input.trigger('change');
 		}
 	});
 });

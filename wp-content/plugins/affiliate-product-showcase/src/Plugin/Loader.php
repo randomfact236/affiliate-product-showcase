@@ -13,6 +13,7 @@ use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\ProductsController;
 use AffiliateProductShowcase\Rest\CategoriesController;
+use AffiliateProductShowcase\Rest\TagsController;
 use AffiliateProductShowcase\Rest\RibbonsController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Cli\ProductsCommand;
@@ -29,6 +30,7 @@ final class Loader {
 		private Blocks $blocks,
 		private ProductsController $products_controller,
 		private CategoriesController $categories_controller,
+		private TagsController $tags_controller,
 		private RibbonsController $ribbons_controller,
 		private AnalyticsController $analytics_controller,
 		private HealthController $health_controller,
@@ -56,6 +58,8 @@ final class Loader {
 			[ 'enqueue_block_editor_assets', 'enqueue_block_editor_assets', 9 ],
 			// IMPORTANT: ensure block front-end handles exist before core enqueues them.
 			[ 'enqueue_block_assets', 'enqueue_block_assets', 9 ],
+			// CRITICAL: Register taxonomies BEFORE REST API routes (priority 5)
+			[ 'rest_api_init', 'register_taxonomies', 5 ],
 			// CRITICAL: Register REST API AFTER taxonomies are registered (priority 10)
 			[ 'rest_api_init', 'register_rest_controllers', 10 ],
 			[ 'cli_init', 'register_cli' ],
@@ -93,6 +97,7 @@ final class Loader {
 	public function register_rest_controllers(): void {
 		$this->products_controller->register_routes();
 		$this->categories_controller->register_routes();
+		$this->tags_controller->register_routes();
 		$this->ribbons_controller->register_routes();
 		$this->analytics_controller->register_routes();
 		$this->health_controller->register_routes();

@@ -27,8 +27,21 @@ class Enqueue {
     public function __construct() {
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueStyles' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'debugHook' ], 1 );
         add_action( 'admin_print_styles', [ $this, 'printInlineStyles' ] );
         add_action( 'admin_footer', [ $this, 'printRedirectScript' ] );
+    }
+    
+    /**
+     * Debug hook to log current admin page
+     * 
+     * @param string $hook Current admin page hook
+     * @return void
+     */
+    public function debugHook( string $hook ): void {
+        if ( strpos( $hook, 'add-product' ) !== false || strpos( $hook, 'aps_product' ) !== false ) {
+            error_log( 'APS Debug - Current admin hook: ' . $hook );
+        }
     }
 
     /**
@@ -81,15 +94,8 @@ class Enqueue {
             );
         }
 
-        // Product edit styles
-        if ( $this->isProductEditPage( $hook ) ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-product-edit',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-edit.css',
-                [],
-                self::VERSION
-            );
-        }
+        // Note: Product edit styles are inline in add-product-page.php
+        // No separate CSS file needed for add-product page
 
         // Products list table styles
         if ( $hook === 'edit-aps_product' ) {
@@ -244,15 +250,7 @@ class Enqueue {
 
         // Product edit scripts
         if ( $this->isProductEditPage( $hook ) ) {
-            wp_enqueue_script(
-                'affiliate-product-showcase-product-edit',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-edit.js',
-                [ 'jquery', 'wp-util', 'media-upload' ],
-                self::VERSION,
-                true
-            );
-
-            // Media uploader
+            // Media uploader - required for wp.media() functionality
             wp_enqueue_media();
         }
 
@@ -583,6 +581,8 @@ class Enqueue {
             'affiliate-product-showcase-settings',
             'affiliate-product-showcase-help',
             'toplevel_page_affiliate-product-showcase',
+            // Add Product page hook (under aps_product)
+            'aps_product_page_add-product',
         ];
 
         foreach ( $plugin_pages as $page ) {
@@ -633,7 +633,8 @@ class Enqueue {
      */
     private function isProductEditPage( string $hook ): bool {
         return $hook === 'post.php'
-            || $hook === 'post-new.php';
+            || $hook === 'post-new.php'
+            || $hook === 'aps_product_page_add-product';
     }
 
     /**

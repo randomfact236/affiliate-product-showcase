@@ -57,6 +57,10 @@ final class ProductFactory {
 		$tag_terms = wp_get_object_terms( $post->ID, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG, [ 'fields' => 'ids' ] );
 		$tag_ids = ! is_wp_error( $tag_terms ) ? array_map( 'intval', $tag_terms ) : [];
 
+		// Get ribbon taxonomy terms
+		$ribbon_terms = wp_get_object_terms( $post->ID, \AffiliateProductShowcase\Plugin\Constants::TAX_RIBBON, [ 'fields' => 'ids' ] );
+		$ribbon_ids = ! is_wp_error( $ribbon_terms ) ? array_map( 'intval', $ribbon_terms ) : [];
+
 		// Get featured status
 		$featured_meta = $meta['aps_featured'][0] ?? '';
 		$is_featured = ! empty( $featured_meta ) && $featured_meta === '1';
@@ -79,6 +83,7 @@ final class ProductFactory {
 			$post->post_status,
 			$category_ids,
 			$tag_ids,
+			$ribbon_ids,
 			sanitize_text_field( $meta['aps_platform_requirements'][0] ?? '' ) ?: null,
 			sanitize_text_field( $meta['aps_version_number'][0] ?? '' ) ?: null
 		);
@@ -107,6 +112,12 @@ final class ProductFactory {
 			$tag_ids = array_map( 'intval', (array) $tag_ids );
 		}
 
+		// Support both 'ribbon_ids' and 'ribbons' for backward compatibility
+		$ribbon_ids = $data['ribbon_ids'] ?? $data['ribbons'] ?? [];
+		if ( ! empty( $ribbon_ids ) ) {
+			$ribbon_ids = array_map( 'intval', (array) $ribbon_ids );
+		}
+
 		// Get featured status with proper type conversion
 		$is_featured = isset( $data['featured'] ) ? (bool) $data['featured'] : false;
 
@@ -128,6 +139,7 @@ final class ProductFactory {
 			sanitize_text_field( $data['status'] ?? 'publish' ),
 			$category_ids,
 			$tag_ids,
+			$ribbon_ids,
 			sanitize_text_field( $data['platform_requirements'] ?? '' ) ?: null,
 			sanitize_text_field( $data['version_number'] ?? '' ) ?: null
 		);

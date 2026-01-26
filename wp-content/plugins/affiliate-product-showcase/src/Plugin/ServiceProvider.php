@@ -30,6 +30,7 @@ use AffiliateProductShowcase\Privacy\GDPR;
 use AffiliateProductShowcase\Public\Public_;
 use AffiliateProductShowcase\Repositories\ProductRepository;
 use AffiliateProductShowcase\Repositories\CategoryRepository;
+use AffiliateProductShowcase\Repositories\TagRepository;
 use AffiliateProductShowcase\Repositories\RibbonRepository;
 use AffiliateProductShowcase\Repositories\SettingsRepository;
 use AffiliateProductShowcase\Rest\AffiliatesController;
@@ -38,6 +39,7 @@ use AffiliateProductShowcase\Rest\AnalyticsController;
 use AffiliateProductShowcase\Rest\CategoriesController;
 use AffiliateProductShowcase\Rest\HealthController;
 use AffiliateProductShowcase\Rest\ProductsController;
+use AffiliateProductShowcase\Rest\TagsController;
 use AffiliateProductShowcase\Security\Headers;
 use AffiliateProductShowcase\Services\AffiliateService;
 use AffiliateProductShowcase\Services\AnalyticsService;
@@ -94,11 +96,12 @@ final class ServiceProvider implements ServiceProviderInterface {
 			// Cache
 			Cache::class,
 
-			// Repositories
-			ProductRepository::class,
-			CategoryRepository::class,
-			RibbonRepository::class,
-			SettingsRepository::class,
+		// Repositories
+		ProductRepository::class,
+		CategoryRepository::class,
+		TagRepository::class,
+		RibbonRepository::class,
+		SettingsRepository::class,
 
 			// Validators
 			ProductValidator::class,
@@ -144,6 +147,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 			// REST Controllers
 			ProductsController::class,
 			CategoriesController::class,
+			TagsController::class,
 			RibbonsController::class,
 			AnalyticsController::class,
 			HealthController::class,
@@ -187,6 +191,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// ============================================================================
 		$this->getContainer()->addShared(ProductRepository::class);
 		$this->getContainer()->addShared(CategoryRepository::class);
+		$this->getContainer()->addShared(TagRepository::class);
 		$this->getContainer()->addShared(RibbonRepository::class);
 		$this->getContainer()->addShared(SettingsRepository::class);
 
@@ -295,6 +300,9 @@ final class ServiceProvider implements ServiceProviderInterface {
 
 		$this->getContainer()->addShared(CategoriesController::class)
 			->addArgument(CategoryRepository::class);
+
+		$this->getContainer()->addShared(TagsController::class)
+			->addArgument(TagRepository::class);
 
 		$this->getContainer()->addShared(RibbonsController::class)
 			->addArgument(RibbonRepository::class);

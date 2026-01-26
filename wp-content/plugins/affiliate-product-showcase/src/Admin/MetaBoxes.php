@@ -71,8 +71,6 @@ final class MetaBoxes {
 			
 			// Group 7: Product Ribbons
 			'featured'    => get_post_meta( $post->ID, '_aps_featured', true ),
-			// TRUE HYBRID: Get ribbon from taxonomy, not post meta
-			'ribbon'      => $this->get_product_ribbon( $post->ID ),
 			'badge_text'  => get_post_meta( $post->ID, '_aps_badge_text', true ),
 			
 			// Group 8: Additional Information
@@ -102,6 +100,27 @@ final class MetaBoxes {
 
 		if ( ! isset( $_POST['aps_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aps_meta_box_nonce'] ) ), 'aps_meta_box' ) ) {
 			return;
+		}
+
+		// Save categories
+		if ( isset( $_POST['aps_categories'] ) && is_array( $_POST['aps_categories'] ) ) {
+			$category_ids = array_map( 'intval', $_POST['aps_categories'] );
+			wp_set_object_terms( $post_id, $category_ids, Constants::TAX_CATEGORY );
+		}
+
+		// Save tags
+		if ( isset( $_POST['aps_tags'] ) && is_array( $_POST['aps_tags'] ) ) {
+			$tag_ids = array_map( 'intval', $_POST['aps_tags'] );
+			wp_set_object_terms( $post_id, $tag_ids, Constants::TAX_TAG );
+		}
+
+		// Save ribbons (multiple selection)
+		if ( isset( $_POST['aps_ribbons'] ) && is_array( $_POST['aps_ribbons'] ) ) {
+			$ribbon_ids = array_map( 'intval', $_POST['aps_ribbons'] );
+			wp_set_object_terms( $post_id, $ribbon_ids, Constants::TAX_RIBBON );
+		} else {
+			// Clear all ribbons if none selected
+			wp_set_object_terms( $post_id, [], Constants::TAX_RIBBON );
 		}
 
 		// Group 1: Product Information
@@ -140,7 +159,7 @@ final class MetaBoxes {
 
 		// Group 7: Product Ribbons
 		$featured = isset( $_POST['aps_featured'] );
-		$ribbon = isset( $_POST['aps_ribbon'] ) ? intval( wp_unslash( $_POST['aps_ribbon'] ) ) : 0;
+		// Ribbons are now saved via taxonomy above
 		$badge_text = sanitize_text_field( wp_unslash( $_POST['aps_badge_text'] ?? '' ) );
 
 		// Group 8: Additional Information
@@ -176,8 +195,6 @@ final class MetaBoxes {
 		update_post_meta( $post_id, '_aps_affiliate_url', $affiliate_url );
 		update_post_meta( $post_id, '_aps_coupon_url', $coupon_url );
 		update_post_meta( $post_id, '_aps_featured', $featured );
-		// TRUE HYBRID: Save ribbon to taxonomy, not post meta
-		$this->save_product_ribbon( $post_id, $ribbon );
 		update_post_meta( $post_id, '_aps_badge_text', $badge_text );
 		update_post_meta( $post_id, '_aps_warranty', $warranty );
 		update_post_meta( $post_id, '_aps_release_date', $release_date );
@@ -186,41 +203,4 @@ final class MetaBoxes {
 		update_post_meta( $post_id, '_aps_hide_from_home', $hide_from_home );
 	}
 
-	/**
-	 * Get product ribbon from taxonomy
-	 *
-	 * TRUE HYBRID: Retrieves ribbon from taxonomy relationship,
-	 * not from post meta.
-	 *
-	 * @param int $product_id Product ID
-	 * @return int Ribbon term ID or 0
-	 */
-	private function get_product_ribbon( int $product_id ): int {
-		$terms = wp_get_object_terms( $product_id, Constants::TAX_RIBBON );
-		
-		if ( is_wp_error( $terms ) || empty( $terms ) ) {
-			return 0;
-		}
-		
-		return (int) $terms[0]->term_id;
-	}
-
-	/**
-	 * Save product ribbon to taxonomy
-	 *
-	 * TRUE HYBRID: Saves ribbon to taxonomy relationship,
-	 * not to post meta.
-	 *
-	 * @param int $product_id Product ID
-	 * @param int $ribbon_id Ribbon term ID
-	 */
-	private function save_product_ribbon( int $product_id, int $ribbon_id ): void {
-		if ( $ribbon_id > 0 ) {
-			// Set taxonomy relationship
-			wp_set_object_terms( $product_id, [ $ribbon_id ], Constants::TAX_RIBBON );
-		} else {
-			// Remove all ribbon relationships
-			wp_set_object_terms( $product_id, [], Constants::TAX_RIBBON );
-		}
-	}
 }
