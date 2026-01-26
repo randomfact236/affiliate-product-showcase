@@ -13,7 +13,6 @@ use AffiliateProductShowcase\Admin\RibbonFields;
 use AffiliateProductShowcase\Admin\Settings;
 
 final class Admin {
-	private MetaBoxes $metaboxes;
 	private Settings $settings;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
@@ -31,7 +30,6 @@ final class Admin {
 		RibbonFields $ribbon_fields,
 		Settings $settings
 	) {
-		$this->metaboxes = new MetaBoxes($this->product_service);
 		$this->settings = $settings;
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
@@ -45,8 +43,6 @@ final class Admin {
 		// Initialize settings
 		$this->settings->init();
 		
-		add_action('add_meta_boxes', [$this->metaboxes, 'register']);
-		add_action('save_post', [$this->metaboxes, 'save_meta'], 10, 2);
 		add_action('admin_notices', [$this, 'render_product_table_on_products_page'], 10);
 		
 		// Initialize category components (WordPress native + custom enhancements)

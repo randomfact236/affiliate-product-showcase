@@ -151,7 +151,7 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ): string {
-		$edit_url = get_edit_post_link( $item->ID );
+		$edit_url = admin_url( 'edit.php?post_type=aps_product&page=add-product&post=' . $item->ID );
 		$title = (string) $item->post_title;
 		$post_type = get_post_type_object( 'aps_product' );
 		$can_edit_post = $post_type ? current_user_can( $post_type->cap->edit_post, $item->ID ) : false;

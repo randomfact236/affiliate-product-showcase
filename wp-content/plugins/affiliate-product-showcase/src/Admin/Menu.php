@@ -23,8 +23,8 @@ class Menu {
 		// Add custom "Add Product" submenu to Affiliate Products CPT (priority 10)
 		add_action( 'admin_menu', [ $this, 'addCustomSubmenus' ], 10 );
 		
-		// Redirect old form to new form
-		add_action( 'admin_init', [ $this, 'redirectOldAddNewForm' ] );
+		// Redirect native editor to custom page
+		add_action( 'admin_init', [ $this, 'redirectNativeEditor' ] );
 		
 		// Remove default Add New - run VERY late after admin_menu
 		add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], PHP_INT_MAX );
@@ -102,16 +102,29 @@ class Menu {
 	}
 	
 	/**
-	 * Redirect old default Add New form to our custom Add Product page
+	 * Redirect native editor to custom Add Product page
+	 *
+	 * Redirects both post-new.php (Add New) and post.php (Edit)
+	 * to our custom single-page form.
 	 *
 	 * @return void
 	 */
-	public function redirectOldAddNewForm(): void {
+	public function redirectNativeEditor(): void {
 		global $pagenow, $typenow;
 		
+		// Redirect post-new.php (Add New) to custom page
 		if ( $pagenow === 'post-new.php' && $typenow === 'aps_product' ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product' ) );
 			exit;
+		}
+		
+		// Redirect post.php (Edit) to custom page
+		if ( $pagenow === 'post.php' && $typenow === 'aps_product' ) {
+			if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
+				$post_id = (int) $_GET['post'];
+				wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $post_id ) );
+				exit;
+			}
 		}
 	}
 

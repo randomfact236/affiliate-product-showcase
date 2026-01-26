@@ -2,12 +2,49 @@
 /**
  * Add Product Page - Single-Page Form with Quick Navigation
  *
+ * Supports both adding new products and editing existing products.
+ * Detects edit mode via $_GET['post'] parameter.
+ *
  * @package AffiliateProductShowcase\Admin\Partials
  * @since 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// Determine if we're editing or adding
+$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+$is_editing = $post_id > 0;
+
+// Get product data if editing
+$product_data = [];
+if ( $is_editing ) {
+	$post = get_post( $post_id );
+	if ( $post && $post->post_type === 'aps_product' ) {
+		$product_data = [
+			'id' => $post->ID,
+			'title' => $post->post_title,
+			'status' => $post->post_status,
+			'content' => $post->post_content,
+			// Meta fields
+			'logo' => get_post_meta( $post->ID, 'aps_product_logo', true ),
+			'brand_image' => get_post_meta( $post->ID, 'aps_brand_image', true ),
+			'affiliate_url' => get_post_meta( $post->ID, 'aps_affiliate_url', true ),
+			'button_name' => get_post_meta( $post->ID, 'aps_button_name', true ),
+			'short_description' => get_post_meta( $post->ID, 'aps_short_description', true ),
+			'regular_price' => get_post_meta( $post->ID, 'aps_regular_price', true ),
+			'sale_price' => get_post_meta( $post->ID, 'aps_sale_price', true ),
+			'currency' => get_post_meta( $post->ID, 'aps_currency', true ) ?: 'USD',
+			'featured' => get_post_meta( $post->ID, 'aps_featured', true ) === '1',
+			'rating' => get_post_meta( $post->ID, 'aps_rating', true ),
+			'views' => get_post_meta( $post->ID, 'aps_views', true ),
+			'user_count' => get_post_meta( $post->ID, 'aps_user_count', true ),
+			'reviews' => get_post_meta( $post->ID, 'aps_reviews', true ),
+			// Features stored as JSON
+			'features' => json_decode( get_post_meta( $post->ID, 'aps_features', true ) ?: '[]', true ),
+		];
+	}
 }
 
 // Ensure WordPress media scripts are loaded
@@ -24,7 +61,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 <div class="wrap affiliate-product-showcase">
 	<!-- Header -->
 	<div class="aps-header">
-		<h1><?php esc_html_e( 'Edit Product', 'affiliate-product-showcase' ); ?></h1>
+		<h1><?php echo esc_html( $is_editing ? __( 'Edit Product', 'affiliate-product-showcase' ) : __( 'Add Product', 'affiliate-product-showcase' ) ); ?></h1>
 		<button type="button" class="aps-close-btn" onclick="window.location.href='<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>'">
 			<i class="fas fa-times"></i>
 		</button>
@@ -71,27 +108,28 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<span class="required">*</span>
 						</label>
 						<input type="text" id="aps-product-title" name="aps_title" class="aps-input"
-							   placeholder="<?php esc_attr_e( 'Enter title...', 'affiliate-product-showcase' ); ?>" required>
+							   placeholder="<?php esc_attr_e( 'Enter title...', 'affiliate-product-showcase' ); ?>" required
+							   value="<?php echo esc_attr( $product_data['title'] ?? '' ); ?>">
 					</div>
 					
 					<div class="aps-field-group">
 						<label for="aps-product-status"><?php esc_html_e( 'Status', 'affiliate-product-showcase' ); ?></label>
 						<select id="aps-product-status" name="aps_status" class="aps-select">
-							<option value="draft"><?php esc_html_e( 'Draft', 'affiliate-product-showcase' ); ?></option>
-							<option value="publish"><?php esc_html_e( 'Published', 'affiliate-product-showcase' ); ?></option>
+							<option value="draft" <?php selected( $product_data['status'] ?? '', 'draft' ); ?>><?php esc_html_e( 'Draft', 'affiliate-product-showcase' ); ?></option>
+							<option value="publish" <?php selected( $product_data['status'] ?? '', 'publish' ); ?>><?php esc_html_e( 'Published', 'affiliate-product-showcase' ); ?></option>
 						</select>
 					</div>
 				</div>
 				
 				<div class="aps-field-group">
 					<label class="aps-checkbox-label">
-						<input type="checkbox" id="aps-featured" name="aps_featured" value="1">
+						<input type="checkbox" id="aps-featured" name="aps_featured" value="1" <?php checked( $product_data['featured'] ?? false ); ?>>
 						<span><?php esc_html_e( 'Featured Product', 'affiliate-product-showcase' ); ?></span>
 					</label>
 				</div>
 			</section>
 			
-			<!-- 2. Product Images -->
+				<!-- 2. Product Images -->
 			<section id="images" class="aps-section">
 				<h2 class="section-title"><?php esc_html_e( 'PRODUCT IMAGES', 'affiliate-product-showcase' ); ?></h2>
 				
@@ -104,15 +142,16 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 								<i class="fas fa-camera"></i>
 								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
-							<div class="image-preview" id="aps-image-preview"></div>
-							<input type="hidden" name="aps_image_url" id="aps-image-url" value="">
+							<div class="image-preview" id="aps-image-preview" style="<?php echo !empty( $product_data['logo'] ) ? 'background-image: url(' . esc_url( $product_data['logo'] ) . '); display: block;' : ''; ?>"></div>
+							<input type="hidden" name="aps_image_url" id="aps-image-url" value="<?php echo esc_attr( $product_data['logo'] ?? '' ); ?>">
 							<button type="button" class="aps-upload-btn" id="aps-upload-image-btn">
 								<i class="fas fa-upload"></i> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
 							</button>
 						</div>
 						<div class="aps-url-input">
 							<input type="url" name="aps_image_url_input" class="aps-input"
-								   placeholder="https://..." id="aps-image-url-input">
+								   placeholder="https://..." id="aps-image-url-input"
+								   value="<?php echo esc_attr( $product_data['logo'] ?? '' ); ?>">
 						</div>
 					</div>
 					
@@ -124,15 +163,16 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 								<i class="fas fa-tshirt"></i>
 								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
-							<div class="image-preview" id="aps-brand-preview"></div>
-							<input type="hidden" name="aps_brand_image_url" id="aps-brand-image-url" value="">
+							<div class="image-preview" id="aps-brand-preview" style="<?php echo !empty( $product_data['brand_image'] ) ? 'background-image: url(' . esc_url( $product_data['brand_image'] ) . '); display: block;' : ''; ?>"></div>
+							<input type="hidden" name="aps_brand_image_url" id="aps-brand-image-url" value="<?php echo esc_attr( $product_data['brand_image'] ?? '' ); ?>">
 							<button type="button" class="aps-upload-btn" id="aps-upload-brand-btn">
 								<i class="fas fa-upload"></i> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
 							</button>
 						</div>
 						<div class="aps-url-input">
 							<input type="url" name="aps_brand_url_input" class="aps-input"
-								   placeholder="https://..." id="aps-brand-url-input">
+								   placeholder="https://..." id="aps-brand-url-input"
+								   value="<?php echo esc_attr( $product_data['brand_image'] ?? '' ); ?>">
 						</div>
 					</div>
 				</div>
@@ -146,13 +186,15 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 					<div class="aps-field-group">
 						<label for="aps-affiliate-url"><?php esc_html_e( 'Affiliate URL', 'affiliate-product-showcase' ); ?></label>
 						<input type="url" id="aps-affiliate-url" name="aps_affiliate_url" class="aps-input"
-							   placeholder="https://example.com/...">
+							   placeholder="https://example.com/..."
+							   value="<?php echo esc_url( $product_data['affiliate_url'] ?? '' ); ?>">
 					</div>
 					
 					<div class="aps-field-group">
 						<label for="aps-button-name"><?php esc_html_e( 'Button Name', 'affiliate-product-showcase' ); ?></label>
 						<input type="text" id="aps-button-name" name="aps_button_name" class="aps-input"
-							   placeholder="Buy Now">
+							   placeholder="Buy Now"
+							   value="<?php echo esc_attr( $product_data['button_name'] ?? 'Buy Now' ); ?>">
 					</div>
 				</div>
 			</section>
@@ -168,7 +210,8 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 					</label>
 					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea aps-full-page"
 							  rows="6" maxlength="200"
-							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required></textarea>
+							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required
+							  data-initial="<?php echo esc_attr( $product_data['short_description'] ?? '' ); ?>"><?php echo esc_textarea( $product_data['short_description'] ?? '' ); ?></textarea>
 					<div class="word-counter">
 						<span id="aps-word-count">0</span>/40 <?php esc_html_e( 'Words', 'affiliate-product-showcase' ); ?>
 					</div>
@@ -238,13 +281,15 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<span class="required">*</span>
 						</label>
 						<input type="number" id="aps-regular-price" name="aps_regular_price" class="aps-input"
-							   step="0.01" min="0" placeholder="30.00" required>
+							   step="0.01" min="0" placeholder="30.00" required
+							   value="<?php echo esc_attr( $product_data['regular_price'] ?? '' ); ?>">
 					</div>
 					
 					<div class="aps-field-group">
 						<label for="aps-sale-price"><?php esc_html_e( 'Sale Price', 'affiliate-product-showcase' ); ?></label>
 						<input type="number" id="aps-sale-price" name="aps_sale_price" class="aps-input"
-							   step="0.01" min="0" placeholder="60.00">
+							   step="0.01" min="0" placeholder="60.00"
+							   value="<?php echo esc_attr( $product_data['sale_price'] ?? '' ); ?>">
 					</div>
 					
 					<div class="aps-field-group">
