@@ -113,6 +113,14 @@ class Enqueue {
                 [],
                 self::VERSION
             );
+
+            // Inline editing styles (click-to-edit cells)
+            wp_enqueue_style(
+                'affiliate-product-showcase-products-table-inline-edit',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/products-table-inline-edit.css',
+                [],
+                self::VERSION
+            );
         }
     }
 
@@ -127,6 +135,9 @@ class Enqueue {
         if ( ! $this->isPluginPage( $hook ) ) {
             return;
         }
+
+        // Ensure jQuery is available in admin pages we control
+        wp_enqueue_script( 'jquery' );
 
         // Main admin JS
         wp_enqueue_script(
@@ -206,6 +217,15 @@ class Enqueue {
                 true
             );
 
+            // Inline editing scripts (click-to-edit cells)
+            wp_enqueue_script(
+                'affiliate-product-showcase-products-table-inline-edit',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/products-table-inline-edit.js',
+                [ 'jquery' ],
+                self::VERSION,
+                true
+            );
+
             wp_localize_script(
                 'affiliate-product-showcase-admin-products-enhancer',
                 'affiliateProductShowcaseAdminEnhancer',
@@ -243,6 +263,21 @@ class Enqueue {
                         'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
                         'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
                         'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
+                    ],
+                ]
+            );
+
+            // Localize inline edit script
+            wp_localize_script(
+                'affiliate-product-showcase-products-table-inline-edit',
+                'apsInlineEditData',
+                [
+                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                    'strings' => [
+                        'saving' => __( 'Saving...', 'affiliate-product-showcase' ),
+                        'saved' => __( 'Saved!', 'affiliate-product-showcase' ),
+                        'error' => __( 'Error', 'affiliate-product-showcase' ),
                     ],
                 ]
             );

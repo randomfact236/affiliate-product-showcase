@@ -89,6 +89,7 @@ class ProductsTable extends \WP_List_Table {
 	public function get_bulk_actions(): array {
 		$actions = [
 			'publish'          => __( 'Publish', 'affiliate-product-showcase' ),
+			'move_to_draft'    => __( 'Move to Draft', 'affiliate-product-showcase' ),
 			'set_in_stock'    => __( 'Set In Stock', 'affiliate-product-showcase' ),
 			'set_out_of_stock' => __( 'Set Out of Stock', 'affiliate-product-showcase' ),
 			'set_featured'     => __( 'Set Featured', 'affiliate-product-showcase' ),
@@ -151,7 +152,8 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ): string {
-		$edit_url = admin_url( 'edit.php?post_type=aps_product&page=add-product&post=' . $item->ID );
+		// Use consistent URL format with admin.php
+		$edit_url = admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $item->ID );
 		$title = (string) $item->post_title;
 		$post_type = get_post_type_object( 'aps_product' );
 		$can_edit_post = $post_type ? current_user_can( $post_type->cap->edit_post, $item->ID ) : false;
@@ -218,17 +220,18 @@ class ProductsTable extends \WP_List_Table {
 		$categories = get_the_terms( $item->ID, Constants::TAX_CATEGORY );
 
 		if ( empty( $categories ) || is_wp_error( $categories ) ) {
-			return '—';
+			return sprintf( '<span data-field="category" data-product-id="%d">—</span>', (int) $item->ID );
 		}
 
 		$badges = array_map( static function( $category ) {
 			return sprintf(
-				'<span class="aps-product-category">%s <span aria-hidden="true">×</span></span>',
+				'<span class="aps-product-category" data-category-id="%s">%s <span aria-hidden="true">×</span></span>',
+				esc_attr( (string) $category->term_id ),
 				esc_html( $category->name )
 			);
 		}, $categories );
 
-		return implode( ' ', $badges );
+		return sprintf( '<div data-field="category" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
 	}
 
 	/**
@@ -241,17 +244,18 @@ class ProductsTable extends \WP_List_Table {
 		$tags = get_the_terms( $item->ID, Constants::TAX_TAG );
 
 		if ( empty( $tags ) || is_wp_error( $tags ) ) {
-			return '—';
+			return sprintf( '<span data-field="tags" data-product-id="%d">—</span>', (int) $item->ID );
 		}
 
 		$badges = array_map( static function( $tag ) {
 			return sprintf(
-				'<span class="aps-product-tag">%s <span aria-hidden="true">×</span></span>',
+				'<span class="aps-product-tag" data-tag-id="%s">%s <span aria-hidden="true">×</span></span>',
+				esc_attr( (string) $tag->term_id ),
 				esc_html( $tag->name )
 			);
 		}, $tags );
 
-		return implode( ' ', $badges );
+		return sprintf( '<div data-field="tags" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
 	}
 
 	/**
@@ -266,14 +270,14 @@ class ProductsTable extends \WP_List_Table {
 		$ribbons = get_the_terms( $item->ID, Constants::TAX_RIBBON );
 		
 		if ( empty( $ribbons ) || is_wp_error( $ribbons ) ) {
-			return '—';
+			return sprintf( '<span data-field="ribbon" data-product-id="%d">—</span>', (int) $item->ID );
 		}
 
 		$badges = array_map( static function( $ribbon ) {
-			return sprintf( '<span class="aps-product-badge">%s</span>', esc_html( $ribbon->name ) );
+			return sprintf( '<span class="aps-product-badge" data-ribbon-id="%s">%s</span>', esc_attr( (string) $ribbon->term_id ), esc_html( $ribbon->name ) );
 		}, $ribbons );
 
-		return implode( ' ', $badges );
+		return sprintf( '<div data-field="ribbon" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
 	}
 
 	/**
@@ -323,10 +327,18 @@ class ProductsTable extends \WP_List_Table {
 		$symbol = $currency_symbols[ $currency ] ?? $currency;
 
 		if ( empty( $price ) ) {
-			return '—';
+			return sprintf( '<span data-field="price" data-product-id="%d">—</span>', (int) $item->ID );
 		}
 
 		$output = sprintf(
+			'<div data-field="price" data-product-id="%d" data-currency="%s" data-original-price="%s" data-price="%s">',
+			(int) $item->ID,
+			esc_attr( $currency ),
+			esc_attr( (string) $original_price ),
+			esc_attr( (string) $price )
+		);
+
+		$output .= sprintf(
 			'<span class="aps-product-price">%s%s</span>',
 			esc_html( $symbol ),
 			esc_html( number_format_i18n( (float) $price, 2 ) )
@@ -342,6 +354,7 @@ class ProductsTable extends \WP_List_Table {
 			);
 		}
 
+		$output .= '</div>';
 		return $output;
 	}
 
@@ -376,7 +389,14 @@ class ProductsTable extends \WP_List_Table {
 				break;
 		}
 
-		return sprintf( '<span class="%s">%s</span>', esc_attr( $class ), esc_html( $label ) );
+		// Wrap in div for consistency with other editable columns
+		return sprintf(
+			'<div data-field="status" data-product-id="%d" data-status="%s"><span class="%s">%s</span></div>',
+			(int) $item->ID,
+			esc_attr( $status ),
+			esc_attr( $class ),
+			esc_html( $label )
+		);
 	}
 
 	/**

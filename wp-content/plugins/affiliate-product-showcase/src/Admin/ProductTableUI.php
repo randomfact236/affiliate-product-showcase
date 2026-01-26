@@ -281,6 +281,14 @@ class ProductTableUI {
 			['aps-admin-table'],
 			\AffiliateProductShowcase\Plugin\Constants::VERSION
 		);
+
+		// Enqueue inline editing CSS
+		wp_enqueue_style(
+			'affiliate-product-showcase-products-table-inline-edit',
+			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/css/products-table-inline-edit.css',
+			['aps-product-table-ui'],
+			\AffiliateProductShowcase\Plugin\Constants::VERSION
+		);
 	}
 
 	/**
@@ -294,6 +302,7 @@ class ProductTableUI {
 			return;
 		}
 
+		// Enqueue product table UI script (bulk actions, filters)
 		wp_enqueue_script(
 			'aps-product-table-ui',
 			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/js/product-table-ui.js',
@@ -316,6 +325,32 @@ class ProductTableUI {
 				'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
 				'done' => __( 'Done!', 'affiliate-product-showcase' ),
 				'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
+			],
+		]);
+
+		// Enqueue inline editing script
+		wp_enqueue_script(
+			'affiliate-product-showcase-products-table-inline-edit',
+			\AffiliateProductShowcase\Plugin\Constants::dirUrl() . 'assets/js/products-table-inline-edit.js',
+			['jquery'],
+			\AffiliateProductShowcase\Plugin\Constants::VERSION,
+			true
+		);
+
+		wp_localize_script( 'affiliate-product-showcase-products-table-inline-edit', 'apsInlineEditData', [
+			'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'strings' => [
+				'saving' => __( 'Saving...', 'affiliate-product-showcase' ),
+				'saved' => __( 'Saved!', 'affiliate-product-showcase' ),
+				'error' => __( 'Error saving. Please try again.', 'affiliate-product-showcase' ),
+				'addNew' => __( 'Add New', 'affiliate-product-showcase' ),
+				'selectCategory' => __( 'Select Category', 'affiliate-product-showcase' ),
+				'selectTags' => __( 'Select Tags', 'affiliate-product-showcase' ),
+				'selectRibbon' => __( 'Select Ribbon', 'affiliate-product-showcase' ),
+				'none' => __( 'None', 'affiliate-product-showcase' ),
+				'published' => __( 'Published', 'affiliate-product-showcase' ),
+				'draft' => __( 'Draft', 'affiliate-product-showcase' ),
 			],
 		]);
 	}

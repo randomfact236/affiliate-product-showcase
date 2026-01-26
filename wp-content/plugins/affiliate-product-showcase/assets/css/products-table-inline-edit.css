@@ -1,0 +1,593 @@
+/**
+ * Products Table Inline Editing Styles
+ *
+ * Styles for inline editing functionality including:
+ * - Editable cell indicators
+ * - Editor controls (dropdowns, inputs, multi-selects)
+ * - Loading, success, and error states
+ * - Bulk action buttons
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+/* ========================================
+   Editable Cell Indicators
+   ======================================== */
+
+.widefat tr td {
+    position: relative;
+}
+
+/* Hover effect for editable cells */
+.widefat td.column-category:hover,
+.widefat td.column-tags:hover,
+.widefat td.column-ribbon:hover,
+.widefat td.column-price:hover,
+.widefat td.column-status:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+    outline: 1px dashed #ddd;
+    outline-offset: -2px;
+}
+
+/* Pencil icon on hover */
+.widefat td.column-category:not(.aps-editing):hover::after,
+.widefat td.column-tags:not(.aps-editing):hover::after,
+.widefat td.column-ribbon:not(.aps-editing):hover::after,
+.widefat td.column-price:not(.aps-editing):hover::after,
+.widefat td.column-status:not(.aps-editing):hover::after {
+    content: '✎';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 14px;
+    color: #666;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.widefat td.column-category:not(.aps-editing):hover::after,
+.widefat td.column-tags:not(.aps-editing):hover::after,
+.widefat td.column-ribbon:not(.aps-editing):hover::after,
+.widefat td.column-price:not(.aps-editing):hover::after,
+.widefat td.column-status:not(.aps-editing):hover::after {
+    color: #666;
+}
+
+/* Hide icon when editing */
+.widefat td.aps-editing::after {
+    display: none;
+}
+
+/* ========================================
+   Editing State
+   ======================================== */
+
+td.aps-editing {
+    background-color: #fff;
+    outline: 2px solid #0073aa;
+    outline-offset: -2px;
+    z-index: 10;
+}
+
+/* ========================================
+   Inline Editor Containers
+   ======================================== */
+
+.aps-inline-editor {
+    position: relative;
+    width: 100%;
+    min-height: 30px;
+}
+
+/* Dropdown Editor */
+.aps-editor-dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.aps-inline-select {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.aps-inline-select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px rgba(0, 115, 170, 0.3);
+}
+
+/* Multi-select Editor */
+.aps-editor-multiselect {
+    padding: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.aps-multiselect-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aps-multiselect-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.aps-multiselect-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.aps-multiselect-item:hover {
+    background-color: #f0f0f1;
+}
+
+.aps-multiselect-item input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.aps-multiselect-add {
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+    text-align: right;
+}
+
+/* Price Editor */
+.aps-editor-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aps-price-editor-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.aps-inline-price-input {
+    flex: 1;
+    padding: 4px 8px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.aps-inline-price-input:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px rgba(0, 115, 170, 0.3);
+}
+
+.aps-price-currency {
+    font-weight: 600;
+    color: #333;
+}
+
+.aps-price-discount-preview {
+    font-size: 12px;
+    color: #d63638;
+    font-weight: 600;
+    padding-left: 8px;
+    white-space: nowrap;
+}
+
+.aps-price-discount-preview.visible {
+    display: inline;
+}
+
+.aps-price-discount-preview:not(.visible) {
+    display: none;
+}
+
+/* Status Editor */
+.aps-editor-status {
+    display: flex;
+    align-items: center;
+}
+
+.aps-status-editor-container {
+    width: 100%;
+}
+
+.aps-inline-status-select {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.aps-inline-status-select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px rgba(0, 115, 170, 0.3);
+}
+
+/* ========================================
+   States: Loading, Success, Error
+   ======================================== */
+
+/* Loading State */
+td.aps-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.aps-editor-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.aps-editor-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-top-color: #0073aa;
+    border-radius: 50%;
+    animation: aps-spin 0.6s linear infinite;
+}
+
+@keyframes aps-spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Success State */
+td.aps-success {
+    background-color: #edfaef;
+    animation: aps-flash-success 0.3s ease-in-out;
+}
+
+@keyframes aps-flash-success {
+    0%, 100% {
+        background-color: #edfaef;
+    }
+    50% {
+        background-color: #c6f6d6;
+    }
+}
+
+td.aps-success::before {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 14px;
+    color: #00a32a;
+    font-weight: bold;
+}
+
+/* Error State */
+td.aps-error {
+    background-color: #f7e6e6;
+}
+
+.aps-editor-error {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    background-color: #dc3232;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    animation: aps-slide-up 0.3s ease-out;
+}
+
+@keyframes aps-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   Product Badges (preserve existing)
+   ======================================== */
+
+.aps-product-category,
+.aps-product-tag,
+.aps-product-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    margin: 2px;
+    font-size: 11px;
+    border-radius: 12px;
+    background-color: #f0f0f1;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.aps-product-category span,
+.aps-product-tag span {
+    margin-left: 6px;
+    opacity: 0.6;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.aps-product-category span:hover,
+.aps-product-tag span:hover {
+    opacity: 1;
+    color: #dc3232;
+}
+
+.aps-product-badge {
+    background-color: #fef7e7;
+    border-color: #f0c674;
+    color: #d63638;
+}
+
+/* ========================================
+   Price Display (preserve existing)
+   ======================================== */
+
+.aps-product-price {
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.aps-product-price-original {
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 8px;
+    font-size: 13px;
+}
+
+.aps-product-price-discount {
+    background-color: #d63638;
+    color: #fff;
+    padding: 2px 6px;
+    margin-left: 8px;
+    font-size: 11px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* ========================================
+   Status Badges (preserve existing)
+   ======================================== */
+
+.aps-product-status {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+.aps-product-status-published {
+    background-color: #edfaef;
+    color: #00a32a;
+    border: 1px solid #00a32a;
+}
+
+.aps-product-status-draft {
+    background-color: #f0f0f1;
+    color: #646970;
+    border: 1px solid #646970;
+}
+
+.aps-product-status-trash {
+    background-color: #f7e6e6;
+    color: #dc3232;
+    border: 1px solid #dc3232;
+}
+
+.aps-product-status-pending {
+    background-color: #fef7e7;
+    color: #d63638;
+    border: 1px solid #d63638;
+}
+
+/* ========================================
+   Bulk Actions
+   ======================================== */
+
+.button-small {
+    padding: 0 8px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+
+@media (max-width: 1200px) {
+    .aps-inline-editor {
+        min-height: 36px;
+    }
+
+    .aps-inline-price-input,
+    .aps-inline-select,
+    .aps-inline-status-select {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 782px) {
+    .widefat td.column-category:not(.aps-editing):hover::after,
+    .widefat td.column-tags:not(.aps-editing):hover::after,
+    .widefat td.column-ribbon:not(.aps-editing):hover::after,
+    .widefat td.column-price:not(.aps-editing):hover::after,
+    .widefat td.column-status:not(.aps-editing):hover::after {
+        display: none;
+    }
+
+    .aps-editor-multiselect {
+        max-height: 200px;
+    }
+}
+
+/* ========================================
+   Transitions
+   ======================================== */
+
+.widefat td {
+    transition: background-color 0.15s ease, outline-color 0.15s ease;
+}
+
+.aps-inline-editor {
+    transition: opacity 0.2s ease;
+}
+
+.aps-multiselect-item {
+    transition: background-color 0.15s ease;
+}
+
+.aps-product-category,
+.aps-product-tag,
+.aps-product-badge {
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+.aps-inline-select:focus,
+.aps-inline-price-input:focus,
+.aps-inline-status-select:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 1px;
+}
+
+.aps-multiselect-item:focus-within {
+    background-color: #f0f0f1;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .widefat td.column-category:hover,
+    .widefat td.column-tags:hover,
+    .widefat td.column-ribbon:hover,
+    .widefat td.column-price:hover,
+    .widefat td.column-status:hover {
+        outline: 2px solid #000;
+    }
+
+    td.aps-editing {
+        outline: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .aps-editor-loading::after {
+        animation: none;
+    }
+
+    td.aps-success {
+        animation: none;
+    }
+
+    .aps-editor-error {
+        animation: none;
+    }
+    
+    .aps-toast-notification {
+        animation: none !important;
+    }
+}
+
+/* ========================================
+   Toast Notifications
+   ======================================== */
+
+.aps-toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
+    animation: aps-slide-in 0.3s ease-out;
+    max-width: 400px;
+    word-wrap: break-word;
+}
+
+@keyframes aps-slide-in {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.aps-toast-success {
+    background-color: #00a32a;
+}
+
+.aps-toast-error {
+    background-color: #dc3232;
+}
+
+.aps-toast-warning {
+    background-color: #d63638;
+}
+
+.aps-toast-hiding {
+    animation: aps-slide-out 0.3s ease-out forwards;
+}
+
+@keyframes aps-slide-out {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+/* Multiple toast support */
+.aps-toast-notification:nth-child(n+2) {
+    bottom: calc(20px + (n - 1) * 60px);
+}

@@ -156,6 +156,33 @@ final class ProductsController extends RestController {
 				],
 			]
 		);
+
+		// Inline editing routes
+		register_rest_route(
+			$this->namespace,
+			'/products/(?P<id>[\d]+)/field',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'update_field' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_update_field_args(),
+				],
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/products/bulk-status',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'bulk_update_status' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => $this->get_bulk_status_args(),
+				],
+			]
+		);
 	}
 
 	/**
@@ -330,6 +357,63 @@ final class ProductsController extends RestController {
 		}
 		
 		return $args;
+	}
+
+	/**
+	 * Get validation schema for update field endpoint
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_update_field_args(): array {
+		return [
+			'field_name' => [
+				'required'          => true,
+				'type'              => 'string',
+				'enum'              => ['category', 'tags', 'ribbon', 'price', 'status'],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'field_value' => [
+				'required'          => true,
+				'type'              => 'mixed',
+				'sanitize_callback' => function( $value ) {
+					if ( is_array( $value ) ) {
+						return array_map( 'intval', $value );
+					}
+					if ( is_numeric( $value ) ) {
+						return floatval( $value );
+					}
+					return sanitize_text_field( $value );
+				},
+			],
+		];
+	}
+
+	/**
+	 * Get validation schema for bulk status update endpoint
+	 *
+	 * @return array<string, mixed> Validation schema for WordPress REST API
+	 * @since 1.0.0
+	 */
+	private function get_bulk_status_args(): array {
+		return [
+			'product_ids' => [
+				'required'          => true,
+				'type'              => 'array',
+				'items'             => [
+					'type' => 'integer',
+				],
+				'sanitize_callback' => function( $value ) {
+					return array_map( 'intval', (array) $value );
+				},
+			],
+			'status' => [
+				'required'          => true,
+				'type'              => 'string',
+				'enum'              => ['publish', 'draft'],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+		];
 	}
 
 	/**
@@ -757,6 +841,247 @@ final class ProductsController extends RestController {
 				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
 				'code' => 'server_error',
 			], 500);
+		}
+	}
+
+	/**
+	 * Update a single field of a product
+	 *
+	 * Handles inline editing of specific fields:
+	 * - category: Single category ID
+	 * - tags: Array of tag IDs
+	 * - ribbon: Ribbon ID or null
+	 * - price: Numeric price value
+	 * - status: 'publish' or 'draft'
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with updated product or error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products/{id}/field
+	 */
+	public function update_field( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_id = $request->get_param( 'id' );
+		$field_name = $request->get_param( 'field_name' );
+		$field_value = $request->get_param( 'field_value' );
+
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+
+		// Verify product exists
+		$existing_product = $this->product_service->get_product( (int) $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+
+		try {
+			// Prepare update data based on field type
+			$update_data = ['id' => (int) $product_id];
+
+			switch ( $field_name ) {
+				case 'category':
+					$category_id = ! empty( $field_value ) ? (int) $field_value : null;
+					$update_data['category_ids'] = $category_id ? [$category_id] : [];
+					break;
+
+				case 'tags':
+					$update_data['tag_ids'] = is_array( $field_value ) ? $field_value : [];
+					break;
+
+				case 'ribbon':
+					$ribbon_id = ! empty( $field_value ) ? (int) $field_value : null;
+					$update_data['badge'] = $ribbon_id ? (string) $ribbon_id : '';
+					break;
+
+				case 'price':
+					$price = floatval( $field_value );
+					if ( $price < 0 ) {
+						return $this->respond( [
+							'message' => __( 'Price must be a positive number.', 'affiliate-product-showcase' ),
+							'code'    => 'invalid_price',
+						], 400 );
+					}
+					$update_data['price'] = $price;
+					
+					// Recalculate discount percentage if original price exists
+					if ( ! empty( $existing_product->original_price ) && $existing_product->original_price > 0 ) {
+						$discount = ( ( $existing_product->original_price - $price ) / $existing_product->original_price ) * 100;
+						$update_data['discount_percentage'] = round( max( 0, $discount ), 2 );
+					}
+					break;
+
+				case 'status':
+					if ( ! in_array( $field_value, ['publish', 'draft'], true ) ) {
+						return $this->respond( [
+							'message' => __( 'Invalid status. Must be "publish" or "draft".', 'affiliate-product-showcase' ),
+							'code'    => 'invalid_status',
+						], 400 );
+					}
+					
+					// Update WordPress post status
+					$post_data = [
+						'ID'          => (int) $product_id,
+						'post_status' => $field_value,
+					];
+					wp_update_post( $post_data );
+					break;
+
+				default:
+					return $this->respond( [
+						'message' => __( 'Invalid field name.', 'affiliate-product-showcase' ),
+						'code'    => 'invalid_field',
+					], 400 );
+			}
+
+			// Update product
+			$product = $this->product_service->create_or_update( $update_data );
+			
+			return $this->respond( [
+				'message' => __( 'Product updated successfully.', 'affiliate-product-showcase' ),
+				'code'    => 'success',
+				'product'  => $product->to_array(),
+			], 200 );
+
+		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
+			error_log( sprintf(
+				'[APS] Field update failed: %s in %s:%d',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			) );
+
+			return $this->respond( [
+				'message' => __( 'Failed to update product.', 'affiliate-product-showcase' ),
+				'code'    => 'update_error',
+			], 400 );
+
+		} catch ( \Throwable $e ) {
+			error_log( sprintf( '[APS] Unexpected error in field update: %s', $e->getMessage() ) );
+
+			return $this->respond( [
+				'message' => __( 'An unexpected error occurred.', 'affiliate-product-showcase' ),
+				'code'    => 'server_error',
+			], 500 );
+		}
+	}
+
+	/**
+	 * Bulk update product status
+	 *
+	 * Updates status for multiple products at once.
+	 * Useful for bulk publish/draft operations.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response Response with success/error
+	 * @since 1.0.0
+	 *
+	 * @route POST /affiliate-showcase/v1/products/bulk-status
+	 */
+	public function bulk_update_status( WP_REST_Request $request ): WP_REST_Response {
+		// Verify nonce for CSRF protection
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+
+		$product_ids = $request->get_param( 'product_ids' );
+		$status = $request->get_param( 'status' );
+
+		if ( empty( $product_ids ) || ! is_array( $product_ids ) ) {
+			return $this->respond( [
+				'message' => __( 'Product IDs are required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_ids',
+			], 400 );
+		}
+
+		if ( ! in_array( $status, ['publish', 'draft'], true ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid status. Must be "publish" or "draft".', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_status',
+			], 400 );
+		}
+
+		try {
+			$success_count = 0;
+			$failed_count = 0;
+			$failed_ids = [];
+
+			foreach ( $product_ids as $product_id ) {
+				// Verify product exists
+				$existing_product = $this->product_service->get_product( (int) $product_id );
+				if ( null === $existing_product ) {
+					$failed_count++;
+					$failed_ids[] = $product_id;
+					continue;
+				}
+
+				// Update WordPress post status
+				$post_data = [
+					'ID'          => (int) $product_id,
+					'post_status' => $status,
+				];
+
+				$result = wp_update_post( $post_data, true );
+
+				if ( is_wp_error( $result ) ) {
+					$failed_count++;
+					$failed_ids[] = $product_id;
+				} else {
+					$success_count++;
+				}
+			}
+
+			if ( $failed_count > 0 ) {
+				return $this->respond( [
+					'message' => sprintf(
+						/* translators: %1$d: success count, %2$d: failed count */
+						__( 'Updated %1$d products. %2$d failed.', 'affiliate-product-showcase' ),
+						$success_count,
+						$failed_count
+					),
+					'code'         => 'partial_success',
+					'success_count' => $success_count,
+					'failed_count'  => $failed_count,
+					'failed_ids'    => $failed_ids,
+				], 207 ); // 207 Multi-Status
+			}
+
+			return $this->respond( [
+				'message'       => sprintf(
+					/* translators: %d: success count */
+					_n( 'Updated %d product successfully.', 'Updated %d products successfully.', $success_count, 'affiliate-product-showcase' ),
+					$success_count
+				),
+				'code'          => 'success',
+				'success_count' => $success_count,
+			], 200 );
+
+		} catch ( \Throwable $e ) {
+			error_log( sprintf( '[APS] Bulk status update failed: %s', $e->getMessage() ) );
+
+			return $this->respond( [
+				'message' => __( 'An unexpected error occurred.', 'affiliate-product-showcase' ),
+				'code'    => 'server_error',
+			], 500 );
 		}
 	}
 }

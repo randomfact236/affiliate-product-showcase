@@ -17,14 +17,15 @@ class Menu {
 	const MENU_SLUG = 'affiliate-manager';
 
 	public function __construct() {
+		// Redirect native editor to custom page - CRITICAL: Must run BEFORE page loads
+		add_action( 'load-post.php', [ $this, 'redirectNativeEditor' ] );
+		add_action( 'load-post-new.php', [ $this, 'redirectNativeEditor' ] );
+		
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
 		
 		// Add custom "Add Product" submenu to Affiliate Products CPT (priority 10)
 		add_action( 'admin_menu', [ $this, 'addCustomSubmenus' ], 10 );
-		
-		// Redirect native editor to custom page
-		add_action( 'admin_init', [ $this, 'redirectNativeEditor' ] );
 		
 		// Remove default Add New - run VERY late after admin_menu
 		add_action( 'admin_menu', [ $this, 'removeDefaultAddNewMenu' ], PHP_INT_MAX );
