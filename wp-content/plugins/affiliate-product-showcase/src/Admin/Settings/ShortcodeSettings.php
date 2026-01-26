@@ -105,24 +105,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		);
 		
 		\add_settings_field(
-			'featured_products_shortcode_id',
-			__('Featured Products Shortcode ID', 'affiliate-product-showcase'),
-			[$this, 'render_featured_products_shortcode_id_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'featured_products_shortcode_id']
-		);
-		
-		\add_settings_field(
-			'product_slider_shortcode_id',
-			__('Product Slider Shortcode ID', 'affiliate-product-showcase'),
-			[$this, 'render_product_slider_shortcode_id_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'product_slider_shortcode_id']
-		);
-		
-		\add_settings_field(
 			'product_grid_products_per_page',
 			__('Product Grid - Products Per Page', 'affiliate-product-showcase'),
 			[$this, 'render_product_grid_products_per_page_field'],
@@ -132,12 +114,30 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		);
 		
 		\add_settings_field(
+			'featured_products_shortcode_id',
+			__('Featured Products Shortcode ID', 'affiliate-product-showcase'),
+			[$this, 'render_featured_products_shortcode_id_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'featured_products_shortcode_id']
+		);
+		
+		\add_settings_field(
 			'featured_products_products_per_page',
 			__('Featured Products - Products Per Page', 'affiliate-product-showcase'),
 			[$this, 'render_featured_products_products_per_page_field'],
 			'affiliate-product-showcase',
 			self::SECTION_ID,
 			['label_for' => 'featured_products_products_per_page']
+		);
+		
+		\add_settings_field(
+			'product_slider_shortcode_id',
+			__('Product Slider Shortcode ID', 'affiliate-product-showcase'),
+			[$this, 'render_product_slider_shortcode_id_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'product_slider_shortcode_id']
 		);
 		
 		\add_settings_field(
