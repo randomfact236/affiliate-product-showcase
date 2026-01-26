@@ -39,7 +39,7 @@ class ProductsTable extends \WP_List_Table {
 		parent::__construct( [
 			'singular' => 'product',
 			'plural'   => 'products',
-			'ajax'     => false,
+			'ajax'     => true,
 		] );
 	}
 
@@ -88,6 +88,7 @@ class ProductsTable extends \WP_List_Table {
 	 */
 	public function get_bulk_actions(): array {
 		$actions = [
+			'publish'          => __( 'Publish', 'affiliate-product-showcase' ),
 			'set_in_stock'    => __( 'Set In Stock', 'affiliate-product-showcase' ),
 			'set_out_of_stock' => __( 'Set Out of Stock', 'affiliate-product-showcase' ),
 			'set_featured'     => __( 'Set Featured', 'affiliate-product-showcase' ),

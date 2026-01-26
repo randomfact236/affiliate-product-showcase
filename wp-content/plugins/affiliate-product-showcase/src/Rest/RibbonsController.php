@@ -450,4 +450,35 @@ final class RibbonsController {
     private function prepare_item_for_response( Ribbon $ribbon ): array {
         return $ribbon->to_array();
     }
+
+    /**
+     * Retrieves the item's schema for display/management.
+     *
+     * @param bool $required Whether to mark required fields.
+     * @return array Item schema data.
+     */
+    private function get_endpoint_args_for_item_schema( bool $required = true ): array {
+        $schema = $this->get_item_schema();
+        $args = [];
+
+        foreach ( $schema['properties'] as $key => $property ) {
+            $arg = [
+                'type'        => $property['type'],
+                'description' => $property['description'],
+                'required'    => $required && isset( $property['required'] ) && $property['required'],
+            ];
+
+            if ( isset( $property['enum'] ) ) {
+                $arg['enum'] = $property['enum'];
+            }
+
+            if ( isset( $property['default'] ) ) {
+                $arg['default'] = $property['default'];
+            }
+
+            $args[ $key ] = $arg;
+        }
+
+        return $args;
+    }
 }
