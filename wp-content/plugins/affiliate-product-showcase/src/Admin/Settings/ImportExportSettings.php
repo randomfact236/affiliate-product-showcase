@@ -19,7 +19,6 @@ final class ImportExportSettings extends AbstractSettingsSection {
 	
 	const SECTION_ID = 'affiliate_product_showcase_import_export';
 	const SECTION_TITLE = 'Import/Export';
-	const SECTION_DESCRIPTION = 'Configure data import/export settings and automatic backups.';
 	
 	/**
 	 * @var array
@@ -96,97 +95,110 @@ final class ImportExportSettings extends AbstractSettingsSection {
 	}
 	
 	/**
-	 * Register settings section and fields
+	 * Register section and fields
 	 *
 	 * @return void
 	 */
 	public function register_section_and_fields(): void {
-		// Register section
 		\add_settings_section(
 			self::SECTION_ID,
-			self::SECTION_TITLE,
+			__('Import/Export', 'affiliate-product-showcase'),
 			[$this, 'render_section_description'],
-			'affiliate-product-showcase'
+			'affiliate-product-showcase',
+			['data-section' => 'import_export']
 		);
 		
 		// Import Settings
-		$this->add_field(
+		\add_settings_field(
 			'import_encoding',
-			'Import File Encoding',
-			'Select the character encoding for imported files. UTF-8 is recommended for most modern systems.',
-			'select',
-			$this->encoding_options
+			__('Import File Encoding', 'affiliate-product-showcase'),
+			[$this, 'render_import_encoding_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'import_encoding']
 		);
 		
 		// Export Settings
-		$this->add_field(
+		\add_settings_field(
 			'export_format',
-			'Export Format',
-			'Choose the default format for exported data. CSV is compatible with spreadsheet applications.',
-			'select',
-			$this->export_format_options
+			__('Export Format', 'affiliate-product-showcase'),
+			[$this, 'render_export_format_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_format']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'export_include_images',
-			'Include Image URLs',
-			'Include full image URLs in export data. This increases file size but preserves complete product data.',
-			'checkbox'
+			__('Include Image URLs', 'affiliate-product-showcase'),
+			[$this, 'render_export_include_images_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_include_images']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'export_include_metadata',
-			'Include Metadata',
-			'Include product metadata (custom fields, SEO data, etc.) in export.',
-			'checkbox'
+			__('Include Metadata', 'affiliate-product-showcase'),
+			[$this, 'render_export_include_metadata_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_include_metadata']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'export_delimiter',
-			'CSV Delimiter',
-			'Character used to separate values in CSV files. Comma is standard.',
-			'select',
-			$this->delimiter_options
+			__('CSV Delimiter', 'affiliate-product-showcase'),
+			[$this, 'render_export_delimiter_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_delimiter']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'export_enclosure',
-			'CSV Enclosure',
-			'Character used to enclose text fields in CSV files. Double quote is standard.',
-			'select',
-			$this->enclosure_options
+			__('CSV Enclosure', 'affiliate-product-showcase'),
+			[$this, 'render_export_enclosure_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_enclosure']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'export_line_ending',
-			'CSV Line Ending',
-			'Line ending style for CSV files. Windows format (CRLF) is most compatible.',
-			'select',
-			$this->line_ending_options
+			__('CSV Line Ending', 'affiliate-product-showcase'),
+			[$this, 'render_export_line_ending_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'export_line_ending']
 		);
 		
 		// Backup Settings
-		$this->add_field(
+		\add_settings_field(
 			'enable_auto_backup',
-			'Enable Automatic Backups',
-			'Automatically create backups of settings at regular intervals.',
-			'checkbox'
+			__('Enable Automatic Backups', 'affiliate-product-showcase'),
+			[$this, 'render_enable_auto_backup_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'enable_auto_backup']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'backup_frequency',
-			'Backup Frequency',
-			'How often to create automatic backups when auto-backup is enabled.',
-			'select',
-			$this->backup_frequency_options
+			__('Backup Frequency', 'affiliate-product-showcase'),
+			[$this, 'render_backup_frequency_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'backup_frequency']
 		);
 		
-		$this->add_field(
+		\add_settings_field(
 			'backup_retention',
-			'Backup Retention',
-			'Number of backup files to retain. Older backups will be automatically deleted.',
-			'number',
-			['min' => 1, 'max' => 30]
+			__('Backup Retention', 'affiliate-product-showcase'),
+			[$this, 'render_backup_retention_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'backup_retention']
 		);
 	}
 	
@@ -261,32 +273,146 @@ final class ImportExportSettings extends AbstractSettingsSection {
 	}
 	
 	/**
-	 * Render number field with attributes
+	 * Render import encoding field
 	 *
-	 * @param array $args
 	 * @return void
 	 */
-	protected function render_number_field(array $args): void {
-		$name = $args['label_for'];
-		$value = $this->get_value($name);
-		$attrs = $args['attrs'] ?? [];
-		
-		$min = $attrs['min'] ?? 1;
-		$max = $attrs['max'] ?? 100;
-		$step = $attrs['step'] ?? 1;
-		
-		printf(
-			'<input type="number" id="%1$s" name="%2$s[%1$s]" value="%3$s" min="%4$d" max="%5$d" step="%6$d" class="regular-text">',
-			esc_attr($name),
-			esc_attr($this->option_name),
-			esc_attr($value),
-			(int) $min,
-			(int) $max,
-			(int) $step
-		);
-		
-		if (isset($args['description'])) {
-			printf('<p class="description">%s</p>', wp_kses_post($args['description']));
+	public function render_import_encoding_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[import_encoding]">';
+		foreach ($this->encoding_options as $value => $label) {
+			$selected = selected($settings['import_encoding'] ?? 'UTF-8', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Select character encoding for imported files. UTF-8 is recommended for most modern systems.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export format field
+	 *
+	 * @return void
+	 */
+	public function render_export_format_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[export_format]">';
+		foreach ($this->export_format_options as $value => $label) {
+			$selected = selected($settings['export_format'] ?? 'csv', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Choose the default format for exported data. CSV is compatible with spreadsheet applications.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export include images field
+	 *
+	 * @return void
+	 */
+	public function render_export_include_images_field(): void {
+		$settings = $this->get_settings();
+		$value = $settings['export_include_images'] ?? false;
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[export_include_images]" value="1" ' . checked($value, true, false) . '>';
+		echo '<p class="description">' . esc_html__('Include full image URLs in export data. This increases file size but preserves complete product data.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export include metadata field
+	 *
+	 * @return void
+	 */
+	public function render_export_include_metadata_field(): void {
+		$settings = $this->get_settings();
+		$value = $settings['export_include_metadata'] ?? true;
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[export_include_metadata]" value="1" ' . checked($value, true, false) . '>';
+		echo '<p class="description">' . esc_html__('Include product metadata (custom fields, SEO data, etc.) in export.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export delimiter field
+	 *
+	 * @return void
+	 */
+	public function render_export_delimiter_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[export_delimiter]">';
+		foreach ($this->delimiter_options as $value => $label) {
+			$selected = selected($settings['export_delimiter'] ?? ',', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Character used to separate values in CSV files. Comma is standard.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export enclosure field
+	 *
+	 * @return void
+	 */
+	public function render_export_enclosure_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[export_enclosure]">';
+		foreach ($this->enclosure_options as $value => $label) {
+			$selected = selected($settings['export_enclosure'] ?? '"', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Character used to enclose text fields in CSV files. Double quote is standard.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render export line ending field
+	 *
+	 * @return void
+	 */
+	public function render_export_line_ending_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[export_line_ending]">';
+		foreach ($this->line_ending_options as $value => $label) {
+			$selected = selected($settings['export_line_ending'] ?? 'CRLF', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Line ending style for CSV files. Windows format (CRLF) is most compatible.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render enable auto backup field
+	 *
+	 * @return void
+	 */
+	public function render_enable_auto_backup_field(): void {
+		$settings = $this->get_settings();
+		$value = $settings['enable_auto_backup'] ?? false;
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_auto_backup]" value="1" ' . checked($value, true, false) . '>';
+		echo '<p class="description">' . esc_html__('Automatically create backups of settings at regular intervals.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render backup frequency field
+	 *
+	 * @return void
+	 */
+	public function render_backup_frequency_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[backup_frequency]">';
+		foreach ($this->backup_frequency_options as $value => $label) {
+			$selected = selected($settings['backup_frequency'] ?? 'daily', $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('How often to create automatic backups when auto-backup is enabled.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render backup retention field
+	 *
+	 * @return void
+	 */
+	public function render_backup_retention_field(): void {
+		$settings = $this->get_settings();
+		$value = $settings['backup_retention'] ?? 7;
+		echo '<input type="number" name="' . esc_attr($this->option_name) . '[backup_retention]" value="' . esc_attr($value) . '" min="1" max="30" class="regular-text">';
+		echo '<p class="description">' . esc_html__('Number of backup files to retain. Older backups will be automatically deleted.', 'affiliate-product-showcase') . '</p>';
 	}
 }
