@@ -36,6 +36,18 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 	/**
 	 * @var array
 	 */
+	private array $products_per_page_options = [
+		'6' => '6 Products',
+		'12' => '12 Products',
+		'18' => '18 Products',
+		'24' => '24 Products',
+		'36' => '36 Products',
+		'48' => '48 Products',
+	];
+	
+	/**
+	 * @var array
+	 */
 	private array $button_style_options = [
 		'default' => 'Default (Theme)',
 		'primary' => 'Primary',
@@ -53,6 +65,7 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 			'product_grid_shortcode_id' => 'affiliate_product_grid',
 			'featured_products_shortcode_id' => 'affiliate_featured_products',
 			'product_slider_shortcode_id' => 'affiliate_product_slider',
+			'shortcode_products_per_page' => 12,
 			'enable_shortcode_cache' => true,
 			'shortcode_cache_duration' => 300,
 			'add_to_cart_button_style' => 'default',
@@ -99,6 +112,15 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 			'affiliate-product-showcase',
 			self::SECTION_ID,
 			['label_for' => 'product_slider_shortcode_id']
+		);
+		
+		\add_settings_field(
+			'shortcode_products_per_page',
+			__('Products Per Shortcode', 'affiliate-product-showcase'),
+			[$this, 'render_shortcode_products_per_page_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'shortcode_products_per_page']
 		);
 		
 		\add_settings_field(
@@ -151,6 +173,13 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		$sanitized['product_grid_shortcode_id'] = sanitize_text_field($input['product_grid_shortcode_id'] ?? 'affiliate_product_grid');
 		$sanitized['featured_products_shortcode_id'] = sanitize_text_field($input['featured_products_shortcode_id'] ?? 'affiliate_featured_products');
 		$sanitized['product_slider_shortcode_id'] = sanitize_text_field($input['product_slider_shortcode_id'] ?? 'affiliate_product_slider');
+		
+		// Products Per Page
+		if (isset($input['shortcode_products_per_page'])) {
+			$sanitized['shortcode_products_per_page'] = in_array($input['shortcode_products_per_page'], array_keys($this->products_per_page_options))
+				? intval($input['shortcode_products_per_page'])
+				: 12;
+		}
 		
 		// Cache Settings
 		$sanitized['enable_shortcode_cache'] = isset($input['enable_shortcode_cache']) ? (bool) $input['enable_shortcode_cache'] : true;
@@ -214,6 +243,22 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		echo '<input type="text" name="' . esc_attr($this->option_name) . '[product_slider_shortcode_id]" value="' . esc_attr($settings['product_slider_shortcode_id'] ?? 'affiliate_product_slider') . '" class="regular-text">';
 		echo '<p class="description">' . esc_html__('Default: [affiliate_product_slider]. Display products in a carousel/slider.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render shortcode products per page field
+	 *
+	 * @return void
+	 */
+	public function render_shortcode_products_per_page_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[shortcode_products_per_page]">';
+		foreach ($this->products_per_page_options as $value => $label) {
+			$selected = selected($settings['shortcode_products_per_page'] ?? 12, $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Default number of products to display in shortcodes. Can be overridden per shortcode.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
