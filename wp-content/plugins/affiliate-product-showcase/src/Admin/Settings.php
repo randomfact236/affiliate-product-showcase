@@ -10,6 +10,9 @@ use AffiliateProductShowcase\Admin\Settings\TagsSettings;
 use AffiliateProductShowcase\Admin\Settings\RibbonsSettings;
 use AffiliateProductShowcase\Admin\Settings\DisplaySettings;
 use AffiliateProductShowcase\Admin\Settings\SecuritySettings;
+use AffiliateProductShowcase\Admin\Settings\ImportExportSettings;
+use AffiliateProductShowcase\Admin\Settings\ShortcodeSettings;
+use AffiliateProductShowcase\Admin\Settings\WidgetSettings;
 
 /**
  * Settings Manager
@@ -33,6 +36,9 @@ class Settings {
 	const SECTION_TAGS = 'affiliate_product_showcase_tags';
 	const SECTION_RIBBONS = 'affiliate_product_showcase_ribbons';
 	const SECTION_SECURITY = 'affiliate_product_showcase_security';
+	const SECTION_IMPORT_EXPORT = 'affiliate_product_showcase_import_export';
+	const SECTION_SHORTCODES = 'affiliate_product_showcase_shortcodes';
+	const SECTION_WIDGETS = 'affiliate_product_showcase_widgets';
 	
 	/**
 	 * @var GeneralSettings
@@ -70,6 +76,21 @@ class Settings {
 	private SecuritySettings $security_settings;
 	
 	/**
+	 * @var ImportExportSettings
+	 */
+	private ImportExportSettings $import_export_settings;
+	
+	/**
+	 * @var ShortcodeSettings
+	 */
+	private ShortcodeSettings $shortcode_settings;
+	
+	/**
+	 * @var WidgetSettings
+	 */
+	private WidgetSettings $widget_settings;
+	
+	/**
 	 * @var array
 	 */
 	private array $defaults;
@@ -95,6 +116,9 @@ class Settings {
 		$this->ribbons_settings = new RibbonsSettings(self::OPTION_NAME);
 		$this->display_settings = new DisplaySettings(self::OPTION_NAME);
 		$this->security_settings = new SecuritySettings(self::OPTION_NAME);
+		$this->import_export_settings = new ImportExportSettings(self::OPTION_NAME);
+		$this->shortcode_settings = new ShortcodeSettings(self::OPTION_NAME);
+		$this->widget_settings = new WidgetSettings(self::OPTION_NAME);
 	}
 	
 	/**
@@ -110,7 +134,10 @@ class Settings {
 			$this->tags_settings->get_defaults(),
 			$this->ribbons_settings->get_defaults(),
 			$this->display_settings->get_defaults(),
-			$this->security_settings->get_defaults()
+			$this->security_settings->get_defaults(),
+			$this->import_export_settings->get_defaults(),
+			$this->shortcode_settings->get_defaults(),
+			$this->widget_settings->get_defaults()
 		);
 	}
 	
@@ -153,6 +180,9 @@ class Settings {
 		$this->ribbons_settings->register_section_and_fields();
 		$this->display_settings->register_section_and_fields();
 		$this->security_settings->register_section_and_fields();
+		$this->import_export_settings->register_section_and_fields();
+		$this->shortcode_settings->register_section_and_fields();
+		$this->widget_settings->register_section_and_fields();
 	}
 	
 	/**
@@ -194,6 +224,9 @@ class Settings {
 		$sanitized = array_merge($sanitized, $this->ribbons_settings->sanitize_options($input));
 		$sanitized = array_merge($sanitized, $this->display_settings->sanitize_options($input));
 		$sanitized = array_merge($sanitized, $this->security_settings->sanitize_options($input));
+		$sanitized = array_merge($sanitized, $this->import_export_settings->sanitize_options($input));
+		$sanitized = array_merge($sanitized, $this->shortcode_settings->sanitize_options($input));
+		$sanitized = array_merge($sanitized, $this->widget_settings->sanitize_options($input));
 		
 		return $sanitized;
 	}
@@ -212,6 +245,9 @@ class Settings {
 			RibbonsSettings::SECTION_ID => RibbonsSettings::SECTION_TITLE,
 			DisplaySettings::SECTION_ID => DisplaySettings::SECTION_TITLE,
 			SecuritySettings::SECTION_ID => SecuritySettings::SECTION_TITLE,
+			ImportExportSettings::SECTION_ID => ImportExportSettings::SECTION_TITLE,
+			ShortcodeSettings::SECTION_ID => ShortcodeSettings::SECTION_TITLE,
+			WidgetSettings::SECTION_ID => WidgetSettings::SECTION_TITLE,
 		];
 	}
 }

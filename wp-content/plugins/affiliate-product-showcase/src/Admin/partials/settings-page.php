@@ -66,11 +66,29 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
             <span class="aps-tab-icon">🔒</span>
             <span class="aps-tab-text"><?php esc_html_e('Security', 'affiliate-product-showcase'); ?></span>
         </a>
+        
+        <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=import_export')); ?>" 
+           class="aps-tab <?php echo $active_tab === 'import_export' ? 'active' : ''; ?>">
+            <span class="aps-tab-icon">📥📤</span>
+            <span class="aps-tab-text"><?php esc_html_e('Import/Export', 'affiliate-product-showcase'); ?></span>
+        </a>
+        
+        <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=shortcodes')); ?>" 
+           class="aps-tab <?php echo $active_tab === 'shortcodes' ? 'active' : ''; ?>">
+            <span class="aps-tab-icon">🎬</span>
+            <span class="aps-tab-text"><?php esc_html_e('Shortcodes', 'affiliate-product-showcase'); ?></span>
+        </a>
+        
+        <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=widgets')); ?>" 
+           class="aps-tab <?php echo $active_tab === 'widgets' ? 'active' : ''; ?>">
+            <span class="aps-tab-icon">🧩</span>
+            <span class="aps-tab-text"><?php esc_html_e('Widgets', 'affiliate-product-showcase'); ?></span>
+        </a>
     </div>
 
     <!-- Settings Form -->
     <div class="aps-settings-content">
-        <?php if (in_array($active_tab, ['general', 'products', 'categories', 'tags', 'ribbons', 'display', 'security'])): ?>
+        <?php if (in_array($active_tab, ['general', 'products', 'categories', 'tags', 'ribbons', 'display', 'security', 'import_export', 'shortcodes', 'widgets'])): ?>
             <form action="options.php" method="post">
                 <?php
                 settings_fields(\AffiliateProductShowcase\Admin\Settings::OPTION_GROUP);
@@ -138,6 +156,33 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
                     // Render security settings fields table
                     echo '<table class="form-table" role="presentation">';
                     do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_SECURITY);
+                    echo '</table>';
+                } elseif ($active_tab === 'import_export') {
+                    // Render import/export section manually with heading
+                    echo '<h2>' . esc_html__('Import/Export Settings', 'affiliate-product-showcase') . '</h2>';
+                    echo '<p>' . esc_html__('Configure data import/export settings and automatic backups.', 'affiliate-product-showcase') . '</p>';
+                    
+                    // Render import/export settings fields table
+                    echo '<table class="form-table" role="presentation">';
+                    do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_IMPORT_EXPORT);
+                    echo '</table>';
+                } elseif ($active_tab === 'shortcodes') {
+                    // Render shortcodes section manually with heading
+                    echo '<h2>' . esc_html__('Shortcode Settings', 'affiliate-product-showcase') . '</h2>';
+                    echo '<p>' . esc_html__('Configure shortcode IDs and caching options for dynamic content.', 'affiliate-product-showcase') . '</p>';
+                    
+                    // Render shortcodes settings fields table
+                    echo '<table class="form-table" role="presentation">';
+                    do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_SHORTCODES);
+                    echo '</table>';
+                } elseif ($active_tab === 'widgets') {
+                    // Render widgets section manually with heading
+                    echo '<h2>' . esc_html__('Widget Settings', 'affiliate-product-showcase') . '</h2>';
+                    echo '<p>' . esc_html__('Configure widget settings and display options.', 'affiliate-product-showcase') . '</p>';
+                    
+                    // Render widgets settings fields table
+                    echo '<table class="form-table" role="presentation">';
+                    do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_WIDGETS);
                     echo '</table>';
                 }
                 
