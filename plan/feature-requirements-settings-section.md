@@ -5,7 +5,7 @@
 - ✅ Settings architecture design
 - ✅ Settings validation and sanitization
 - ✅ REST API for settings management
-- ✅ **Total:** 103 settings across all features (NO ANALYTICS, NO PERFORMANCE, NO SEO, NO CACHE)
+- ✅ **Total:** 105 settings across all features (NO ANALYTICS, NO PERFORMANCE, NO SEO, NO CACHE)
 
 **Milestone:** Fully dynamic settings system for complete plugin configuration
 
@@ -50,9 +50,9 @@
 | **7.8 Security** | 11 | ⏸️ Not Started |
 | **7.9 Integration/SEO** | 0 | ⏸️ SKIPPED (Rank Math) |
 | **7.10 Import/Export** | 9 | ⏸️ Not Started |
-| **7.11 Shortcodes** | 6 | ⏸️ Not Started |
+| **7.11 Shortcodes** | 8 | ⏸️ Not Started |
 | **7.12 Widgets** | 7 | ⏸️ Not Started |
-| **TOTAL** | **103** | ⏸️ Not Started |
+| **TOTAL** | **105** | ⏸️ Not Started |
 
 ---
 
@@ -545,18 +545,23 @@ final class SettingsManager {
 
 ---
 
-## SECTION 7.11: SHORTCODE SETTINGS (6 Settings)
+## SECTION 7.11: SHORTCODE SETTINGS (8 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
 | `product_grid_shortcode_id` | text | 'affiliate_product_grid' | Product grid shortcode ID | Customizable |
 | `featured_products_shortcode_id` | text | 'affiliate_featured_products' | Featured products shortcode ID | Customizable |
 | `product_slider_shortcode_id` | text | 'affiliate_product_slider' | Product slider shortcode ID | Customizable |
-| `shortcode_products_per_page` | number | 12 | Default number of products per shortcode | 6, 12, 18, 24, 36, 48 |
+| `product_grid_products_per_page` | number | 12 | Products per page in grid shortcode | 6, 12, 18, 24, 36, 48 |
+| `featured_products_products_per_page` | number | 6 | Featured products per page | 3, 6, 9, 12, 15 |
+| `product_slider_products_per_page` | number | 5 | Products in slider | 3, 5, 8, 10 |
 | `add_to_cart_button_style` | select | 'default' | Add to cart button style | default, primary, secondary, flat |
 | `enable_quick_view_shortcode` | checkbox | true | Enable quick view in shortcodes | - |
 
-**Note:** Cache settings removed - LiteSpeed/LS Cache handles all caching.
+**Note:** 
+- Cache settings removed - LiteSpeed/LS Cache handles all caching
+- Each shortcode type has its own products_per_page setting for granular control
+- Settings can be overridden per shortcode instance via attributes
 
 ---
 
@@ -717,7 +722,7 @@ Import settings from file
 
 ## Phase 1: Core Settings Infrastructure
 - [ ] Create SettingsManager class
-- [ ] Define all default values (103 settings)
+- [ ] Define all default values (105 settings)
 - [ ] Implement get/set methods
 - [ ] Implement caching mechanism
 - [ ] Add sanitization functions

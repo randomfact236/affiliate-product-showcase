@@ -23,13 +23,34 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 	/**
 	 * @var array
 	 */
-	private array $products_per_page_options = [
+	private array $grid_products_per_page_options = [
 		'6' => '6 Products',
 		'12' => '12 Products',
 		'18' => '18 Products',
 		'24' => '24 Products',
 		'36' => '36 Products',
 		'48' => '48 Products',
+	];
+	
+	/**
+	 * @var array
+	 */
+	private array $featured_products_per_page_options = [
+		'3' => '3 Products',
+		'6' => '6 Products',
+		'9' => '9 Products',
+		'12' => '12 Products',
+		'15' => '15 Products',
+	];
+	
+	/**
+	 * @var array
+	 */
+	private array $slider_products_per_page_options = [
+		'3' => '3 Products',
+		'5' => '5 Products',
+		'8' => '8 Products',
+		'10' => '10 Products',
 	];
 	
 	/**
@@ -52,7 +73,9 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 			'product_grid_shortcode_id' => 'affiliate_product_grid',
 			'featured_products_shortcode_id' => 'affiliate_featured_products',
 			'product_slider_shortcode_id' => 'affiliate_product_slider',
-			'shortcode_products_per_page' => 12,
+			'product_grid_products_per_page' => 12,
+			'featured_products_products_per_page' => 6,
+			'product_slider_products_per_page' => 5,
 			'add_to_cart_button_style' => 'default',
 			'enable_quick_view_shortcode' => true,
 		];
@@ -100,12 +123,30 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		);
 		
 		\add_settings_field(
-			'shortcode_products_per_page',
-			__('Products Per Shortcode', 'affiliate-product-showcase'),
-			[$this, 'render_shortcode_products_per_page_field'],
+			'product_grid_products_per_page',
+			__('Product Grid - Products Per Page', 'affiliate-product-showcase'),
+			[$this, 'render_product_grid_products_per_page_field'],
 			'affiliate-product-showcase',
 			self::SECTION_ID,
-			['label_for' => 'shortcode_products_per_page']
+			['label_for' => 'product_grid_products_per_page']
+		);
+		
+		\add_settings_field(
+			'featured_products_products_per_page',
+			__('Featured Products - Products Per Page', 'affiliate-product-showcase'),
+			[$this, 'render_featured_products_products_per_page_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'featured_products_products_per_page']
+		);
+		
+		\add_settings_field(
+			'product_slider_products_per_page',
+			__('Product Slider - Products Per Page', 'affiliate-product-showcase'),
+			[$this, 'render_product_slider_products_per_page_field'],
+			'affiliate-product-showcase',
+			self::SECTION_ID,
+			['label_for' => 'product_slider_products_per_page']
 		);
 		
 		\add_settings_field(
@@ -141,11 +182,25 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		$sanitized['featured_products_shortcode_id'] = sanitize_text_field($input['featured_products_shortcode_id'] ?? 'affiliate_featured_products');
 		$sanitized['product_slider_shortcode_id'] = sanitize_text_field($input['product_slider_shortcode_id'] ?? 'affiliate_product_slider');
 		
-		// Products Per Page
-		if (isset($input['shortcode_products_per_page'])) {
-			$sanitized['shortcode_products_per_page'] = in_array($input['shortcode_products_per_page'], array_keys($this->products_per_page_options))
-				? intval($input['shortcode_products_per_page'])
+		// Products Per Page - Grid
+		if (isset($input['product_grid_products_per_page'])) {
+			$sanitized['product_grid_products_per_page'] = in_array($input['product_grid_products_per_page'], array_keys($this->grid_products_per_page_options))
+				? intval($input['product_grid_products_per_page'])
 				: 12;
+		}
+		
+		// Products Per Page - Featured
+		if (isset($input['featured_products_products_per_page'])) {
+			$sanitized['featured_products_products_per_page'] = in_array($input['featured_products_products_per_page'], array_keys($this->featured_products_per_page_options))
+				? intval($input['featured_products_products_per_page'])
+				: 6;
+		}
+		
+		// Products Per Page - Slider
+		if (isset($input['product_slider_products_per_page'])) {
+			$sanitized['product_slider_products_per_page'] = in_array($input['product_slider_products_per_page'], array_keys($this->slider_products_per_page_options))
+				? intval($input['product_slider_products_per_page'])
+				: 5;
 		}
 		
 		// Button Style
@@ -204,19 +259,51 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 	}
 	
 	/**
-	 * Render shortcode products per page field
+	 * Render product grid products per page field
 	 *
 	 * @return void
 	 */
-	public function render_shortcode_products_per_page_field(): void {
+	public function render_product_grid_products_per_page_field(): void {
 		$settings = $this->get_settings();
-		echo '<select name="' . esc_attr($this->option_name) . '[shortcode_products_per_page]">';
-		foreach ($this->products_per_page_options as $value => $label) {
-			$selected = selected($settings['shortcode_products_per_page'] ?? 12, $value, false);
+		echo '<select name="' . esc_attr($this->option_name) . '[product_grid_products_per_page]">';
+		foreach ($this->grid_products_per_page_options as $value => $label) {
+			$selected = selected($settings['product_grid_products_per_page'] ?? 12, $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
 		echo '</select>';
-		echo '<p class="description">' . esc_html__('Default number of products to display in shortcodes. Can be overridden per shortcode.', 'affiliate-product-showcase') . '</p>';
+		echo '<p class="description">' . esc_html__('Number of products to display in product grid shortcode. Can be overridden in shortcode attributes.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render featured products products per page field
+	 *
+	 * @return void
+	 */
+	public function render_featured_products_products_per_page_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[featured_products_products_per_page]">';
+		foreach ($this->featured_products_per_page_options as $value => $label) {
+			$selected = selected($settings['featured_products_products_per_page'] ?? 6, $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Number of featured products to display. Can be overridden in shortcode attributes.', 'affiliate-product-showcase') . '</p>';
+	}
+	
+	/**
+	 * Render product slider products per page field
+	 *
+	 * @return void
+	 */
+	public function render_product_slider_products_per_page_field(): void {
+		$settings = $this->get_settings();
+		echo '<select name="' . esc_attr($this->option_name) . '[product_slider_products_per_page]">';
+		foreach ($this->slider_products_per_page_options as $value => $label) {
+			$selected = selected($settings['product_slider_products_per_page'] ?? 5, $value, false);
+			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+		}
+		echo '</select>';
+		echo '<p class="description">' . esc_html__('Number of products to display in product slider. Can be overridden in shortcode attributes.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
