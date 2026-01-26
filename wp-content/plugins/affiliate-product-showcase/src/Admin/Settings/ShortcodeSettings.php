@@ -8,8 +8,8 @@ use AffiliateProductShowcase\Admin\Settings\AbstractSettingsSection;
 /**
  * Shortcode Settings Section
  *
- * Handles settings for shortcode functionality including shortcode IDs,
- * caching options, and display configurations.
+ * Handles settings for shortcode functionality including shortcode IDs
+ * and display configurations.
  *
  * @package AffiliateProductShowcase\Admin\Settings
  * @since 1.0.0
@@ -19,19 +19,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 	
 	const SECTION_ID = 'affiliate_product_showcase_shortcodes';
 	const SECTION_TITLE = 'Shortcodes';
-	
-	/**
-	 * @var array
-	 */
-	private array $cache_duration_options = [
-		'60' => '1 Minute',
-		'300' => '5 Minutes',
-		'900' => '15 Minutes',
-		'1800' => '30 Minutes',
-		'3600' => '1 Hour',
-		'86400' => '1 Day',
-		'0' => 'No Cache',
-	];
 	
 	/**
 	 * @var array
@@ -66,8 +53,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 			'featured_products_shortcode_id' => 'affiliate_featured_products',
 			'product_slider_shortcode_id' => 'affiliate_product_slider',
 			'shortcode_products_per_page' => 12,
-			'enable_shortcode_cache' => true,
-			'shortcode_cache_duration' => 300,
 			'add_to_cart_button_style' => 'default',
 			'enable_quick_view_shortcode' => true,
 		];
@@ -124,24 +109,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		);
 		
 		\add_settings_field(
-			'enable_shortcode_cache',
-			__('Enable Shortcode Caching', 'affiliate-product-showcase'),
-			[$this, 'render_enable_shortcode_cache_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'enable_shortcode_cache']
-		);
-		
-		\add_settings_field(
-			'shortcode_cache_duration',
-			__('Cache Duration', 'affiliate-product-showcase'),
-			[$this, 'render_shortcode_cache_duration_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'shortcode_cache_duration']
-		);
-		
-		\add_settings_field(
 			'add_to_cart_button_style',
 			__('Add to Cart Button Style', 'affiliate-product-showcase'),
 			[$this, 'render_add_to_cart_button_style_field'],
@@ -181,15 +148,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 				: 12;
 		}
 		
-		// Cache Settings
-		$sanitized['enable_shortcode_cache'] = isset($input['enable_shortcode_cache']) ? (bool) $input['enable_shortcode_cache'] : true;
-		
-		if (isset($input['shortcode_cache_duration'])) {
-			$sanitized['shortcode_cache_duration'] = in_array($input['shortcode_cache_duration'], array_keys($this->cache_duration_options))
-				? intval($input['shortcode_cache_duration'])
-				: 300;
-		}
-		
 		// Button Style
 		if (isset($input['add_to_cart_button_style'])) {
 			$sanitized['add_to_cart_button_style'] = in_array($input['add_to_cart_button_style'], array_keys($this->button_style_options))
@@ -209,7 +167,7 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 	 * @return void
 	 */
 	public function render_section_description(): void {
-		echo '<p>' . esc_html__('Configure shortcode IDs and caching options for displaying products on your site.', 'affiliate-product-showcase') . '</p>';
+		echo '<p>' . esc_html__('Configure shortcode IDs and display options for displaying products on your site.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -259,34 +217,6 @@ final class ShortcodeSettings extends AbstractSettingsSection {
 		}
 		echo '</select>';
 		echo '<p class="description">' . esc_html__('Default number of products to display in shortcodes. Can be overridden per shortcode.', 'affiliate-product-showcase') . '</p>';
-	}
-	
-	/**
-	 * Render enable shortcode cache field
-	 *
-	 * @return void
-	 */
-	public function render_enable_shortcode_cache_field(): void {
-		$settings = $this->get_settings();
-		$value = $settings['enable_shortcode_cache'] ?? true;
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_shortcode_cache]" value="1" ' . checked($value, true, false) . '>';
-		echo '<p class="description">' . esc_html__('Cache shortcode output to improve performance. Disable for dynamic content.', 'affiliate-product-showcase') . '</p>';
-	}
-	
-	/**
-	 * Render shortcode cache duration field
-	 *
-	 * @return void
-	 */
-	public function render_shortcode_cache_duration_field(): void {
-		$settings = $this->get_settings();
-		echo '<select name="' . esc_attr($this->option_name) . '[shortcode_cache_duration]">';
-		foreach ($this->cache_duration_options as $value => $label) {
-			$selected = selected($settings['shortcode_cache_duration'] ?? 300, $value, false);
-			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
-		}
-		echo '</select>';
-		echo '<p class="description">' . esc_html__('How long to cache shortcode output. Longer durations improve performance but may show outdated content.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
