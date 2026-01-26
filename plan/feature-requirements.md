@@ -914,10 +914,21 @@ aps-product-[element]-[modifier]
 - **Section 6: Quality & Launch:** [0]/20 complete (0%) for Phase 1
 - **Overall Progress:** ~86/363 complete (~24%) for Phase 1 launch
 
-**Last Updated:** 2026-01-25
-**Version:** 5.0.0 (Section 7 Settings Infrastructure Complete)
+**Last Updated:** 2026-01-26
+**Version:** 5.1.0 (Section 7 Settings Updated - 105 Settings, External Plugin Delegation)
 **Maintainer:** Development Team
 **Recent Changes:**
+- ✅ **UPDATED SECTION 7:** Reduced from 138 to 105 settings
+- ✅ **REMOVED SECTIONS:** Performance (12 settings), Analytics (10 settings), Integration/SEO (11 settings)
+- ✅ **EXTERNAL PLUGIN DELEGATION:**
+  - Performance → LiteSpeed/LS Cache (handles caching, optimization, minification)
+  - SEO/Integration → Rank Math (handles schema, Open Graph, Twitter Cards)
+- ✅ **SHORTCODE SETTINGS REORDERED:** Grouped by shortcode type (ID + Products Per Page)
+- ✅ **GRANULAR SHORTCODE CONTROL:** Split products_per_page into 3 separate settings
+  - product_grid_products_per_page (6, 12, 18, 24, 36, 48)
+  - featured_products_products_per_page (3, 6, 9, 12, 15)
+  - product_slider_products_per_page (3, 5, 8, 10)
+- ✅ **DETAILED SPECS:** See `plan/feature-requirements-settings-section.md` for complete settings specification
 - ✅ **TRUE HYBRID IMPLEMENTATION:** Section 2 (Categories) - 32/32 features complete
 - ✅ **Removed Duplicate Pages:** Deleted CategoryTable.php and categories-table.php
 - ✅ **Added Custom Columns:** Featured ⭐, Default 🏠, Status in WordPress native table
@@ -940,9 +951,11 @@ aps-product-[element]-[modifier]
 - ✅ Settings architecture design
 - ✅ Settings validation and sanitization
 - ✅ REST API for settings management
-- ✅ **Total:** 50+ settings across all features
+- ✅ **Total:** 105 settings across all features (NO ANALYTICS, NO PERFORMANCE, NO SEO, NO CACHE)
 
 **Milestone:** Fully dynamic settings system for complete plugin configuration
+
+**Detailed Requirements:** See `plan/feature-requirements-settings-section.md` for complete settings specification
 
 ---
 
@@ -966,6 +979,9 @@ aps-product-[element]-[modifier]
 - Dynamic field registration system
 - Type-safe value retrieval
 - Cached settings for performance
+- **External Plugin Integration:**
+  - LiteSpeed/LS Cache handles all performance settings
+  - Rank Math SEO handles all SEO/Integration settings
 
 ---
 
@@ -973,20 +989,23 @@ aps-product-[element]-[modifier]
 
 | Section | Settings Count | Status |
 |----------|----------------|---------|
-| **7.1 General** | 5 | ⏸️ Not Started |
+| **7.1 General** | 4 | ⏸️ Not Started |
 | **7.2 Products** | 13 | ⏸️ Not Started |
 | **7.3 Categories** | 11 | ⏸️ Not Started |
 | **7.4 Tags** | 10 | ⏸️ Not Started |
 | **7.5 Ribbons** | 9 | ⏸️ Not Started |
 | **7.6 Display** | 20 | ⏸️ Not Started |
-| **7.7 Performance** | 12 | ⏸️ Not Started |
-| **7.8 Security** | 14 | ⏸️ Not Started |
-| **7.9 Analytics** | 10 | ⏸️ Not Started |
-| **7.10 Integration** | 11 | ⏸️ Not Started |
-| **7.11 Import/Export** | 9 | ⏸️ Not Started |
-| **7.12 Shortcodes** | 7 | ⏸️ Not Started |
-| **7.13 Widgets** | 7 | ⏸️ Not Started |
-| **TOTAL** | **138** | ⏸️ Not Started |
+| **7.7 Performance** | 0 | ⏸️ SKIPPED (LiteSpeed/LS Cache) |
+| **7.8 Security** | 11 | ⏸️ Not Started |
+| **7.9 Integration/SEO** | 0 | ⏸️ SKIPPED (Rank Math) |
+| **7.10 Import/Export** | 9 | ⏸️ Not Started |
+| **7.11 Shortcodes** | 8 | ⏸️ Not Started |
+| **7.12 Widgets** | 7 | ⏸️ Not Started |
+| **TOTAL** | **105** | ⏸️ Not Started |
+
+**Note:** Performance, SEO, and Integration settings handled by external plugins (LiteSpeed/LS Cache, Rank Math)
+
+See `plan/feature-requirements-settings-section.md` for complete settings specification with all 105 settings.
 
 ---
 
@@ -1083,13 +1102,6 @@ final class SettingsManager {
             'show_discount_percentage' => true,
             'price_display_format' => '{symbol}{price}',
             
-            // Performance Settings
-            'enable_query_cache' => true,
-            'cache_duration' => 3600,
-            'enable_image_lazy_loading' => true,
-            'enable_code_splitting' => false,
-            'cdn_base_url' => '',
-            
             // Security Settings
             'enable_nonce_verification' => true,
             'enable_rate_limiting' => true,
@@ -1097,25 +1109,35 @@ final class SettingsManager {
             'rate_limit_requests_per_hour' => 1000,
             'enable_csrf_protection' => true,
             'sanitize_all_output' => true,
-            
-            // Analytics Settings
-            'enable_analytics_hooks' => true,
-            'track_product_views' => true,
-            'track_affiliate_clicks' => true,
-            'track_conversions' => true,
-            'analytics_data_retention_days' => 90,
-            
-            // Integration Settings
-            'enable_seo_plugin_integration' => true,
-            'compatible_seo_plugins' => ['yoast', 'rank-math', 'aioseo', 'seopress'],
-            'enable_schema_markup' => true,
-            'enable_open_graph' => true,
-            'enable_twitter_cards' => true,
+            'enable_xss_protection' => true,
+            'enable_content_security_policy' => false,
+            'csp_report_only_mode' => true,
+            'enable_frame_options' => true,
+            'frame_options_value' => 'SAMEORIGIN',
             
             // Import/Export Settings
             'import_encoding' => 'UTF-8',
             'export_format' => 'csv',
             'export_include_images' => false,
+            
+            // Shortcode Settings
+            'product_grid_shortcode_id' => 'affiliate_product_grid',
+            'featured_products_shortcode_id' => 'affiliate_featured_products',
+            'product_slider_shortcode_id' => 'affiliate_product_slider',
+            'product_grid_products_per_page' => 12,
+            'featured_products_products_per_page' => 6,
+            'product_slider_products_per_page' => 5,
+            'add_to_cart_button_style' => 'default',
+            'enable_quick_view_shortcode' => true,
+            
+            // Widget Settings
+            'enable_product_widget' => true,
+            'enable_featured_widget' => true,
+            'enable_category_widget' => true,
+            'enable_sale_widget' => true,
+            'widget_default_layout' => 'grid',
+            'widget_image_size' => 'thumbnail',
+            'widget_lazy_loading' => true,
         ];
     }
     
@@ -1282,30 +1304,35 @@ final class SettingsManager {
             'show_original_price' => 'boolean',
             'show_discount_percentage' => 'boolean',
             'price_display_format' => 'text',
-            'enable_query_cache' => 'boolean',
-            'cache_duration' => 'integer',
-            'enable_image_lazy_loading' => 'boolean',
-            'enable_code_splitting' => 'boolean',
-            'cdn_base_url' => 'url',
             'enable_nonce_verification' => 'boolean',
             'enable_rate_limiting' => 'boolean',
             'rate_limit_requests_per_minute' => 'integer',
             'rate_limit_requests_per_hour' => 'integer',
             'enable_csrf_protection' => 'boolean',
             'sanitize_all_output' => 'boolean',
-            'enable_analytics_hooks' => 'boolean',
-            'track_product_views' => 'boolean',
-            'track_affiliate_clicks' => 'boolean',
-            'track_conversions' => 'boolean',
-            'analytics_data_retention_days' => 'integer',
-            'enable_seo_plugin_integration' => 'boolean',
-            'compatible_seo_plugins' => 'array',
-            'enable_schema_markup' => 'boolean',
-            'enable_open_graph' => 'boolean',
-            'enable_twitter_cards' => 'boolean',
+            'enable_xss_protection' => 'boolean',
+            'enable_content_security_policy' => 'boolean',
+            'csp_report_only_mode' => 'boolean',
+            'enable_frame_options' => 'boolean',
+            'frame_options_value' => 'text',
             'import_encoding' => 'text',
             'export_format' => 'text',
             'export_include_images' => 'boolean',
+            'product_grid_shortcode_id' => 'text',
+            'featured_products_shortcode_id' => 'text',
+            'product_slider_shortcode_id' => 'text',
+            'product_grid_products_per_page' => 'integer',
+            'featured_products_products_per_page' => 'integer',
+            'product_slider_products_per_page' => 'integer',
+            'add_to_cart_button_style' => 'text',
+            'enable_quick_view_shortcode' => 'boolean',
+            'enable_product_widget' => 'boolean',
+            'enable_featured_widget' => 'boolean',
+            'enable_category_widget' => 'boolean',
+            'enable_sale_widget' => 'boolean',
+            'widget_default_layout' => 'text',
+            'widget_image_size' => 'text',
+            'widget_lazy_loading' => 'boolean',
         ];
         
         return $types[$key] ?? 'text';
@@ -1317,7 +1344,7 @@ final class SettingsManager {
 
 # 📊 COMPLETE SETTINGS LIST
 
-## SECTION 7.1: GENERAL SETTINGS (5 Settings)
+## SECTION 7.1: GENERAL SETTINGS (4 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
@@ -1325,7 +1352,6 @@ final class SettingsManager {
 | `default_currency` | select | 'USD' | Default currency for all products | USD, EUR, GBP, JPY, AUD, CAD, CHF, CNY, INR |
 | `date_format` | select | WP default | Date format for display | WordPress date formats |
 | `time_format` | select | WP default | Time format for display | WordPress time formats |
-| `language` | select | 'en_US' | Plugin language | en_US, es_ES, fr_FR, de_DE, it_IT, pt_BR |
 
 ---
 
@@ -1412,7 +1438,6 @@ final class SettingsManager {
 | `grid_columns` | number | 3 | Number of columns in grid view | 2, 3, 4, 5 |
 | `list_columns` | number | 1 | Number of columns in list view | 1, 2 |
 | `enable_lazy_loading` | checkbox | true | Enable image lazy loading | - |
-| `lazy_load_threshold` | number | 50 | Number of products before lazy loading | 20, 50, 100 |
 | `show_product_price` | checkbox | true | Show product price | - |
 | `show_original_price` | checkbox | true | Show original price (if discount) | - |
 | `show_discount_percentage` | checkbox | true | Show discount percentage | - |
@@ -1429,27 +1454,30 @@ final class SettingsManager {
 
 ---
 
-## SECTION 7.7: PERFORMANCE SETTINGS (12 Settings)
+## SECTION 7.7: PERFORMANCE SETTINGS (SKIPPED)
+
+**Status:** ⏸️ SKIPPED - LiteSpeed/LS Cache handles all performance optimization
+
+**Reason:** You're using LiteSpeed server with LS Cache plugin, which provides:
+- Page caching
+- Object caching
+- Database caching
+- Image optimization
+- WebP conversion
+- Critical CSS
+- Lazy loading
+- Minification (CSS/JS)
+- CDN integration
+
+**No settings needed in your plugin** - rely on LiteSpeed/LS Cache for all performance optimization.
+
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `enable_query_cache` | checkbox | true | Enable database query caching | - |
-| `cache_duration` | number | 3600 | Cache duration in seconds | 300, 600, 1800, 3600, 7200, 86400 |
-| `enable_image_lazy_loading` | checkbox | true | Enable lazy loading for images | - |
-| `enable_image_optimization` | checkbox | false | Enable automatic image optimization | - |
-| `image_quality` | number | 85 | Image quality for optimization | 60, 70, 75, 80, 85, 90, 95 |
-| `enable_webp_conversion` | checkbox | false | Convert images to WebP format | - |
-| `enable_code_splitting` | checkbox | false | Enable JavaScript code splitting | - |
-| `enable_css_minification` | checkbox | true | Enable CSS minification | - |
-| `enable_js_minification` | checkbox | true | Enable JavaScript minification | - |
-| `cdn_base_url` | url | '' | CDN base URL for assets | Custom CDN URL |
-| `enable_critical_css` | checkbox | false | Extract critical CSS | - |
-| `enable_defer_js` | checkbox | true | Defer non-critical JavaScript | - |
-| `enable_async_js` | checkbox | false | Load JavaScript asynchronously | - |
 
 ---
 
-## SECTION 7.8: SECURITY SETTINGS (14 Settings)
+## SECTION 7.8: SECURITY SETTINGS (11 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
@@ -1464,52 +1492,40 @@ final class SettingsManager {
 | `csp_report_only_mode` | checkbox | true | CSP report-only mode (development) | - |
 | `enable_frame_options` | checkbox | true | Set X-Frame-Options header | - |
 | `frame_options_value` | select | 'SAMEORIGIN' | X-Frame-Options value | SAMEORIGIN, DENY |
-| `enable_hsts` | checkbox | false | Enable HTTP Strict Transport Security | - |
-| `hsts_max_age` | number | 31536000 | HSTS max age in seconds | 86400, 2592000, 31536000, 63072000 |
-| `enable_referrer_policy` | checkbox | true | Set Referrer-Policy header | - |
-| `referrer_policy_value` | select | 'strict-origin-when-cross-origin' | Referrer-Policy value | strict-origin, strict-origin-when-cross-origin, no-referrer |
 
 ---
 
-## SECTION 7.9: ANALYTICS SETTINGS (10 Settings)
+## SECTION 7.9: INTEGRATION/SEO SETTINGS (SKIPPED)
+
+**Status:** ⏸️ SKIPPED - Rank Math handles all SEO
+
+**Reason:** You're using Rank Math SEO plugin, which provides:
+- Schema markup (Product, Course, etc.)
+- Open Graph tags
+- Twitter Cards
+- Canonical URLs
+- JSON-LD
+- Breadcrumb schema
+- Rating/Review schema
+
+**Your Plugin Should Do:**
+- Let Rank Math handle ALL SEO
+- Your plugin just creates/manages frontend content
+- Rank Math automatically picks it up
+
+**Optional Enhancement:**
+- Detect if Rank Math is active
+- Show notice in settings: "SEO handled by Rank Math ✓"
+
+**No settings needed in your plugin** - rely on Rank Math for all SEO functionality.
+
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `enable_analytics_hooks` | checkbox | true | Enable WordPress hooks for analytics | - |
-| `track_product_views` | checkbox | true | Track product page views | - |
-| `track_affiliate_clicks` | checkbox | true | Track affiliate link clicks | - |
-| `track_conversions` | checkbox | true | Track product conversions | - |
-| `analytics_data_retention_days` | number | 90 | Days to retain analytics data | 30, 60, 90, 180, 365 |
-| `enable_click_tracking_unique` | checkbox | true | Track unique clicks only | - |
-| `click_tracking_ip_limit` | number | 24 | Hours before same IP counted again | 1, 6, 12, 24, 48 |
-| `enable_conversion_tracking_cookie` | checkbox | true | Use cookie for conversion tracking | - |
-| `conversion_cookie_duration` | number | 30 | Conversion cookie duration in days | 1, 7, 14, 30, 90 |
-| `export_analytics_format` | select | 'csv' | Analytics export format | csv, json, xml |
-| `enable_analytics_dashboard` | checkbox | true | Show analytics in admin dashboard | - |
-| `dashboard_refresh_interval` | number | 60 | Dashboard refresh interval (seconds) | 30, 60, 120, 300 |
 
 ---
 
-## SECTION 7.10: INTEGRATION SETTINGS (11 Settings)
-
-| Setting Key | Type | Default | Description | Options |
-|-------------|------|----------|-------------|----------|
-| `enable_seo_plugin_integration` | checkbox | true | Enable SEO plugin integration | - |
-| `compatible_seo_plugins` | multiselect | ['yoast', 'rank-math', 'aioseo', 'seopress'] | Compatible SEO plugins | yoast, rank-math, aioseo, seopress, -seo-framework |
-| `enable_schema_markup` | checkbox | true | Generate Schema.org structured data | - |
-| `schema_type` | select | 'Product' | Default Schema.org type | Product, SoftwareApplication, Book, Course |
-| `enable_open_graph` | checkbox | true | Generate Open Graph meta tags | - |
-| `enable_twitter_cards` | checkbox | true | Generate Twitter Card meta tags | - |
-| `twitter_card_type` | select | 'summary_large_image' | Twitter Card type | summary, summary_large_image, app |
-| `enable_canonical_urls` | checkbox | true | Add canonical URLs | - |
-| `enable_json_ld` | checkbox | true | Enable JSON-LD structured data | - |
-| `enable_breadcrumb_schema` | checkbox | true | Generate breadcrumb schema | - |
-| `enable_rating_schema` | checkbox | false | Generate rating schema | - |
-| `enable_review_schema` | checkbox | false | Generate review schema | - |
-
----
-
-## SECTION 7.11: IMPORT/EXPORT SETTINGS (9 Settings)
+## SECTION 7.10: IMPORT/EXPORT SETTINGS (9 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
@@ -1526,31 +1542,43 @@ final class SettingsManager {
 
 ---
 
-## SECTION 7.12: SHORTCODE SETTINGS (7 Settings)
+## SECTION 7.11: SHORTCODE SETTINGS (8 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `products_shortcode_id` | text | 'products' | Products shortcode ID | Customizable |
-| `product_shortcode_id` | text | 'product' | Single product shortcode ID | Customizable |
-| `category_shortcode_id` | text | 'category' | Category shortcode ID | Customizable |
-| `tag_shortcode_id` | text | 'tag' | Tag shortcode ID | Customizable |
-| `ribbon_shortcode_id` | text | 'ribbon' | Ribbon shortcode ID | Customizable |
-| `enable_shortcode_cache` | checkbox | true | Cache shortcode output | - |
-| `shortcode_cache_duration` | number | 3600 | Shortcode cache duration (seconds) | 300, 600, 1800, 3600, 7200 |
+| `product_grid_shortcode_id` | text | 'affiliate_product_grid' | Product grid shortcode ID | Customizable |
+| `featured_products_shortcode_id` | text | 'affiliate_featured_products' | Featured products shortcode ID | Customizable |
+| `product_slider_shortcode_id` | text | 'affiliate_product_slider' | Product slider shortcode ID | Customizable |
+| `product_grid_products_per_page` | number | 12 | Products per page in grid shortcode | 6, 12, 18, 24, 36, 48 |
+| `featured_products_products_per_page` | number | 6 | Featured products per page | 3, 6, 9, 12, 15 |
+| `product_slider_products_per_page` | number | 5 | Products in slider | 3, 5, 8, 10 |
+| `add_to_cart_button_style` | select | 'default' | Add to cart button style | default, primary, secondary, flat |
+| `enable_quick_view_shortcode` | checkbox | true | Enable quick view in shortcodes | - |
+
+**Note:** 
+- Cache settings removed - LiteSpeed/LS Cache handles all caching
+- Each shortcode type has its own products_per_page setting for granular control
+- Settings can be overridden per shortcode instance via attributes
 
 ---
 
-## SECTION 7.13: WIDGET SETTINGS (7 Settings)
+## SECTION 7.12: WIDGET SETTINGS (7 Settings)
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `enable_product_slider_widget` | checkbox | true | Enable product slider widget | - |
+| `enable_product_widget` | checkbox | true | Enable product list widget | - |
+| `enable_featured_widget` | checkbox | true | Enable featured products widget | - |
 | `enable_category_widget` | checkbox | true | Enable category widget | - |
-| `enable_tag_cloud_widget` | checkbox | true | Enable tag cloud widget | - |
-| `enable_featured_products_widget` | checkbox | true | Enable featured products widget | - |
-| `enable_filter_widget` | checkbox | true | Enable filter sidebar widget | - |
-| `widget_default_limit` | number | 6 | Default number of items per widget | 3, 6, 9, 12 |
-| `enable_widget_lazy_loading` | checkbox | true | Lazy load widget content | - |
+| `enable_sale_widget` | checkbox | true | Enable sale products widget | - |
+| `widget_default_layout` | select | 'grid' | Default widget layout | grid, list, compact |
+| `widget_image_size` | select | 'thumbnail' | Widget image size | thumbnail, medium, large, full |
+| `widget_lazy_loading` | checkbox | true | Lazy load widget content | - |
+
+---
+
+
+| Setting Key | Type | Default | Description | Options |
+|-------------|------|----------|-------------|----------|
 
 ---
 
@@ -1566,10 +1594,7 @@ Affiliate Product Showcase Settings
 ├── Tags (Tag Configuration)
 ├── Ribbons (Ribbon Configuration)
 ├── Display (Frontend Display)
-├── Performance (Performance Optimization)
 ├── Security (Security Configuration)
-├── Analytics (Analytics & Tracking)
-├── Integration (Third-Party Integration)
 ├── Import/Export (Data Management)
 ├── Shortcodes (Shortcode Configuration)
 └── Widgets (Widget Configuration)
@@ -1737,9 +1762,11 @@ Import settings from file
 
 **Status Tracking:**
 
-- **Section 7: Settings:** [0]/138 complete (0%) for Phase 1
+- **Section 7: Settings:** 0/105 complete (0%) for Phase 1
   - ❌ Settings Infrastructure (0/6 complete)
   - ❌ Settings Page UI (0/6 complete)
-  - ❌ Settings REST API (0/7 complete)
+  - ❌ Settings REST API (0/6 complete)
   - ❌ Settings Validation (0/5 complete)
   - ❌ Settings Testing (0/5 complete)
+
+**Updated:** 2026-01-26 - Reduced to 105 settings (removed Performance, SEO, Analytics sections - delegated to external plugins)
