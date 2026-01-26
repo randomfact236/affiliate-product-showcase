@@ -31,10 +31,9 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=products')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'products' ? 'active' : ''; ?> disabled">
+           class="aps-tab <?php echo $active_tab === 'products' ? 'active' : ''; ?>">
             <span class="aps-tab-icon">📦</span>
             <span class="aps-tab-text"><?php esc_html_e('Products', 'affiliate-product-showcase'); ?></span>
-            <span class="aps-tab-badge">Coming Soon</span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=categories')); ?>" 
@@ -61,7 +60,7 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
 
     <!-- Settings Form -->
     <div class="aps-settings-content">
-        <?php if (in_array($active_tab, ['general', 'display'])): ?>
+        <?php if (in_array($active_tab, ['general', 'products', 'display'])): ?>
             <form action="options.php" method="post">
                 <?php
                 settings_fields(\AffiliateProductShowcase\Admin\Settings::OPTION_GROUP);
@@ -84,6 +83,15 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
                     // Render display settings fields table
                     echo '<table class="form-table" role="presentation">';
                     do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_DISPLAY);
+                    echo '</table>';
+                } elseif ($active_tab === 'products') {
+                    // Render products section manually with heading
+                    echo '<h2>' . esc_html__('Product Settings', 'affiliate-product-showcase') . '</h2>';
+                    echo '<p>' . esc_html__('Configure product-specific settings including slugs, tracking, and display options.', 'affiliate-product-showcase') . '</p>';
+                    
+                    // Render products settings fields table
+                    echo '<table class="form-table" role="presentation">';
+                    do_settings_fields('affiliate-product-showcase', \AffiliateProductShowcase\Admin\Settings::SECTION_PRODUCTS);
                     echo '</table>';
                 }
                 

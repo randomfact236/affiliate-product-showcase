@@ -387,7 +387,7 @@ final class SettingsManager {
 
 | Setting Key | Type | Default | Description | Options |
 |-------------|------|----------|-------------|----------|
-| `product_permalink_structure` | text | '/product/%product_slug%/' | URL structure for single products | Customizable |
+
 | `auto_generate_slugs` | checkbox | true | Automatically generate slugs from titles | - |
 | `enable_click_tracking` | checkbox | true | Track affiliate link clicks | - |
 | `enable_conversion_tracking` | checkbox | true | Track product conversions | - |
