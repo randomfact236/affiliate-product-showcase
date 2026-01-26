@@ -80,6 +80,7 @@ class Settings {
 	 * Register settings
 	 *
 	 * Called on admin_init hook to register settings with WordPress.
+	 * All sections and fields must be registered regardless of active tab.
 	 *
 	 * @return void
 	 */
@@ -88,224 +89,248 @@ class Settings {
 		\register_setting(
 			self::OPTION_GROUP,
 			self::OPTION_NAME,
-			[$this, 'sanitize_options']
+			[
+				'sanitize_callback' => [$this, 'sanitize_options'],
+				'show_in_rest' => false,
+				'default' => $this->defaults
+			]
 		);
 		
-		// Get active tab
-		$active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
+		// Register General Settings Section
+		\add_settings_section(
+			self::SECTION_GENERAL,
+			__('General Settings', 'affiliate-product-showcase'),
+			[$this, 'render_general_section_description'],
+			'affiliate-product-showcase',
+			['data-section' => 'general']
+		);
 		
-		// Only register sections based on active tab
-		if ($active_tab === 'general') {
-			\add_settings_section(
-				self::SECTION_GENERAL,
-				__('General Settings', 'affiliate-product-showcase'),
-				[$this, 'render_general_section_description'],
-				'affiliate-product-showcase'
-			);
-			
-			// General Settings Fields
-			\add_settings_field(
-				'plugin_version',
-				__('Plugin Version', 'affiliate-product-showcase'),
-				[$this, 'render_plugin_version_field'],
-				'affiliate-product-showcase',
-				self::SECTION_GENERAL
-			);
-			
-			\add_settings_field(
-				'default_currency',
-				__('Default Currency', 'affiliate-product-showcase'),
-				[$this, 'render_currency_field'],
-				'affiliate-product-showcase',
-				self::SECTION_GENERAL
-			);
-			
-			\add_settings_field(
-				'date_format',
-				__('Date Format', 'affiliate-product-showcase'),
-				[$this, 'render_date_format_field'],
-				'affiliate-product-showcase',
-				self::SECTION_GENERAL
-			);
-			
-			\add_settings_field(
-				'time_format',
-				__('Time Format', 'affiliate-product-showcase'),
-				[$this, 'render_time_format_field'],
-				'affiliate-product-showcase',
-				self::SECTION_GENERAL
-			);
-		}
+		// General Settings Fields
+		\add_settings_field(
+			'plugin_version',
+			__('Plugin Version', 'affiliate-product-showcase'),
+			[$this, 'render_plugin_version_field'],
+			'affiliate-product-showcase',
+			self::SECTION_GENERAL,
+			['label_for' => 'plugin_version']
+		);
 		
-		if ($active_tab === 'display') {
-			\add_settings_section(
-				self::SECTION_DISPLAY,
-				__('Display Settings', 'affiliate-product-showcase'),
-				[$this, 'render_display_section_description'],
-				'affiliate-product-showcase'
-			);
-			
-			// Display Settings Fields
-			\add_settings_field(
-				'products_per_page',
-				__('Products Per Page', 'affiliate-product-showcase'),
-				[$this, 'render_products_per_page_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'default_view_mode',
-				__('Default View Mode', 'affiliate-product-showcase'),
-				[$this, 'render_default_view_mode_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'enable_view_mode_toggle',
-				__('Enable View Mode Toggle', 'affiliate-product-showcase'),
-				[$this, 'render_enable_view_mode_toggle_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'grid_columns',
-				__('Grid Columns', 'affiliate-product-showcase'),
-				[$this, 'render_grid_columns_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'list_columns',
-				__('List Columns', 'affiliate-product-showcase'),
-				[$this, 'render_list_columns_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'enable_lazy_loading',
-				__('Enable Lazy Loading', 'affiliate-product-showcase'),
-				[$this, 'render_enable_lazy_loading_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'lazy_load_threshold',
-				__('Lazy Load Threshold', 'affiliate-product-showcase'),
-				[$this, 'render_lazy_load_threshold_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_product_price',
-				__('Show Product Price', 'affiliate-product-showcase'),
-				[$this, 'render_show_product_price_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_original_price',
-				__('Show Original Price', 'affiliate-product-showcase'),
-				[$this, 'render_show_original_price_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_discount_percentage',
-				__('Show Discount Percentage', 'affiliate-product-showcase'),
-				[$this, 'render_show_discount_percentage_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'price_display_format',
-				__('Price Display Format', 'affiliate-product-showcase'),
-				[$this, 'render_price_display_format_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_currency_symbol',
-				__('Show Currency Symbol', 'affiliate-product-showcase'),
-				[$this, 'render_show_currency_symbol_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_product_sku',
-				__('Show Product SKU', 'affiliate-product-showcase'),
-				[$this, 'render_show_product_sku_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_product_brand',
-				__('Show Product Brand', 'affiliate-product-showcase'),
-				[$this, 'render_show_product_brand_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_product_rating',
-				__('Show Product Rating', 'affiliate-product-showcase'),
-				[$this, 'render_show_product_rating_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'show_product_clicks',
-				__('Show Product Clicks', 'affiliate-product-showcase'),
-				[$this, 'render_show_product_clicks_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'enable_product_quick_view',
-				__('Enable Product Quick View', 'affiliate-product-showcase'),
-				[$this, 'render_enable_product_quick_view_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'quick_view_animation',
-				__('Quick View Animation', 'affiliate-product-showcase'),
-				[$this, 'render_quick_view_animation_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'enable_product_comparison',
-				__('Enable Product Comparison', 'affiliate-product-showcase'),
-				[$this, 'render_enable_product_comparison_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-			
-			\add_settings_field(
-				'max_comparison_items',
-				__('Max Comparison Items', 'affiliate-product-showcase'),
-				[$this, 'render_max_comparison_items_field'],
-				'affiliate-product-showcase',
-				self::SECTION_DISPLAY
-			);
-		}
+		\add_settings_field(
+			'default_currency',
+			__('Default Currency', 'affiliate-product-showcase'),
+			[$this, 'render_currency_field'],
+			'affiliate-product-showcase',
+			self::SECTION_GENERAL,
+			['label_for' => 'default_currency']
+		);
+		
+		\add_settings_field(
+			'date_format',
+			__('Date Format', 'affiliate-product-showcase'),
+			[$this, 'render_date_format_field'],
+			'affiliate-product-showcase',
+			self::SECTION_GENERAL,
+			['label_for' => 'date_format']
+		);
+		
+		\add_settings_field(
+			'time_format',
+			__('Time Format', 'affiliate-product-showcase'),
+			[$this, 'render_time_format_field'],
+			'affiliate-product-showcase',
+			self::SECTION_GENERAL,
+			['label_for' => 'time_format']
+		);
+		
+		// Register Display Settings Section
+		\add_settings_section(
+			self::SECTION_DISPLAY,
+			__('Display Settings', 'affiliate-product-showcase'),
+			[$this, 'render_display_section_description'],
+			'affiliate-product-showcase',
+			['data-section' => 'display']
+		);
+		
+		// Display Settings Fields
+		\add_settings_field(
+			'products_per_page',
+			__('Products Per Page', 'affiliate-product-showcase'),
+			[$this, 'render_products_per_page_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'products_per_page']
+		);
+		
+		\add_settings_field(
+			'default_view_mode',
+			__('Default View Mode', 'affiliate-product-showcase'),
+			[$this, 'render_default_view_mode_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'default_view_mode']
+		);
+		
+		\add_settings_field(
+			'enable_view_mode_toggle',
+			__('Enable View Mode Toggle', 'affiliate-product-showcase'),
+			[$this, 'render_enable_view_mode_toggle_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'enable_view_mode_toggle']
+		);
+		
+		\add_settings_field(
+			'grid_columns',
+			__('Grid Columns', 'affiliate-product-showcase'),
+			[$this, 'render_grid_columns_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'grid_columns']
+		);
+		
+		\add_settings_field(
+			'list_columns',
+			__('List Columns', 'affiliate-product-showcase'),
+			[$this, 'render_list_columns_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'list_columns']
+		);
+		
+		\add_settings_field(
+			'enable_lazy_loading',
+			__('Enable Lazy Loading', 'affiliate-product-showcase'),
+			[$this, 'render_enable_lazy_loading_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'enable_lazy_loading']
+		);
+		
+		\add_settings_field(
+			'lazy_load_threshold',
+			__('Lazy Load Threshold', 'affiliate-product-showcase'),
+			[$this, 'render_lazy_load_threshold_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'lazy_load_threshold']
+		);
+		
+		\add_settings_field(
+			'show_product_price',
+			__('Show Product Price', 'affiliate-product-showcase'),
+			[$this, 'render_show_product_price_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_product_price']
+		);
+		
+		\add_settings_field(
+			'show_original_price',
+			__('Show Original Price', 'affiliate-product-showcase'),
+			[$this, 'render_show_original_price_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_original_price']
+		);
+		
+		\add_settings_field(
+			'show_discount_percentage',
+			__('Show Discount Percentage', 'affiliate-product-showcase'),
+			[$this, 'render_show_discount_percentage_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_discount_percentage']
+		);
+		
+		\add_settings_field(
+			'price_display_format',
+			__('Price Display Format', 'affiliate-product-showcase'),
+			[$this, 'render_price_display_format_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'price_display_format']
+		);
+		
+		\add_settings_field(
+			'show_currency_symbol',
+			__('Show Currency Symbol', 'affiliate-product-showcase'),
+			[$this, 'render_show_currency_symbol_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_currency_symbol']
+		);
+		
+		\add_settings_field(
+			'show_product_sku',
+			__('Show Product SKU', 'affiliate-product-showcase'),
+			[$this, 'render_show_product_sku_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_product_sku']
+		);
+		
+		\add_settings_field(
+			'show_product_brand',
+			__('Show Product Brand', 'affiliate-product-showcase'),
+			[$this, 'render_show_product_brand_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_product_brand']
+		);
+		
+		\add_settings_field(
+			'show_product_rating',
+			__('Show Product Rating', 'affiliate-product-showcase'),
+			[$this, 'render_show_product_rating_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_product_rating']
+		);
+		
+		\add_settings_field(
+			'show_product_clicks',
+			__('Show Product Clicks', 'affiliate-product-showcase'),
+			[$this, 'render_show_product_clicks_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'show_product_clicks']
+		);
+		
+		\add_settings_field(
+			'enable_product_quick_view',
+			__('Enable Product Quick View', 'affiliate-product-showcase'),
+			[$this, 'render_enable_product_quick_view_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'enable_product_quick_view']
+		);
+		
+		\add_settings_field(
+			'quick_view_animation',
+			__('Quick View Animation', 'affiliate-product-showcase'),
+			[$this, 'render_quick_view_animation_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'quick_view_animation']
+		);
+		
+		\add_settings_field(
+			'enable_product_comparison',
+			__('Enable Product Comparison', 'affiliate-product-showcase'),
+			[$this, 'render_enable_product_comparison_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'enable_product_comparison']
+		);
+		
+		\add_settings_field(
+			'max_comparison_items',
+			__('Max Comparison Items', 'affiliate-product-showcase'),
+			[$this, 'render_max_comparison_items_field'],
+			'affiliate-product-showcase',
+			self::SECTION_DISPLAY,
+			['label_for' => 'max_comparison_items']
+		);
 	}
 	
 	/**
