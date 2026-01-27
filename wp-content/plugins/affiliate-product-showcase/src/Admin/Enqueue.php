@@ -97,33 +97,15 @@ class Enqueue {
         // Note: Product edit styles are inline in add-product-page.php
         // No separate CSS file needed for add-product page
 
-        // Products list table styles
-        // REMOVED: ProductTableUI, inline editing styles - using native WordPress UI only
-        // Products now use only native WordPress table styling via ProductsTable (WP_List_Table)
+        // Products list page - WordPress default table with filter extensions
         if ( $hook === 'edit-aps_product' ) {
-            // Only basic admin table styles if needed
-            // wp_enqueue_style(
-            //     'affiliate-product-showcase-admin-table',
-            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table.css',
-            //     [],
-            //     self::VERSION
-            // );
-
-            // REMOVED: Custom product table UI styles (filters, counts, etc.)
-            // wp_enqueue_style(
-            //     'affiliate-product-showcase-product-table-ui',
-            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-table-ui.css',
-            //     [],
-            //     self::VERSION
-            // );
-
-            // REMOVED: Inline editing styles
-            // wp_enqueue_style(
-            //     'affiliate-product-showcase-products-table-inline-edit',
-            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/products-table-inline-edit.css',
-            //     [],
-            //     self::VERSION
-            // );
+            // Enqueue filter styles for custom filters added via hooks
+            wp_enqueue_style(
+                'affiliate-product-showcase-table-filters',
+                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table-filters.css',
+                [],
+                self::VERSION
+            );
         }
     }
 
@@ -201,15 +183,9 @@ class Enqueue {
             );
         }
 
-        // Products list page scripts (enhanced "All Products" page)
-        // REMOVED: All custom product table scripts - using native WordPress UI only
-        // Products now use only native WordPress functionality via ProductsTable (WP_List_Table)
+        // Products list page scripts - WordPress default table only
         if ( $this->isProductsListPage( $hook ) ) {
-            // REMOVED: admin-products-enhancer.js
-            // REMOVED: product-table-ui.js
-            // REMOVED: products-table-inline-edit.js
-            
-            // No scripts enqueued - using native WordPress only
+            // No custom scripts needed - using native WordPress UI
         }
 
         // Product edit scripts

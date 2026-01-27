@@ -10,6 +10,7 @@ use AffiliateProductShowcase\Services\ProductService;
 use AffiliateProductShowcase\Admin\CategoryFields;
 use AffiliateProductShowcase\Admin\TagFields;
 use AffiliateProductShowcase\Admin\RibbonFields;
+use AffiliateProductShowcase\Admin\ProductFilters;
 use AffiliateProductShowcase\Admin\Settings;
 
 final class Admin {
@@ -19,6 +20,7 @@ final class Admin {
 	private CategoryFields $category_fields;
 	private TagFields $tag_fields;
 	private RibbonFields $ribbon_fields;
+	private ProductFilters $product_filters;
 
 	public function __construct(
 		private Assets $assets,
@@ -35,6 +37,7 @@ final class Admin {
 		$this->category_fields = new CategoryFields();
 		$this->tag_fields = new TagFields();
 		$this->ribbon_fields = $ribbon_fields;
+		$this->product_filters = new ProductFilters();
 	}
 
 	public function init(): void {
@@ -49,6 +52,9 @@ final class Admin {
 		
 		// Initialize ribbon components (WordPress native + custom enhancements)
 		$this->ribbon_fields->init();
+		
+		// Initialize product filters (WordPress default table extensions)
+		$this->product_filters->init();
 		
 		$this->headers->init();
 	}
