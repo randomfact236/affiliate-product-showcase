@@ -13,7 +13,7 @@ use AffiliateProductShowcase\Plugin\Constants;
  * Provides native pagination, sorting, and bulk actions.
  *
  * This is SINGLE source of truth for column rendering in true hybrid approach.
- * Custom UI is rendered by ProductTableUI, column rendering is handled here.
+ * Uses native WordPress table with custom column rendering.
  *
  * @package AffiliateProductShowcase\Admin
  * @since 1.0.0
@@ -343,7 +343,6 @@ class ProductsTable extends \WP_List_Table {
 	 *
 	 * This removes the default WordPress status views (All, Published, Drafts, etc.)
 	 * from appearing at the top and bottom of the table.
-	 * Custom status counts are rendered in ProductTableUI instead.
 	 *
 	 * @return array|false Return false to disable views
 	 */
