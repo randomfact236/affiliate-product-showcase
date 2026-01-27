@@ -49,8 +49,9 @@ final class ProductFilters {
             'hide_empty' => false
         ]);
         
-        if (empty($categories) || is_wp_error($categories)) {
-            return;
+        // Always render dropdown, even if empty
+        if (is_wp_error($categories)) {
+            $categories = [];
         }
         
         $selected = isset($_GET['aps_category_filter']) ? (int) $_GET['aps_category_filter'] : 0;
@@ -88,8 +89,9 @@ final class ProductFilters {
             'hide_empty' => false
         ]);
         
-        if (empty($tags) || is_wp_error($tags)) {
-            return;
+        // Always render dropdown, even if empty
+        if (is_wp_error($tags)) {
+            $tags = [];
         }
         
         $selected = isset($_GET['aps_tag_filter']) ? (int) $_GET['aps_tag_filter'] : 0;
