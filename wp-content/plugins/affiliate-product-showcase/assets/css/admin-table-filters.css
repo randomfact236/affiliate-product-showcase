@@ -4,8 +4,14 @@
  * Styles for custom filters added to WordPress default table.
  *
  * @package AffiliateProductShowcase
- * @since 1.0.0
+ * @since1.0.0
  */
+
+/* Hide native WordPress "Add New" button on products list page */
+body.post-type-aps_product.edit-php .page-title-action,
+body.post-type-aps_product.edit-php .wrap .page-title-action {
+    display: none !important;
+}
 
 /* Filter container in tablenav */
 .aps-featured-filter-label {
