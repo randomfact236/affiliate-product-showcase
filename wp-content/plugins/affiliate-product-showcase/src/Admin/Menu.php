@@ -24,6 +24,12 @@ class Menu {
 		// Filter all edit post links to point to custom form
 		add_filter( 'get_edit_post_link', [ $this, 'filterEditPostLink' ], 10, 3 );
 		
+		// Add custom columns to products table (register early)
+		add_filter( 'manage_aps_product_posts_columns', [ $this, 'addCustomColumns' ] );
+		add_action( 'manage_aps_product_posts_custom_column', [ $this, 'renderCustomColumns' ], 10, 2 );
+		add_filter( 'manage_edit-aps_product_sortable_columns', [ $this, 'makeColumnsSortable' ] );
+		add_filter( 'pre_get_posts', [ $this, 'setDefaultSorting' ] );
+		
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
 		
@@ -161,17 +167,141 @@ class Menu {
 		
 		return $url;
 	}
+	
+	/**
+	 * Add custom columns to products table
+	 *
+	 * @param array $columns Existing columns
+	 * @return array Modified columns with custom ones
+	 */
+	public function addCustomColumns(array $columns): array {
+		// Insert Logo column at the beginning (after checkbox)
+		$logo_column = ['logo' => __('Logo', 'affiliate-product-showcase')];
+		$columns = array_slice($columns, 0, 1, true) + $logo_column + array_slice($columns, 1, null, true);
+		
+		// Add other custom columns
+		// Note: Ribbon uses WordPress native taxonomy column (taxonomy-aps_ribbon)
+		// Custom styling applied via CSS in admin-products.css
+		$columns['price'] = __('Price', 'affiliate-product-showcase');
+		$columns['featured'] = __('Featured', 'affiliate-product-showcase');
+		$columns['status'] = __('Status', 'affiliate-product-showcase');
+		
+		return $columns;
+	}
+	
+	/**
+	 * Render custom column content
+	 *
+	 * @param string $column  Column name
+	 * @param int    $post_id Post ID
+	 * @return void
+	 */
+	public function renderCustomColumns(string $column, int $post_id): void {
+		switch ($column) {
+			case 'logo':
+				$logo_id = get_post_meta($post_id, '_aps_logo', true);
+				if ($logo_id) {
+					$logo_url = wp_get_attachment_image_url($logo_id, 'thumbnail');
+					if ($logo_url) {
+						echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_the_title($post_id)) . '" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">';
+					}
+				}
+				break;
+				
+			case 'price':
+				$price = get_post_meta($post_id, '_aps_price', true);
+				$currency = get_post_meta($post_id, '_aps_currency', true) ?: 'USD';
+				$symbol = $this->getCurrencySymbol($currency);
+				if ($price) {
+					echo '<span class="aps-price">' . esc_html($symbol) . esc_html(number_format(floatval($price), 2)) . '</span>';
+				}
+				break;
+				
+			case 'featured':
+				$featured = get_post_meta($post_id, '_aps_featured', true);
+				echo $featured ? '<span class="aps-featured-star" style="color: #f59e0b; font-size:1.2em;">★</span>' : '';
+				break;
+				
+			case 'status':
+				$post_status = get_post_status($post_id);
+				$status_labels = [
+					'publish' => __('Published', 'affiliate-product-showcase'),
+					'draft' => __('Draft', 'affiliate-product-showcase'),
+					'trash' => __('Trash', 'affiliate-product-showcase'),
+					'pending' => __('Pending', 'affiliate-product-showcase'),
+				];
+				$label = $status_labels[$post_status] ?? ucfirst($post_status);
+				$status_class = 'aps-product-status aps-product-status-' . $post_status;
+				echo '<span class="' . esc_attr($status_class) . '">' . esc_html($label) . '</span>';
+				break;
+		}
+	}
+	
+	/**
+	 * Make custom columns sortable
+	 *
+	 * @param array $columns Existing sortable columns
+	 * @return array Modified sortable columns
+	 */
+	public function makeColumnsSortable(array $columns): array {
+		$columns['price'] = 'aps_price';
+		$columns['featured'] = 'aps_featured';
+		return $columns;
+	}
+	
+	/**
+	 * Set default sorting for products table
+	 *
+	 * @param WP_Query $query Current query
+	 * @return void
+	 */
+	public function setDefaultSorting(\WP_Query $query): void {
+		if (!is_admin() || !$query->is_main_query()) {
+			return;
+		}
+		
+		if (isset($_GET['post_type']) && $_GET['post_type'] === 'aps_product') {
+			// Default sort by date descending
+			if (!isset($_GET['orderby'])) {
+				$query->set('orderby', 'date');
+				$query->set('order', 'DESC');
+			}
+		}
+	}
+	
+	/**
+	 * Get currency symbol
+	 *
+	 * @param string $currency Currency code
+	 * @return string Currency symbol
+	 */
+	private function getCurrencySymbol(string $currency): string {
+		$symbols = [
+			'USD' => '$',
+			'EUR' => '€',
+			'GBP' => '£',
+			'JPY' => '¥',
+			'CAD' => 'C$',
+			'AUD' => 'A$',
+		];
+		return $symbols[$currency] ?? $currency;
+	}
 
 	/**
 	 * Add custom submenus to Affiliate Products CPT
 	 *
 	 * Registers custom "Add Product" submenu under Affiliate Products.
+	 * "All Products" uses WordPress native listing (automatically created).
 	 * Called during admin_menu hook (priority 10) before reordering.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
 	public function addCustomSubmenus(): void {
+		// NOTE: "All Products" uses WordPress native submenu (edit.php?post_type=aps_product)
+		// which is automatically created for the custom post type
+		// We don't add a custom one here to avoid duplicates
+
 		// Add custom "Add Product" submenu to Affiliate Products CPT
 		// Use 'manage_options' capability for admin access
 		add_submenu_page(
@@ -224,17 +354,18 @@ class Menu {
 		$reordered_items = [];
 		$used_indices = [];
 		
-		// 1. Keep "All Products" (edit.php?post_type=aps_product) - it's the main listing
+		// 1. Keep "All Products" (edit.php?post_type=aps_product) - WordPress native listing
 		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
 			if ( $slug === 'edit.php?post_type=aps_product' ) {
+				// Keep the native WordPress menu item as-is
 				$reordered_items[] = $item;
 				$used_indices[] = $index;
 				break;
 			}
 		}
 		
-		// 2. Add custom "Add Product" menu (now already registered)
+		// 2. Add custom "Add Product" menu (already registered)
 		foreach ( $existing_items as $index => $item ) {
 			$slug = isset( $item[2] ) ? $item[2] : '';
 			if ( $slug === 'add-product' && ! in_array( $index, $used_indices, true ) ) {
@@ -446,6 +577,18 @@ class Menu {
     public static function getAddProductUrl(): string {
         return admin_url( 'edit.php?post_type=aps_product&page=add-product' );
     }
+
+	/**
+	 * Get products URL (under Affiliate Products CPT menu)
+	 *
+	 * Uses native WordPress URL for the CPT listing.
+	 * Our custom ProductsPage will be rendered via load-edit.php hook.
+	 *
+	 * @return string
+	 */
+	public static function getProductsUrl(): string {
+		return admin_url( 'edit.php?post_type=aps_product' );
+	}
 
     /**
      * Reorder menus to position Affiliate Manager right after Affiliate Products

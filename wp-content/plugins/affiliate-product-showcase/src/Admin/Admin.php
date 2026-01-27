@@ -12,6 +12,8 @@ use AffiliateProductShowcase\Admin\TagFields;
 use AffiliateProductShowcase\Admin\RibbonFields;
 use AffiliateProductShowcase\Admin\ProductFilters;
 use AffiliateProductShowcase\Admin\Settings;
+use AffiliateProductShowcase\Admin\ProductsPage;
+use AffiliateProductShowcase\Admin\ProductsAjaxHandler;
 
 final class Admin {
 	private Settings $settings;
@@ -21,6 +23,8 @@ final class Admin {
 	private TagFields $tag_fields;
 	private RibbonFields $ribbon_fields;
 	private ProductFilters $product_filters;
+	private ProductsPage $products_page;
+	private ProductsAjaxHandler $products_ajax_handler;
 
 	public function __construct(
 		private Assets $assets,
@@ -38,6 +42,8 @@ final class Admin {
 		$this->tag_fields = new TagFields();
 		$this->ribbon_fields = $ribbon_fields;
 		$this->product_filters = new ProductFilters();
+		$this->products_page = new ProductsPage();
+		$this->products_ajax_handler = new ProductsAjaxHandler();
 	}
 
 	public function init(): void {
@@ -55,6 +61,12 @@ final class Admin {
 		
 		// Initialize product filters (WordPress default table extensions)
 		$this->product_filters->init();
+		
+		// Initialize custom products page
+		$this->products_page->init();
+		
+		// Initialize products AJAX handler
+		$this->products_ajax_handler->init();
 		
 		$this->headers->init();
 	}

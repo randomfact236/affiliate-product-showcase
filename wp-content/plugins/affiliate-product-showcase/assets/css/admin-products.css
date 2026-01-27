@@ -1,0 +1,785 @@
+/**
+ * Products Page Styles
+ *
+ * Styles for products listing page.
+ *
+ * @package Affiliate_Product_Showcase
+ * @since 1.0.0
+ */
+
+/* ============================================
+   CSS Variables - Color Palette
+   ============================================ */
+:root {
+    /* Text Colors */
+    --color-text-main: #1d2327;
+    --color-text-light: #646970;
+    
+    /* UI Colors */
+    --color-border: #c3c4c7;
+    --color-bg-light: #f0f0f1;
+    --color-bg-hover: #f6f7f7;
+    
+    /* Primary (Buttons, Links) */
+    --color-primary: #2271b1;
+    --color-primary-hover: #135e96;
+    
+    /* Status Badges */
+    --color-green-bg: #e5f7ed;
+    --color-green-text: #22c55e;
+    --color-yellow-bg: #fef3c7;
+    --color-yellow-text: #d97706;
+    --color-red-bg: #fee2e2;
+    --color-red-text: #dc2626;
+    --color-gray-bg: #f3f4f6;
+    --color-gray-text: #6b7280;
+    
+    /* Ribbon Badge */
+    --color-ribbon: #d63638;
+    
+    /* Featured Star */
+    --color-star: #e6b800;
+}
+
+/* ============================================
+   Products Page Container
+   ============================================ */
+.aps-products-page {
+    position: relative;
+}
+
+/* ============================================
+   Navigation Tabs
+   ============================================ */
+.aps-nav-tabs {
+    margin: 20px 0 0;
+    border-bottom: 1px solid #c3c4c7;
+    line-height: inherit;
+}
+
+.aps-nav-tabs .nav-tab {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 6px 12px;
+    margin: 0 4px -1px 0;
+    border: 1px solid #c3c4c7;
+    border-bottom: none;
+    color: #646970;
+    background: #f6f7f7;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+}
+
+.aps-nav-tabs .nav-tab:hover {
+    background: #fff;
+    color: #1d2327;
+}
+
+.aps-nav-tabs .nav-tab.nav-tab-active {
+    background: #fff;
+    color: #2c3338;
+    border-bottom: 1px solid #fff;
+    font-weight: 600;
+}
+
+/* ============================================
+   Products Table
+   ============================================ */
+.wp-list-table {
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    background: #fff;
+    margin: 0;
+}
+
+.wp-list-table thead {
+    background: #f6f7f7;
+}
+
+.wp-list-table thead th {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #1d2327;
+}
+
+.wp-list-table tbody td {
+    font-size: 13px;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* Column Widths */
+.column-cb {
+    width: 2.2em;
+    padding: 10px 0 10px 10px;
+}
+
+.column-id {
+    width: 50px;
+    text-align: center;
+}
+
+.column-logo {
+    width: 60px;
+    text-align: center;
+}
+
+.column-category {
+    width: auto;
+}
+
+.column-tags {
+    width: auto;
+}
+
+.column-featured {
+    width: 60px;
+    text-align: center;
+}
+
+.column-price {
+    width: 100px;
+}
+
+.column-status {
+    width: 120px;
+}
+
+/* Row Styling */
+.wp-list-table tr:nth-child(odd) {
+    background-color: #f6f7f7;
+}
+
+.wp-list-table tr:nth-child(even) {
+    background-color: #fff;
+}
+
+.wp-list-table tr:hover td {
+    background-color: #f0f0f1;
+}
+
+/* ============================================
+   Product Logo
+   ============================================ */
+.aps-product-logo {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+.aps-no-logo {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* ============================================
+   Title Column
+   ============================================ */
+.row-title {
+    font-weight: 600;
+    color: #2271b1;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.row-title:hover,
+.row-title:focus {
+    color: #135e96;
+}
+
+/* Row Actions */
+.row-actions {
+    font-size: 12px;
+    color: #a7aaad;
+    visibility: hidden;
+    margin-top: 4px;
+}
+
+.wp-list-table tr:hover .row-actions {
+    visibility: visible;
+}
+
+.row-actions a {
+    text-decoration: none;
+    color: #2271b1;
+}
+
+.row-actions a:hover {
+    color: #135e96;
+}
+
+.row-actions .trash a {
+    color: #d63638;
+}
+
+.row-actions .trash a:hover {
+    color: #b32d2e;
+}
+
+/* ============================================
+   Category Column - Plain Text
+   ============================================ */
+.aps-category-text {
+    color: #1d2327;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* ============================================
+   Tags Column - Plain Text
+   ============================================ */
+.aps-tag-text {
+    color: #646970;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* ============================================
+   Ribbon Column - Red Badge (WordPress Native)
+   ============================================ */
+
+/* Style WordPress native Ribbon column cells */
+.column-taxonomy-aps_ribbon {
+    width: 120px;
+}
+
+/* Apply red badge styling to native Ribbon taxonomy links */
+.column-taxonomy-aps_ribbon a {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--color-ribbon);
+    color: #ffffff;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 2px;
+    text-decoration: none;
+    border: none;
+}
+
+.column-taxonomy-aps_ribbon a:hover {
+    background: #b91c1c;
+    color: #ffffff;
+}
+
+/* Empty ribbon indicator */
+.aps-ribbon-empty {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* ============================================
+   Status Column - Colored Badges
+   ============================================ */
+.aps-product-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Published - Green */
+.aps-product-status-published {
+    background: var(--color-green-bg);
+    color: var(--color-green-text);
+}
+
+/* Draft - Yellow */
+.aps-product-status-draft {
+    background: var(--color-yellow-bg);
+    color: var(--color-yellow-text);
+}
+
+/* Trash - Red */
+.aps-product-status-trash {
+    background: var(--color-red-bg);
+    color: var(--color-red-text);
+}
+
+/* Pending - Gray */
+.aps-product-status-pending {
+    background: var(--color-gray-bg);
+    color: var(--color-gray-text);
+}
+
+/* ============================================
+   Featured Column - Star Icon
+   ============================================ */
+.aps-featured-star {
+    font-size: 18px;
+    color: var(--color-star);
+    display: inline-block;
+}
+
+/* ============================================
+   Price Column
+   ============================================ */
+.aps-price {
+    font-weight: 600;
+    color: #1d2327;
+    font-size: 13px;
+}
+
+/* ============================================
+   Toolbar Styling
+   ============================================ */
+.tablenav {
+    margin: 20px 0;
+}
+
+.tablenav.top {
+    margin: 20px 0 0;
+}
+
+.tablenav.bottom {
+    margin: 10px 0 20px;
+}
+
+.alignleft,
+.alignright {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Select Dropdowns */
+.tablenav select,
+.search-form input[type="search"] {
+    padding: 6px 8px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #3c434a;
+    background: #fff;
+}
+
+.tablenav select:focus,
+.search-form input[type="search"]:focus {
+    outline: none;
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Buttons */
+.tablenav .button {
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 2;
+    height: auto;
+    margin: 0;
+}
+
+.tablenav .button.action {
+    margin-left: 4px;
+}
+
+/* ============================================
+   Search Form
+   ============================================ */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-form input[type="search"] {
+    width: 280px;
+}
+
+/* ============================================
+   Pagination
+   ============================================ */
+.tablenav-pages {
+    margin: 0 20px 1em 0;
+    color: #646970;
+}
+
+.pagination-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pagination-links a,
+.pagination-links span {
+    padding: 0 6px;
+    line-height: 1.5;
+    text-decoration: none;
+    color: #2271b1;
+}
+
+.pagination-links a:hover {
+    color: #135e96;
+}
+
+.pagination-links .current {
+    background: #2271b1;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0 8px;
+}
+
+.pagination-links .tablenav-pages-navspan {
+    color: #646970;
+}
+
+/* ============================================
+   Toast Notifications
+   ============================================ */
+#aps-toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.aps-toast {
+    background: #fff;
+    border-left: 4px solid #72aee6;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px 0 15px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    border-radius: 4px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.aps-toast.aps-toast-success {
+    border-left-color: #00a32a;
+}
+
+.aps-toast.aps-toast-error {
+    border-left-color: #d63638;
+}
+
+.aps-toast-message {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #1d2327;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Quick Edit Modal
+   ============================================ */
+.aps-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aps-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.aps-modal-content {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 20px;
+}
+
+.aps-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #c3c4c7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.aps-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.aps-modal-close {
+    background: none;
+    border: none;
+    font-size: 32px;
+    line-height: 1;
+    color: #646970;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aps-modal-close:hover {
+    color: #1d2327;
+}
+
+.aps-modal-body {
+    padding: 20px;
+}
+
+.aps-form-field {
+    margin-bottom: 16px;
+}
+
+.aps-form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.aps-form-field input[type="text"],
+.aps-form-field input[type="number"],
+.aps-form-field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #3c434a;
+    background: #fff;
+}
+
+.aps-form-field input[type="text"]:focus,
+.aps-form-field input[type="number"]:focus,
+.aps-form-field select:focus {
+    outline: none;
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.aps-form-field input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+.aps-modal-footer {
+    padding: 20px;
+    border-top: 1px solid #c3c4c7;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* ============================================
+   Screen Reader Text
+   ============================================ */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+/* ============================================
+   Clear Fix
+   ============================================ */
+.clear {
+    clear: both;
+}
+
+/* ============================================
+   Responsive Design - Mobile (< 782px)
+   ============================================ */
+@media screen and (max-width: 782px) {
+    /* Hide table headers */
+    .wp-list-table thead {
+        display: none;
+    }
+    
+    /* Convert rows to card layout */
+    .wp-list-table tbody tr {
+        display: block;
+        border-bottom: 1px solid #c3c4c7;
+        margin-bottom: 10px;
+    }
+    
+    /* Show data attributes as labels */
+    .wp-list-table tbody td {
+        display: block;
+        padding: 8px 12px;
+        position: relative;
+        padding-left: 40%;
+    }
+    
+    .wp-list-table tbody td::before {
+        content: attr(data-colname);
+        font-weight: 600;
+        position: absolute;
+        left: 12px;
+        width: 35%;
+        text-align: left;
+        color: #1d2327;
+    }
+    
+    /* Hide checkbox column */
+    .column-cb {
+        display: none;
+    }
+    
+    /* Stack toolbar elements */
+    .tablenav {
+        height: auto !important;
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 10px;
+    }
+    
+    .alignleft,
+    .alignright {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    
+    /* Search form full width */
+    .search-form {
+        width: 100%;
+    }
+    
+    .search-form input[type="search"] {
+        width: 100%;
+    }
+    
+    /* Navigation tabs */
+    .aps-nav-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .aps-nav-tabs .nav-tab {
+        margin-bottom: 0;
+    }
+    
+    /* Modal full width on mobile */
+    .aps-modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 10px;
+    }
+}
+
+/* ============================================
+   Responsive Design - Tablet (782px - 1200px)
+   ============================================ */
+@media screen and (min-width: 782px) and (max-width: 1200px) {
+    /* Adjust column widths */
+    .column-logo {
+        width: 50px;
+    }
+    
+    .column-taxonomy-aps_ribbon {
+        width: 100px;
+    }
+    
+    .column-featured {
+        width: 50px;
+    }
+    
+    /* Smaller search input */
+    .search-form input[type="search"] {
+        width: 200px;
+    }
+}
+
+/* ============================================
+   High Contrast Mode
+   ============================================ */
+@media (prefers-contrast: high) {
+    .column-taxonomy-aps_ribbon a,
+    .aps-product-status {
+        border: 1px solid currentColor;
+    }
+    
+    .row-title:hover {
+        text-decoration: underline;
+    }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .aps-toast {
+        animation: none;
+    }
+    
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .tablenav,
+    .aps-nav-tabs,
+    #aps-toast-container,
+    .aps-modal {
+        display: none !important;
+    }
+    
+    .wp-list-table {
+        border: 1px solid #000;
+    }
+    
+    .wp-list-table th,
+    .wp-list-table td {
+        border: 1px solid #000;
+    }
+}

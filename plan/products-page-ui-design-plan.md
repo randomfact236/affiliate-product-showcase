@@ -1,5 +1,37 @@
 # Products Page UI Design Plan
 
+# Feature Requirements: Affiliate Product Showcase
+
+> **IMPORTANT RULE: NEVER DELETE THIS FILE**
+> This file contains complete feature requirements for plugin. All features must be implemented according to this plan.
+
+---
+
+# 📝 STRICT DEVELOPMENT RULES
+
+**⚠️ MANDATORY:** Always use all assistant instruction files when writing code for feature development and issue resolution.
+
+### Project Context
+
+**Project:** Affiliate Product Showcase WordPress Plugin  
+**Framework:** Modern WordPress Plugin Boilerplate (Tailwind + Vite + PSR-4 + Security & Cache Ready)  
+**Quality Standard:** Hybrid Quality Matrix - Enterprise-grade where it matters, practical everywhere  
+**Architecture:** DI container, event-driven architecture, REST API, Gutenberg blocks  
+**Tech Stack:** PHP 8.1+, JavaScript/React, Vite, Tailwind CSS  
+**Code Quality:** PHPUnit, PHPCS (WPCS), PHPStan, Psalm  
+
+### Required Reference Files (ALWAYS USE):
+
+1. **docs/assistant-instructions.md** - Project context, code change policy, git rules
+2. **docs/assistant-quality-standards.md** - Enterprise-grade code quality requirements
+3. **docs/assistant-performance-optimization.md** - Performance optimization guidelines
+
+### Quality Standard: 10/10 Enterprise-Grade
+- Fully/highly optimized, no compromises
+- All code must meet hybrid quality matrix standards
+- Essential standards at 10/10, performance goals as targets
+
+
 ## Overview
 Design specification for Products List page following WooCommerce-style UI with WordPress admin standards.
 

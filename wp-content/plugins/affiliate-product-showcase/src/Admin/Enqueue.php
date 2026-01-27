@@ -59,7 +59,7 @@ class Enqueue {
         // Main admin CSS
         wp_enqueue_style(
             'affiliate-product-showcase-admin',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin.css',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
             [],
             self::VERSION
         );
@@ -68,7 +68,7 @@ class Enqueue {
         if ( $this->isDashboardPage( $hook ) ) {
             wp_enqueue_style(
                 'affiliate-product-showcase-dashboard',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/dashboard.css',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/dashboard.css' ),
                 [],
                 self::VERSION
             );
@@ -78,7 +78,7 @@ class Enqueue {
         if ( $this->isAnalyticsPage( $hook ) ) {
             wp_enqueue_style(
                 'affiliate-product-showcase-analytics',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/analytics.css',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/analytics.css' ),
                 [],
                 self::VERSION
             );
@@ -88,7 +88,7 @@ class Enqueue {
         if ( $this->isSettingsPage( $hook ) ) {
             wp_enqueue_style(
                 'affiliate-product-showcase-settings',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/settings.css',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/settings.css' ),
                 [],
                 self::VERSION
             );
@@ -102,9 +102,41 @@ class Enqueue {
             // Enqueue filter styles for custom filters added via hooks
             wp_enqueue_style(
                 'affiliate-product-showcase-table-filters',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table-filters.css',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-table-filters.css' ),
                 [],
                 self::VERSION
+            );
+            
+            // Enqueue products styles for custom columns (Logo, Ribbon, Status, etc.)
+            wp_enqueue_style(
+                'affiliate-product-showcase-products',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
+                [],
+                self::VERSION
+            );
+        }
+
+        // Custom products page
+        if ( $hook === 'aps_product_page_aps-products' ) {
+            wp_enqueue_style(
+                'affiliate-product-showcase-products',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
+                [],
+                self::VERSION
+            );
+            
+            wp_enqueue_script(
+                'affiliate-product-showcase-products',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/admin-products.js' ),
+                [ 'jquery' ],
+                self::VERSION,
+                true
+            );
+            
+            wp_localize_script(
+                'affiliate-product-showcase-products',
+                'apsProductsData',
+                $this->getProductsPageScriptData()
             );
         }
     }
@@ -127,7 +159,7 @@ class Enqueue {
         // Main admin JS
         wp_enqueue_script(
             'affiliate-product-showcase-admin',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin.js',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/admin.js' ),
             [ 'jquery' ],
             self::VERSION,
             true
@@ -144,7 +176,7 @@ class Enqueue {
         if ( $this->isDashboardPage( $hook ) ) {
             wp_register_script(
                 'affiliate-product-showcase-dashboard',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/dashboard.js',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/dashboard.js' ),
                 [ 'jquery', 'wp-util' ],
                 self::VERSION,
                 true
@@ -160,7 +192,7 @@ class Enqueue {
         if ( $this->isAnalyticsPage( $hook ) ) {
             wp_register_script(
                 'affiliate-product-showcase-analytics',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/analytics.js',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/analytics.js' ),
                 [ 'jquery', 'wp-util', 'chart.js' ],
                 self::VERSION,
                 true
@@ -176,7 +208,7 @@ class Enqueue {
         if ( $this->isSettingsPage( $hook ) ) {
             wp_enqueue_script(
                 'affiliate-product-showcase-settings',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/settings.js',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/settings.js' ),
                 [ 'jquery', 'wp-util' ],
                 self::VERSION,
                 true
@@ -186,6 +218,11 @@ class Enqueue {
         // Products list page scripts - WordPress default table only
         if ( $this->isProductsListPage( $hook ) ) {
             // No custom scripts needed - using native WordPress UI
+        }
+
+        // Custom products page scripts
+        if ( $this->isCustomProductsPage( $hook ) ) {
+            // Scripts already enqueued in enqueueScripts
         }
 
         // Product edit scripts
@@ -588,6 +625,16 @@ class Enqueue {
     }
 
     /**
+     * Check if current page is custom products page
+     *
+     * @param string $hook Current admin page hook
+     * @return bool
+     */
+    private function isCustomProductsPage( string $hook ): bool {
+        return $hook === 'aps_product_page_aps-products';
+    }
+
+    /**
      * Get script data for localization
      *
      * @return array
@@ -609,6 +656,46 @@ class Enqueue {
             ],
             'settings'  => [
                 'restBase' => 'affiliate-product-showcase/v1',
+            ],
+            'products'  => [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('aps_products_nonce'),
+                'strings' => [
+                    'bulkActionRequired' => __('Please select an action.', 'affiliate-product-showcase'),
+                    'noItemsSelected' => __('Please select at least one product.', 'affiliate-product-showcase'),
+                    'bulkDeleteConfirm' => __('Are you sure you want to move %d products to trash?', 'affiliate-product-showcase'),
+                    'bulkDeleteSuccess' => __('%d products moved to trash.', 'affiliate-product-showcase'),
+                    'deleteConfirm' => __('Are you sure you want to move this product to trash?', 'affiliate-product-showcase'),
+                    'deleteSuccess' => __('Product moved to trash.', 'affiliate-product-showcase'),
+                    'saveError' => __('Failed to save changes. Please try again.', 'affiliate-product-showcase'),
+                    'saveSuccess' => __('Changes saved successfully.', 'affiliate-product-showcase'),
+                    'validationError' => __('Please fix the errors before saving.', 'affiliate-product-showcase'),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Get script data for products page
+     *
+     * @return array
+     */
+    private function getProductsPageScriptData(): array {
+        return [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('aps_products_nonce'),
+            'restUrl' => rest_url('affiliate-product-showcase/v1/'),
+            'restNonce' => wp_create_nonce('wp_rest'),
+            'strings' => [
+                'bulkActionRequired' => __('Please select an action.', 'affiliate-product-showcase'),
+                'noItemsSelected' => __('Please select at least one product.', 'affiliate-product-showcase'),
+                'bulkDeleteConfirm' => __('Are you sure you want to move %d products to trash?', 'affiliate-product-showcase'),
+                'bulkDeleteSuccess' => __('%d products moved to trash.', 'affiliate-product-showcase'),
+                'deleteConfirm' => __('Are you sure you want to move this product to trash?', 'affiliate-product-showcase'),
+                'deleteSuccess' => __('Product moved to trash.', 'affiliate-product-showcase'),
+                'saveError' => __('Failed to save changes. Please try again.', 'affiliate-product-showcase'),
+                'saveSuccess' => __('Changes saved successfully.', 'affiliate-product-showcase'),
+                'validationError' => __('Please fix the errors before saving.', 'affiliate-product-showcase'),
             ],
         ];
     }

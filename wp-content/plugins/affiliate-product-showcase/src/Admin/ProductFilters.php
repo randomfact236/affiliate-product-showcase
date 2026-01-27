@@ -221,6 +221,12 @@ final class ProductFilters {
             $query->set('meta_query', $meta_query);
         }
         
+        // Status filter
+        if (isset($_GET['aps_status_filter']) && !empty($_GET['aps_status_filter'])) {
+            $status = sanitize_text_field($_GET['aps_status_filter']);
+            $query->set('post_status', $status);
+        }
+        
         // Custom search
         if (isset($_GET['aps_search']) && !empty($_GET['aps_search'])) {
             $search_term = sanitize_text_field($_GET['aps_search']);
