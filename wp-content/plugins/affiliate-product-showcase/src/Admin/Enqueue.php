@@ -98,29 +98,32 @@ class Enqueue {
         // No separate CSS file needed for add-product page
 
         // Products list table styles
+        // REMOVED: ProductTableUI, inline editing styles - using native WordPress UI only
+        // Products now use only native WordPress table styling via ProductsTable (WP_List_Table)
         if ( $hook === 'edit-aps_product' ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-admin-table',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table.css',
-                [],
-                self::VERSION
-            );
+            // Only basic admin table styles if needed
+            // wp_enqueue_style(
+            //     'affiliate-product-showcase-admin-table',
+            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/admin-table.css',
+            //     [],
+            //     self::VERSION
+            // );
 
-            // Product table UI styles (custom filters, counts, etc.)
-            wp_enqueue_style(
-                'affiliate-product-showcase-product-table-ui',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-table-ui.css',
-                [],
-                self::VERSION
-            );
+            // REMOVED: Custom product table UI styles (filters, counts, etc.)
+            // wp_enqueue_style(
+            //     'affiliate-product-showcase-product-table-ui',
+            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-table-ui.css',
+            //     [],
+            //     self::VERSION
+            // );
 
-            // Inline editing styles (click-to-edit cells)
-            wp_enqueue_style(
-                'affiliate-product-showcase-products-table-inline-edit',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/products-table-inline-edit.css',
-                [],
-                self::VERSION
-            );
+            // REMOVED: Inline editing styles
+            // wp_enqueue_style(
+            //     'affiliate-product-showcase-products-table-inline-edit',
+            //     AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/products-table-inline-edit.css',
+            //     [],
+            //     self::VERSION
+            // );
         }
     }
 
@@ -199,88 +202,14 @@ class Enqueue {
         }
 
         // Products list page scripts (enhanced "All Products" page)
+        // REMOVED: All custom product table scripts - using native WordPress UI only
+        // Products now use only native WordPress functionality via ProductsTable (WP_List_Table)
         if ( $this->isProductsListPage( $hook ) ) {
-            wp_enqueue_script(
-                'affiliate-product-showcase-admin-products-enhancer',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/admin-products-enhancer.js',
-                [ 'jquery' ],
-                self::VERSION,
-                true
-            );
-
-            // Product table UI scripts (AJAX filtering, sorting, etc.)
-            wp_enqueue_script(
-                'affiliate-product-showcase-product-table-ui',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-table-ui.js',
-                [ 'jquery' ],
-                self::VERSION,
-                true
-            );
-
-            // Inline editing scripts (click-to-edit cells)
-            wp_enqueue_script(
-                'affiliate-product-showcase-products-table-inline-edit',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/products-table-inline-edit.js',
-                [ 'jquery' ],
-                self::VERSION,
-                true
-            );
-
-            wp_localize_script(
-                'affiliate-product-showcase-admin-products-enhancer',
-                'affiliateProductShowcaseAdminEnhancer',
-                [
-                    'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                    'nonce' => wp_create_nonce( 'affiliate-product-showcase-admin-bulk-action' ),
-                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
-                    'restNonce' => wp_create_nonce( 'wp_rest' ),
-                    'strings' => [
-                        'confirmDelete' => __( 'Are you sure you want to delete this item?', 'affiliate-product-showcase' ),
-                        'pleaseSelect' => __( 'Please select at least one product.', 'affiliate-product-showcase' ),
-                        'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
-                        'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
-                        'productDeleted' => __( 'Product deleted successfully.', 'affiliate-product-showcase' ),
-                        'deleteFailed' => __( 'Failed to delete product.', 'affiliate-product-showcase' ),
-                        'actionFailed' => __( 'Action failed.', 'affiliate-product-showcase' ),
-                        'requestFailed' => __( 'Request failed: ', 'affiliate-product-showcase' ),
-                        'dismissNotice' => __( 'Dismiss this notice.', 'affiliate-product-showcase' ),
-                    ],
-                ]
-            );
-
-            // Localize product-table-ui.js
-            wp_localize_script(
-                'affiliate-product-showcase-product-table-ui',
-                'apsProductTableUI',
-                [
-                    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-                    'nonce' => wp_create_nonce( 'aps_table_actions' ),
-                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
-                    'restNonce' => wp_create_nonce( 'wp_rest' ),
-                    'strings' => [
-                        'confirmBulkUpload' => __( 'Are you sure you want to bulk upload products?', 'affiliate-product-showcase' ),
-                        'confirmCheckLinks' => __( 'Are you sure you want to check all product links?', 'affiliate-product-showcase' ),
-                        'processing' => __( 'Processing...', 'affiliate-product-showcase' ),
-                        'noProducts' => __( 'No products found.', 'affiliate-product-showcase' ),
-                        'selectAction' => __( 'Please select an action.', 'affiliate-product-showcase' ),
-                    ],
-                ]
-            );
-
-            // Localize inline edit script
-            wp_localize_script(
-                'affiliate-product-showcase-products-table-inline-edit',
-                'apsInlineEditData',
-                [
-                    'restUrl' => rest_url( 'affiliate-product-showcase/v1/' ),
-                    'nonce' => wp_create_nonce( 'wp_rest' ),
-                    'strings' => [
-                        'saving' => __( 'Saving...', 'affiliate-product-showcase' ),
-                        'saved' => __( 'Saved!', 'affiliate-product-showcase' ),
-                        'error' => __( 'Error', 'affiliate-product-showcase' ),
-                    ],
-                ]
-            );
+            // REMOVED: admin-products-enhancer.js
+            // REMOVED: product-table-ui.js
+            // REMOVED: products-table-inline-edit.js
+            
+            // No scripts enqueued - using native WordPress only
         }
 
         // Product edit scripts

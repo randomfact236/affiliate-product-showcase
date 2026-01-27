@@ -16,7 +16,6 @@ final class Admin {
 	private Settings $settings;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
-	private ProductTableUI $product_table_ui;
 	private CategoryFields $category_fields;
 	private TagFields $tag_fields;
 	private RibbonFields $ribbon_fields;
@@ -33,7 +32,8 @@ final class Admin {
 		$this->settings = $settings;
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
-		$this->product_table_ui = new ProductTableUI();
+		// REMOVED: ProductTableUI - using native WordPress UI only
+		// $this->product_table_ui = new ProductTableUI();
 		$this->category_fields = new CategoryFields();
 		$this->tag_fields = new TagFields();
 		$this->ribbon_fields = $ribbon_fields;
@@ -43,7 +43,8 @@ final class Admin {
 		// Initialize settings
 		$this->settings->init();
 		
-		add_action('admin_notices', [$this, 'render_product_table_on_products_page'], 10);
+		// ProductTableUI removed - using native WordPress UI only
+		// add_action('admin_notices', [$this, 'render_product_table_on_products_page'], 10);
 		
 		// Initialize category components (WordPress native + custom enhancements)
 		$this->category_fields->init();
@@ -60,19 +61,26 @@ final class Admin {
 	/**
 	 * Render product table only on products page
 	 *
-	 * This prevents the product table from appearing on other admin pages
+	 * This prevents product table from appearing on other admin pages
 	 * like categories, tags, etc.
+	 *
+	 * NOTE: ProductTableUI has been removed.
+	 * Products now use native WordPress UI only via ProductsTable (WP_List_Table).
 	 *
 	 * @return void
 	 * @since 1.0.0
+	 * @deprecated 1.0.0 Use native WordPress UI instead
 	 */
 	public function render_product_table_on_products_page(): void {
-		$screen = get_current_screen();
+		// REMOVED: ProductTableUI custom UI no longer used
+		// Products page now uses native WordPress interface via ProductsTable
+		return;
 		
+		// $screen = get_current_screen();
 		// Only render on products listing page (edit.php?post_type=aps_product)
-		if ($screen && $screen->id === 'edit-aps_product') {
-			$this->product_table_ui->render();
-		}
+		// if ($screen && $screen->id === 'edit-aps_product') {
+		//	$this->product_table_ui->render();
+		// }
 	}
 
 	public function enqueue_admin_assets(string $hook): void {
