@@ -144,7 +144,7 @@ class Menu {
 			'edit.php?post_type=aps_product',
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
-			'edit_aps_products',
+			'edit_posts',
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
