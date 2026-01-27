@@ -633,7 +633,7 @@ class Enqueue {
                 const $button = $(this);
                 const href = $button.attr('href');
                 if (href && href.includes('post-new.php?post_type=aps_product')) {
-                    $button.attr('href', '<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-add-product')); ?>');
+                    $button.attr('href', '<?php echo esc_url(admin_url('edit.php?post_type=aps_product&page=add-product')); ?>');
                 }
             });
             
@@ -642,7 +642,7 @@ class Enqueue {
                 const $link = $(this);
                 const href = $link.attr('href');
                 if (href && href.includes('post-new.php?post_type=aps_product')) {
-                    $link.attr('href', '<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-add-product')); ?>');
+                    $link.attr('href', '<?php echo esc_url(admin_url('edit.php?post_type=aps_product&page=add-product')); ?>');
                 }
             });
         });

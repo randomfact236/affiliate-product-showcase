@@ -123,7 +123,8 @@ class Menu {
 		
 		// Redirect post-new.php (Add New) to custom page
 		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'add' ) {
-			wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product' ) );
+			// Use correct URL: edit.php?post_type=aps_product&page=add-product
+			wp_safe_redirect( self::getAddProductUrl() );
 			exit;
 		}
 		
@@ -131,7 +132,8 @@ class Menu {
 		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'edit' ) {
 			$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
 			if ( $post_id > 0 ) {
-				wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $post_id ) );
+				// Use correct URL with post parameter
+				wp_safe_redirect( admin_url( 'edit.php?post_type=aps_product&page=add-product&post=' . $post_id ) );
 				exit;
 			}
 		}
@@ -148,11 +150,12 @@ class Menu {
 	 */
 	public function addCustomSubmenus(): void {
 		// Add custom "Add Product" submenu to Affiliate Products CPT
+		// Use 'edit_aps_products' capability to match CPT permissions
 		add_submenu_page(
 			'edit.php?post_type=aps_product',
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
-			'manage_options', // Changed to manage_options (admins always have this)
+			'edit_aps_products', // Use CPT capability instead of manage_options
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
