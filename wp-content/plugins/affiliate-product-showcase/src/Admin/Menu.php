@@ -17,8 +17,8 @@ class Menu {
 	const MENU_SLUG = 'affiliate-manager';
 
 	public function __construct() {
-		// Redirect native editor to custom page - CRITICAL: Must run BEFORE permission checks
-		add_action( 'admin_init', [ $this, 'redirectNativeEditor' ], 1 );
+		// Redirect native editor to custom page (using current_screen hook)
+		add_action( 'current_screen', [ $this, 'redirectNativeEditor' ] );
 		
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
@@ -107,29 +107,32 @@ class Menu {
 	 * Redirects both post-new.php (Add New) and post.php (Edit)
 	 * to our custom single-page form.
 	 *
+	 * Uses current_screen hook which runs after screen is set up.
+	 *
 	 * @return void
 	 */
 	public function redirectNativeEditor(): void {
-		global $pagenow, $typenow;
+		// Get current screen object
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return;
+		}
+		
+		$post_type = $screen->post_type;
+		$base = $screen->base;
 		
 		// Redirect post-new.php (Add New) to custom page
-		if ( $pagenow === 'post-new.php' && $typenow === 'aps_product' ) {
-			// Check if user can edit products before redirecting
-			if ( current_user_can( 'edit_posts' ) ) {
-				wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product' ) );
-				exit;
-			}
+		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'add' ) {
+			wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product' ) );
+			exit;
 		}
 		
 		// Redirect post.php (Edit) to custom page
-		if ( $pagenow === 'post.php' && $typenow === 'aps_product' ) {
-			if ( isset( $_GET['post'] ) && isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
-				// Check if user can edit this specific post
-				$post_id = (int) $_GET['post'];
-				if ( current_user_can( 'edit_posts' ) ) {
-					wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $post_id ) );
-					exit;
-				}
+		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'edit' ) {
+			$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+			if ( $post_id > 0 ) {
+				wp_safe_redirect( admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $post_id ) );
+				exit;
 			}
 		}
 	}
@@ -149,7 +152,7 @@ class Menu {
 			'edit.php?post_type=aps_product',
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
-			'edit_posts',
+			'manage_options', // Changed to manage_options (admins always have this)
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
