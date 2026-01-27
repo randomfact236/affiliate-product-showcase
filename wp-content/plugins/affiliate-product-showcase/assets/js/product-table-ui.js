@@ -862,4 +862,4 @@ const apsLoadingStyles = `
 `;
 
 // Inject styles
-$(apsLoadingStyles).appendTo('head');
+jQuery(apsLoadingStyles).appendTo('head');

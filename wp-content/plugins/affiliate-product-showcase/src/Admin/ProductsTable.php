@@ -28,6 +28,18 @@ class ProductsTable extends \WP_List_Table {
 	private ProductRepository $repository;
 
 	/**
+	 * Currency symbols configuration
+	 *
+	 * @var array
+	 */
+	private const CURRENCY_SYMBOLS = [
+		'USD' => '$',
+		'EUR' => '€',
+		'GBP' => '£',
+		'JPY' => '¥',
+	];
+
+	/**
 	 * Constructor
 	 *
 	 * @param ProductRepository $repository Product repository instance
@@ -49,7 +61,7 @@ class ProductsTable extends \WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns(): array {
-		$columns = [
+		return [
 			'cb'        => '<input type="checkbox" />',
 			'id'        => __( '#', 'affiliate-product-showcase' ),
 			'logo'      => __( 'Logo', 'affiliate-product-showcase' ),
@@ -61,8 +73,6 @@ class ProductsTable extends \WP_List_Table {
 			'price'     => __( 'Price', 'affiliate-product-showcase' ),
 			'status'    => __( 'Status', 'affiliate-product-showcase' ),
 		];
-
-		return $columns;
 	}
 
 	/**
@@ -71,14 +81,12 @@ class ProductsTable extends \WP_List_Table {
 	 * @return array
 	 */
 	public function get_sortable_columns(): array {
-		$sortable = [
-			'title'   => [ 'title', true ],
-			'price'   => [ 'price', true ],
-			'status'  => [ 'status', true ],
+		return [
+			'title'    => [ 'title', true ],
+			'price'    => [ 'price', true ],
+			'status'   => [ 'status', true ],
 			'featured' => [ 'featured', true ],
 		];
-
-		return $sortable;
 	}
 
 	/**
@@ -87,18 +95,16 @@ class ProductsTable extends \WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions(): array {
-		$actions = [
-			'publish'          => __( 'Publish', 'affiliate-product-showcase' ),
-			'move_to_draft'    => __( 'Move to Draft', 'affiliate-product-showcase' ),
-			'set_in_stock'    => __( 'Set In Stock', 'affiliate-product-showcase' ),
-			'set_out_of_stock' => __( 'Set Out of Stock', 'affiliate-product-showcase' ),
-			'set_featured'     => __( 'Set Featured', 'affiliate-product-showcase' ),
-			'unset_featured'   => __( 'Unset Featured', 'affiliate-product-showcase' ),
-			'reset_clicks'     => __( 'Reset Clicks', 'affiliate-product-showcase' ),
-			'export_csv'       => __( 'Export to CSV', 'affiliate-product-showcase' ),
+		return [
+			'publish'           => __( 'Publish', 'affiliate-product-showcase' ),
+			'move_to_draft'     => __( 'Move to Draft', 'affiliate-product-showcase' ),
+			'set_in_stock'      => __( 'Set In Stock', 'affiliate-product-showcase' ),
+			'set_out_of_stock'  => __( 'Set Out of Stock', 'affiliate-product-showcase' ),
+			'set_featured'      => __( 'Set Featured', 'affiliate-product-showcase' ),
+			'unset_featured'    => __( 'Unset Featured', 'affiliate-product-showcase' ),
+			'reset_clicks'      => __( 'Reset Clicks', 'affiliate-product-showcase' ),
+			'export_csv'        => __( 'Export to CSV', 'affiliate-product-showcase' ),
 		];
-
-		return $actions;
 	}
 
 	/**
@@ -152,7 +158,6 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ): string {
-		// Use consistent URL format with admin.php
 		$edit_url = admin_url( 'admin.php?page=affiliate-manager-add-product&post=' . $item->ID );
 		$title = (string) $item->post_title;
 		$post_type = get_post_type_object( 'aps_product' );
@@ -169,37 +174,8 @@ class ProductsTable extends \WP_List_Table {
 			);
 		}
 
-		// Add Restore or Trash/Delete Permanently action based on post status
 		$post_status = get_post_status( $item->ID );
-		
-		if ( 'trash' === $post_status ) {
-			// Show Restore and Delete Permanently for trashed items
-			if ( $can_delete_post ) {
-				$actions['untrash'] = sprintf(
-					'<a href="%s" aria-label="%s">%s</a>',
-					esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=untrash', $item->ID ) ), 'untrash-post_' . $item->ID ) ),
-					esc_attr( sprintf( __( 'Restore "%s" from trash', 'affiliate-product-showcase' ), $title ) ),
-					__( 'Restore', 'affiliate-product-showcase' )
-				);
-				
-				$actions['delete'] = sprintf(
-					'<a href="%s" class="submitdelete" aria-label="%s">%s</a>',
-					esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=delete', $item->ID ) ), 'delete-post_' . $item->ID ) ),
-					esc_attr( sprintf( __( 'Delete "%s" permanently', 'affiliate-product-showcase' ), $title ) ),
-					__( 'Delete Permanently', 'affiliate-product-showcase' )
-				);
-			}
-		} else {
-			// Show Trash for non-trashed items
-			if ( $can_delete_post ) {
-				$actions['trash'] = sprintf(
-					'<a href="%s" aria-label="%s">%s</a>',
-					esc_url( get_delete_post_link( $item->ID ) ),
-					esc_attr( sprintf( __( 'Move "%s" to trash', 'affiliate-product-showcase' ), $title ) ),
-					__( 'Trash', 'affiliate-product-showcase' )
-				);
-			}
-		}
+		$actions = array_merge( $actions, $this->get_post_actions( $item->ID, $title, $post_status, $can_delete_post ) );
 
 		return sprintf(
 			'<div class="aps-product-cell"><strong><a href="%s">%s</a></strong><div class="aps-product-sub">%s</div>%s</div>',
@@ -217,21 +193,7 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_category( $item ): string {
-		$categories = get_the_terms( $item->ID, Constants::TAX_CATEGORY );
-
-		if ( empty( $categories ) || is_wp_error( $categories ) ) {
-			return sprintf( '<span data-field="category" data-product-id="%d">—</span>', (int) $item->ID );
-		}
-
-		$badges = array_map( static function( $category ) {
-			return sprintf(
-				'<span class="aps-product-category" data-category-id="%s">%s <span aria-hidden="true">×</span></span>',
-				esc_attr( (string) $category->term_id ),
-				esc_html( $category->name )
-			);
-		}, $categories );
-
-		return sprintf( '<div data-field="category" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
+		return $this->render_taxonomy_column( $item->ID, Constants::TAX_CATEGORY, 'aps-product-category', 'category-id', 'category' );
 	}
 
 	/**
@@ -241,21 +203,7 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_tags( $item ): string {
-		$tags = get_the_terms( $item->ID, Constants::TAX_TAG );
-
-		if ( empty( $tags ) || is_wp_error( $tags ) ) {
-			return sprintf( '<span data-field="tags" data-product-id="%d">—</span>', (int) $item->ID );
-		}
-
-		$badges = array_map( static function( $tag ) {
-			return sprintf(
-				'<span class="aps-product-tag" data-tag-id="%s">%s <span aria-hidden="true">×</span></span>',
-				esc_attr( (string) $tag->term_id ),
-				esc_html( $tag->name )
-			);
-		}, $tags );
-
-		return sprintf( '<div data-field="tags" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
+		return $this->render_taxonomy_column( $item->ID, Constants::TAX_TAG, 'aps-product-tag', 'tag-id', 'tags' );
 	}
 
 	/**
@@ -267,15 +215,19 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_ribbon( $item ): string {
-		$ribbons = get_the_terms( $item->ID, Constants::TAX_RIBBON );
+		$terms = get_the_terms( $item->ID, Constants::TAX_RIBBON );
 		
-		if ( empty( $ribbons ) || is_wp_error( $ribbons ) ) {
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
 			return sprintf( '<span data-field="ribbon" data-product-id="%d">—</span>', (int) $item->ID );
 		}
 
-		$badges = array_map( static function( $ribbon ) {
-			return sprintf( '<span class="aps-product-badge" data-ribbon-id="%s">%s</span>', esc_attr( (string) $ribbon->term_id ), esc_html( $ribbon->name ) );
-		}, $ribbons );
+		$badges = array_map( static function( $term ) {
+			return sprintf(
+				'<span class="aps-product-badge" data-ribbon-id="%s">%s</span>',
+				esc_attr( (string) $term->term_id ),
+				esc_html( $term->name )
+			);
+		}, $terms );
 
 		return sprintf( '<div data-field="ribbon" data-product-id="%d">%s</div>', (int) $item->ID, implode( ' ', $badges ) );
 	}
@@ -287,10 +239,7 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_featured( $item ): string {
-		$is_featured = (bool) get_post_meta( $item->ID, 'aps_featured', true );
-		if ( ! $is_featured ) {
-			$is_featured = (bool) get_post_meta( $item->ID, '_aps_featured', true );
-		}
+		$is_featured = (bool) $this->get_meta_with_fallback( $item->ID, 'aps_featured' );
 
 		if ( $is_featured ) {
 			return '<span class="aps-product-featured dashicons dashicons-star-filled" aria-label="' . esc_attr__( 'Featured', 'affiliate-product-showcase' ) . '"></span>';
@@ -306,25 +255,10 @@ class ProductsTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_price( $item ): string {
-		$price = get_post_meta( $item->ID, 'aps_price', true );
-		if ( '' === (string) $price ) {
-			$price = get_post_meta( $item->ID, '_aps_price', true );
-		}
-		$currency = get_post_meta( $item->ID, 'aps_currency', true );
-		if ( '' === (string) $currency ) {
-			$currency = get_post_meta( $item->ID, '_aps_currency', true );
-		}
-		$original_price = get_post_meta( $item->ID, 'aps_original_price', true );
-		if ( '' === (string) $original_price ) {
-			$original_price = get_post_meta( $item->ID, '_aps_original_price', true );
-		}
-		$currency_symbols = [
-			'USD' => '$',
-			'EUR' => '€',
-			'GBP' => '£',
-			'JPY' => '¥',
-		];
-		$symbol = $currency_symbols[ $currency ] ?? $currency;
+		$price = $this->get_meta_with_fallback( $item->ID, 'aps_price' );
+		$currency = $this->get_meta_with_fallback( $item->ID, 'aps_currency' );
+		$original_price = $this->get_meta_with_fallback( $item->ID, 'aps_original_price' );
+		$symbol = self::CURRENCY_SYMBOLS[ $currency ] ?? $currency;
 
 		if ( empty( $price ) ) {
 			return sprintf( '<span data-field="price" data-product-id="%d">—</span>', (int) $item->ID );
@@ -338,23 +272,9 @@ class ProductsTable extends \WP_List_Table {
 			esc_attr( (string) $price )
 		);
 
-		$output .= sprintf(
-			'<span class="aps-product-price">%s%s</span>',
-			esc_html( $symbol ),
-			esc_html( number_format_i18n( (float) $price, 2 ) )
-		);
-
-		if ( ! empty( $original_price ) && (float) $original_price > (float) $price ) {
-			$discount = (int) round( ( ( (float) $original_price - (float) $price ) / (float) $original_price ) * 100 );
-			$output .= sprintf(
-				'<span class="aps-product-price-original">%s%s</span><span class="aps-product-price-discount">%d%% OFF</span>',
-				esc_html( $symbol ),
-				esc_html( number_format_i18n( (float) $original_price, 2 ) ),
-				esc_html( $discount )
-			);
-		}
-
+		$output .= $this->render_price_with_discount( (float) $price, (float) $original_price, $symbol );
 		$output .= '</div>';
+
 		return $output;
 	}
 
@@ -389,7 +309,6 @@ class ProductsTable extends \WP_List_Table {
 				break;
 		}
 
-		// Wrap in div for consistency with other editable columns
 		return sprintf(
 			'<div data-field="status" data-product-id="%d" data-status="%s"><span class="%s">%s</span></div>',
 			(int) $item->ID,
@@ -454,70 +373,8 @@ class ProductsTable extends \WP_List_Table {
 		$current_page = $this->get_pagenum();
 		$offset = ( $current_page - 1 ) * $per_page;
 
-		// Get filter values
-		$search = isset( $_GET['aps_search'] ) ? sanitize_text_field( wp_unslash( $_GET['aps_search'] ) ) : '';
-		$category = isset( $_GET['aps_category_filter'] ) ? intval( $_GET['aps_category_filter'] ) : 0;
-		$tag = isset( $_GET['aps_tag_filter'] ) ? intval( $_GET['aps_tag_filter'] ) : 0;
-		$featured = isset( $_GET['featured_filter'] ) ? ( '1' === (string) $_GET['featured_filter'] ) : false;
-		$order = isset( $_GET['order'] ) ? sanitize_key( (string) $_GET['order'] ) : 'desc';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_key( (string) $_GET['orderby'] ) : 'date';
-		$post_status = isset( $_GET['post_status'] ) ? sanitize_key( (string) $_GET['post_status'] ) : '';
-		$statuses_default = [ 'publish', 'draft' ];
-		if ( 'trash' === $post_status ) {
-			$statuses_default = [ 'trash' ];
-		}
-
 		// Build query args
-		$args = [
-			'post_type'      => 'aps_product',
-			'post_status'    => $post_status ? $post_status : $statuses_default,
-			'posts_per_page' => $per_page,
-			'offset'         => $offset,
-			'orderby'        => $orderby,
-			'order'          => $order,
-		];
-
-		// Add search
-		if ( ! empty( $search ) ) {
-			$args['s'] = $search;
-		}
-
-		// Build tax_query for category and tag filters
-		$tax_query = [];
-
-		// Add category filter
-		if ( $category > 0 ) {
-			$tax_query[] = [
-				'taxonomy' => Constants::TAX_CATEGORY,
-				'terms'    => $category,
-			];
-		}
-
-		// Add tag filter
-		if ( $tag > 0 ) {
-			$tax_query[] = [
-				'taxonomy' => Constants::TAX_TAG,
-				'terms'    => $tag,
-			];
-		}
-
-		// Apply tax_query if we have filters
-		if ( ! empty( $tax_query ) ) {
-			// Set relation to AND so products must match both category and tag if both are selected
-			$tax_query['relation'] = 'AND';
-			$args['tax_query'] = $tax_query;
-		}
-
-		// Add featured filter
-		if ( $featured ) {
-			$args['meta_query'] = [
-				[
-					'key'     => 'aps_featured',
-					'value'   => '1',
-					'compare' => '=',
-				],
-			];
-		}
+		$args = $this->build_query_args( $per_page, $offset );
 
 		// Get products
 		$query = new \WP_Query( $args );
@@ -532,6 +389,214 @@ class ProductsTable extends \WP_List_Table {
 		] );
 	}
 
-	// Intentionally not rendering WP-style views here.
-	// Status counts are rendered in ProductTableUI to match custom design.
+	// ============================================================
+	// HELPER METHODS
+	// ============================================================
+
+	/**
+	 * Get post meta with fallback to prefixed version
+	 *
+	 * @param int    $post_id Post ID
+	 * @param string $meta_key Meta key (without prefix)
+	 * @return mixed Meta value
+	 */
+	private function get_meta_with_fallback( int $post_id, string $meta_key ) {
+		$value = get_post_meta( $post_id, $meta_key, true );
+		
+		if ( '' === (string) $value ) {
+			$value = get_post_meta( $post_id, '_' . $meta_key, true );
+		}
+		
+		return $value;
+	}
+
+	/**
+	 * Render taxonomy column with badges
+	 *
+	 * @param int    $post_id      Post ID
+	 * @param string $taxonomy     Taxonomy name
+	 * @param string $badge_class   Badge CSS class
+	 * @param string $data_attr    Data attribute name
+	 * @param string $field_name    Field name for data attribute
+	 * @return string Rendered badges HTML
+	 */
+	private function render_taxonomy_column( int $post_id, string $taxonomy, string $badge_class, string $data_attr, string $field_name ): string {
+		$terms = get_the_terms( $post_id, $taxonomy );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return sprintf( '<span data-field="%s" data-product-id="%d">—</span>', $field_name, $post_id );
+		}
+
+		$badges = array_map( static function( $term ) use ( $badge_class, $data_attr ) {
+			return sprintf(
+				'<span class="%s" data-%s="%s">%s <span aria-hidden="true">×</span></span>',
+				esc_attr( $badge_class ),
+				esc_attr( $data_attr ),
+				esc_attr( (string) $term->term_id ),
+				esc_html( $term->name )
+			);
+		}, $terms );
+
+		return sprintf( '<div data-field="%s" data-product-id="%d">%s</div>', $field_name, $post_id, implode( ' ', $badges ) );
+	}
+
+	/**
+	 * Render price with optional discount
+	 *
+	 * @param float  $price          Current price
+	 * @param float  $original_price Original price
+	 * @param string $symbol         Currency symbol
+	 * @return string Rendered price HTML
+	 */
+	private function render_price_with_discount( float $price, float $original_price, string $symbol ): string {
+		$output = sprintf(
+			'<span class="aps-product-price">%s%s</span>',
+			esc_html( $symbol ),
+			esc_html( number_format_i18n( $price, 2 ) )
+		);
+
+		if ( ! empty( $original_price ) && $original_price > $price ) {
+			$discount = (int) round( ( ( $original_price - $price ) / $original_price ) * 100 );
+			$output .= sprintf(
+				'<span class="aps-product-price-original">%s%s</span><span class="aps-product-price-discount">%d%% OFF</span>',
+				esc_html( $symbol ),
+				esc_html( number_format_i18n( $original_price, 2 ) ),
+				esc_html( $discount )
+			);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Get post actions based on post status
+	 *
+	 * @param int    $post_id        Post ID
+	 * @param string $title          Post title
+	 * @param string $post_status    Post status
+	 * @param bool   $can_delete_post Whether user can delete post
+	 * @return array Post actions
+	 */
+	private function get_post_actions( int $post_id, string $title, string $post_status, bool $can_delete_post ): array {
+		$actions = [];
+
+		if ( 'trash' === $post_status && $can_delete_post ) {
+			$actions['untrash'] = sprintf(
+				'<a href="%s" aria-label="%s">%s</a>',
+				esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=untrash', $post_id ) ), 'untrash-post_' . $post_id ) ),
+				esc_attr( sprintf( __( 'Restore "%s" from trash', 'affiliate-product-showcase' ), $title ) ),
+				__( 'Restore', 'affiliate-product-showcase' )
+			);
+			
+			$actions['delete'] = sprintf(
+				'<a href="%s" class="submitdelete" aria-label="%s">%s</a>',
+				esc_url( wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&action=delete', $post_id ) ), 'delete-post_' . $post_id ) ),
+				esc_attr( sprintf( __( 'Delete "%s" permanently', 'affiliate-product-showcase' ), $title ) ),
+				__( 'Delete Permanently', 'affiliate-product-showcase' )
+			);
+		} elseif ( $can_delete_post ) {
+			$actions['trash'] = sprintf(
+				'<a href="%s" aria-label="%s">%s</a>',
+				esc_url( get_delete_post_link( $post_id ) ),
+				esc_attr( sprintf( __( 'Move "%s" to trash', 'affiliate-product-showcase' ), $title ) ),
+				__( 'Trash', 'affiliate-product-showcase' )
+			);
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Build query arguments for WP_Query
+	 *
+	 * @param int $per_page Items per page
+	 * @param int $offset   Offset for pagination
+	 * @return array Query arguments
+	 */
+	private function build_query_args( int $per_page, int $offset ): array {
+		$filters = $this->get_filter_values();
+		
+		$args = [
+			'post_type'      => 'aps_product',
+			'post_status'    => $filters['post_status'],
+			'posts_per_page' => $per_page,
+			'offset'         => $offset,
+			'orderby'        => $filters['orderby'],
+			'order'          => $filters['order'],
+		];
+
+		// Add search
+		if ( ! empty( $filters['search'] ) ) {
+			$args['s'] = $filters['search'];
+		}
+
+		// Add tax query
+		$tax_query = $this->build_tax_query( $filters );
+		if ( ! empty( $tax_query ) ) {
+			$args['tax_query'] = $tax_query;
+		}
+
+		// Add meta query for featured filter
+		if ( $filters['featured'] ) {
+			$args['meta_query'] = [
+				[
+					'key'     => 'aps_featured',
+					'value'   => '1',
+					'compare' => '=',
+				],
+			];
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Get filter values from $_GET
+	 *
+	 * @return array Filter values
+	 */
+	private function get_filter_values(): array {
+		$post_status = isset( $_GET['post_status'] ) ? sanitize_key( (string) $_GET['post_status'] ) : '';
+		$statuses_default = 'trash' === $post_status ? [ 'trash' ] : [ 'publish', 'draft' ];
+
+		return [
+			'search'      => isset( $_GET['aps_search'] ) ? sanitize_text_field( wp_unslash( $_GET['aps_search'] ) ) : '',
+			'category'    => isset( $_GET['aps_category_filter'] ) ? (int) $_GET['aps_category_filter'] : 0,
+			'tag'         => isset( $_GET['aps_tag_filter'] ) ? (int) $_GET['aps_tag_filter'] : 0,
+			'featured'    => isset( $_GET['featured_filter'] ) ? ( '1' === (string) $_GET['featured_filter'] ) : false,
+			'order'       => isset( $_GET['order'] ) ? sanitize_key( (string) $_GET['order'] ) : 'desc',
+			'orderby'     => isset( $_GET['orderby'] ) ? sanitize_key( (string) $_GET['orderby'] ) : 'date',
+			'post_status' => $post_status ? $post_status : $statuses_default,
+		];
+	}
+
+	/**
+	 * Build taxonomy query from filters
+	 *
+	 * @param array $filters Filter values
+	 * @return array Tax query
+	 */
+	private function build_tax_query( array $filters ): array {
+		$tax_query = [];
+
+		if ( $filters['category'] > 0 ) {
+			$tax_query[] = [
+				'taxonomy' => Constants::TAX_CATEGORY,
+				'terms'    => $filters['category'],
+			];
+		}
+
+		if ( $filters['tag'] > 0 ) {
+			$tax_query[] = [
+				'taxonomy' => Constants::TAX_TAG,
+				'terms'    => $filters['tag'],
+			];
+		}
+
+		if ( ! empty( $tax_query ) ) {
+			$tax_query['relation'] = 'AND';
+		}
+
+		return $tax_query;
+	}
 }

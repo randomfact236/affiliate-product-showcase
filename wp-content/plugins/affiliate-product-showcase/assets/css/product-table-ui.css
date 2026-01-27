@@ -11,24 +11,67 @@
  */
 
 /* ============================================
+   CSS Custom Properties (Variables)
+   ============================================ */
+
+:root {
+    /* Primary Colors */
+    --aps-primary: #2271b1;
+    --aps-primary-dark: #135e96;
+    --aps-primary-darker: #0b3c6e;
+    
+    /* Neutral Colors */
+    --aps-border: #dcdcde;
+    --aps-border-light: #8c8f94;
+    --aps-background: #ffffff;
+    --aps-background-alt: #f6f7f7;
+    --aps-background-light: #f0f0f1;
+    
+    /* Text Colors */
+    --aps-text: #2c3338;
+    --aps-text-muted: #646970;
+    --aps-text-dark: #1d2327;
+    
+    /* Status Colors */
+    --aps-danger: #d63638;
+    --aps-success: #2271b1;
+    
+    /* Spacing */
+    --aps-spacing-xs: 4px;
+    --aps-spacing-sm: 8px;
+    --aps-spacing-md: 12px;
+    --aps-spacing-lg: 16px;
+    --aps-spacing-xl: 20px;
+    
+    /* Border Radius */
+    --aps-radius-sm: 4px;
+    --aps-radius-md: 12px;
+    --aps-radius-lg: 20px;
+}
+
+/* ============================================
    Hide default WordPress UI on Products screen
    ============================================ */
 
+/* Use higher specificity to override WordPress core styles without !important */
 body.post-type-aps_product.edit-php .wrap > h1.wp-heading-inline,
-body.post-type-aps_product.edit-php .wrap > a.page-title-action,
+body.post-type-aps_product.edit-php .wrap > a.page-title-action {
+    display: none;
+}
+
 body.post-type-aps_product.edit-php #posts-filter {
-    display: none !important;
+    display: none;
 }
 
 /* Hide WordPress default bulk actions at the top for products screen */
 body.post-type-aps_product.edit-php .tablenav.top .bulkactions {
-    display: none !important;
+    display: none;
 }
 
 /* Hide WordPress default status views (All, Published, Drafts, etc.) */
 body.post-type-aps_product.edit-php .tablenav .views,
-body.post-type-aps_product.edit-php .subsubsub {
-    display: none !important;
+body.post-type-aps_product.edit-php .tablenav .subsubsub {
+    display: none;
 }
 
 /* Keep admin notices visible */
@@ -43,9 +86,67 @@ body.post-type-aps_product.edit-php .updated {
    ============================================ */
 
 .aps-products-page {
-    margin: 20px 0;
+    margin: var(--aps-spacing-xl) var(--aps-spacing-xl) var(--aps-spacing-xl) 0;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   Products Table Container
+   ============================================ */
+
+.aps-products-table-form {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 0;
+    box-sizing: border-box;
+}
+
+/* Table width control - use auto layout for responsiveness */
+.aps-products-table-form .wp-list-table {
+    max-width: 100%;
+    min-width: 100%;
+    table-layout: auto;
+}
+
+/* Remove overflow visible to allow scrolling */
+.aps-products-table-form .wp-list-table table {
+    width: 100%;
+    table-layout: auto;
+    overflow: visible;
+}
+
+/* Scrollable wrapper for wide content */
+.aps-products-table-form .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Table cell overflow handling */
+.aps-products-table-form td,
+.aps-products-table-form th {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.aps-products-table-form .column-product,
+.aps-products-table-form .column-title {
+    max-width: 400px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.aps-products-table-form .column-tags,
+.aps-products-table-form .column-categories {
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 /* ============================================
@@ -53,33 +154,33 @@ body.post-type-aps_product.edit-php .updated {
    ============================================ */
 
 .aps-product-table-actions {
-    margin: 20px 0;
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
+    margin: var(--aps-spacing-xl) 0;
+    padding: var(--aps-spacing-xl);
+    background: var(--aps-background);
+    border: 1px solid var(--aps-border);
+    border-radius: var(--aps-radius-sm);
     max-width: 100%;
     box-sizing: border-box;
 }
 
 .aps-page-title {
-    margin: 0 0 8px 0;
+    margin: 0 0 var(--aps-spacing-sm) 0;
     font-size: 23px;
     font-weight: 400;
     line-height: 1.3;
-    color: #1d2327;
+    color: var(--aps-text-dark);
 }
 
 .aps-page-description {
-    margin: 0 0 16px 0;
+    margin: 0 0 var(--aps-spacing-lg) 0;
     font-size: 13px;
-    color: #646970;
+    color: var(--aps-text-muted);
     line-height: 1.5;
 }
 
 .aps-action-buttons {
     display: flex;
-    gap: 8px;
+    gap: var(--aps-spacing-sm);
     flex-wrap: wrap;
 }
 
@@ -89,12 +190,12 @@ body.post-type-aps_product.edit-php .updated {
 
 .aps-product-counts {
     display: flex;
-    gap: 4px;
-    margin: 16px 0;
-    padding: 12px;
-    background: #f6f7f7;
-    border-radius: 4px;
-    border-left: 4px solid #2271b1;
+    gap: var(--aps-spacing-xs);
+    margin: var(--aps-spacing-lg) 0;
+    padding: var(--aps-spacing-md);
+    background: var(--aps-background-alt);
+    border-radius: var(--aps-radius-sm);
+    border-inline-start: 4px solid var(--aps-primary);
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
@@ -104,26 +205,26 @@ body.post-type-aps_product.edit-php .updated {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px 16px;
-    background: #ffffff;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
+    padding: var(--aps-spacing-sm) var(--aps-spacing-lg);
+    background: var(--aps-background);
+    border: 1px solid var(--aps-border);
+    border-radius: var(--aps-radius-sm);
     text-decoration: none;
     transition: all 0.2s ease;
     flex: 1;
 }
 
 .aps-count-item:hover {
-    background: #f6f7f7;
-    border-color: #2271b1;
+    background: var(--aps-background-alt);
+    border-color: var(--aps-primary);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .aps-count-item.active {
-    background: #2271b1;
-    border-color: #135e96;
-    color: #ffffff;
+    background: var(--aps-primary);
+    border-color: var(--aps-primary-dark);
+    color: var(--aps-background);
 }
 
 .aps-count-number {
@@ -153,30 +254,55 @@ body.post-type-aps_product.edit-php .updated {
    Product Filters Section
    ============================================ */
 
+.aps-products-page-layout {
+    margin: 0 var(--aps-spacing-xl) var(--aps-spacing-xl) 0;
+}
+
 .aps-product-filters {
     display: flex;
-    gap: 12px;
+    gap: var(--aps-spacing-lg);
     align-items: center;
-    margin: 8px 0;
-    padding: 16px;
-    background: #ffffff;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
+    margin: 0;
+    padding: var(--aps-spacing-xl);
+    background: var(--aps-background);
+    border: 1px solid var(--aps-border);
+    border-radius: var(--aps-radius-sm);
     flex-wrap: wrap;
     max-width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
-/* Slightly tighter filter controls (matches flowchart density) */
+/* Better spaced filter controls */
 .aps-product-filters .aps-filter-select,
 .aps-product-filters .aps-filter-input {
-    height: 34px;
+    height: 38px;
+    min-width: 150px;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+.aps-product-filters .aps-filter-toggle {
+    flex-shrink: 0;
+}
+
+.aps-product-filters .aps-filter-group:last-child {
+    flex-shrink: 0;
+    margin-left: auto;
 }
 
 .aps-products-table-form {
-    margin-top: 12px;
+    margin-top: 16px;
+    max-width: 100%;
+    overflow-x: auto;
 }
+
+/* Ensure table doesn't overflow */
+.aps-products-table-form .wp-list-table {
+    max-width: 100%;
+    min-width: 100%;
+    table-layout: fixed;
+}
+
 
 /* Product cell subline */
 .aps-product-cell .aps-product-sub {
@@ -188,36 +314,46 @@ body.post-type-aps_product.edit-php .updated {
 .aps-filter-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    min-width: fit-content;
+    box-sizing: border-box;
+}
+
+.aps-filter-group.bulk-actions-group {
+    flex-grow: 1;
 }
 
 .aps-filter-select,
 .aps-filter-input {
-    padding: 6px 12px;
+    padding: 8px 14px;
     font-size: 14px;
     line-height: 1.5;
-    color: #2c3338;
-    background: #ffffff;
-    border: 1px solid #8c8f94;
-    border-radius: 4px;
+    color: var(--aps-text);
+    background: var(--aps-background);
+    border: 1px solid var(--aps-border-light);
+    border-radius: var(--aps-radius-sm);
     transition: border-color 0.2s ease;
+    min-width: 160px;
+    max-width: 200px;
+    box-sizing: border-box;
 }
 
 .aps-filter-select:hover,
 .aps-filter-input:hover {
-    border-color: #135e96;
+    border-color: var(--aps-primary-dark);
 }
 
 .aps-filter-select:focus,
 .aps-filter-input:focus {
-    border-color: #2271b1;
+    border-color: var(--aps-primary);
     outline: none;
     box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.2);
 }
 
 .aps-filter-search {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 200px;
+    max-width: 300px;
 }
 
 .aps-filter-search .aps-filter-input {
@@ -232,7 +368,7 @@ body.post-type-aps_product.edit-php .updated {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
+    padding: 8px 8px;
     font-size: 13px;
     font-weight: 500;
     line-height: 1.5;
@@ -250,14 +386,14 @@ body.post-type-aps_product.edit-php .updated {
 }
 
 .aps-btn-primary {
-    background: #2271b1;
-    color: #ffffff;
-    border: 1px solid #135e96;
+    background: var(--aps-primary);
+    color: var(--aps-background);
+    border: 1px solid var(--aps-primary-dark);
 }
 
 .aps-btn-primary:hover {
-    background: #135e96;
-    border-color: #0b3c6e;
+    background: var(--aps-primary-dark);
+    border-color: var(--aps-primary-darker);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(34, 113, 177, 0.3);
 }
@@ -267,37 +403,37 @@ body.post-type-aps_product.edit-php .updated {
 }
 
 .aps-btn-secondary {
-    background: #f6f7f7;
-    color: #2c3338;
-    border: 1px solid #dcdcde;
+    background: var(--aps-background-alt);
+    color: var(--aps-text);
+    border: 1px solid var(--aps-border);
 }
 
 .aps-btn-secondary:hover {
-    background: #ffffff;
-    border-color: #8c8f94;
+    background: var(--aps-background);
+    border-color: var(--aps-border-light);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .aps-btn-apply {
-    background: #2271b1;
-    color: #ffffff;
+    background: var(--aps-primary);
+    color: var(--aps-background);
     padding: 6px 12px;
 }
 
 .aps-btn-apply:hover {
-    background: #135e96;
+    background: var(--aps-primary-dark);
 }
 
 .aps-btn-clear {
-    background: #f0f0f1;
-    color: #d63638;
-    border: 1px solid #dcdcde;
+    background: var(--aps-background-light);
+    color: var(--aps-danger);
+    border: 1px solid var(--aps-border);
 }
 
 .aps-btn-clear:hover {
-    background: #fff;
-    border-color: #d63638;
+    background: var(--aps-background);
+    border-color: var(--aps-danger);
 }
 
 /* ============================================
@@ -324,8 +460,8 @@ body.post-type-aps_product.edit-php .updated {
     position: relative;
     width: 44px;
     height: 24px;
-    background: #dcdcde;
-    border-radius: 12px;
+    background: var(--aps-border);
+    border-radius: var(--aps-radius-md);
     transition: background 0.3s ease;
 }
 
@@ -343,7 +479,7 @@ body.post-type-aps_product.edit-php .updated {
 }
 
 .aps-toggle-label input:checked + .aps-toggle-slider {
-    background: #2271b1;
+    background: var(--aps-primary);
 }
 
 .aps-toggle-label input:checked + .aps-toggle-slider::before {
@@ -353,7 +489,7 @@ body.post-type-aps_product.edit-php .updated {
 .aps-toggle-text {
     font-size: 13px;
     font-weight: 500;
-    color: #2c3338;
+    color: var(--aps-text);
 }
 
 /* ============================================
@@ -444,4 +580,25 @@ body.post-type-aps_product.edit-php .updated {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
+
+    .aps-products-table-form {
+        overflow: visible;
+    }
+}
+
+/* ============================================
+   RTL Support (Logical Properties)
+   ============================================ */
+
+[dir="rtl"] .aps-product-counts {
+    border-inline-start: 4px solid var(--aps-primary);
+    border-left: none;
+}
+
+[dir="rtl"] .aps-filter-group {
+    gap: 10px;
+}
+
+[dir="rtl"] .aps-count-item {
+    flex-direction: column;
 }
