@@ -173,12 +173,12 @@ class Menu {
 	 */
 	public function addCustomSubmenus(): void {
 		// Add custom "Add Product" submenu to Affiliate Products CPT
-		// Use 'edit_aps_products' capability to match CPT permissions
+		// Use 'manage_options' capability for admin access
 		add_submenu_page(
 			'edit.php?post_type=aps_product',
 			__( 'Add Product', 'affiliate-product-showcase' ),
 			__( 'Add Product', 'affiliate-product-showcase' ),
-			'edit_aps_products', // Use CPT capability instead of manage_options
+			'manage_options', // Use manage_options for admin access
 			'add-product',
 			[ $this, 'renderAddProductPage' ]
 		);
