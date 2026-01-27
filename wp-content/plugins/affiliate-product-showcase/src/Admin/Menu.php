@@ -17,8 +17,12 @@ class Menu {
 	const MENU_SLUG = 'affiliate-manager';
 
 	public function __construct() {
-		// Redirect native editor to custom page (using current_screen hook)
-		add_action( 'current_screen', [ $this, 'redirectNativeEditor' ] );
+		// Redirect native editor to custom page (using load hook - more reliable)
+		add_action( 'load-post.php', [ $this, 'redirectNativeEditor' ] );
+		add_action( 'load-post-new.php', [ $this, 'redirectNativeEditor' ] );
+		
+		// Filter all edit post links to point to custom form
+		add_filter( 'get_edit_post_link', [ $this, 'filterEditPostLink' ], 10, 3 );
 		
 		// Add top-level Affiliate Manager menu (priority 10)
 		add_action( 'admin_menu', [ $this, 'addMenuPages' ], 10 );
@@ -107,36 +111,55 @@ class Menu {
 	 * Redirects both post-new.php (Add New) and post.php (Edit)
 	 * to our custom single-page form.
 	 *
-	 * Uses current_screen hook which runs after screen is set up.
+	 * Uses load-post.php and load-post-new.php hooks for more reliable detection.
 	 *
 	 * @return void
 	 */
 	public function redirectNativeEditor(): void {
-		// Get current screen object
-		$screen = get_current_screen();
-		if ( ! $screen ) {
+		// Check if we're editing an aps_product
+		if ( ! isset( $_GET['post'] ) && ! isset( $_GET['post_type'] ) ) {
 			return;
 		}
 		
-		$post_type = $screen->post_type;
-		$base = $screen->base;
-		
-		// Redirect post-new.php (Add New) to custom page
-		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'add' ) {
-			// Use correct URL: edit.php?post_type=aps_product&page=add-product
-			wp_safe_redirect( self::getAddProductUrl() );
-			exit;
-		}
-		
-		// Redirect post.php (Edit) to custom page
-		if ( $base === 'post' && $post_type === 'aps_product' && $screen->action === 'edit' ) {
-			$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
-			if ( $post_id > 0 ) {
-				// Use correct URL with post parameter
+		// Handle edit existing product
+		$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+		if ( $post_id > 0 ) {
+			$post_type = get_post_type( $post_id );
+			if ( $post_type === 'aps_product' ) {
+				// Redirect to custom form with post ID
 				wp_safe_redirect( admin_url( 'edit.php?post_type=aps_product&page=add-product&post=' . $post_id ) );
 				exit;
 			}
 		}
+		
+		// Handle add new product
+		if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'aps_product' ) {
+			// Redirect to custom add form
+			wp_safe_redirect( self::getAddProductUrl() );
+			exit;
+		}
+	}
+	
+	/**
+	 * Filter edit post link to use custom form
+	 *
+	 * Redirects all "Edit" links throughout the admin area to use
+	 * our custom add-product form instead of native WordPress editor.
+	 *
+	 * @param string $url     The edit post link
+	 * @param int    $post_id  The post ID
+	 * @param string $context  The link context
+	 * @return string Modified URL pointing to custom form
+	 */
+	public function filterEditPostLink( string $url, int $post_id, string $context ): string {
+		$post_type = get_post_type( $post_id );
+		
+		// Only redirect for aps_product post type
+		if ( $post_type === 'aps_product' ) {
+			return admin_url( 'edit.php?post_type=aps_product&page=add-product&post=' . $post_id );
+		}
+		
+		return $url;
 	}
 
 	/**
