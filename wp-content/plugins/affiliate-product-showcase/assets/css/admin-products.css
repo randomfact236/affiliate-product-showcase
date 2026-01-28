@@ -261,7 +261,7 @@
 }
 
 /* ============================================
-   Ribbon Column - Red Badge (WordPress Native)
+   Ribbon Column - Dynamic Colors
    ============================================ */
 
 /* Style WordPress native Ribbon column cells */
@@ -269,8 +269,21 @@
     width: 120px;
 }
 
-/* Apply red badge styling to native Ribbon taxonomy links */
-.column-taxonomy-aps_ribbon a {
+/* Dynamic ribbon badge with custom colors */
+.aps-ribbon-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+}
+
+/* Apply red badge styling to native Ribbon taxonomy links (fallback) */
+.column-taxonomy-aps_ribbon a:not(.aps-ribbon-badge) {
     display: inline-block;
     padding: 4px 10px;
     background: var(--color-ribbon);
@@ -285,7 +298,7 @@
     border: none;
 }
 
-.column-taxonomy-aps_ribbon a:hover {
+.column-taxonomy-aps_ribbon a:not(.aps-ribbon-badge):hover {
     background: #b91c1c;
     color: #ffffff;
 }

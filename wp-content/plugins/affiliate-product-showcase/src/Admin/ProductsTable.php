@@ -380,8 +380,33 @@ class ProductsTable extends WP_List_Table {
             return '<span class="aps-ribbon-empty">—</span>';
         }
 
+        // Get ribbon term to retrieve colors
+        $terms = \wp_get_object_terms($item['id'], 'aps_ribbon');
+        
+        if (is_wp_error($terms) || empty($terms)) {
+            return sprintf(
+                '<span class="aps-ribbon-badge">%s</span>',
+                esc_html($item['ribbon'])
+            );
+        }
+
+        $ribbon_term = $terms[0];
+        $bg_color = \get_term_meta($ribbon_term->term_id, '_aps_ribbon_bg_color', true);
+        $text_color = \get_term_meta($ribbon_term->term_id, '_aps_ribbon_color', true);
+
+        $styles = [];
+        if (!empty($bg_color)) {
+            $styles[] = 'background-color: ' . esc_attr($bg_color);
+        }
+        if (!empty($text_color)) {
+            $styles[] = 'color: ' . esc_attr($text_color);
+        }
+
+        $style_attr = !empty($styles) ? ' style="' . implode('; ', $styles) . '"' : '';
+
         return sprintf(
-            '<span class="aps-ribbon-badge">%s</span>',
+            '<span class="aps-ribbon-badge"%s>%s</span>',
+            $style_attr,
             esc_html($item['ribbon'])
         );
     }
