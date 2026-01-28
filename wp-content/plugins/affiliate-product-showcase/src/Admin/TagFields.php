@@ -66,6 +66,10 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		
 		// Add filter to modify name column display
 		add_filter( $this->get_taxonomy() . '_row_actions', [ $this, 'modify_name_column' ], 5, 2 );
+		
+		// Remove description field from tag form
+		add_filter( $this->get_taxonomy() . '_add_form_fields', [ $this, 'remove_description_field' ], 9 );
+		add_filter( $this->get_taxonomy() . '_edit_form_fields', [ $this, 'remove_description_field' ], 9 );
 	}
 
 	/**
@@ -423,6 +427,31 @@ final class TagFields extends TaxonomyFieldsAbstract {
 	}
 	
 	/**
+	 * Remove description field from tag form
+	 *
+	 * Removes the WordPress native description field from add/edit forms.
+	 *
+	 * @param string $taxonomy Taxonomy name (for edit form) or empty (for add form)
+	 * @return void
+	 * @since 2.0.0
+	 */
+	public function remove_description_field( string $taxonomy = '' ): void {
+		ob_start();
+		?>
+		<script>
+		jQuery(document).ready(function($) {
+			// Remove description field from add form
+			$('#tag-description').closest('.form-field').remove();
+			
+			// Remove description field from edit form
+			$('#description').closest('.form-wrap').remove();
+		});
+		</script>
+		<?php
+		echo ob_get_clean();
+	}
+	
+	/**
 	 * Modify name column to show icon and colored badge
 	 *
 	 * @param array $actions Row actions
@@ -502,6 +531,9 @@ final class TagFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	public function add_custom_columns( array $columns ): array {
+		// Remove description column from table
+		unset( $columns['description'] );
+		
 		// Call parent for shared columns
 		$columns = parent::add_custom_columns( $columns );
 		
