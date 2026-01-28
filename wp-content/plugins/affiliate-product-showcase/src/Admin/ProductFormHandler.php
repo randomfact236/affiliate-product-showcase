@@ -47,27 +47,35 @@ class ProductFormHandler {
 
 		// Use admin_post_{action} hook for form submissions
 		add_action( 'admin_post_aps_save_product', [ $this, 'handle_form_submission' ] );
+		add_action( 'admin_post_aps_update_product', [ $this, 'handle_form_submission' ] );
 	}
 
 	/**
 	 * Handle form submission
 	 *
+	 * Handles both creating new products and updating existing products.
+	 *
 	 * @return void
 	 */
 	public function handle_form_submission(): void {
 		// Check if this is our form submission
-		if ( ! isset( $_POST['action'] ) || $_POST['action'] !== 'aps_save_product' ) {
+		$action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
+		
+		if ( ! in_array( $action, [ 'aps_save_product', 'aps_update_product' ], true ) ) {
 			return;
 		}
 
+		// Determine nonce action based on form action
+		$nonce_action = $action === 'aps_update_product' ? 'aps_update_product' : 'aps_save_product';
+
 		// Verify nonce
-		if ( ! isset( $_POST['aps_product_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aps_product_nonce'] ) ), 'aps_save_product' ) ) {
+		if ( ! isset( $_POST['aps_product_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aps_product_nonce'] ) ), $nonce_action ) ) {
 			wp_die( esc_html__( 'Security check failed. Please try again.', 'affiliate-product-showcase' ) );
 		}
 
 		// Check user permissions
 		if ( ! current_user_can( 'publish_posts' ) ) {
-			wp_die( esc_html__( 'You do not have permission to add products.', 'affiliate-product-showcase' ) );
+			wp_die( esc_html__( 'You do not have permission to save products.', 'affiliate-product-showcase' ) );
 		}
 
 		// Sanitize and validate input
@@ -80,16 +88,25 @@ class ProductFormHandler {
 			return;
 		}
 
-		// Create product
-		$product = $this->create_product( $data );
+		// Check if we're updating an existing product
+		$is_update = isset( $_POST['post_id'] ) && ! empty( $_POST['post_id'] );
+		
+		if ( $is_update ) {
+			$data['post_id'] = (int) $_POST['post_id'];
+			$product = $this->update_product( $data );
+			$message = 2; // Updated
+		} else {
+			$product = $this->create_product( $data );
+			$message = 1; // Created
+		}
 
 		if ( is_wp_error( $product ) ) {
 			wp_die( esc_html( $product->get_error_message() ) );
 		}
 
-		// Redirect to product list
+		// Redirect to product list with success message
 		wp_safe_redirect(
-			admin_url( 'edit.php?post_type=aps_product&message=1' )
+			admin_url( 'edit.php?post_type=aps_product&message=' . $message )
 		);
 		exit;
 	}
@@ -332,7 +349,58 @@ class ProductFormHandler {
 			return $post_id;
 		}
 
-		// Save meta data
+		// Save all meta data
+		$this->save_product_meta( $post_id, $data );
+
+		return $post_id;
+	}
+
+	/**
+	 * Update existing product
+	 *
+	 * @param array<string,mixed> $data Form data including post_id
+	 * @return int|WP_Error Updated product ID or error
+	 */
+	private function update_product( array $data ) {
+		$post_id = $data['post_id'];
+		
+		// Verify the post exists and is a product
+		$post = get_post( $post_id );
+		if ( ! $post || $post->post_type !== 'aps_product' ) {
+			return new \WP_Error( 'invalid_product', __( 'Invalid product ID.', 'affiliate-product-showcase' ) );
+		}
+
+		// Update product post
+		$result = wp_update_post(
+			[
+				'ID'           => $post_id,
+				'post_title'   => $data['title'],
+				'post_content' => $data['description'],
+				'post_excerpt' => $data['short_description'],
+				'post_status'  => $data['status'],
+			],
+			true // Return WP_Error on failure
+		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		// Save all meta data
+		$this->save_product_meta( $post_id, $data );
+
+		return $post_id;
+	}
+
+	/**
+	 * Save product meta data
+	 *
+	 * @param int $post_id Product ID
+	 * @param array<string,mixed> $data Form data
+	 * @return void
+	 */
+	private function save_product_meta( int $post_id, array $data ): void {
+		// Save basic meta fields
 		update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
 		update_post_meta( $post_id, '_aps_currency', $data['currency'] );
 		update_post_meta( $post_id, '_aps_affiliate_url', $data['affiliate_url'] );
@@ -344,20 +412,23 @@ class ProductFormHandler {
 		update_post_meta( $post_id, '_aps_seo_title', $data['seo_title'] );
 		update_post_meta( $post_id, '_aps_seo_description', $data['seo_description'] );
 		
-		// Save logo (attachment ID)
-		if ( ! empty( $data['logo'] ) ) {
-			update_post_meta( $post_id, '_aps_logo', $data['logo'] );
-		}
+		// Save logo
+		update_post_meta( $post_id, '_aps_logo', $data['logo'] );
 
-		// Save sale price if set
-		if ( null !== $data['sale_price'] ) {
+		// Handle sale price logic
+		if ( null !== $data['sale_price'] && ! empty( $data['sale_price'] ) ) {
 			update_post_meta( $post_id, '_aps_original_price', $data['regular_price'] );
 			update_post_meta( $post_id, '_aps_price', $data['sale_price'] );
+		} else {
+			delete_post_meta( $post_id, '_aps_original_price' );
+			update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
 		}
 
 		// Save discount percentage if provided
-		if ( null !== $data['discount_percentage'] ) {
+		if ( null !== $data['discount_percentage'] && ! empty( $data['discount_percentage'] ) ) {
 			update_post_meta( $post_id, '_aps_discount_percentage', $data['discount_percentage'] );
+		} else {
+			delete_post_meta( $post_id, '_aps_discount_percentage' );
 		}
 
 		// Save digital product info
@@ -368,28 +439,22 @@ class ProductFormHandler {
 		update_post_meta( $post_id, '_aps_gallery', $data['gallery'] );
 
 		// Save brand image
-		if ( ! empty( $data['brand_image'] ) ) {
-			update_post_meta( $post_id, '_aps_brand_image', $data['brand_image'] );
-		}
+		update_post_meta( $post_id, '_aps_brand_image', $data['brand_image'] );
 
 		// Save button name
-		if ( ! empty( $data['button_name'] ) ) {
-			update_post_meta( $post_id, '_aps_button_name', $data['button_name'] );
-		}
+		update_post_meta( $post_id, '_aps_button_name', ! empty( $data['button_name'] ) ? $data['button_name'] : 'Buy Now' );
 
 		// Save user count
-		if ( ! empty( $data['user_count'] ) ) {
-			update_post_meta( $post_id, '_aps_user_count', $data['user_count'] );
-		}
+		update_post_meta( $post_id, '_aps_user_count', $data['user_count'] );
 
 		// Save reviews count
-		if ( ! empty( $data['reviews'] ) ) {
-			update_post_meta( $post_id, '_aps_reviews', $data['reviews'] );
-		}
+		update_post_meta( $post_id, '_aps_reviews', $data['reviews'] );
 
 		// Save features (JSON array)
 		if ( ! empty( $data['features'] ) ) {
 			update_post_meta( $post_id, '_aps_features', json_encode( $data['features'] ) );
+		} else {
+			delete_post_meta( $post_id, '_aps_features' );
 		}
 
 		// Save categories
@@ -406,19 +471,21 @@ class ProductFormHandler {
 		// Save tags
 		if ( ! empty( $data['tags'] ) ) {
 			wp_set_object_terms( $post_id, $data['tags'], 'aps_tag', false );
+		} else {
+			wp_delete_object_term_relationships( $post_id, 'aps_tag' );
 		}
 
 		// Save ribbons
 		if ( ! empty( $data['ribbons'] ) ) {
 			wp_set_object_terms( $post_id, $data['ribbons'], 'aps_ribbon', false );
+		} else {
+			wp_delete_object_term_relationships( $post_id, 'aps_ribbon' );
 		}
 
 		// Set featured image if URL provided
 		if ( ! empty( $data['image_url'] ) ) {
 			$this->set_featured_image_from_url( $post_id, $data['image_url'] );
 		}
-
-		return $post_id;
 	}
 
 	/**
