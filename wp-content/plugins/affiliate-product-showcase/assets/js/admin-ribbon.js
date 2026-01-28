@@ -277,11 +277,10 @@
 	 * Apply dynamic colors to ribbon name badges in table
 	 */
 	function applyRibbonNameColors() {
-			// Find all name cells with color data attributes
-			$('.column-name span[data-ribbon-bg]').each(function() {
+			// Find all name spans with color data attributes
+			$('span[data-ribbon-bg]').each(function() {
 				var $span = $(this);
-				var $row = $span.closest('tr');
-				var $nameLink = $row.find('.column-name a');
+				var $link = $span.closest('td').find('a');
 				
 				var bgColor = $span.data('ribbon-bg');
 				var textColor = $span.data('ribbon-text');
@@ -307,7 +306,7 @@
 					styles['color'] = textColor;
 				}
 				
-				$nameLink.css(styles);
+				$link.css(styles);
 			});
 		}
 	});
