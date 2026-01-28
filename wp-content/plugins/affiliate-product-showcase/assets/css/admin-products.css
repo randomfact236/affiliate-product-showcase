@@ -1,6 +1,6 @@
 /**
  * Products Page Styles
- *
+*
  * Styles for products listing page.
  *
  * @package Affiliate_Product_Showcase
@@ -113,12 +113,14 @@
 
 /* Column Widths */
 .column-cb {
-    width: 2.2em;
-    padding: 10px 0 10px 10px;
+    width: 40px;
+    padding: 12px 8px !important;
+    text-align: center;
 }
 
 .column-id {
     width: 60px;
+    padding: 12px 8px !important;
     text-align: center;
     font-weight: 600;
     color: #646970;
@@ -126,30 +128,61 @@
 }
 
 .column-logo {
-    width: 60px;
+    width: 70px;
+    padding: 12px 8px !important;
     text-align: center;
-    padding: 10px;
+}
+
+.column-title {
+    width: auto;
+    min-width: 250px;
+    max-width: 400px;
+    padding: 12px 12px !important;
 }
 
 .column-category {
     width: auto;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 12px 12px !important;
 }
 
 .column-tags {
     width: auto;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 12px 12px !important;
+}
+
+.column-taxonomy-aps_ribbon {
+    width: 130px;
+    padding: 12px 12px !important;
+    text-align: center;
 }
 
 .column-featured {
-    width: 60px;
+    width: 70px;
+    padding: 12px 8px !important;
     text-align: center;
 }
 
 .column-price {
-    width: 100px;
+    width: 110px;
+    padding: 12px 12px !important;
+    text-align: right;
 }
 
 .column-status {
-    width: 120px;
+    width: 130px;
+    padding: 12px 12px !important;
+    text-align: center;
+}
+
+/* Ensure consistent padding across all table cells */
+.wp-list-table tbody td {
+    padding: 12px 12px !important;
+    vertical-align: middle;
+    line-height: 1.5;
 }
 
 /* Row Styling */

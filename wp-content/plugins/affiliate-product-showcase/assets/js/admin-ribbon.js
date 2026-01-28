@@ -285,12 +285,22 @@
 				var $colorSwatch = $row.find('.column-color .aps-ribbon-color-swatch');
 				var $bgSwatch = $row.find('.column-bg_color .aps-ribbon-bg-color-swatch');
 				
+				// Get icon from the icon column
+				var $iconDisplay = $row.find('.column-ribbon_icon .aps-ribbon-icon-display');
+				var icon = $iconDisplay.length ? $iconDisplay.text().trim() : '';
+				
 				// Get the name column link
 				var $nameLink = $row.find('.column-name .row-title');
 				
 				if ($nameLink.length && ($colorSwatch.length || $bgSwatch.length)) {
 					var textColor = $colorSwatch.length ? $colorSwatch.css('background-color') : '';
 					var bgColor = $bgSwatch.length ? $bgSwatch.css('background-color') : '';
+					
+					// Prepend icon to name if it exists
+					if (icon && $nameLink.find('.ribbon-icon-prefix').length === 0) {
+						var originalText = $nameLink.text();
+						$nameLink.html('<span class="ribbon-icon-prefix">' + icon + '</span> ' + originalText);
+					}
 					
 					// Apply styles to name link
 					var styles = {

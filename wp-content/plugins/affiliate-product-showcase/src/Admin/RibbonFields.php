@@ -344,15 +344,16 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 		// Call parent for shared columns
 		$columns = parent::add_custom_columns( $columns );
 		
-		// Insert color column before icon
+		// Insert color and icon columns
 		$new_columns = [];
 		foreach ( $columns as $key => $value ) {
 			$new_columns[ $key ] = $value;
 			
-			// Add color column before icon
+			// Add ribbon-specific columns after slug
 			if ( $key === 'slug' ) {
 				$new_columns['color'] = __( 'Color', 'affiliate-product-showcase' );
 				$new_columns['bg_color'] = __( 'Background', 'affiliate-product-showcase' );
+				$new_columns['ribbon_icon'] = __( 'Icon', 'affiliate-product-showcase' );
 			}
 		}
 		
@@ -369,8 +370,8 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
-		// Call parent for shared columns
-		if ( in_array( $column_name, [ 'icon', 'status', 'count' ], true ) ) {
+		// Call parent for shared columns (status, count)
+		if ( in_array( $column_name, [ 'status', 'count' ], true ) ) {
 			return parent::render_custom_columns( $content, $column_name, $term_id );
 		}
 		
@@ -402,6 +403,21 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			}
 			
 			return '<span class="aps-ribbon-bg-color-empty">-</span>';
+		}
+		
+		// Render icon column
+		if ( $column_name === 'ribbon_icon' ) {
+			$icon = get_term_meta( $term_id, '_aps_ribbon_icon', true );
+			
+			if ( ! empty( $icon ) ) {
+				return sprintf(
+					'<span class="aps-ribbon-icon-display" title="%s">%s</span>',
+					esc_attr( $icon ),
+					esc_html( $icon )
+				);
+			}
+			
+			return '<span class="aps-ribbon-icon-empty">-</span>';
 		}
 		
 		return $content;
