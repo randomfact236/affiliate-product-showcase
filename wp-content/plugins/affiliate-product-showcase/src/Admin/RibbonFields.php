@@ -243,14 +243,13 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 				</button>
 			</div>
 			
-			<!-- Live Preview -->
+		<!-- Live Preview -->
 			<div class="ribbon-live-preview" id="ribbon-preview-container">
 				<span class="preview-label">Preview:</span>
 				<div class="ribbon-preview-badge" id="ribbon-preview">
 					<?php esc_html_e( 'SALE', Constants::TEXTDOMAIN ); ?>
 				</div>
 			</div>
-		</div>
 		</div>
 
 		<!-- Icon Field -->
