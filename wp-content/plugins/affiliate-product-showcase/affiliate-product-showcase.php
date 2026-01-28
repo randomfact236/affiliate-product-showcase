@@ -351,6 +351,21 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 					]
 				);
 			}
+
+			// Run Ribbon Demo Color Fix Migration (one-time fix)
+			$ribbon_fix_run = get_option( 'affiliate_product_showcase_ribbon_demo_fix', false );
+			if ( ! $ribbon_fix_run ) {
+				require_once AFFILIATE_PRODUCT_SHOWCASE_PATH . 'src/Migrations/RibbonDemoColorFix.php';
+				$migration = new \Affiliate\ProductShowcase\Migrations\RibbonDemoColorFix();
+				
+				if ( ! $migration->has_run() ) {
+					$migration->run();
+				}
+				
+				// Mark as run to prevent re-running
+				update_option( 'affiliate_product_showcase_ribbon_demo_fix', true, false );
+				affiliate_product_showcase_log_error( 'Ribbon Demo Color Fix migration completed' );
+			}
 		}
 	);
 }
