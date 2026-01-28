@@ -5,6 +5,8 @@
  * Adds custom fields to ribbon edit/add forms including:
  * - Color field with WordPress color picker
  * - Icon field
+ * - Background color field with presets
+ * - Live preview area
  *
  * @package AffiliateProductShowcase\Admin
  * @since 2.0.0
@@ -173,13 +175,14 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	protected function render_taxonomy_specific_fields( int $ribbon_id ): void {
 		// Get current values
 		$color = get_term_meta( $ribbon_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';
+		$bg_color = get_term_meta( $ribbon_id, '_aps_ribbon_bg_color', true ) ?: '#ff0000';
 		$icon = get_term_meta( $ribbon_id, '_aps_ribbon_icon', true ) ?: '';
 
 		?>
-		<!-- Color Field (Ribbon-specific) -->
+		<!-- Color Field (Ribbon text color) -->
 		<div class="form-field">
 			<label for="aps_ribbon_color">
-				<?php esc_html_e( 'Color', Constants::TEXTDOMAIN ); ?>
+				<?php esc_html_e( 'Text Color', Constants::TEXTDOMAIN ); ?>
 			</label>
 			<input 
 				type="text" 
@@ -192,8 +195,68 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 				maxlength="7"
 			/>
 			<p class="description">
-				<?php esc_html_e( 'Enter hex color code for ribbon (e.g., #ff6b6b).', Constants::TEXTDOMAIN ); ?>
+				<?php esc_html_e( 'Enter hex color code for ribbon text (e.g., #ff6b6b).', Constants::TEXTDOMAIN ); ?>
 			</p>
+		</div>
+
+		<!-- Background Color Field (Ribbon background) -->
+		<div class="form-field">
+			<label for="aps_ribbon_bg_color">
+				<?php esc_html_e( 'Background Color', Constants::TEXTDOMAIN ); ?>
+			</label>
+			<div class="ribbon-bg-color-wrapper">
+				<input 
+					type="color" 
+					name="aps_ribbon_bg_color" 
+					id="aps_ribbon_bg_color" 
+					value="<?php echo esc_attr( $bg_color ); ?>" 
+					class="aps-bg-color-picker"
+				/>
+				<input 
+					type="text" 
+					name="aps_ribbon_bg_color_text" 
+					id="aps_ribbon_bg_color_text" 
+					value="<?php echo esc_attr( $bg_color ); ?>" 
+					class="regular-text"
+					placeholder="#ff0000"
+					pattern="^#[0-9a-fA-F]{6}$"
+					maxlength="7"
+				/>
+			</div>
+			
+			<!-- Color Presets -->
+			<div class="color-presets">
+				<button type="button" class="preset-color" data-color="#ff0000" title="Red">
+					<span class="color-swatch" style="background-color: #ff0000;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#00ff00" title="Green">
+					<span class="color-swatch" style="background-color: #00ff00;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#0000ff" title="Blue">
+					<span class="color-swatch" style="background-color: #0000ff;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#ffff00" title="Yellow">
+					<span class="color-swatch" style="background-color: #ffff00;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#ff00ff" title="Purple">
+					<span class="color-swatch" style="background-color: #ff00ff;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#000000" title="Black">
+					<span class="color-swatch" style="background-color: #000000;"></span>
+				</button>
+				<button type="button" class="preset-color" data-color="#ff6600" title="Orange">
+					<span class="color-swatch" style="background-color: #ff6600;"></span>
+				</button>
+			</div>
+			
+			<!-- Live Preview -->
+			<div class="ribbon-live-preview" id="ribbon-preview-container">
+				<span class="preview-label">Preview:</span>
+				<div class="ribbon-preview-badge" id="ribbon-preview">
+					<?php esc_html_e( 'SALE', Constants::TEXTDOMAIN ); ?>
+				</div>
+			</div>
+		</div>
 		</div>
 
 		<!-- Icon Field -->
@@ -223,13 +286,23 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	protected function save_taxonomy_specific_fields( int $ribbon_id ): void {
-		// Save color
+		// Save text color
 		if ( isset( $_POST['aps_ribbon_color'] ) ) {
 			$color = sanitize_hex_color( wp_unslash( $_POST['aps_ribbon_color'] ) );
 			if ( $color ) {
 				update_term_meta( $ribbon_id, '_aps_ribbon_color', $color );
 			} else {
 				delete_term_meta( $ribbon_id, '_aps_ribbon_color' );
+			}
+		}
+
+		// Save background color
+		if ( isset( $_POST['aps_ribbon_bg_color'] ) ) {
+			$bg_color = sanitize_hex_color( wp_unslash( $_POST['aps_ribbon_bg_color'] ) );
+			if ( $bg_color ) {
+				update_term_meta( $ribbon_id, '_aps_ribbon_bg_color', $bg_color );
+			} else {
+				delete_term_meta( $ribbon_id, '_aps_ribbon_bg_color' );
 			}
 		}
 
@@ -263,6 +336,7 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			// Add color column before icon
 			if ( $key === 'slug' ) {
 				$new_columns['color'] = __( 'Color', 'affiliate-product-showcase' );
+				$new_columns['bg_color'] = __( 'Background', 'affiliate-product-showcase' );
 			}
 		}
 		
@@ -284,7 +358,7 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			return parent::render_custom_columns( $content, $column_name, $term_id );
 		}
 		
-		// Render color column (ribbon-specific)
+		// Render color column (text color)
 		if ( $column_name === 'color' ) {
 			$color = get_term_meta( $term_id, '_aps_ribbon_color', true );
 			
@@ -297,6 +371,21 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			}
 			
 			return '<span class="aps-ribbon-color-empty">-</span>';
+		}
+		
+		// Render background color column
+		if ( $column_name === 'bg_color' ) {
+			$bg_color = get_term_meta( $term_id, '_aps_ribbon_bg_color', true );
+			
+			if ( ! empty( $bg_color ) ) {
+				return sprintf(
+					'<span class="aps-ribbon-bg-color-swatch" style="background-color: %s; display:inline-block; width:20px; height:20px; border-radius:4px; border:2px solid #ccc;" title="%s"></span>',
+					esc_attr( $bg_color ),
+					esc_attr( $bg_color )
+				);
+			}
+			
+			return '<span class="aps-ribbon-bg-color-empty">-</span>';
 		}
 		
 		return $content;
