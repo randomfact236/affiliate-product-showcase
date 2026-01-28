@@ -43,35 +43,11 @@
 }
 
 /* =========================================
-   Color Field Styles
+   Color Field Styles (Shared for Text & Background)
    ========================================= */
 
 .aps-color-picker {
 	width: 100px;
-}
-
-/* =========================================
-   Background Color Field Styles
-   ========================================= */
-
-.ribbon-bg-color-wrapper {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-top: 10px;
-}
-
-.aps-bg-color-picker {
-	width: 50px;
-	height: 35px;
-	padding: 0;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-.aps-bg-color-picker:hover {
-	border-color: #999;
 }
 
 /* =========================================

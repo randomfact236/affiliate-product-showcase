@@ -204,25 +204,19 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			<label for="aps_ribbon_bg_color">
 				<?php esc_html_e( 'Background Color', Constants::TEXTDOMAIN ); ?>
 			</label>
-			<div class="ribbon-bg-color-wrapper">
-				<input 
-					type="color" 
-					name="aps_ribbon_bg_color" 
-					id="aps_ribbon_bg_color" 
-					value="<?php echo esc_attr( $bg_color ); ?>" 
-					class="aps-bg-color-picker"
-				/>
-				<input 
-					type="text" 
-					name="aps_ribbon_bg_color_text" 
-					id="aps_ribbon_bg_color_text" 
-					value="<?php echo esc_attr( $bg_color ); ?>" 
-					class="regular-text"
-					placeholder="#ff0000"
-					pattern="^#[0-9a-fA-F]{6}$"
-					maxlength="7"
-				/>
-			</div>
+			<input 
+				type="text" 
+				name="aps_ribbon_bg_color" 
+				id="aps_ribbon_bg_color" 
+				value="<?php echo esc_attr( $bg_color ); ?>" 
+				class="aps-color-picker regular-text"
+				placeholder="#ff0000"
+				pattern="^#[0-9a-fA-F]{6}$"
+				maxlength="7"
+			/>
+			<p class="description">
+				<?php esc_html_e( 'Enter hex color code for ribbon background (e.g., #ff0000).', Constants::TEXTDOMAIN ); ?>
+			</p>
 			
 			<!-- Color Presets -->
 			<div class="color-presets">
