@@ -161,6 +161,18 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			th.manage-column.column-description {
 				display: none !important;
 			}
+			
+			/* Ribbon name badge styling */
+			.aps-ribbon-name-badge {
+				display: inline-block;
+				padding: 4px 12px;
+				border-radius: 4px;
+				font-weight: 600;
+				font-size: 12px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			}
 		</style>
 		<?php
 	}
@@ -346,6 +358,35 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
+		// Render ribbon name with background color
+		if ( $column_name === 'name' ) {
+			$term = get_term( $term_id );
+			$bg_color = get_term_meta( $term_id, '_aps_ribbon_bg_color', true );
+			$text_color = get_term_meta( $term_id, '_aps_ribbon_color', true );
+			
+			if ( $term && ! is_wp_error( $term ) ) {
+				$styles = [];
+				
+				if ( ! empty( $bg_color ) ) {
+					$styles[] = 'background-color: ' . esc_attr( $bg_color );
+				}
+				
+				if ( ! empty( $text_color ) ) {
+					$styles[] = 'color: ' . esc_attr( $text_color );
+				}
+				
+				$style_attr = ! empty( $styles ) ? ' style="' . implode( '; ', $styles ) . '"' : '';
+				
+				return sprintf(
+					'<span class="aps-ribbon-name-badge"%s>%s</span>',
+					$style_attr,
+					esc_html( $term->name )
+				);
+			}
+			
+			return $content;
+		}
+		
 		// Call parent for shared columns
 		if ( in_array( $column_name, [ 'icon', 'status', 'count' ], true ) ) {
 			return parent::render_custom_columns( $content, $column_name, $term_id );
