@@ -64,7 +64,74 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		// Call parent to initialize shared functionality
 		parent::init();
 		
-		// Tag doesn't need any additional hooks beyond what parent provides
+		// Add filter to modify name column display
+		add_filter( $this->get_taxonomy() . '_row_actions', [ $this, 'modify_name_column' ], 5, 2 );
+	}
+
+	/**
+	 * Enqueue admin assets (color picker for tags)
+	 *
+	 * @param string $hook_suffix Current admin page hook
+	 * @return void
+	 * @since 2.0.0
+	 */
+	public function enqueue_admin_assets( string $hook_suffix ): void {
+		$screen = get_current_screen();
+
+		if ( $screen && $screen->taxonomy === $this->get_taxonomy() ) {
+			// Enqueue WordPress color picker
+			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_script( 'wp-color-picker' );
+
+			// Add inline script for initializing color picker
+			wp_add_inline_script( 'wp-color-picker', $this->get_color_picker_script() );
+
+			// Enqueue taxonomy-specific JS/CSS if present (parent handles that too)
+			parent::enqueue_admin_assets( $hook_suffix );
+		}
+	}
+
+	/**
+	 * Get inline JavaScript for color picker
+	 *
+	 * @return string Inline script
+	 * @since 2.0.0
+	 */
+	private function get_color_picker_script(): string {
+		ob_start();
+		?>
+		jQuery(document).ready(function($) {
+			if ( $('.aps-color-picker').length ) {
+				$('.aps-color-picker').wpColorPicker({
+					change: function(event, ui) {
+						$(this).val(ui.color.toString());
+						// Update preview if present
+						var text = $('#_aps_tag_color').val() || '';
+						var bg = $('#_aps_tag_bg_color').val() || '';
+						if ( $('#tag-preview').length ) {
+							$('#tag-preview').css({ 'color': text, 'background-color': bg });
+						}
+					},
+					clear: function() {
+						$(this).val('');
+						var text = $('#_aps_tag_color').val() || '';
+						var bg = $('#_aps_tag_bg_color').val() || '';
+						if ( $('#tag-preview').length ) {
+							$('#tag-preview').css({ 'color': text, 'background-color': bg });
+						}
+					}
+				});
+			}
+
+			// Initialize preview on load
+			var initText = $('#_aps_tag_color').val() || '';
+			var initBg = $('#_aps_tag_bg_color').val() || '';
+			if ( $('#tag-preview').length ) {
+				$('#tag-preview').css({ 'color': initText, 'background-color': initBg });
+			}
+		});
+		<?php
+		return ob_get_clean();
 	}
 	
 	/**
@@ -159,6 +226,53 @@ final class TagFields extends TaxonomyFieldsAbstract {
 			</div>
 		</div>
 
+			<!-- Text Color -->
+			<div class="form-field">
+				<label for="_aps_tag_color">
+					<?php esc_html_e( 'Text Color', 'affiliate-product-showcase' ); ?>
+				</label>
+				<input
+					type="text"
+					id="_aps_tag_color"
+					name="_aps_tag_color"
+					value="<?php echo esc_attr( $this->get_tag_meta( $tag_id, 'color' ) ?: '#ffffff' ); ?>"
+					class="aps-color-picker regular-text"
+					placeholder="#ffffff"
+					pattern="^#[0-9a-fA-F]{6}$"
+					maxlength="7"
+				/>
+				<p class="description">
+					<?php esc_html_e( 'Enter hex color code for tag text (e.g., #ffffff).', 'affiliate-product-showcase' ); ?>
+				</p>
+			</div>
+
+			<!-- Background Color -->
+			<div class="form-field">
+				<label for="_aps_tag_bg_color">
+					<?php esc_html_e( 'Background Color', 'affiliate-product-showcase' ); ?>
+				</label>
+				<input
+					type="text"
+					id="_aps_tag_bg_color"
+					name="_aps_tag_bg_color"
+					value="<?php echo esc_attr( $this->get_tag_meta( $tag_id, 'bg_color' ) ?: '#ff6b6b' ); ?>"
+					class="aps-color-picker regular-text"
+					placeholder="#ff6b6b"
+					pattern="^#[0-9a-fA-F]{6}$"
+					maxlength="7"
+				/>
+				<p class="description">
+					<?php esc_html_e( 'Enter hex color code for tag background (e.g., #ff6b6b).', 'affiliate-product-showcase' ); ?>
+				</p>
+
+				<div class="ribbon-live-preview" id="tag-preview-container" style="margin-top:10px;">
+					<span class="preview-label">Preview:</span>
+					<div class="ribbon-preview-badge" id="tag-preview" style="display:inline-block;padding:4px 12px;border-radius:4px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+						<?php esc_html_e( 'Tag', 'affiliate-product-showcase' ); ?>
+					</div>
+				</div>
+			</div>
+
 		<style>
 			/* Side-by-side checkbox layout */
 			.aps-tag-checkboxes-inner {
@@ -197,6 +311,19 @@ final class TagFields extends TaxonomyFieldsAbstract {
 				font-size: 14px;
 				font-weight: 600;
 				text-align: center;
+			}
+
+			/* Name badge styling (reuse ribbon styles) */
+			.aps-ribbon-name-badge {
+				display: inline-block;
+				padding: 4px 12px;
+				border-radius: 4px;
+				font-weight: 600;
+				font-size: 12px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+				margin-right: 8px;
 			}
 		</style>
 
@@ -253,6 +380,26 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		update_term_meta( $tag_id, '_aps_tag_image_url', $image_url );
 		// Delete legacy key
 		delete_term_meta( $tag_id, 'aps_tag_image_url' );
+
+		// Save text color
+		if ( isset( $_POST['_aps_tag_color'] ) ) {
+			$color = sanitize_hex_color( wp_unslash( $_POST['_aps_tag_color'] ) );
+			if ( $color ) {
+				update_term_meta( $tag_id, '_aps_tag_color', $color );
+			} else {
+				delete_term_meta( $tag_id, '_aps_tag_color' );
+			}
+		}
+
+		// Save background color
+		if ( isset( $_POST['_aps_tag_bg_color'] ) ) {
+			$bg = sanitize_hex_color( wp_unslash( $_POST['_aps_tag_bg_color'] ) );
+			if ( $bg ) {
+				update_term_meta( $tag_id, '_aps_tag_bg_color', $bg );
+			} else {
+				delete_term_meta( $tag_id, '_aps_tag_bg_color' );
+			}
+		}
 	}
 	
 	/**
@@ -273,6 +420,57 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		}
 		
 		return $value;
+	}
+	
+	/**
+	 * Modify name column to show icon and colored badge
+	 *
+	 * @param array $actions Row actions
+	 * @param \WP_Term $term Term object
+	 * @return array Row actions (unchanged)
+	 * @since 2.0.0
+	 */
+	public function modify_name_column( array $actions, \WP_Term $term ): array {
+		// This filter is called after the name is rendered, but we can use it to inject CSS
+		// that modifies the already-rendered name column via JavaScript
+		// Add inline style to make name display as badge
+		static $script_added = false;
+		if ( ! $script_added ) {
+			$script_added = true;
+			add_action( 'admin_footer', function() {
+				?>
+				<script>
+				jQuery(document).ready(function($) {
+					// Modify tag name column to show as badge with colors
+					$('.column-name a.row-title').each(function() {
+						var $link = $(this);
+						var termId = $link.closest('tr').attr('id');
+						if (termId && termId.indexOf('tag-') === 0) {
+							var $row = $link.closest('tr');
+							// Get colors from the color columns
+							var textColor = $row.find('.column-color .aps-tag-color-swatch').attr('title') || '';
+							var bgColor = $row.find('.column-bg_color .aps-tag-bg-color-swatch').attr('title') || '';
+							var icon = $row.find('.column-icon .aps-tag-icon-display').clone();
+							
+							if (textColor || bgColor) {
+								var $badge = $('<span class="aps-ribbon-name-badge"></span>');
+								if (textColor) $badge.css('color', textColor);
+								if (bgColor) $badge.css('background-color', bgColor);
+								if (icon.length) {
+									icon.css({'vertical-align': 'middle', 'margin-right': '6px'});
+									$badge.append(icon);
+								}
+								$badge.append($link.text());
+								$link.html($badge);
+							}
+						}
+					});
+				});
+				</script>
+				<?php
+			} );
+		}
+		return $actions;
 	}
 	
 	/**
@@ -307,13 +505,15 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		// Call parent for shared columns
 		$columns = parent::add_custom_columns( $columns );
 		
-		// Insert icon column before status
+		// Insert icon and color columns after slug (like ribbons)
 		$new_columns = [];
 		foreach ( $columns as $key => $value ) {
 			$new_columns[ $key ] = $value;
 			
-			// Add icon column before status
+			// Add tag-specific columns after slug
 			if ( $key === 'slug' ) {
+				$new_columns['color'] = __( 'Text Color', 'affiliate-product-showcase' );
+				$new_columns['bg_color'] = __( 'Background', 'affiliate-product-showcase' );
 				$new_columns['icon'] = __( 'Icon', 'affiliate-product-showcase' );
 			}
 		}
@@ -334,6 +534,36 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		// Call parent for shared columns
 		if ( in_array( $column_name, [ 'status', 'count' ], true ) ) {
 			return parent::render_custom_columns( $content, $column_name, $term_id );
+		}
+		
+		// Render text color column
+		if ( $column_name === 'color' ) {
+			$color = get_term_meta( $term_id, '_aps_tag_color', true );
+			
+			if ( ! empty( $color ) ) {
+				return sprintf(
+					'<span class="aps-tag-color-swatch" style="background-color: %s; display:inline-block; width:20px; height:20px; border-radius:4px;" title="%s"></span>',
+					esc_attr( $color ),
+					esc_attr( $color )
+				);
+			}
+			
+			return '<span class="aps-tag-color-empty">-</span>';
+		}
+		
+		// Render background color column
+		if ( $column_name === 'bg_color' ) {
+			$bg_color = get_term_meta( $term_id, '_aps_tag_bg_color', true );
+			
+			if ( ! empty( $bg_color ) ) {
+				return sprintf(
+					'<span class="aps-tag-bg-color-swatch" style="background-color: %s; display:inline-block; width:20px; height:20px; border-radius:4px; border:2px solid #ccc;" title="%s"></span>',
+					esc_attr( $bg_color ),
+					esc_attr( $bg_color )
+				);
+			}
+			
+			return '<span class="aps-tag-bg-color-empty">-</span>';
 		}
 		
 		// Render icon column
