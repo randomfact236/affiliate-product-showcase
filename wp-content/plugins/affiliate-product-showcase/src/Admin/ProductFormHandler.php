@@ -112,6 +112,24 @@ class ProductFormHandler {
 		$data['video_url']     = isset( $raw_data['aps_video_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_video_url'] ) ) : '';
 		$data['logo']          = isset( $raw_data['aps_logo'] ) ? absint( $raw_data['aps_logo'] ) : 0;
 
+		// Brand image
+		$data['brand_image'] = isset( $raw_data['aps_brand_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_brand_image_url'] ) ) : '';
+
+		// Button name
+		$data['button_name'] = isset( $raw_data['aps_button_name'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_button_name'] ) ) : 'Buy Now';
+
+		// User count
+		$data['user_count'] = isset( $raw_data['aps_user_count'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_user_count'] ) ) : '';
+
+		// Reviews count
+		$data['reviews'] = isset( $raw_data['aps_reviews'] ) ? intval( $raw_data['aps_reviews'] ) : 0;
+
+		// Features (JSON array)
+		$data['features'] = isset( $raw_data['aps_features'] ) ? $this->sanitize_features_array( wp_unslash( $raw_data['aps_features'] ) ) : [];
+
+		// Ribbons (taxonomy)
+		$data['ribbons'] = isset( $raw_data['aps_ribbons'] ) ? $this->sanitize_comma_list( wp_unslash( $raw_data['aps_ribbons'] ) ) : [];
+
 		// Pricing
 		$data['regular_price']     = isset( $raw_data['aps_regular_price'] ) ? floatval( $raw_data['aps_regular_price'] ) : 0.0;
 		$data['sale_price']        = isset( $raw_data['aps_sale_price'] ) && ! empty( $raw_data['aps_sale_price'] ) ? floatval( $raw_data['aps_sale_price'] ) : null;
@@ -188,6 +206,38 @@ class ProductFormHandler {
 		
 		// Return empty array for any other type
 		return [];
+	}
+
+	/**
+	 * Sanitize features JSON array
+	 *
+	 * @param string $features_json JSON string of features
+	 * @return array<array<string, mixed>> Sanitized features array
+	 */
+	private function sanitize_features_array( string $features_json ): array {
+		// Decode JSON
+		$features = json_decode( $features_json, true );
+		
+		// Validate it's an array
+		if ( ! is_array( $features ) ) {
+			return [];
+		}
+		
+		// Sanitize each feature
+		$sanitized_features = [];
+		foreach ( $features as $feature ) {
+			// Ensure feature is an array with required fields
+			if ( ! is_array( $feature ) ) {
+				continue;
+			}
+			
+			$sanitized_features[] = [
+				'text'       => isset( $feature['text'] ) ? sanitize_text_field( $feature['text'] ) : '',
+				'highlighted' => isset( $feature['highlighted'] ) ? (bool) $feature['highlighted'] : false,
+			];
+		}
+		
+		return $sanitized_features;
 	}
 
 	/**
@@ -317,6 +367,31 @@ class ProductFormHandler {
 		// Save gallery
 		update_post_meta( $post_id, '_aps_gallery', $data['gallery'] );
 
+		// Save brand image
+		if ( ! empty( $data['brand_image'] ) ) {
+			update_post_meta( $post_id, '_aps_brand_image', $data['brand_image'] );
+		}
+
+		// Save button name
+		if ( ! empty( $data['button_name'] ) ) {
+			update_post_meta( $post_id, '_aps_button_name', $data['button_name'] );
+		}
+
+		// Save user count
+		if ( ! empty( $data['user_count'] ) ) {
+			update_post_meta( $post_id, '_aps_user_count', $data['user_count'] );
+		}
+
+		// Save reviews count
+		if ( ! empty( $data['reviews'] ) ) {
+			update_post_meta( $post_id, '_aps_reviews', $data['reviews'] );
+		}
+
+		// Save features (JSON array)
+		if ( ! empty( $data['features'] ) ) {
+			update_post_meta( $post_id, '_aps_features', json_encode( $data['features'] ) );
+		}
+
 		// Save categories
 		if ( ! empty( $data['categories'] ) ) {
 			wp_set_object_terms( $post_id, $data['categories'], 'aps_category', false );
@@ -331,6 +406,11 @@ class ProductFormHandler {
 		// Save tags
 		if ( ! empty( $data['tags'] ) ) {
 			wp_set_object_terms( $post_id, $data['tags'], 'aps_tag', false );
+		}
+
+		// Save ribbons
+		if ( ! empty( $data['ribbons'] ) ) {
+			wp_set_object_terms( $post_id, $data['ribbons'], 'aps_ribbon', false );
 		}
 
 		// Set featured image if URL provided

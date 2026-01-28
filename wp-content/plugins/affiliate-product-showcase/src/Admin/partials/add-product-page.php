@@ -155,9 +155,9 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						</div>
 					</div>
 					
-					<!-- Brand Image Upload -->
+					<!-- Logo Upload -->
 					<div class="aps-upload-group">
-						<label><?php esc_html_e( 'Brand Image', 'affiliate-product-showcase' ); ?></label>
+						<label><?php esc_html_e( 'Logo', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-upload-area" id="aps-brand-upload">
 							<div class="upload-placeholder">
 								<i class="fas fa-tshirt"></i>
@@ -193,8 +193,8 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 					<div class="aps-field-group">
 						<label for="aps-button-name"><?php esc_html_e( 'Button Name', 'affiliate-product-showcase' ); ?></label>
 						<input type="text" id="aps-button-name" name="aps_button_name" class="aps-input"
-							   placeholder="Buy Now"
-							   value="<?php echo esc_attr( $product_data['button_name'] ?? 'Buy Now' ); ?>">
+							   placeholder=""
+							   value="<?php echo esc_attr( $product_data['button_name'] ?? '' ); ?>">
 					</div>
 				</div>
 			</section>
@@ -231,41 +231,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 				
 				<div class="aps-features-list" id="aps-features-list">
-					<!-- Sample feature (for demo purposes) -->
-					<div class="aps-feature-item" id="feat-1">
-						<span class="feature-text">erfgergh rgntht</span>
-						<div class="feature-actions">
-							<button type="button" class="feature-btn active-highlight" onclick="toggleHighlight(this)" title="Highlight">
-								<i class="fas fa-bold"></i>
-							</button>
-							<button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up">
-								<i class="fas fa-arrow-up"></i>
-							</button>
-							<button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down">
-								<i class="fas fa-arrow-down"></i>
-							</button>
-							<button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete">
-								<i class="fas fa-trash"></i>
-							</button>
-						</div>
-					</div>
-					<div class="aps-feature-item" id="feat-2">
-						<span class="feature-text">htrgre rtgrtgrt</span>
-						<div class="feature-actions">
-							<button type="button" class="feature-btn" onclick="toggleHighlight(this)" title="Highlight">
-								<i class="fas fa-bold"></i>
-							</button>
-							<button type="button" class="feature-btn" onclick="moveFeature(this, -1)" title="Move Up">
-								<i class="fas fa-arrow-up"></i>
-							</button>
-							<button type="button" class="feature-btn" onclick="moveFeature(this, 1)" title="Move Down">
-								<i class="fas fa-arrow-down"></i>
-							</button>
-							<button type="button" class="feature-btn delete" onclick="deleteFeature(this)" title="Delete">
-								<i class="fas fa-trash"></i>
-							</button>
-						</div>
-					</div>
+					<!-- Features will be added dynamically -->
 				</div>
 				<input type="hidden" name="aps_features" id="aps-features-input">
 			</section>
@@ -321,9 +287,18 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 									'hide_empty' => false,
 								] );
 								foreach ( $categories as $category ) :
+									// Get category image for styling
+									$category_image = get_term_meta( $category->term_id, '_aps_category_image', true );
+									$category_featured = get_term_meta( $category->term_id, '_aps_category_featured', true ) === '1';
 								?>
-									<div class="dropdown-item" data-value="<?php echo esc_attr( $category->slug ); ?>">
-										<?php echo esc_html( $category->name ); ?>
+									<div class="dropdown-item aps-taxonomy-item" data-value="<?php echo esc_attr( $category->slug ); ?>">
+										<?php if ( $category_image ) : ?>
+											<span class="taxonomy-image" style="background-image: url('<?php echo esc_url( $category_image ); ?>');"></span>
+										<?php endif; ?>
+										<span class="taxonomy-name"><?php echo esc_html( $category->name ); ?></span>
+										<?php if ( $category_featured ) : ?>
+											<span class="taxonomy-badge featured">★</span>
+										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>
 							</div>
@@ -347,9 +322,18 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 									'hide_empty' => false,
 								] );
 								foreach ( $ribbons as $ribbon ) :
+									// Get ribbon styling
+									$ribbon_color = get_term_meta( $ribbon->term_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';
+									$ribbon_bg = get_term_meta( $ribbon->term_id, '_aps_ribbon_bg_color', true ) ?: '#ff0000';
+									$ribbon_icon = get_term_meta( $ribbon->term_id, '_aps_ribbon_icon', true ) ?: '';
 								?>
-									<div class="dropdown-item" data-value="<?php echo esc_attr( $ribbon->slug ); ?>">
-										<?php echo esc_html( $ribbon->name ); ?>
+									<div class="dropdown-item aps-ribbon-item" data-value="<?php echo esc_attr( $ribbon->slug ); ?>">
+										<span class="ribbon-badge-preview" style="color: <?php echo esc_attr( $ribbon_color ); ?>; background-color: <?php echo esc_attr( $ribbon_bg ); ?>;">
+											<?php if ( $ribbon_icon ) : ?>
+												<span class="ribbon-icon"><?php echo esc_html( $ribbon_icon ); ?></span>
+											<?php endif; ?>
+											<span class="ribbon-name"><?php echo esc_html( $ribbon->name ); ?></span>
+										</span>
 									</div>
 								<?php endforeach; ?>
 							</div>
@@ -370,10 +354,23 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						'hide_empty' => false,
 					] );
 					foreach ( $tags as $tag ) :
+						// Get tag styling
+						$tag_color = get_term_meta( $tag->term_id, '_aps_tag_color', true ) ?: '#ffffff';
+						$tag_bg = get_term_meta( $tag->term_id, '_aps_tag_bg_color', true ) ?: '#ff6b6b';
+						$tag_icon = get_term_meta( $tag->term_id, '_aps_tag_icon', true ) ?: '';
+						$tag_featured = get_term_meta( $tag->term_id, '_aps_tag_featured', true ) === '1';
 					?>
-						<label class="aps-checkbox-label">
+						<label class="aps-checkbox-label aps-tag-checkbox">
 							<input type="checkbox" name="aps_tags[]" value="<?php echo esc_attr( $tag->slug ); ?>">
-							<span><?php echo esc_html( $tag->name ); ?></span>
+							<span class="tag-badge" style="color: <?php echo esc_attr( $tag_color ); ?>; background-color: <?php echo esc_attr( $tag_bg ); ?>;">
+								<?php if ( $tag_icon ) : ?>
+									<span class="tag-icon"><?php echo esc_html( $tag_icon ); ?></span>
+								<?php endif; ?>
+								<span class="tag-name"><?php echo esc_html( $tag->name ); ?></span>
+								<?php if ( $tag_featured ) : ?>
+									<span class="tag-star">★</span>
+								<?php endif; ?>
+							</span>
 						</label>
 					<?php endforeach; ?>
 				</div>
@@ -1023,6 +1020,132 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		opacity: 1;
 	}
 }
+
+/* Taxonomy Item Styling */
+.aps-taxonomy-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.aps-taxonomy-item .taxonomy-image {
+	width: 24px;
+	height: 24px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 4px;
+	flex-shrink: 0;
+}
+
+.aps-taxonomy-item .taxonomy-name {
+	flex-grow: 1;
+}
+
+.aps-taxonomy-item .taxonomy-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: #ffd700;
+	color: #fff;
+	font-size: 12px;
+	flex-shrink: 0;
+}
+
+.aps-taxonomy-item .taxonomy-badge.featured {
+	background: #ff6b6b;
+}
+
+/* Ribbon Badge Preview */
+.aps-ribbon-item {
+	padding: 8px 12px;
+}
+
+.aps-ribbon-item .ribbon-badge-preview {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aps-ribbon-item .ribbon-icon {
+	font-size: 14px;
+}
+
+.aps-ribbon-item .ribbon-name {
+	font-weight: 600;
+}
+
+/* Tag Badge Styling */
+.aps-tag-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.aps-tag-checkbox:hover {
+	background: #f0f0f1;
+	border-color: #ddd;
+}
+
+.aps-tag-checkbox input[type="checkbox"] {
+	margin: 0;
+}
+
+.aps-tag-checkbox .tag-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aps-tag-checkbox .tag-icon {
+	font-size: 14px;
+}
+
+.aps-tag-checkbox .tag-name {
+	font-weight: 600;
+}
+
+.aps-tag-checkbox .tag-star {
+	color: #ffd700;
+	font-size: 14px;
+	margin-left: 4px;
+}
+
+/* Selected tags in multi-select should show styling */
+.aps-selected-tags .aps-tag {
+	padding: 4px 12px;
+	background: var(--aps-tag-bg);
+	color: var(--aps-tag-color);
+	border-radius: 3px;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
 </style>
 
 <script>
@@ -1328,6 +1451,24 @@ jQuery(document).ready(function($) {
 				.css('background-image', 'url(' + url + ')')
 				.show();
 			$('#aps-brand-upload .upload-placeholder').hide();
+		}
+	});
+	
+	// User Count - Auto convert to K format
+	$('#aps-user-count').on('blur', function() {
+		const input = $(this).val().trim();
+		
+		// If input is a number, convert to K format
+		const number = parseFloat(input);
+		if (!isNaN(number)) {
+			if (number >= 1000) {
+				// Convert to K format with 2 decimal places
+				const kValue = (number / 1000).toFixed(2);
+				$(this).val(kValue + 'K');
+			} else if (number < 1000 && number > 0) {
+				// Keep as is for numbers < 1000
+				$(this).val(number.toString());
+			}
 		}
 	});
 });
