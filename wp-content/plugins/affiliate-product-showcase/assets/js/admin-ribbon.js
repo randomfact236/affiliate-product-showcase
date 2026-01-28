@@ -277,36 +277,44 @@
 	 * Apply dynamic colors to ribbon name badges in table
 	 */
 	function applyRibbonNameColors() {
-			// Find all name spans with color data attributes
-			$('span[data-ribbon-bg]').each(function() {
-				var $span = $(this);
-				var $link = $span.closest('td').find('a');
+			// Iterate through each table row
+			$('#the-list tr').each(function() {
+				var $row = $(this);
 				
-				var bgColor = $span.data('ribbon-bg');
-				var textColor = $span.data('ribbon-text');
+				// Get colors from the Color and Background column swatches
+				var $colorSwatch = $row.find('.column-color .aps-ribbon-color-swatch');
+				var $bgSwatch = $row.find('.column-bg_color .aps-ribbon-bg-color-swatch');
 				
-				// Apply styles to name link
-				var styles = {
-					'padding': '4px 12px',
-					'border-radius': '4px',
-					'font-weight': '600',
-					'font-size': '12px',
-					'text-transform': 'uppercase',
-					'letter-spacing': '0.5px',
-					'box-shadow': '0 1px 3px rgba(0, 0, 0, 0.1)',
-					'text-decoration': 'none',
-					'display': 'inline-block'
-				};
+				// Get the name column link
+				var $nameLink = $row.find('.column-name .row-title');
 				
-				if (bgColor) {
-					styles['background-color'] = bgColor;
+				if ($nameLink.length && ($colorSwatch.length || $bgSwatch.length)) {
+					var textColor = $colorSwatch.length ? $colorSwatch.css('background-color') : '';
+					var bgColor = $bgSwatch.length ? $bgSwatch.css('background-color') : '';
+					
+					// Apply styles to name link
+					var styles = {
+						'padding': '4px 12px',
+						'border-radius': '4px',
+						'font-weight': '600',
+						'font-size': '12px',
+						'text-transform': 'uppercase',
+						'letter-spacing': '0.5px',
+						'box-shadow': '0 1px 3px rgba(0, 0, 0, 0.1)',
+						'text-decoration': 'none',
+						'display': 'inline-block'
+					};
+					
+					if (bgColor) {
+						styles['background-color'] = bgColor;
+					}
+					
+					if (textColor) {
+						styles['color'] = textColor;
+					}
+					
+					$nameLink.css(styles);
 				}
-				
-				if (textColor) {
-					styles['color'] = textColor;
-				}
-				
-				$link.css(styles);
 			});
 		}
 	});

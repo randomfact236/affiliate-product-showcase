@@ -51,7 +51,27 @@ class Enqueue {
      * @return void
      */
     public function enqueueStyles( string $hook ): void {
-        // Only load on our plugin pages
+        // Load products page CSS regardless of plugin page check
+        global $typenow;
+        if ( $hook === 'edit.php' && $typenow === 'aps_product' ) {
+            // Table filters CSS
+            wp_enqueue_style(
+                'affiliate-product-showcase-table-filters',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-table-filters.css' ),
+                [],
+                self::VERSION
+            );
+            
+            // Products table CSS for custom columns (Logo, Ribbon, Status, etc.)
+            wp_enqueue_style(
+                'affiliate-product-showcase-products',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
+                [],
+                self::VERSION
+            );
+        }
+        
+        // Only load other styles on our plugin pages
         if ( ! $this->isPluginPage( $hook ) ) {
             return;
         }
@@ -96,25 +116,6 @@ class Enqueue {
 
         // Note: Product edit styles are inline in add-product-page.php
         // No separate CSS file needed for add-product page
-
-        // Products list page - WordPress default table with filter extensions
-        if ( $hook === 'edit-aps_product' ) {
-            // Enqueue filter styles for custom filters added via hooks
-            wp_enqueue_style(
-                'affiliate-product-showcase-table-filters',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-table-filters.css' ),
-                [],
-                self::VERSION
-            );
-            
-            // Enqueue products styles for custom columns (Logo, Ribbon, Status, etc.)
-            wp_enqueue_style(
-                'affiliate-product-showcase-products',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
-                [],
-                self::VERSION
-            );
-        }
 
         // Custom products page
         if ( $hook === 'aps_product_page_aps-products' ) {

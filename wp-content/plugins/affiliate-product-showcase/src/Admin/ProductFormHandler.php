@@ -110,6 +110,7 @@ class ProductFormHandler {
 		$data['affiliate_url']     = isset( $raw_data['aps_affiliate_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_affiliate_url'] ) ) : '';
 		$data['image_url']     = isset( $raw_data['aps_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_image_url'] ) ) : '';
 		$data['video_url']     = isset( $raw_data['aps_video_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_video_url'] ) ) : '';
+		$data['logo']          = isset( $raw_data['aps_logo'] ) ? absint( $raw_data['aps_logo'] ) : 0;
 
 		// Pricing
 		$data['regular_price']     = isset( $raw_data['aps_regular_price'] ) ? floatval( $raw_data['aps_regular_price'] ) : 0.0;
@@ -292,6 +293,11 @@ class ProductFormHandler {
 		update_post_meta( $post_id, '_aps_stock_status', $data['stock_status'] );
 		update_post_meta( $post_id, '_aps_seo_title', $data['seo_title'] );
 		update_post_meta( $post_id, '_aps_seo_description', $data['seo_description'] );
+		
+		// Save logo (attachment ID)
+		if ( ! empty( $data['logo'] ) ) {
+			update_post_meta( $post_id, '_aps_logo', $data['logo'] );
+		}
 
 		// Save sale price if set
 		if ( null !== $data['sale_price'] ) {

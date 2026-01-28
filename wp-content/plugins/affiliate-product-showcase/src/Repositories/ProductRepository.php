@@ -54,7 +54,7 @@ final class ProductRepository extends AbstractRepository {
 	/**
 	 * Constructor
 	 *
-	 * Initializes the repository with required dependencies.
+	 * Initializes repository with required dependencies.
 	 *
 	 * @return void
 	 * @since 1.0.0
@@ -153,97 +153,6 @@ final class ProductRepository extends AbstractRepository {
 		$this->cacheItems( $cache_key, $items );
 		
 		return $items;
-	}
-
-	/**
-	 * Prepare and validate query arguments
-	 *
-	 * Merges provided arguments with defaults and validates.
-	 *
-	 * @param array<string, mixed> $args Query arguments
-	 * @return array<string, mixed> Prepared query arguments
-	 * @throws RepositoryException If validation fails
-	 * @since 1.0.0
-	 */
-	private function prepareQueryArgs( array $args ): array {
-		$query_args = wp_parse_args(
-			$args,
-			[
-				'post_type'      => Constants::CPT_PRODUCT,
-				'post_status'    => 'publish',
-				'posts_per_page' => $args['per_page'] ?? 20,
-				'orderby'        => $args['orderby'] ?? 'date',
-				'order'          => $args['order'] ?? 'DESC',
-			]
-		);
-
-		$this->validateQueryArgs( $query_args );
-		
-		return $query_args;
-	}
-
-	/**
-	 * Validate query arguments
-	 *
-	 * Ensures query arguments are valid before execution.
-	 *
-	 * @param array<string, mixed> $args Query arguments to validate
-	 * @throws RepositoryException If validation fails
-	 * @since 1.0.0
-	 */
-	private function validateQueryArgs( array $args ): void {
-		if ( isset( $args['posts_per_page'] ) && $args['posts_per_page'] < -1 ) {
-			throw RepositoryException::validationError( 'posts_per_page', 'Must be -1 or a positive integer' );
-		}
-	}
-
-	/**
-	 * Generate cache key from query arguments
-	 *
-	 * Creates unique cache key from query arguments.
-	 *
-	 * @param array<string, mixed> $args Query arguments
-	 * @return string Cache key
-	 * @since 1.0.0
-	 */
-	private function generateCacheKey( array $args ): string {
-		return 'aps_product_list_' . md5( serialize( $args ) );
-	}
-
-	/**
-	 * Get cached items if available
-	 *
-	 * Retrieves cached items from WordPress object cache.
-	 *
-	 * @param string $cache_key Cache key
-	 * @return array<int, Product>|false Cached items or false if not cached
-	 * @since 1.0.0
-	 */
-	private function getCachedItems( string $cache_key ) {
-		return wp_cache_get( $cache_key, 'aps_products' );
-	}
-
-	/**
-	 * Execute WP_Query with error handling
-	 *
-	 * Executes WordPress query and wraps exceptions.
-	 *
-	 * @param array<string, mixed> $args Query arguments
-	 * @return \WP_Query Query object
-	 * @throws RepositoryException If query fails
-	 * @since 1.0.0
-	 */
-	private function executeQuery( array $args ): \WP_Query {
-		try {
-			return new \WP_Query( $args );
-		} catch ( \Exception $e ) {
-			throw RepositoryException::queryError(
-				__( 'Product', 'affiliate-product-showcase' ),
-				$e->getMessage(),
-				0,
-				$e
-			);
-		}
 	}
 
 	/**
@@ -440,6 +349,9 @@ final class ProductRepository extends AbstractRepository {
 		
 		// Save tag taxonomies
 		$this->saveTags( $post_id, $product );
+		
+		// Save ribbon taxonomies
+		$this->saveRibbons( $post_id, $product );
 	}
 
 	/**
@@ -452,22 +364,31 @@ final class ProductRepository extends AbstractRepository {
 	 * @since 1.0.0
 	 */
 	private function getProductMetaFields( Product $product ): array {
-		return [
-			'aps_price'         => $product->price,
-			'aps_original_price' => $product->original_price,
-			'aps_currency'      => $product->currency,
-			'aps_affiliate_url' => $product->affiliate_url,
-			'aps_image_url'    => $product->image_url,
-			'aps_rating'       => $product->rating,
-			'aps_badge'        => $product->badge,
-			'aps_featured'      => $product->featured ? '1' : '',
+		$fields = [
+			'_aps_price'              => $product->price,
+			'_aps_original_price'      => $product->original_price,
+			'_aps_currency'           => $product->currency,
+			'_aps_affiliate_url'      => $product->affiliate_url,
+			'_aps_image_url'          => $product->image_url,
+			'_aps_rating'             => $product->rating,
+			'_aps_badge'              => $product->badge,
+			'_aps_featured'            => $product->featured ? '1' : '',
+			'_aps_short_description'   => $product->short_description,
+			'_aps_discount_percentage' => $product->discount_percentage,
+			'_aps_platform_requirements' => $product->platform_requirements,
+			'_aps_version_number'      => $product->version_number,
 		];
+		
+		// Remove null/empty values
+		return array_filter( $fields, function( $value ) {
+			return $value !== null && $value !== '';
+		} );
 	}
 
 	/**
 	 * Save category taxonomies for a product
 	 *
-	 * Sets category taxonomy terms for the product.
+	 * Sets category taxonomy terms for product.
 	 *
 	 * @param int $post_id Post ID
 	 * @param Product $product Product object
@@ -490,7 +411,7 @@ final class ProductRepository extends AbstractRepository {
 	/**
 	 * Save tag taxonomies for a product
 	 *
-	 * Sets tag taxonomy terms for the product.
+	 * Sets tag taxonomy terms for product.
 	 *
 	 * @param int $post_id Post ID
 	 * @param Product $product Product object
@@ -507,6 +428,29 @@ final class ProductRepository extends AbstractRepository {
 		} else {
 			// Remove all tag terms if empty array provided
 			wp_set_object_terms( $post_id, [], Constants::TAX_TAG );
+		}
+	}
+
+	/**
+	 * Save ribbon taxonomies for a product
+	 *
+	 * Sets ribbon taxonomy terms for product.
+	 *
+	 * @param int $post_id Post ID
+	 * @param Product $product Product object
+	 * @return void
+	 * @since 1.0.0
+	 */
+	private function saveRibbons( int $post_id, Product $product ): void {
+		// Remove old 'aps_ribbons' meta if it exists (migration cleanup)
+		delete_post_meta( $post_id, 'aps_ribbons' );
+		
+		// Set taxonomy terms
+		if ( ! empty( $product->ribbon_ids ) ) {
+			wp_set_object_terms( $post_id, $product->ribbon_ids, Constants::TAX_RIBBON );
+		} else {
+			// Remove all ribbon terms if empty array provided
+			wp_set_object_terms( $post_id, [], Constants::TAX_RIBBON );
 		}
 	}
 

@@ -65,6 +65,11 @@ class AjaxHandler {
         // Check links
         add_action('wp_ajax_aps_check_links', [$this, 'handleCheckLinks']);
         add_action('wp_ajax_nopriv_aps_check_links', [$this, 'handleCheckLinks']);
+
+        // Product table actions (no nopriv - only logged-in admins)
+        add_action('wp_ajax_aps_bulk_trash_products', [$this, 'handleBulkTrashProducts']);
+        add_action('wp_ajax_aps_trash_product', [$this, 'handleTrashProduct']);
+        add_action('wp_ajax_aps_quick_edit_product', [$this, 'handleQuickEditProduct']);
     }
 
     /**
@@ -123,7 +128,7 @@ class AjaxHandler {
         if ($featured) {
             $args['meta_query'] = [
                 [
-                    'key' => 'aps_featured',
+                    'key' => '_aps_featured',
                     'value' => '1',
                     'compare' => '=',
                 ]
@@ -142,16 +147,16 @@ class AjaxHandler {
                 $products[] = [
                     'id' => $post_id,
                     'title' => get_the_title(),
-                    'logo' => get_post_meta($post_id, 'aps_product_logo', true),
-                    'price' => get_post_meta($post_id, 'aps_product_price', true),
-                    'original_price' => get_post_meta($post_id, 'aps_product_original_price', true),
+                    'logo' => get_post_meta($post_id, '_aps_logo', true),
+                    'price' => get_post_meta($post_id, '_aps_price', true),
+                    'original_price' => get_post_meta($post_id, '_aps_original_price', true),
                     'discount_percentage' => $this->calculateDiscount($post_id),
                     'status' => get_post_status($post_id),
-                    'featured' => get_post_meta($post_id, 'aps_featured', true) === '1',
-                    'ribbon' => get_post_meta($post_id, 'aps_product_ribbon', true),
+                    'featured' => get_post_meta($post_id, '_aps_featured', true) === '1',
+                    'ribbon' => get_post_meta($post_id, '_aps_ribbon', true),
                     'categories' => wp_get_post_terms($post_id, 'aps_category', ['fields' => 'names']),
                     'tags' => wp_get_post_terms($post_id, 'aps_tag', ['fields' => 'names']),
-                    'affiliate_url' => get_post_meta($post_id, 'aps_product_affiliate_url', true),
+                    'affiliate_url' => get_post_meta($post_id, '_aps_affiliate_url', true),
                 ];
             }
         }
@@ -285,7 +290,7 @@ class AjaxHandler {
             'post_status' => 'publish',
             'meta_query' => [
                 [
-                    'key' => 'aps_product_affiliate_url',
+                    'key' => '_aps_affiliate_url',
                     'compare' => 'EXISTS',
                 ]
             ]
@@ -298,7 +303,7 @@ class AjaxHandler {
             while ($query->have_posts()) {
                 $query->the_post();
                 $product_id = get_the_ID();
-                $affiliate_url = get_post_meta($product_id, 'aps_product_affiliate_url', true);
+                $affiliate_url = get_post_meta($product_id, '_aps_affiliate_url', true);
 
                 // Check link (simulated for now)
                 $is_valid = $this->checkLink($affiliate_url);
@@ -340,19 +345,19 @@ class AjaxHandler {
     private function processBulkAction(string $action, int $product_id): bool {
         switch ($action) {
             case 'set_in_stock':
-                return update_post_meta($product_id, 'aps_stock_status', 'in_stock');
+                return update_post_meta($product_id, '_aps_stock_status', 'in_stock');
             
             case 'set_out_of_stock':
-                return update_post_meta($product_id, 'aps_stock_status', 'out_of_stock');
+                return update_post_meta($product_id, '_aps_stock_status', 'out_of_stock');
             
             case 'set_featured':
-                return update_post_meta($product_id, 'aps_featured', '1');
+                return update_post_meta($product_id, '_aps_featured', '1');
             
             case 'unset_featured':
-                return update_post_meta($product_id, 'aps_featured', '0');
+                return update_post_meta($product_id, '_aps_featured', '0');
             
             case 'reset_clicks':
-                return update_post_meta($product_id, 'aps_clicks', 0);
+                return update_post_meta($product_id, '_aps_clicks', 0);
             
             case 'delete':
                 return wp_delete_post($product_id, true) !== false;
@@ -369,8 +374,8 @@ class AjaxHandler {
      * @return int
      */
     private function calculateDiscount(int $product_id): int {
-        $price = (float) get_post_meta($product_id, 'aps_product_price', true);
-        $original_price = (float) get_post_meta($product_id, 'aps_product_original_price', true);
+        $price = (float) get_post_meta($product_id, '_aps_price', true);
+        $original_price = (float) get_post_meta($product_id, '_aps_original_price', true);
 
         if ($original_price > 0 && $original_price > $price) {
             return (int) round((($original_price - $price) / $original_price) * 100);
@@ -388,5 +393,308 @@ class AjaxHandler {
     private function checkLink(string $url): bool {
         // Simulate link check (in production, use wp_remote_get)
         return !empty($url) && filter_var($url, FILTER_VALIDATE_URL);
+    }
+
+    /**
+     * Handle bulk trash products action
+     *
+     * @return void
+     */
+    public function handleBulkTrashProducts(): void {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_products_nonce')) {
+            wp_send_json_error(['message' => 'Invalid security token']);
+            return;
+        }
+
+        // Check permissions
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Insufficient permissions']);
+            return;
+        }
+
+        // Get product IDs
+        $product_ids = isset($_POST['product_ids']) ? array_map('intval', $_POST['product_ids']) : [];
+
+        if (empty($product_ids)) {
+            wp_send_json_error(['message' => 'No products selected']);
+            return;
+        }
+
+        $success_count = 0;
+        $error_count = 0;
+        $trashed_ids = [];
+
+        foreach ($product_ids as $product_id) {
+            // Validate product exists and is correct type
+            $post = get_post($product_id);
+            
+            if (!$post || $post->post_type !== 'aps_product') {
+                $error_count++;
+                continue;
+            }
+
+            // Trash the product
+            $result = wp_trash_post($product_id);
+            
+            if ($result) {
+                $success_count++;
+                $trashed_ids[] = $product_id;
+            } else {
+                $error_count++;
+            }
+        }
+
+        // Clear product cache
+        foreach ($trashed_ids as $product_id) {
+            wp_cache_delete("product_{$product_id}", 'products');
+        }
+
+        wp_send_json_success([
+            'message' => sprintf(
+                '%d product%s moved to trash.',
+                $success_count,
+                $success_count === 1 ? '' : 's'
+            ),
+            'count' => $success_count,
+            'trashed_ids' => $trashed_ids,
+            'errors' => $error_count,
+        ]);
+    }
+
+    /**
+     * Handle trash product action
+     *
+     * @return void
+     */
+    public function handleTrashProduct(): void {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_products_nonce')) {
+            wp_send_json_error(['message' => 'Invalid security token']);
+            return;
+        }
+
+        // Check permissions
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Insufficient permissions']);
+            return;
+        }
+
+        // Get product ID
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+
+        if ($product_id === 0) {
+            wp_send_json_error(['message' => 'Invalid product ID']);
+            return;
+        }
+
+        // Validate product exists and is correct type
+        $post = get_post($product_id);
+        
+        if (!$post) {
+            wp_send_json_error(['message' => 'Product not found']);
+            return;
+        }
+
+        if ($post->post_type !== 'aps_product') {
+            wp_send_json_error(['message' => 'Invalid product type']);
+            return;
+        }
+
+        // Trash the product
+        $result = wp_trash_post($product_id);
+
+        if ($result) {
+            // Clear product cache
+            wp_cache_delete("product_{$product_id}", 'products');
+
+            wp_send_json_success([
+                'message' => 'Product moved to trash.',
+                'product_id' => $product_id,
+            ]);
+        } else {
+            wp_send_json_error(['message' => 'Failed to move product to trash']);
+        }
+    }
+
+    /**
+     * Handle quick edit product action
+     *
+     * @return void
+     */
+    public function handleQuickEditProduct(): void {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_products_nonce')) {
+            wp_send_json_error(['message' => 'Invalid security token']);
+            return;
+        }
+
+        // Check permissions
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Insufficient permissions']);
+            return;
+        }
+
+        // Get product ID
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+
+        if ($product_id === 0) {
+            wp_send_json_error(['message' => 'Invalid product ID']);
+            return;
+        }
+
+        // Validate product exists and is correct type
+        $post = get_post($product_id);
+        
+        if (!$post) {
+            wp_send_json_error(['message' => 'Product not found']);
+            return;
+        }
+
+        if ($post->post_type !== 'aps_product') {
+            wp_send_json_error(['message' => 'Invalid product type']);
+            return;
+        }
+
+        // Get product data
+        $product_data = isset($_POST['data']) && is_array($_POST['data']) ? $_POST['data'] : [];
+
+        if (empty($product_data)) {
+            wp_send_json_error(['message' => 'No data provided']);
+            return;
+        }
+
+        // Validate and sanitize fields
+        $errors = $this->validateQuickEditData($product_data);
+        
+        if (!empty($errors)) {
+            wp_send_json_error([
+                'message' => 'Validation failed',
+                'errors' => $errors,
+            ]);
+            return;
+        }
+
+        $updated_fields = [];
+
+        // Update title
+        if (isset($product_data['title'])) {
+            $title = sanitize_text_field($product_data['title']);
+            if (!empty($title)) {
+                $updated = wp_update_post([
+                    'ID' => $product_id,
+                    'post_title' => $title,
+                ]);
+                
+                if (!is_wp_error($updated)) {
+                    $updated_fields['title'] = $title;
+                }
+            }
+        }
+
+        // Update status
+        if (isset($product_data['status'])) {
+            $status = sanitize_text_field($product_data['status']);
+            $valid_statuses = ['publish', 'draft', 'pending'];
+            
+            if (in_array($status, $valid_statuses)) {
+                $updated = wp_update_post([
+                    'ID' => $product_id,
+                    'post_status' => $status,
+                ]);
+                
+                if (!is_wp_error($updated)) {
+                    $updated_fields['status'] = $status;
+                }
+            }
+        }
+
+        // Update price
+        if (isset($product_data['price'])) {
+            $price = floatval($product_data['price']);
+            if ($price >= 0) {
+                update_post_meta($product_id, '_aps_price', $price);
+                $updated_fields['price'] = $price;
+            }
+        }
+
+        // Update original price
+        if (isset($product_data['original_price'])) {
+            $original_price = floatval($product_data['original_price']);
+            if ($original_price >= 0) {
+                update_post_meta($product_id, '_aps_original_price', $original_price);
+                $updated_fields['original_price'] = $original_price;
+            }
+        }
+
+        // Update featured
+        if (isset($product_data['featured'])) {
+            $featured = $product_data['featured'] === '1' || $product_data['featured'] === true;
+            update_post_meta($product_id, '_aps_featured', $featured ? '1' : '0');
+            $updated_fields['featured'] = $featured;
+        }
+
+        // Update ribbon
+        if (isset($product_data['ribbon'])) {
+            $ribbon = sanitize_text_field($product_data['ribbon']);
+            update_post_meta($product_id, '_aps_ribbon', $ribbon);
+            $updated_fields['ribbon'] = $ribbon;
+        }
+
+        // Clear product cache
+        wp_cache_delete("product_{$product_id}", 'products');
+
+        wp_send_json_success([
+            'message' => 'Product updated successfully.',
+            'product_id' => $product_id,
+            'updated_fields' => $updated_fields,
+        ]);
+    }
+
+    /**
+     * Validate quick edit data
+     *
+     * @param array $data
+     * @return array
+     */
+    private function validateQuickEditData(array $data): array {
+        $errors = [];
+
+        // Validate title
+        if (isset($data['title'])) {
+            if (empty($data['title'])) {
+                $errors['title'] = 'Title is required';
+            } elseif (strlen($data['title']) > 200) {
+                $errors['title'] = 'Title must be less than 200 characters';
+            }
+        }
+
+        // Validate price
+        if (isset($data['price'])) {
+            $price = floatval($data['price']);
+            if ($price < 0) {
+                $errors['price'] = 'Price must be a positive number';
+            }
+        }
+
+        // Validate original price
+        if (isset($data['original_price'])) {
+            $original_price = floatval($data['original_price']);
+            if ($original_price < 0) {
+                $errors['original_price'] = 'Original price must be a positive number';
+            } elseif (isset($data['price']) && $original_price > 0 && $original_price < floatval($data['price'])) {
+                $errors['original_price'] = 'Original price cannot be less than price';
+            }
+        }
+
+        // Validate status
+        if (isset($data['status'])) {
+            $valid_statuses = ['publish', 'draft', 'pending'];
+            if (!in_array($data['status'], $valid_statuses)) {
+                $errors['status'] = 'Invalid status value';
+            }
+        }
+
+        return $errors;
     }
 }

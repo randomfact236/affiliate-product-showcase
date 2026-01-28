@@ -27,22 +27,22 @@ if ( $is_editing ) {
 			'title' => $post->post_title,
 			'status' => $post->post_status,
 			'content' => $post->post_content,
-			// Meta fields
-			'logo' => get_post_meta( $post->ID, 'aps_product_logo', true ),
-			'brand_image' => get_post_meta( $post->ID, 'aps_brand_image', true ),
-			'affiliate_url' => get_post_meta( $post->ID, 'aps_affiliate_url', true ),
-			'button_name' => get_post_meta( $post->ID, 'aps_button_name', true ),
-			'short_description' => get_post_meta( $post->ID, 'aps_short_description', true ),
-			'regular_price' => get_post_meta( $post->ID, 'aps_regular_price', true ),
-			'sale_price' => get_post_meta( $post->ID, 'aps_sale_price', true ),
-			'currency' => get_post_meta( $post->ID, 'aps_currency', true ) ?: 'USD',
-			'featured' => get_post_meta( $post->ID, 'aps_featured', true ) === '1',
-			'rating' => get_post_meta( $post->ID, 'aps_rating', true ),
-			'views' => get_post_meta( $post->ID, 'aps_views', true ),
-			'user_count' => get_post_meta( $post->ID, 'aps_user_count', true ),
-			'reviews' => get_post_meta( $post->ID, 'aps_reviews', true ),
+			// Meta fields - standardized with underscore prefix to match save logic
+			'logo' => get_post_meta( $post->ID, '_aps_logo', true ),
+			'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
+			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
+			'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
+			'short_description' => get_post_meta( $post->ID, '_aps_short_description', true ),
+			'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
+			'sale_price' => get_post_meta( $post->ID, '_aps_sale_price', true ),
+			'currency' => get_post_meta( $post->ID, '_aps_currency', true ) ?: 'USD',
+			'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
+			'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
+			'views' => get_post_meta( $post->ID, '_aps_views', true ),
+			'user_count' => get_post_meta( $post->ID, '_aps_user_count', true ),
+			'reviews' => get_post_meta( $post->ID, '_aps_reviews', true ),
 			// Features stored as JSON
-			'features' => json_decode( get_post_meta( $post->ID, 'aps_features', true ) ?: '[]', true ),
+			'features' => json_decode( get_post_meta( $post->ID, '_aps_features', true ) ?: '[]', true ),
 		];
 	}
 }

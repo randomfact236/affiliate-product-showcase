@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Ribbon Fields
  *
@@ -12,8 +14,6 @@
  * @since 2.0.0
  * @author Development Team
  */
-
-declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Admin;
 
@@ -55,7 +55,7 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	}
 	
 	/**
-	 * Initialize all hooks (override parent to add name color filter)
+	 * Initialize all hooks
 	 *
 	 * @return void
 	 * @since 2.0.0
@@ -63,9 +63,6 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	public function init(): void {
 		// Call parent init for shared functionality
 		parent::init();
-		
-		// Add filter to embed color data in name column
-		add_filter( 'term_links-' . $this->get_taxonomy(), [ $this, 'embed_color_data_in_name' ], 10, 2 );
 	}
 	
 	/**
@@ -408,35 +405,5 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 		}
 		
 		return $content;
-	}
-	
-	/**
-	 * Embed color data in name column for JavaScript styling
-	 *
-	 * @param string $name Term name
-	 * @param WP_Term $term Term object
-	 * @return string Modified name with color data attributes
-	 * @since 2.0.0
-	 */
-	public function embed_color_data_in_name( string $name, \WP_Term $term ): string {
-		// Only apply on ribbon taxonomy list page
-		$screen = get_current_screen();
-		if ( ! $screen || $screen->taxonomy !== $this->get_taxonomy() ) {
-			return $name;
-		}
-		
-		$bg_color = get_term_meta( $term->term_id, '_aps_ribbon_bg_color', true );
-		$text_color = get_term_meta( $term->term_id, '_aps_ribbon_color', true );
-		
-		// Embed colors as data attributes
-		$data_attrs = '';
-		if ( ! empty( $bg_color ) ) {
-			$data_attrs .= sprintf( ' data-ribbon-bg="%s"', esc_attr( $bg_color ) );
-		}
-		if ( ! empty( $text_color ) ) {
-			$data_attrs .= sprintf( ' data-ribbon-text="%s"', esc_attr( $text_color ) );
-		}
-		
-		return sprintf( '<span%s>%s</span>', $data_attrs, $name );
 	}
 }
