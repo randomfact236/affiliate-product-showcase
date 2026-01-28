@@ -175,9 +175,16 @@ class Menu {
 	 * @return array Modified columns with custom ones
 	 */
 	public function addCustomColumns(array $columns): array {
-		// Insert Logo column at the beginning (after checkbox)
+		// Ensure ID column is present and positioned
+		if (!isset($columns['id'])) {
+			// Insert ID column at position 1 (after checkbox)
+			$id_column = ['id' => __('ID', 'affiliate-product-showcase')];
+			$columns = array_slice($columns, 0, 1, true) + $id_column + array_slice($columns, 1, null, true);
+		}
+		
+		// Insert Logo column at the beginning (after checkbox and ID)
 		$logo_column = ['logo' => __('Logo', 'affiliate-product-showcase')];
-		$columns = array_slice($columns, 0, 1, true) + $logo_column + array_slice($columns, 1, null, true);
+		$columns = array_slice($columns, 0, 2, true) + $logo_column + array_slice($columns, 2, null, true);
 		
 		// Add other custom columns
 		// Note: Ribbon uses WordPress native taxonomy column (taxonomy-aps_ribbon)
@@ -198,12 +205,18 @@ class Menu {
 	 */
 	public function renderCustomColumns(string $column, int $post_id): void {
 		switch ($column) {
+			case 'id':
+				echo '<span class="aps-product-id">' . esc_html($post_id) . '</span>';
+				break;
+				
 			case 'logo':
 				$logo_id = get_post_meta($post_id, '_aps_logo', true);
 				if ($logo_id) {
 					$logo_url = wp_get_attachment_image_url($logo_id, 'thumbnail');
 					if ($logo_url) {
-						echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_the_title($post_id)) . '" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">';
+						echo '<div class="aps-logo-container">';
+						echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_the_title($post_id)) . '" class="aps-product-logo">';
+						echo '</div>';
 					}
 				}
 				break;
