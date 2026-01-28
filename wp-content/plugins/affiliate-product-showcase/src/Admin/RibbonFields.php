@@ -55,6 +55,20 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	}
 	
 	/**
+	 * Initialize all hooks (override parent to add name color filter)
+	 *
+	 * @return void
+	 * @since 2.0.0
+	 */
+	public function init(): void {
+		// Call parent init for shared functionality
+		parent::init();
+		
+		// Add filter to embed color data in name column
+		add_filter( 'term_links-' . $this->get_taxonomy(), [ $this, 'embed_color_data_in_name' ], 10, 2 );
+	}
+	
+	/**
 	 * Enqueue admin assets (ribbon-specific: color picker)
 	 *
 	 * @param string $hook_suffix Current admin page hook
@@ -358,35 +372,6 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	public function render_custom_columns( string $content, string $column_name, int $term_id ): string {
-		// Render ribbon name with background color
-		if ( $column_name === 'name' ) {
-			$term = get_term( $term_id );
-			$bg_color = get_term_meta( $term_id, '_aps_ribbon_bg_color', true );
-			$text_color = get_term_meta( $term_id, '_aps_ribbon_color', true );
-			
-			if ( $term && ! is_wp_error( $term ) ) {
-				$styles = [];
-				
-				if ( ! empty( $bg_color ) ) {
-					$styles[] = 'background-color: ' . esc_attr( $bg_color );
-				}
-				
-				if ( ! empty( $text_color ) ) {
-					$styles[] = 'color: ' . esc_attr( $text_color );
-				}
-				
-				$style_attr = ! empty( $styles ) ? ' style="' . implode( '; ', $styles ) . '"' : '';
-				
-				return sprintf(
-					'<span class="aps-ribbon-name-badge"%s>%s</span>',
-					$style_attr,
-					esc_html( $term->name )
-				);
-			}
-			
-			return $content;
-		}
-		
 		// Call parent for shared columns
 		if ( in_array( $column_name, [ 'icon', 'status', 'count' ], true ) ) {
 			return parent::render_custom_columns( $content, $column_name, $term_id );
@@ -423,5 +408,35 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 		}
 		
 		return $content;
+	}
+	
+	/**
+	 * Embed color data in name column for JavaScript styling
+	 *
+	 * @param string $name Term name
+	 * @param WP_Term $term Term object
+	 * @return string Modified name with color data attributes
+	 * @since 2.0.0
+	 */
+	public function embed_color_data_in_name( string $name, \WP_Term $term ): string {
+		// Only apply on ribbon taxonomy list page
+		$screen = get_current_screen();
+		if ( ! $screen || $screen->taxonomy !== $this->get_taxonomy() ) {
+			return $name;
+		}
+		
+		$bg_color = get_term_meta( $term->term_id, '_aps_ribbon_bg_color', true );
+		$text_color = get_term_meta( $term->term_id, '_aps_ribbon_color', true );
+		
+		// Embed colors as data attributes
+		$data_attrs = '';
+		if ( ! empty( $bg_color ) ) {
+			$data_attrs .= sprintf( ' data-ribbon-bg="%s"', esc_attr( $bg_color ) );
+		}
+		if ( ! empty( $text_color ) ) {
+			$data_attrs .= sprintf( ' data-ribbon-text="%s"', esc_attr( $text_color ) );
+		}
+		
+		return sprintf( '<span%s>%s</span>', $data_attrs, $name );
 	}
 }
