@@ -33,7 +33,7 @@ if ( $is_editing ) {
 			'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
 			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
 			'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
-			'short_description' => get_post_meta( $post->ID, '_aps_short_description', true ),
+			'short_description' => get_post_meta( $post->ID, 'aps_short_description', true ),
 			'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
 			'sale_price' => get_post_meta( $post->ID, '_aps_sale_price', true ),
 			'currency' => get_post_meta( $post->ID, '_aps_currency', true ) ?: 'USD',
