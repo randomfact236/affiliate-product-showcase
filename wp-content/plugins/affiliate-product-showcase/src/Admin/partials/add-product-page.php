@@ -705,6 +705,7 @@ jQuery(document).ready(function($) {
 		if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
 		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
 		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
+		if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
 	}
 	
 });
