@@ -478,262 +478,255 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		});
 	
 		let features = [];
-	if (apsIsEditing && apsProductData.features && Array.isArray(apsProductData.features)) {
-		features = apsProductData.features;
-		renderFeatures();
-	}
-	
-	$('#aps-add-feature').on('click', function() {
-		const input = $('#aps-new-feature');
-		const featureText = input.val().trim();
-		if (featureText) {
-			features.push({ text: featureText, highlighted: false });
-			input.val('');
+		if (apsIsEditing && apsProductData.features && Array.isArray(apsProductData.features)) {
+			features = apsProductData.features;
 			renderFeatures();
 		}
-	});
 	
-	$('#aps-new-feature').on('keypress', function(e) {
-		if (e.which === 13) { e.preventDefault(); $('#aps-add-feature').click(); }
-	});
-	
-	function renderFeatures() {
-		const container = $('#aps-features-list');
-		container.empty();
-		features.forEach((feature, index) => {
-			const html = `<div class="aps-feature-item ${feature.highlighted ? 'highlighted' : ''}" data-index="${index}">
-				<span class="feature-text">${feature.text.replace(/</g, '<')}</span>
-				<div class="feature-actions">
-					<button type="button" class="highlight-btn" title="Highlight"><i class="fas fa-bold"></i></button>
-					<button type="button" class="move-up" title="Move Up"><i class="fas fa-arrow-up"></i></button>
-					<button type="button" class="move-down" title="Move Down"><i class="fas fa-arrow-down"></i></button>
-					<button type="button" class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
-				</div>`;
-			container.append(html);
+		$('#aps-add-feature').on('click', function() {
+			const input = $('#aps-new-feature');
+			const featureText = input.val().trim();
+			if (featureText) {
+				features.push({ text: featureText, highlighted: false });
+				input.val('');
+				renderFeatures();
+			}
 		});
-		$('#aps-features-input').val(JSON.stringify(features));
-	}
 	
-	$(document).on('click', '.aps-feature-item .highlight-btn', function() {
-		const index = $(this).closest('.aps-feature-item').data('index');
-		features[index].highlighted = !features[index].highlighted;
-		renderFeatures();
-	});
-	
-	$(document).on('click', '.aps-feature-item .move-up', function() {
-		const index = $(this).closest('.aps-feature-item').data('index');
-		if (index > 0) {
-			[features[index], features[index - 1]] = [features[index - 1], features[index]];
-			renderFeatures();
-		}
-	});
-	
-	$(document).on('click', '.aps-feature-item .move-down', function() {
-		const index = $(this).closest('.aps-feature-item').data('index');
-		if (index < features.length - 1) {
-			[features[index], features[index + 1]] = [features[index + 1], features[index]];
-			renderFeatures();
-		}
-	});
-	
-	$(document).on('click', '.aps-feature-item .delete-btn', function() {
-		const index = $(this).closest('.aps-feature-item').data('index');
-		features.splice(index, 1);
-		renderFeatures();
-	});
-	
-	const selectedCategories = [];
-	if (apsIsEditing && apsProductData.categories && Array.isArray(apsProductData.categories)) {
-		apsProductData.categories.forEach(catSlug => {
-			if (!selectedCategories.includes(catSlug)) selectedCategories.push(catSlug);
+		$('#aps-new-feature').on('keypress', function(e) {
+			if (e.which === 13) { e.preventDefault(); $('#aps-add-feature').click(); }
 		});
-		renderCategories();
-		$('#aps-categories-input').val(selectedCategories.join(','));
-	}
 	
-	$('.aps-multi-select .aps-multiselect-input').on('focus click', function() {
-		$(this).siblings('.aps-dropdown').slideDown(200);
-	});
-	
-	$(document).on('click', function(e) {
-		if (!$(e.target).closest('.aps-multi-select').length) {
-			$('.aps-dropdown').slideUp(200);
+		function renderFeatures() {
+			const container = $('#aps-features-list');
+			container.empty();
+			features.forEach((feature, index) => {
+				const html = `<div class="aps-feature-item ${feature.highlighted ? 'highlighted' : ''}" data-index="${index}">
+					<span class="feature-text">${feature.text.replace(/</g, '<')}</span>
+					<div class="feature-actions">
+						<button type="button" class="highlight-btn" title="Highlight"><i class="fas fa-bold"></i></button>
+						<button type="button" class="move-up" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+						<button type="button" class="move-down" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+						<button type="button" class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+					</div>`;
+				container.append(html);
+			});
+			$('#aps-features-input').val(JSON.stringify(features));
 		}
-	});
 	
-	$('#aps-categories-dropdown .dropdown-item').on('click', function() {
-		const value = $(this).data('value');
-		if (!selectedCategories.includes(value)) {
-			selectedCategories.push(value);
+		$(document).on('click', '.aps-feature-item .highlight-btn', function() {
+			const index = $(this).closest('.aps-feature-item').data('index');
+			features[index].highlighted = !features[index].highlighted;
+			renderFeatures();
+		});
+	
+		$(document).on('click', '.aps-feature-item .move-up', function() {
+			const index = $(this).closest('.aps-feature-item').data('index');
+			if (index > 0) {
+				[features[index], features[index - 1]] = [features[index - 1], features[index]];
+				renderFeatures();
+			}
+		});
+	
+		$(document).on('click', '.aps-feature-item .move-down', function() {
+			const index = $(this).closest('.aps-feature-item').data('index');
+			if (index < features.length - 1) {
+				[features[index], features[index + 1]] = [features[index + 1], features[index]];
+				renderFeatures();
+			}
+		});
+	
+		$(document).on('click', '.aps-feature-item .delete-btn', function() {
+			const index = $(this).closest('.aps-feature-item').data('index');
+			features.splice(index, 1);
+			renderFeatures();
+		});
+	
+		const selectedCategories = [];
+		if (apsIsEditing && apsProductData.categories && Array.isArray(apsProductData.categories)) {
+			apsProductData.categories.forEach(catSlug => {
+				if (!selectedCategories.includes(catSlug)) selectedCategories.push(catSlug);
+			});
 			renderCategories();
 			$('#aps-categories-input').val(selectedCategories.join(','));
 		}
-	});
 	
-	function renderCategories() {
-		const container = $('#aps-selected-categories');
-		container.empty();
-		selectedCategories.forEach((cat, index) => {
-			const text = $('#aps-categories-dropdown .dropdown-item[data-value="' + cat + '"]').text();
-			container.append(`<span class="aps-tag">${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
+		$('.aps-multi-select .aps-multiselect-input').on('focus click', function() {
+			$(this).siblings('.aps-dropdown').slideDown(200);
 		});
-	}
 	
-	$(document).on('click', '#aps-selected-categories .remove-tag', function() {
-		const index = $(this).data('index');
-		selectedCategories.splice(index, 1);
-		renderCategories();
-		$('#aps-categories-input').val(selectedCategories.join(','));
-	});
-	
-	const selectedRibbons = [];
-	const ribbonData = {}; // Store ribbon styling data
-	
-	if (apsIsEditing && apsProductData.ribbons && Array.isArray(apsProductData.ribbons)) {
-		apsProductData.ribbons.forEach(ribbonSlug => {
-			if (!selectedRibbons.includes(ribbonSlug)) selectedRibbons.push(ribbonSlug);
+		$(document).on('click', function(e) {
+			if (!$(e.target).closest('.aps-multi-select').length) {
+				$('.aps-dropdown').slideUp(200);
+			}
 		});
-		renderRibbons();
-		$('#aps-ribbons-input').val(selectedRibbons.join(','));
-	}
 	
-	$('#aps-ribbons-dropdown .dropdown-item').on('click', function() {
-		const value = $(this).data('value');
-		if (!selectedRibbons.includes(value)) {
-			selectedRibbons.push(value);
-			// Store ribbon styling data
-			const preview = $(this).find('.ribbon-badge-preview');
-			ribbonData[value] = {
-				color: preview.css('color'),
-				backgroundColor: preview.css('background-color')
-			};
+		$('#aps-categories-dropdown .dropdown-item').on('click', function() {
+			const value = $(this).data('value');
+			if (!selectedCategories.includes(value)) {
+				selectedCategories.push(value);
+				renderCategories();
+				$('#aps-categories-input').val(selectedCategories.join(','));
+			}
+		});
+	
+		function renderCategories() {
+			const container = $('#aps-selected-categories');
+			container.empty();
+			selectedCategories.forEach((cat, index) => {
+				const text = $('#aps-categories-dropdown .dropdown-item[data-value="' + cat + '"]').text();
+				container.append(`<span class="aps-tag">${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
+			});
+		}
+	
+		$(document).on('click', '#aps-selected-categories .remove-tag', function() {
+			const index = $(this).data('index');
+			selectedCategories.splice(index, 1);
+			renderCategories();
+			$('#aps-categories-input').val(selectedCategories.join(','));
+		});
+	
+		const selectedRibbons = [];
+		const ribbonData = {}; // Store ribbon styling data
+	
+		if (apsIsEditing && apsProductData.ribbons && Array.isArray(apsProductData.ribbons)) {
+			apsProductData.ribbons.forEach(ribbonSlug => {
+				if (!selectedRibbons.includes(ribbonSlug)) selectedRibbons.push(ribbonSlug);
+			});
 			renderRibbons();
 			$('#aps-ribbons-input').val(selectedRibbons.join(','));
 		}
-	});
 	
-	function renderRibbons() {
-		const container = $('#aps-selected-ribbons');
-		container.empty();
-		selectedRibbons.forEach((ribbon, index) => {
-			const dropdownItem = $('#aps-ribbons-dropdown .dropdown-item[data-value="' + ribbon + '"]');
-			const preview = dropdownItem.find('.ribbon-badge-preview');
-			const color = preview.css('color');
-			const bgColor = preview.css('background-color');
-			const text = dropdownItem.find('.ribbon-name').text();
-			const icon = dropdownItem.find('.ribbon-icon').text();
-			const iconHtml = icon ? `<span class="ribbon-icon">${icon}</span>` : '';
-			container.append(`<span class="aps-tag" style="color: ${color}; background-color: ${bgColor};">${iconHtml}${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
+		$('#aps-ribbons-dropdown .dropdown-item').on('click', function() {
+			const value = $(this).data('value');
+			if (!selectedRibbons.includes(value)) {
+				selectedRibbons.push(value);
+				// Store ribbon styling data
+				const preview = $(this).find('.ribbon-badge-preview');
+				ribbonData[value] = {
+					color: preview.css('color'),
+					backgroundColor: preview.css('background-color')
+				};
+				renderRibbons();
+				$('#aps-ribbons-input').val(selectedRibbons.join(','));
+			}
 		});
-	}
 	
-	$(document).on('click', '#aps-selected-ribbons .remove-tag', function() {
-		const index = $(this).data('index');
-		selectedRibbons.splice(index, 1);
-		renderRibbons();
-		$('#aps-ribbons-input').val(selectedRibbons.join(','));
-	});
-	
-	$('#aps-upload-image-btn').on('click', function(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-			alert('WordPress media library is not loaded. Please refresh page.');
-			return;
+		function renderRibbons() {
+			const container = $('#aps-selected-ribbons');
+			container.empty();
+			selectedRibbons.forEach((ribbon, index) => {
+				const dropdownItem = $('#aps-ribbons-dropdown .dropdown-item[data-value="' + ribbon + '"]');
+				const preview = dropdownItem.find('.ribbon-badge-preview');
+				const color = preview.css('color');
+				const bgColor = preview.css('background-color');
+				const text = dropdownItem.find('.ribbon-name').text();
+				const icon = dropdownItem.find('.ribbon-icon').text();
+				const iconHtml = icon ? `<span class="ribbon-icon">${icon}</span>` : '';
+				container.append(`<span class="aps-tag" style="color: ${color}; background-color: ${bgColor};">${iconHtml}${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
+			});
 		}
-		const mediaUploader = wp.media({ title: 'Select Image', button: { text: 'Use This Image' }, multiple: false });
-		mediaUploader.on('select', function() {
-			const attachment = mediaUploader.state().get('selection').first().toJSON();
-			$('#aps-image-url').val(attachment.url);
-			$('#aps-image-url-input').val(attachment.url);
-			$('#aps-image-preview').css('background-image', 'url(' + attachment.url + ')').show();
-			$('#aps-image-upload .upload-placeholder').hide();
-			$('#aps-remove-image-btn').show();
-		});
-		mediaUploader.open();
-	});
 	
-	$('#aps-upload-brand-btn').on('click', function(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-			alert('WordPress media library is not loaded. Please refresh page.');
-			return;
-		}
-		const mediaUploader = wp.media({ title: 'Select Brand Image', button: { text: 'Use This Image' }, multiple: false });
-		mediaUploader.on('select', function() {
-			const attachment = mediaUploader.state().get('selection').first().toJSON();
-			$('#aps-brand-image-url').val(attachment.url);
-			$('#aps-brand-url-input').val(attachment.url);
-			$('#aps-brand-preview').css('background-image', 'url(' + attachment.url + ')').show();
-			$('#aps-brand-upload .upload-placeholder').hide();
-			$('#aps-remove-brand-btn').show();
+		$(document).on('click', '#aps-selected-ribbons .remove-tag', function() {
+			const index = $(this).data('index');
+			selectedRibbons.splice(index, 1);
+			renderRibbons();
+			$('#aps-ribbons-input').val(selectedRibbons.join(','));
 		});
-		mediaUploader.open();
-	});
 	
-	$('#aps-image-url-input').on('blur', function() {
-		const url = $(this).val();
-		if (url) {
-			$('#aps-image-url').val(url);
-			$('#aps-image-preview').css('background-image', 'url(' + url + ')').show();
-			$('#aps-image-upload .upload-placeholder').hide();
-			$('#aps-remove-image-btn').show();
-		} else {
+		$('#aps-upload-image-btn').on('click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+				alert('WordPress media library is not loaded. Please refresh page.');
+				return;
+			}
+			const mediaUploader = wp.media({ title: 'Select Image', button: { text: 'Use This Image' }, multiple: false });
+			mediaUploader.on('select', function() {
+				const attachment = mediaUploader.state().get('selection').first().toJSON();
+				$('#aps-image-url').val(attachment.url);
+				$('#aps-image-url-input').val(attachment.url);
+				$('#aps-image-preview').css('background-image', 'url(' + attachment.url + ')').show();
+				$('#aps-image-upload .upload-placeholder').hide();
+				$('#aps-remove-image-btn').show();
+			});
+			mediaUploader.open();
+		});
+	
+		$('#aps-upload-brand-btn').on('click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+				alert('WordPress media library is not loaded. Please refresh page.');
+				return;
+			}
+			const mediaUploader = wp.media({ title: 'Select Brand Image', button: { text: 'Use This Image' }, multiple: false });
+			mediaUploader.on('select', function() {
+				const attachment = mediaUploader.state().get('selection').first().toJSON();
+				$('#aps-brand-image-url').val(attachment.url);
+				$('#aps-brand-url-input').val(attachment.url);
+				$('#aps-brand-preview').css('background-image', 'url(' + attachment.url + ')').show();
+				$('#aps-brand-upload .upload-placeholder').hide();
+				$('#aps-remove-brand-btn').show();
+			});
+			mediaUploader.open();
+		});
+	
+		$('#aps-image-url-input').on('blur', function() {
+			const url = $(this).val();
+			if (url) {
+				$('#aps-image-url').val(url);
+				$('#aps-image-preview').css('background-image', 'url(' + url + ')').show();
+				$('#aps-image-upload .upload-placeholder').hide();
+				$('#aps-remove-image-btn').show();
+			} else {
+				$('#aps-image-url').val('');
+				$('#aps-image-preview').css('background-image', 'none').hide();
+				$('#aps-image-upload .upload-placeholder').show();
+				$('#aps-remove-image-btn').hide();
+			}
+		});
+	
+		$('#aps-brand-url-input').on('blur', function() {
+			const url = $(this).val();
+			if (url) {
+				$('#aps-brand-image-url').val(url);
+				$('#aps-brand-preview').css('background-image', 'url(' + url + ')').show();
+				$('#aps-brand-upload .upload-placeholder').hide();
+				$('#aps-remove-brand-btn').show();
+			} else {
+				$('#aps-brand-image-url').val('');
+				$('#aps-brand-preview').css('background-image', 'none').hide();
+				$('#aps-brand-upload .upload-placeholder').show();
+				$('#aps-remove-brand-btn').hide();
+			}
+		});
+	
+		// Remove image functionality
+		$('#aps-remove-image-btn').on('click', function() {
 			$('#aps-image-url').val('');
+			$('#aps-image-url-input').val('');
 			$('#aps-image-preview').css('background-image', 'none').hide();
 			$('#aps-image-upload .upload-placeholder').show();
-			$('#aps-remove-image-btn').hide();
-		}
-	});
+			$(this).hide();
+		});
 	
-	$('#aps-brand-url-input').on('blur', function() {
-		const url = $(this).val();
-		if (url) {
-			$('#aps-brand-image-url').val(url);
-			$('#aps-brand-preview').css('background-image', 'url(' + url + ')').show();
-			$('#aps-brand-upload .upload-placeholder').hide();
-			$('#aps-remove-brand-btn').show();
-		} else {
+		$('#aps-remove-brand-btn').on('click', function() {
 			$('#aps-brand-image-url').val('');
+			$('#aps-brand-url-input').val('');
 			$('#aps-brand-preview').css('background-image', 'none').hide();
 			$('#aps-brand-upload .upload-placeholder').show();
-			$('#aps-remove-brand-btn').hide();
+			$(this).hide();
+		});
+	
+		if (apsIsEditing) {
+			if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
+			if (apsProductData.views) $('#aps-views').val(apsProductData.views);
+			if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
+			if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
+			if (apsProductData.regular_price) $('#aps-current-price').val(apsProductData.regular_price);
+			if (apsProductData.original_price) $('#aps-original-price').val(apsProductData.original_price);
 		}
-	});
-	
-	// Remove image functionality
-	$('#aps-remove-image-btn').on('click', function() {
-		$('#aps-image-url').val('');
-		$('#aps-image-url-input').val('');
-		$('#aps-image-preview').css('background-image', 'none').hide();
-		$('#aps-image-upload .upload-placeholder').show();
-		$(this).hide();
-	});
-	
-	$('#aps-remove-brand-btn').on('click', function() {
-		$('#aps-brand-image-url').val('');
-		$('#aps-brand-url-input').val('');
-		$('#aps-brand-preview').css('background-image', 'none').hide();
-		$('#aps-brand-upload .upload-placeholder').show();
-		$(this).hide();
-	});
-	
-	$(document).on('click', '#aps-selected-categories .remove-tag', function() {
-		const index = $(this).data('index');
-		selectedCategories.splice(index, 1);
-		renderCategories();
-		$('#aps-categories-input').val(selectedCategories.join(','));
-	});
-	
-	if (apsIsEditing) {
-		if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
-		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
-		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
-		if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
-		if (apsProductData.regular_price) $('#aps-current-price').val(apsProductData.regular_price);
-		if (apsProductData.original_price) $('#aps-original-price').val(apsProductData.original_price);
-	}
 	
 	});
 </script>
