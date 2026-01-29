@@ -377,17 +377,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 			</section>
 			
-			<section id="inventory" class="aps-section">
-				<h2 class="section-title">INVENTORY</h2>
-				<div class="aps-field-group">
-					<label for="aps-stock-status">Stock Status</label>
-					<select id="aps-stock-status" name="aps_stock_status" class="aps-select">
-						<option value="instock" <?php selected( $product_data['stock_status'] ?? 'instock', 'instock' ); ?>>In Stock</option>
-						<option value="outofstock" <?php selected( $product_data['stock_status'] ?? 'instock', 'outofstock' ); ?>>Out of Stock</option>
-						<option value="onbackorder" <?php selected( $product_data['stock_status'] ?? 'instock', 'onbackorder' ); ?>>On Backorder</option>
-					</select>
-				</div>
-			</section>
 			
 			<section id="stats" class="aps-section">
 				<h2 class="section-title">PRODUCT STATISTICS</h2>
