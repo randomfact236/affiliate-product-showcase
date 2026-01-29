@@ -490,6 +490,25 @@ class Menu {
                 height: 20px;
                 padding: 5px 0;
             }
+            /* Logo column sizing - auto-resize to fit in table */
+            .aps-product-logo {
+                width: 50px;
+                height: 50px;
+                object-fit: contain;
+                object-position: center;
+            }
+            .aps-logo-container {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            /* Table column width adjustment for logo */
+            .wp-list-table.posts .column-logo {
+                width: 80px;
+                vertical-align: middle;
+            }
         </style>
         <?php
     }
