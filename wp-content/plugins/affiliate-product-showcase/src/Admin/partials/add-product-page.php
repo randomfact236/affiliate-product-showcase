@@ -93,7 +93,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		<a href="#features" class="nav-link"><i class="fas fa-list"></i> Features</a>
 		<a href="#pricing" class="nav-link"><i class="fas fa-tag"></i> Pricing</a>
 		<a href="#taxonomy" class="nav-link"><i class="fas fa-folder"></i> Categories & Tags</a>
-		<a href="#stats" class="nav-link"><i class="fas fa-chart-bar"></i> Stats</a>
 	</div>
 	
 	<div class="aps-form-container">
@@ -332,79 +331,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							</span>
 						</label>
 					<?php endforeach; ?>
-				</div>
-			</section>
-			
-			<section id="digital-details" class="aps-section">
-				<h2 class="section-title">DIGITAL PRODUCT DETAILS</h2>
-				<div class="aps-grid-2">
-					<div class="aps-field-group">
-						<label for="aps-video-url">Video URL</label>
-						<input type="url" id="aps-video-url" name="aps_video_url" class="aps-input"
-							   placeholder="https://..."
-							   value="<?php echo esc_url( $product_data['video_url'] ?? '' ); ?>">
-					</div>
-					<div class="aps-field-group">
-						<label for="aps-version-number">Version Number</label>
-						<input type="text" id="aps-version-number" name="aps_version_number" class="aps-input"
-							   placeholder="1.0.0"
-							   value="<?php echo esc_attr( $product_data['version_number'] ?? '' ); ?>">
-					</div>
-				</div>
-				<div class="aps-field-group">
-					<label for="aps-platform-requirements">Platform Requirements</label>
-					<textarea id="aps-platform-requirements" name="aps_platform_requirements" class="aps-textarea"
-							  rows="4"
-							  placeholder="Windows 10, macOS 10.14+, etc."><?php echo esc_textarea( $product_data['platform_requirements'] ?? '' ); ?></textarea>
-				</div>
-			</section>
-			
-			<section id="seo" class="aps-section">
-				<h2 class="section-title">SEO SETTINGS</h2>
-				<div class="aps-field-group">
-					<label for="aps-seo-title">SEO Title</label>
-					<input type="text" id="aps-seo-title" name="aps_seo_title" class="aps-input"
-						   placeholder="Custom SEO title"
-						   value="<?php echo esc_attr( $product_data['seo_title'] ?? '' ); ?>">
-					<span class="description">Leave empty to use product title</span>
-				</div>
-				<div class="aps-field-group">
-					<label for="aps-seo-description">SEO Description</label>
-					<textarea id="aps-seo-description" name="aps_seo_description" class="aps-textarea"
-							  rows="4"
-							  placeholder="Custom SEO description"><?php echo esc_textarea( $product_data['seo_description'] ?? '' ); ?></textarea>
-					<span class="description">Leave empty to use short description</span>
-				</div>
-			</section>
-			
-			
-			<section id="stats" class="aps-section">
-				<h2 class="section-title">PRODUCT STATISTICS</h2>
-				<div class="aps-grid-3">
-					<div class="aps-field-group">
-						<label for="aps-rating">Rating</label>
-						<input type="number" id="aps-rating" name="aps_rating" class="aps-input"
-							   step="0.1" min="0" max="5" placeholder="4.5"
-							   value="<?php echo esc_attr( $product_data['rating'] ?? '' ); ?>">
-					</div>
-					<div class="aps-field-group">
-						<label for="aps-views">Views</label>
-						<input type="number" id="aps-views" name="aps_views" class="aps-input"
-							   min="0" placeholder="325"
-							   value="<?php echo esc_attr( $product_data['views'] ?? '' ); ?>">
-					</div>
-					<div class="aps-field-group">
-						<label for="aps-user-count">User Count</label>
-						<input type="text" id="aps-user-count" name="aps_user_count" class="aps-input"
-							   placeholder="1.5K"
-							   value="<?php echo esc_attr( $product_data['user_count'] ?? '' ); ?>">
-					</div>
-				</div>
-				<div class="aps-field-group">
-					<label for="aps-reviews">No. of Reviews</label>
-					<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
-						   min="0" placeholder="12"
-						   value="<?php echo esc_attr( $product_data['reviews'] ?? '' ); ?>">
 				</div>
 			</section>
 			
@@ -742,18 +668,6 @@ jQuery(document).ready(function($) {
 		apsProductData.tags.forEach(tagSlug => {
 			$(`input[name="aps_tags[]"][value="${tagSlug}"]`).prop('checked', true);
 		});
-	}
-	
-	if (apsIsEditing) {
-		if (apsProductData.video_url) $('#aps-video-url').val(apsProductData.video_url);
-		if (apsProductData.platform_requirements) $('[name="aps_platform_requirements"]').val(apsProductData.platform_requirements);
-		if (apsProductData.version_number) $('[name="aps_version_number"]').val(apsProductData.version_number);
-		if (apsProductData.stock_status) $('[name="aps_stock_status"]').val(apsProductData.stock_status);
-		if (apsProductData.seo_title) $('[name="aps_seo_title"]').val(apsProductData.seo_title);
-		if (apsProductData.seo_description) $('[name="aps_seo_description"]').val(apsProductData.seo_description);
-		if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
-		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
-		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 	}
 	
 });
