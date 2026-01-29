@@ -93,6 +93,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		<a href="#features" class="nav-link"><i class="fas fa-list"></i> Features</a>
 		<a href="#pricing" class="nav-link"><i class="fas fa-tag"></i> Pricing</a>
 		<a href="#taxonomy" class="nav-link"><i class="fas fa-folder"></i> Categories & Tags</a>
+		<a href="#stats" class="nav-link"><i class="fas fa-chart-bar"></i> Statistics</a>
 	</div>
 	
 	<div class="aps-form-container">
@@ -331,6 +332,36 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							</span>
 						</label>
 					<?php endforeach; ?>
+				</div>
+			</section>
+			
+			<section id="stats" class="aps-section">
+				<h2 class="section-title">PRODUCT STATISTICS</h2>
+				<div class="aps-grid-3">
+					<div class="aps-field-group">
+						<label for="aps-rating">Rating</label>
+						<input type="number" id="aps-rating" name="aps_rating" class="aps-input"
+							   step="0.1" min="0" max="5" placeholder="4.5"
+							   value="<?php echo esc_attr( $product_data['rating'] ?? '' ); ?>">
+					</div>
+					<div class="aps-field-group">
+						<label for="aps-views">Views</label>
+						<input type="number" id="aps-views" name="aps_views" class="aps-input"
+							   min="0" placeholder="325"
+							   value="<?php echo esc_attr( $product_data['views'] ?? '' ); ?>">
+					</div>
+					<div class="aps-field-group">
+						<label for="aps-user-count">User Count</label>
+						<input type="text" id="aps-user-count" name="aps_user_count" class="aps-input"
+							   placeholder="1.5K"
+							   value="<?php echo esc_attr( $product_data['user_count'] ?? '' ); ?>">
+					</div>
+				</div>
+				<div class="aps-field-group">
+					<label for="aps-reviews">No. of Reviews</label>
+					<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
+						   min="0" placeholder="12"
+						   value="<?php echo esc_attr( $product_data['reviews'] ?? '' ); ?>">
 				</div>
 			</section>
 			
@@ -668,6 +699,12 @@ jQuery(document).ready(function($) {
 		apsProductData.tags.forEach(tagSlug => {
 			$(`input[name="aps_tags[]"][value="${tagSlug}"]`).prop('checked', true);
 		});
+	}
+	
+	if (apsIsEditing) {
+		if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
+		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
+		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 	}
 	
 });
