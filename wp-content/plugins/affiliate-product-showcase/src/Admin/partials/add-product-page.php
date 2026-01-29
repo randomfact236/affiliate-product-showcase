@@ -56,17 +56,17 @@ if ( $is_editing ) {
 		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
 		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
 	} else {
-	// Post doesn't exist or wrong post type - show error
-	wp_die(
-		sprintf(
-			'<h1>%s</h1><p>%s</p>',
-			esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
-			esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
-		),
-		esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
-		403
-	);
-}
+		// Post doesn't exist or wrong post type - show error
+		wp_die(
+			sprintf(
+				'<h1>%s</h1><p>%s</p>',
+				esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
+				esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
+			),
+			esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
+			403
+		);
+	}
 
 // Enqueue scripts
 wp_enqueue_media();
@@ -717,13 +717,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		$('#aps-brand-preview').css('background-image', 'none').hide();
 		$('#aps-brand-upload .upload-placeholder').show();
 		$(this).hide();
-	});
-	
-	$(document).on('click', '#aps-selected-categories .remove-tag', function() {
-		const index = $(this).data('index');
-		selectedCategories.splice(index, 1);
-		renderCategories();
-		$('#aps-categories-input').val(selectedCategories.join(','));
 	});
 	
 	if (apsIsEditing) {
