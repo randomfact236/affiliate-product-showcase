@@ -21,6 +21,7 @@ $is_editing = $post_id > 0;
 $product_data = [];
 if ( $is_editing ) {
 	$post = get_post( $post_id );
+	
 	if ( $post && $post->post_type === 'aps_product' ) {
 		$product_data = [
 			'id' => $post->ID,
@@ -54,6 +55,17 @@ if ( $is_editing ) {
 		$product_data['categories'] = wp_get_object_terms( $post->ID, 'aps_category', [ 'fields' => 'slugs' ] );
 		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
 		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
+	} else {
+		// Post doesn't exist or wrong post type - show error
+		wp_die(
+			sprintf(
+				'<h1>%s</h1><p>%s</p>',
+				esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
+				esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
+			),
+			esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
+			403
+		);
 	}
 }
 
@@ -165,6 +177,20 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 								   value="<?php echo esc_attr( $product_data['brand_image'] ?? '' ); ?>">
 						</div>
 					</div>
+				</div>
+			</section>
+			
+			<section id="gallery" class="aps-section">
+				<h2 class="section-title">PRODUCT GALLERY</h2>
+				<div class="aps-field-group">
+					<label>Product Gallery</label>
+					<div class="aps-gallery-upload-area" id="aps-gallery-upload">
+						<button type="button" class="aps-btn" id="aps-add-gallery-image">
+							<i class="fas fa-plus"></i> Add Gallery Images
+						</button>
+					</div>
+					<div class="aps-gallery-preview" id="aps-gallery-preview"></div>
+					<textarea id="aps-gallery-input" name="aps_gallery" class="aps-textarea" style="display:none;"></textarea>
 				</div>
 			</section>
 			
@@ -756,5 +782,42 @@ jQuery(document).ready(function($) {
 		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
 		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 	}
+	
+	// Gallery management
+	let galleryImages = [];
+	
+	if (apsIsEditing && apsProductData.gallery && Array.isArray(apsProductData.gallery)) {
+		galleryImages = apsProductData.gallery;
+		renderGallery();
+	}
+	
+	$('#aps-add-gallery-image').on('click', function() {
+		const input = $('#aps-gallery-url-input');
+		const url = input.val().trim();
+		if (url) {
+			galleryImages.push(url);
+			renderGallery();
+			input.val('');
+		}
+	});
+	
+	function renderGallery() {
+		const container = $('#aps-gallery-preview');
+		container.empty();
+		galleryImages.forEach((url, index) => {
+			const html = `<div class="aps-gallery-item">
+				<img src="${url}" alt="Gallery image ${index + 1}">
+				<button type="button" class="aps-remove-gallery" data-index="${index}">&times;</button>
+			</div>`;
+			container.append(html);
+		});
+		$('#aps-gallery-input').val(JSON.stringify(galleryImages));
+	}
+	
+	$(document).on('click', '.aps-remove-gallery', function() {
+		const index = $(this).data('index');
+		galleryImages.splice(index, 1);
+		renderGallery();
+	});
 });
 </script>

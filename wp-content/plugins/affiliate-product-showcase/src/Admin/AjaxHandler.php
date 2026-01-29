@@ -144,6 +144,9 @@ class AjaxHandler {
                 $query->the_post();
                 $post_id = get_the_ID();
 
+                // Get ribbon from taxonomy
+                $ribbon_terms = wp_get_post_terms($post_id, 'aps_ribbon', ['fields' => 'names']);
+
                 $products[] = [
                     'id' => $post_id,
                     'title' => get_the_title(),
@@ -153,7 +156,7 @@ class AjaxHandler {
                     'discount_percentage' => $this->calculateDiscount($post_id),
                     'status' => get_post_status($post_id),
                     'featured' => get_post_meta($post_id, '_aps_featured', true) === '1',
-                    'ribbon' => get_post_meta($post_id, '_aps_ribbon', true),
+                    'ribbon' => !empty($ribbon_terms) ? $ribbon_terms[0] : '',
                     'categories' => wp_get_post_terms($post_id, 'aps_category', ['fields' => 'names']),
                     'tags' => wp_get_post_terms($post_id, 'aps_tag', ['fields' => 'names']),
                     'affiliate_url' => get_post_meta($post_id, '_aps_affiliate_url', true),
@@ -637,7 +640,7 @@ class AjaxHandler {
         // Update ribbon
         if (isset($product_data['ribbon'])) {
             $ribbon = sanitize_text_field($product_data['ribbon']);
-            update_post_meta($product_id, '_aps_ribbon', $ribbon);
+            wp_set_object_terms($product_id, [$ribbon], 'aps_ribbon', false);
             $updated_fields['ribbon'] = $ribbon;
         }
 

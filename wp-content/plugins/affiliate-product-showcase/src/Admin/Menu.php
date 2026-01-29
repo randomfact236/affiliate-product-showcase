@@ -210,9 +210,16 @@ class Menu {
 				break;
 				
 			case 'logo':
-				$logo_id = get_post_meta($post_id, '_aps_logo', true);
-				if ($logo_id) {
-					$logo_url = wp_get_attachment_image_url($logo_id, 'thumbnail');
+				$logo_value = get_post_meta($post_id, '_aps_logo', true);
+				if ($logo_value) {
+					// Check if it's an attachment ID or URL
+					if (is_numeric($logo_value)) {
+						$logo_url = wp_get_attachment_image_url($logo_value, 'thumbnail');
+					} else {
+						// It's a URL string
+						$logo_url = $logo_value;
+					}
+					
 					if ($logo_url) {
 						echo '<div class="aps-logo-container">';
 						echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_the_title($post_id)) . '" class="aps-product-logo">';

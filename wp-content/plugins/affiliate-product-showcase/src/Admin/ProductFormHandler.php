@@ -122,12 +122,12 @@ class ProductFormHandler {
 
 		// Basic fields
 		$data['title']             = isset( $raw_data['aps_title'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_title'] ) ) : '';
-		$data['description']       = isset( $raw_data['aps_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_description'] ) ) : '';
+		$data['description']       = isset( $raw_data['aps_short_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_short_description'] ) ) : '';
 		$data['short_description'] = isset( $raw_data['aps_short_description'] ) ? sanitize_textarea_field( wp_unslash( $raw_data['aps_short_description'] ) ) : '';
 		$data['affiliate_url']     = isset( $raw_data['aps_affiliate_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_affiliate_url'] ) ) : '';
 		$data['image_url']     = isset( $raw_data['aps_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_image_url'] ) ) : '';
 		$data['video_url']     = isset( $raw_data['aps_video_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_video_url'] ) ) : '';
-		$data['logo']          = isset( $raw_data['aps_logo'] ) ? absint( $raw_data['aps_logo'] ) : 0;
+		$data['logo']          = isset( $raw_data['aps_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_image_url'] ) ) : '';
 
 		// Brand image
 		$data['brand_image'] = isset( $raw_data['aps_brand_image_url'] ) ? esc_url_raw( wp_unslash( $raw_data['aps_brand_image_url'] ) ) : '';
