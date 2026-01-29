@@ -56,28 +56,27 @@ if ( $is_editing ) {
 		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
 		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
 	} else {
-		// Post doesn't exist or wrong post type - show error
-		wp_die(
-			sprintf(
-				'<h1>%s</h1><p>%s</p>',
-				esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
-				esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
-			),
-			esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
-			403
-		);
-	}
+	// Post doesn't exist or wrong post type - show error
+	wp_die(
+		sprintf(
+			'<h1>%s</h1><p>%s</p>',
+			esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
+			esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
+		),
+		esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
+		403
+	);
 }
 
 // Enqueue scripts
 wp_enqueue_media();
-wp_enqueue_script( 'jquery' );
+wp_enqueue_script( 'jquery' ); 
 
 // Enqueue styles
 wp_enqueue_style( 'aps-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', [], '6.4.0' );
 wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap', [], null );
 ?>
-
+ 
 <div class="wrap affiliate-product-showcase">
 	<div class="aps-header">
 		<h1><?php echo esc_html( $is_editing ? __( 'Edit Product', 'affiliate-product-showcase' ) : __( 'Add Product', 'affiliate-product-showcase' ) ); ?></h1>
@@ -149,6 +148,9 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<button type="button" class="aps-upload-btn" id="aps-upload-image-btn">
 								<i class="fas fa-upload"></i> Select from Media Library
 							</button>
+							<button type="button" class="aps-upload-btn aps-btn-cancel" id="aps-remove-image-btn" style="display:none;">
+								<i class="fas fa-times"></i> Remove
+							</button>
 						</div>
 						<div class="aps-url-input">
 							<input type="url" name="aps_image_url_input" class="aps-input"
@@ -168,6 +170,9 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 							<button type="button" class="aps-upload-btn" id="aps-upload-brand-btn">
 								<i class="fas fa-upload"></i> Select from Media Library
 							</button>
+							<button type="button" class="aps-upload-btn aps-btn-cancel" id="aps-remove-brand-btn" style="display:none;">
+								<i class="fas fa-times"></i> Remove
+							</button>
 						</div>
 						<div class="aps-url-input">
 							<input type="url" name="aps_brand_url_input" class="aps-input"
@@ -177,8 +182,8 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 					</div>
 				</div>
 			</section>
-				
-		<section id="affiliate" class="aps-section">
+			
+			<section id="affiliate" class="aps-section">
 				<h2 class="section-title">AFFILIATE DETAILS</h2>
 				<div class="aps-grid-2">
 					<div class="aps-field-group">
@@ -308,33 +313,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 			</section>
 			
-			<section class="aps-section">
-				<h2 class="section-title">PRODUCT TAGS</h2>
-				<div class="aps-tags-group">
-					<?php
-					$tags = get_terms( [ 'taxonomy' => 'aps_tag', 'hide_empty' => false ] );
-					foreach ( $tags as $tag ) :
-						$tag_color = get_term_meta( $tag->term_id, '_aps_tag_color', true ) ?: '#ffffff';
-						$tag_bg = get_term_meta( $tag->term_id, '_aps_tag_bg_color', true ) ?: '#ff6b6b';
-						$tag_icon = get_term_meta( $tag->term_id, '_aps_tag_icon', true ) ?: '';
-						$tag_featured = get_term_meta( $tag->term_id, '_aps_tag_featured', true ) === '1';
-					?>
-						<label class="aps-checkbox-label aps-tag-checkbox">
-							<input type="checkbox" name="aps_tags[]" value="<?php echo esc_attr( $tag->slug ); ?>">
-							<span class="tag-badge" style="color: <?php echo esc_attr( $tag_color ); ?>; background-color: <?php echo esc_attr( $tag_bg ); ?>;">
-								<?php if ( $tag_icon ) : ?>
-									<span class="tag-icon"><?php echo esc_html( $tag_icon ); ?></span>
-								<?php endif; ?>
-								<span class="tag-name"><?php echo esc_html( $tag->name ); ?></span>
-								<?php if ( $tag_featured ) : ?>
-									<span class="tag-star">★</span>
-								<?php endif; ?>
-							</span>
-						</label>
-					<?php endforeach; ?>
-				</div>
-			</section>
-			
 			<section id="stats" class="aps-section">
 				<h2 class="section-title">PRODUCT STATISTICS</h2>
 				<div class="aps-grid-3">
@@ -359,7 +337,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 				<div class="aps-field-group">
 					<label for="aps-reviews">No. of Reviews</label>
-					<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
+						<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
 						   min="0" placeholder="12"
 						   value="<?php echo esc_attr( $product_data['reviews'] ?? '' ); ?>">
 				</div>
@@ -468,38 +446,38 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 </style>
 
 <script>
-const apsProductData = <?php echo wp_json_encode( $product_data ); ?>;
-const apsIsEditing = <?php echo $is_editing ? 'true' : 'false'; ?>;
-
-jQuery(document).ready(function($) {
-	console.log('Product Data:', apsProductData);
+	const apsProductData = <?php echo wp_json_encode( $product_data ); ?>;
+	const apsIsEditing = <?php echo $is_editing ? 'true' : 'false'; ?>;
 	
-	$('.aps-quick-nav .nav-link').on('click', function(e) {
-		e.preventDefault();
-		const target = $(this).attr('href');
-		$('html, body').animate({ scrollTop: $(target).offset().top - 50 }, 300);
-	});
+	jQuery(document).ready(function($) {
+		console.log('Product Data:', apsProductData);
 	
-	$('#aps-short-description').on('input', function() {
-		const text = $(this).val().trim();
-		const words = text === '' ? 0 : text.split(/\s+/).length;
-		$('#aps-word-count').text(Math.min(words, 40));
-	});
+		$('.aps-quick-nav .nav-link').on('click', function(e) {
+			e.preventDefault();
+			const target = $(this).attr('href');
+			$('html, body').animate({ scrollTop: $(target).offset().top - 50 }, 300);
+		});
 	
-	$('#aps-current-price, #aps-original-price').on('input', function() {
-		const current = parseFloat($('#aps-current-price').val()) || 0;
-		const original = parseFloat($('#aps-original-price').val()) || 0;
-		// Calculate discount: (original - current) / original * 100
-		// Only show discount if original price is greater than current price
-		if (current > 0 && original > 0 && original > current) {
-			const discount = ((original - current) / original * 100).toFixed(0);
-			$('#aps-discount').val(discount + '% OFF');
-		} else {
-			$('#aps-discount').val('0% OFF');
-		}
-	});
+		$('#aps-short-description').on('input', function() {
+			const text = $(this).val().trim();
+			const words = text === '' ? 0 : text.split(/\s+/).length;
+			$('#aps-word-count').text(Math.min(words, 40));
+		});
 	
-	let features = [];
+		$('#aps-current-price, #aps-original-price').on('input', function() {
+			const current = parseFloat($('#aps-current-price').val()) || 0;
+			const original = parseFloat($('#aps-original-price').val()) || 0;
+			// Calculate discount: (original - current) / original * 100
+			// Only show discount if original price is greater than current price
+			if (current > 0 && original > 0 && original > current) {
+				const discount = ((original - current) / original * 100).toFixed(0);
+				$('#aps-discount').val(discount + '% OFF');
+			} else {
+				$('#aps-discount').val('0% OFF');
+			}
+		});
+	
+		let features = [];
 	if (apsIsEditing && apsProductData.features && Array.isArray(apsProductData.features)) {
 		features = apsProductData.features;
 		renderFeatures();
@@ -530,8 +508,7 @@ jQuery(document).ready(function($) {
 					<button type="button" class="move-up" title="Move Up"><i class="fas fa-arrow-up"></i></button>
 					<button type="button" class="move-down" title="Move Down"><i class="fas fa-arrow-down"></i></button>
 					<button type="button" class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
-				</div>
-			</div>`;
+				</div>`;
 			container.append(html);
 		});
 		$('#aps-features-input').val(JSON.stringify(features));
@@ -671,6 +648,7 @@ jQuery(document).ready(function($) {
 			$('#aps-image-url-input').val(attachment.url);
 			$('#aps-image-preview').css('background-image', 'url(' + attachment.url + ')').show();
 			$('#aps-image-upload .upload-placeholder').hide();
+			$('#aps-remove-image-btn').show();
 		});
 		mediaUploader.open();
 	});
@@ -689,6 +667,7 @@ jQuery(document).ready(function($) {
 			$('#aps-brand-url-input').val(attachment.url);
 			$('#aps-brand-preview').css('background-image', 'url(' + attachment.url + ')').show();
 			$('#aps-brand-upload .upload-placeholder').hide();
+			$('#aps-remove-brand-btn').show();
 		});
 		mediaUploader.open();
 	});
@@ -699,6 +678,12 @@ jQuery(document).ready(function($) {
 			$('#aps-image-url').val(url);
 			$('#aps-image-preview').css('background-image', 'url(' + url + ')').show();
 			$('#aps-image-upload .upload-placeholder').hide();
+			$('#aps-remove-image-btn').show();
+		} else {
+			$('#aps-image-url').val('');
+			$('#aps-image-preview').css('background-image', 'none').hide();
+			$('#aps-image-upload .upload-placeholder').show();
+			$('#aps-remove-image-btn').hide();
 		}
 	});
 	
@@ -708,14 +693,38 @@ jQuery(document).ready(function($) {
 			$('#aps-brand-image-url').val(url);
 			$('#aps-brand-preview').css('background-image', 'url(' + url + ')').show();
 			$('#aps-brand-upload .upload-placeholder').hide();
+			$('#aps-remove-brand-btn').show();
+		} else {
+			$('#aps-brand-image-url').val('');
+			$('#aps-brand-preview').css('background-image', 'none').hide();
+			$('#aps-brand-upload .upload-placeholder').show();
+			$('#aps-remove-brand-btn').hide();
 		}
 	});
 	
-	if (apsIsEditing && apsProductData.tags && Array.isArray(apsProductData.tags)) {
-		apsProductData.tags.forEach(tagSlug => {
-			$(`input[name="aps_tags[]"][value="${tagSlug}"]`).prop('checked', true);
-		});
-	}
+	// Remove image functionality
+	$('#aps-remove-image-btn').on('click', function() {
+		$('#aps-image-url').val('');
+		$('#aps-image-url-input').val('');
+		$('#aps-image-preview').css('background-image', 'none').hide();
+		$('#aps-image-upload .upload-placeholder').show();
+		$(this).hide();
+	});
+	
+	$('#aps-remove-brand-btn').on('click', function() {
+		$('#aps-brand-image-url').val('');
+		$('#aps-brand-url-input').val('');
+		$('#aps-brand-preview').css('background-image', 'none').hide();
+		$('#aps-brand-upload .upload-placeholder').show();
+		$(this).hide();
+	});
+	
+	$(document).on('click', '#aps-selected-categories .remove-tag', function() {
+		const index = $(this).data('index');
+		selectedCategories.splice(index, 1);
+		renderCategories();
+		$('#aps-categories-input').val(selectedCategories.join(','));
+	});
 	
 	if (apsIsEditing) {
 		if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
@@ -726,5 +735,5 @@ jQuery(document).ready(function($) {
 		if (apsProductData.original_price) $('#aps-original-price').val(apsProductData.original_price);
 	}
 	
-});
+	});
 </script>
