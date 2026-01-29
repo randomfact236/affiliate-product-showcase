@@ -289,7 +289,7 @@ class ProductFormHandler {
 		}
 
 		// Validate original price - should be greater than current price
-		if ( null !== $data['original_price'] && $data['original_price'] <= $data['current_price'] ) {
+		if ( null !== $data['original_price'] && $data['original_price'] < $data['current_price'] ) {
 			$errors['original_price'] = __( 'Original price must be greater than current price.', 'affiliate-product-showcase' );
 		}
 
