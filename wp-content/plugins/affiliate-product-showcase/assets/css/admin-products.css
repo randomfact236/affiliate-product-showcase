@@ -219,9 +219,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid #eee;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
     background-color: #f9f9f9;
+    transition: all 0.2s ease;
+}
+
+.aps-product-logo:hover {
+    transform: scale(1.1);
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .aps-no-logo {
@@ -274,7 +281,7 @@
 }
 
 /* ============================================
-   Category Column - Plain Text
+   Category Column - Chips/Badges
    ============================================ */
 .aps-category-text {
     color: #1d2327;
@@ -283,14 +290,60 @@
     line-height: 1.5;
 }
 
+/* Category chips with colored dots */
+.aps-category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #f3f4f6;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #374151;
+    margin: 2px;
+}
+
+.aps-category-chip::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    flex-shrink: 0;
+}
+
 /* ============================================
-   Tags Column - Plain Text
+   Tags Column - Chips/Badges
    ============================================ */
 .aps-tag-text {
     color: #646970;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.5;
+}
+
+/* Tag chips with colored dots */
+.aps-tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #fef3c7;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #d97706;
+    margin: 2px;
+}
+
+.aps-tag-chip::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #f59e0b;
+    flex-shrink: 0;
 }
 
 /* ============================================
@@ -395,6 +448,18 @@
     font-weight: 600;
     color: #1d2327;
     font-size: 13px;
+}
+
+/* Discount badge */
+.aps-discount-badge {
+    background-color: #ef4444;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 8px;
+    display: inline-block;
 }
 
 /* ============================================

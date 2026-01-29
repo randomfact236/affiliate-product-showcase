@@ -340,14 +340,18 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_category($item): string {
-        if (empty($item['categories'])) {
-            return '<span class="aps-category-text">—</span>';
-        }
-
-        return sprintf(
-            '<span class="aps-category-text">%s</span>',
-            esc_html(implode(', ', $item['categories']))
-        );
+    	if (empty($item['categories'])) {
+    		return '<span class="aps-category-text">—</span>';
+    	}
+   
+    	$categories = array_map(function($cat) {
+    		return sprintf(
+    			'<span class="aps-category-chip">%s</span>',
+    			esc_html($cat)
+    		);
+    	}, $item['categories']);
+   
+    	return implode(' ', $categories);
     }
 
     /**
@@ -358,14 +362,18 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_tags($item): string {
-        if (empty($item['tags'])) {
-            return '<span class="aps-tag-text">—</span>';
-        }
-
-        return sprintf(
-            '<span class="aps-tag-text">%s</span>',
-            esc_html(implode(', ', $item['tags']))
-        );
+    	if (empty($item['tags'])) {
+    		return '<span class="aps-tag-text">—</span>';
+    	}
+   
+    	$tags = array_map(function($tag) {
+    		return sprintf(
+    			'<span class="aps-tag-chip">%s</span>',
+    			esc_html($tag)
+    		);
+    	}, $item['tags']);
+   
+    	return implode(' ', $tags);
     }
 
     /**
@@ -430,15 +438,27 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_price($item): string {
-        $currency = $item['currency'] ?? 'USD';
-        $currency_symbol = $this->get_currency_symbol($currency);
-        $price = floatval($item['price'] ?? 0);
-        
-        return sprintf(
-            '<span class="aps-price">%s%s</span>',
-            esc_html($currency_symbol),
-            esc_html(number_format($price, 2))
-        );
+    	$currency = $item['currency'] ?? 'USD';
+    	$currency_symbol = $this->get_currency_symbol($currency);
+    	$current_price = floatval($item['price'] ?? 0);
+    	$original_price = floatval(\get_post_meta($item['id'], '_aps_original_price', true) ?? 0);
+    	
+    	$price_html = sprintf(
+    		'<span class="aps-price">%s%s</span>',
+    		esc_html($currency_symbol),
+    		esc_html(number_format($current_price, 2))
+    	);
+    	
+    	// Add discount badge if original price exists and is higher
+    	if ($original_price > 0 && $original_price > $current_price) {
+    		$discount = round(($original_price - $current_price) / $original_price * 100);
+    		$price_html .= sprintf(
+    			' <span class="aps-discount-badge">-%d%%</span>',
+    			esc_html($discount)
+    		);
+    	}
+    	
+    	return $price_html;
     }
 
     /**
