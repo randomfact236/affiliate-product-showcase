@@ -236,7 +236,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 						<label for="aps-original-price">Original Price</label>
 						<input type="number" id="aps-original-price" name="aps_original_price" class="aps-input"
 							   step="0.01" min="0" placeholder="60.00"
-							   value="<?php echo esc_attr( $product_data['sale_price'] ?? '' ); ?>">
+							   value="<?php echo esc_attr( $product_data['original_price'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
 						<label>Discount</label>
@@ -489,8 +489,10 @@ jQuery(document).ready(function($) {
 	$('#aps-current-price, #aps-original-price').on('input', function() {
 		const current = parseFloat($('#aps-current-price').val()) || 0;
 		const original = parseFloat($('#aps-original-price').val()) || 0;
-		if (current > 0 && original > 0 && original < current) {
-			const discount = ((current - original) / current * 100).toFixed(0);
+		// Calculate discount: (original - current) / original * 100
+		// Only show discount if original price is greater than current price
+		if (current > 0 && original > 0 && original > current) {
+			const discount = ((original - current) / original * 100).toFixed(0);
 			$('#aps-discount').val(discount + '% OFF');
 		} else {
 			$('#aps-discount').val('0% OFF');
@@ -721,7 +723,7 @@ jQuery(document).ready(function($) {
 		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 		if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
 		if (apsProductData.regular_price) $('#aps-current-price').val(apsProductData.regular_price);
-		if (apsProductData.sale_price) $('#aps-original-price').val(apsProductData.sale_price);
+		if (apsProductData.original_price) $('#aps-original-price').val(apsProductData.original_price);
 	}
 	
 });
