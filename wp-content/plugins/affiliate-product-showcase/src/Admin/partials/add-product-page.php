@@ -608,6 +608,8 @@ jQuery(document).ready(function($) {
 	});
 	
 	const selectedRibbons = [];
+	const ribbonData = {}; // Store ribbon styling data
+	
 	if (apsIsEditing && apsProductData.ribbons && Array.isArray(apsProductData.ribbons)) {
 		apsProductData.ribbons.forEach(ribbonSlug => {
 			if (!selectedRibbons.includes(ribbonSlug)) selectedRibbons.push(ribbonSlug);
@@ -620,6 +622,12 @@ jQuery(document).ready(function($) {
 		const value = $(this).data('value');
 		if (!selectedRibbons.includes(value)) {
 			selectedRibbons.push(value);
+			// Store ribbon styling data
+			const preview = $(this).find('.ribbon-badge-preview');
+			ribbonData[value] = {
+				color: preview.css('color'),
+				backgroundColor: preview.css('background-color')
+			};
 			renderRibbons();
 			$('#aps-ribbons-input').val(selectedRibbons.join(','));
 		}
@@ -629,8 +637,14 @@ jQuery(document).ready(function($) {
 		const container = $('#aps-selected-ribbons');
 		container.empty();
 		selectedRibbons.forEach((ribbon, index) => {
-			const text = $('#aps-ribbons-dropdown .dropdown-item[data-value="' + ribbon + '"]').text();
-			container.append(`<span class="aps-tag">${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
+			const dropdownItem = $('#aps-ribbons-dropdown .dropdown-item[data-value="' + ribbon + '"]');
+			const preview = dropdownItem.find('.ribbon-badge-preview');
+			const color = preview.css('color');
+			const bgColor = preview.css('background-color');
+			const text = dropdownItem.find('.ribbon-name').text();
+			const icon = dropdownItem.find('.ribbon-icon').text();
+			const iconHtml = icon ? `<span class="ribbon-icon">${icon}</span>` : '';
+			container.append(`<span class="aps-tag" style="color: ${color}; background-color: ${bgColor};">${iconHtml}${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
 		});
 	}
 	
