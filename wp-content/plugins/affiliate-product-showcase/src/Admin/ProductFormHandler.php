@@ -288,9 +288,9 @@ class ProductFormHandler {
 			$errors['current_price'] = __( 'Price must be greater than or equal to 0.', 'affiliate-product-showcase' );
 		}
 
-		// Validate original price
-		if ( null !== $data['original_price'] && $data['original_price'] > $data['current_price'] ) {
-			$errors['original_price'] = __( 'Original price must be less than current price.', 'affiliate-product-showcase' );
+		// Validate original price - should be greater than current price
+		if ( null !== $data['original_price'] && $data['original_price'] <= $data['current_price'] ) {
+			$errors['original_price'] = __( 'Original price must be greater than current price.', 'affiliate-product-showcase' );
 		}
 
 		// Validate rating
