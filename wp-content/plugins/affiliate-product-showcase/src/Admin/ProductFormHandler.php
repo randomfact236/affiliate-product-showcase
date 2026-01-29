@@ -418,13 +418,33 @@ class ProductFormHandler {
 		// Save logo
 		update_post_meta( $post_id, '_aps_logo', $data['logo'] );
 
-		// Handle sale price logic
+		// Handle sale price logic - preserve existing values if not provided
+		$existing_sale_price = get_post_meta( $post_id, '_aps_sale_price', true );
+		$existing_original_price = get_post_meta( $post_id, '_aps_original_price', true );
+		
 		if ( null !== $data['sale_price'] && ! empty( $data['sale_price'] ) ) {
+			// Sale price provided - update both
 			update_post_meta( $post_id, '_aps_original_price', $data['regular_price'] );
 			update_post_meta( $post_id, '_aps_price', $data['sale_price'] );
+			update_post_meta( $post_id, '_aps_sale_price', $data['sale_price'] );
+		} elseif ( ! isset( $raw_data['aps_sale_price'] ) ) {
+			// Sale price field not submitted - preserve existing values
+			if ( $existing_original_price ) {
+				update_post_meta( $post_id, '_aps_original_price', $existing_original_price );
+			}
+			if ( $existing_sale_price ) {
+				update_post_meta( $post_id, '_aps_price', $existing_sale_price );
+				update_post_meta( $post_id, '_aps_sale_price', $existing_sale_price );
+			} else {
+				// No existing sale price - use regular price
+				update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
+				delete_post_meta( $post_id, '_aps_sale_price' );
+			}
 		} else {
+			// Sale price is empty/null - remove sale pricing
 			delete_post_meta( $post_id, '_aps_original_price' );
 			update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
+			delete_post_meta( $post_id, '_aps_sale_price' );
 		}
 
 		// Save discount percentage if provided
