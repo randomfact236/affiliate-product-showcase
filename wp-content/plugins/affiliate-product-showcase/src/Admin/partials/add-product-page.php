@@ -56,16 +56,17 @@ if ( $is_editing ) {
 		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
 		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
 	} else {
-	// Post doesn't exist or wrong post type - show error
-	wp_die(
-		sprintf(
-			'<h1>%s</h1><p>%s</p>',
-			esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
-			esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
-		),
-		esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
-		403
-	);
+		// Post doesn't exist or wrong post type - show error
+		wp_die(
+			sprintf(
+				'<h1>%s</h1><p>%s</p>',
+				esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
+				esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
+			),
+			esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
+			403
+		);
+	}
 }
 
 // Enqueue scripts
@@ -201,7 +202,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				</div>
 			</section>
 			
-			<section class="aps-section">
+			<section id="short-description" class="aps-section">
 				<h2 class="section-title">SHORT DESCRIPTION</h2>
 				<div class="aps-field-group">
 					<label for="aps-short-description">Short Description <span class="required">*</span></label>
@@ -574,7 +575,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 			const container = $('#aps-selected-categories');
 			container.empty();
 			selectedCategories.forEach((cat, index) => {
-				const text = $('#aps-categories-dropdown .dropdown-item[data-value="' + cat + '"]').text();
+				const text = $('#aps-categories-dropdown .dropdown-item[data-value="' + cat + '"]').find('.taxonomy-name').text();
 				container.append(`<span class="aps-tag">${text}<span class="remove-tag" data-index="${index}">&times;</span></span>`);
 			});
 		}
@@ -723,9 +724,7 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 			if (apsProductData.rating) $('#aps-rating').val(apsProductData.rating);
 			if (apsProductData.views) $('#aps-views').val(apsProductData.views);
 			if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
-			if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
-			if (apsProductData.regular_price) $('#aps-current-price').val(apsProductData.regular_price);
-			if (apsProductData.original_price) $('#aps-original-price').val(apsProductData.original_price);
+			if (apsProductData.user_count) $('#aps-user-count').val(apsProductData.user_count);
 		}
 	
 	});
