@@ -93,8 +93,6 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 		<a href="#features" class="nav-link"><i class="fas fa-list"></i> Features</a>
 		<a href="#pricing" class="nav-link"><i class="fas fa-tag"></i> Pricing</a>
 		<a href="#taxonomy" class="nav-link"><i class="fas fa-folder"></i> Categories & Tags</a>
-		<a href="#digital-details" class="nav-link"><i class="fas fa-laptop"></i> Digital Details</a>
-		<a href="#seo" class="nav-link"><i class="fas fa-search"></i> SEO</a>
 		<a href="#stats" class="nav-link"><i class="fas fa-chart-bar"></i> Stats</a>
 	</div>
 	
@@ -179,22 +177,8 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 					</div>
 				</div>
 			</section>
-			
-			<section id="gallery" class="aps-section">
-				<h2 class="section-title">PRODUCT GALLERY</h2>
-				<div class="aps-field-group">
-					<label>Product Gallery</label>
-					<div class="aps-gallery-upload-area" id="aps-gallery-upload">
-						<button type="button" class="aps-btn" id="aps-add-gallery-image">
-							<i class="fas fa-plus"></i> Add Gallery Images
-						</button>
-					</div>
-					<div class="aps-gallery-preview" id="aps-gallery-preview"></div>
-					<textarea id="aps-gallery-input" name="aps_gallery" class="aps-textarea" style="display:none;"></textarea>
-				</div>
-			</section>
-			
-			<section id="affiliate" class="aps-section">
+				
+		<section id="affiliate" class="aps-section">
 				<h2 class="section-title">AFFILIATE DETAILS</h2>
 				<div class="aps-grid-2">
 					<div class="aps-field-group">
@@ -783,41 +767,5 @@ jQuery(document).ready(function($) {
 		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 	}
 	
-	// Gallery management
-	let galleryImages = [];
-	
-	if (apsIsEditing && apsProductData.gallery && Array.isArray(apsProductData.gallery)) {
-		galleryImages = apsProductData.gallery;
-		renderGallery();
-	}
-	
-	$('#aps-add-gallery-image').on('click', function() {
-		const input = $('#aps-gallery-url-input');
-		const url = input.val().trim();
-		if (url) {
-			galleryImages.push(url);
-			renderGallery();
-			input.val('');
-		}
-	});
-	
-	function renderGallery() {
-		const container = $('#aps-gallery-preview');
-		container.empty();
-		galleryImages.forEach((url, index) => {
-			const html = `<div class="aps-gallery-item">
-				<img src="${url}" alt="Gallery image ${index + 1}">
-				<button type="button" class="aps-remove-gallery" data-index="${index}">&times;</button>
-			</div>`;
-			container.append(html);
-		});
-		$('#aps-gallery-input').val(JSON.stringify(galleryImages));
-	}
-	
-	$(document).on('click', '.aps-remove-gallery', function() {
-		const index = $(this).data('index');
-		galleryImages.splice(index, 1);
-		renderGallery();
-	});
 });
 </script>
