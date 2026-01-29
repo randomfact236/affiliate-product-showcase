@@ -138,6 +138,9 @@ class ProductFormHandler {
 		// User count
 		$data['user_count'] = isset( $raw_data['aps_user_count'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_user_count'] ) ) : '';
 
+		// Views count
+		$data['views'] = isset( $raw_data['aps_views'] ) ? intval( $raw_data['aps_views'] ) : 0;
+
 		// Reviews count
 		$data['reviews'] = isset( $raw_data['aps_reviews'] ) ? intval( $raw_data['aps_reviews'] ) : 0;
 
@@ -446,6 +449,9 @@ class ProductFormHandler {
 
 		// Save user count
 		update_post_meta( $post_id, '_aps_user_count', $data['user_count'] );
+
+		// Save views count
+		update_post_meta( $post_id, '_aps_views', $data['views'] );
 
 		// Save reviews count
 		update_post_meta( $post_id, '_aps_reviews', $data['reviews'] );
