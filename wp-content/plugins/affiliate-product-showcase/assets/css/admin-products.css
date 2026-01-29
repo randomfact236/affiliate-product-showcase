@@ -11,19 +11,24 @@
    CSS Variables - Color Palette
    ============================================ */
 :root {
+    /* Primary Colors */
+    --aps-color-primary: #2271b1;
+    --aps-color-primary-hover: #135e96;
+
     /* Text Colors */
-    --color-text-main: #1d2327;
-    --color-text-light: #646970;
-    
+    --aps-color-text-main: #1d2327;
+    --aps-color-text-muted: #646970;
+
+    /* Background Colors */
+    --aps-color-bg-light: #f0f0f1;
+    --aps-color-bg-card: #ffffff;
+    --aps-color-bg-hover: #f6f7f7;
+
     /* UI Colors */
-    --color-border: #c3c4c7;
-    --color-bg-light: #f0f0f1;
-    --color-bg-hover: #f6f7f7;
-    
-    /* Primary (Buttons, Links) */
-    --color-primary: #2271b1;
-    --color-primary-hover: #135e96;
-    
+    --aps-color-border: #c3c4c7;
+    --aps-color-danger: #d63638;
+    --aps-color-success: #00a32a;
+
     /* Status Badges */
     --color-green-bg: #e5f7ed;
     --color-green-text: #22c55e;
@@ -33,12 +38,21 @@
     --color-red-text: #dc2626;
     --color-gray-bg: #f3f4f6;
     --color-gray-text: #6b7280;
-    
+
     /* Ribbon Badge */
     --color-ribbon: #d63638;
-    
+
     /* Featured Star */
     --color-star: #e6b800;
+
+    /* Legacy variables for backward compatibility */
+    --color-text-main: var(--aps-color-text-main);
+    --color-text-light: var(--aps-color-text-muted);
+    --color-border: var(--aps-color-border);
+    --color-bg-light: var(--aps-color-bg-light);
+    --color-bg-hover: var(--aps-color-bg-hover);
+    --color-primary: var(--aps-color-primary);
+    --color-primary-hover: var(--aps-color-primary-hover);
 }
 
 /* ============================================
@@ -51,30 +65,35 @@
 /* ============================================
    Navigation Tabs
    ============================================ */
+.nav-tab-wrapper {
+    display: block;
+    float: left;
+    margin-bottom: 20px;
+}
+
 .aps-nav-tabs {
     margin: 20px 0 0;
-    border-bottom: 1px solid #c3c4c7;
     line-height: inherit;
 }
 
 .aps-nav-tabs .nav-tab {
     display: inline-block;
     text-decoration: none;
-    font-size: 14px;
-    line-height: 1.6;
-    padding: 6px 12px;
-    margin: 0 4px -1px 0;
+    font-size: 13px;
+    line-height: 1.71428571;
+    margin: 0 5px -1px 0;
+    padding: 5px 10px;
     border: 1px solid #c3c4c7;
     border-bottom: none;
-    color: #646970;
     background: #f6f7f7;
+    color: #646970;
     border-radius: 3px 3px 0 0;
     cursor: pointer;
 }
 
 .aps-nav-tabs .nav-tab:hover {
-    background: #fff;
-    color: #1d2327;
+    background-color: #fff;
+    color: #2c3338;
 }
 
 .aps-nav-tabs .nav-tab.nav-tab-active {
@@ -88,101 +107,76 @@
    Products Table
    ============================================ */
 .wp-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
     border: 1px solid #c3c4c7;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-    background: #fff;
-    margin: 0;
-}
-
-.wp-list-table thead {
-    background: #f6f7f7;
+    clear: both;
+    display: table;
 }
 
 .wp-list-table thead th {
-    font-size: 13px;
+    border-bottom: 1px solid #c3c4c7;
     font-weight: 600;
-    text-transform: uppercase;
-    color: #1d2327;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13px;
 }
 
 .wp-list-table tbody td {
-    font-size: 13px;
-    padding: 10px;
+    padding: 9px 10px;
     vertical-align: middle;
+    font-size: 13px;
+    border-bottom: 1px solid #c3c4c7;
+    color: #646970;
+    word-break: break-word;
 }
 
 /* Column Widths */
 .column-cb {
-    width: 40px;
-    padding: 12px 8px !important;
-    text-align: center;
+    width: 2.2em;
+    padding: 3px 0 0 10px !important;
 }
 
 .column-id {
-    width: 60px;
-    padding: 12px 8px !important;
+    width: 50px;
     text-align: center;
-    font-weight: 600;
-    color: #646970;
-    font-size: 13px;
 }
 
 .column-logo {
-    width: 70px;
-    padding: 12px 8px !important;
-    text-align: center;
+    width: 60px;
 }
 
 .column-title {
     width: auto;
-    min-width: 250px;
-    max-width: 400px;
-    padding: 12px 12px !important;
 }
 
 .column-category {
     width: auto;
-    min-width: 120px;
-    max-width: 200px;
-    padding: 12px 12px !important;
 }
 
 .column-tags {
     width: auto;
-    min-width: 120px;
-    max-width: 200px;
-    padding: 12px 12px !important;
 }
 
 .column-taxonomy-aps_ribbon {
-    width: 130px;
-    padding: 12px 12px !important;
-    text-align: center;
+    width: 120px;
 }
 
 .column-featured {
-    width: 70px;
-    padding: 12px 8px !important;
+    width: 60px;
     text-align: center;
+    font-size: 18px;
+    color: #e6b800;
 }
 
 .column-price {
-    width: 110px;
-    padding: 12px 12px !important;
-    text-align: right;
+    width: 100px;
 }
 
 .column-status {
-    width: 130px;
-    padding: 12px 12px !important;
-    text-align: center;
-}
-
-/* Ensure consistent padding across all table cells */
-.wp-list-table tbody td {
-    padding: 12px 12px !important;
-    vertical-align: middle;
-    line-height: 1.5;
+    width: 120px;
 }
 
 /* Row Styling */
@@ -201,34 +195,13 @@
 /* ============================================
    Product Logo Container
    ============================================ */
-.aps-logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    margin: 0 auto;
-    padding: 2px;
-    background-color: #f9f9f9;
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
-}
-
 .aps-product-logo {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #e5e7eb;
-    background-color: #f9f9f9;
-    transition: all 0.2s ease;
-}
-
-.aps-product-logo:hover {
-    transform: scale(1.1);
-    border-color: #3b82f6;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    border: 1px solid #eee;
 }
 
 .aps-no-logo {
@@ -243,7 +216,7 @@
     font-weight: 600;
     color: #2271b1;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .row-title:hover,
@@ -281,7 +254,7 @@
 }
 
 /* ============================================
-   Category Column - Chips/Badges
+   Category Column - Plain Text (NO BADGE)
    ============================================ */
 .aps-category-text {
     color: #1d2327;
@@ -290,31 +263,8 @@
     line-height: 1.5;
 }
 
-/* Category chips with colored dots */
-.aps-category-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: #f3f4f6;
-    border-radius: 16px;
-    font-size: 12px;
-    color: #374151;
-    margin: 2px;
-}
-
-.aps-category-chip::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #3b82f6;
-    flex-shrink: 0;
-}
-
 /* ============================================
-   Tags Column - Chips/Badges
+   Tags Column - Plain Text (NO BADGE)
    ============================================ */
 .aps-tag-text {
     color: #646970;
@@ -323,31 +273,8 @@
     line-height: 1.5;
 }
 
-/* Tag chips with colored dots */
-.aps-tag-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: #fef3c7;
-    border-radius: 16px;
-    font-size: 12px;
-    color: #d97706;
-    margin: 2px;
-}
-
-.aps-tag-chip::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #f59e0b;
-    flex-shrink: 0;
-}
-
 /* ============================================
-   Ribbon Column - Dynamic Colors
+   Ribbon Column - Red Badge
    ============================================ */
 
 /* Style WordPress native Ribbon column cells */
@@ -355,24 +282,11 @@
     width: 120px;
 }
 
-/* Dynamic ribbon badge with custom colors */
+/* Ribbon badge - Red */
 .aps-ribbon-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    line-height: 1.5;
-}
-
-/* Apply red badge styling to native Ribbon taxonomy links (fallback) */
-.column-taxonomy-aps_ribbon a:not(.aps-ribbon-badge) {
-    display: inline-block;
     padding: 4px 10px;
-    background: var(--color-ribbon);
+    background: #d63638;
     color: #ffffff;
     border-radius: 12px;
     font-size: 11px;
@@ -380,13 +294,11 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 2px;
-    text-decoration: none;
-    border: none;
 }
 
-.column-taxonomy-aps_ribbon a:not(.aps-ribbon-badge):hover {
-    background: #b91c1c;
-    color: #ffffff;
+/* Multiple ribbons */
+.aps-ribbon-badge + .aps-ribbon-badge {
+    margin-left: 4px;
 }
 
 /* Empty ribbon indicator */
@@ -466,53 +378,74 @@
    Toolbar Styling
    ============================================ */
 .tablenav {
-    margin: 20px 0;
+    clear: both;
+    height: 30px;
+    margin: 6px 0 4px 0;
+    vertical-align: middle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .tablenav.top {
-    margin: 20px 0 0;
+    margin: 6px 0 4px 0;
 }
 
 .tablenav.bottom {
-    margin: 10px 0 20px;
+    margin: 6px 0 4px 0;
 }
 
-.alignleft,
+.alignleft {
+    float: left;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 .alignright {
+    float: right;
     display: flex;
     align-items: center;
-    gap: 8px;
 }
 
 /* Select Dropdowns */
 .tablenav select,
 .search-form input[type="search"] {
-    padding: 6px 8px;
+    margin: 1px;
+    padding: 4px 8px;
+    line-height: 2;
+    height: 30px;
+    vertical-align: middle;
     border: 1px solid #8c8f94;
     border-radius: 4px;
-    font-size: 13px;
-    color: #3c434a;
-    background: #fff;
-}
-
-.tablenav select:focus,
-.search-form input[type="search"]:focus {
-    outline: none;
-    border-color: #2271b1;
-    box-shadow: 0 0 0 1px #2271b1;
+    font-size: 14px;
+    color: #2c3338;
 }
 
 /* Buttons */
 .tablenav .button {
-    padding: 6px 12px;
+    display: inline-block;
+    text-decoration: none;
     font-size: 13px;
-    line-height: 2;
-    height: auto;
+    line-height: 2.15384615;
+    min-height: 30px;
     margin: 0;
+    padding: 0 10px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .tablenav .button.action {
-    margin-left: 4px;
+    background: #f6f7f7;
+    border-color: #8c8f94;
+    color: #1d2327;
+    height: 30px;
+    margin-top: 1px;
+    vertical-align: top;
 }
 
 /* ============================================
@@ -778,19 +711,17 @@
     /* Show data attributes as labels */
     .wp-list-table tbody td {
         display: block;
-        padding: 8px 12px;
-        position: relative;
-        padding-left: 40%;
+        text-align: right;
+        padding: 8px 10px;
+        border-bottom: 1px solid #eee;
     }
     
     .wp-list-table tbody td::before {
         content: attr(data-colname);
         font-weight: 600;
-        position: absolute;
-        left: 12px;
-        width: 35%;
+        float: left;
+        margin-left: -10px;
         text-align: left;
-        color: #1d2327;
     }
     
     /* Hide checkbox column */
@@ -800,42 +731,16 @@
     
     /* Stack toolbar elements */
     .tablenav {
-        height: auto !important;
+        height: auto;
         flex-direction: column;
-        align-items: stretch !important;
+        align-items: flex-start;
         gap: 10px;
     }
     
     .alignleft,
     .alignright {
-        flex-direction: column;
-        align-items: stretch;
+        float: none;
         width: 100%;
-    }
-    
-    /* Search form full width */
-    .search-form {
-        width: 100%;
-    }
-    
-    .search-form input[type="search"] {
-        width: 100%;
-    }
-    
-    /* Navigation tabs */
-    .aps-nav-tabs {
-        flex-wrap: wrap;
-    }
-    
-    .aps-nav-tabs .nav-tab {
-        margin-bottom: 0;
-    }
-    
-    /* Modal full width on mobile */
-    .aps-modal-content {
-        width: 95%;
-        max-width: none;
-        margin: 10px;
     }
 }
 

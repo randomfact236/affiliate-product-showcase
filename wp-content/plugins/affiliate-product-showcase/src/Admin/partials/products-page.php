@@ -18,10 +18,10 @@ $status_counts = $this->get_status_counts();
 ?>
 
 <div class="wrap aps-products-page">
-    <!-- Page Header -->
-    <h1 class="wp-heading-inline">
-        <?php esc_html_e('Products', 'affiliate-product-showcase'); ?>
-    </h1>
+<!-- Page Header -->
+<h1>
+    <?php esc_html_e('Products', 'affiliate-product-showcase'); ?>
+</h1>
     
     <a href="<?php echo esc_url(admin_url('admin.php?page=aps-add-product')); ?>" 
        class="page-title-action">
@@ -129,9 +129,9 @@ $status_counts = $this->get_status_counts();
         </div>
 
         <!-- Right Side: Search + Pagination -->
-        <div class="alignright actions">
+        <div class="alignright">
             <!-- Search Input -->
-            <form method="get" class="search-form">
+            <div class="search-form">
                 <input type="hidden" name="page" value="aps-products">
                 <?php if (isset($_GET['status'])): ?>
                     <input type="hidden" name="status" value="<?php echo esc_attr(sanitize_text_field($_GET['status'])); ?>">
@@ -142,9 +142,9 @@ $status_counts = $this->get_status_counts();
                 <input type="search" id="post-search-input" name="s" 
                        value="<?php echo isset($_GET['s']) ? esc_attr(sanitize_text_field($_GET['s'])) : ''; ?>"
                        placeholder="<?php esc_attr_e('Search products...', 'affiliate-product-showcase'); ?>">
-                <input type="submit" id="search-submit" class="button" value="<?php esc_attr_e('Search Products', 'affiliate-product-showcase'); ?>">
-            </form>
-        </div>
+               <input type="submit" id="search-submit" class="button" value="<?php esc_attr_e('Search Products', 'affiliate-product-showcase'); ?>">
+           </div>
+       </div>
 
         <div class="clear"></div>
     </div>

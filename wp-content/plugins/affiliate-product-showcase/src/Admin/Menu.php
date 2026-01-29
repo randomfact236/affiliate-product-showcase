@@ -460,8 +460,35 @@ class Menu {
      * @return void
      */
     public function renderAddProductPage(): void {
+        global $post_id, $is_editing, $product_data;
+        
         // Enqueue WordPress media library scripts
         wp_enqueue_media();
+        
+        // Enqueue admin add product styles
+        wp_enqueue_style(
+            'aps-admin-add-product',
+            plugins_url( 'assets/css/admin-add-product.css', APS_PLUGIN_FILE ),
+            ['aps-admin-products'],
+            defined( 'APS_VERSION' ) ? APS_VERSION : '1.0.0'
+        );
+        
+        // Enqueue admin add product script
+        wp_enqueue_script(
+            'aps-admin-add-product',
+            plugins_url( 'assets/js/admin-add-product.js', APS_PLUGIN_FILE ),
+            ['jquery', 'media-editor'],
+            defined( 'APS_VERSION' ) ? APS_VERSION : '1.0.0',
+            true
+        );
+        
+        // Localize script with PHP data
+        wp_localize_script('aps-admin-add-product', 'apsAddProductData', [
+            'productData' => $product_data ?? [],
+            'isEditing' => $is_editing ?? false,
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('aps_product_nonce')
+        ]);
         
         include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/add-product-page.php' );
     }

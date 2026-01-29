@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Admin;
 
+use AffiliateProductShowcase\Admin\Config\ProductConfig;
+use AffiliateProductShowcase\Admin\Helpers\ProductHelpers;
+use AffiliateProductShowcase\Admin\Traits\ColumnRenderer;
 use WP_List_Table;
 
 /**
@@ -22,6 +25,7 @@ use WP_List_Table;
  * @since 1.0.0
  */
 class ProductsTable extends WP_List_Table {
+    use ColumnRenderer;
     /**
      * Products data
      *
@@ -54,7 +58,7 @@ class ProductsTable extends WP_List_Table {
         $this->products = $this->get_products_data();
 
         // Set pagination
-        $per_page = $this->get_items_per_page('products_per_page', 20);
+        $per_page = $this->get_items_per_page('products_per_page', ProductConfig::DEFAULT_PER_PAGE);
         $current_page = $this->get_pagenum();
         $total_items = count($this->products);
 
@@ -81,7 +85,7 @@ class ProductsTable extends WP_List_Table {
      */
     private function get_products_data(): array {
         $args = [
-            'post_type'      => 'aps_product',
+            'post_type'      => ProductConfig::POST_TYPE,
             'posts_per_page' => -1,
             'post_status'     => ['publish', 'draft', 'trash'],
             'orderby'        => 'date',
@@ -103,7 +107,7 @@ class ProductsTable extends WP_List_Table {
         if (isset($_GET['category']) && !empty($_GET['category'])) {
             $args['tax_query'] = [
                 [
-                    'taxonomy' => 'aps_category',
+                    'taxonomy' => ProductConfig::getTaxonomy('category'),
                     'field'    => 'slug',
                     'terms'    => sanitize_text_field($_GET['category']),
                 ],
@@ -114,7 +118,7 @@ class ProductsTable extends WP_List_Table {
         if (isset($_GET['tag']) && !empty($_GET['tag'])) {
             $args['tax_query'] = isset($args['tax_query']) ? $args['tax_query'] : [];
             $args['tax_query'][] = [
-                'taxonomy' => 'aps_tag',
+                'taxonomy' => ProductConfig::getTaxonomy('tag'),
                 'field'    => 'slug',
                 'terms'    => sanitize_text_field($_GET['tag']),
             ];
@@ -141,16 +145,16 @@ class ProductsTable extends WP_List_Table {
                 'title'         => get_the_title(),
                 'slug'          => \get_post_field('post_name', $post_id),
                 'description'   => get_the_content(),
-                'price'         => \get_post_meta($post_id, '_aps_price', true),
-                'currency'      => \get_post_meta($post_id, '_aps_currency', true) ?: 'USD',
-                'logo'          => \get_the_post_thumbnail_url($post_id, 'thumbnail'),
-                'affiliate_url' => \get_post_meta($post_id, '_aps_affiliate_url', true),
-                'ribbon'        => $this->get_product_ribbon($post_id),
-                'featured'       => (bool) \get_post_meta($post_id, '_aps_featured', true),
+                'price'         => ProductHelpers::getPrice($post_id),
+                'currency'      => ProductHelpers::getCurrency($post_id),
+                'logo'          => ProductHelpers::getLogoUrl($post_id),
+                'affiliate_url' => ProductHelpers::getAffiliateUrl($post_id),
+                'ribbon'        => ProductHelpers::getRibbon($post_id),
+                'featured'      => ProductHelpers::isFeatured($post_id),
                 'status'        => \get_post_status($post_id),
-                'categories'    => $this->get_product_categories($post_id),
-                'tags'          => $this->get_product_tags($post_id),
-                'created_at'     => get_the_date('Y-m-d H:i:s', $post_id),
+                'categories'    => ProductHelpers::getCategories($post_id),
+                'tags'          => ProductHelpers::getTags($post_id),
+                'created_at'    => get_the_date('Y-m-d H:i:s', $post_id),
             ];
         }
 
@@ -159,41 +163,6 @@ class ProductsTable extends WP_List_Table {
         return $products;
     }
 
-    /**
-     * Get product ribbon
-     *
-     * @since 1.0.0
-     * @param int $product_id Product ID
-     * @return string Ribbon name
-     */
-    private function get_product_ribbon(int $product_id): string {
-        $terms = \wp_get_object_terms($product_id, 'aps_ribbon', ['fields' => 'names']);
-        return is_array($terms) && !empty($terms) ? $terms[0] : '';
-    }
-
-    /**
-     * Get product categories
-     *
-     * @since 1.0.0
-     * @param int $product_id Product ID
-     * @return array Category names
-     */
-    private function get_product_categories(int $product_id): array {
-        $terms = \wp_get_object_terms($product_id, 'aps_category', ['fields' => 'names']);
-        return is_array($terms) ? $terms : [];
-    }
-
-    /**
-     * Get product tags
-     *
-     * @since 1.0.0
-     * @param int $product_id Product ID
-     * @return array Tag names
-     */
-    private function get_product_tags(int $product_id): array {
-        $terms = \wp_get_object_terms($product_id, 'aps_tag', ['fields' => 'names']);
-        return is_array($terms) ? $terms : [];
-    }
 
     /**
      * Define table columns
@@ -276,15 +245,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_logo($item): string {
-        if (empty($item['logo'])) {
-            return '<span class="aps-no-logo">—</span>';
-        }
-
-        $logo_url = esc_url($item['logo']);
-        return sprintf(
-            '<img src="%s" alt="" class="aps-product-logo" width="48" height="48" />',
-            $logo_url
-        );
+        return $this->render_logo($item['logo']);
     }
 
     /**
@@ -295,41 +256,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_title($item): string {
-        $edit_url = \admin_url(sprintf(
-            'admin.php?page=aps-edit-product&id=%d',
-            $item['id']
-        ));
-        $view_url = \get_permalink($item['id']);
-
-        $actions = [
-            'edit'       => sprintf(
-                '<a href="%s">%s</a>',
-                esc_url($edit_url),
-                __('Edit', 'affiliate-product-showcase')
-            ),
-            'inline'     => sprintf(
-                '<a href="#" class="aps-inline-edit" data-id="%d">%s</a>',
-                $item['id'],
-                __('Quick Edit', 'affiliate-product-showcase')
-            ),
-            'trash'      => sprintf(
-                '<a href="#" class="aps-trash-product" data-id="%d">%s</a>',
-                $item['id'],
-                __('Trash', 'affiliate-product-showcase')
-            ),
-            'view'       => sprintf(
-                '<a href="%s" target="_blank">%s</a>',
-                esc_url($view_url),
-                __('View', 'affiliate-product-showcase')
-            ),
-        ];
-
-        return sprintf(
-            '<strong><a href="%s" class="row-title">%s</a></strong>%s',
-            esc_url($edit_url),
-            esc_html($item['title']),
-            $this->row_actions($actions)
-        );
+        return $this->render_title_with_actions($item['title'], $item['id']);
     }
 
     /**
@@ -340,18 +267,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_category($item): string {
-    	if (empty($item['categories'])) {
-    		return '<span class="aps-category-text">—</span>';
-    	}
-   
-    	$categories = array_map(function($cat) {
-    		return sprintf(
-    			'<span class="aps-category-chip">%s</span>',
-    			esc_html($cat)
-    		);
-    	}, $item['categories']);
-   
-    	return implode(' ', $categories);
+        return $this->render_taxonomy_list($item['categories'], 'aps-category-text');
     }
 
     /**
@@ -362,18 +278,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_tags($item): string {
-    	if (empty($item['tags'])) {
-    		return '<span class="aps-tag-text">—</span>';
-    	}
-   
-    	$tags = array_map(function($tag) {
-    		return sprintf(
-    			'<span class="aps-tag-chip">%s</span>',
-    			esc_html($tag)
-    		);
-    	}, $item['tags']);
-   
-    	return implode(' ', $tags);
+        return $this->render_taxonomy_list($item['tags'], 'aps-tag-text');
     }
 
     /**
@@ -384,39 +289,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_ribbon($item): string {
-        if (empty($item['ribbon'])) {
-            return '<span class="aps-ribbon-empty">—</span>';
-        }
-
-        // Get ribbon term to retrieve colors
-        $terms = \wp_get_object_terms($item['id'], 'aps_ribbon');
-        
-        if (is_wp_error($terms) || empty($terms)) {
-            return sprintf(
-                '<span class="aps-ribbon-badge">%s</span>',
-                esc_html($item['ribbon'])
-            );
-        }
-
-        $ribbon_term = $terms[0];
-        $bg_color = \get_term_meta($ribbon_term->term_id, '_aps_ribbon_bg_color', true);
-        $text_color = \get_term_meta($ribbon_term->term_id, '_aps_ribbon_color', true);
-
-        $styles = [];
-        if (!empty($bg_color)) {
-            $styles[] = 'background-color: ' . esc_attr($bg_color);
-        }
-        if (!empty($text_color)) {
-            $styles[] = 'color: ' . esc_attr($text_color);
-        }
-
-        $style_attr = !empty($styles) ? ' style="' . implode('; ', $styles) . '"' : '';
-
-        return sprintf(
-            '<span class="aps-ribbon-badge"%s>%s</span>',
-            $style_attr,
-            esc_html($item['ribbon'])
-        );
+        return $this->render_ribbon($item['ribbon'], $item['id']);
     }
 
     /**
@@ -427,7 +300,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_featured($item): string {
-        return $item['featured'] ? '<span class="aps-featured-star">★</span>' : '';
+        return $this->render_empty_indicator($item['featured']);
     }
 
     /**
@@ -438,27 +311,11 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_price($item): string {
-    	$currency = $item['currency'] ?? 'USD';
-    	$currency_symbol = $this->get_currency_symbol($currency);
+    	$currency = $item['currency'] ?? ProductConfig::DEFAULT_CURRENCY;
     	$current_price = floatval($item['price'] ?? 0);
-    	$original_price = floatval(\get_post_meta($item['id'], '_aps_original_price', true) ?? 0);
+    	$original_price = ProductHelpers::getOriginalPrice($item['id']);
     	
-    	$price_html = sprintf(
-    		'<span class="aps-price">%s%s</span>',
-    		esc_html($currency_symbol),
-    		esc_html(number_format($current_price, 2))
-    	);
-    	
-    	// Add discount badge if original price exists and is higher
-    	if ($original_price > 0 && $original_price > $current_price) {
-    		$discount = round(($original_price - $current_price) / $original_price * 100);
-    		$price_html .= sprintf(
-    			' <span class="aps-discount-badge">-%d%%</span>',
-    			esc_html($discount)
-    		);
-    	}
-    	
-    	return $price_html;
+    	return $this->render_price($current_price, $currency, $original_price);
     }
 
     /**
@@ -469,14 +326,7 @@ class ProductsTable extends WP_List_Table {
      * @return string
      */
     public function column_status($item): string {
-        $status_class = 'aps-product-status-' . $item['status'];
-        $status_label = $this->get_status_label($item['status']);
-
-        return sprintf(
-            '<span class="aps-product-status %s">%s</span>',
-            esc_attr($status_class),
-            esc_html($status_label)
-        );
+        return $this->render_status($item['status']);
     }
 
     /**
@@ -491,43 +341,6 @@ class ProductsTable extends WP_List_Table {
         return isset($item[$column_name]) ? \esc_html((string) $item[$column_name]) : '';
     }
 
-    /**
-     * Get currency symbol
-     *
-     * @since 1.0.0
-     * @param string $currency Currency code
-     * @return string
-     */
-    private function get_currency_symbol(string $currency): string {
-        $symbols = [
-            'USD' => '$',
-            'EUR' => '€',
-            'GBP' => '£',
-            'JPY' => '¥',
-            'AUD' => 'A$',
-            'CAD' => 'C$',
-        ];
-
-        return $symbols[$currency] ?? '$';
-    }
-
-    /**
-     * Get status label
-     *
-     * @since 1.0.0
-     * @param string $status Status value
-     * @return string
-     */
-    private function get_status_label(string $status): string {
-        $labels = [
-            'published' => __('Published', 'affiliate-product-showcase'),
-            'draft'     => __('Draft', 'affiliate-product-showcase'),
-            'trash'     => __('Trash', 'affiliate-product-showcase'),
-            'pending'   => __('Pending', 'affiliate-product-showcase'),
-        ];
-
-        return $labels[$status] ?? ucfirst($status);
-    }
 
     /**
      * Get hidden columns

@@ -1,0 +1,646 @@
+/**
+ * Add Product Page Styles
+ *
+ * Styles for the add/edit product form page.
+ *
+ * @package Affiliate_Product_Showcase
+ * @since 1.0.0
+ */
+
+/* ============================================
+   CSS Variables - Color Palette
+   ============================================ */
+:root {
+	/* Primary Colors */
+	--aps-color-primary: #2271b1;
+	--aps-color-primary-hover: #135e96;
+
+	/* Text Colors */
+	--aps-color-text-main: #1d2327;
+	--aps-color-text-muted: #646970;
+
+	/* Background Colors */
+	--aps-color-bg-light: #f0f0f1;
+	--aps-color-bg-card: #ffffff;
+	--aps-color-bg-hover: #f6f7f7;
+
+	/* UI Colors */
+	--aps-color-border: #c3c4c7;
+	--aps-color-danger: #d63638;
+	--aps-color-success: #00a32a;
+}
+
+/* ============================================
+   Main Container
+   ============================================ */
+.affiliate-product-showcase {
+	font-family: 'Inter', sans-serif;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.aps-header {
+	background: #fff;
+	padding: 20px 30px;
+	border-bottom: 1px solid var(--aps-color-border);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: -20px -20px 30px -20px;
+}
+
+.aps-header h1 {
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0;
+}
+
+.aps-close-btn {
+	background: none;
+	border: none;
+	font-size: 20px;
+	color: var(--aps-color-text-muted);
+	cursor: pointer;
+	padding: 8px;
+}
+
+.aps-close-btn:hover {
+	color: var(--aps-color-danger);
+}
+
+/* ============================================
+   Quick Navigation
+   ============================================ */
+.aps-quick-nav {
+	display: flex;
+	gap: 15px;
+	padding: 15px 20px;
+	background: var(--aps-color-bg-light);
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	margin-bottom: 30px;
+	flex-wrap: wrap;
+}
+
+.aps-quick-nav .nav-link {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 15px;
+	background: #fff;
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	color: var(--aps-color-text-main);
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.aps-quick-nav .nav-link:hover {
+	background: var(--aps-color-primary);
+	color: #fff;
+}
+
+.aps-quick-nav .nav-link i {
+	font-size: 16px;
+}
+
+/* ============================================
+   Form Container
+   ============================================ */
+.aps-form-container {
+	background: var(--aps-color-bg-card);
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	padding: 30px;
+	max-width: 1200px;
+	margin-bottom: 30px;
+}
+
+/* ============================================
+   Sections
+   ============================================ */
+.aps-section {
+	margin-bottom: 40px;
+	padding-bottom: 40px;
+	border-bottom: 1px solid var(--aps-color-border);
+}
+
+.section-title {
+	font-size: 14px;
+	font-weight: 600;
+	margin: 0 0 20px 0;
+	padding-bottom: 10px;
+	border-bottom: 2px solid var(--aps-color-primary);
+}
+
+/* ============================================
+   Field Groups
+   ============================================ */
+.aps-field-group {
+	margin-bottom: 20px;
+}
+
+.aps-field-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 500;
+	font-size: 13px;
+}
+
+.aps-field-group .required {
+	color: var(--aps-color-danger);
+}
+
+.aps-field-group .description {
+	display: block;
+	margin-top: 6px;
+	font-size: 12px;
+	font-style: italic;
+	color: var(--aps-color-text-muted);
+}
+
+/* ============================================
+   Form Inputs
+   ============================================ */
+.aps-input {
+	width: 100%;
+	padding: 10px 12px;
+	font-size: 14px;
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+}
+
+.aps-input:focus {
+	border-color: var(--aps-color-primary);
+	outline: none;
+}
+
+.aps-textarea {
+	min-height: 200px;
+	width: 100%;
+	resize: vertical;
+}
+
+.aps-textarea.aps-full-page {
+	min-height: 200px;
+	width: 100%;
+	font-family: inherit;
+	line-height: 1.6;
+	padding: 12px;
+}
+
+.aps-select {
+	width: 100%;
+	padding: 10px 36px 10px 12px;
+	font-size: 14px;
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.aps-readonly {
+	background: #f6f7f7;
+}
+
+/* ============================================
+   Checkbox
+   ============================================ */
+.aps-checkbox-label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.aps-checkbox-label input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+}
+
+/* ============================================
+   Tags
+   ============================================ */
+.aps-tags-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-top: 10px;
+}
+
+.aps-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	background: #e6f0f5;
+	color: #2271b1;
+	border-radius: 3px;
+	font-size: 13px;
+}
+
+.aps-tag .remove-tag {
+	cursor: pointer;
+	font-size: 12px;
+}
+
+/* ============================================
+   Grid Layouts
+   ============================================ */
+.aps-grid-2 {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+}
+
+.aps-grid-3 {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+/* ============================================
+   Upload Areas
+   ============================================ */
+.aps-upload-area {
+	border: 2px dashed var(--aps-color-border);
+	border-radius: 4px;
+	padding: 20px;
+	text-align: center;
+	background: #f9f9f9;
+	cursor: pointer;
+	position: relative;
+	min-height: 150px;
+}
+
+.aps-upload-area:hover {
+	border-color: var(--aps-color-primary);
+}
+
+.aps-upload-area .upload-placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	color: var(--aps-color-text-muted);
+}
+
+.aps-upload-area .upload-placeholder i {
+	font-size: 40px;
+}
+
+.aps-upload-area .image-preview {
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 150px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	top: 0;
+	left: 0;
+}
+
+/* Image preview with data attribute support - handled via JavaScript */
+.aps-image-preview.has-image,
+.aps-brand-preview.has-image {
+	display: block;
+}
+
+.aps-image-preview.no-image,
+.aps-brand-preview.no-image {
+	display: none;
+}
+
+.aps-url-input {
+	margin-top: 15px;
+}
+
+.aps-upload-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: var(--aps-color-primary);
+	color: #fff;
+	border-radius: 4px;
+	font-size: 13px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.aps-btn-cancel {
+	background: transparent;
+	color: var(--aps-color-text-muted);
+}
+
+/* ============================================
+   Multi-Select Dropdown
+   ============================================ */
+.aps-multi-select {
+	position: relative;
+}
+
+.aps-selected-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	padding: 4px 8px;
+	min-height: 38px;
+	cursor: pointer;
+}
+
+.aps-multiselect-input {
+	border: none;
+	outline: none;
+	font-size: 14px;
+	min-width: 150px;
+	flex: 1;
+}
+
+.aps-dropdown {
+	position: absolute;
+	background: #fff;
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	max-height: 200px;
+	overflow-y: auto;
+	z-index: 100;
+	display: none;
+}
+
+.aps-dropdown .dropdown-item {
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+.aps-dropdown .dropdown-item:hover {
+	background: var(--aps-color-bg-hover);
+}
+
+.aps-dropdown .dropdown-item.focused {
+	background: var(--aps-color-bg-light);
+}
+
+/* ============================================
+   Features List
+   ============================================ */
+.aps-feature-list-input-group {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+
+.aps-features-list {
+	border: 1px solid var(--aps-color-border);
+	border-radius: 4px;
+	max-height: 300px;
+	overflow-y: auto;
+	margin-top: 15px;
+}
+
+.aps-feature-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 15px;
+	border-bottom: 1px solid #eee;
+}
+
+.aps-feature-item:hover {
+	background: #f8f9f9;
+}
+
+.aps-feature-item.highlighted {
+	background: #e6f0f5;
+}
+
+.aps-feature-item .feature-text {
+	flex-grow: 1;
+}
+
+.aps-feature-item .feature-actions {
+	display: flex;
+	gap: 5px;
+}
+
+.aps-feature-item .feature-actions button {
+	background: none;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+	color: var(--aps-color-text-muted);
+}
+
+/* ============================================
+   Word Counter
+   ============================================ */
+.word-counter {
+	text-align: right;
+	font-size: 12px;
+	color: var(--aps-color-text-muted);
+	margin-top: 5px;
+}
+
+/* ============================================
+   Form Actions
+   ============================================ */
+.aps-form-actions {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	padding-top: 20px;
+	border-top: 1px solid var(--aps-color-border);
+}
+
+.aps-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 24px;
+	border-radius: 4px;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 600;
+	border: none;
+}
+
+.aps-btn-primary {
+	background: var(--aps-color-primary);
+	color: #fff;
+}
+
+.aps-btn-primary:hover {
+	background: var(--aps-color-primary-hover);
+}
+
+.aps-btn-secondary {
+	background: #646970;
+	color: #fff;
+}
+
+.aps-btn-cancel {
+	background: transparent;
+	color: var(--aps-color-text-muted);
+}
+
+/* ============================================
+   Tag Checkbox
+   ============================================ */
+.aps-tag-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.aps-tag-checkbox .tag-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px;
+	background: #e6f0f5;
+	color: #2271b1;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 12px;
+}
+
+/* ============================================
+   Taxonomy Items
+   ============================================ */
+.aps-taxonomy-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.aps-taxonomy-item .taxonomy-image {
+	width: 24px;
+	height: 24px;
+	background-size: cover;
+	border-radius: 4px;
+}
+
+.aps-taxonomy-item .taxonomy-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: #ffd700;
+	color: #fff;
+	font-size: 12px;
+}
+
+/* ============================================
+   Ribbon Items
+   ============================================ */
+.aps-ribbon-item .ribbon-badge-preview {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 12px;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.aps-hidden {
+	display: none !important;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+	.aps-grid-2,
+	.aps-grid-3 {
+		grid-template-columns: 1fr;
+	}
+
+	.aps-quick-nav {
+		flex-direction: column;
+	}
+
+	.aps-form-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.aps-btn {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+/* ============================================
+   Accessibility - Screen Reader Only
+   ============================================ */
+.visually-hidden {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+/* ============================================
+   Focus Styles for Accessibility
+   ============================================ */
+.aps-input:focus,
+.aps-textarea:focus,
+.aps-select:focus,
+.aps-multiselect-input:focus,
+.aps-btn:focus,
+.aps-upload-btn:focus,
+.aps-close-btn:focus {
+	outline: 2px solid var(--aps-color-primary);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   High Contrast Mode
+   ============================================ */
+@media (prefers-contrast: high) {
+	.aps-tag,
+	.aps-ribbon-item .ribbon-badge-preview {
+		border: 1px solid currentColor;
+	}
+
+	.aps-quick-nav .nav-link:hover {
+		text-decoration: underline;
+	}
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
