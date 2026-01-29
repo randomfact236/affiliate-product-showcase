@@ -35,7 +35,7 @@ if ( $is_editing ) {
 			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
 			'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
 			'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
-			'sale_price' => get_post_meta( $post->ID, '_aps_sale_price', true ),
+			'original_price' => get_post_meta( $post->ID, '_aps_original_price', true ),
 			'currency' => get_post_meta( $post->ID, '_aps_currency', true ) ?: 'USD',
 			'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
 			'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
@@ -227,14 +227,14 @@ wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=
 				<h2 class="section-title">PRICING</h2>
 				<div class="aps-grid-3">
 					<div class="aps-field-group">
-						<label for="aps-regular-price">Regular Price <span class="required">*</span></label>
-						<input type="number" id="aps-regular-price" name="aps_regular_price" class="aps-input"
+						<label for="aps-current-price">Current Price <span class="required">*</span></label>
+						<input type="number" id="aps-current-price" name="aps_current_price" class="aps-input"
 							   step="0.01" min="0" placeholder="30.00" required
 							   value="<?php echo esc_attr( $product_data['regular_price'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-sale-price">Sale Price</label>
-						<input type="number" id="aps-sale-price" name="aps_sale_price" class="aps-input"
+						<label for="aps-original-price">Original Price</label>
+						<input type="number" id="aps-original-price" name="aps_original_price" class="aps-input"
 							   step="0.01" min="0" placeholder="60.00"
 							   value="<?php echo esc_attr( $product_data['sale_price'] ?? '' ); ?>">
 					</div>
@@ -486,11 +486,11 @@ jQuery(document).ready(function($) {
 		$('#aps-word-count').text(Math.min(words, 40));
 	});
 	
-	$('#aps-regular-price, #aps-sale-price').on('input', function() {
-		const regular = parseFloat($('#aps-regular-price').val()) || 0;
-		const sale = parseFloat($('#aps-sale-price').val()) || 0;
-		if (regular > 0 && sale > 0 && sale < regular) {
-			const discount = ((regular - sale) / regular * 100).toFixed(0);
+	$('#aps-current-price, #aps-original-price').on('input', function() {
+		const current = parseFloat($('#aps-current-price').val()) || 0;
+		const original = parseFloat($('#aps-original-price').val()) || 0;
+		if (current > 0 && original > 0 && original < current) {
+			const discount = ((current - original) / current * 100).toFixed(0);
 			$('#aps-discount').val(discount + '% OFF');
 		} else {
 			$('#aps-discount').val('0% OFF');
@@ -720,6 +720,8 @@ jQuery(document).ready(function($) {
 		if (apsProductData.views) $('#aps-views').val(apsProductData.views);
 		if (apsProductData.reviews) $('#aps-reviews').val(apsProductData.reviews);
 		if (apsProductData.short_description) $('#aps-short-description').val(apsProductData.short_description);
+		if (apsProductData.regular_price) $('#aps-current-price').val(apsProductData.regular_price);
+		if (apsProductData.sale_price) $('#aps-original-price').val(apsProductData.sale_price);
 	}
 	
 });

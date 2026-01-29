@@ -151,8 +151,8 @@ class ProductFormHandler {
 		$data['ribbons'] = isset( $raw_data['aps_ribbons'] ) ? $this->sanitize_comma_list( wp_unslash( $raw_data['aps_ribbons'] ) ) : [];
 
 		// Pricing
-		$data['regular_price']     = isset( $raw_data['aps_regular_price'] ) ? floatval( $raw_data['aps_regular_price'] ) : 0.0;
-		$data['sale_price']        = isset( $raw_data['aps_sale_price'] ) && ! empty( $raw_data['aps_sale_price'] ) ? floatval( $raw_data['aps_sale_price'] ) : null;
+		$data['current_price']     = isset( $raw_data['aps_current_price'] ) ? floatval( $raw_data['aps_current_price'] ) : 0.0;
+		$data['original_price']   = isset( $raw_data['aps_original_price'] ) ? floatval( $raw_data['aps_original_price'] ) : null;
 		$data['discount_percentage'] = isset( $raw_data['aps_discount_percentage'] ) && ! empty( $raw_data['aps_discount_percentage'] ) ? floatval( $raw_data['aps_discount_percentage'] ) : null;
 		$data['currency']           = isset( $raw_data['aps_currency'] ) ? sanitize_text_field( wp_unslash( $raw_data['aps_currency'] ) ) : 'USD';
 
@@ -284,13 +284,13 @@ class ProductFormHandler {
 		}
 
 		// Validate price
-		if ( $data['regular_price'] < 0 ) {
-			$errors['regular_price'] = __( 'Price must be greater than or equal to 0.', 'affiliate-product-showcase' );
+		if ( $data['current_price'] < 0 ) {
+			$errors['current_price'] = __( 'Price must be greater than or equal to 0.', 'affiliate-product-showcase' );
 		}
 
-		// Validate sale price
-		if ( null !== $data['sale_price'] && $data['sale_price'] > $data['regular_price'] ) {
-			$errors['sale_price'] = __( 'Sale price must be less than regular price.', 'affiliate-product-showcase' );
+		// Validate original price
+		if ( null !== $data['original_price'] && $data['original_price'] > $data['current_price'] ) {
+			$errors['original_price'] = __( 'Original price must be less than current price.', 'affiliate-product-showcase' );
 		}
 
 		// Validate rating
@@ -404,7 +404,7 @@ class ProductFormHandler {
 	 */
 	private function save_product_meta( int $post_id, array $data ): void {
 		// Save basic meta fields
-		update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
+		update_post_meta( $post_id, '_aps_price', $data['current_price'] );
 		update_post_meta( $post_id, '_aps_currency', $data['currency'] );
 		update_post_meta( $post_id, '_aps_affiliate_url', $data['affiliate_url'] );
 		update_post_meta( $post_id, '_aps_image_url', $data['image_url'] );
@@ -422,13 +422,13 @@ class ProductFormHandler {
 		$existing_sale_price = get_post_meta( $post_id, '_aps_sale_price', true );
 		$existing_original_price = get_post_meta( $post_id, '_aps_original_price', true );
 		
-		if ( null !== $data['sale_price'] && ! empty( $data['sale_price'] ) ) {
-			// Sale price provided - update both
-			update_post_meta( $post_id, '_aps_original_price', $data['regular_price'] );
-			update_post_meta( $post_id, '_aps_price', $data['sale_price'] );
-			update_post_meta( $post_id, '_aps_sale_price', $data['sale_price'] );
-		} elseif ( ! isset( $raw_data['aps_sale_price'] ) ) {
-			// Sale price field not submitted - preserve existing values
+		if ( null !== $data['original_price'] && ! empty( $data['original_price'] ) ) {
+			// Original price provided - update both
+			update_post_meta( $post_id, '_aps_original_price', $data['original_price'] );
+			update_post_meta( $post_id, '_aps_price', $data['current_price'] );
+			update_post_meta( $post_id, '_aps_sale_price', $data['original_price'] );
+		} elseif ( ! isset( $raw_data['aps_original_price'] ) ) {
+			// Original price field not submitted - preserve existing values
 			if ( $existing_original_price ) {
 				update_post_meta( $post_id, '_aps_original_price', $existing_original_price );
 			}
@@ -436,14 +436,14 @@ class ProductFormHandler {
 				update_post_meta( $post_id, '_aps_price', $existing_sale_price );
 				update_post_meta( $post_id, '_aps_sale_price', $existing_sale_price );
 			} else {
-				// No existing sale price - use regular price
-				update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
+				// No existing sale price - use current price
+				update_post_meta( $post_id, '_aps_price', $data['current_price'] );
 				delete_post_meta( $post_id, '_aps_sale_price' );
 			}
 		} else {
-			// Sale price is empty/null - remove sale pricing
+			// Original price is empty/null - remove sale pricing
 			delete_post_meta( $post_id, '_aps_original_price' );
-			update_post_meta( $post_id, '_aps_price', $data['regular_price'] );
+			update_post_meta( $post_id, '_aps_price', $data['current_price'] );
 			delete_post_meta( $post_id, '_aps_sale_price' );
 		}
 
