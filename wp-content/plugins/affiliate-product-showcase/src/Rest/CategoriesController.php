@@ -391,6 +391,66 @@ final class CategoriesController extends RestController {
 	}
 
 	/**
+	 * Log error with context
+	 *
+	 * @param string $context Error context description
+	 * @param \Throwable $e Exception
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function log_error( string $context, \Throwable $e ): void {
+		error_log( sprintf( '[APS] %s: %s', $context, $e->getMessage() ) );
+		
+		// Debug only - log full details when debug mode is enabled
+		if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
+			error_log( sprintf(
+				'[APS] %s: %s in %s:%d',
+				$context,
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			) );
+		}
+	}
+
+	/**
+	 * Perform common preflight checks for REST methods
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @param bool $require_nonce Whether to verify nonce
+	 * @param bool $require_id Whether to validate category ID
+	 * @return WP_REST_Response|null Error response or null if all checks pass
+	 * @since 2.1.0
+	 */
+	private function perform_preflight_checks( WP_REST_Request $request, bool $require_nonce = true, bool $require_id = false ): ?WP_REST_Response {
+		// Check taxonomy exists
+		if ( $error = $this->check_taxonomy_exists() ) {
+			return $error;
+		}
+		
+		// Verify nonce if required
+		if ( $require_nonce ) {
+			if ( $error = $this->verify_nonce( $request ) ) {
+				return $error;
+			}
+		}
+		
+		// Validate category ID if required
+		if ( $require_id ) {
+			if ( $error = $this->validate_category_id( $request ) ) {
+				return $error;
+			}
+			
+			$category_id = (int) $request->get_param( 'id' );
+			if ( $error = $this->get_category_or_error( $category_id ) ) {
+				return $error;
+			}
+		}
+		
+		return null;
+	}
+
+	/**
 	 * Get single category
 	 *
 	 * @param WP_REST_Request $request Request object
@@ -431,20 +491,8 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/{id}
 	 */
 	public function update( WP_REST_Request $request ): WP_REST_Response {
-		// Use helper methods
-		if ( $error = $this->check_taxonomy_exists() ) {
-			return $error;
-		}
-		
-		if ( $error = $this->verify_nonce( $request ) ) {
-			return $error;
-		}
-		
-		if ( $error = $this->validate_category_id( $request ) ) {
-			return $error;
-		}
-		
-		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+		// Perform preflight checks
+		if ( $error = $this->perform_preflight_checks( $request, true, true ) ) {
 			return $error;
 		}
 
@@ -459,18 +507,7 @@ final class CategoriesController extends RestController {
 			return $this->respond( $updated->to_array(), 200 );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
-			// Log error without sensitive information
-			error_log(sprintf('[APS] Category update failed: %s', $e->getMessage()));
-			
-			// Debug only - log full details when debug mode is enabled
-			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
-				error_log(sprintf(
-					'[APS] Category update failed: %s in %s:%d',
-					$e->getMessage(),
-					$e->getFile(),
-					$e->getLine()
-				));
-			}
+			$this->log_error( 'Category update failed', $e );
 			
 			return $this->respond([
 				'message' => esc_html__('Failed to update category', 'affiliate-product-showcase'),
@@ -490,20 +527,8 @@ final class CategoriesController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/categories/{id}
 	 */
 	public function delete( WP_REST_Request $request ): WP_REST_Response {
-		// Use helper methods
-		if ( $error = $this->check_taxonomy_exists() ) {
-			return $error;
-		}
-		
-		if ( $error = $this->verify_nonce( $request ) ) {
-			return $error;
-		}
-		
-		if ( $error = $this->validate_category_id( $request ) ) {
-			return $error;
-		}
-		
-		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+		// Perform preflight checks
+		if ( $error = $this->perform_preflight_checks( $request, true, true ) ) {
 			return $error;
 		}
 
@@ -516,7 +541,7 @@ final class CategoriesController extends RestController {
 			], 200 );
 			
 		} catch ( \Throwable $e ) {
-			error_log(sprintf('[APS] Category delete failed: %s', $e->getMessage()));
+			$this->log_error( 'Category delete failed', $e );
 			
 			return $this->respond([
 				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
@@ -538,7 +563,7 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/{id}/trash
 	 */
 	public function trash( WP_REST_Request $request ): WP_REST_Response {
-		// Use helper methods
+		// Perform preflight checks (no taxonomy check needed here)
 		if ( $error = $this->verify_nonce( $request ) ) {
 			return $error;
 		}
@@ -562,7 +587,7 @@ final class CategoriesController extends RestController {
 			], 200 );
 			
 		} catch ( \Throwable $e ) {
-			error_log(sprintf('[APS] Category trash failed: %s', $e->getMessage()));
+			$this->log_error( 'Category trash failed', $e );
 			
 			return $this->respond([
 				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
@@ -605,7 +630,7 @@ final class CategoriesController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/categories/{id}/delete-permanently
 	 */
 	public function delete_permanently( WP_REST_Request $request ): WP_REST_Response {
-		// Use helper methods
+		// Perform preflight checks (no taxonomy check needed here)
 		if ( $error = $this->verify_nonce( $request ) ) {
 			return $error;
 		}
@@ -627,7 +652,7 @@ final class CategoriesController extends RestController {
 			], 200 );
 			
 		} catch ( \Throwable $e ) {
-			error_log(sprintf('[APS] Category permanent delete failed: %s', $e->getMessage()));
+			$this->log_error( 'Category permanent delete failed', $e );
 			
 			return $this->respond([
 				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
@@ -748,12 +773,8 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories
 	 */
 	public function create( WP_REST_Request $request ): WP_REST_Response {
-		// Use helper methods
-		if ( $error = $this->check_taxonomy_exists() ) {
-			return $error;
-		}
-		
-		if ( $error = $this->verify_nonce( $request ) ) {
+		// Perform preflight checks
+		if ( $error = $this->perform_preflight_checks( $request, true, false ) ) {
 			return $error;
 		}
 
@@ -773,18 +794,7 @@ final class CategoriesController extends RestController {
 			return $this->respond( $created->to_array(), 201, $this->rate_limiter->get_headers( 'categories_create', 20 ) );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
-			// Log error without sensitive information
-			error_log(sprintf('[APS] Category creation failed: %s', $e->getMessage()));
-			
-			// Debug only - log full details when debug mode is enabled
-			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
-				error_log(sprintf(
-					'[APS] Category creation failed: %s in %s:%d',
-					$e->getMessage(),
-					$e->getFile(),
-					$e->getLine()
-				));
-			}
+			$this->log_error( 'Category creation failed', $e );
 			
 			// Return safe message to client
 			return $this->respond([
@@ -794,18 +804,7 @@ final class CategoriesController extends RestController {
 			], 400);
 			
 		} catch ( \Throwable $e ) {
-			// Catch-all for unexpected errors - log without sensitive info
-			error_log(sprintf('[APS] Unexpected error in category creation: %s', $e->getMessage()));
-			
-			// Debug only - log full details when debug mode is enabled
-			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
-				error_log(sprintf(
-					'[APS] Unexpected error in category creation: %s in %s:%d',
-					$e->getMessage(),
-					$e->getFile(),
-					$e->getLine()
-				));
-			}
+			$this->log_error( 'Unexpected error in category creation', $e );
 			
 			return $this->respond([
 				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),

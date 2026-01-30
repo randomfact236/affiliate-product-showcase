@@ -90,6 +90,15 @@
 	border-radius: 50%;
 }
 
+/* Preset color swatches using data attributes */
+.preset-color[data-color="#ff0000"] .color-swatch { background-color: #ff0000; }
+.preset-color[data-color="#00ff00"] .color-swatch { background-color: #00ff00; }
+.preset-color[data-color="#0000ff"] .color-swatch { background-color: #0000ff; }
+.preset-color[data-color="#ffff00"] .color-swatch { background-color: #ffff00; }
+.preset-color[data-color="#ff00ff"] .color-swatch { background-color: #ff00ff; }
+.preset-color[data-color="#000000"] .color-swatch { background-color: #000000; }
+.preset-color[data-color="#ff6600"] .color-swatch { background-color: #ff6600; }
+
 /* =========================================
    Live Preview Styles
    ========================================= */

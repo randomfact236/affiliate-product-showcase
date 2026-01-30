@@ -244,25 +244,25 @@ final class RibbonFields extends TaxonomyFieldsAbstract {
 			<!-- Color Presets -->
 			<div class="color-presets">
 				<button type="button" class="preset-color" data-color="#ff0000" title="Red">
-					<span class="color-swatch" style="background-color: #ff0000;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#00ff00" title="Green">
-					<span class="color-swatch" style="background-color: #00ff00;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#0000ff" title="Blue">
-					<span class="color-swatch" style="background-color: #0000ff;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#ffff00" title="Yellow">
-					<span class="color-swatch" style="background-color: #ffff00;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#ff00ff" title="Purple">
-					<span class="color-swatch" style="background-color: #ff00ff;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#000000" title="Black">
-					<span class="color-swatch" style="background-color: #000000;"></span>
+					<span class="color-swatch"></span>
 				</button>
 				<button type="button" class="preset-color" data-color="#ff6600" title="Orange">
-					<span class="color-swatch" style="background-color: #ff6600;"></span>
+					<span class="color-swatch"></span>
 				</button>
 			</div>
 			

@@ -154,7 +154,7 @@ final class TagFields extends TaxonomyFieldsAbstract {
 
 		?>
 		<!-- Featured and Default Checkboxes (side by side) -->
-		<div class="aps-tag-checkboxes-wrapper" style="display:none;">
+		<div class="aps-tag-checkboxes-wrapper">
 			<!-- Featured Checkbox -->
 			<div class="form-field aps-tag-featured">
 				<label for="_aps_tag_featured">
@@ -269,75 +269,14 @@ final class TagFields extends TaxonomyFieldsAbstract {
 					<?php esc_html_e( 'Enter hex color code for tag background (e.g., #ff6b6b).', 'affiliate-product-showcase' ); ?>
 				</p>
 
-				<div class="ribbon-live-preview" id="tag-preview-container" style="margin-top:10px;">
+				<div class="ribbon-live-preview" id="tag-preview-container">
 					<span class="preview-label">Preview:</span>
-					<div class="ribbon-preview-badge" id="tag-preview" style="display:inline-block;padding:4px 12px;border-radius:4px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+					<div class="ribbon-preview-badge" id="tag-preview">
 						<?php esc_html_e( 'Tag', 'affiliate-product-showcase' ); ?>
 					</div>
 				</div>
+				</div>
 			</div>
-
-		<style>
-			/* Side-by-side checkbox layout */
-			.aps-tag-checkboxes-inner {
-				display: flex;
-				gap: 20px;
-				margin-top: 10px;
-			}
-			
-			.aps-tag-checkbox-item {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				gap: 5px;
-			}
-			
-			.aps-tag-checkbox-item label {
-				font-weight: 600;
-				margin-bottom: 5px;
-			}
-			
-			.aps-tag-checkbox-item input[type="checkbox"] {
-				margin-right: 8px;
-			}
-			
-			.aps-tag-checkbox-item .description {
-				font-size: 12px;
-				color: #646970;
-				margin-top: 5px;
-			}
-			
-			/* Section divider styling */
-			.aps-tag-settings h3 {
-				margin: 20px 0 15px 0;
-				padding-bottom: 10px;
-				border-bottom: 1px solid #dcdcde;
-				font-size: 14px;
-				font-weight: 600;
-				text-align: center;
-			}
-
-			/* Name badge styling (reuse ribbon styles) */
-			.aps-ribbon-name-badge {
-				display: inline-block;
-				padding: 4px 12px;
-				border-radius: 4px;
-				font-weight: 600;
-				font-size: 12px;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-				margin-right: 8px;
-			}
-		</style>
-
-		<script>
-		jQuery(document).ready(function($) {
-			// Move Featured and Default checkboxes side by side below slug field
-			$('.aps-tag-checkboxes-wrapper').insertAfter($('input[name="slug"]').parent());
-			$('.aps-tag-checkboxes-wrapper').show();
-		});
-		</script>
 
 		<?php
 	}

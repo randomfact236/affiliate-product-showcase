@@ -481,28 +481,23 @@ final class CategoryRepository {
 	private function save_metadata( int $term_id, Category $category ): void {
 		// Featured
 		update_term_meta( $term_id, '_aps_category_featured', $category->featured ? 1 : 0 );
-		// Delete legacy key
-		delete_term_meta( $term_id, 'aps_category_featured' );
+		$this->cleanup_legacy_meta( $term_id, [ 'featured' ] );
 
 		// Image URL
 		if ( $category->image_url ) {
 			update_term_meta( $term_id, '_aps_category_image', $category->image_url );
-			// Delete legacy key
-			delete_term_meta( $term_id, 'aps_category_image' );
 		} else {
 			delete_term_meta( $term_id, '_aps_category_image' );
-			delete_term_meta( $term_id, 'aps_category_image' );
 		}
+		$this->cleanup_legacy_meta( $term_id, [ 'image' ] );
 
 		// Sort order
 		update_term_meta( $term_id, '_aps_category_sort_order', $category->sort_order );
-		// Delete legacy key
-		delete_term_meta( $term_id, 'aps_category_sort_order' );
+		$this->cleanup_legacy_meta( $term_id, [ 'sort_order' ] );
 
 		// Status (published/draft)
 		update_term_meta( $term_id, '_aps_category_status', $category->status );
-		// Delete legacy key
-		delete_term_meta( $term_id, 'aps_category_status' );
+		$this->cleanup_legacy_meta( $term_id, [ 'status' ] );
 
 		// Is default category
 		if ( $category->is_default ) {
@@ -510,8 +505,7 @@ final class CategoryRepository {
 			$this->remove_default_from_all_categories();
 			// Set this category as default
 			update_term_meta( $term_id, '_aps_category_is_default', 1 );
-			// Delete legacy key
-			delete_term_meta( $term_id, 'aps_category_is_default' );
+			$this->cleanup_legacy_meta( $term_id, [ 'is_default' ] );
 			// Update global default category option
 			update_option( 'aps_default_category_id', $term_id );
 		}
@@ -594,10 +588,20 @@ final class CategoryRepository {
 		delete_term_meta( $term_id, '_aps_category_is_default' );
 		
 		// Delete legacy format keys
-		delete_term_meta( $term_id, 'aps_category_featured' );
-		delete_term_meta( $term_id, 'aps_category_image' );
-		delete_term_meta( $term_id, 'aps_category_sort_order' );
-		delete_term_meta( $term_id, 'aps_category_status' );
-		delete_term_meta( $term_id, 'aps_category_is_default' );
+		$this->cleanup_legacy_meta( $term_id, [ 'featured', 'image', 'sort_order', 'status', 'is_default' ] );
+	}
+
+	/**
+	 * Cleanup legacy term meta keys
+	 *
+	 * @param int $term_id Term ID
+	 * @param array<string> $keys Array of meta key suffixes (without prefix)
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function cleanup_legacy_meta( int $term_id, array $keys ): void {
+		foreach ( $keys as $key ) {
+			delete_term_meta( $term_id, 'aps_category_' . $key );
+		}
 	}
 }
