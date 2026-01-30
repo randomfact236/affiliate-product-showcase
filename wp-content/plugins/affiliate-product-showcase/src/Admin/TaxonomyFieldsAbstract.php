@@ -219,8 +219,9 @@ abstract class TaxonomyFieldsAbstract {
 	 */
 	final public function save_fields( int $term_id, int $tt_id ): void {
 		// Check nonce
-		if ( ! isset( $_POST[ $this->get_nonce_action( 'fields_nonce' ) ] ) || 
-		     ! wp_verify_nonce( $_POST[ $this->get_nonce_action( 'fields_nonce' ) ], $this->get_nonce_action( 'fields' ) ) ) {
+		$nonce_name = $this->get_nonce_action( 'fields_nonce' );
+		if ( ! isset( $_POST[ $nonce_name ] ) || 
+		     ! wp_verify_nonce( wp_unslash( $_POST[ $nonce_name ] ), $this->get_nonce_action( 'fields' ) ) ) {
 			return;
 		}
 

@@ -27,6 +27,22 @@ use AffiliateProductShowcase\Helpers\Logger;
  */
 class Sanitizer {
 
+	/**
+	 * Sanitize taxonomy term IDs
+	 *
+	 * Converts term IDs to integers, handling both array and scalar values.
+	 *
+	 * @param mixed $value Value to sanitize (array or scalar)
+	 * @return array<int, int> Array of sanitized integer IDs
+	 * @since 1.0.0
+	 */
+	private static function sanitize_taxonomy_ids( $value ): array {
+		if ( is_array( $value ) ) {
+			return array_map( 'intval', $value );
+		}
+		return [ intval( $value ) ];
+	}
+
     /**
      * Sanitize a string value
      *
@@ -177,15 +193,11 @@ class Sanitizer {
         }
 
 		if ( isset( $data['category_ids'] ) ) {
-			$sanitized['category_ids'] = is_array( $data['category_ids'] )
-				? array_map( 'intval', $data['category_ids'] )
-				: [ intval( $data['category_ids'] ) ];
+			$sanitized['category_ids'] = self::sanitize_taxonomy_ids( $data['category_ids'] );
 		}
 
 		if ( isset( $data['tag_ids'] ) ) {
-			$sanitized['tag_ids'] = is_array( $data['tag_ids'] )
-				? array_map( 'intval', $data['tag_ids'] )
-				: [ intval( $data['tag_ids'] ) ];
+			$sanitized['tag_ids'] = self::sanitize_taxonomy_ids( $data['tag_ids'] );
 		}
 
         if ( isset( $data['rating'] ) ) {

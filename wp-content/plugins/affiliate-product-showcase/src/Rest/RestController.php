@@ -14,7 +14,7 @@ abstract class RestController {
 
 	abstract public function register_routes(): void;
 
-	protected function permissions_check(): bool {
+	public function permissions_check(): bool {
 		return current_user_can( 'manage_options' );
 	}
 

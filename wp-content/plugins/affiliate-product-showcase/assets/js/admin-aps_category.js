@@ -42,14 +42,24 @@ function apsGetAjaxUrl() {
  */
 function apsShowNotice( type, message ) {
 	var $ = jQuery;
+	var allowedTypes = [ 'success', 'error', 'warning', 'info' ];
+	if ( allowedTypes.indexOf( type ) === -1 ) {
+		type = 'info';
+	}
 	var prefix = ( typeof aps_admin_vars !== 'undefined' && aps_admin_vars && aps_admin_vars.notice_prefix )
 		? aps_admin_vars.notice_prefix
 		: 'aps-category-notice';
 	var cls = prefix + '-' + type;
 
 	$( '.' + prefix ).remove();
-	var html = '<div class="notice notice-' + type + ' is-dismissible ' + prefix + ' ' + cls + '"><p>' + message + '</p></div>';
-	$( '.wrap h1' ).first().after( html );
+	var $notice = $( '<div></div>' )
+		.addClass( 'notice' )
+		.addClass( 'notice-' + type )
+		.addClass( 'is-dismissible' )
+		.addClass( prefix )
+		.addClass( cls );
+	$( '<p></p>' ).text( message ).appendTo( $notice );
+	$( '.wrap h1' ).first().after( $notice );
 
 	setTimeout( function() {
 		$( '.' + prefix ).fadeOut( 200 );
@@ -85,7 +95,11 @@ function apsAddCancelButton() {
 		var cancelText = (typeof aps_admin_vars !== 'undefined' && aps_admin_vars.cancel_text)
 			? aps_admin_vars.cancel_text
 			: 'Cancel';
-		$submit.prepend('<a class="button button-secondary aps-cancel-term-edit" href="' + cancelUrl + '">' + cancelText + '</a>');
+		$( '<a></a>' )
+			.addClass( 'button button-secondary aps-cancel-term-edit' )
+			.attr( 'href', cancelUrl )
+			.text( cancelText )
+			.prependTo( $submit );
 	}
 }
 
@@ -171,7 +185,7 @@ jQuery(document).ready(function($) {
 			url: ajaxUrl,
 			type: 'POST',
 			data: {
-				action: 'aps_category_row_action',
+				action: 'aps_aps_category_row_action',
 				nonce: aps_admin_vars.row_action_nonce,
 				term_id: termId,
 				do: doAction
@@ -243,7 +257,7 @@ jQuery(document).ready(function($) {
 			url: ajaxUrl,
 			type: 'POST',
 			data: {
-				action: 'aps_toggle_category_status',
+				action: 'aps_toggle_aps_category_status',
 				nonce: aps_admin_vars.nonce,
 				term_id: termId,
 				status: newStatus

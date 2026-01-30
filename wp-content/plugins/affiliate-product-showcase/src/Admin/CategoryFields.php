@@ -169,8 +169,8 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 		</div>
 
 		<?php
-		// Nonce field for security (base class handles saving)
-		wp_nonce_field( 'aps_category_fields', 'aps_category_fields_nonce' );
+		// Note: Nonce field is handled by the base class TaxonomyFieldsAbstract
+		// No need to add it here as it would be redundant
 	}
 	
 	/**

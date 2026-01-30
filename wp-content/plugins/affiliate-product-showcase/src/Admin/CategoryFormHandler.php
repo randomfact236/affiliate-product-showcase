@@ -100,11 +100,11 @@ final class CategoryFormHandler {
 		}
 
 		// Get form data
-		$cat_id      = isset( $_POST['category_id'] ) && is_numeric( $_POST['category_id'] ) ? (int) $_POST['category_id'] : 0;
+		$cat_id      = isset( $_POST['category_id'] ) ? absint( wp_unslash( $_POST['category_id'] ) ) : 0;
 		$name        = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 		$slug        = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
 		$description = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
-		$parent_id   = isset( $_POST['parent_id'] ) && is_numeric( $_POST['parent_id'] ) ? (int) $_POST['parent_id'] : 0;
+		$parent_id   = isset( $_POST['parent_id'] ) ? absint( wp_unslash( $_POST['parent_id'] ) ) : 0;
 		$featured     = isset( $_POST['featured'] ) && '1' === $_POST['featured'];
 		$image_url   = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
 		$sort_order  = isset( $_POST['sort_order'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_order'] ) ) : 'date';
@@ -127,6 +127,7 @@ final class CategoryFormHandler {
 					$slug,
 					$description,
 					$parent_id,
+					0, // count - will be updated by WordPress
 					$featured,
 					$image_url,
 					$sort_order
@@ -149,6 +150,7 @@ final class CategoryFormHandler {
 					$slug,
 					$description,
 					$parent_id,
+					0, // count - will be updated by WordPress
 					$featured,
 					$image_url,
 					$sort_order

@@ -280,8 +280,13 @@ final class Category {
 		// Generate slug from name if not provided
 		$slug = $data['slug'] ?? sanitize_title( $data['name'] );
 
-		// Ensure unique slug
-		$slug = wp_unique_term_slug( $slug, Constants::TAX_CATEGORY );
+		// Ensure unique slug by creating a temporary term object
+		$term_object = (object) [
+			'taxonomy' => Constants::TAX_CATEGORY,
+			'parent'   => (int) ( $data['parent_id'] ?? 0 ),
+			'term_id'  => (int) ( $data['id'] ?? 0 ),
+		];
+		$slug = wp_unique_term_slug( $slug, $term_object );
 
 		return new self(
 			(int) ( $data['id'] ?? 0 ),
@@ -294,7 +299,7 @@ final class Category {
 			! empty( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : null,
 			SortOrderConstants::isValid($data['sort_order'] ?? SortOrderConstants::DATE)
 				? $data['sort_order']
-				: StatusConstants::PUBLISHED,
+				: SortOrderConstants::DATE,
 			$data['created_at'] ?? '',
 			StatusValidator::isValid($data['status'] ?? StatusConstants::PUBLISHED)
 				? $data['status']

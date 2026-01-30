@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Load Constants class to access taxonomy constants
+require_once __DIR__ . '/src/Plugin/Constants.php';
+
 // Configurable constants (can be defined in wp-config.php)
 defined( 'APS_UNINSTALL_REMOVE_ALL_DATA' )     or define( 'APS_UNINSTALL_REMOVE_ALL_DATA', false );
 defined( 'APS_UNINSTALL_FORCE_DELETE_CONTENT' ) or define( 'APS_UNINSTALL_FORCE_DELETE_CONTENT', false );
@@ -73,7 +76,11 @@ function aps_cleanup_content() {
 	global $wpdb;
 
 	$post_types = [ 'aps_product', 'aps_affiliate' ];
-	$taxonomies = [ 'aps_category', 'aps_tag' ];
+	// FIXED: Use constants instead of hardcoded strings
+	$taxonomies = [
+		\AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY,
+		\AffiliateProductShowcase\Plugin\Constants::TAX_TAG,
+	];
 
 	// Safety re-registration (multisite context)
 	foreach ( $post_types as $pt ) {

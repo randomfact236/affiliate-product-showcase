@@ -216,7 +216,18 @@ final class CategoryRepository {
 		$this->save_metadata( $term_id, $category );
 
 		// Return category with ID
-		return $this->find( $term_id );
+		$created_category = $this->find( $term_id );
+		
+		if ( ! $created_category ) {
+			throw new PluginException(
+				sprintf(
+					'Category created successfully but could not be retrieved. Term ID: %d',
+					$term_id
+				)
+			);
+		}
+		
+		return $created_category;
 	}
 
 	/**
@@ -267,52 +278,43 @@ final class CategoryRepository {
 		// Save metadata
 		$this->save_metadata( $category->id, $category );
 
-		return $this->find( $category->id );
+		// Return updated category
+		$updated_category = $this->find( $category->id );
+		
+		if ( ! $updated_category ) {
+			throw new PluginException(
+				sprintf(
+					'Category updated successfully but could not be retrieved. Term ID: %d',
+					$category->id
+				)
+			);
+		}
+		
+		return $updated_category;
 	}
 
 	/**
-	 * Delete a category (move to trash)
+	 * Delete a category permanently
+	 *
+	 * Note: WordPress core does not support trash/restore functionality for taxonomy terms.
+	 * This method immediately deletes the category permanently. It is kept as an alias
+	 * to delete_permanently() for API consistency and backward compatibility.
 	 *
 	 * @param int $category_id Category ID to delete
 	 * @return bool True on success
 	 * @throws PluginException If deletion fails
 	 * @since 1.0.0
+	 * @see delete_permanently() The actual implementation
 	 *
 	 * @example
 	 * ```php
 	 * $repository->delete(1);
 	 * ```
 	 */
-	public function delete( int $category_id ): bool {
-		if ( $category_id <= 0 ) {
-			throw new PluginException( 'Category ID is required.' );
-		}
-
-		$category = $this->find( $category_id );
-		if ( ! $category ) {
-			throw new PluginException( 'Category not found.' );
-		}
-
-		// Prevent deleting default category
-		if ( $category->is_default ) {
-			throw new PluginException( 'Cannot delete default category. Please select another default category first.' );
-		}
-
-		$result = wp_delete_term( $category_id, Constants::TAX_CATEGORY );
-
-		if ( is_wp_error( $result ) ) {
-			throw new PluginException(
-				sprintf(
-					'Failed to delete category: %s',
-					$result->get_error_message()
-				)
-			);
-		}
-
-		// Delete metadata
-		$this->delete_metadata( $category_id );
-
-		return true;
+	final public function delete( int $category_id ): bool {
+		// WordPress doesn't have native trash for terms
+		// This is an alias for delete_permanently() for API consistency
+		return $this->delete_permanently( $category_id );
 	}
 
 	/**
@@ -335,10 +337,14 @@ final class CategoryRepository {
 	/**
 	 * Delete a category permanently
 	 *
+	 * This method performs the actual deletion. The delete() method is an alias
+	 * to this method since WordPress does not support trash for taxonomy terms.
+	 *
 	 * @param int $category_id Category ID to delete permanently
 	 * @return bool True on success
 	 * @throws PluginException If deletion fails
 	 * @since 1.0.0
+	 * @see delete() Alias method for API consistency
 	 *
 	 * @example
 	 * ```php

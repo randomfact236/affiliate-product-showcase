@@ -65,6 +65,86 @@ final class ProductsController extends RestController {
 	}
 
 	/**
+	 * Verify nonce from request
+	 *
+	 * Validates the X-WP-Nonce header for CSRF protection.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response|null Returns error response if nonce is invalid, null otherwise
+	 * @since 1.0.0
+	 */
+	private function verify_nonce( WP_REST_Request $request ): ?WP_REST_Response {
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+		return null;
+	}
+
+	/**
+	 * Validate product ID from request
+	 *
+	 * Extracts and validates the product ID parameter.
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response|int Returns error response if invalid, product ID otherwise
+	 * @since 1.0.0
+	 */
+	private function validate_product_id( WP_REST_Request $request ) {
+		$product_id = $request->get_param( 'id' );
+		if ( empty( $product_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_product_id',
+			], 400 );
+		}
+		return (int) $product_id;
+	}
+
+	/**
+	 * Verify product exists
+	 *
+	 * Checks if a product with the given ID exists.
+	 *
+	 * @param int $product_id Product ID to verify
+	 * @return WP_REST_Response|null Returns error response if not found, null otherwise
+	 * @since 1.0.0
+	 */
+	private function verify_product_exists( int $product_id ): ?WP_REST_Response {
+		$existing_product = $this->product_service->get_product( $product_id );
+		if ( null === $existing_product ) {
+			return $this->respond( [
+				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
+				'code'    => 'product_not_found',
+			], 404 );
+		}
+		return null;
+	}
+
+	/**
+	 * Check permissions for listing products
+	 *
+	 * Allows public read access for the products list endpoint.
+	 * This is appropriate for a public-facing product showcase.
+	 * If you want to restrict access, change this to require authentication.
+	 *
+	 * @return bool True if request is allowed
+	 * @since 1.0.0
+	 */
+	public function list_permissions_check(): bool {
+		/**
+		 * Filter the permission check for listing products.
+		 *
+		 * @param bool $allow Whether to allow listing products.
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'aps_products_list_permission', true );
+	}
+
+	/**
 	 * Register REST API routes
 	 *
 	 * Registers /products endpoints for:
@@ -84,7 +164,8 @@ final class ProductsController extends RestController {
 				[
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'list' ],
-					'permission_callback' => '__return_true',
+					// FIXED: Use proper permission check instead of __return_true
+					'permission_callback' => [ $this, 'list_permissions_check' ],
 					'args'                => $this->get_list_args(),
 				],
 				[
@@ -104,7 +185,8 @@ final class ProductsController extends RestController {
 				[
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'get_item' ],
-					'permission_callback' => '__return_true',
+					// FIXED: Use proper permission check instead of __return_true
+					'permission_callback' => [ $this, 'list_permissions_check' ],
 				],
 				[
 					'methods'             => WP_REST_Server::CREATABLE | WP_REST_Server::EDITABLE,
@@ -230,6 +312,9 @@ final class ProductsController extends RestController {
 	 * @since 1.0.0
 	 */
 	private function get_create_args(): array {
+		// FIXED: Use helper method to avoid duplication
+		$taxonomy_ids_schema = $this->get_taxonomy_ids_schema();
+
 		return [
 			'title' => [
 				'required'          => true,
@@ -308,26 +393,8 @@ final class ProductsController extends RestController {
 				'maximum'           => 5,
 				'sanitize_callback' => 'floatval',
 			],
-			'category_ids' => [
-				'required'          => false,
-				'type'              => 'array',
-				'items'             => [
-					'type' => 'integer',
-				],
-				'sanitize_callback' => function( $value ) {
-					return array_map( 'intval', (array) $value );
-				},
-			],
-			'tag_ids' => [
-				'required'          => false,
-				'type'              => 'array',
-				'items'             => [
-					'type' => 'integer',
-				],
-				'sanitize_callback' => function( $value ) {
-					return array_map( 'intval', (array) $value );
-				},
-			],
+			'category_ids' => $taxonomy_ids_schema,
+			'tag_ids' => $taxonomy_ids_schema,
 			'platform_requirements' => [
 				'required'          => false,
 				'type'              => 'string',
@@ -339,6 +406,27 @@ final class ProductsController extends RestController {
 				'maxLength'         => 50,
 				'sanitize_callback' => 'sanitize_text_field',
 			],
+		];
+	}
+
+	/**
+	 * Get validation schema for taxonomy IDs
+	 *
+	 * Returns a reusable schema for validating taxonomy term IDs.
+	 *
+	 * @return array<string, mixed> Validation schema for taxonomy IDs
+	 * @since 1.0.0
+	 */
+	private function get_taxonomy_ids_schema(): array {
+		return [
+			'required'          => false,
+			'type'              => 'array',
+			'items'             => [
+				'type' => 'integer',
+			],
+			'sanitize_callback' => function( $value ) {
+				return array_map( 'intval', (array) $value );
+			},
 		];
 	}
 
@@ -457,35 +545,26 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products/{id}
 	 */
 	public function update( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
-		
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
 		}
 
-		// Verify product exists
-		$existing_product = $this->product_service->get_product( (int) $product_id );
-		if ( null === $existing_product ) {
-			return $this->respond( [
-				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
-				'code'    => 'product_not_found',
-			], 404 );
+		// Verify product exists using helper method
+		$error = $this->verify_product_exists( $product_id );
+		if ( $error ) {
+			return $error;
 		}
 
 		try {
-			// Merge existing product data with updates
+			$existing_product = $this->product_service->get_product( $product_id );
 			$updates = array_merge( $existing_product->to_array(), $request->get_params() );
 			$updates['id'] = (int) $product_id;
 			
@@ -517,30 +596,22 @@ final class ProductsController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/products/{id}
 	 */
 	public function delete( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
-		
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
 		}
 
-		$existing_product = $this->product_service->get_product( (int) $product_id );
-		if ( null === $existing_product ) {
-			return $this->respond( [
-				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
-				'code'    => 'product_not_found',
-			], 404 );
+		// Verify product exists using helper method
+		$error = $this->verify_product_exists( $product_id );
+		if ( $error ) {
+			return $error;
 		}
 
 		try {
@@ -578,22 +649,16 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products/{id}/restore
 	 */
 	public function restore( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
-		
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
 		}
 
 		try {
@@ -635,30 +700,22 @@ final class ProductsController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/products/{id}/delete-permanently
 	 */
 	public function delete_permanently( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
-		
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
 		}
 
-		$existing_product = $this->product_service->get_product( (int) $product_id );
-		if ( null === $existing_product ) {
-			return $this->respond( [
-				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
-				'code'    => 'product_not_found',
-			], 404 );
+		// Verify product exists using helper method
+		$error = $this->verify_product_exists( $product_id );
+		if ( $error ) {
+			return $error;
 		}
 
 		try {
@@ -696,30 +753,22 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products/{id}/trash
 	 */
 	public function trash( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
-		
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
 		}
 
-		$existing_product = $this->product_service->get_product( (int) $product_id );
-		if ( null === $existing_product ) {
-			return $this->respond( [
-				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
-				'code'    => 'product_not_found',
-			], 404 );
+		// Verify product exists using helper method
+		$error = $this->verify_product_exists( $product_id );
+		if ( $error ) {
+			return $error;
 		}
 
 		try {
@@ -796,13 +845,10 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products
 	 */
 	public function create( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
 		// Check rate limit (stricter for create operations)
@@ -861,38 +907,30 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products/{id}/field
 	 */
 	public function update_field( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
-		$product_id = $request->get_param( 'id' );
+		// Validate product ID using helper method
+		$product_id = $this->validate_product_id( $request );
+		if ( $product_id instanceof WP_REST_Response ) {
+			return $product_id;
+		}
+
 		$field_name = $request->get_param( 'field_name' );
 		$field_value = $request->get_param( 'field_value' );
 
-		if ( empty( $product_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Product ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_product_id',
-			], 400 );
-		}
-
-		// Verify product exists
-		$existing_product = $this->product_service->get_product( (int) $product_id );
-		if ( null === $existing_product ) {
-			return $this->respond( [
-				'message' => __( 'Product not found.', 'affiliate-product-showcase' ),
-				'code'    => 'product_not_found',
-			], 404 );
+		// Verify product exists using helper method
+		$error = $this->verify_product_exists( $product_id );
+		if ( $error ) {
+			return $error;
 		}
 
 		try {
 			// Prepare update data based on field type
-			$update_data = ['id' => (int) $product_id];
+			$update_data = ['id' => $product_id];
 
 			switch ( $field_name ) {
 				case 'category':
@@ -936,7 +974,7 @@ final class ProductsController extends RestController {
 					
 					// Update WordPress post status
 					$post_data = [
-						'ID'          => (int) $product_id,
+						'ID'          => $product_id,
 						'post_status' => $field_value,
 					];
 					wp_update_post( $post_data );
@@ -994,13 +1032,10 @@ final class ProductsController extends RestController {
 	 * @route POST /affiliate-showcase/v1/products/bulk-status
 	 */
 	public function bulk_update_status( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Verify nonce using helper method
+		$error = $this->verify_nonce( $request );
+		if ( $error ) {
+			return $error;
 		}
 
 		$product_ids = $request->get_param( 'product_ids' );
@@ -1036,7 +1071,7 @@ final class ProductsController extends RestController {
 
 				// Update WordPress post status
 				$post_data = [
-					'ID'          => (int) $product_id,
+					'ID'          => $product_id,
 					'post_status' => $status,
 				];
 

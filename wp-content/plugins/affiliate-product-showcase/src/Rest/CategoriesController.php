@@ -102,7 +102,7 @@ final class CategoriesController extends RestController {
 				[
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'list' ],
-					'permission_callback' => '__return_true',
+					'permission_callback' => [ $this, 'permissions_check' ],
 					'args'                => $this->get_list_args(),
 				],
 				[
@@ -122,7 +122,7 @@ final class CategoriesController extends RestController {
 				[
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'get_item' ],
-					'permission_callback' => '__return_true',
+					'permission_callback' => [ $this, 'permissions_check' ],
 				],
 				[
 					'methods'             => WP_REST_Server::CREATABLE | WP_REST_Server::EDITABLE,
@@ -327,8 +327,8 @@ final class CategoriesController extends RestController {
 		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
 			return $this->respond( [
 				'message' => sprintf(
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
+					esc_html__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					esc_html( Constants::TAX_CATEGORY )
 				),
 				'code'    => 'taxonomy_not_registered',
 			], 500 );
@@ -347,7 +347,7 @@ final class CategoriesController extends RestController {
 		$nonce = $request->get_header( 'X-WP-Nonce' );
 		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
 				'code'    => 'invalid_nonce',
 			], 403 );
 		}
@@ -365,7 +365,7 @@ final class CategoriesController extends RestController {
 		$category_id = $request->get_param( 'id' );
 		if ( empty( $category_id ) ) {
 			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Category ID is required.', 'affiliate-product-showcase' ),
 				'code'    => 'missing_category_id',
 			], 400 );
 		}
@@ -409,11 +409,16 @@ final class CategoriesController extends RestController {
 			return $error;
 		}
 		
-		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
-			return $error;
+		$category_id = (int) $request->get_param( 'id' );
+		$category    = $this->repository->find( $category_id );
+		if ( null === $category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
 		}
 
-		return $this->respond( $this->repository->find( (int) $request->get_param( 'id' ) )->to_array(), 200 );
+		return $this->respond( $category->to_array(), 200 );
 	}
 
 	/**
@@ -468,7 +473,7 @@ final class CategoriesController extends RestController {
 			}
 			
 			return $this->respond([
-				'message' => __('Failed to update category', 'affiliate-product-showcase'),
+				'message' => esc_html__('Failed to update category', 'affiliate-product-showcase'),
 				'code' => 'category_update_error',
 				'errors' => $e->getMessage(),
 			], 400);
@@ -506,7 +511,7 @@ final class CategoriesController extends RestController {
 			$this->repository->delete( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
-				'message' => __( 'Category deleted successfully.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Category deleted successfully.', 'affiliate-product-showcase' ),
 				'code'    => 'success',
 			], 200 );
 			
@@ -514,7 +519,7 @@ final class CategoriesController extends RestController {
 			error_log(sprintf('[APS] Category delete failed: %s', $e->getMessage()));
 			
 			return $this->respond([
-				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
 				'code' => 'server_error',
 			], 500);
 		}
@@ -552,7 +557,7 @@ final class CategoriesController extends RestController {
 			$this->repository->delete_permanently( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
-				'message' => __( 'Category deleted. Note: WordPress does not support trash for categories.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Category deleted. Note: WordPress does not support trash for categories.', 'affiliate-product-showcase' ),
 				'code'    => 'success',
 			], 200 );
 			
@@ -560,7 +565,7 @@ final class CategoriesController extends RestController {
 			error_log(sprintf('[APS] Category trash failed: %s', $e->getMessage()));
 			
 			return $this->respond([
-				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
 				'code' => 'server_error',
 			], 500);
 		}
@@ -585,7 +590,7 @@ final class CategoriesController extends RestController {
 		}
 
 		return $this->respond( [
-			'message' => __( 'Category trash/restore is not supported in WordPress core.', 'affiliate-product-showcase' ),
+			'message' => esc_html__( 'Category trash/restore is not supported in WordPress core.', 'affiliate-product-showcase' ),
 			'code'    => 'not_supported',
 		], 501 );
 	}
@@ -617,7 +622,7 @@ final class CategoriesController extends RestController {
 			$this->repository->delete_permanently( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
-				'message' => __( 'Category deleted permanently.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Category deleted permanently.', 'affiliate-product-showcase' ),
 				'code'    => 'success',
 			], 200 );
 			
@@ -625,7 +630,7 @@ final class CategoriesController extends RestController {
 			error_log(sprintf('[APS] Category permanent delete failed: %s', $e->getMessage()));
 			
 			return $this->respond([
-				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
+				'message' => esc_html__('An unexpected error occurred', 'affiliate-product-showcase'),
 				'code' => 'server_error',
 			], 500);
 		}
@@ -650,7 +655,7 @@ final class CategoriesController extends RestController {
 		}
 
 		return $this->respond( [
-			'message' => __( 'Category trash/empty is not supported in WordPress core.', 'affiliate-product-showcase' ),
+			'message' => esc_html__( 'Category trash/empty is not supported in WordPress core.', 'affiliate-product-showcase' ),
 			'code'    => 'not_supported',
 		], 501 );
 	}
@@ -673,8 +678,8 @@ final class CategoriesController extends RestController {
 		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
 			return $this->respond( [
 				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
+					esc_html__( 'Taxonomy %s is not registered. Please ensure plugin is properly activated.', 'affiliate-product-showcase' ),
+					esc_html( Constants::TAX_CATEGORY )
 				),
 				'code'    => 'taxonomy_not_registered',
 			], 500 );
@@ -683,7 +688,7 @@ final class CategoriesController extends RestController {
 		// Check rate limit
 		if ( ! $this->rate_limiter->check( 'categories_list' ) ) {
 			return $this->respond( [
-				'message' => __( 'Too many requests. Please try again later.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Too many requests. Please try again later.', 'affiliate-product-showcase' ),
 				'code'    => 'rate_limit_exceeded',
 			], 429, $this->rate_limiter->get_headers( 'categories_list' ) );
 		}
@@ -755,7 +760,7 @@ final class CategoriesController extends RestController {
 		// Check rate limit (stricter for create operations)
 		if ( ! $this->rate_limiter->check( 'categories_create', 20 ) ) {
 			return $this->respond( [
-				'message' => __( 'Too many creation requests. Please try again later.', 'affiliate-product-showcase' ),
+				'message' => esc_html__( 'Too many creation requests. Please try again later.', 'affiliate-product-showcase' ),
 				'code'    => 'rate_limit_exceeded',
 			], 429, $this->rate_limiter->get_headers( 'categories_create', 20 ) );
 		}
@@ -783,7 +788,7 @@ final class CategoriesController extends RestController {
 			
 			// Return safe message to client
 			return $this->respond([
-				'message' => __('Failed to create category', 'affiliate-product-showcase'),
+				'message' => esc_html__('Failed to create category', 'affiliate-product-showcase'),
 				'code' => 'category_creation_error',
 				'errors' => $e->getMessage(),
 			], 400);

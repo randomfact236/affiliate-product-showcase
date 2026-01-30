@@ -38,6 +38,41 @@ use AffiliateProductShowcase\Exceptions\PluginException;
  */
 final class ProductValidator extends AbstractValidator {
 	/**
+	 * Validate taxonomy term IDs
+	 *
+	 * Validates that term IDs are positive integers and that the terms exist.
+	 *
+	 * @param array<int, mixed> $term_ids Array of term IDs to validate
+	 * @param string $taxonomy Taxonomy name
+	 * @param string $label Human-readable label for error messages
+	 * @return array<string> Array of error messages (empty if valid)
+	 * @since 1.0.0
+	 */
+	private function validate_taxonomy_ids( array $term_ids, string $taxonomy, string $label ): array {
+		$errors = [];
+
+		if ( ! is_array( $term_ids ) ) {
+			$errors[] = sprintf( '%s IDs must be an array.', $label );
+			return $errors;
+		}
+
+		foreach ( $term_ids as $term_id ) {
+			if ( ! is_numeric( $term_id ) || $term_id <= 0 ) {
+				$errors[] = sprintf( '%s IDs must be positive integers.', $label );
+				break;
+			}
+
+			$term = get_term( (int) $term_id, $taxonomy );
+			if ( ! $term || is_wp_error( $term ) ) {
+				$errors[] = sprintf( '%s ID %d does not exist.', $label, (int) $term_id );
+				break;
+			}
+		}
+
+		return $errors;
+	}
+
+	/**
 	 * Validate product data
 	 *
 	 * Validates required fields and taxonomy term IDs.
@@ -59,46 +94,24 @@ final class ProductValidator extends AbstractValidator {
 			$errors[] = 'Affiliate URL is required.';
 		}
 
-		// Validate category IDs
+		// Validate category IDs using helper method
 		if ( isset( $data['category_ids'] ) ) {
-			if ( ! is_array( $data['category_ids'] ) ) {
-				$errors[] = 'Category IDs must be an array.';
-			} else {
-				foreach ( $data['category_ids'] as $category_id ) {
-					if ( ! is_numeric( $category_id ) || $category_id <= 0 ) {
-						$errors[] = 'Category IDs must be positive integers.';
-						break;
-					}
-					
-					// Verify category term exists
-					$term = get_term( (int) $category_id, \AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY );
-					if ( ! $term || is_wp_error( $term ) ) {
-						$errors[] = sprintf( 'Category ID %d does not exist.', (int) $category_id );
-						break;
-					}
-				}
-			}
+			$category_errors = $this->validate_taxonomy_ids(
+				$data['category_ids'],
+				\AffiliateProductShowcase\Plugin\Constants::TAX_CATEGORY,
+				'Category'
+			);
+			$errors = array_merge( $errors, $category_errors );
 		}
 
-		// Validate tag IDs
+		// Validate tag IDs using helper method
 		if ( isset( $data['tag_ids'] ) ) {
-			if ( ! is_array( $data['tag_ids'] ) ) {
-				$errors[] = 'Tag IDs must be an array.';
-			} else {
-				foreach ( $data['tag_ids'] as $tag_id ) {
-					if ( ! is_numeric( $tag_id ) || $tag_id <= 0 ) {
-						$errors[] = 'Tag IDs must be positive integers.';
-						break;
-					}
-					
-					// Verify tag term exists
-					$term = get_term( (int) $tag_id, \AffiliateProductShowcase\Plugin\Constants::TAX_TAG );
-					if ( ! $term || is_wp_error( $term ) ) {
-						$errors[] = sprintf( 'Tag ID %d does not exist.', (int) $tag_id );
-						break;
-					}
-				}
-			}
+			$tag_errors = $this->validate_taxonomy_ids(
+				$data['tag_ids'],
+				\AffiliateProductShowcase\Plugin\Constants::TAX_TAG,
+				'Tag'
+			);
+			$errors = array_merge( $errors, $tag_errors );
 		}
 
 		if ( ! empty( $errors ) ) {
