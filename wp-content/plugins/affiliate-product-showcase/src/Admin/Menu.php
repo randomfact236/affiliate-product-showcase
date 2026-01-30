@@ -239,7 +239,7 @@ class Menu {
 				
 			case 'featured':
 				$featured = get_post_meta($post_id, '_aps_featured', true);
-				echo $featured ? '<span class="aps-featured-star" style="color: #f59e0b; font-size:1.2em;">★</span>' : '';
+				echo $featured ? '<span class="aps-featured-star">★</span>' : '';
 				break;
 				
 			case 'status':

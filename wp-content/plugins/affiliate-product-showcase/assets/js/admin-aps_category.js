@@ -66,6 +66,94 @@ function apsShowNotice( type, message ) {
 	}, 3000 );
 }
 
+/**
+ * Perform AJAX request with standardized error handling
+ *
+ * Provides consistent error handling and notice display for all AJAX requests.
+ * Automatically handles success/error responses and displays notices.
+ *
+ * @param {Object} options - AJAX options
+ * @param {Object} options.data - Data to send (required)
+ * @param {Function} options.success - Success callback (receives response)
+ * @param {Function} options.error - Error callback (receives xhr, status, error)
+ * @param {Function} options.beforeSend - Before send callback
+ * @param {boolean} options.showNoticeOnError - Show error notice (default: true)
+ * @param {string} options.type - HTTP method (default: 'POST')
+ * @param {string} options.url - AJAX URL (default: apsGetAjaxUrl())
+ * @returns {jqXHR} jQuery AJAX object
+ *
+ * @example
+ * ```javascript
+ * apsAjaxRequest({
+ *     data: {
+ *         action: 'my_action',
+ *         nonce: my_nonce,
+ *         id: 123
+ *     },
+ *     success: function( response ) {
+ *         console.log( 'Success:', response.data );
+ *     },
+ *     beforeSend: function() {
+ *         // Disable button, etc.
+ *     }
+ * });
+ * ```
+ */
+function apsAjaxRequest( options ) {
+	var $ = jQuery;
+	var defaults = {
+		type: 'POST',
+		url: apsGetAjaxUrl(),
+		beforeSend: null,
+		success: null,
+		error: null,
+		showNoticeOnError: true
+	};
+
+	var settings = $.extend( {}, defaults, options );
+
+	return $.ajax({
+		url: settings.url,
+		type: settings.type,
+		data: settings.data,
+		beforeSend: settings.beforeSend,
+		success: function( response ) {
+			if ( response && response.success ) {
+				if ( typeof settings.success === 'function' ) {
+					settings.success( response );
+				}
+			} else {
+				var message = ( response && response.data && response.data.message )
+					? response.data.message
+					: ( typeof aps_admin_vars !== 'undefined' && aps_admin_vars.error_text )
+						? aps_admin_vars.error_text
+						: 'Request failed.';
+
+				if ( settings.showNoticeOnError ) {
+					apsShowNotice( 'error', message );
+				}
+
+				if ( typeof settings.error === 'function' ) {
+					settings.error( response, message, 'validation' );
+				}
+			}
+		},
+		error: function( xhr, status, error ) {
+			var message = ( typeof aps_admin_vars !== 'undefined' && aps_admin_vars.error_text )
+				? aps_admin_vars.error_text
+				: 'Request failed.';
+
+			if ( settings.showNoticeOnError ) {
+				apsShowNotice( 'error', message );
+			}
+
+			if ( typeof settings.error === 'function' ) {
+				settings.error( xhr, status, error );
+			}
+		}
+	});
+}
+
 
 /**
  * Move category checkboxes after slug field
@@ -181,45 +269,40 @@ jQuery(document).ready(function($) {
 		var previousText = $link.text();
 		$link.text(previousText + '...').addClass('disabled');
 
-		$.ajax({
-			url: ajaxUrl,
-			type: 'POST',
+		apsAjaxRequest({
 			data: {
 				action: 'aps_aps_category_row_action',
 				nonce: aps_admin_vars.row_action_nonce,
 				term_id: termId,
 				do: doAction
 			},
+			beforeSend: function() {
+				$link.text(previousText + '...').addClass('disabled');
+			},
 			success: function(response) {
 				$link.text(previousText).removeClass('disabled');
-				if (response && response.success) {
-					var currentView = apsGetCurrentViewStatus();
-					var newStatus = response.data && response.data.status ? response.data.status : '';
-					var deleted = response.data && response.data.deleted;
+				var currentView = apsGetCurrentViewStatus();
+				var newStatus = response.data && response.data.status ? response.data.status : '';
+				var deleted = response.data && response.data.deleted;
 
-					if (deleted) {
+				if (deleted) {
+					$row.fadeOut(150, function() { $(this).remove(); });
+				} else if (newStatus) {
+					apsSetRowStatusUI($row, newStatus);
+					// If we're on a filtered view and the row no longer belongs, remove it.
+					if (currentView !== 'all' && currentView !== newStatus) {
 						$row.fadeOut(150, function() { $(this).remove(); });
-					} else if (newStatus) {
-						apsSetRowStatusUI($row, newStatus);
-						// If we're on a filtered view and the row no longer belongs, remove it.
-						if (currentView !== 'all' && currentView !== newStatus) {
-							$row.fadeOut(150, function() { $(this).remove(); });
-						}
-						// If moved to trash, remove it from default view as well.
-						if (currentView === 'all' && newStatus === 'trashed') {
-							$row.fadeOut(150, function() { $(this).remove(); });
-						}
 					}
-
-					apsShowNotice('success', (response.data && response.data.message) ? response.data.message : 'Done.');
-				} else {
-					var message = (response && response.data && response.data.message) ? response.data.message : (aps_admin_vars.error_text || 'Request failed.');
-					apsShowNotice('error', message);
+					// If moved to trash, remove it from default view as well.
+					if (currentView === 'all' && newStatus === 'trashed') {
+						$row.fadeOut(150, function() { $(this).remove(); });
+					}
 				}
+
+				apsShowNotice('success', (response.data && response.data.message) ? response.data.message : 'Done.');
 			},
 			error: function() {
 				$link.text(previousText).removeClass('disabled');
-				apsShowNotice('error', aps_admin_vars.error_text || 'Request failed.');
 			}
 		});
 	});
@@ -252,10 +335,8 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		
-		// Update status via AJAX
-		$.ajax({
-			url: ajaxUrl,
-			type: 'POST',
+		// Update status via AJAX using the reusable wrapper
+		apsAjaxRequest({
 			data: {
 				action: 'aps_toggle_aps_category_status',
 				nonce: aps_admin_vars.nonce,
@@ -266,27 +347,15 @@ jQuery(document).ready(function($) {
 				$this.prop('disabled', true);
 			},
 			success: function(response) {
-				if (response.success) {
-					$this.prop('disabled', false);
-					// Update original status to new value
-					$this.data('original-status', newStatus);
-					apsShowNotice( 'success', ( response.data && response.data.message ) ? response.data.message : ( aps_admin_vars.success_text || 'Updated.' ) );
-				} else if (response.data && response.data.message) {
-					$this.prop('disabled', false);
-					// Revert to original status
-					$this.val(originalStatus);
-					apsShowNotice( 'error', response.data.message );
-				} else {
-					$this.prop('disabled', false);
-					$this.val(originalStatus);
-					apsShowNotice( 'error', aps_admin_vars.error_text || 'Request failed.' );
-				}
+				$this.prop('disabled', false);
+				// Update original status to new value
+				$this.data('original-status', newStatus);
+				apsShowNotice( 'success', ( response.data && response.data.message ) ? response.data.message : ( aps_admin_vars.success_text || 'Updated.' ) );
 			},
-			error: function(xhr, status, error) {
+			error: function() {
 				$this.prop('disabled', false);
 				// Revert to original status
 				$this.val(originalStatus);
-				apsShowNotice( 'error', aps_admin_vars.error_text || 'Request failed.' );
 			}
 		});
 	});

@@ -87,3 +87,11 @@
 .edittag p.submit a.button:hover {
 	background-color: #f0f0f1;
 }
+
+/* Featured star styling */
+.aps-featured-star {
+	color: #f59e0b;
+	font-size: 1.2em;
+	line-height: 1;
+	display: inline-block;
+}

@@ -181,80 +181,116 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	protected function save_taxonomy_specific_fields( int $category_id ): void {
-		// Sanitize and save featured
+		$this->save_featured_field( $category_id );
+		$this->save_image_field( $category_id );
+		$this->save_default_field( $category_id );
+	}
+	
+	/**
+	 * Save featured field
+	 *
+	 * @param int $category_id Category ID
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function save_featured_field( int $category_id ): void {
 		$featured = isset( $_POST['_aps_category_featured'] ) && '1' === $_POST['_aps_category_featured'] ? '1' : '0';
 		update_term_meta( $category_id, '_aps_category_featured', $featured );
 		$this->delete_legacy_meta( $category_id, 'featured' );
-
-		// Sanitize and save image URL
-		$image_url = isset( $_POST['_aps_category_image'] )
-			? esc_url_raw( wp_unslash( $_POST['_aps_category_image'] ) )
+	}
+	
+	/**
+	 * Save and validate image URL field
+	 *
+	 * @param int $category_id Category ID
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function save_image_field( int $category_id ): void {
+		$image_url_input = isset( $_POST['_aps_category_image'] )
+			? wp_unslash( $_POST['_aps_category_image'] )
 			: '';
 		
-		// Validate URL format
-		if ( ! empty( $image_url ) ) {
-			$parsed_url = wp_parse_url( $image_url );
-			
-			// Validate URL structure
-			if ( ! $parsed_url || empty( $parsed_url['scheme'] ) ) {
-				$image_url = '';
-				$this->add_invalid_url_notice();
-			}
-			
-			// Validate protocol
-			elseif ( ! in_array( $parsed_url['scheme'], [ 'http', 'https' ], true ) ) {
-				$image_url = '';
-				$this->add_invalid_url_notice();
-			}
-			
-			// Validate host
-			elseif ( empty( $parsed_url['host'] ) ) {
-				$image_url = '';
-				$this->add_invalid_url_notice();
-			}
+		$error_message = '';
+		$image_url = \AffiliateProductShowcase\Validators\UrlValidator::validate_with_error( $image_url_input, $error_message );
+		
+		if ( ! empty( $error_message ) ) {
+			$this->add_invalid_url_notice();
+			$image_url = '';
 		}
 		
-		update_term_meta( $category_id, '_aps_category_image', $image_url );
+		update_term_meta( $category_id, '_aps_category_image', $image_url ?? '' );
 		$this->delete_legacy_meta( $category_id, 'image' );
-
-		// Handle default category
-		$is_default = isset( $_POST['_aps_category_is_default'] ) && '1' === $_POST['_aps_category_is_default']
-			? '1'
-			: '0';
-		if ( $is_default === '1' ) {
-			// Remove default flag from all other categories
-			$this->repository->remove_default_from_all_categories();
-			// Set this category as default
-			$this->set_is_default( $category_id, true );
-			// Update global option
-			update_option( 'aps_default_category_id', $category_id );
-			
-			// Get category name for notice
-			$category = get_term( $category_id, 'aps_category' );
-			$category_name = $category && ! is_wp_error( $category ) ? $category->name : sprintf( 'Category #%d', $category_id );
-			
-			// Add admin notice for auto-assignment feedback
-			add_action( 'admin_notices', function() use ( $category_name ) {
-				printf(
-					'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-					wp_kses_post(
-						sprintf(
-							__( '%s has been set as default category. Products without a category will be automatically assigned to this category.', 'affiliate-product-showcase' ),
-							esc_html( $category_name )
-						)
-					)
-				);
-			} );
+	}
+	
+	/**
+	 * Save default category field
+	 *
+	 * @param int $category_id Category ID
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function save_default_field( int $category_id ): void {
+		$is_default = isset( $_POST['_aps_category_is_default'] ) && '1' === $_POST['_aps_category_is_default'];
+		
+		if ( $is_default ) {
+			$this->set_as_default_category( $category_id );
 		} else {
-			// Remove default flag from this category
-			$this->set_is_default( $category_id, false );
-			$this->delete_legacy_meta( $category_id, 'is_default' );
-			
-			// Clear global option if this was default
-			$current_default = get_option( 'aps_default_category_id', 0 );
-			if ( (int) $current_default === $category_id ) {
-				delete_option( 'aps_default_category_id' );
-			}
+			$this->unset_as_default_category( $category_id );
+		}
+	}
+	
+	/**
+	 * Set category as default
+	 *
+	 * @param int $category_id Category ID
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function set_as_default_category( int $category_id ): void {
+		// Remove default flag from all other categories
+		$this->repository->remove_default_from_all_categories();
+		
+		// Set this category as default
+		$this->set_is_default( $category_id, true );
+		
+		// Update global option
+		update_option( 'aps_default_category_id', $category_id );
+		
+		// Get category name for notice
+		$category = get_term( $category_id, 'aps_category' );
+		$category_name = $category && ! is_wp_error( $category ) ? $category->name : sprintf( 'Category #%d', $category_id );
+		
+		// Add admin notice for auto-assignment feedback
+		add_action( 'admin_notices', function() use ( $category_name ) {
+			printf(
+				'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+				wp_kses_post(
+					sprintf(
+						__( '%s has been set as default category. Products without a category will be automatically assigned to this category.', 'affiliate-product-showcase' ),
+						esc_html( $category_name )
+					)
+				)
+			);
+		} );
+	}
+	
+	/**
+	 * Unset category as default
+	 *
+	 * @param int $category_id Category ID
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function unset_as_default_category( int $category_id ): void {
+		// Remove default flag from this category
+		$this->set_is_default( $category_id, false );
+		$this->delete_legacy_meta( $category_id, 'is_default' );
+		
+		// Clear global option if this was default
+		$current_default = get_option( 'aps_default_category_id', 0 );
+		if ( (int) $current_default === $category_id ) {
+			delete_option( 'aps_default_category_id' );
 		}
 	}
 	

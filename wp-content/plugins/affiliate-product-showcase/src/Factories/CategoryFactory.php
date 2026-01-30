@@ -99,6 +99,9 @@ final class CategoryFactory {
 	/**
 	 * Create Categories from array of WP_Term objects
 	 *
+	 * Optimized to preload all term metadata in a single query,
+	 * avoiding N+1 query problems when loading multiple categories.
+	 *
 	 * @param array<int, \WP_Term> $terms Array of WordPress term objects
 	 * @return array<int, Category> Array of Category instances
 	 * @since 1.0.0
@@ -110,6 +113,14 @@ final class CategoryFactory {
 	 * ```
 	 */
 	public static function from_wp_terms( array $terms ): array {
+		if ( empty( $terms ) ) {
+			return [];
+		}
+
+		// Preload all term meta in one query to avoid N+1 problem
+		$term_ids = wp_list_pluck( $terms, 'term_id' );
+		update_termmeta_cache( $term_ids );
+
 		$categories = [];
 
 		foreach ( $terms as $term ) {
