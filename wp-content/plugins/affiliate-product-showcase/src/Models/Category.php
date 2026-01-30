@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace AffiliateProductShowcase\Models;
 
 use AffiliateProductShowcase\Plugin\Constants;
+use AffiliateProductShowcase\Helpers\TermMetaHelper;
+use AffiliateProductShowcase\Validators\StatusValidator;
+use AffiliateProductShowcase\Plugin\StatusConstants;
+use AffiliateProductShowcase\Plugin\SortOrderConstants;
 
 /**
  * Category Model
@@ -165,7 +169,7 @@ final class Category {
 		$this->image_url = $image_url;
 		$this->sort_order = $sort_order;
 		$this->created_at = $created_at ?: current_time( 'mysql' );
-		$this->status = in_array( $status, [ 'published', 'draft' ], true ) ? $status : 'published';
+		$this->status = $status;
 		$this->is_default = $is_default;
 	}
 
@@ -196,28 +200,6 @@ final class Category {
 	}
 
 	/**
-	 * Get category meta with legacy fallback
-	 *
-	 * Retrieves meta value with fallback to old key format.
-	 *
-	 * @param int $term_id Term ID
-	 * @param string $meta_key Meta key (without _aps_category_ prefix)
-	 * @return mixed Meta value
-	 * @since 1.2.0
-	 */
-	private static function get_category_meta( int $term_id, string $meta_key ) {
-		// Try new format with underscore prefix
-		$value = get_term_meta( $term_id, '_aps_category_' . $meta_key, true );
-		
-		// If empty, try legacy format without underscore
-		if ( $value === '' || $value === false ) {
-			$value = get_term_meta( $term_id, 'aps_category_' . $meta_key, true );
-		}
-		
-		return $value;
-	}
-
-	/**
 	 * Create Category from WP_Term
 	 *
 	 * Factory method to create Category instance from WP_Term object.
@@ -244,11 +226,11 @@ final class Category {
 		}
 
 		// Get category metadata with legacy fallback
-		$featured = (bool) self::get_category_meta( $term->term_id, 'featured' );
-		$image_url = self::get_category_meta( $term->term_id, 'image' ) ?: null;
-		$sort_order = self::get_category_meta( $term->term_id, 'sort_order' ) ?: 'date';
-		$status = self::get_category_meta( $term->term_id, 'status' ) ?: 'published';
-		$is_default = (bool) self::get_category_meta( $term->term_id, 'is_default' );
+		$featured = (bool) TermMetaHelper::get_with_fallback( $term->term_id, 'featured', 'aps_category_' );
+		$image_url = TermMetaHelper::get_with_fallback( $term->term_id, 'image', 'aps_category_' ) ?: null;
+		$sort_order = TermMetaHelper::get_with_fallback( $term->term_id, 'sort_order', 'aps_category_' ) ?: 'date';
+		$status = StatusValidator::validate(TermMetaHelper::get_with_fallback( $term->term_id, 'status', 'aps_category_' ));
+		$is_default = (bool) TermMetaHelper::get_with_fallback( $term->term_id, 'is_default', 'aps_category_' );
 
 		// Check if this is the global default category
 		$global_default_id = get_option( 'aps_default_category_id', 0 );
@@ -310,11 +292,11 @@ final class Category {
 			(int) ( $data['count'] ?? 0 ),
 			(bool) ( $data['featured'] ?? false ),
 			! empty( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : null,
-			in_array( $data['sort_order'] ?? 'date', [ 'name', 'price', 'date', 'popularity', 'random' ], true )
+			SortOrderConstants::isValid($data['sort_order'] ?? SortOrderConstants::DATE)
 				? $data['sort_order']
-				: 'date',
+				: StatusConstants::PUBLISHED,
 			$data['created_at'] ?? '',
-			in_array( $data['status'] ?? 'published', [ 'published', 'draft' ], true )
+			StatusValidator::isValid($data['status'] ?? StatusConstants::PUBLISHED)
 				? $data['status']
 				: 'published',
 			(bool) ( $data['is_default'] ?? false )

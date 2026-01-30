@@ -295,7 +295,7 @@ final class CategoryRepository {
 
 		// Prevent deleting default category
 		if ( $category->is_default ) {
-			throw new PluginException( 'Cannot delete the default category. Please select another default category first.' );
+			throw new PluginException( 'Cannot delete default category. Please select another default category first.' );
 		}
 
 		$result = wp_delete_term( $category_id, Constants::TAX_CATEGORY );
@@ -357,7 +357,7 @@ final class CategoryRepository {
 
 		// Prevent deleting default category
 		if ( $category->is_default ) {
-			throw new PluginException( 'Cannot delete the default category. Please select another default category first.' );
+			throw new PluginException( 'Cannot delete default category. Please select another default category first.' );
 		}
 
 		$result = wp_delete_term( $category_id, Constants::TAX_CATEGORY );
@@ -389,9 +389,14 @@ final class CategoryRepository {
 	 * ```
 	 */
 	public function get_featured(): array {
-		$categories = $this->all();
-
-		return CategoryFactory::filter_by_featured( $categories, true );
+		return $this->all( [
+			'meta_query' => [
+				[
+					'key'   => '_aps_category_featured',
+					'value' => '1',
+				],
+			],
+		] );
 	}
 
 	/**
@@ -512,7 +517,7 @@ final class CategoryRepository {
 	 * @return void
 	 * @since 1.1.0
 	 */
-	private function remove_default_from_all_categories(): void {
+	public function remove_default_from_all_categories(): void {
 		$categories = $this->all();
 		foreach ( $categories as $category ) {
 			delete_term_meta( $category->id, '_aps_category_is_default' );

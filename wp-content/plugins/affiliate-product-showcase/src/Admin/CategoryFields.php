@@ -22,6 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use AffiliateProductShowcase\Plugin\Constants;
+use AffiliateProductShowcase\Repositories\CategoryRepository;
+use AffiliateProductShowcase\Helpers\TermMetaHelper;
 
 /**
  * Category Fields
@@ -35,13 +37,31 @@ use AffiliateProductShowcase\Plugin\Constants;
  */
 final class CategoryFields extends TaxonomyFieldsAbstract {
 	/**
+	 * Category repository instance
+	 *
+	 * @var CategoryRepository
+	 * @since 2.0.0
+	 */
+	private CategoryRepository $repository;
+
+	/**
+	 * Constructor
+	 *
+	 * @param CategoryRepository|null $repository Optional repository instance
+	 * @since 2.0.0
+	 */
+	public function __construct( ?CategoryRepository $repository = null ) {
+		$this->repository = $repository ?? new CategoryRepository();
+	}
+
+	/**
 	 * Get taxonomy name
 	 *
 	 * @return string Taxonomy name
 	 * @since 2.0.0
 	 */
 	protected function get_taxonomy(): string {
-		return 'aps_category';
+		return Constants::TAX_CATEGORY;
 	}
 	
 	/**
@@ -78,47 +98,51 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 	 */
 	protected function render_taxonomy_specific_fields( int $category_id ): void {
 		// Get current values with legacy fallback
-		$featured = $this->get_category_meta( $category_id, 'featured' );
-		$image_url = $this->get_category_meta( $category_id, 'image' );
+		$featured = TermMetaHelper::get_with_fallback( $category_id, 'featured', 'aps_category_' );
+		$image_url = TermMetaHelper::get_with_fallback( $category_id, 'image', 'aps_category_' );
 		$is_default = $this->get_is_default( $category_id ) === '1';
 
 		?>
-		<!-- Featured and Default Checkboxes (side by side) -->
-		<div class="aps-category-checkboxes-wrapper" style="display:none;">
-			<!-- Featured Checkbox -->
-			<div class="form-field aps-category-featured">
-				<label for="_aps_category_featured">
-					<?php esc_html_e( 'Featured Category', 'affiliate-product-showcase' ); ?>
-				</label>
-				<input
-					type="checkbox"
-					id="_aps_category_featured"
-					name="_aps_category_featured"
-					value="1"
-					<?php checked( $featured, true ); ?>
-				/>
-				<p class="description">
-					<?php esc_html_e( 'Display this category prominently on frontend.', 'affiliate-product-showcase' ); ?>
-				</p>
-			</div>
-
-			<!-- Default Category -->
-			<div class="form-field aps-category-default">
-				<label for="_aps_category_is_default">
-					<?php esc_html_e( 'Default Category', 'affiliate-product-showcase' ); ?>
-				</label>
-				<input
-					type="checkbox"
-					id="_aps_category_is_default"
-					name="_aps_category_is_default"
-					value="1"
-					<?php checked( $is_default, true ); ?>
-				/>
-				<p class="description">
-					<?php esc_html_e( 'Products without a category will be assigned to this category automatically.', 'affiliate-product-showcase' ); ?>
-				</p>
-			</div>
+	<!-- Featured and Default Checkboxes (side by side) -->
+	<fieldset class="aps-category-checkboxes-wrapper aps-hidden" aria-label="<?php esc_attr_e( 'Category options', 'affiliate-product-showcase' ); ?>">
+		<legend><?php esc_html_e( 'Category Options', 'affiliate-product-showcase' ); ?></legend>
+		
+		<!-- Featured Checkbox -->
+		<div class="form-field aps-category-featured">
+			<label for="_aps_category_featured">
+				<?php esc_html_e( 'Featured Category', 'affiliate-product-showcase' ); ?>
+			</label>
+			<input
+				type="checkbox"
+				id="_aps_category_featured"
+				name="_aps_category_featured"
+				value="1"
+				aria-describedby="_aps_category_featured_description"
+				<?php checked( $featured, true ); ?>
+			/>
+			<p class="description" id="_aps_category_featured_description">
+				<?php esc_html_e( 'Display this category prominently on frontend.', 'affiliate-product-showcase' ); ?>
+			</p>
 		</div>
+
+		<!-- Default Category -->
+		<div class="form-field aps-category-default">
+			<label for="_aps_category_is_default">
+				<?php esc_html_e( 'Default Category', 'affiliate-product-showcase' ); ?>
+			</label>
+			<input
+				type="checkbox"
+				id="_aps_category_is_default"
+				name="_aps_category_is_default"
+				value="1"
+				aria-describedby="_aps_category_is_default_description"
+				<?php checked( $is_default, true ); ?>
+			/>
+			<p class="description" id="_aps_category_is_default_description">
+				<?php esc_html_e( 'Products without a category will be assigned to this category automatically.', 'affiliate-product-showcase' ); ?>
+			</p>
+		</div>
+	</fieldset>
 
 		<div class="form-field aps-category-fields">
 			<h3><?php esc_html_e( 'Category Settings', 'affiliate-product-showcase' ); ?></h3>
@@ -135,20 +159,14 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 					value="<?php echo esc_attr( $image_url ); ?>"
 					class="regular-text"
 					placeholder="<?php esc_attr_e( 'https://example.com/image.jpg', 'affiliate-product-showcase' ); ?>"
+					aria-describedby="_aps_category_image_description"
+					aria-label="<?php esc_attr_e( 'Category image URL input field', 'affiliate-product-showcase' ); ?>"
 				/>
-				<p class="description">
+				<p class="description" id="_aps_category_image_description">
 					<?php esc_html_e( 'Enter URL for category image.', 'affiliate-product-showcase' ); ?>
 				</p>
 			</div>
 		</div>
-
-		<script>
-		jQuery(document).ready(function($) {
-			// Move Featured and Default checkboxes side by side below slug field
-			$('.aps-category-checkboxes-wrapper').insertAfter($('input[name="slug"]').parent());
-			$('.aps-category-checkboxes-wrapper').show();
-		});
-		</script>
 
 		<?php
 		// Nonce field for security (base class handles saving)
@@ -164,24 +182,48 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 	 */
 	protected function save_taxonomy_specific_fields( int $category_id ): void {
 		// Sanitize and save featured
-		$featured = isset( $_POST['_aps_category_featured'] ) ? '1' : '0';
+		$featured = isset( $_POST['_aps_category_featured'] ) && '1' === $_POST['_aps_category_featured'] ? '1' : '0';
 		update_term_meta( $category_id, '_aps_category_featured', $featured );
-		// Delete legacy key
-		delete_term_meta( $category_id, 'aps_category_featured' );
+		$this->delete_legacy_meta( $category_id, 'featured' );
 
 		// Sanitize and save image URL
-		$image_url = isset( $_POST['_aps_category_image'] ) 
-			? esc_url_raw( wp_unslash( $_POST['_aps_category_image'] ) ) 
+		$image_url = isset( $_POST['_aps_category_image'] )
+			? esc_url_raw( wp_unslash( $_POST['_aps_category_image'] ) )
 			: '';
+		
+		// Validate URL format
+		if ( ! empty( $image_url ) ) {
+			$parsed_url = wp_parse_url( $image_url );
+			
+			// Validate URL structure
+			if ( ! $parsed_url || empty( $parsed_url['scheme'] ) ) {
+				$image_url = '';
+				$this->add_invalid_url_notice();
+			}
+			
+			// Validate protocol
+			elseif ( ! in_array( $parsed_url['scheme'], [ 'http', 'https' ], true ) ) {
+				$image_url = '';
+				$this->add_invalid_url_notice();
+			}
+			
+			// Validate host
+			elseif ( empty( $parsed_url['host'] ) ) {
+				$image_url = '';
+				$this->add_invalid_url_notice();
+			}
+		}
+		
 		update_term_meta( $category_id, '_aps_category_image', $image_url );
-		// Delete legacy key
-		delete_term_meta( $category_id, 'aps_category_image' );
+		$this->delete_legacy_meta( $category_id, 'image' );
 
 		// Handle default category
-		$is_default = isset( $_POST['_aps_category_is_default'] ) ? '1' : '0';
+		$is_default = isset( $_POST['_aps_category_is_default'] ) && '1' === $_POST['_aps_category_is_default']
+			? '1'
+			: '0';
 		if ( $is_default === '1' ) {
 			// Remove default flag from all other categories
-			$this->remove_default_from_all_categories();
+			$this->repository->remove_default_from_all_categories();
 			// Set this category as default
 			$this->set_is_default( $category_id, true );
 			// Update global option
@@ -193,62 +235,25 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 			
 			// Add admin notice for auto-assignment feedback
 			add_action( 'admin_notices', function() use ( $category_name ) {
-				$message = sprintf(
-					esc_html__( '%s has been set as default category. Products without a category will be automatically assigned to this category.', 'affiliate-product-showcase' ),
-					esc_html( $category_name )
+				printf(
+					'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+					wp_kses_post(
+						sprintf(
+							__( '%s has been set as default category. Products without a category will be automatically assigned to this category.', 'affiliate-product-showcase' ),
+							esc_html( $category_name )
+						)
+					)
 				);
-				echo '<div class="notice notice-success is-dismissible"><p>' . $message . '</p></div>';
 			} );
 		} else {
 			// Remove default flag from this category
 			$this->set_is_default( $category_id, false );
-			delete_term_meta( $category_id, '_aps_category_is_default' );
+			$this->delete_legacy_meta( $category_id, 'is_default' );
 			
 			// Clear global option if this was default
 			$current_default = get_option( 'aps_default_category_id', 0 );
 			if ( (int) $current_default === $category_id ) {
 				delete_option( 'aps_default_category_id' );
-			}
-		}
-	}
-	
-	/**
-	 * Get category meta with legacy fallback
-	 *
-	 * @param int $category_id Category ID
-	 * @param string $meta_key Meta key (without _aps_category_ prefix)
-	 * @return mixed Meta value
-	 * @since 2.0.0
-	 */
-	private function get_category_meta( int $category_id, string $meta_key ): mixed {
-		// Try new format with underscore prefix
-		$value = get_term_meta( $category_id, '_aps_category_' . $meta_key, true );
-		
-		// If empty, try legacy format without underscore
-		if ( $value === '' || $value === false ) {
-			$value = get_term_meta( $category_id, 'aps_category_' . $meta_key, true );
-		}
-		
-		return $value;
-	}
-	
-	/**
-	 * Remove default flag from all categories
-	 *
-	 * @return void
-	 * @since 2.0.0
-	 */
-	private function remove_default_from_all_categories(): void {
-		$terms = get_terms( [
-			'taxonomy'   => 'aps_category',
-			'hide_empty' => false,
-			'fields'     => 'ids',
-		] );
-
-		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-			foreach ( $terms as $term_id ) {
-				delete_term_meta( $term_id, '_aps_category_is_default' );
-				delete_term_meta( $term_id, 'aps_category_is_default' );
 			}
 		}
 	}
@@ -310,6 +315,33 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 	}
 	
 	/**
+	 * Get sort order filter HTML template
+	 *
+	 * Returns the HTML template for the sort order filter.
+	 * Extracted to a constant for better maintainability.
+	 *
+	 * @param string $current_sort_order Current sort order
+	 * @return string HTML template
+	 * @since 2.0.0
+	 */
+	private function get_sort_filter_template( string $current_sort_order ): string {
+		ob_start();
+		?>
+		<div class="alignleft actions aps-sort-filter">
+			<label for="aps_sort_order" class="screen-reader-text">
+				<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
+			</label>
+			<select name="aps_sort_order" id="aps_sort_order" class="postform">
+				<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
+					<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
+				</option>
+			</select>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Add sort order filter HTML above categories table
 	 *
 	 * Checks if we're on a category management page and adds filter.
@@ -328,24 +360,17 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 			return;
 		}
 
-		// Get current sort order from URL
-		$current_sort_order = isset( $_GET['aps_sort_order'] ) ? sanitize_text_field( $_GET['aps_sort_order'] ) : 'date';
+		// Get current sort order from URL with validation
+		$valid_sort_orders = ['date', 'name', 'count'];
+		$current_sort_order = isset( $_GET['aps_sort_order'] ) &&
+		                  in_array( $_GET['aps_sort_order'], $valid_sort_orders, true )
+		                  ? sanitize_text_field( $_GET['aps_sort_order'] )
+		                  : 'date';
+
+		// Get HTML template
+		$filter_html = $this->get_sort_filter_template( $current_sort_order );
 
 		?>
-		<style>
-			/* Ensure sort filter and bulk actions are side by side */
-			.aps-sort-filter {
-				display: inline-block;
-				margin-right: 10px;
-				margin-bottom: 10px;
-			}
-			.aps-sort-filter .postform {
-				margin-right: 5px;
-			}
-			.bulkactions {
-				display: inline-block;
-			}
-		</style>
 		<script>
 		jQuery(document).ready(function($) {
 			// Find form that contains bulk actions
@@ -353,21 +378,9 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 			
 			if ($searchForm.length) {
 				// Insert sort order filter before bulk actions
-				$searchForm.find('.tablenav.top').find('.actions').before(`
-					<div class="alignleft actions aps-sort-filter">
-						<label for="aps_sort_order" class="screen-reader-text">
-							<?php esc_html_e( 'Sort Categories By', 'affiliate-product-showcase' ); ?>
-						</label>
-						<select name="aps_sort_order" id="aps_sort_order" class="postform">
-							<option value="date" <?php selected( $current_sort_order, 'date' ); ?>>
-								<?php esc_html_e( 'Date (Newest First)', 'affiliate-product-showcase' ); ?>
-							</option>
-						</select>
-					</div>
-				`);
-				
-				// Ensure alignment
-				$('.aps-sort-filter').css('float', 'left');
+				$searchForm.find('.tablenav.top').find('.actions').before(
+					<?php echo wp_json_encode( $filter_html ); ?>
+				);
 			}
 		});
 		</script>
@@ -397,6 +410,34 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 		}
 		
 		return $new_columns;
+	}
+	
+	/**
+	 * Delete legacy term meta key
+	 *
+	 * @param int    $term_id  Term ID
+	 * @param string $meta_key Meta key name (without prefix)
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function delete_legacy_meta( int $term_id, string $meta_key ): void {
+		delete_term_meta( $term_id, '_aps_category_' . $meta_key );
+		delete_term_meta( $term_id, 'aps_category_' . $meta_key );
+	}
+	
+	/**
+	 * Add invalid URL admin notice
+	 *
+	 * @return void
+	 * @since 2.1.0
+	 */
+	private function add_invalid_url_notice(): void {
+		add_action( 'admin_notices', function() {
+			printf(
+				'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+				esc_html__( 'Invalid image URL. Please enter a valid HTTP or HTTPS URL.', 'affiliate-product-showcase' )
+			);
+		} );
 	}
 	
 	/**

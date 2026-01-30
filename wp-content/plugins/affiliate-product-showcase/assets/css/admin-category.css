@@ -5,10 +5,42 @@
  * - Status dropdown styling
  * - Cancel button styling
  * - Bulk action improvements
+ * - Utility classes
  *
  * @package AffiliateProductShowcase
  * @since 1.2.0
  */
+
+/* Utility classes */
+.aps-hidden {
+	display: none;
+}
+
+/* Sort filter alignment */
+.aps-sort-filter {
+	float: left;
+	display: inline-block;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.aps-sort-filter .postform {
+	margin-right: 5px;
+}
+
+/* Status icon colors */
+.aps-status-icon-success {
+	color: #00a32a;
+}
+
+.aps-status-icon-neutral {
+	color: #646970;
+}
+
+/* Cancel button spacing */
+.aps-cancel-term-edit {
+	margin-right: 8px;
+}
 
 /* Status dropdown styling */
 .aps-category-status-select {

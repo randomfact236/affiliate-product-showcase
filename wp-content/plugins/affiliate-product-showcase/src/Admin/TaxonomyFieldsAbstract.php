@@ -29,6 +29,22 @@ use AffiliateProductShowcase\Plugin\Constants;
  */
 abstract class TaxonomyFieldsAbstract {
 	/**
+	 * Valid status values for taxonomy terms
+	 *
+	 * @var array<string>
+	 * @since 2.1.0
+	 */
+	private const VALID_STATUSES = ['all', 'published', 'draft', 'trashed'];
+
+	/**
+	 * Valid action values for term row actions
+	 *
+	 * @var array<string>
+	 * @since 2.1.0
+	 */
+	private const VALID_ACTIONS = ['draft', 'trash', 'restore', 'delete_permanently'];
+
+	/**
 	 * Get taxonomy name (must be implemented by child classes)
 	 *
 	 * @return string Taxonomy name (e.g., 'aps_category')
@@ -166,6 +182,8 @@ abstract class TaxonomyFieldsAbstract {
 					'row_action_nonce'=> wp_create_nonce( $this->get_nonce_action( 'row_action' ) ),
 					'success_text'     => esc_html__( $this->get_taxonomy_label() . ' status updated successfully.', 'affiliate-product-showcase' ),
 					'error_text'       => esc_html__( 'An error occurred. Please try again.', 'affiliate-product-showcase' ),
+					'cancel_url'       => admin_url( 'edit-tags.php?taxonomy=' . $this->get_taxonomy() . '&post_type=aps_product' ),
+					'cancel_text'      => esc_html__( 'Cancel', 'affiliate-product-showcase' ),
 				] );
 			}
 		}
@@ -246,8 +264,8 @@ abstract class TaxonomyFieldsAbstract {
 		$draft_count = $this->count_terms_by_status( 'draft' );
 		$trash_count = $this->count_terms_by_status( 'trashed' );
 
-		// Get current status from URL
-		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+		// Get current status from URL with validation
+		$current_status = $this->get_valid_status_from_url();
 
 		// Build new views
 		$new_views = [];
@@ -327,8 +345,8 @@ abstract class TaxonomyFieldsAbstract {
 			return $terms;
 		}
 
-		// Get status from URL
-		$status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+		// Get status from URL with validation
+		$status = $this->get_valid_status_from_url();
 
 		// Filter terms by status
 		$filtered_terms = [];
@@ -466,11 +484,11 @@ abstract class TaxonomyFieldsAbstract {
 
 			if ( $is_default === '1' ) {
 				// Default term - read-only status
-				$icon = $status === 'published' 
-					? '<span class="dashicons dashicons-yes-alt" style="color: #00a32a;" aria-hidden="true"></span>' 
-					: '<span class="dashicons dashicons-minus" style="color: #646970;" aria-hidden="true"></span>';
-				$status_text = $status === 'published' 
-					? esc_html__( 'Published', 'affiliate-product-showcase' ) 
+				$icon = $status === 'published'
+					? '<span class="dashicons dashicons-yes-alt aps-status-icon-success" aria-hidden="true"></span>'
+					: '<span class="dashicons dashicons-minus aps-status-icon-neutral" aria-hidden="true"></span>';
+				$status_text = $status === 'published'
+					? esc_html__( 'Published', 'affiliate-product-showcase' )
 					: esc_html__( 'Draft', 'affiliate-product-showcase' );
 				
 				return sprintf(
@@ -549,8 +567,8 @@ abstract class TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	final public function add_bulk_actions( array $bulk_actions ): array {
-		// Get current status from URL
-		$current_status = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+		// Get current status from URL with validation
+		$current_status = $this->get_valid_status_from_url();
 
 		// If in Trash view, add Restore and Permanently Delete
 		if ( $current_status === 'trashed' ) {
@@ -583,105 +601,113 @@ abstract class TaxonomyFieldsAbstract {
 		}
 		
 		$count = 0;
+		$query_param = '';
 		
-		// Handle "Move to Draft" action
-		if ( $action_name === 'move_to_draft' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default term (cannot be changed to draft)
-				$is_default = $this->get_is_default( (int) $term_id );
-				
-				if ( $is_default === '1' ) {
-					continue;
-				}
-				
-				// Update term status to draft
-				$result = $this->update_term_status( (int) $term_id, 'draft' );
-				
-				if ( $result ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'moved_to_draft' => $count,
-				], $redirect_url );
-			}
+		switch ( $action_name ) {
+			case 'move_to_draft':
+				$count = $this->handle_bulk_move_to_draft( $term_ids );
+				$query_param = 'moved_to_draft';
+				break;
+			case 'move_to_trash':
+				$count = $this->handle_bulk_move_to_trash( $term_ids );
+				$query_param = 'moved_to_trash';
+				break;
+			case 'restore':
+				$count = $this->handle_bulk_restore( $term_ids );
+				$query_param = 'restored_from_trash';
+				break;
+			case 'delete_permanently':
+				$count = $this->handle_bulk_delete_permanently( $term_ids );
+				$query_param = 'permanently_deleted';
+				break;
 		}
 		
-		// Handle "Move to Trash" action (sets status to trashed)
-		if ( $action_name === 'move_to_trash' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default term (cannot be trashed)
-				$is_default = $this->get_is_default( (int) $term_id );
-				
-				if ( $is_default === '1' ) {
-					continue;
-				}
-				
-				// Set status to trashed
-				$result = $this->update_term_status( (int) $term_id, 'trashed' );
-				
-				if ( $result ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'moved_to_trash' => $count,
-				], $redirect_url );
-			}
-		}
-
-		// Handle "Restore" action
-		if ( $action_name === 'restore' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Restore by setting status to published
-				$result = $this->update_term_status( (int) $term_id, 'published' );
-				
-				if ( $result ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'restored_from_trash' => $count,
-				], $redirect_url );
-			}
-		}
-
-		// Handle "Delete Permanently" action
-		if ( $action_name === 'delete_permanently' ) {
-			foreach ( $term_ids as $term_id ) {
-				// Check if this is default term (cannot be permanently deleted)
-				$is_default = $this->get_is_default( (int) $term_id );
-				
-				if ( $is_default === '1' ) {
-					continue;
-				}
-				
-				// Permanently delete term
-				$result = wp_delete_term( (int) $term_id, $this->get_taxonomy() );
-				
-				if ( $result && ! is_wp_error( $result ) ) {
-					$count++;
-				}
-			}
-			
-			// Add success message to redirect URL
-			if ( $count > 0 ) {
-				$redirect_url = add_query_arg( [
-					'permanently_deleted' => $count,
-				], $redirect_url );
-			}
+		if ( $count > 0 ) {
+			$redirect_url = add_query_arg( [ $query_param => $count ], $redirect_url );
 		}
 		
 		return $redirect_url;
+	}
+
+	/**
+	 * Handle move to draft bulk action
+	 *
+	 * @param array<int> $term_ids Term IDs
+	 * @return int Count of successfully moved terms
+	 * @since 2.1.0
+	 */
+	private function handle_bulk_move_to_draft( array $term_ids ): int {
+		$count = 0;
+		foreach ( $term_ids as $term_id ) {
+			$is_default = $this->get_is_default( (int) $term_id );
+			if ( $is_default === '1' ) {
+				continue;
+			}
+			if ( $this->update_term_status( (int) $term_id, 'draft' ) ) {
+				$count++;
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Handle move to trash bulk action
+	 *
+	 * @param array<int> $term_ids Term IDs
+	 * @return int Count of successfully moved terms
+	 * @since 2.1.0
+	 */
+	private function handle_bulk_move_to_trash( array $term_ids ): int {
+		$count = 0;
+		foreach ( $term_ids as $term_id ) {
+			$is_default = $this->get_is_default( (int) $term_id );
+			if ( $is_default === '1' ) {
+				continue;
+			}
+			if ( $this->update_term_status( (int) $term_id, 'trashed' ) ) {
+				$count++;
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Handle restore bulk action
+	 *
+	 * @param array<int> $term_ids Term IDs
+	 * @return int Count of successfully restored terms
+	 * @since 2.1.0
+	 */
+	private function handle_bulk_restore( array $term_ids ): int {
+		$count = 0;
+		foreach ( $term_ids as $term_id ) {
+			if ( $this->update_term_status( (int) $term_id, 'published' ) ) {
+				$count++;
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Handle delete permanently bulk action
+	 *
+	 * @param array<int> $term_ids Term IDs
+	 * @return int Count of successfully deleted terms
+	 * @since 2.1.0
+	 */
+	private function handle_bulk_delete_permanently( array $term_ids ): int {
+		$count = 0;
+		foreach ( $term_ids as $term_id ) {
+			$is_default = $this->get_is_default( (int) $term_id );
+			if ( $is_default === '1' ) {
+				continue;
+			}
+			$result = wp_delete_term( (int) $term_id, $this->get_taxonomy() );
+			if ( $result && ! is_wp_error( $result ) ) {
+				$count++;
+			}
+		}
+		return $count;
 	}
 	
 	/**
@@ -694,28 +720,44 @@ abstract class TaxonomyFieldsAbstract {
 		if ( isset( $_GET['moved_to_draft'] ) ) {
 			$count = intval( $_GET['moved_to_draft'] );
 			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d ' . strtolower( $this->get_taxonomy_label() ) . '(s) moved to draft.', 'affiliate-product-showcase' ), $count );
+			printf(
+				esc_html__( '%d %s(s) moved to draft.', 'affiliate-product-showcase' ),
+				$count,
+				esc_html( strtolower( $this->get_taxonomy_label() ) )
+			);
 			echo '</p></div>';
 		}
 		
 		if ( isset( $_GET['moved_to_trash'] ) ) {
 			$count = intval( $_GET['moved_to_trash'] );
 			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d ' . strtolower( $this->get_taxonomy_label() ) . '(s) moved to trash.', 'affiliate-product-showcase' ), $count );
+			printf(
+				esc_html__( '%d %s(s) moved to trash.', 'affiliate-product-showcase' ),
+				$count,
+				esc_html( strtolower( $this->get_taxonomy_label() ) )
+			);
 			echo '</p></div>';
 		}
 
 		if ( isset( $_GET['restored_from_trash'] ) ) {
 			$count = intval( $_GET['restored_from_trash'] );
 			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d ' . strtolower( $this->get_taxonomy_label() ) . '(s) restored from trash.', 'affiliate-product-showcase' ), $count );
+			printf(
+				esc_html__( '%d %s(s) restored from trash.', 'affiliate-product-showcase' ),
+				$count,
+				esc_html( strtolower( $this->get_taxonomy_label() ) )
+			);
 			echo '</p></div>';
 		}
 
 		if ( isset( $_GET['permanently_deleted'] ) ) {
 			$count = intval( $_GET['permanently_deleted'] );
 			echo '<div class="notice notice-success is-dismissible"><p>';
-			printf( esc_html__( '%d ' . strtolower( $this->get_taxonomy_label() ) . '(s) permanently deleted.', 'affiliate-product-showcase' ), $count );
+			printf(
+				esc_html__( '%d %s(s) permanently deleted.', 'affiliate-product-showcase' ),
+				$count,
+				esc_html( strtolower( $this->get_taxonomy_label() ) )
+			);
 			echo '</p></div>';
 		}
 	}
@@ -842,7 +884,8 @@ abstract class TaxonomyFieldsAbstract {
 		$status = $this->get_term_status( $term_id );
 		$is_default = $this->get_is_default( $term_id );
 
-		$current_view = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+		// Get current status from URL with validation
+		$current_view = $this->get_valid_status_from_url();
 		$base = admin_url( 'admin-post.php' );
 
 		if ( $current_view === 'trashed' || $status === 'trashed' ) {
@@ -911,7 +954,8 @@ abstract class TaxonomyFieldsAbstract {
 		check_admin_referer( $this->get_nonce_action( 'row_action' ) );
 
 		$term_id = isset( $_GET['term_id'] ) ? (int) $_GET['term_id'] : 0;
-		$do = isset( $_GET['do'] ) ? sanitize_text_field( $_GET['do'] ) : '';
+		// Get action from URL with validation
+		$do = $this->get_valid_action_from_url();
 		if ( $term_id <= 0 || $do === '' ) {
 			wp_safe_redirect( wp_get_referer() ?: admin_url( 'edit-tags.php?taxonomy=' . $this->get_taxonomy() . '&post_type=aps_product' ) );
 			exit;
@@ -986,6 +1030,32 @@ abstract class TaxonomyFieldsAbstract {
 	}
 	
 	/**
+	 * Get and validate status from URL
+	 *
+	 * @return string Valid status value
+	 * @since 2.1.0
+	 */
+	private function get_valid_status_from_url(): string {
+		if ( isset( $_GET['status'] ) && in_array( $_GET['status'], self::VALID_STATUSES, true ) ) {
+			return sanitize_text_field( $_GET['status'] );
+		}
+		return 'all';
+	}
+
+	/**
+	 * Get and validate action from URL
+	 *
+	 * @return string Valid action value
+	 * @since 2.1.0
+	 */
+	private function get_valid_action_from_url(): string {
+		if ( isset( $_GET['do'] ) && in_array( $_GET['do'], self::VALID_ACTIONS, true ) ) {
+			return sanitize_text_field( $_GET['do'] );
+		}
+		return '';
+	}
+
+	/**
 	 * Add a Cancel button on term edit screen.
 	 *
 	 * @return void
@@ -999,14 +1069,9 @@ abstract class TaxonomyFieldsAbstract {
 
 		$cancel_url = admin_url( 'edit-tags.php?taxonomy=' . $this->get_taxonomy() . '&post_type=aps_product' );
 		?>
-		<script>
-		jQuery(function($){
-			var $submit = $('#edittag .submit');
-			if ($submit.length && !$submit.find('.aps-cancel-term-edit').length) {
-				$submit.prepend('<a class="button button-secondary aps-cancel-term-edit" style="margin-right:8px" href="<?php echo esc_js( esc_url( $cancel_url ) ); ?>"><?php echo esc_js( esc_html__( 'Cancel', 'affiliate-product-showcase' ) ); ?></a>');
-			}
-		});
-		</script>
+		<a href="<?php echo esc_url( $cancel_url ); ?>" class="button">
+			<?php esc_html_e( 'Cancel', 'affiliate-product-showcase' ); ?>
+		</a>
 		<?php
 	}
 }

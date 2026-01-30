@@ -204,9 +204,9 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_default_category_field(): void {
 		$settings = $this->get_settings();
-		$categories = get_terms(['taxonomy' => 'product_category', 'hide_empty' => false]);
+		$categories = get_terms(['taxonomy' => 'aps_category', 'hide_empty' => false]);
 		
-		echo '<select name="' . esc_attr($this->option_name) . '[default_category]">';
+		echo '<select name="' . esc_attr($this->option_name) . '[default_category]" id="default-category" aria-describedby="default-category-description">';
 		echo '<option value="0">' . esc_html__('None', 'affiliate-product-showcase') . '</option>';
 		
 		foreach ($categories as $category) {
@@ -217,7 +217,7 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		}
 		
 		echo '</select>';
-		echo '<p class="description">' . esc_html__('Default category for unassigned products.', 'affiliate-product-showcase') . '</p>';
+		echo '<p class="description" id="default-category-description">' . esc_html__('Default category for unassigned products.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -229,9 +229,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['enable_category_hierarchy'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_category_hierarchy]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_category_hierarchy]" value="1" ' . $checked . ' aria-describedby="enable-category-hierarchy-description"> ';
 		echo esc_html__('Enable category hierarchy (parent/child)', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="enable-category-hierarchy-description">' . esc_html__('Allow categories to have parent-child relationships.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -247,12 +248,13 @@ final class CategoriesSettings extends AbstractSettingsSection {
 			'compact' => __('Compact', 'affiliate-product-showcase'),
 		];
 		
-		echo '<select name="' . esc_attr($this->option_name) . '[category_display_style]">';
+		echo '<select name="' . esc_attr($this->option_name) . '[category_display_style]" id="category-display-style" aria-describedby="category-display-style-description">';
 		foreach ($styles as $value => $label) {
 			$selected = selected($settings['category_display_style'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
 		echo '</select>';
+		echo '<p class="description" id="category-display-style-description">' . esc_html__('Choose how categories are displayed on the frontend.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -262,12 +264,13 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_category_products_per_page_field(): void {
 		$settings = $this->get_settings();
-		echo '<select name="' . esc_attr($this->option_name) . '[category_products_per_page]">';
+		echo '<select name="' . esc_attr($this->option_name) . '[category_products_per_page]" id="category-products-per-page" aria-describedby="category-products-per-page-description">';
 		foreach ([6, 12, 18, 24, 36, 48] as $value) {
 			$selected = selected($settings['category_products_per_page'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($value) . '</option>';
 		}
 		echo '</select>';
+		echo '<p class="description" id="category-products-per-page-description">' . esc_html__('Number of products to display per category page.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -285,12 +288,13 @@ final class CategoriesSettings extends AbstractSettingsSection {
 			'random' => __('Random', 'affiliate-product-showcase'),
 		];
 		
-		echo '<select name="' . esc_attr($this->option_name) . '[category_default_sort]">';
+		echo '<select name="' . esc_attr($this->option_name) . '[category_default_sort]" id="category-default-sort" aria-describedby="category-default-sort-description">';
 		foreach ($options as $value => $label) {
 			$selected = selected($settings['category_default_sort'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
 		echo '</select>';
+		echo '<p class="description" id="category-default-sort-description">' . esc_html__('Default sorting method for category products.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -308,10 +312,11 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		foreach ($options as $value => $label) {
 			$checked = checked($settings['category_default_sort_order'], $value, false);
 			echo '<label>';
-			echo '<input type="radio" name="' . esc_attr($this->option_name) . '[category_default_sort_order]" value="' . esc_attr($value) . '" ' . $checked . '> ';
+			echo '<input type="radio" name="' . esc_attr($this->option_name) . '[category_default_sort_order]" value="' . esc_attr($value) . '" ' . $checked . ' aria-describedby="category-default-sort-order-description"> ';
 			echo esc_html($label);
 			echo '</label><br>';
 		}
+		echo '<p class="description" id="category-default-sort-order-description">' . esc_html__('Sort order for category products (ascending or descending).', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -323,9 +328,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['show_category_description'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_description]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_description]" value="1" ' . $checked . ' aria-describedby="show-category-description-description"> ';
 		echo esc_html__('Show category description', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="show-category-description-description">' . esc_html__('Display category description on category pages.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -337,9 +343,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['show_category_image'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_image]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_image]" value="1" ' . $checked . ' aria-describedby="show-category-image-description"> ';
 		echo esc_html__('Show category image', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="show-category-image-description">' . esc_html__('Display category image on category pages.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -351,9 +358,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['show_category_count'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_count]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_category_count]" value="1" ' . $checked . ' aria-describedby="show-category-count-description"> ';
 		echo esc_html__('Show product count per category', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="show-category-count-description">' . esc_html__('Display number of products in each category.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -365,9 +373,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['enable_category_featured_products'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_category_featured_products]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_category_featured_products]" value="1" ' . $checked . ' aria-describedby="enable-category-featured-products-description"> ';
 		echo esc_html__('Enable featured products per category', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="enable-category-featured-products-description">' . esc_html__('Show featured products at the top of category pages.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -377,13 +386,13 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_category_featured_products_limit_field(): void {
 		$settings = $this->get_settings();
-		echo '<select name="' . esc_attr($this->option_name) . '[category_featured_products_limit]">';
+		echo '<select name="' . esc_attr($this->option_name) . '[category_featured_products_limit]" id="category-featured-products-limit" aria-describedby="category-featured-products-limit-description">';
 		foreach ([1, 2, 3, 4, 6, 8] as $value) {
 			$selected = selected($settings['category_featured_products_limit'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($value) . '</option>';
 		}
 		echo '</select>';
-		echo '<p class="description">' . esc_html__('Number of featured products to show.', 'affiliate-product-showcase') . '</p>';
+		echo '<p class="description" id="category-featured-products-limit-description">' . esc_html__('Number of featured products to show.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -395,8 +404,9 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$checked = checked($settings['enable_empty_category_display'], true, false);
 		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_empty_category_display]" value="1" ' . $checked . '> ';
+		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_empty_category_display]" value="1" ' . $checked . ' aria-describedby="enable-empty-category-display-description"> ';
 		echo esc_html__('Display empty categories', 'affiliate-product-showcase');
 		echo '</label>';
+		echo '<p class="description" id="enable-empty-category-display-description">' . esc_html__('Show categories even if they have no products.', 'affiliate-product-showcase') . '</p>';
 	}
 }

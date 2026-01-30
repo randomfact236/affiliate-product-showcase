@@ -5,6 +5,8 @@
  * - Status toggle via AJAX
  * - Cancel button on edit form
  * - Bulk action handling
+ * - Category checkboxes positioning
+ * - Cancel button injection
  *
  * @package AffiliateProductShowcase
  * @since 1.2.0
@@ -12,6 +14,13 @@
 
 /* global ajaxurl, aps_admin_vars */
 
+/**
+ * Get AJAX URL for category operations
+ *
+ * Checks for aps_admin_vars.ajax_url first, then falls back to global ajaxurl.
+ *
+ * @returns {string} The AJAX URL, or empty string if not found
+ */
 function apsGetAjaxUrl() {
 	if ( typeof aps_admin_vars !== 'undefined' && aps_admin_vars && aps_admin_vars.ajax_url ) {
 		return aps_admin_vars.ajax_url;
@@ -22,6 +31,15 @@ function apsGetAjaxUrl() {
 	return '';
 }
 
+/**
+ * Show admin notice message
+ *
+ * Displays a dismissible notice above the page heading.
+ * Auto-dismisses after 3 seconds.
+ *
+ * @param {string} type - Notice type ('success', 'error', 'warning', 'info')
+ * @param {string} message - Notice message content
+ */
 function apsShowNotice( type, message ) {
 	var $ = jQuery;
 	var prefix = ( typeof aps_admin_vars !== 'undefined' && aps_admin_vars && aps_admin_vars.notice_prefix )
@@ -39,16 +57,75 @@ function apsShowNotice( type, message ) {
 }
 
 
+/**
+ * Move category checkboxes after slug field
+ *
+ * Repositions the category checkboxes wrapper to appear after the slug field
+ * in the category add/edit form.
+ */
+function apsMoveCategoryCheckboxes() {
+	var $ = jQuery;
+	$('.aps-category-checkboxes-wrapper').insertAfter($('input[name="slug"]').parent());
+	$('.aps-category-checkboxes-wrapper').removeAttr('hidden');
+}
+
+/**
+ * Add cancel button to term edit screen
+ *
+ * Injects a cancel button into the term edit screen submit area.
+ * Uses localized data for URL and text.
+ */
+function apsAddCancelButton() {
+	var $ = jQuery;
+	var $submit = $('#edittag .submit');
+	if ($submit.length && !$submit.find('.aps-cancel-term-edit').length) {
+		var cancelUrl = (typeof aps_admin_vars !== 'undefined' && aps_admin_vars.cancel_url)
+			? aps_admin_vars.cancel_url
+			: '';
+		var cancelText = (typeof aps_admin_vars !== 'undefined' && aps_admin_vars.cancel_text)
+			? aps_admin_vars.cancel_text
+			: 'Cancel';
+		$submit.prepend('<a class="button button-secondary aps-cancel-term-edit" href="' + cancelUrl + '">' + cancelText + '</a>');
+	}
+}
+
 jQuery(document).ready(function($) {
+	// Initialize category-specific functionality
+	if ($('.aps-category-checkboxes-wrapper').length) {
+		apsMoveCategoryCheckboxes();
+	}
+	
+	// Initialize cancel button on term edit screen
+	if ($('#edittag').length) {
+		apsAddCancelButton();
+	}
+
+	/**
+	 * Get current view status from URL
+	 *
+	 * @returns {string} Current status filter ('all', 'published', 'draft', 'trashed')
+	 */
 	function apsGetCurrentViewStatus() {
 		var params = new URLSearchParams(window.location.search);
 		return params.get('status') || 'all';
 	}
 
+	/**
+	 * Find the table row containing a given link
+	 *
+	 * @param {jQuery} $link - The link element
+	 * @returns {jQuery} The closest table row element
+	 */
 	function apsFindRowFromLink($link) {
 		return $link.closest('tr');
 	}
 
+	/**
+	 * Set the status dropdown value and store original status
+	 *
+	 * @param {jQuery} $row - The table row element
+	 * @param {string} status - The new status value
+	 */
 	function apsSetRowStatusUI($row, status) {
 		var $select = $row.find('.aps-category-status-select');
 		if ($select.length) {

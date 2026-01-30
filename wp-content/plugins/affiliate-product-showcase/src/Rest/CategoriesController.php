@@ -318,6 +318,79 @@ final class CategoriesController extends RestController {
 	}
 
 	/**
+	 * Check if taxonomy exists
+	 *
+	 * @return WP_REST_Response|null Response if taxonomy doesn't exist, null otherwise
+	 * @since 2.1.0
+	 */
+	private function check_taxonomy_exists(): ?WP_REST_Response {
+		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
+			return $this->respond( [
+				'message' => sprintf(
+					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					Constants::TAX_CATEGORY
+				),
+				'code'    => 'taxonomy_not_registered',
+			], 500 );
+		}
+		return null;
+	}
+
+	/**
+	 * Verify nonce from request
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response|null Response if invalid, null otherwise
+	 * @since 2.1.0
+	 */
+	private function verify_nonce( WP_REST_Request $request ): ?WP_REST_Response {
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return $this->respond( [
+				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
+				'code'    => 'invalid_nonce',
+			], 403 );
+		}
+		return null;
+	}
+
+	/**
+	 * Validate category ID parameter
+	 *
+	 * @param WP_REST_Request $request Request object
+	 * @return WP_REST_Response|null Response if invalid, null otherwise
+	 * @since 2.1.0
+	 */
+	private function validate_category_id( WP_REST_Request $request ): ?WP_REST_Response {
+		$category_id = $request->get_param( 'id' );
+		if ( empty( $category_id ) ) {
+			return $this->respond( [
+				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
+				'code'    => 'missing_category_id',
+			], 400 );
+		}
+		return null;
+	}
+
+	/**
+	 * Get category or return error response
+	 *
+	 * @param int $category_id Category ID
+	 * @return WP_REST_Response|null Response if not found, null otherwise
+	 * @since 2.1.0
+	 */
+	private function get_category_or_error( int $category_id ): ?WP_REST_Response {
+		$category = $this->repository->find( $category_id );
+		if ( null === $category ) {
+			return $this->respond( [
+				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
+				'code'    => 'category_not_found',
+			], 404 );
+		}
+		return null;
+	}
+
+	/**
 	 * Get single category
 	 *
 	 * @param WP_REST_Request $request Request object
@@ -327,36 +400,20 @@ final class CategoriesController extends RestController {
 	 * @route GET /affiliate-showcase/v1/categories/{id}
 	 */
 	public function get_item( WP_REST_Request $request ): WP_REST_Response {
-		// Check if taxonomy exists
-		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
-			return $this->respond( [
-				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
-				),
-				'code'    => 'taxonomy_not_registered',
-			], 500 );
+		// Use helper methods
+		if ( $error = $this->check_taxonomy_exists() ) {
+			return $error;
 		}
-
-		$category_id = $request->get_param( 'id' );
 		
-		if ( empty( $category_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_category_id',
-			], 400 );
+		if ( $error = $this->validate_category_id( $request ) ) {
+			return $error;
 		}
-
-		$category = $this->repository->find( (int) $category_id );
 		
-		if ( null === $category ) {
-			return $this->respond( [
-				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
-				'code'    => 'category_not_found',
-			], 404 );
+		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+			return $error;
 		}
 
-		return $this->respond( $category->to_array(), 200 );
+		return $this->respond( $this->repository->find( (int) $request->get_param( 'id' ) )->to_array(), 200 );
 	}
 
 	/**
@@ -369,48 +426,27 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/{id}
 	 */
 	public function update( WP_REST_Request $request ): WP_REST_Response {
-		// Check if taxonomy exists
-		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
-			return $this->respond( [
-				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
-				),
-				'code'    => 'taxonomy_not_registered',
-			], 500 );
+		// Use helper methods
+		if ( $error = $this->check_taxonomy_exists() ) {
+			return $error;
 		}
-
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
-		}
-
-		$category_id = $request->get_param( 'id' );
 		
-		if ( empty( $category_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_category_id',
-			], 400 );
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
-
-		// Verify category exists
-		$existing_category = $this->repository->find( (int) $category_id );
-		if ( null === $existing_category ) {
-			return $this->respond( [
-				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
-				'code'    => 'category_not_found',
-			], 404 );
+		
+		if ( $error = $this->validate_category_id( $request ) ) {
+			return $error;
+		}
+		
+		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+			return $error;
 		}
 
 		try {
 			// Merge existing category data with updates
 			$data = $request->get_params();
-			$data['id'] = (int) $category_id;
+			$data['id'] = (int) $request->get_param( 'id' );
 			
 			$category = Category::from_array( $data );
 			$updated = $this->repository->update( $category );
@@ -418,12 +454,18 @@ final class CategoriesController extends RestController {
 			return $this->respond( $updated->to_array(), 200 );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
-			error_log(sprintf(
-				'[APS] Category update failed: %s in %s:%d',
-				$e->getMessage(),
-				$e->getFile(),
-				$e->getLine()
-			));
+			// Log error without sensitive information
+			error_log(sprintf('[APS] Category update failed: %s', $e->getMessage()));
+			
+			// Debug only - log full details when debug mode is enabled
+			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
+				error_log(sprintf(
+					'[APS] Category update failed: %s in %s:%d',
+					$e->getMessage(),
+					$e->getFile(),
+					$e->getLine()
+				));
+			}
 			
 			return $this->respond([
 				'message' => __('Failed to update category', 'affiliate-product-showcase'),
@@ -443,45 +485,25 @@ final class CategoriesController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/categories/{id}
 	 */
 	public function delete( WP_REST_Request $request ): WP_REST_Response {
-		// Check if taxonomy exists
-		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
-			return $this->respond( [
-				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
-				),
-				'code'    => 'taxonomy_not_registered',
-			], 500 );
+		// Use helper methods
+		if ( $error = $this->check_taxonomy_exists() ) {
+			return $error;
 		}
-
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
-		}
-
-		$category_id = $request->get_param( 'id' );
 		
-		if ( empty( $category_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_category_id',
-			], 400 );
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
-
-		$existing_category = $this->repository->find( (int) $category_id );
-		if ( null === $existing_category ) {
-			return $this->respond( [
-				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
-				'code'    => 'category_not_found',
-			], 404 );
+		
+		if ( $error = $this->validate_category_id( $request ) ) {
+			return $error;
+		}
+		
+		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+			return $error;
 		}
 
 		try {
-			$this->repository->delete( (int) $category_id );
+			$this->repository->delete( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
 				'message' => __( 'Category deleted successfully.', 'affiliate-product-showcase' ),
@@ -502,7 +524,7 @@ final class CategoriesController extends RestController {
 	 * Trash category (move to trash)
 	 *
 	 * Note: WordPress doesn't have native trash for terms.
-	 * This endpoint deletes the category permanently.
+	 * This endpoint deletes category permanently.
 	 *
 	 * @param WP_REST_Request $request Request object
 	 * @return WP_REST_Response Response with success/error
@@ -511,36 +533,23 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/{id}/trash
 	 */
 	public function trash( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Use helper methods
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
-
-		$category_id = $request->get_param( 'id' );
 		
-		if ( empty( $category_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_category_id',
-			], 400 );
+		if ( $error = $this->validate_category_id( $request ) ) {
+			return $error;
 		}
-
-		$existing_category = $this->repository->find( (int) $category_id );
-		if ( null === $existing_category ) {
-			return $this->respond( [
-				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
-				'code'    => 'category_not_found',
-			], 404 );
+		
+		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+			return $error;
 		}
 
 		try {
 			// WordPress doesn't have native trash for terms
 			// We'll delete permanently but notify user
-			$this->repository->delete_permanently( (int) $category_id );
+			$this->repository->delete_permanently( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
 				'message' => __( 'Category deleted. Note: WordPress does not support trash for categories.', 'affiliate-product-showcase' ),
@@ -570,13 +579,9 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/{id}/restore
 	 */
 	public function restore( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Use helper methods
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
 
 		return $this->respond( [
@@ -595,34 +600,21 @@ final class CategoriesController extends RestController {
 	 * @route DELETE /affiliate-showcase/v1/categories/{id}/delete-permanently
 	 */
 	public function delete_permanently( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Use helper methods
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
-
-		$category_id = $request->get_param( 'id' );
 		
-		if ( empty( $category_id ) ) {
-			return $this->respond( [
-				'message' => __( 'Category ID is required.', 'affiliate-product-showcase' ),
-				'code'    => 'missing_category_id',
-			], 400 );
+		if ( $error = $this->validate_category_id( $request ) ) {
+			return $error;
 		}
-
-		$existing_category = $this->repository->find( (int) $category_id );
-		if ( null === $existing_category ) {
-			return $this->respond( [
-				'message' => __( 'Category not found.', 'affiliate-product-showcase' ),
-				'code'    => 'category_not_found',
-			], 404 );
+		
+		if ( $error = $this->get_category_or_error( (int) $request->get_param( 'id' ) ) ) {
+			return $error;
 		}
 
 		try {
-			$this->repository->delete_permanently( (int) $category_id );
+			$this->repository->delete_permanently( (int) $request->get_param( 'id' ) );
 			
 			return $this->respond( [
 				'message' => __( 'Category deleted permanently.', 'affiliate-product-showcase' ),
@@ -652,13 +644,9 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories/trash/empty
 	 */
 	public function empty_trash( WP_REST_Request $request ): WP_REST_Response {
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		// Use helper methods
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
 
 		return $this->respond( [
@@ -685,7 +673,7 @@ final class CategoriesController extends RestController {
 		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
 			return $this->respond( [
 				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
+					__( 'Taxonomy %s is not registered. Please ensure plugin is properly activated.', 'affiliate-product-showcase' ),
 					Constants::TAX_CATEGORY
 				),
 				'code'    => 'taxonomy_not_registered',
@@ -755,24 +743,13 @@ final class CategoriesController extends RestController {
 	 * @route POST /affiliate-showcase/v1/categories
 	 */
 	public function create( WP_REST_Request $request ): WP_REST_Response {
-		// Check if taxonomy exists
-		if ( ! taxonomy_exists( Constants::TAX_CATEGORY ) ) {
-			return $this->respond( [
-				'message' => sprintf( 
-					__( 'Taxonomy %s is not registered. Please ensure the plugin is properly activated.', 'affiliate-product-showcase' ),
-					Constants::TAX_CATEGORY
-				),
-				'code'    => 'taxonomy_not_registered',
-			], 500 );
+		// Use helper methods
+		if ( $error = $this->check_taxonomy_exists() ) {
+			return $error;
 		}
-
-		// Verify nonce for CSRF protection
-		$nonce = $request->get_header( 'X-WP-Nonce' );
-		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return $this->respond( [
-				'message' => __( 'Invalid nonce. Please refresh page and try again.', 'affiliate-product-showcase' ),
-				'code'    => 'invalid_nonce',
-			], 403 );
+		
+		if ( $error = $this->verify_nonce( $request ) ) {
+			return $error;
 		}
 
 		// Check rate limit (stricter for create operations)
@@ -791,13 +768,18 @@ final class CategoriesController extends RestController {
 			return $this->respond( $created->to_array(), 201, $this->rate_limiter->get_headers( 'categories_create', 20 ) );
 			
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
-			// Log full error internally (includes details)
-			error_log(sprintf(
-				'[APS] Category creation failed: %s in %s:%d',
-				$e->getMessage(),
-				$e->getFile(),
-				$e->getLine()
-			));
+			// Log error without sensitive information
+			error_log(sprintf('[APS] Category creation failed: %s', $e->getMessage()));
+			
+			// Debug only - log full details when debug mode is enabled
+			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
+				error_log(sprintf(
+					'[APS] Category creation failed: %s in %s:%d',
+					$e->getMessage(),
+					$e->getFile(),
+					$e->getLine()
+				));
+			}
 			
 			// Return safe message to client
 			return $this->respond([
@@ -807,8 +789,18 @@ final class CategoriesController extends RestController {
 			], 400);
 			
 		} catch ( \Throwable $e ) {
-			// Catch-all for unexpected errors
+			// Catch-all for unexpected errors - log without sensitive info
 			error_log(sprintf('[APS] Unexpected error in category creation: %s', $e->getMessage()));
+			
+			// Debug only - log full details when debug mode is enabled
+			if ( defined( 'APS_DEBUG' ) && APS_DEBUG ) {
+				error_log(sprintf(
+					'[APS] Unexpected error in category creation: %s in %s:%d',
+					$e->getMessage(),
+					$e->getFile(),
+					$e->getLine()
+				));
+			}
 			
 			return $this->respond([
 				'message' => __('An unexpected error occurred', 'affiliate-product-showcase'),
