@@ -1,0 +1,175 @@
+/**
+ * Tables Component (BEM)
+ *
+ * Reusable table styles for data display.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Table
+// ============================================
+
+.aps-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	box-shadow: $aps-shadow-sm;
+	clear: both;
+	display: table;
+
+	// ============================================
+	// Element: Header
+	// ============================================
+
+	&__header {
+		border-bottom: 1px solid $aps-color-border-light;
+		font-weight: $aps-font-weight-semibold;
+		text-align: left;
+		padding: $aps-spacing-3;
+		background: $aps-color-bg-light;
+	}
+
+	&__header th {
+		padding: $aps-spacing-2 $aps-spacing-3;
+		font-size: $aps-font-size-sm;
+		color: $aps-color-text-main;
+		border-bottom: 1px solid $aps-color-border;
+	}
+
+	// ============================================
+	// Element: Body
+	// ============================================
+
+	&__body {
+		td {
+			padding: $aps-spacing-2 $aps-spacing-3;
+			vertical-align: middle;
+			font-size: $aps-font-size-sm;
+			color: $aps-color-text-muted;
+			border-bottom: 1px solid $aps-color-border-light;
+			word-break: break-word;
+		}
+	}
+
+	// ============================================
+	// Element: Row
+	// ============================================
+
+	&__row {
+		&:nth-child(odd) {
+			background-color: $aps-color-bg-light;
+		}
+
+		&:nth-child(even) {
+			background-color: $aps-color-bg-card;
+		}
+
+		&:hover td {
+			background-color: $aps-color-bg-hover;
+		}
+	}
+
+	// ============================================
+	// Element: Checkbox Column
+	// ============================================
+
+	&__column-cb {
+		width: 2.2em;
+		padding: $aps-spacing-3 0 0 0 $aps-spacing-3 !important;
+	}
+
+	// ============================================
+	// Element: Actions
+	// ============================================
+
+	&__actions {
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-muted;
+		visibility: hidden;
+		margin-top: $aps-spacing-1;
+
+		a {
+			text-decoration: none;
+			color: $aps-color-primary;
+
+			&:hover {
+				color: $aps-color-primary-hover;
+			}
+		}
+
+		.aps-table__row:hover & {
+			visibility: visible;
+		}
+
+		& .trash a {
+			color: $aps-color-danger;
+
+			&:hover {
+				color: $aps-color-danger-text;
+			}
+		}
+	}
+
+	// ============================================
+	// Element: Sortable
+	// ============================================
+
+	&__sortable {
+		&__header th {
+			cursor: pointer;
+			user-select: none;
+
+			&:hover {
+				background-color: $aps-color-bg-hover;
+			}
+		}
+	}
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+
+	@include tablet-down {
+		display: block;
+		overflow-x: auto;
+
+		&__body {
+			td {
+				display: block;
+				border-bottom: 1px solid $aps-color-border-light;
+				padding: $aps-spacing-2 $aps-spacing-3;
+				text-align: right;
+
+				&::before {
+					content: attr(data-colname) ': ';
+					font-weight: $aps-font-weight-semibold;
+					float: left;
+				}
+			}
+		}
+
+		&__column-cb {
+			display: none;
+		}
+	}
+
+	// ============================================
+	// Print Styles
+	// ============================================
+
+	@media print {
+		border: 1px solid #000;
+		box-shadow: none;
+
+		th,
+		td {
+			border: 1px solid #000;
+		}
+	}
+}

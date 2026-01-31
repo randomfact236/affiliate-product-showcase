@@ -1,0 +1,195 @@
+/**
+ * Modals Component (BEM)
+ *
+ * Reusable modal dialog styles.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Modal
+// ============================================
+
+.aps-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: $aps-z-modal-backdrop;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: aps-fadeIn $aps-transition-base ease;
+
+	// ============================================
+	// Accessibility
+	// ============================================
+
+	&:focus-within {
+		outline: 3px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-radius: $aps-radius-lg;
+	}
+
+	// ============================================
+	// Reduced Motion
+	// ============================================
+
+	@include prefers-reduced-motion {
+		animation: none;
+		transition: none;
+	}
+}
+
+// ============================================
+// Element: Backdrop
+// ============================================
+
+.aps-modal__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+// ============================================
+// Element: Content
+// ============================================
+
+.aps-modal__content {
+	position: relative;
+	background: $aps-color-bg-card;
+	border-radius: $aps-radius-lg;
+	box-shadow: $aps-shadow-xl;
+	width: 100%;
+	max-width: $aps-container-lg;
+	max-height: 90vh;
+	overflow-y: auto;
+	margin: $aps-spacing-5;
+	animation: aps-slideUp $aps-transition-base ease;
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+
+	@include tablet-down {
+		margin: $aps-spacing-3;
+		max-height: 80vh;
+	}
+
+	@include mobile-only {
+		margin: $aps-spacing-2;
+		max-height: 75vh;
+		width: 95%;
+	}
+
+	@include prefers-reduced-motion {
+		animation: none;
+	}
+}
+
+// ============================================
+// Element: Header
+// ============================================
+
+.aps-modal__header {
+	padding: $aps-spacing-5;
+	border-bottom: 1px solid $aps-color-border-light;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.aps-modal__title {
+	margin: 0;
+	font-size: $aps-font-size-xl;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
+	line-height: $aps-line-height-tight;
+}
+
+// ============================================
+// Element: Close Button
+// ============================================
+
+.aps-modal__close {
+	background: none;
+	border: none;
+	font-size: 2rem;
+	line-height: 1;
+	color: $aps-color-text-muted;
+	cursor: pointer;
+	padding: 0;
+	width: 2rem;
+	height: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: color $aps-transition-fast ease;
+
+	&:hover {
+		color: $aps-color-text-main;
+	}
+}
+
+// ============================================
+// Element: Body
+// ============================================
+
+.aps-modal__body {
+	padding: $aps-spacing-5;
+}
+
+// ============================================
+// Element: Footer
+// ============================================
+
+.aps-modal__footer {
+	padding: $aps-spacing-5;
+	border-top: 1px solid $aps-color-border-light;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: $aps-spacing-3;
+}
+
+// ============================================
+// Animations
+// ============================================
+
+@keyframes aps-fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes aps-slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.aps-modal {
+		display: none;
+	}
+}

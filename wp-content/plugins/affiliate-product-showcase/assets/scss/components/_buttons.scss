@@ -1,0 +1,238 @@
+/**
+ * Buttons Component (BEM)
+ *
+ * Reusable button styles with multiple variants.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+@use '../mixins/focus' as *;
+
+// ============================================
+// Block: Button
+// ============================================
+
+.aps-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: $aps-spacing-2 $aps-spacing-5;
+	font-family: $aps-font-family-base;
+	font-size: $aps-font-size-base;
+	font-weight: $aps-font-weight-semibold;
+	line-height: $aps-line-height-normal;
+	text-decoration: none;
+	border-radius: $aps-radius-sm;
+	border: none;
+	cursor: pointer;
+	transition: all $aps-transition-base ease;
+	white-space: nowrap;
+
+	// ============================================
+	// Modifier: Primary
+	// ============================================
+
+	&--primary {
+		background: $aps-color-primary;
+		color: $aps-color-bg-card;
+
+		&:hover {
+			background: $aps-color-primary-hover;
+			transform: translateY(-1px);
+			box-shadow: $aps-shadow-md;
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		@include focus-visible;
+	}
+
+	// ============================================
+	// Modifier: Secondary
+	// ============================================
+
+	&--secondary {
+		background: $aps-color-secondary-light;
+		color: $aps-color-text-main;
+		border: 1px solid $aps-color-border-light;
+
+		&:hover {
+			background: $aps-color-bg-hover;
+			border-color: $aps-color-border;
+		}
+
+		@include focus-visible;
+	}
+
+	// ============================================
+	// Modifier: Danger
+	// ============================================
+
+	&--danger {
+		background: $aps-color-danger;
+		color: $aps-color-bg-card;
+
+		&:hover {
+			background: $aps-color-danger-text;
+		}
+
+		@include focus-error;
+	}
+
+	// ============================================
+	// Modifier: Success
+	// ============================================
+
+	&--success {
+		background: $aps-color-success;
+		color: $aps-color-bg-card;
+
+		&:hover {
+			background: $aps-color-success-text;
+		}
+
+		@include focus-visible;
+	}
+
+	// ============================================
+	// Modifier: Outline
+	// ============================================
+
+	&--outline {
+		background: transparent;
+		color: $aps-color-primary;
+		border: 2px solid $aps-color-primary;
+
+		&:hover {
+			background: $aps-color-primary;
+			color: $aps-color-bg-card;
+		}
+
+		@include focus-visible;
+	}
+
+	// ============================================
+	// Modifier: Small
+	// ============================================
+
+	&--small {
+		padding: $aps-spacing-1 $aps-spacing-3;
+		font-size: $aps-font-size-sm;
+	}
+
+	// ============================================
+	// Modifier: Large
+	// ============================================
+
+	&--large {
+		padding: $aps-spacing-3 $aps-spacing-6;
+		font-size: $aps-font-size-lg;
+	}
+
+	// ============================================
+	// Modifier: Block (full width)
+	// ============================================
+
+	&--block {
+		display: flex;
+		width: 100%;
+	}
+
+	// ============================================
+	// Modifier: Loading State
+	// ============================================
+
+	&--loading {
+		opacity: 0.6;
+		pointer-events: none;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 1rem;
+			height: 1rem;
+			top: 50%;
+			left: 50%;
+			margin-top: -0.5rem;
+			margin-left: -0.5rem;
+			border: 2px solid $aps-color-bg-card;
+			border-top-color: transparent;
+			border-radius: 50%;
+			border-top: 2px solid $aps-color-primary;
+			animation: aps-spin 1s linear infinite;
+		}
+	}
+
+	@keyframes aps-spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	// ============================================
+	// Modifier: Disabled
+	// ============================================
+
+	&--disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	// ============================================
+	// Modifier: Icon Button
+	// ============================================
+
+	&--icon {
+		padding: $aps-spacing-2;
+		border-radius: 50%;
+
+		.aps-icon {
+			font-size: 1.125rem;
+		}
+	}
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+
+	@include tablet-down {
+		&--block {
+			width: 100%;
+		}
+	}
+
+	// ============================================
+	// Accessibility
+	// ============================================
+
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+
+	&.aps-focus-ring {
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.1);
+	}
+
+	// ============================================
+	// Reduced Motion
+	// ============================================
+
+	@include prefers-reduced-motion {
+		transition: none;
+
+		&--loading::after {
+			animation: none;
+		}
+	}
+}

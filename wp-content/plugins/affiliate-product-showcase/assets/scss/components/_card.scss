@@ -1,0 +1,508 @@
+/**
+ * Product Card Component (BEM)
+ *
+ * BEM-style component for product display cards.
+ * Fully modular and reusable.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Block: Product Card
+// ============================================
+
+.aps-card {
+	position: relative;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	overflow: hidden;
+	transition: all $aps-transition-base ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	// ============================================
+	// Modifier: Hover State
+	// ============================================
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: $aps-shadow-lg;
+		border-color: $aps-color-primary;
+	}
+
+	// ============================================
+	// Modifier: Focus State (keyboard navigation)
+	// ============================================
+
+	&:focus-within {
+		outline: 3px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-radius: $aps-radius-lg;
+	}
+
+	// ============================================
+	// Element: Media (Image)
+	// ============================================
+
+	&__media {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		background: $aps-color-bg-light;
+
+		& img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform $aps-transition-base ease;
+		}
+
+		// Image zoom on card hover
+		.aps-card:hover & img {
+			transform: scale(1.05);
+		}
+	}
+
+	// ============================================
+	// Element: Body
+	// ============================================
+
+	&__body {
+		padding: $aps-spacing-4;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: $aps-spacing-3;
+	}
+
+	// ============================================
+	// Element: Title
+	// ============================================
+
+	&__title {
+		margin: 0;
+		font-size: $aps-font-size-lg;
+		font-weight: $aps-font-weight-semibold;
+		line-height: $aps-line-height-tight;
+		color: $aps-color-text-main;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	// ============================================
+	// Element: Short Description
+	// ============================================
+
+	&__short-description {
+		margin: 0;
+		font-size: $aps-font-size-base;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-secondary;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	// ============================================
+	// Element: Meta Container
+	// ============================================
+
+	&__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $aps-spacing-2;
+		align-items: center;
+	}
+
+	// ============================================
+	// Element: Badge
+	// ============================================
+
+	&__badge {
+		display: inline-block;
+		padding: $aps-spacing-1 $aps-spacing-3;
+		background: linear-gradient(135deg, $aps-color-primary 0%, $aps-color-primary-dark 100%);
+		color: $aps-color-bg-card;
+		font-size: $aps-font-size-xs;
+		font-weight: $aps-font-weight-semibold;
+		border-radius: $aps-radius-sm;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	// ============================================
+	// Element: Rating
+	// ============================================
+
+	&__rating {
+		display: inline-flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		background: $aps-color-rating-bg;
+		border: 1px solid $aps-color-rating-border;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-sm;
+		color: $aps-color-rating-text;
+		font-weight: $aps-font-weight-medium;
+
+		// Screen reader only star symbol
+		&[aria-hidden="true"] {
+			color: #ffd700;
+		}
+	}
+
+	// ============================================
+	// Element: Version Badge
+	// ============================================
+
+	&__version {
+		display: inline-flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		background: $aps-color-version-bg;
+		border: 1px solid $aps-color-version-border;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-xs;
+		color: $aps-color-primary;
+		font-weight: $aps-font-weight-medium;
+		font-family: $aps-font-family-base;
+		transition: all $aps-transition-fast ease;
+
+		&:hover {
+			background: $aps-color-primary;
+			color: $aps-color-bg-card;
+			border-color: $aps-color-primary;
+		}
+
+		// Dashicon within version
+		& .dashicons {
+			font-size: 0.875rem;
+			width: 0.875rem;
+			height: 0.875rem;
+		}
+	}
+
+	// ============================================
+	// Element: Footer (Price + CTA)
+	// ============================================
+
+	&__footer {
+		margin-top: auto;
+		padding: $aps-spacing-4 $aps-spacing-5;
+		border-top: 1px solid $aps-color-bg-light;
+		display: flex;
+		flex-wrap: wrap;
+		gap: $aps-spacing-3;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	// ============================================
+	// Element: Price Container
+	// ============================================
+
+	&__price-container {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: $aps-spacing-2;
+	}
+
+	// ============================================
+	// Element: Price
+	// ============================================
+
+	&__price {
+		display: flex;
+		align-items: baseline;
+		gap: 0.125rem;
+		font-size: $aps-font-size-xl;
+		font-weight: $aps-font-weight-bold;
+		color: $aps-color-text-main;
+		line-height: 1;
+	}
+
+	// ============================================
+	// Element: Price Currency
+	// ============================================
+
+	&__price-currency {
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-text-muted;
+	}
+
+	// ============================================
+	// Element: Price Value
+	// ============================================
+
+	&__price-value {
+		color: $aps-color-text-main;
+	}
+
+	// ============================================
+	// Element: Original Price
+	// ============================================
+
+	&__price--original {
+		font-size: $aps-font-size-md;
+		color: $aps-color-text-muted;
+		text-decoration: line-through;
+	}
+
+	// ============================================
+	// Element: Discount Badge
+	// ============================================
+
+	&__discount {
+		display: inline-flex;
+		align-items: center;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		background: $aps-color-danger;
+		color: $aps-color-bg-card;
+		font-size: $aps-font-size-xs;
+		font-weight: $aps-font-weight-bold;
+		border-radius: $aps-radius-sm;
+		box-shadow: 0 2px 4px rgba(220, 50, 50, 0.3);
+		animation: aps-pulse 2s infinite;
+	}
+
+	// Pulse animation for discount badge
+	@keyframes aps-pulse {
+		0%, 100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.05);
+		}
+	}
+
+	// ============================================
+	// Element: CTA Button
+	// ============================================
+
+	&__cta {
+		padding: $aps-spacing-2 $aps-spacing-5;
+		background: $aps-color-primary;
+		color: $aps-color-bg-card;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-semibold;
+		border-radius: $aps-radius-sm;
+		text-decoration: none;
+		transition: all $aps-transition-base ease;
+		white-space: nowrap;
+
+		&:hover {
+			background: $aps-color-primary-hover;
+			transform: translateY(-1px);
+			box-shadow: $aps-shadow-md;
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+		}
+	}
+
+	// ============================================
+	// Element: Platform Requirements
+	// ============================================
+
+	&__platform {
+		margin-top: $aps-spacing-3;
+		padding: $aps-spacing-3;
+		background: $aps-color-bg-light;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-md;
+		font-size: $aps-font-size-sm;
+	}
+
+	&__platform-details {
+		transition: all $aps-transition-base ease;
+
+		&[open] {
+			background: $aps-color-bg-card;
+		}
+
+		// Rotate icon when open
+		&[open] .aps-card__platform-toggle .dashicons {
+			transform: rotate(90deg);
+		}
+	}
+
+	&__platform-toggle {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-primary;
+		padding: $aps-spacing-1 0;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+
+		&:hover {
+			color: $aps-color-primary-hover;
+		}
+
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+			border-radius: $aps-radius-sm;
+		}
+
+		// Dashicon within toggle
+		& .dashicons {
+			font-size: 1rem;
+			width: 1rem;
+			height: 1rem;
+			transition: transform $aps-transition-base ease;
+		}
+	}
+
+	&__platform-content {
+		margin-top: $aps-spacing-2;
+		padding: $aps-spacing-2 $aps-spacing-3;
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-sm;
+		line-height: $aps-line-height-relaxed;
+		color: $aps-color-secondary;
+		animation: aps-slideDown $aps-transition-base ease;
+	}
+
+	@keyframes aps-slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}
+
+// ============================================
+// Disclosure Component
+// ============================================
+
+.aps-disclosure {
+	padding: $aps-spacing-3;
+	margin-bottom: $aps-spacing-3;
+	font-size: $aps-font-size-xs;
+	line-height: $aps-line-height-normal;
+	color: $aps-color-secondary;
+	background: $aps-color-bg-light;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-sm;
+
+	&--top {
+		margin-top: 0;
+		margin-bottom: $aps-spacing-4;
+	}
+
+	&--bottom {
+		margin-top: $aps-spacing-4;
+		margin-bottom: 0;
+	}
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: $aps-breakpoint-md) {
+	.aps-card__footer {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.aps-card__cta {
+		width: 100%;
+		text-align: center;
+	}
+
+	.aps-card__price-container {
+		justify-content: center;
+		width: 100%;
+	}
+}
+
+@media (max-width: $aps-breakpoint-xs) {
+	.aps-card__title {
+		font-size: $aps-font-size-md;
+	}
+
+	.aps-card__price {
+		font-size: $aps-font-size-lg;
+	}
+
+	.aps-card__platform {
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.aps-card {
+		break-inside: avoid;
+		border: 1px solid #000;
+		box-shadow: none;
+	}
+
+	.aps-card__cta {
+		display: none;
+	}
+
+	.aps-card__platform-details {
+		display: none;
+	}
+}
+
+// ============================================
+// Accessibility Enhancements
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+	.aps-card,
+	.aps-card:hover .aps-card__media img,
+	.aps-card__platform-details,
+	.aps-card__platform-toggle .dashicons,
+	.aps-card__discount {
+		animation: none;
+		transition: none;
+	}
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+	.aps-card {
+		border-width: 2px;
+	}
+
+	.aps-card__badge,
+	.aps-card__discount {
+		border: 2px solid #000;
+	}
+}

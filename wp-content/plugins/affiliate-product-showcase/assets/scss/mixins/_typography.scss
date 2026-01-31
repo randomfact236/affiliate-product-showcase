@@ -1,0 +1,195 @@
+/**
+ * Typography Mixins
+ *
+ * Typography utilities for consistent text styling.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Mixin: Text Truncation
+// ============================================
+
+@mixin text-truncate($lines: 1) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// ============================================
+// Mixin: Word Break
+// ============================================
+
+@mixin word-break {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+// ============================================
+// Mixin: Line Clamp (fallback)
+// ============================================
+
+@mixin line-clamp($lines: 1) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	
+	// Fallback for browsers that don't support -webkit-line-clamp
+	@supports not (-webkit-line-clamp: 1) {
+		max-height: calc($aps-line-height-normal * $aps-font-size-base * $lines);
+	}
+}
+
+// ============================================
+// Mixin: Responsive Font Size
+// ============================================
+
+@mixin responsive-font-size($mobile: $aps-font-size-base, $tablet: $aps-font-size-md, $desktop: $aps-font-size-lg) {
+	font-size: $mobile;
+	
+	@include tablet {
+		font-size: $tablet;
+	}
+	
+	@include desktop {
+		font-size: $desktop;
+	}
+}
+
+// ============================================
+// Mixin: Heading Styles
+// ============================================
+
+@mixin heading($level: 1) {
+	font-weight: $aps-font-weight-semibold;
+	line-height: $aps-line-height-tight;
+	
+	@if $level == 1 {
+		font-size: 2.5rem; // 40px
+	} @else if $level == 2 {
+		font-size: 2rem;     // 32px
+	} @else if $level == 3 {
+		font-size: 1.75rem;  // 28px
+	} @else if $level == 4 {
+		font-size: 1.5rem;   // 24px
+	} @else if $level == 5 {
+		font-size: 1.25rem;  // 20px
+	} @else if $level == 6 {
+		font-size: 1.125rem; // 18px
+	} @else {
+		font-size: $aps-font-size-base;
+	}
+}
+
+// ============================================
+// Mixin: Body Text
+// ============================================
+
+@mixin body-text {
+	font-family: $aps-font-family-base;
+	font-size: $aps-font-size-base;
+	line-height: $aps-line-height-normal;
+	color: $aps-color-text-main;
+}
+
+// ============================================
+// Mixin: Muted Text
+// ============================================
+
+@mixin muted-text {
+	color: $aps-color-text-muted;
+}
+
+// ============================================
+// Mixin: Link Styles
+// ============================================
+
+@mixin link-text {
+	color: $aps-color-primary;
+	text-decoration: none;
+	transition: color $aps-transition-fast ease;
+	
+	&:hover {
+		color: $aps-color-primary-hover;
+		text-decoration: underline;
+	}
+	
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-radius: $aps-radius-sm;
+	}
+}
+
+// ============================================
+// Mixin: Code/Preformatted Text
+// ============================================
+
+@mixin code-text {
+	font-family: $aps-font-family-mono;
+	font-size: 0.875rem; // 14px
+	line-height: $aps-line-height-relaxed;
+	background: $aps-color-bg-light;
+	padding: $aps-spacing-1 $aps-spacing-2;
+	border-radius: $aps-radius-sm;
+}
+
+// ============================================
+// Mixin: Text Alignment
+// ============================================
+
+@mixin text-center {
+	text-align: center;
+}
+
+@mixin text-left {
+	text-align: left;
+}
+
+@mixin text-right {
+	text-align: right;
+}
+
+// ============================================
+// Mixin: Text Transform
+// ============================================
+
+@mixin text-uppercase {
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+@mixin text-capitalize {
+	text-transform: capitalize;
+}
+
+// ============================================
+// Mixin: Font Weight
+// ============================================
+
+@mixin font-light {
+	font-weight: $aps-font-weight-light;
+}
+
+@mixin font-normal {
+	font-weight: $aps-font-weight-normal;
+}
+
+@mixin font-medium {
+	font-weight: $aps-font-weight-medium;
+}
+
+@mixin font-semibold {
+	font-weight: $aps-font-weight-semibold;
+}
+
+@mixin font-bold {
+	font-weight: $aps-font-weight-bold;
+}

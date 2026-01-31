@@ -1,0 +1,141 @@
+/**
+ * Affiliate Product Showcase - Main SCSS Entry Point
+ *
+ * Modular SCSS architecture with BEM methodology.
+ * All styles are organized by component and feature.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+// ============================================
+// Import Variables
+// ============================================
+
+@use 'variables' as *;
+
+// ============================================
+// Import Mixins
+// ============================================
+
+@use 'mixins/breakpoints';
+@use 'mixins/focus';
+@use 'mixins/typography';
+
+// ============================================
+// Import Components
+// ============================================
+
+@use 'components/card';
+@use 'components/buttons';
+@use 'components/forms';
+@use 'components/badges';
+@use 'components/tables';
+@use 'components/modals';
+@use 'components/toasts';
+
+// ============================================
+// Import Layouts
+// ============================================
+
+@use 'layouts/container';
+@use 'layouts/grid';
+@use 'layouts/flex';
+
+// ============================================
+// Import Pages
+// ============================================
+
+@use 'pages/admin';
+@use 'pages/products';
+@use 'pages/settings';
+
+// ============================================
+// Import Utilities
+// ============================================
+
+@use 'utilities/spacing';
+@use 'utilities/colors';
+@use 'utilities/text';
+@use 'utilities/accessibility';
+
+// ============================================
+// Base Styles
+// ============================================
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-ms-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: $aps-font-family-base;
+	font-size: $aps-font-size-base;
+	line-height: $aps-line-height-normal;
+	color: $aps-color-text-main;
+	background-color: $aps-color-bg-light;
+}
+
+// ============================================
+// Reset
+// ============================================
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+button {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	cursor: pointer;
+}
+
+input,
+textarea,
+select {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+// ============================================
+// Accessibility
+// ============================================
+// NOTE: .aps-skip-link and .aps-sr-only moved to utilities/_accessibility.scss
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	* {
+		background: transparent !important;
+		color: #000 !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+
+	a[href]:after {
+		content: " (" attr(href) ")";
+	}
+
+	img {
+		page-break-inside: avoid;
+	}
+}

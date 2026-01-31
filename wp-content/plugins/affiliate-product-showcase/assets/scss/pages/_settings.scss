@@ -1,0 +1,92 @@
+/**
+ * Settings Page Styles (BEM)
+ *
+ * Styles for settings pages.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Block: Settings Page
+// ============================================
+
+.aps-settings {
+	&__header {
+		margin-bottom: $aps-spacing-5;
+	}
+
+	&__title {
+		margin: 0 0 $aps-spacing-2 0;
+		font-size: $aps-font-size-xl;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	&__description {
+		margin: 0;
+		font-size: $aps-font-size-base;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-secondary;
+	}
+
+	&__tabs {
+		display: flex;
+		gap: $aps-spacing-2;
+		margin-bottom: $aps-spacing-5;
+		border-bottom: 1px solid $aps-color-border-light;
+	}
+
+	&__tab {
+		padding: $aps-spacing-2 $aps-spacing-4;
+		background: transparent;
+		border: none;
+		border-bottom: 2px solid transparent;
+		color: $aps-color-secondary;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-medium;
+		cursor: pointer;
+		transition: all $aps-transition-base ease;
+
+		&:hover {
+			color: $aps-color-primary;
+		}
+
+		&--active {
+			color: $aps-color-primary;
+			border-bottom-color: $aps-color-primary;
+		}
+	}
+
+	&__content {
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-sm;
+		box-shadow: $aps-shadow-sm;
+		padding: $aps-spacing-5;
+	}
+
+	&__section {
+		margin-bottom: $aps-spacing-6;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__section-title {
+		margin: 0 0 $aps-spacing-3 0;
+		font-size: $aps-font-size-md;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	&__section-description {
+		margin: 0 0 $aps-spacing-4 0;
+		font-size: $aps-font-size-sm;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-secondary;
+	}
+}

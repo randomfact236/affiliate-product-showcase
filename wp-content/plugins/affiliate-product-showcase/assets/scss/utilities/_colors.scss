@@ -1,0 +1,131 @@
+/**
+ * Color Utilities (BEM)
+ *
+ * Utility classes for colors.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Text Color Utilities
+// ============================================
+
+.aps-text {
+	&-primary { color: $aps-color-primary; }
+	&-primary-hover { color: $aps-color-primary-hover; }
+	&-primary-dark { color: $aps-color-primary-dark; }
+
+	&-secondary { color: $aps-color-secondary; }
+	&-secondary-light { color: $aps-color-secondary-light; }
+
+	&-success { color: $aps-color-success; }
+	&-success-light { color: $aps-color-success-light; }
+	&-success-text { color: $aps-color-success-text; }
+
+	&-warning { color: $aps-color-warning; }
+	&-warning-light { color: $aps-color-warning-light; }
+	&-warning-text { color: $aps-color-warning-text; }
+
+	&-danger { color: $aps-color-danger; }
+	&-danger-light { color: $aps-color-danger-light; }
+	&-danger-text { color: $aps-color-danger-text; }
+
+	&-info { color: $aps-color-info; }
+	&-info-light { color: $aps-color-info-light; }
+	&-info-text { color: $aps-color-info-text; }
+
+	&-main { color: $aps-color-text-main; }
+	&-muted { color: $aps-color-text-muted; }
+	&-light { color: $aps-color-text-light; }
+
+	&-white { color: #ffffff; }
+	&-black { color: #000000; }
+}
+
+// ============================================
+// Background Color Utilities
+// ============================================
+
+.aps-bg {
+	&-primary { background-color: $aps-color-primary; }
+	&-primary-hover { background-color: $aps-color-primary-hover; }
+	&-primary-dark { background-color: $aps-color-primary-dark; }
+
+	&-secondary { background-color: $aps-color-secondary; }
+	&-secondary-light { background-color: $aps-color-secondary-light; }
+
+	&-success { background-color: $aps-color-success; }
+	&-success-light { background-color: $aps-color-success-light; }
+
+	&-warning { background-color: $aps-color-warning; }
+	&-warning-light { background-color: $aps-color-warning-light; }
+
+	&-danger { background-color: $aps-color-danger; }
+	&-danger-light { background-color: $aps-color-danger-light; }
+
+	&-info { background-color: $aps-color-info; }
+	&-info-light { background-color: $aps-color-info-light; }
+
+	&-light { background-color: $aps-color-bg-light; }
+	&-card { background-color: $aps-color-bg-card; }
+	&-hover { background-color: $aps-color-bg-hover; }
+	&-input { background-color: $aps-color-bg-input; }
+
+	&-white { background-color: #ffffff; }
+	&-black { background-color: #000000; }
+	&-transparent { background-color: transparent; }
+}
+
+// ============================================
+// Border Color Utilities
+// ============================================
+
+.aps-border {
+	&-primary { border-color: $aps-color-primary; }
+	&-primary-hover { border-color: $aps-color-primary-hover; }
+	&-primary-dark { border-color: $aps-color-primary-dark; }
+
+	&-secondary { border-color: $aps-color-secondary; }
+	&-secondary-light { border-color: $aps-color-secondary-light; }
+
+	&-success { border-color: $aps-color-success; }
+	&-success-light { border-color: $aps-color-success-light; }
+
+	&-warning { border-color: $aps-color-warning; }
+	&-warning-light { border-color: $aps-color-warning-light; }
+
+	&-danger { border-color: $aps-color-danger; }
+	&-danger-light { border-color: $aps-color-danger-light; }
+
+	&-info { border-color: $aps-color-info; }
+	&-info-light { border-color: $aps-color-info-light; }
+
+	&-light { border-color: $aps-color-border-light; }
+	&-dark { border-color: $aps-color-border-dark; }
+
+	&-white { border-color: #ffffff; }
+	&-black { border-color: #000000; }
+}
+
+// ============================================
+// Ribbon Colors
+// ============================================
+
+.aps-ribbon {
+	&-default { background-color: $aps-color-ribbon; }
+	&-green { background-color: $aps-color-ribbon-green; }
+	&-blue { background-color: $aps-color-ribbon-blue; }
+	&-orange { background-color: $aps-color-ribbon-orange; }
+}
+
+// ============================================
+// Featured Star Color
+// ============================================
+
+.aps-star {
+	&-color { color: $aps-color-star; }
+	&-bg { background-color: $aps-color-star; }
+}
