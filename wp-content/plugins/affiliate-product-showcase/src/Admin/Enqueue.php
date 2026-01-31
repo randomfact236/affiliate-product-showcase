@@ -64,7 +64,7 @@ class Enqueue {
             // Products table CSS for custom columns (Logo, Ribbon, Status, etc.)
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
                 [],
                 self::VERSION
             );
@@ -86,7 +86,7 @@ class Enqueue {
         // Form styles (WooCommerce-style product form)
         wp_enqueue_style(
             'affiliate-product-showcase-form',
-            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-form.css' ),
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
             [],
             self::VERSION
         );
@@ -128,7 +128,7 @@ class Enqueue {
         if ( $hook === 'aps_product_page_aps-products' ) {
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-products.css' ),
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
                 [],
                 self::VERSION
             );

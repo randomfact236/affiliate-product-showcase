@@ -188,7 +188,7 @@ class Menu {
 		
 		// Add other custom columns
 		// Note: Ribbon uses WordPress native taxonomy column (taxonomy-aps_ribbon)
-		// Custom styling applied via CSS in admin-products.css
+		// Custom styling applied via CSS in affiliate-product-showcase.css
 		$columns['price'] = __('Price', 'affiliate-product-showcase');
 		$columns['featured'] = __('Featured', 'affiliate-product-showcase');
 		$columns['status'] = __('Status', 'affiliate-product-showcase');
@@ -468,8 +468,8 @@ class Menu {
         // Enqueue admin add product styles
         wp_enqueue_style(
             'aps-admin-add-product',
-            plugins_url( 'assets/css/admin-add-product.css', APS_PLUGIN_FILE ),
-            ['aps-admin-products'],
+            plugins_url( 'assets/css/affiliate-product-showcase.css', APS_PLUGIN_FILE ),
+            [],
             defined( 'APS_VERSION' ) ? APS_VERSION : '1.0.0'
         );
         
