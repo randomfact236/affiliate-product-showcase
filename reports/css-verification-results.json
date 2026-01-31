@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-01-31T15:18:05.036368",
+  "plugin_path": "wp-content\\plugins\\affiliate-product-showcase",
+  "file_counts": {
+    "total_css_files": 16,
+    "css_files_list": [
+      "assets\\css\\admin-add-product.css",
+      "assets\\css\\admin-aps_category.css",
+      "assets\\css\\admin-form.css",
+      "assets\\css\\admin-products.css",
+      "assets\\css\\admin-ribbon.css",
+      "assets\\css\\admin-table-filters.css",
+      "assets\\css\\admin-tag.css",
+      "assets\\css\\admin.css",
+      "assets\\css\\affiliate-product-showcase.css",
+      "assets\\css\\analytics.css",
+      "assets\\css\\dashboard.css",
+      "assets\\css\\product-card.css",
+      "assets\\css\\settings.css",
+      "assets\\css\\test-output.css",
+      "resources\\css\\app.css",
+      "frontend\\styles\\tailwind.css"
+    ]
+  },
+  "line_counts": {
+    "assets/css/admin-products.css": 818,
+    "assets/css/admin-add-product.css": 646,
+    "assets/css/admin-tag.css": 625,
+    "assets/css/product-card.css": 454,
+    "assets/css/admin-form.css": 306,
+    "assets/css/admin-ribbon.css": 300,
+    "assets/css/settings.css": 178,
+    "assets/css/admin-table-filters.css": 102,
+    "assets/css/admin-aps_category.css": 97
+  },
+  "important_counts": {
+    "assets/css/admin-products.css": 6,
+    "assets/css/admin-add-product.css": 5,
+    "assets/css/admin-table-filters.css": 1,
+    "total": 12
+  },
+  "media_query_counts": {
+    "assets/css/admin-products.css": 5,
+    "assets/css/admin-add-product.css": 3,
+    "assets/css/admin-tag.css": 7,
+    "assets/css/admin-ribbon.css": 4
+  },
+  "css_variable_counts": {
+    "assets/css/admin-add-product.css": {
+      "count": 10,
+      "variables": [
+        "--aps-color-bg-card",
+        "--aps-color-bg-hover",
+        "--aps-color-bg-light",
+        "--aps-color-border",
+        "--aps-color-danger",
+        "--aps-color-primary",
+        "--aps-color-primary-hover",
+        "--aps-color-success",
+        "--aps-color-text-main",
+        "--aps-color-text-muted"
+      ]
+    },
+    "assets/css/admin-products.css": {
+      "count": 10,
+      "variables": [
+        "--aps-color-bg-card",
+        "--aps-color-bg-hover",
+        "--aps-color-bg-light",
+        "--aps-color-border",
+        "--aps-color-danger",
+        "--aps-color-primary",
+        "--aps-color-primary-hover",
+        "--aps-color-success",
+        "--aps-color-text-main",
+        "--aps-color-text-muted"
+      ]
+    }
+  },
+  "file_existence": {
+    "assets/css/public.css": false,
+    "assets/css/grid.css": false,
+    "assets/css/responsive.css": false
+  },
+  "scss_compilation": {
+    "mobile-only_mixin_exists": true,
+    "toasts_imports_breakpoints": true,
+    "modals_imports_breakpoints": true
+  }
+}
