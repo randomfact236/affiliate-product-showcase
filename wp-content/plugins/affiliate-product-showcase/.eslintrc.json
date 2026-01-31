@@ -4,6 +4,15 @@
     "es6": true,
     "node": true
   },
+  "globals": {
+    "$": "readonly",
+    "jQuery": "readonly",
+    "wp": "readonly",
+    "ajaxurl": "readonly",
+    "apsAddProductData": "readonly",
+    "apsProductsData": "readonly",
+    "aps_admin_vars": "readonly"
+  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",

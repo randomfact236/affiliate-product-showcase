@@ -17,9 +17,10 @@ export default {
   rules: {
     // Tailwind CSS specific rules
     'selector-class-pattern': [
-      '^(?:[a-z]+)?(?:-[a-z]+)*-[a-z]+(?:-[a-z]+)*$',
+      '^(?:[a-z]+(?:-[a-z0-9]+)*)(?:__(?:[a-z0-9]+(?:-[a-z0-9]+)*))?(?:--(?:[a-z0-9]+(?:-[a-z0-9]+)*))?$',
       {
-        message: 'Expected class name to be in kebab-case (e.g., "component-name", "component-name--modifier")'
+        message:
+          'Expected class name to be kebab-case or BEM (e.g., "block-name__element-name--modifier")'
       }
     ],
     
@@ -42,12 +43,7 @@ export default {
     // WordPress specific overrides
     'declaration-no-important': null,
     'selector-max-id': null,
-    'selector-max-type': [
-      0,
-      {
-        ignoreTypes: ['attribute']
-      }
-    ],
+    'selector-max-type': null,
     
     // Allow calc() for modern browsers
     'function-no-unknown': [

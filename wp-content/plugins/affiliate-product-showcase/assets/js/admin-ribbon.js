@@ -1,5 +1,3 @@
-/* global jQuery, aps_admin_vars, ajaxurl */
-
 (function ($) {
 	'use strict';
 
@@ -64,7 +62,6 @@
 		var $bgColorPicker = $('#aps_ribbon_bg_color');
 		var $bgColorText = $('#aps_ribbon_bg_color_text');
 		var $presetButtons = $('.preset-color');
-		var $preview = $('#ribbon-preview');
 		
 		// Update preview on text color change
 		$colorInput.on('input', function() {
@@ -113,11 +110,11 @@
 		var $bgColorInput = $('#aps_ribbon_bg_color');
 		var $preview = $('#ribbon-preview');
 		
-		var textColor = $colorInput.val() || '#ff6b6b';
 		var bgColor = $bgColorInput.val() || '#ff0000';
 		
 		// Calculate text contrast based on background brightness
 		var textColorAuto = calculateContrastColor(bgColor);
+		var textColor = $colorInput.val() || textColorAuto;
 		
 		// Apply styles to preview
 		$preview.css({
@@ -145,7 +142,7 @@
 		var luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 		
 		// Return black or white based on luminance
-		return luminance > 128 ? '#000000' : '#ffffff';
+		return luminance > 0.5 ? '#000000' : '#ffffff';
 	}
 
 	$(function () {

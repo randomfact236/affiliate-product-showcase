@@ -1,0 +1,21 @@
+/* Error: Undefined mixin.
+ *     ,
+ * 114 | /     @include mobile-only {
+ * 115 | |         left: $aps-spacing-3;
+ * 116 | |         right: $aps-spacing-3;
+ * 117 | |         max-width: calc(100% - #{$aps-spacing-6} * 2);
+ * 118 | \     }
+ *     '
+ *   components\_toasts.scss 114:2  @use
+ *   main.scss 35:1                 root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined mixin.\a     \2577 \a 114 \2502  \250c      @include mobile-only {\a 115 \2502  \2502          left: $aps-spacing-3;\a 116 \2502  \2502          right: $aps-spacing-3;\a 117 \2502  \2502          max-width: calc(100% - #{$aps-spacing-6} * 2);\a 118 \2502  \2514      }\a     \2575 \a   components\\_toasts.scss 114:2  @use\a   main.scss 35:1                 root stylesheet";
+}

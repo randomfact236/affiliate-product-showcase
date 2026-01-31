@@ -115,8 +115,8 @@ final class ProductRepository extends AbstractRepository {
 
 		try {
 			$product = $this->factory->from_post( $post );
-			// Cache for 1 hour
-			wp_cache_set( $cache_key, $product, 'aps_products', HOUR_IN_SECONDS );
+			// Cache for 5 minutes (consistent with requirement)
+			wp_cache_set( $cache_key, $product, 'aps_products', 5 * MINUTE_IN_SECONDS );
 			return $product;
 		} catch ( \Exception $e ) {
 			throw RepositoryException::queryError(__( 'Product', 'affiliate-product-showcase' ), $e->getMessage(), 0, $e);
@@ -176,6 +176,7 @@ final class ProductRepository extends AbstractRepository {
 	 * Fetch all meta data for given post IDs (N+1 query prevention)
 	 *
 	 * Pre-fetches all meta data to prevent N+1 query problem.
+	 * Uses direct SQL query for bulk retrieval.
 	 *
 	 * @param array<int, int> $post_ids Array of post IDs
 	 * @return array<int, array<string, mixed>> Meta data indexed by post ID
@@ -184,10 +185,32 @@ final class ProductRepository extends AbstractRepository {
 	private function fetchAllMeta( array $post_ids ): array {
 		$all_meta = [];
 		
-		if ( ! empty( $post_ids ) ) {
-			foreach ( $post_ids as $post_id ) {
-				$all_meta[ $post_id ] = get_post_meta( $post_id );
+		if ( empty( $post_ids ) ) {
+			return $all_meta;
+		}
+		
+		global $wpdb;
+		
+		// Prepare placeholders for IN clause
+		$placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
+		
+		// Bulk fetch all meta data in single query
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_id, meta_key, meta_value
+				 FROM {$wpdb->postmeta}
+				 WHERE post_id IN ($placeholders)",
+				...$post_ids
+			),
+			ARRAY_A
+		);
+		
+		// Organize results by post ID and meta key
+		foreach ( $results as $row ) {
+			if ( ! isset( $all_meta[ $row->post_id ] ) ) {
+				$all_meta[ $row->post_id ] = [];
 			}
+			$all_meta[ $row->post_id ][ $row->meta_key ] = $row->meta_value;
 		}
 		
 		return $all_meta;

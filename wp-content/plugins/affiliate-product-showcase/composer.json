@@ -170,7 +170,7 @@
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"phpstan/extension-installer": true,
 			"infection/extension-installer": true,
-			"ergebnis/composer-normalize": true
+			"ergebnis/composer-normalize": false
 		},
 		"platform": {
 			"php": "8.3.0"

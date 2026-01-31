@@ -41,6 +41,10 @@ class Headers {
 	 * - X-XSS-Protection: Enables browser XSS filters
 	 * - Referrer-Policy: Controls referrer information leakage
 	 * - Permissions-Policy: Restricts browser features
+	 * - Strict-Transport-Security: Enforces HTTPS
+	 * - Expect-CT: Prevents MIME confusion attacks
+	 * - Cross-Origin-Opener-Policy: Controls cross-origin behavior
+	 * - Cross-Origin-Resource-Policy: Controls resource loading
 	 *
 	 * @param array $headers Existing HTTP headers
 	 * @return array Modified headers with security additions
@@ -56,6 +60,36 @@ class Headers {
 
 		// Add headers to REST API endpoints
 		$headers = $this->add_rest_headers( $headers );
+
+		// Add global security headers
+		$headers = $this->add_global_security_headers( $headers );
+
+		return $headers;
+	}
+
+	/**
+	 * Add global security headers
+	 *
+	 * Adds security headers that apply to all requests.
+	 *
+	 * @param array $headers Existing HTTP headers
+	 * @return array Headers with global security additions
+	 * @since 1.0.0
+	 */
+	private function add_global_security_headers( array $headers ): array {
+		// Strict-Transport-Security (HSTS) - only on HTTPS
+		if ( is_ssl() ) {
+			$headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
+		}
+
+		// Expect-CT - prevent MIME confusion attacks
+		$headers['Expect-CT'] = 'enforce';
+
+		// Cross-Origin-Opener-Policy - control window.opener access
+		$headers['Cross-Origin-Opener-Policy'] = 'same-origin';
+
+		// Cross-Origin-Resource-Policy - control resource loading
+		$headers['Cross-Origin-Resource-Policy'] = "same-origin";
 
 		return $headers;
 	}

@@ -9,7 +9,6 @@
     'use strict';
 
     $(document).ready(function() {
-        console.log('Dashboard JS loaded');
     });
 
 })(jQuery);

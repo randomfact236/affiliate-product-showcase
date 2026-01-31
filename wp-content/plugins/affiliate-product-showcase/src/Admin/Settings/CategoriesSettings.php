@@ -15,7 +15,48 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	
 	const SECTION_ID = 'affiliate_product_showcase_categories';
 	const SECTION_TITLE = 'Category Settings';
-	
+
+    // Default Values Constants
+    const DEFAULT_CATEGORY_NONE = 0;
+    const DEFAULT_ENABLE_HIERARCHY = true;
+    const DEFAULT_DISPLAY_STYLE = 'grid';
+    const DEFAULT_PRODUCTS_PER_PAGE = 12;
+    const DEFAULT_SORT = 'date';
+    const DEFAULT_SORT_ORDER = 'DESC';
+    const DEFAULT_SHOW_DESCRIPTION = true;
+    const DEFAULT_SHOW_IMAGE = true;
+    const DEFAULT_SHOW_COUNT = true;
+    const DEFAULT_ENABLE_FEATURED = false;
+    const DEFAULT_FEATURED_LIMIT = 4;
+    const DEFAULT_ENABLE_EMPTY_DISPLAY = false;
+
+    // Validation Limits/Options
+    const PRODUCTS_PER_PAGE_OPTIONS = [6, 12, 18, 24, 36, 48];
+    const FEATURED_PRODUCTS_LIMIT_OPTIONS = [1, 2, 3, 4, 6, 8];
+    const DISPLAY_STYLES = ['grid', 'list', 'compact'];
+    const SORT_OPTIONS = ['name', 'price', 'date', 'popularity', 'random'];
+    const SORT_ORDERS = ['ASC', 'DESC'];
+
+    // Label mappings for render methods
+    const DISPLAY_STYLE_LABELS = [
+        'grid' => 'Grid',
+        'list' => 'List',
+        'compact' => 'Compact',
+    ];
+
+    const SORT_OPTION_LABELS = [
+        'name' => 'Name',
+        'price' => 'Price',
+        'date' => 'Date',
+        'popularity' => 'Popularity',
+        'random' => 'Random',
+    ];
+
+    const SORT_ORDER_LABELS = [
+        'ASC' => 'Ascending',
+        'DESC' => 'Descending',
+    ];
+
 	/**
 	 * Get default values for this section
 	 *
@@ -23,18 +64,18 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function get_defaults(): array {
 		return [
-			'default_category' => 0,
-			'enable_category_hierarchy' => true,
-			'category_display_style' => 'grid',
-			'category_products_per_page' => 12,
-			'category_default_sort' => 'date',
-			'category_default_sort_order' => 'DESC',
-			'show_category_description' => true,
-			'show_category_image' => true,
-			'show_category_count' => true,
-			'enable_category_featured_products' => false,
-			'category_featured_products_limit' => 4,
-			'enable_empty_category_display' => false,
+			'default_category' => self::DEFAULT_CATEGORY_NONE,
+			'enable_category_hierarchy' => self::DEFAULT_ENABLE_HIERARCHY,
+			'category_display_style' => self::DEFAULT_DISPLAY_STYLE,
+			'category_products_per_page' => self::DEFAULT_PRODUCTS_PER_PAGE,
+			'category_default_sort' => self::DEFAULT_SORT,
+			'category_default_sort_order' => self::DEFAULT_SORT_ORDER,
+			'show_category_description' => self::DEFAULT_SHOW_DESCRIPTION,
+			'show_category_image' => self::DEFAULT_SHOW_IMAGE,
+			'show_category_count' => self::DEFAULT_SHOW_COUNT,
+			'enable_category_featured_products' => self::DEFAULT_ENABLE_FEATURED,
+			'category_featured_products_limit' => self::DEFAULT_FEATURED_LIMIT,
+			'enable_empty_category_display' => self::DEFAULT_ENABLE_EMPTY_DISPLAY,
 		];
 	}
 	
@@ -170,20 +211,37 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	public function sanitize_options(array $input): array {
 		$sanitized = [];
 		
-		$sanitized['default_category'] = intval($input['default_category'] ?? 0);
+		$sanitized['default_category'] = intval($input['default_category'] ?? self::DEFAULT_CATEGORY_NONE);
 		$sanitized['enable_category_hierarchy'] = isset($input['enable_category_hierarchy']);
-		$sanitized['category_display_style'] = in_array($input['category_display_style'] ?? 'grid', ['grid', 'list', 'compact']) ? $input['category_display_style'] : 'grid';
-		$sanitized['category_products_per_page'] = intval($input['category_products_per_page'] ?? 12);
-		$sanitized['category_products_per_page'] = max(6, min(48, $sanitized['category_products_per_page']));
-		$sanitized['category_default_sort'] = in_array($input['category_default_sort'] ?? 'date', ['name', 'price', 'date', 'popularity', 'random']) ? $input['category_default_sort'] : 'date';
-		$sanitized['category_default_sort_order'] = in_array($input['category_default_sort_order'] ?? 'DESC', ['ASC', 'DESC']) ? $input['category_default_sort_order'] : 'DESC';
+		
+        $sanitized['category_display_style'] = in_array($input['category_display_style'] ?? self::DEFAULT_DISPLAY_STYLE, self::DISPLAY_STYLES) 
+            ? $input['category_display_style'] 
+            : self::DEFAULT_DISPLAY_STYLE;
+            
+		$sanitized['category_products_per_page'] = intval($input['category_products_per_page'] ?? self::DEFAULT_PRODUCTS_PER_PAGE);
+		if (!in_array($sanitized['category_products_per_page'], self::PRODUCTS_PER_PAGE_OPTIONS, true)) {
+			$sanitized['category_products_per_page'] = self::DEFAULT_PRODUCTS_PER_PAGE;
+		}
+		
+        $sanitized['category_default_sort'] = in_array($input['category_default_sort'] ?? self::DEFAULT_SORT, self::SORT_OPTIONS) 
+            ? $input['category_default_sort'] 
+            : self::DEFAULT_SORT;
+            
+		$sanitized['category_default_sort_order'] = in_array($input['category_default_sort_order'] ?? self::DEFAULT_SORT_ORDER, self::SORT_ORDERS) 
+            ? $input['category_default_sort_order'] 
+            : self::DEFAULT_SORT_ORDER;
+            
 		$sanitized['show_category_description'] = isset($input['show_category_description']);
 		$sanitized['show_category_image'] = isset($input['show_category_image']);
 		$sanitized['show_category_count'] = isset($input['show_category_count']);
 		$sanitized['enable_category_featured_products'] = isset($input['enable_category_featured_products']);
-		$sanitized['category_featured_products_limit'] = intval($input['category_featured_products_limit'] ?? 4);
-		$sanitized['category_featured_products_limit'] = max(1, min(8, $sanitized['category_featured_products_limit']));
-		$sanitized['enable_empty_category_display'] = isset($input['enable_empty_category_display']);
+		
+        $sanitized['category_featured_products_limit'] = intval($input['category_featured_products_limit'] ?? self::DEFAULT_FEATURED_LIMIT);
+		if (!in_array($sanitized['category_featured_products_limit'], self::FEATURED_PRODUCTS_LIMIT_OPTIONS, true)) {
+			$sanitized['category_featured_products_limit'] = self::DEFAULT_FEATURED_LIMIT;
+		}
+		
+        $sanitized['enable_empty_category_display'] = isset($input['enable_empty_category_display']);
 		
 		return $sanitized;
 	}
@@ -206,8 +264,12 @@ final class CategoriesSettings extends AbstractSettingsSection {
 		$settings = $this->get_settings();
 		$categories = get_terms(['taxonomy' => 'aps_category', 'hide_empty' => false]);
 		
+        if (is_wp_error($categories)) {
+            $categories = [];
+        }
+
 		echo '<select name="' . esc_attr($this->option_name) . '[default_category]" id="default-category" aria-describedby="default-category-description">';
-		echo '<option value="0">' . esc_html__('None', 'affiliate-product-showcase') . '</option>';
+		echo '<option value="' . esc_attr(self::DEFAULT_CATEGORY_NONE) . '">' . esc_html__('None', 'affiliate-product-showcase') . '</option>';
 		
 		foreach ($categories as $category) {
 			$selected = selected($settings['default_category'], $category->term_id, false);
@@ -242,14 +304,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_category_display_style_field(): void {
 		$settings = $this->get_settings();
-		$styles = [
-			'grid' => __('Grid', 'affiliate-product-showcase'),
-			'list' => __('List', 'affiliate-product-showcase'),
-			'compact' => __('Compact', 'affiliate-product-showcase'),
-		];
 		
 		echo '<select name="' . esc_attr($this->option_name) . '[category_display_style]" id="category-display-style" aria-describedby="category-display-style-description">';
-		foreach ($styles as $value => $label) {
+		foreach (self::DISPLAY_STYLES as $value) {
+			$label = __(self::DISPLAY_STYLE_LABELS[$value], 'affiliate-product-showcase');
 			$selected = selected($settings['category_display_style'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
@@ -265,7 +323,7 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	public function render_category_products_per_page_field(): void {
 		$settings = $this->get_settings();
 		echo '<select name="' . esc_attr($this->option_name) . '[category_products_per_page]" id="category-products-per-page" aria-describedby="category-products-per-page-description">';
-		foreach ([6, 12, 18, 24, 36, 48] as $value) {
+		foreach (self::PRODUCTS_PER_PAGE_OPTIONS as $value) {
 			$selected = selected($settings['category_products_per_page'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($value) . '</option>';
 		}
@@ -280,16 +338,10 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_category_default_sort_field(): void {
 		$settings = $this->get_settings();
-		$options = [
-			'name' => __('Name', 'affiliate-product-showcase'),
-			'price' => __('Price', 'affiliate-product-showcase'),
-			'date' => __('Date', 'affiliate-product-showcase'),
-			'popularity' => __('Popularity', 'affiliate-product-showcase'),
-			'random' => __('Random', 'affiliate-product-showcase'),
-		];
 		
 		echo '<select name="' . esc_attr($this->option_name) . '[category_default_sort]" id="category-default-sort" aria-describedby="category-default-sort-description">';
-		foreach ($options as $value => $label) {
+		foreach (self::SORT_OPTIONS as $value) {
+			$label = __(self::SORT_OPTION_LABELS[$value], 'affiliate-product-showcase');
 			$selected = selected($settings['category_default_sort'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
 		}
@@ -304,12 +356,9 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	 */
 	public function render_category_default_sort_order_field(): void {
 		$settings = $this->get_settings();
-		$options = [
-			'ASC' => __('Ascending', 'affiliate-product-showcase'),
-			'DESC' => __('Descending', 'affiliate-product-showcase'),
-		];
 		
-		foreach ($options as $value => $label) {
+		foreach (self::SORT_ORDERS as $value) {
+			$label = __(self::SORT_ORDER_LABELS[$value], 'affiliate-product-showcase');
 			$checked = checked($settings['category_default_sort_order'], $value, false);
 			echo '<label>';
 			echo '<input type="radio" name="' . esc_attr($this->option_name) . '[category_default_sort_order]" value="' . esc_attr($value) . '" ' . $checked . ' aria-describedby="category-default-sort-order-description"> ';
@@ -387,7 +436,7 @@ final class CategoriesSettings extends AbstractSettingsSection {
 	public function render_category_featured_products_limit_field(): void {
 		$settings = $this->get_settings();
 		echo '<select name="' . esc_attr($this->option_name) . '[category_featured_products_limit]" id="category-featured-products-limit" aria-describedby="category-featured-products-limit-description">';
-		foreach ([1, 2, 3, 4, 6, 8] as $value) {
+		foreach (self::FEATURED_PRODUCTS_LIMIT_OPTIONS as $value) {
 			$selected = selected($settings['category_featured_products_limit'], $value, false);
 			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($value) . '</option>';
 		}

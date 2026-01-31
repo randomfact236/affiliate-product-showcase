@@ -2,18 +2,17 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import path from 'path';
 import type { Stats } from 'fs';
 
-// Mock console.log and console.error
-const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
 // Mock fsContext
-const mockFsContext = {
+const mockFsContext = vi.hoisted(() => ({
 	readdir: vi.fn(),
 	readFile: vi.fn(),
 	writeFile: vi.fn(),
 	stat: vi.fn(),
 	access: vi.fn(),
-};
+}));
 
 vi.mock('../../tools/compress', async () => {
 	const actual = await vi.importActual('../../tools/compress');
@@ -28,6 +27,9 @@ import { walk, shouldSkip, compressFile, main } from '../../tools/compress';
 
 describe('compress.ts', () => {
 	beforeEach(() => {
+		vi.restoreAllMocks();
+		consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+		consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 		vi.clearAllMocks();
 	});
 

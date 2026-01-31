@@ -10,10 +10,10 @@ return [
 'integrity' => 'sha384-z+V/uuSs+vqPg5T4IXTFrtxll/irBGKJaWmJgZCgimM5PF+tzuZ3h/uIFEVfVvbD'
 ],
 '../resources/css/app.css' => [
-'file' => 'css/component-library.DYd4Chnb.css',
+'file' => 'css/component-library.DbuLwADh.css',
 'src' => '../resources/css/app.css',
 'isEntry' => true,
-'integrity' => 'sha384-9VeHe/wFtzKq7gZJJgXUuZR9oTytcsyJ/yL05EwdamjAqMguUT/5zLoe5izkMIjF'
+'integrity' => 'sha384-enD1lTD3lFjm9avZkPOb47Kwj1q9T1VJ4FJ1AcMRkdVRm8CAq8wYtfR+FkO5F1Sg'
 ],
 '_vendor-common.B6sXpVHO.js' => [
 'file' => 'js/chunks/vendor-common.B6sXpVHO.js',
@@ -45,11 +45,11 @@ return [
 'integrity' => 'sha384-ft+g/LgIadT+o5x1Fue861CnSBlwnro7ewYGomJV7u9v3Qso35Q552ySwWlGUu/n'
 ],
 'js/frontend.ts' => [
-'file' => 'js/frontend.QjKyDFfD.js',
+'file' => 'js/frontend.DIYJQbdS.js',
 'name' => 'frontend',
 'src' => 'js/frontend.ts',
 'isEntry' => true,
-'css' => ['css/frontend-styles.CqLDdCTQ.css'],
+'css' => ['css/frontend-styles.CjRJLvaa.css'],
 'integrity' => 'sha384-klGCcku44ZIGvshYkad2lBhrbhvZcRQv4lQTd3SJMzJtkT8qu4p+TgARu1RG2ETE'
 ],
 'styles/admin.scss' => [
@@ -65,9 +65,9 @@ return [
 'integrity' => 'sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb'
 ],
 'styles/frontend.scss' => [
-'file' => 'css/frontend-styles.CqLDdCTQ.css',
+'file' => 'css/frontend-styles.CjRJLvaa.css',
 'src' => 'styles/frontend.scss',
 'isEntry' => true,
-'integrity' => 'sha384-aIzNxjD+TygYqi3Fl2oLO1Etx6GaphLklTBbrlSfiKShnB5Tkyi1j+FKcgJ7SWg7'
+'integrity' => 'sha384-YPkWHFwpjFwyy3XQj80a5aFwpcowFRT0YrpdllUkSY/oHJffl4yRWR7LBbRodDcr'
 ]
 ];

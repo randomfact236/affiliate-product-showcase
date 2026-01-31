@@ -92,7 +92,20 @@ class ProductFormHandler {
 		$is_update = isset( $_POST['post_id'] ) && ! empty( $_POST['post_id'] );
 		
 		if ( $is_update ) {
-			$data['post_id'] = (int) $_POST['post_id'];
+			$post_id = (int) $_POST['post_id'];
+			
+			// Security: Verify user has permission to edit this specific product
+			$post = get_post( $post_id );
+			if ( ! $post || $post->post_type !== 'aps_product' ) {
+				wp_die( esc_html__( 'Invalid product ID.', 'affiliate-product-showcase' ) );
+			}
+			
+			// Security: Check if user is the author or has admin privileges
+			if ( ! current_user_can( 'manage_options' ) && $post->post_author !== get_current_user_id() ) {
+				wp_die( esc_html__( 'You do not have permission to edit this product.', 'affiliate-product-showcase' ) );
+			}
+			
+			$data['post_id'] = $post_id;
 			$product = $this->update_product( $data );
 			$message = 2; // Updated
 		} else {
@@ -522,6 +535,11 @@ class ProductFormHandler {
 	 * @return void
 	 */
 	private function set_featured_image_from_url( int $post_id, string $image_url ): void {
+		// Validate URL before processing
+		if ( ! filter_var( $image_url, FILTER_VALIDATE_URL ) ) {
+			return;
+		}
+
 		// Check if image is already in media library
 		$existing_attachment = $this->get_attachment_by_url( $image_url );
 		if ( $existing_attachment ) {
@@ -539,8 +557,45 @@ class ProductFormHandler {
 			return;
 		}
 
+		// Validate filename
+		$filename = basename( parse_url( $image_url, PHP_URL_PATH ) );
+		
+		// Security: Validate file extension against allowlist
+		$allowed_extensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg' ];
+		$file_extension = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+		
+		if ( ! in_array( $file_extension, $allowed_extensions, true ) ) {
+			@unlink( $tmp );
+			return;
+		}
+
+		// Security: Validate file size (max 5MB)
+		$max_file_size = 5 * 1024 * 1024; // 5MB in bytes
+		if ( filesize( $tmp ) > $max_file_size ) {
+			@unlink( $tmp );
+			return;
+		}
+
+		// Security: Validate MIME type
+		$finfo = finfo_open( FILEINFO_MIME_TYPE );
+		$mime_type = finfo_file( $finfo, $tmp );
+		finfo_close( $finfo );
+		
+		$allowed_mime_types = [
+			'image/jpeg',
+			'image/png',
+			'image/gif',
+			'image/webp',
+			'image/svg+xml',
+		];
+		
+		if ( ! in_array( $mime_type, $allowed_mime_types, true ) ) {
+			@unlink( $tmp );
+			return;
+		}
+
 		$file_array = [
-			'name'     => basename( parse_url( $image_url, PHP_URL_PATH ) ),
+			'name'     => $filename,
 			'tmp_name' => $tmp,
 		];
 
@@ -563,10 +618,13 @@ class ProductFormHandler {
 	private function get_attachment_by_url( string $url ): ?int {
 		global $wpdb;
 
+		$filename = basename( parse_url( $url, PHP_URL_PATH ) );
+		$escaped_filename = $wpdb->esc_like( $filename );
+
 		$attachment_id = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_wp_attached_file' AND meta_value LIKE %s",
-				'%' . basename( parse_url( $url, PHP_URL_PATH ) ) . '%'
+				'%' . $escaped_filename . '%'
 			)
 		);
 

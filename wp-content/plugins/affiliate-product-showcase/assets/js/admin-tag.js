@@ -1,5 +1,3 @@
-/* global jQuery, aps_admin_vars, ajaxurl */
-
 (function ($) {
 	'use strict';
 

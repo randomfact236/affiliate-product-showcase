@@ -16,8 +16,6 @@ export default function ProductModal({ product, onClose }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(document.activeElement as HTMLElement);
 
-  if (!product) return null;
-
   const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
       onClose?.();
@@ -25,6 +23,9 @@ export default function ProductModal({ product, onClose }: Props) {
   };
 
   useEffect(() => {
+    if (!product) return;
+    const trigger = triggerRef.current;
+
     // Focus modal when opened
     const focusableElements = modalRef.current?.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -54,9 +55,11 @@ export default function ProductModal({ product, onClose }: Props) {
     return () => {
       document.removeEventListener('keydown', handleTab);
       // Return focus to trigger
-      triggerRef.current?.focus();
+      trigger?.focus();
     };
   }, [product]);
+
+  if (!product) return null;
 
   return (
     <div 

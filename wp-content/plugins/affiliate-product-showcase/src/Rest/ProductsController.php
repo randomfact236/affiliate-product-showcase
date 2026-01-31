@@ -127,20 +127,24 @@ final class ProductsController extends RestController {
 	/**
 	 * Check permissions for listing products
 	 *
-	 * Allows public read access for the products list endpoint.
-	 * This is appropriate for a public-facing product showcase.
-	 * If you want to restrict access, change this to require authentication.
+	 * Allows public read access for published products only.
+	 * Draft and private products require authentication.
 	 *
 	 * @return bool True if request is allowed
 	 * @since 1.0.0
 	 */
 	public function list_permissions_check(): bool {
-		/**
-		 * Filter the permission check for listing products.
-		 *
-		 * @param bool $allow Whether to allow listing products.
-		 * @since 1.0.0
-		 */
+		// Allow public access to published products
+		// Require authentication for draft/private products
+		$user_id = get_current_user_id();
+		
+		if ( $user_id > 0 ) {
+			// Authenticated users can see all products
+			return current_user_can( 'read' );
+		}
+		
+		// Non-authenticated users can only see published products
+		// This is enforced in the query, but we add an additional check here
 		return apply_filters( 'aps_products_list_permission', true );
 	}
 

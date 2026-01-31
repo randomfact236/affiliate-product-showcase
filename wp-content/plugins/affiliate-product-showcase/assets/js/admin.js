@@ -11,7 +11,6 @@
     // Placeholder - Main admin functionality
     $(document).ready(function() {
         // Admin JS functionality goes here
-        console.log('Affiliate Product Showcase Admin JS loaded');
     });
 
 })(jQuery);

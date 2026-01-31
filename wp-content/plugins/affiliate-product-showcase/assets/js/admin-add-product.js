@@ -149,18 +149,16 @@
 		}
 
 		bindEvents() {
-			const self = this;
-
 			// Dropdown item click
-			$(document).on('click', `#${this.config.dropdownId} ${this.config.itemSelector}`, function() {
-				const value = $(this).data('value');
-				self.addItem(value);
+			$(document).on('click', `#${this.config.dropdownId} ${this.config.itemSelector}`, (e) => {
+				const value = $(e.currentTarget).data('value');
+				this.addItem(value);
 			});
 
 			// Remove tag click
-			$(document).on('click', `#${this.config.selectedContainerId} .remove-tag`, function() {
-				const index = $(this).data('index');
-				self.removeItem(index);
+			$(document).on('click', `#${this.config.selectedContainerId} .remove-tag`, (e) => {
+				const index = $(e.currentTarget).data('index');
+				this.removeItem(index);
 			});
 		}
 
@@ -230,9 +228,6 @@
 	// Document Ready Handler
 	// ============================================
 	$(document).ready(function() {
-		console.log('Product Data:', apsAddProductData.productData);
-		console.log('Is Editing:', apsAddProductData.isEditing);
-
 		// ============================================
 		// Quick Navigation
 		// ============================================
@@ -385,13 +380,17 @@
 			switch(e.key) {
 				case 'ArrowDown':
 					e.preventDefault();
-					const nextIndex = Math.min(currentIndex + 1, items.length - 1);
-					items.removeClass('focused').eq(nextIndex).addClass('focused');
+					{
+						const nextIndex = Math.min(currentIndex + 1, items.length - 1);
+						items.removeClass('focused').eq(nextIndex).addClass('focused');
+					}
 					break;
 				case 'ArrowUp':
 					e.preventDefault();
-					const prevIndex = Math.max(currentIndex - 1, 0);
-					items.removeClass('focused').eq(prevIndex).addClass('focused');
+					{
+						const prevIndex = Math.max(currentIndex - 1, 0);
+						items.removeClass('focused').eq(prevIndex).addClass('focused');
+					}
 					break;
 				case 'Enter':
 				case ' ':

@@ -12,8 +12,6 @@
  * @since 1.2.0
  */
 
-/* global ajaxurl, aps_admin_vars */
-
 /**
  * Get AJAX URL for category operations
  *

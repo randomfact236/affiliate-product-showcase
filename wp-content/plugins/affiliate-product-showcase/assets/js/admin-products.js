@@ -268,7 +268,7 @@
     /**
      * Handle checkbox change
      */
-    function handleCheckboxChange(e) {
+    function handleCheckboxChange() {
         updateSelectedProducts();
         
         // Update select all checkbox state

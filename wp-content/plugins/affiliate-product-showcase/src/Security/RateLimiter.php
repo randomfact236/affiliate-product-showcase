@@ -24,14 +24,14 @@ final class RateLimiter {
 	private const OPTION_KEY = 'aps_rate_limit_settings';
 	
 	/**
-	 * @var int Default rate limit (requests per hour)
+	 * @var int Default rate limit (requests per minute)
 	 */
 	private const DEFAULT_LIMIT = 100;
 	
 	/**
 	 * @var int Rate limit window in seconds
 	 */
-	private const WINDOW = 3600; // 1 hour
+	private const WINDOW = 60; // 1 minute
 
 	/**
 	 * Check if request is allowed.
@@ -165,10 +165,17 @@ final class RateLimiter {
 	 * @return array Headers for rate limiting
 	 */
 	public function get_headers( string $endpoint, int $limit = self::DEFAULT_LIMIT ): array {
-		return [
+		$headers = [
 			'X-RateLimit-Limit'     => (string) $limit,
 			'X-RateLimit-Remaining' => (string) $this->get_remaining( $endpoint, $limit ),
 			'X-RateLimit-Reset'     => (string) $this->get_reset_time( $endpoint ),
 		];
+		
+		// Add Retry-After header when rate limited
+		if ( $this->get_remaining( $endpoint, $limit ) === 0 ) {
+			$headers['Retry-After'] = (string) self::WINDOW;
+		}
+		
+		return $headers;
 	}
 }
