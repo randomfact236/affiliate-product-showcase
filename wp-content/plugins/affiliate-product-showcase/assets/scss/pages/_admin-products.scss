@@ -1,0 +1,778 @@
+/**
+ * Admin Products Page Styles (BEM)
+ *
+ * Styles for admin products listing page.
+ * Converted from admin-products.css (818 lines)
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Products Page
+// ============================================
+
+.aps-products-page {
+	position: relative;
+}
+
+// ============================================
+// Block: Navigation Tabs
+// ============================================
+
+.nav-tab-wrapper {
+	display: block;
+	float: left;
+	margin-bottom: $aps-spacing-5;
+}
+
+.aps-nav-tabs {
+	margin: $aps-spacing-5 0 0;
+	line-height: inherit;
+
+	&__tab {
+		display: inline-block;
+		text-decoration: none;
+		font-size: $aps-font-size-sm;
+		line-height: 1.71428571;
+		margin: 0 5px -1px 0;
+		padding: 5px 10px;
+		border: 1px solid $aps-color-border;
+		border-bottom: none;
+		background: $aps-color-bg-hover;
+		color: $aps-color-text-muted;
+		border-radius: 3px 3px 0 0;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $aps-color-bg-card;
+			color: #2c3338;
+		}
+
+		&--active {
+			background: $aps-color-bg-card;
+			color: #2c3338;
+			border-bottom: 1px solid $aps-color-bg-card;
+			font-weight: $aps-font-weight-semibold;
+		}
+	}
+}
+
+// ============================================
+// Block: Products Table (WordPress List Table)
+// ============================================
+
+.wp-list-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	clear: both;
+	display: table;
+
+	// Header
+	thead th {
+		border-bottom: 1px solid $aps-color-border;
+		font-weight: $aps-font-weight-semibold;
+		text-align: left;
+		padding: $aps-spacing-2 10px;
+		font-size: $aps-font-size-sm;
+	}
+
+	// Body
+	tbody td {
+		padding: 9px 10px;
+		vertical-align: middle;
+		font-size: $aps-font-size-sm;
+		border-bottom: 1px solid $aps-color-border;
+		color: $aps-color-text-muted;
+		word-break: break-word;
+	}
+
+	// Row Styling
+	tr:nth-child(odd) {
+		background-color: $aps-color-bg-hover;
+	}
+
+	tr:nth-child(even) {
+		background-color: $aps-color-bg-card;
+	}
+
+	tr:hover td {
+		background-color: $aps-color-bg-light;
+	}
+
+	// Column Widths
+	&__column-cb {
+		width: 2.2em;
+		padding: 3px 0 0 10px !important;
+	}
+
+	&__column-id {
+		width: 50px;
+		text-align: center;
+	}
+
+	&__column-logo {
+		width: 60px;
+	}
+
+	&__column-title {
+		width: auto;
+	}
+
+	&__column-category {
+		width: auto;
+	}
+
+	&__column-tags {
+		width: auto;
+	}
+
+	&__column-taxonomy-aps_ribbon {
+		width: 120px;
+	}
+
+	&__column-featured {
+		width: 60px;
+		text-align: center;
+		font-size: $aps-font-size-lg;
+		color: $aps-color-star;
+	}
+
+	&__column-price {
+		width: 100px;
+	}
+
+	&__column-status {
+		width: 120px;
+	}
+}
+
+// ============================================
+// Block: Product Logo
+// ============================================
+
+.aps-product-logo {
+	display: block;
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: $aps-radius-sm;
+	border: 1px solid #eee;
+}
+
+.aps-no-logo {
+	color: #aaa;
+	font-size: $aps-font-size-base;
+}
+
+// ============================================
+// Block: Row Title
+// ============================================
+
+.row-title {
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-primary;
+	text-decoration: none;
+	font-size: $aps-font-size-sm;
+
+	&:hover,
+	&:focus {
+		color: $aps-color-primary-hover;
+	}
+}
+
+// Row Actions
+.row-actions {
+	font-size: $aps-font-size-xs;
+	color: $aps-color-text-light;
+	visibility: hidden;
+	margin-top: 4px;
+
+	a {
+		text-decoration: none;
+		color: $aps-color-primary;
+
+		&:hover {
+			color: $aps-color-primary-hover;
+		}
+	}
+
+	.trash a {
+		color: $aps-color-danger;
+
+		&:hover {
+			color: #b32d2e;
+		}
+	}
+}
+
+.wp-list-table tr:hover .row-actions {
+	visibility: visible;
+}
+
+// ============================================
+// Block: Category Text
+// ============================================
+
+.aps-category-text {
+	color: $aps-color-text-main;
+	font-size: $aps-font-size-sm;
+	font-weight: $aps-font-weight-normal;
+	line-height: $aps-line-height-normal;
+}
+
+// ============================================
+// Block: Tag Text
+// ============================================
+
+.aps-tag-text {
+	color: $aps-color-text-muted;
+	font-size: $aps-font-size-sm;
+	font-weight: $aps-font-weight-normal;
+	line-height: $aps-line-height-normal;
+}
+
+// ============================================
+// Block: Ribbon Badge
+// ============================================
+
+.aps-ribbon-badge {
+	display: inline-block;
+	padding: 4px 10px;
+	background: $aps-color-ribbon;
+	color: $aps-color-bg-card;
+	border-radius: 12px;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-semibold;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin: 2px;
+
+	& + & {
+		margin-left: 4px;
+	}
+}
+
+.aps-ribbon-empty {
+	color: #aaa;
+	font-size: $aps-font-size-base;
+}
+
+// ============================================
+// Block: Product Status Badge
+// ============================================
+
+.aps-product-status {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 12px;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-semibold;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+
+	&--published {
+		background: $aps-color-success-light;
+		color: $aps-color-success-text;
+	}
+
+	&--draft {
+		background: $aps-color-warning-light;
+		color: $aps-color-warning-text;
+	}
+
+	&--trash {
+		background: $aps-color-danger-light;
+		color: $aps-color-danger-text;
+	}
+
+	&--pending {
+		background: $aps-color-bg-light;
+		color: #6b7280;
+	}
+}
+
+// ============================================
+// Block: Featured Star
+// ============================================
+
+.aps-featured-star {
+	font-size: $aps-font-size-lg;
+	color: $aps-color-star;
+	display: inline-block;
+}
+
+// ============================================
+// Block: Price
+// ============================================
+
+.aps-price {
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
+	font-size: $aps-font-size-sm;
+}
+
+.aps-discount-badge {
+	background-color: #ef4444;
+	color: $aps-color-bg-card;
+	padding: 2px 8px;
+	border-radius: $aps-radius-sm;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-bold;
+	margin-left: 8px;
+	display: inline-block;
+}
+
+// ============================================
+// Block: Table Navigation
+// ============================================
+
+.tablenav {
+	clear: both;
+	height: 30px;
+	margin: 6px 0 4px 0;
+	vertical-align: middle;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&.top,
+	&.bottom {
+		margin: 6px 0 4px 0;
+	}
+}
+
+.alignleft {
+	float: left;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.alignright {
+	float: right;
+	display: flex;
+	align-items: center;
+}
+
+// Select Dropdowns
+.tablenav {
+	select,
+	.search-form input[type="search"] {
+		margin: 1px;
+		padding: 4px 8px;
+		line-height: 2;
+		height: 30px;
+		vertical-align: middle;
+		border: 1px solid $aps-color-border-dark;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-base;
+		color: #2c3338;
+	}
+}
+
+// Buttons
+.tablenav {
+	.button {
+		display: inline-block;
+		text-decoration: none;
+		font-size: $aps-font-size-sm;
+		line-height: 2.15384615;
+		min-height: 30px;
+		margin: 0;
+		padding: 0 10px;
+		cursor: pointer;
+		border-width: 1px;
+		border-style: solid;
+		border-radius: 3px;
+		white-space: nowrap;
+		box-sizing: border-box;
+
+		&.action {
+			background: $aps-color-bg-hover;
+			border-color: $aps-color-border-dark;
+			color: $aps-color-text-main;
+			height: 30px;
+			margin-top: 1px;
+			vertical-align: top;
+		}
+	}
+}
+
+// ============================================
+// Block: Search Form
+// ============================================
+
+.search-form {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	input[type="search"] {
+		width: 280px;
+	}
+}
+
+// ============================================
+// Block: Pagination
+// ============================================
+
+.tablenav-pages {
+	margin: 0 20px 1em 0;
+	color: $aps-color-text-muted;
+}
+
+.pagination-links {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+
+	a,
+	span {
+		padding: 0 6px;
+		line-height: $aps-line-height-normal;
+		text-decoration: none;
+		color: $aps-color-primary;
+	}
+
+	a:hover {
+		color: $aps-color-primary-hover;
+	}
+
+	.current {
+		background: $aps-color-primary;
+		color: $aps-color-bg-card;
+		border-radius: 3px;
+		padding: 0 8px;
+	}
+
+	.tablenav-pages-navspan {
+		color: $aps-color-text-muted;
+	}
+}
+
+// ============================================
+// Block: Toast Notifications
+// ============================================
+
+#aps-toast-container {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: $aps-z-toast;
+	max-width: 400px;
+}
+
+.aps-toast {
+	background: $aps-color-bg-card;
+	border-left: 4px solid #72aee6;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	margin: 5px 0 15px;
+	padding: 12px 16px;
+	display: flex;
+	align-items: center;
+	min-width: 300px;
+	border-radius: $aps-radius-sm;
+	animation: slideIn 0.3s ease-out;
+
+	&--success {
+		border-left-color: $aps-color-success;
+	}
+
+	&--error {
+		border-left-color: $aps-color-danger;
+	}
+
+	&__message {
+		flex: 1;
+		font-size: $aps-font-size-base;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-text-main;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+// ============================================
+// Block: Quick Edit Modal
+// ============================================
+
+.aps-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&__overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	&__content {
+		position: relative;
+		background: $aps-color-bg-card;
+		border-radius: $aps-radius-lg;
+		box-shadow: $aps-shadow-xl;
+		width: 100%;
+		max-width: 500px;
+		max-height: 90vh;
+		overflow-y: auto;
+		margin: 20px;
+	}
+
+	&__header {
+		padding: 20px;
+		border-bottom: 1px solid $aps-color-border;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		h2 {
+			margin: 0;
+			font-size: 20px;
+			font-weight: $aps-font-weight-semibold;
+			color: $aps-color-text-main;
+		}
+	}
+
+	&__close {
+		background: none;
+		border: none;
+		font-size: 32px;
+		line-height: 1;
+		color: $aps-color-text-muted;
+		cursor: pointer;
+		padding: 0;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&:hover {
+			color: $aps-color-text-main;
+		}
+	}
+
+	&__body {
+		padding: 20px;
+	}
+
+	&__footer {
+		padding: 20px;
+		border-top: 1px solid $aps-color-border;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 12px;
+	}
+}
+
+.aps-form-field {
+	margin-bottom: 16px;
+
+	label {
+		display: block;
+		margin-bottom: 8px;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	input[type="text"],
+	input[type="number"],
+	select {
+		width: 100%;
+		padding: 8px 12px;
+		border: 1px solid $aps-color-border-dark;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-base;
+		color: #3c434a;
+		background: $aps-color-bg-card;
+
+		&:focus {
+			outline: none;
+			border-color: $aps-color-primary;
+			box-shadow: 0 0 0 1px $aps-color-primary;
+		}
+	}
+
+	input[type="checkbox"] {
+		width: auto;
+		margin-right: 8px;
+	}
+}
+
+// ============================================
+// Block: Screen Reader Text
+// ============================================
+
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+// ============================================
+// Block: Clear Fix
+// ============================================
+
+.clear {
+	clear: both;
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Mobile (< 782px)
+@media screen and (max-width: 782px) {
+	.wp-list-table {
+		// Hide table headers
+		thead {
+			display: none;
+		}
+
+		// Convert rows to card layout
+		tbody tr {
+			display: block;
+			border-bottom: 1px solid $aps-color-border;
+			margin-bottom: 10px;
+		}
+
+		// Show data attributes as labels
+		tbody td {
+			display: block;
+			text-align: right;
+			padding: 8px 10px;
+			border-bottom: 1px solid #eee;
+
+			&::before {
+				content: attr(data-colname);
+				font-weight: $aps-font-weight-semibold;
+				float: left;
+				margin-left: -10px;
+				text-align: left;
+			}
+		}
+
+		// Hide checkbox column
+		&__column-cb {
+			display: none;
+		}
+	}
+
+	// Stack toolbar elements
+	.tablenav {
+		height: auto;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+
+	.alignleft,
+	.alignright {
+		float: none;
+		width: 100%;
+	}
+}
+
+// Tablet (782px - 1200px)
+@media screen and (min-width: 782px) and (max-width: 1200px) {
+	.wp-list-table {
+		&__column-logo {
+			width: 50px;
+		}
+
+		&__column-taxonomy-aps_ribbon {
+			width: 100px;
+		}
+
+		&__column-featured {
+			width: 50px;
+		}
+	}
+
+	// Smaller search input
+	.search-form input[type="search"] {
+		width: 200px;
+	}
+}
+
+// High Contrast Mode
+@include prefers-high-contrast {
+	.wp-list-table {
+		&__column-taxonomy-aps_ribbon a,
+		.aps-product-status {
+			border: 1px solid currentColor;
+		}
+	}
+
+	.row-title:hover {
+		text-decoration: underline;
+	}
+}
+
+// Reduced Motion
+@include prefers-reduced-motion {
+	.aps-toast {
+		animation: none;
+	}
+
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+// Print Styles
+@include print-only {
+	.tablenav,
+	.aps-nav-tabs,
+	#aps-toast-container,
+	.aps-modal {
+		display: none !important;
+	}
+
+	.wp-list-table {
+		border: 1px solid #000;
+
+		th,
+		td {
+			border: 1px solid #000;
+		}
+	}
+}

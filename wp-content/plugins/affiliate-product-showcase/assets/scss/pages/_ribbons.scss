@@ -1,0 +1,316 @@
+/**
+ * Admin Ribbons Page Styles (BEM)
+ *
+ * Styles for ribbon taxonomy admin interface including:
+ * - Status badges
+ * - Color pickers
+ * - Preset color buttons
+ * - Preview areas
+ * - Background color support
+ * Converted from admin-ribbon.css (300 lines)
+ *
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Ribbon Status Badge
+// ============================================
+
+.aps-ribbon-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-semibold;
+	line-height: 1.4;
+	text-decoration: none;
+
+	&--publish {
+		background-color: #22c55e;
+		color: $aps-color-bg-card;
+	}
+
+	&--draft {
+		background-color: #6c757d;
+		color: $aps-color-bg-card;
+	}
+
+	&--pending {
+		background-color: #f59e0b;
+		color: $aps-color-bg-card;
+	}
+}
+
+// ============================================
+// Block: Color Picker
+// ============================================
+
+.aps-color-picker {
+	width: 100px;
+}
+
+// ============================================
+// Block: Color Presets
+// ============================================
+
+.color-presets {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: 15px;
+}
+
+.preset-color {
+	position: relative;
+	width: 35px;
+	height: 35px;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: transform $aps-transition-base ease, box-shadow $aps-transition-base ease;
+	padding: 0;
+	background: none;
+
+	&:hover {
+		transform: scale(1.1);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	&.active {
+		border-color: #0073aa;
+		box-shadow: 0 0 0 4px rgba(0, 115, 177, 0.3);
+	}
+}
+
+.color-swatch {
+	width: 100%;
+	height: 100%;
+	display: block;
+	border-radius: 50%;
+}
+
+// Preset color swatches using data attributes
+.preset-color[data-color="#ff0000"] .color-swatch { background-color: #ff0000; }
+.preset-color[data-color="#00ff00"] .color-swatch { background-color: #00ff00; }
+.preset-color[data-color="#0000ff"] .color-swatch { background-color: #0000ff; }
+.preset-color[data-color="#ffff00"] .color-swatch { background-color: #ffff00; }
+.preset-color[data-color="#ff00ff"] .color-swatch { background-color: #ff00ff; }
+.preset-color[data-color="#000000"] .color-swatch { background-color: #000000; }
+.preset-color[data-color="#ff6600"] .color-swatch { background-color: #ff6600; }
+
+// ============================================
+// Block: Live Preview
+// ============================================
+
+.ribbon-live-preview {
+	margin-top: 25px;
+	padding: 20px;
+	border: 2px solid #e0e0e0;
+	border-radius: $aps-radius-md;
+	background: #f9f9f9;
+}
+
+.preview-label {
+	display: block;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-semibold;
+	color: #444;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.ribbon-preview-badge {
+	display: inline-block;
+	padding: 8px 16px;
+	border-radius: $aps-radius-sm;
+	font-weight: $aps-font-weight-bold;
+	font-size: $aps-font-size-base;
+	line-height: 1.4;
+	text-align: center;
+	min-width: 100px;
+	transition: all $aps-transition-slow ease;
+}
+
+// ============================================
+// Block: Ribbon Color Swatch
+// ============================================
+
+.aps-ribbon-color-swatch {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: $aps-radius-sm;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aps-ribbon-color-empty {
+	color: #999;
+	font-style: italic;
+}
+
+// ============================================
+// Block: Ribbon Background Color Swatch
+// ============================================
+
+.aps-ribbon-bg-color-swatch {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: $aps-radius-sm;
+	border: 2px solid #ccc;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aps-ribbon-bg-color-empty {
+	color: #999;
+	font-style: italic;
+}
+
+// ============================================
+// Block: Ribbon Icon Display
+// ============================================
+
+.aps-ribbon-icon-display {
+	display: inline-block;
+	padding: 3px 8px;
+	background: #f0f0f0;
+	border-radius: 3px;
+	font-size: $aps-font-size-xs;
+	font-family: monospace;
+	color: #444;
+}
+
+.aps-ribbon-icon-empty {
+	color: #999;
+	font-style: italic;
+}
+
+// ============================================
+// Block: Ribbon Icon Prefix
+// ============================================
+
+.ribbon-icon-prefix {
+	margin-right: 4px;
+	font-weight: $aps-font-weight-bold;
+}
+
+// ============================================
+// Ribbon Taxonomy Table Columns
+// ============================================
+
+.taxonomy-aps_ribbon {
+	.wp-list-table {
+		table-layout: fixed;
+	}
+
+	// Column widths
+	.column-cb {
+		width: 2.2em;
+	}
+
+	.column-name {
+		width: 25%;
+		min-width: 150px;
+	}
+
+	.column-slug {
+		width: 18%;
+		min-width: 120px;
+	}
+
+	.column-color {
+		width: 60px;
+		text-align: center;
+	}
+
+	.column-bg_color {
+		width: 80px;
+		text-align: center;
+	}
+
+	.column-ribbon_icon {
+		width: 100px;
+		text-align: center;
+	}
+
+	.column-status {
+		width: 100px;
+		text-align: center;
+	}
+
+	.column-count {
+		width: 80px;
+		text-align: center;
+	}
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: 768px) {
+	.color-presets {
+		justify-content: center;
+	}
+
+	.ribbon-live-preview {
+		padding: 15px;
+	}
+
+	.preset-color {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+@media (max-width: 1200px) {
+	.taxonomy-aps_ribbon {
+		.column-name {
+			width: 22%;
+		}
+
+		.column-slug {
+			width: 15%;
+		}
+	}
+}
+
+@media (max-width: 782px) {
+	.taxonomy-aps_ribbon {
+		.wp-list-table {
+			table-layout: auto;
+		}
+
+		.column-name,
+		.column-slug {
+			width: auto;
+			min-width: 0;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.ribbon-live-preview {
+		padding: 10px;
+	}
+
+	.ribbon-preview-badge {
+		padding: 6px 12px;
+		font-size: $aps-font-size-xs;
+		min-width: 80px;
+	}
+
+	.color-presets {
+		gap: 8px;
+	}
+
+	.preset-color {
+		width: 35px;
+		height: 35px;
+	}
+}

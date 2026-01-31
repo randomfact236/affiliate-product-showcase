@@ -1,0 +1,663 @@
+/**
+ * Admin Add Product Page Styles (BEM)
+ *
+ * Styles for add/edit product form page.
+ * Converted from admin-add-product.css (647 lines)
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Main Container
+// ============================================
+
+.affiliate-product-showcase {
+	font-family: 'Inter', sans-serif;
+}
+
+// ============================================
+// Block: Header
+// ============================================
+
+.aps-header {
+	background: $aps-color-bg-card;
+	padding: 20px 30px;
+	border-bottom: 1px solid $aps-color-border;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: -20px -20px 30px -20px;
+
+	&__title {
+		font-size: 20px;
+		font-weight: $aps-font-weight-semibold;
+		margin: 0;
+	}
+
+	&__close {
+		background: none;
+		border: none;
+		font-size: 20px;
+		color: $aps-color-text-muted;
+		cursor: pointer;
+		padding: 8px;
+
+		&:hover {
+			color: $aps-color-danger;
+		}
+	}
+}
+
+// ============================================
+// Block: Quick Navigation
+// ============================================
+
+.aps-quick-nav {
+	display: flex;
+	gap: 15px;
+	padding: 15px 20px;
+	background: $aps-color-bg-light;
+	border: 1px solid $aps-color-border;
+	border-radius: $aps-radius-sm;
+	margin-bottom: 30px;
+	flex-wrap: wrap;
+
+	&__link {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 15px;
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-text-main;
+		text-decoration: none;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-medium;
+
+		&:hover {
+			background: $aps-color-primary;
+			color: $aps-color-bg-card;
+		}
+
+		i {
+			font-size: 16px;
+		}
+	}
+}
+
+// ============================================
+// Block: Form Container
+// ============================================
+
+.aps-form-container {
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border;
+	border-radius: $aps-radius-sm;
+	padding: 30px;
+	max-width: 1200px;
+	margin-bottom: 30px;
+}
+
+// ============================================
+// Block: Section
+// ============================================
+
+.aps-section {
+	margin-bottom: 40px;
+	padding-bottom: 40px;
+	border-bottom: 1px solid $aps-color-border;
+
+	&__title {
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-semibold;
+		margin: 0 0 20px 0;
+		padding-bottom: 10px;
+		border-bottom: 2px solid $aps-color-primary;
+	}
+}
+
+// ============================================
+// Block: Field Group
+// ============================================
+
+.aps-field-group {
+	margin-bottom: 20px;
+
+	label {
+		display: block;
+		margin-bottom: 8px;
+		font-weight: $aps-font-weight-medium;
+		font-size: $aps-font-size-sm;
+	}
+
+	.required {
+		color: $aps-color-danger;
+	}
+
+	.description {
+		display: block;
+		margin-top: 6px;
+		font-size: $aps-font-size-xs;
+		font-style: italic;
+		color: $aps-color-text-muted;
+	}
+}
+
+// ============================================
+// Block: Form Inputs
+// ============================================
+
+.aps-input {
+	width: 100%;
+	padding: 10px 12px;
+	font-size: $aps-font-size-base;
+	border: 1px solid $aps-color-border;
+	border-radius: $aps-radius-sm;
+
+	&:focus {
+		border-color: $aps-color-primary;
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+}
+
+.aps-textarea {
+	min-height: 200px;
+	width: 100%;
+	resize: vertical;
+
+	&--full-page {
+		min-height: 200px;
+		width: 100%;
+		font-family: inherit;
+		line-height: 1.6;
+		padding: 12px;
+	}
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+}
+
+.aps-select {
+	width: 100%;
+	padding: 10px 36px 10px 12px;
+	font-size: $aps-font-size-base;
+	border: 1px solid $aps-color-border;
+	border-radius: $aps-radius-sm;
+	background: $aps-color-bg-card;
+	cursor: pointer;
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+}
+
+.aps-readonly {
+	background: $aps-color-bg-hover;
+}
+
+// ============================================
+// Block: Checkbox Label
+// ============================================
+
+.aps-checkbox-label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+
+	input[type="checkbox"] {
+		width: 20px;
+		height: 20px;
+	}
+}
+
+// ============================================
+// Block: Tags Group
+// ============================================
+
+.aps-tags-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-top: 10px;
+}
+
+.aps-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	background: #e6f0f5;
+	color: $aps-color-primary;
+	border-radius: 3px;
+	font-size: $aps-font-size-sm;
+
+	&__remove {
+		cursor: pointer;
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Block: Grid Layouts
+// ============================================
+
+.aps-grid {
+	&--2 {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	&--3 {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+}
+
+// ============================================
+// Block: Upload Area
+// ============================================
+
+.aps-upload-area {
+	border: 2px dashed $aps-color-border;
+	border-radius: $aps-radius-sm;
+	padding: 20px;
+	text-align: center;
+	background: #f9f9f9;
+	cursor: pointer;
+	position: relative;
+	min-height: 150px;
+
+	&:hover {
+		border-color: $aps-color-primary;
+	}
+
+	&__placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		color: $aps-color-text-muted;
+
+		i {
+			font-size: 40px;
+		}
+	}
+
+	&__preview {
+		display: none;
+		position: absolute;
+		width: 100%;
+		height: 150px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		top: 0;
+		left: 0;
+
+		&.has-image {
+			display: block;
+		}
+
+		&.no-image {
+			display: none;
+		}
+	}
+}
+
+.aps-url-input {
+	margin-top: 15px;
+}
+
+.aps-upload-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: $aps-color-primary;
+	color: $aps-color-bg-card;
+	border-radius: $aps-radius-sm;
+	font-size: $aps-font-size-sm;
+	cursor: pointer;
+	margin-top: 10px;
+	border: none;
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+
+	&--cancel {
+		background: transparent;
+		color: $aps-color-text-muted;
+	}
+}
+
+// ============================================
+// Block: Multi-Select Dropdown
+// ============================================
+
+.aps-multi-select {
+	position: relative;
+
+	&__selected-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		border: 1px solid $aps-color-border;
+		border-radius: $aps-radius-sm;
+		padding: 4px 8px;
+		min-height: 38px;
+		cursor: pointer;
+	}
+
+	&__input {
+		border: none;
+		outline: none;
+		font-size: $aps-font-size-base;
+		min-width: 150px;
+		flex: 1;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&__dropdown {
+		position: absolute;
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border;
+		border-radius: $aps-radius-sm;
+		max-height: 200px;
+		overflow-y: auto;
+		z-index: $aps-z-dropdown;
+		display: none;
+
+		&__item {
+			padding: 10px 15px;
+			cursor: pointer;
+
+			&:hover {
+				background: $aps-color-bg-hover;
+			}
+
+			&--focused {
+				background: $aps-color-bg-light;
+			}
+		}
+	}
+}
+
+// ============================================
+// Block: Features List
+// ============================================
+
+.aps-feature-list {
+	&__input-group {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 15px;
+	}
+
+	&__list {
+		border: 1px solid $aps-color-border;
+		border-radius: $aps-radius-sm;
+		max-height: 300px;
+		overflow-y: auto;
+		margin-top: 15px;
+	}
+
+	&__item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 15px;
+		border-bottom: 1px solid #eee;
+
+		&:hover {
+			background: #f8f9f9;
+		}
+
+		&--highlighted {
+			background: #e6f0f5;
+		}
+
+		&__text {
+			flex-grow: 1;
+		}
+
+		&__actions {
+			display: flex;
+			gap: 5px;
+
+			button {
+				background: none;
+				border: 1px solid #ddd;
+				border-radius: 3px;
+				width: 28px;
+				height: 28px;
+				cursor: pointer;
+				color: $aps-color-text-muted;
+			}
+		}
+	}
+}
+
+// ============================================
+// Block: Word Counter
+// ============================================
+
+.word-counter {
+	text-align: right;
+	font-size: $aps-font-size-xs;
+	color: $aps-color-text-muted;
+	margin-top: 5px;
+}
+
+// ============================================
+// Block: Form Actions
+// ============================================
+
+.aps-form-actions {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	padding-top: 20px;
+	border-top: 1px solid $aps-color-border;
+}
+
+// ============================================
+// Block: Button
+// ============================================
+
+.aps-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 24px;
+	border-radius: $aps-radius-sm;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: $aps-font-size-base;
+	font-weight: $aps-font-weight-semibold;
+	border: none;
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+
+	&--primary {
+		background: $aps-color-primary;
+		color: $aps-color-bg-card;
+
+		&:hover {
+			background: $aps-color-primary-hover;
+		}
+	}
+
+	&--secondary {
+		background: $aps-color-secondary;
+		color: $aps-color-bg-card;
+	}
+
+	&--cancel {
+		background: transparent;
+		color: $aps-color-text-muted;
+	}
+}
+
+// ============================================
+// Block: Tag Checkbox
+// ============================================
+
+.aps-tag-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+	border-radius: $aps-radius-sm;
+	cursor: pointer;
+
+	&__badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 12px;
+		background: #e6f0f5;
+		color: $aps-color-primary;
+		border-radius: $aps-radius-sm;
+		font-weight: $aps-font-weight-semibold;
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Block: Taxonomy Item
+// ============================================
+
+.aps-taxonomy-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	&__image {
+		width: 24px;
+		height: 24px;
+		background-size: cover;
+		border-radius: $aps-radius-sm;
+	}
+
+	&__badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #ffd700;
+		color: $aps-color-bg-card;
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Block: Ribbon Item
+// ============================================
+
+.aps-ribbon-item {
+	&__badge-preview {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 12px;
+		border-radius: $aps-radius-sm;
+		font-weight: $aps-font-weight-semibold;
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Block: Utility Classes
+// ============================================
+
+.aps-hidden {
+	display: none !important;
+}
+
+// ============================================
+// Block: Visually Hidden
+// ============================================
+
+.visually-hidden {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: 768px) {
+	.aps-grid--2,
+	.aps-grid--3 {
+		grid-template-columns: 1fr;
+	}
+
+	.aps-quick-nav {
+		flex-direction: column;
+	}
+
+	.aps-form-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.aps-btn {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+// High Contrast Mode
+@include prefers-high-contrast {
+	.aps-tag,
+	.aps-ribbon-item__badge-preview {
+		border: 1px solid currentColor;
+	}
+
+	.aps-quick-nav__link:hover {
+		text-decoration: underline;
+	}
+}
+
+// Reduced Motion
+@include prefers-reduced-motion {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

@@ -1,0 +1,692 @@
+/**
+ * Admin Tags Page Styles (BEM)
+ *
+ * Styles for tag management in WordPress admin
+ * following standard taxonomy design pattern.
+ * Converted from admin-tag.css (625 lines)
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Tag Checkboxes Wrapper
+// ============================================
+
+.aps-tag-checkboxes-wrapper {
+	display: none;
+}
+
+// ============================================
+// Block: Tag Preview
+// ============================================
+
+.ribbon-live-preview#tag-preview-container {
+	margin-top: 10px;
+}
+
+.ribbon-preview-badge#tag-preview {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: $aps-radius-sm;
+	font-weight: $aps-font-weight-semibold;
+	font-size: $aps-font-size-xs;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// ============================================
+// Block: Tag Checkboxes Inner
+// ============================================
+
+.aps-tag-checkboxes-inner {
+	display: flex;
+	gap: 20px;
+	margin-top: 10px;
+}
+
+.aps-tag-checkbox-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+
+	label {
+		font-weight: $aps-font-weight-semibold;
+		margin-bottom: 5px;
+	}
+
+	input[type="checkbox"] {
+		margin-right: 8px;
+	}
+
+	.description {
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-muted;
+		margin-top: 5px;
+	}
+}
+
+// ============================================
+// Block: Tag Settings
+// ============================================
+
+.aps-tag-settings {
+	h3 {
+		margin: 20px 0 15px 0;
+		padding-bottom: 10px;
+		border-bottom: 1px solid $aps-color-border-light;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-semibold;
+		text-align: center;
+	}
+}
+
+// ============================================
+// Block: Two-Column Layout
+// ============================================
+
+// Tags page wrapper
+body.taxonomy-aps_tag {
+	#col-container {
+		display: flex;
+		gap: 30px;
+	}
+
+	// Left side: Form (40%)
+	#col-left {
+		flex: 0 0 40%;
+	}
+
+	// Right side: Table (60%)
+	#col-right {
+		flex: 0 0 60%;
+	}
+}
+
+// ============================================
+// Block: Tag Top Controls
+// ============================================
+
+// Ensure top controls appear in right column above table
+body.taxonomy-aps_tag {
+	#col-right {
+		.aps-tag-top-controls {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 20px;
+			margin: 20px 0 15px 0;
+			padding: 15px;
+			background: $aps-color-bg-card;
+			border: 1px solid $aps-color-border;
+			border-radius: $aps-radius-sm;
+		}
+	}
+}
+
+// Fallback for broader selector
+.aps-tag-top-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	margin: 20px 0 15px 0;
+	padding: 15px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border;
+	border-radius: $aps-radius-sm;
+}
+
+// ============================================
+// Block: Tag Status Links
+// ============================================
+
+.aps-tag-status-links-wrapper {
+	flex: 1;
+}
+
+.aps-tag-status-links {
+	display: flex;
+	gap: 5px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	li {
+		margin: 0;
+
+		a {
+			display: inline-block;
+			padding: 6px 12px;
+			text-decoration: none;
+			color: $aps-color-primary;
+			border-radius: 3px;
+			transition: all $aps-transition-base ease;
+			font-size: $aps-font-size-sm;
+
+			&:hover {
+				background-color: $aps-color-bg-light;
+				color: $aps-color-primary-hover;
+			}
+
+			&:focus {
+				outline: 2px solid $aps-color-primary;
+				outline-offset: 2px;
+			}
+		}
+
+		&.current a {
+			background-color: $aps-color-primary;
+			color: $aps-color-bg-card;
+
+			&:hover {
+				background-color: $aps-color-primary-hover;
+				color: $aps-color-bg-card;
+			}
+		}
+	}
+}
+
+// ============================================
+// Block: Tag Sort Controls
+// ============================================
+
+.aps-tag-sort-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	label {
+		font-size: $aps-font-size-sm;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+}
+
+.aps-tag-date-sort {
+	min-width: 200px;
+	padding: 5px 10px;
+	font-size: $aps-font-size-sm;
+	border: 1px solid $aps-color-border-dark;
+	border-radius: 3px;
+	background: $aps-color-bg-card;
+	cursor: pointer;
+
+	&:hover {
+		border-color: $aps-color-primary;
+	}
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+}
+
+// ============================================
+// Block: Tag Featured
+// ============================================
+
+.aps-tag-featured {
+	margin-bottom: 15px;
+
+	label {
+		display: block;
+		margin-bottom: 5px;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	input[type="checkbox"] {
+		margin-right: 8px;
+
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+		}
+	}
+}
+
+// ============================================
+// Block: Tag Settings Divider
+// ============================================
+
+.aps-tag-settings-divider {
+	margin: 20px 0 15px;
+	padding: 10px 0;
+	border-top: 2px solid $aps-color-border;
+	border-bottom: 2px solid $aps-color-border;
+	text-align: center;
+
+	h3 {
+		margin: 0;
+		padding: 0 15px;
+		font-size: $aps-font-size-base;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+		background: $aps-color-bg-card;
+		display: inline-block;
+	}
+}
+
+// ============================================
+// Block: Tag Image URL
+// ============================================
+
+.aps-tag-image-url {
+	margin-bottom: 15px;
+
+	label {
+		display: block;
+		margin-bottom: 5px;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	input[type="url"] {
+		width: 100%;
+		max-width: 300px;
+		padding: 8px 12px;
+		font-size: $aps-font-size-sm;
+		border: 1px solid $aps-color-border-dark;
+		border-radius: 3px;
+
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+		}
+	}
+
+	.description {
+		margin-top: 5px;
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-muted;
+	}
+}
+
+// ============================================
+// Block: Table Column Styling
+// ============================================
+
+.fixed {
+	// Name column (WordPress native)
+	.column-name {
+		width: 20%;
+	}
+
+	// Slug column (WordPress native)
+	.column-slug {
+		width: 15%;
+		font-family: monospace;
+	}
+
+	// Icon column
+	.column-icon {
+		width: 10%;
+		text-align: center;
+	}
+
+	// Status column (inline editable)
+	.column-status {
+		width: 10%;
+	}
+
+	// Count column
+	.column-count {
+		width: 15%;
+		text-align: right;
+	}
+}
+
+// ============================================
+// Block: Tag Status Inline
+// ============================================
+
+.aps-tag-status-inline {
+	min-width: 120px;
+	padding: 5px 8px;
+	font-size: $aps-font-size-xs;
+	border: 1px solid $aps-color-border-dark;
+	border-radius: 3px;
+	background: $aps-color-bg-card;
+	cursor: pointer;
+	transition: all $aps-transition-base ease;
+
+	&:hover {
+		border-color: $aps-color-primary;
+	}
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+	}
+
+	// Status dropdown states
+	&--updating {
+		opacity: 0.6;
+		cursor: wait;
+	}
+
+	&--updated {
+		background-color: #edfaef;
+		border-color: $aps-color-success;
+		color: $aps-color-success;
+	}
+
+	&--error {
+		background-color: #f7edf0;
+		border-color: $aps-color-danger;
+		color: $aps-color-danger;
+	}
+}
+
+// ============================================
+// Block: Tag Count
+// ============================================
+
+.aps-tag-count {
+	display: inline-block;
+	padding: 2px 8px;
+	background-color: $aps-color-bg-light;
+	border-radius: 3px;
+	font-weight: $aps-font-weight-semibold;
+	font-size: $aps-font-size-xs;
+}
+
+// ============================================
+// Block: Tag Icon Display
+// ============================================
+
+.aps-tag-icon-display {
+	display: inline-block;
+	font-size: 20px;
+	line-height: 1;
+	vertical-align: middle;
+	color: $aps-color-text-main;
+
+	&.dashicons {
+		font-size: 18px;
+		width: 18px;
+		height: 18px;
+	}
+
+	&:hover {
+		transform: scale(1.2);
+		transition: transform $aps-transition-base ease;
+	}
+}
+
+// Empty icon state
+.aps-tag-icon-empty {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	border-radius: 3px;
+	border: 1px dashed $aps-color-border;
+	background-color: $aps-color-bg-hover;
+	vertical-align: middle;
+	text-align: center;
+	line-height: 24px;
+	font-size: $aps-font-size-xs;
+	color: $aps-color-text-muted;
+}
+
+// ============================================
+// Block: Bulk Actions
+// ============================================
+
+// Bulk actions dropdown
+.select#bulk-action-selector-top {
+	min-width: 200px;
+	margin-right: 10px;
+}
+
+// Apply button
+button.button.action {
+	height: 30px;
+	padding: 0 15px;
+	font-size: $aps-font-size-sm;
+	line-height: 28px;
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Desktop (>1200px)
+@media (min-width: 1201px) {
+	body.taxonomy-aps_tag {
+		#col-container {
+			display: flex;
+		}
+
+		#col-left {
+			flex: 0 0 40%;
+		}
+
+		#col-right {
+			flex: 0 0 60%;
+		}
+	}
+}
+
+// Tablet (768px-1200px)
+@media (max-width: 1200px) and (min-width: 769px) {
+	body.taxonomy-aps_tag {
+		#col-container {
+			gap: 15px;
+		}
+
+		#col-left {
+			flex: 0 0 45%;
+		}
+
+		#col-right {
+			flex: 0 0 55%;
+		}
+	}
+
+	.aps-tag-top-controls {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+
+	.aps-tag-sort-controls {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.aps-tag-date-sort {
+		flex: 1;
+		max-width: 300px;
+	}
+}
+
+// Mobile (<768px)
+@media (max-width: 768px) {
+	body.taxonomy-aps_tag {
+		#col-container {
+			flex-direction: column;
+		}
+
+		#col-left {
+			flex: 0 0 auto;
+			width: 100%;
+		}
+
+		#col-right {
+			flex: 0 0 auto;
+			width: 100%;
+		}
+	}
+
+	.aps-tag-top-controls {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+		padding: 10px;
+	}
+
+	.aps-tag-status-links {
+		flex-wrap: wrap;
+		gap: 3px;
+
+		li a {
+			padding: 5px 10px;
+			font-size: $aps-font-size-xs;
+		}
+	}
+
+	.aps-tag-sort-controls {
+		width: 100%;
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+	}
+
+	.aps-tag-date-sort {
+		width: 100%;
+		max-width: none;
+	}
+
+	.aps-tag-image-url input[type="url"] {
+		max-width: 100%;
+	}
+
+	// Table horizontal scroll on mobile
+	.wp-list-table {
+		display: block;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+	.aps-tag-status-inline {
+		min-width: 100px;
+		font-size: $aps-font-size-xs;
+	}
+
+	.aps-tag-count {
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// Small mobile (<480px)
+@media (max-width: 480px) {
+	.aps-tag-top-controls {
+		margin: 10px 0;
+		padding: 8px;
+	}
+
+	.aps-tag-status-links {
+		gap: 2px;
+
+		li a {
+			padding: 4px 8px;
+			font-size: $aps-font-size-xs;
+		}
+	}
+
+	.aps-tag-featured,
+	.aps-tag-image-url {
+		margin-bottom: 12px;
+	}
+
+	.aps-tag-settings-divider {
+		margin: 15px 0 12px;
+		padding: 8px 0;
+
+		h3 {
+			font-size: $aps-font-size-sm;
+			padding: 0 10px;
+		}
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+// High contrast mode support
+@include prefers-high-contrast {
+	.aps-tag-status-links {
+		li a {
+			border: 2px solid currentColor;
+		}
+
+		li.current a {
+			background-color: #000;
+			color: $aps-color-bg-card;
+			border-color: #000;
+		}
+	}
+
+	.aps-tag-status-inline {
+		border: 2px solid #000;
+
+		&--updated {
+			background-color: #000;
+			color: $aps-color-bg-card;
+			border-color: #000;
+		}
+
+		&--error {
+			background-color: $aps-color-danger;
+			color: $aps-color-bg-card;
+			border-color: #000;
+		}
+	}
+
+	.aps-tag-count {
+		background-color: #000;
+		color: $aps-color-bg-card;
+		border: 2px solid #000;
+	}
+
+	.aps-tag-settings-divider {
+		border-top: 3px solid #000;
+		border-bottom: 3px solid #000;
+	}
+}
+
+// Reduced motion support
+@include prefers-reduced-motion {
+	.aps-tag-status-links li a,
+	.aps-tag-status-inline {
+		transition: none;
+	}
+}
+
+// Screen reader only content
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@include print-only {
+	.aps-tag-top-controls,
+	.aps-tag-settings-divider {
+		display: none;
+	}
+
+	.aps-tag-status-inline {
+		border: 1px solid #000;
+	}
+}

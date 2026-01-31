@@ -17,6 +17,8 @@
     "dev": "vite",
     "build": "vite build",
     "watch": "vite build --watch",
+    "scss:build": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --style compressed",
+    "scss:watch": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --watch",
     "preview": "vite preview",
     "lint": "npm run lint:php && npm run lint:js && npm run lint:css",
     "lint:php": "cd ../../.. && composer --working-dir=wp-content/plugins/affiliate-product-showcase phpcs",
