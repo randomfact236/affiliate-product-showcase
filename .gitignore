@@ -20,6 +20,10 @@ assets/dist/compression-report.json
 ### SCSS Source (keep tracked)
 assets/scss/
 
+### NUL files (Windows reserved, ignore)
+NUL
+NUL.map
+
 ### Environment
 .env
 .env.*
