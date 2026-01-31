@@ -14,11 +14,17 @@ composer.phar
 dist/
 assets/dist/
 assets/dist/*.map
-*.min.js.map
+assets/dist/sri-hashes.json
+assets/dist/compression-report.json
+
+### SCSS Source (keep tracked)
+assets/scss/
 
 ### Environment
 .env
 .env.*
+.env.bak
+docker/.env
 
 ### IDEs & editors
 .vscode/
@@ -44,6 +50,7 @@ wp-tests-config.php
 ### Packaging helpers
 *.zip
 *.tar.gz
+
 # Local Composer PHAR (installed for local dev/testing)
 composer.phar
 
@@ -54,7 +61,6 @@ composer.phar
 node_modules/
 dist/
 assets/dist/
-wp-content/plugins/affiliate-product-showcase/assets/dist/
 *.gz
 *.br
 wp-content/plugins/affiliate-product-showcase/assets/dist/sri-hashes.json
