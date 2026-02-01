@@ -199,38 +199,36 @@ body.taxonomy-aps_tag {
 }
 
 // WordPress native class compatibility
-.aps-tag-status-links {
-	li {
-		@extend .aps-tag-status-links__item;
+.aps-tag-status-links > li {
+	@extend .aps-tag-status-links__item;
 
-		a {
-			display: inline-block;
-			padding: 6px $aps-spacing-3;
-			text-decoration: none;
-			color: $aps-color-primary;
-			border-radius: $aps-radius-sm;
-			transition: all $aps-transition-base ease;
-			font-size: $aps-font-size-sm;
+	> a {
+		display: inline-block;
+		padding: 6px $aps-spacing-3;
+		text-decoration: none;
+		color: $aps-color-primary;
+		border-radius: $aps-radius-sm;
+		transition: all $aps-transition-base ease;
+		font-size: $aps-font-size-sm;
 
-			&:hover {
-				background-color: $aps-color-bg-light;
-				color: $aps-color-primary-hover;
-			}
-
-			&:focus {
-				outline: 2px solid $aps-color-primary;
-				outline-offset: $aps-spacing-2;
-			}
+		&:hover {
+			background-color: $aps-color-bg-light;
+			color: $aps-color-primary-hover;
 		}
 
-		&.current a {
-			background-color: $aps-color-primary;
-			color: $aps-color-bg-card;
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: $aps-spacing-2;
+		}
+	}
 
-			&:hover {
-				background-color: $aps-color-primary-hover;
-				color: $aps-color-bg-card;
-			}
+	&.current > a {
+		background-color: $aps-color-primary;
+		color: $aps-color-bg-card;
+
+		&:hover {
+			background-color: $aps-color-primary-hover;
+			color: $aps-color-bg-card;
 		}
 	}
 }
@@ -673,11 +671,6 @@ button.button.action {
 			flex: 0 0 auto;
 			width: 100%;
 		}
-
-		.aps-tag-status-links li a {
-			padding: 5px $aps-spacing-2;
-			font-size: $aps-font-size-xs;
-		}
 	}
 }
 
@@ -695,6 +688,12 @@ button.button.action {
 			padding: 4px $aps-spacing-2;
 			font-size: $aps-font-size-xs;
 		}
+	}
+
+	// WordPress native class compatibility
+	.aps-tag-status-links > li > a {
+		padding: 5px $aps-spacing-2;
+		font-size: $aps-font-size-xs;
 	}
 
 	.aps-tag-featured,
@@ -731,6 +730,17 @@ button.button.action {
 		}
 	}
 
+	// WordPress native class compatibility
+	.aps-tag-status-links > li > a {
+		border: 2px solid currentcolor;
+	}
+
+	.aps-tag-status-links > li.current > a {
+		background-color: $aps-color-black;
+		color: $aps-color-bg-card;
+		border-color: $aps-color-black;
+	}
+
 	.aps-tag-status-inline {
 		border: 2px solid $aps-color-black;
 
@@ -756,17 +766,9 @@ button.button.action {
 	.aps-tag-settings-divider {
 		border-top: 3px solid $aps-color-black;
 		border-bottom: 3px solid $aps-color-black;
-	}
 
-	// WordPress native class compatibility
-	.aps-tag-status-links li a {
-		border: 2px solid currentcolor;
-	}
 
-	.aps-tag-status-links li.current a {
-		background-color: $aps-color-black;
-		color: $aps-color-bg-card;
-		border-color: $aps-color-black;
+	
 	}
 }
 
