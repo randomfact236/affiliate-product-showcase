@@ -129,14 +129,10 @@
         }
         
         /* 3-column grid for pricing */
-        .form-row.pricing-row { grid-template-columns: 1fr 1fr 1fr; }
+        .form-row.pricing-row { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
         
         /* 2-column grid for others */
-        .form-row.grid-2 { grid-template-columns: 1fr 1fr; }
-        
-        @media (max-width: 768px) {
-            .form-row.pricing-row, .form-row.grid-2, .image-row { grid-template-columns: 1fr; }
-        }
+        .form-row.grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 
         label {
             display: block;
@@ -180,7 +176,7 @@
            ========================================= */
         .image-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
         }
 

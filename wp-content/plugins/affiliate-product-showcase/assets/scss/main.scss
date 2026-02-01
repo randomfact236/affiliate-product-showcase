@@ -29,8 +29,6 @@
 @use 'components/card';
 @use 'components/buttons';
 @use 'components/forms';
-@use 'components/badges';
-@use 'components/tables';
 @use 'components/modals';
 @use 'components/toasts';
 
@@ -73,7 +71,7 @@
 }
 
 html {
-	font-size: 16px;
+	font-size: $aps-font-size-md;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-ms-text-size-adjust: 100%;
@@ -136,7 +134,7 @@ select {
 		text-decoration: underline;
 	}
 
-	a[href]:after {
+	a[href]::after {
 		content: " (" attr(href) ")";
 	}
 

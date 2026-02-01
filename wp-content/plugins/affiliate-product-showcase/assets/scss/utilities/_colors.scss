@@ -41,8 +41,8 @@
 	&-muted { color: $aps-color-text-muted; }
 	&-light { color: $aps-color-text-light; }
 
-	&-white { color: #ffffff; }
-	&-black { color: #000000; }
+	&-white { color: #fff; }
+	&-black { color: #000; }
 }
 
 // ============================================
@@ -74,8 +74,8 @@
 	&-hover { background-color: $aps-color-bg-hover; }
 	&-input { background-color: $aps-color-bg-input; }
 
-	&-white { background-color: #ffffff; }
-	&-black { background-color: #000000; }
+	&-white { background-color: #fff; }
+	&-black { background-color: #000; }
 	&-transparent { background-color: transparent; }
 }
 
@@ -106,8 +106,8 @@
 	&-light { border-color: $aps-color-border-light; }
 	&-dark { border-color: $aps-color-border-dark; }
 
-	&-white { border-color: #ffffff; }
-	&-black { border-color: #000000; }
+	&-white { border-color: #fff; }
+	&-black { border-color: #000; }
 }
 
 // ============================================

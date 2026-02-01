@@ -4,6 +4,8 @@
  * Styles for the block editor interface
  */
 
+@use '../../assets/scss/variables' as *;
+
 .aps-block--grid {
 	// Container
 	margin: 0;
@@ -14,12 +16,12 @@
 	grid-template-columns: repeat(var(--aps-grid-columns, 3), 1fr);
 	gap: var(--aps-grid-gap, 16px);
 
-	// Responsive adjustments
-	@media (max-width: 1200px) {
+	// Responsive adjustments - using Tailwind breakpoint variables
+	@media (max-width: $aps-breakpoint-xl) {
 		grid-template-columns: repeat(min(var(--aps-grid-columns, 3), 2), 1fr);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: $aps-breakpoint-md) {
 		grid-template-columns: 1fr;
 	}
 

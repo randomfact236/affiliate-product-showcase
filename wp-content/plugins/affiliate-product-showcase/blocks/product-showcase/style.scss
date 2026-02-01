@@ -4,6 +4,8 @@
  * Styles for frontend display
  */
 
+@use '../../assets/scss/variables' as *;
+
 .aps-block--showcase {
 	// Container
 	margin: 0;
@@ -21,12 +23,12 @@
 		gap: var(--aps-showcase-gap, 16px);
 	}
 
-	// Responsive adjustments
-	@media (max-width: 1200px) {
+	// Responsive adjustments - using Tailwind breakpoint variables
+	@media (max-width: $aps-breakpoint-xl) {
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: $aps-breakpoint-md) {
 		grid-template-columns: 1fr;
 		gap: calc(var(--aps-showcase-gap, 16px) * 0.75);
 	}
@@ -76,7 +78,7 @@
 				-webkit-line-clamp: 3;
 			}
 
-			@media (max-width: 768px) {
+			@media (max-width: $aps-breakpoint-md) {
 				flex-direction: column;
 
 				.aps-product-image {
@@ -94,7 +96,7 @@
 			display: block;
 			background: #f9fafb;
 
-			@media (max-width: 768px) {
+			@media (max-width: $aps-breakpoint-md) {
 				height: 200px;
 			}
 		}

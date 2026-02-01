@@ -1,0 +1,137 @@
+/**
+ * Card Component - Body Styles (BEM)
+ *
+ * Content area styles for product card component.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Element: Body
+// ============================================
+
+.aps-card {
+	&__body {
+		padding: $aps-spacing-4;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: $aps-spacing-3;
+	}
+
+	// ============================================
+	// Element: Title
+	// ============================================
+
+	&__title {
+		margin: 0;
+		font-size: $aps-font-size-lg;
+		font-weight: $aps-font-weight-semibold;
+		line-height: $aps-line-height-tight;
+		color: $aps-color-text-main;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	// ============================================
+	// Element: Short Description
+	// ============================================
+
+	&__short-description {
+		margin: 0;
+		font-size: $aps-font-size-base;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-secondary;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	// ============================================
+	// Element: Meta Container
+	// ============================================
+
+	&__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $aps-spacing-2;
+		align-items: center;
+	}
+
+	// ============================================
+	// Element: Badge
+	// ============================================
+
+	&__badge {
+		display: inline-block;
+		padding: $aps-spacing-1 $aps-spacing-3;
+		background: linear-gradient(135deg, $aps-color-primary 0%, $aps-color-primary-dark 100%);
+		color: $aps-color-bg-card;
+		font-size: $aps-font-size-xs;
+		font-weight: $aps-font-weight-semibold;
+		border-radius: $aps-radius-sm;
+		text-transform: uppercase;
+		letter-spacing: $aps-letter-spacing-wide;
+	}
+
+	// ============================================
+	// Element: Rating
+	// ============================================
+
+	&__rating {
+		display: inline-flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		background: $aps-color-rating-bg;
+		border: 1px solid $aps-color-rating-border;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-sm;
+		color: $aps-color-rating-text;
+		font-weight: $aps-font-weight-medium;
+
+		// Screen reader only star symbol
+		&[aria-hidden="true"] {
+			color: $aps-color-gold;
+		}
+	}
+
+	// ============================================
+	// Element: Version Badge
+	// ============================================
+
+	&__version {
+		display: inline-flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		background: $aps-color-version-bg;
+		border: 1px solid $aps-color-version-border;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-xs;
+		color: $aps-color-primary;
+		font-weight: $aps-font-weight-medium;
+		font-family: $aps-font-family-base;
+		transition: all $aps-transition-fast ease;
+
+		&:hover {
+			background: $aps-color-primary;
+			color: $aps-color-bg-card;
+			border-color: $aps-color-primary;
+		}
+
+		// Dashicon within version
+		& .dashicons {
+			font-size: $aps-icon-size-sm;
+			width: $aps-icon-size-sm;
+			height: $aps-icon-size-sm;
+		}
+	}
+}

@@ -16,7 +16,7 @@
 // ============================================
 
 .affiliate-product-showcase {
-	font-family: 'Inter', sans-serif;
+	font-family: $aps-font-family-base;
 }
 
 // ============================================
@@ -25,15 +25,15 @@
 
 .aps-header {
 	background: $aps-color-bg-card;
-	padding: 20px 30px;
+	padding: $aps-spacing-5 $aps-spacing-8;
 	border-bottom: 1px solid $aps-color-border;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin: -20px -20px 30px -20px;
+	margin: (-$aps-spacing-5) (-$aps-spacing-5) $aps-spacing-8;
 
 	&__title {
-		font-size: 20px;
+		font-size: $aps-font-size-md;
 		font-weight: $aps-font-weight-semibold;
 		margin: 0;
 	}
@@ -41,10 +41,10 @@
 	&__close {
 		background: none;
 		border: none;
-		font-size: 20px;
+		font-size: $aps-font-size-md;
 		color: $aps-color-text-muted;
 		cursor: pointer;
-		padding: 8px;
+		padding: $aps-spacing-2;
 
 		&:hover {
 			color: $aps-color-danger;
@@ -58,19 +58,19 @@
 
 .aps-quick-nav {
 	display: flex;
-	gap: 15px;
-	padding: 15px 20px;
+	gap: $aps-spacing-4;
+	padding: $aps-spacing-4 $aps-spacing-5;
 	background: $aps-color-bg-light;
 	border: 1px solid $aps-color-border;
 	border-radius: $aps-radius-sm;
-	margin-bottom: 30px;
+	margin-bottom: $aps-spacing-8;
 	flex-wrap: wrap;
 
 	&__link {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		padding: 10px 15px;
+		gap: $aps-spacing-2;
+		padding: $aps-spacing-2 $aps-spacing-4;
 		background: $aps-color-bg-card;
 		border: 1px solid $aps-color-border;
 		border-radius: $aps-radius-sm;
@@ -85,7 +85,7 @@
 		}
 
 		i {
-			font-size: 16px;
+			font-size: $aps-font-size-base;
 		}
 	}
 }
@@ -98,9 +98,9 @@
 	background: $aps-color-bg-card;
 	border: 1px solid $aps-color-border;
 	border-radius: $aps-radius-sm;
-	padding: 30px;
+	padding: $aps-spacing-8;
 	max-width: 1200px;
-	margin-bottom: 30px;
+	margin-bottom: $aps-spacing-8;
 }
 
 // ============================================
@@ -108,15 +108,15 @@
 // ============================================
 
 .aps-section {
-	margin-bottom: 40px;
-	padding-bottom: 40px;
+	margin-bottom: $aps-spacing-10;
+	padding-bottom: $aps-spacing-10;
 	border-bottom: 1px solid $aps-color-border;
 
 	&__title {
 		font-size: $aps-font-size-base;
 		font-weight: $aps-font-weight-semibold;
-		margin: 0 0 20px 0;
-		padding-bottom: 10px;
+		margin: 0 0 $aps-spacing-5;
+		padding-bottom: $aps-spacing-2;
 		border-bottom: 2px solid $aps-color-primary;
 	}
 }
@@ -126,22 +126,22 @@
 // ============================================
 
 .aps-field-group {
-	margin-bottom: 20px;
+	margin-bottom: $aps-spacing-5;
 
 	label {
 		display: block;
-		margin-bottom: 8px;
+		margin-bottom: $aps-spacing-2;
 		font-weight: $aps-font-weight-medium;
 		font-size: $aps-font-size-sm;
 	}
 
-	.required {
+	&__required {
 		color: $aps-color-danger;
 	}
 
-	.description {
+	&__description {
 		display: block;
-		margin-top: 6px;
+		margin-top: $aps-spacing-1;
 		font-size: $aps-font-size-xs;
 		font-style: italic;
 		color: $aps-color-text-muted;
@@ -154,7 +154,7 @@
 
 .aps-input {
 	width: 100%;
-	padding: 10px 12px;
+	padding: $aps-spacing-2 $aps-spacing-3;
 	font-size: $aps-font-size-base;
 	border: 1px solid $aps-color-border;
 	border-radius: $aps-radius-sm;
@@ -162,7 +162,7 @@
 	&:focus {
 		border-color: $aps-color-primary;
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 }
 
@@ -176,18 +176,18 @@
 		width: 100%;
 		font-family: inherit;
 		line-height: 1.6;
-		padding: 12px;
+		padding: $aps-spacing-3;
 	}
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 }
 
 .aps-select {
 	width: 100%;
-	padding: 10px 36px 10px 12px;
+	padding: $aps-spacing-2 36px $aps-spacing-2 $aps-spacing-3;
 	font-size: $aps-font-size-base;
 	border: 1px solid $aps-color-border;
 	border-radius: $aps-radius-sm;
@@ -196,11 +196,11 @@
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 }
 
-.aps-readonly {
+.aps-input--readonly {
 	background: $aps-color-bg-hover;
 }
 
@@ -211,7 +211,7 @@
 .aps-checkbox-label {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: $aps-spacing-2;
 	cursor: pointer;
 
 	input[type="checkbox"] {
@@ -227,18 +227,18 @@
 .aps-tags-group {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 15px;
-	margin-top: 10px;
+	gap: $aps-spacing-4;
+	margin-top: $aps-spacing-2;
 }
 
 .aps-tag {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	padding: 4px 10px;
-	background: #e6f0f5;
+	gap: $aps-spacing-1;
+	padding: 4px $aps-spacing-2;
+	background: $aps-color-info-light;
 	color: $aps-color-primary;
-	border-radius: 3px;
+	border-radius: $aps-radius-sm;
 	font-size: $aps-font-size-sm;
 
 	&__remove {
@@ -255,13 +255,13 @@
 	&--2 {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 20px;
+		gap: $aps-spacing-5;
 	}
 
 	&--3 {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 20px;
+		gap: $aps-spacing-5;
 	}
 }
 
@@ -272,9 +272,9 @@
 .aps-upload-area {
 	border: 2px dashed $aps-color-border;
 	border-radius: $aps-radius-sm;
-	padding: 20px;
+	padding: $aps-spacing-5;
 	text-align: center;
-	background: #f9f9f9;
+	background: $aps-color-bg-light;
 	cursor: pointer;
 	position: relative;
 	min-height: 150px;
@@ -287,11 +287,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 10px;
+		gap: $aps-spacing-2;
 		color: $aps-color-text-muted;
 
 		i {
-			font-size: 40px;
+			font-size: $aps-font-size-2xl;
 		}
 	}
 
@@ -306,36 +306,36 @@
 		top: 0;
 		left: 0;
 
-		&.has-image {
+		&--has-image {
 			display: block;
 		}
 
-		&.no-image {
+		&--no-image {
 			display: none;
 		}
 	}
 }
 
 .aps-url-input {
-	margin-top: 15px;
+	margin-top: $aps-spacing-4;
 }
 
 .aps-upload-btn {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
-	padding: 8px 16px;
+	gap: $aps-spacing-2;
+	padding: $aps-spacing-2 $aps-spacing-4;
 	background: $aps-color-primary;
 	color: $aps-color-bg-card;
 	border-radius: $aps-radius-sm;
 	font-size: $aps-font-size-sm;
 	cursor: pointer;
-	margin-top: 10px;
+	margin-top: $aps-spacing-2;
 	border: none;
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 
 	&--cancel {
@@ -354,10 +354,10 @@
 	&__selected-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 5px;
+		gap: $aps-spacing-1;
 		border: 1px solid $aps-color-border;
 		border-radius: $aps-radius-sm;
-		padding: 4px 8px;
+		padding: 4px $aps-spacing-2;
 		min-height: 38px;
 		cursor: pointer;
 	}
@@ -385,7 +385,7 @@
 		display: none;
 
 		&__item {
-			padding: 10px 15px;
+			padding: $aps-spacing-2 $aps-spacing-4;
 			cursor: pointer;
 
 			&:hover {
@@ -406,8 +406,8 @@
 .aps-feature-list {
 	&__input-group {
 		display: flex;
-		gap: 10px;
-		margin-bottom: 15px;
+		gap: $aps-spacing-2;
+		margin-bottom: $aps-spacing-4;
 	}
 
 	&__list {
@@ -415,36 +415,36 @@
 		border-radius: $aps-radius-sm;
 		max-height: 300px;
 		overflow-y: auto;
-		margin-top: 15px;
+		margin-top: $aps-spacing-4;
 	}
 
 	&__item {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 10px 15px;
-		border-bottom: 1px solid #eee;
+		padding: $aps-spacing-2 $aps-spacing-4;
+		border-bottom: 1px solid $aps-color-border-light;
 
 		&:hover {
-			background: #f8f9f9;
+			background: $aps-color-bg-hover;
 		}
 
 		&--highlighted {
-			background: #e6f0f5;
+			background: $aps-color-info-light;
 		}
 
-		&__text {
+		&-text {
 			flex-grow: 1;
 		}
 
-		&__actions {
+		&-actions {
 			display: flex;
-			gap: 5px;
+			gap: $aps-spacing-1;
 
 			button {
 				background: none;
-				border: 1px solid #ddd;
-				border-radius: 3px;
+				border: 1px solid $aps-color-border;
+				border-radius: $aps-radius-sm;
 				width: 28px;
 				height: 28px;
 				cursor: pointer;
@@ -458,11 +458,11 @@
 // Block: Word Counter
 // ============================================
 
-.word-counter {
+.aps-word-counter {
 	text-align: right;
 	font-size: $aps-font-size-xs;
 	color: $aps-color-text-muted;
-	margin-top: 5px;
+	margin-top: $aps-spacing-1;
 }
 
 // ============================================
@@ -472,8 +472,8 @@
 .aps-form-actions {
 	display: flex;
 	align-items: center;
-	gap: 15px;
-	padding-top: 20px;
+	gap: $aps-spacing-4;
+	padding-top: $aps-spacing-5;
 	border-top: 1px solid $aps-color-border;
 }
 
@@ -484,8 +484,8 @@
 .aps-btn {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
-	padding: 10px 24px;
+	gap: $aps-spacing-2;
+	padding: $aps-spacing-2 $aps-spacing-6;
 	border-radius: $aps-radius-sm;
 	cursor: pointer;
 	text-decoration: none;
@@ -495,7 +495,7 @@
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 
 	&--primary {
@@ -525,19 +525,19 @@
 .aps-tag-checkbox {
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	padding: 6px 12px;
-	background: #f9f9f9;
-	border: 1px solid #eee;
+	gap: $aps-spacing-2;
+	padding: 6px $aps-spacing-3;
+	background: $aps-color-bg-light;
+	border: 1px solid $aps-color-border-light;
 	border-radius: $aps-radius-sm;
 	cursor: pointer;
 
 	&__badge {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		padding: 4px 12px;
-		background: #e6f0f5;
+		gap: $aps-spacing-1;
+		padding: 4px $aps-spacing-3;
+		background: $aps-color-info-light;
 		color: $aps-color-primary;
 		border-radius: $aps-radius-sm;
 		font-weight: $aps-font-weight-semibold;
@@ -552,7 +552,7 @@
 .aps-taxonomy-item {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: $aps-spacing-2;
 
 	&__image {
 		width: 24px;
@@ -568,7 +568,7 @@
 		width: 20px;
 		height: 20px;
 		border-radius: 50%;
-		background: #ffd700;
+		background: $aps-color-gold;
 		color: $aps-color-bg-card;
 		font-size: $aps-font-size-xs;
 	}
@@ -582,8 +582,8 @@
 	&__badge-preview {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		padding: 4px 12px;
+		gap: $aps-spacing-1;
+		padding: 4px $aps-spacing-3;
 		border-radius: $aps-radius-sm;
 		font-weight: $aps-font-weight-semibold;
 		font-size: $aps-font-size-xs;
@@ -602,7 +602,7 @@
 // Block: Visually Hidden
 // ============================================
 
-.visually-hidden {
+.aps-visually-hidden {
 	border: 0;
 	clip: rect(1px, 1px, 1px, 1px);
 	-webkit-clip-path: inset(50%);
@@ -620,7 +620,7 @@
 // Responsive Design
 // ============================================
 
-@media (max-width: 768px) {
+@media (max-width: $aps-breakpoint-md) {
 	.aps-grid--2,
 	.aps-grid--3 {
 		grid-template-columns: 1fr;
@@ -645,7 +645,7 @@
 @include prefers-high-contrast {
 	.aps-tag,
 	.aps-ribbon-item__badge-preview {
-		border: 1px solid currentColor;
+		border: 1px solid currentcolor;
 	}
 
 	.aps-quick-nav__link:hover {

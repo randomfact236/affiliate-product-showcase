@@ -1,0 +1,27 @@
+/**
+ * Form Component - Textarea Styles (BEM)
+ *
+ * Textarea styles for form components.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Element: Textarea
+// ============================================
+
+.aps-form-field {
+	&__textarea {
+		min-height: 5rem;
+		resize: vertical;
+		font-family: $aps-font-family-base;
+
+		&:focus {
+			border-color: $aps-color-primary;
+			box-shadow: $aps-shadow-focus;
+		}
+	}
+}

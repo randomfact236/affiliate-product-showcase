@@ -34,32 +34,33 @@ $aps-color-version-border: #b3d7ff;
 $aps-color-success: #00a32a;
 $aps-color-success-light: #e5f7ed;
 $aps-color-success-text: #22c55e;
-
 $aps-color-warning: #d97706;
 $aps-color-warning-light: #fef3c7;
 $aps-color-warning-text: #b45309;
-
 $aps-color-danger: #d63638;
+$aps-color-danger-dark: #b32d2e;
 $aps-color-danger-light: #fee2e2;
 $aps-color-danger-text: #dc2626;
-
 $aps-color-info: #3b82f6;
 $aps-color-info-light: #dbeafe;
+$aps-color-info-light-alt: #e6f0ff;
 $aps-color-info-text: #2563eb;
 
 // Neutral Colors
+$aps-color-black: #000;
 $aps-color-text-main: #1d2327;
+$aps-color-text-dark: #2c3338;
 $aps-color-text-muted: #646970;
 $aps-color-text-light: #a7aaad;
-
 $aps-color-bg-light: #f0f0f1;
-$aps-color-bg-card: #ffffff;
+$aps-color-bg-card: #fff;
+$aps-color-white: #fff;
 $aps-color-bg-hover: #f6f7f7;
-$aps-color-bg-input: #ffffff;
-
+$aps-color-bg-input: #fff;
 $aps-color-border: #c3c4c7;
 $aps-color-border-light: #dcdcde;
 $aps-color-border-dark: #8c8f94;
+$aps-color-gray: #646970;
 
 // Ribbon Colors
 $aps-color-ribbon: #d63638;
@@ -70,14 +71,20 @@ $aps-color-ribbon-orange: #f97316;
 // Featured Star
 $aps-color-star: #e6b800;
 
+// Gold Color
+$aps-color-gold: #ffd700;
+
+// Discount Color
+$aps-color-discount: #ef4444;
+
 // ============================================
 // Typography
 // ============================================
 
 // Font Families
-$aps-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-$aps-font-family-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-$aps-font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+$aps-font-family-base: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
+$aps-font-family-heading: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
+$aps-font-family-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 
 // Font Sizes (in rem)
 $aps-font-size-xs: 0.75rem;   // 12px
@@ -104,10 +111,14 @@ $aps-line-height-relaxed: 1.75;
 // Spacing Scale (in rem)
 // ============================================
 
+$aps-spacing-xs: 0.125rem; // 2px
 $aps-spacing-0: 0;
 $aps-spacing-1: 0.25rem;  // 4px
 $aps-spacing-2: 0.5rem;   // 8px
 $aps-spacing-3: 0.75rem;  // 12px
+$aps-spacing-base: 1rem; // 16px (base spacing unit)
+$aps-letter-spacing-wide: 0.5px; // Wide letter spacing for badges, labels, tags
+$aps-icon-size-sm: 0.875rem; // 14px (small icon size)
 $aps-spacing-4: 1rem;      // 16px
 $aps-spacing-5: 1.25rem;   // 20px
 $aps-spacing-6: 1.5rem;    // 24px
@@ -115,6 +126,7 @@ $aps-spacing-8: 2rem;      // 32px
 $aps-spacing-10: 2.5rem;   // 40px
 $aps-spacing-12: 3rem;     // 48px
 $aps-spacing-16: 4rem;     // 64px
+$aps-spacing-full: 100%; // Full width/height
 
 // ============================================
 // Border Radius (in rem)
@@ -131,13 +143,12 @@ $aps-radius-full: 9999px;
 // Shadows
 // ============================================
 
-$aps-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-$aps-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-$aps-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-$aps-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-
-$aps-shadow-focus: 0 0 0 3px rgba(34, 113, 177, 0.1);
-$aps-shadow-focus-error: 0 0 0 3px rgba(214, 99, 56, 0.1);
+$aps-shadow-sm: 0 1px 2px rgb(0 0 0 / 5%);
+$aps-shadow-md: 0 4px 6px rgb(0 0 0 / 7%);
+$aps-shadow-lg: 0 10px 15px rgb(0 0 0 / 10%);
+$aps-shadow-xl: 0 20px 25px rgb(0 0 0 / 15%);
+$aps-shadow-focus: 0 0 0 3px rgb(34 113 177 / 10%);
+$aps-shadow-focus-error: 0 0 0 3px rgb(214 99 56 / 10%);
 
 // ============================================
 // Transitions
@@ -161,15 +172,19 @@ $aps-z-tooltip: 1070;
 $aps-z-toast: 9999;
 
 // ============================================
-// Breakpoints (in px)
+// Breakpoints (in px) - Aligned with Tailwind CSS
 // ============================================
+// Note: These match Tailwind's standard breakpoints defined in tailwind.config.js
+// Tailwind is the single source of truth for breakpoints
 
 $aps-breakpoint-xs: 480px;
-$aps-breakpoint-sm: 640px;
-$aps-breakpoint-md: 768px;
-$aps-breakpoint-lg: 1024px;
-$aps-breakpoint-xl: 1200px;
-$aps-breakpoint-2xl: 1440px;
+$aps-breakpoint-wp-mobile: 600px;
+$aps-breakpoint-sm: 640px;  // Tailwind 'sm' - Small devices (landscape phones)
+$aps-breakpoint-md: 768px;  // Tailwind 'md' - Medium devices (tablets)
+$aps-breakpoint-wp-tablet: 782px;
+$aps-breakpoint-lg: 1024px; // Tailwind 'lg' - Large devices (desktops)
+$aps-breakpoint-xl: 1280px; // Tailwind 'xl' - Extra large devices (large desktops) - CHANGED from 1200px
+$aps-breakpoint-2xl: 1536px; // Tailwind '2xl' - 2X large devices (extra large desktops) - CHANGED from 1440px
 
 // ============================================
 // Container Widths
@@ -180,6 +195,20 @@ $aps-container-md: 768px;
 $aps-container-lg: 1024px;
 $aps-container-xl: 1200px;
 $aps-container-max: 1400px;
+
+// ============================================
+// Widths (in rem)
+// ============================================
+
+$aps-width-search-input: 280px;
+$aps-width-search-input-sm: 200px;
+$aps-width-color-picker: 50px;
+
+// ============================================
+// Sizes (in px)
+// ============================================
+
+$aps-size-swatch: 32px;
 
 // ============================================
 // Legacy Variables (for backward compatibility)

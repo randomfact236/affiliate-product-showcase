@@ -1,0 +1,30 @@
+/**
+ * Button Component - Size Styles (BEM)
+ *
+ * Size styles (small, large) for button component.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Modifier: Small
+// ============================================
+
+.aps-button {
+	&--small {
+		padding: $aps-spacing-1 $aps-spacing-3;
+		font-size: $aps-font-size-sm;
+	}
+
+	// ============================================
+	// Modifier: Large
+	// ============================================
+
+	&--large {
+		padding: $aps-spacing-3 $aps-spacing-6;
+		font-size: $aps-font-size-lg;
+	}
+}

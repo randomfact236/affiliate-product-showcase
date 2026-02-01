@@ -1,0 +1,233 @@
+/**
+ * Card Component - Base Styles (BEM)
+ *
+ * Base styles for the product card component.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Block: Product Card
+// ============================================
+
+.aps-card {
+	position: relative;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	overflow: hidden;
+	transition: all $aps-transition-base ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	// ============================================
+	// Modifier: Hover State
+	// ============================================
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: $aps-shadow-lg;
+		border-color: $aps-color-primary;
+	}
+
+	// ============================================
+	// Modifier: Focus State (keyboard navigation)
+	// ============================================
+
+	&:focus-within {
+		outline: 3px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-radius: $aps-radius-lg;
+	}
+
+	// ============================================
+	// Element: Platform Requirements
+	// ============================================
+
+	&__platform {
+		margin-top: $aps-spacing-3;
+		padding: $aps-spacing-3;
+		background: $aps-color-bg-light;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-md;
+		font-size: $aps-font-size-sm;
+	}
+
+	&__platform-details {
+		transition: all $aps-transition-base ease;
+
+		&[open] {
+			background: $aps-color-bg-card;
+		}
+
+		// Rotate icon when open
+		&[open] .aps-card__platform-toggle .dashicons {
+			transform: rotate(90deg);
+		}
+	}
+
+	&__platform-toggle {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-primary;
+		padding: $aps-spacing-1 0;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+
+		&:hover {
+			color: $aps-color-primary-hover;
+		}
+
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+			border-radius: $aps-radius-sm;
+		}
+
+		// Dashicon within toggle
+		& .dashicons {
+			font-size: 1rem;
+			width: 1rem;
+			height: 1rem;
+			transition: transform $aps-transition-base ease;
+		}
+	}
+
+	&__platform-content {
+		margin-top: $aps-spacing-2;
+		padding: $aps-spacing-2 $aps-spacing-3;
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-sm;
+		font-size: $aps-font-size-sm;
+		line-height: $aps-line-height-relaxed;
+		color: $aps-color-secondary;
+		animation: aps-slideDown $aps-transition-base ease;
+	}
+
+	@keyframes aps-slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}
+
+// ============================================
+// Disclosure Component
+// ============================================
+
+.aps-disclosure {
+	padding: $aps-spacing-3;
+	margin-bottom: $aps-spacing-3;
+	font-size: $aps-font-size-xs;
+	line-height: $aps-line-height-normal;
+	color: $aps-color-secondary;
+	background: $aps-color-bg-light;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-sm;
+
+	&--top {
+		margin-top: 0;
+		margin-bottom: $aps-spacing-4;
+	}
+
+	&--bottom {
+		margin-top: $aps-spacing-4;
+		margin-bottom: 0;
+	}
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+@media (max-width: $aps-breakpoint-md) {
+	.aps-card__footer {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.aps-card__cta {
+		width: 100%;
+		text-align: center;
+	}
+
+	.aps-card__price-container {
+		justify-content: center;
+		width: 100%;
+	}
+}
+
+@media (max-width: $aps-breakpoint-xs) {
+	.aps-card__title {
+		font-size: $aps-font-size-md;
+	}
+
+	.aps-card__price {
+		font-size: $aps-font-size-lg;
+	}
+
+	.aps-card__platform {
+		font-size: $aps-font-size-xs;
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.aps-card {
+		break-inside: avoid;
+		border: 1px solid $aps-color-black;
+		box-shadow: none;
+	}
+
+	.aps-card__cta {
+		display: none;
+	}
+
+	.aps-card__platform-details {
+		display: none;
+	}
+}
+
+// ============================================
+// Accessibility Enhancements
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+	.aps-card,
+	.aps-card:hover .aps-card__media img,
+	.aps-card__platform-details,
+	.aps-card__platform-toggle .dashicons,
+	.aps-card__discount {
+		animation: none;
+		transition: none;
+	}
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+	.aps-card {
+		border-width: 2px;
+	}
+
+	.aps-card__badge,
+	.aps-card__discount {
+		border: 2px solid $aps-color-black;
+	}
+}

@@ -1,0 +1,84 @@
+{
+  "analysis_date": "2026-02-01T09:18:21.549751+00:00",
+  "summary": {
+    "total_issues": 6,
+    "performance_impact": "low",
+    "estimated_improvement": "5-10%"
+  },
+  "deep_nesting": [],
+  "inefficient_selectors": [
+    {
+      "severity": "medium",
+      "file": "affiliate-product-showcase\\assets\\scss\\pages\\_tags.scss",
+      "line": 677,
+      "selector": "a",
+      "type": "descendant",
+      "suggestion": "Use child selector '>' or BEM classes"
+    },
+    {
+      "severity": "medium",
+      "file": "affiliate-product-showcase\\assets\\scss\\pages\\_tags.scss",
+      "line": 762,
+      "selector": "a",
+      "type": "descendant",
+      "suggestion": "Use child selector '>' or BEM classes"
+    }
+  ],
+  "unused_css": {
+    "total_unused_bytes": 0,
+    "unused_percentage": 0,
+    "unused_classes": []
+  },
+  "media_queries": [
+    {
+      "severity": "medium",
+      "issue": "duplicate_breakpoint",
+      "breakpoint": "768px",
+      "locations": [
+        "affiliate-product-showcase\\assets\\scss\\pages\\_add-product.scss:623",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_ribbons.scss:294",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_tags.scss:604"
+      ],
+      "suggestion": "Use shared breakpoint mixin for 768px"
+    },
+    {
+      "severity": "medium",
+      "issue": "duplicate_breakpoint",
+      "breakpoint": "782px",
+      "locations": [
+        "affiliate-product-showcase\\assets\\scss\\pages\\_admin-form.scss:209",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_admin-products.scss:762",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_admin-products.scss:860",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_ribbons.scss:331"
+      ],
+      "suggestion": "Use shared breakpoint mixin for 782px"
+    },
+    {
+      "severity": "medium",
+      "issue": "duplicate_breakpoint",
+      "breakpoint": "480px",
+      "locations": [
+        "affiliate-product-showcase\\assets\\scss\\pages\\_admin-form.scss:224",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_ribbons.scss:353",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_tags.scss:685"
+      ],
+      "suggestion": "Use shared breakpoint mixin for 480px"
+    },
+    {
+      "severity": "medium",
+      "issue": "duplicate_breakpoint",
+      "breakpoint": "1200px",
+      "locations": [
+        "affiliate-product-showcase\\assets\\scss\\pages\\_admin-products.scss:860",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_ribbons.scss:309",
+        "affiliate-product-showcase\\assets\\scss\\pages\\_tags.scss:559"
+      ],
+      "suggestion": "Use shared breakpoint mixin for 1200px"
+    }
+  ],
+  "critical_css": {
+    "above_fold_classes": [],
+    "estimated_size": "0.0KB",
+    "recommendation": "Critical CSS is small (0.0KB). Can be safely inlined without significant overhead."
+  }
+}

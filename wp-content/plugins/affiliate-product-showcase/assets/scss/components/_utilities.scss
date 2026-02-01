@@ -308,6 +308,7 @@
 
 .aps-print-only {
 	@media print { display: block; }
+
 	@media screen { display: none; }
 }
 

@@ -4,6 +4,8 @@
  * Styles for block editor interface
  */
 
+@use '../../assets/scss/variables' as *;
+
 .aps-block--showcase {
 	// Container
 	margin: 0;
@@ -35,7 +37,7 @@
 				flex: 1;
 			}
 
-			@media (max-width: 768px) {
+			@media (max-width: $aps-breakpoint-md) {
 				flex-direction: column;
 
 				.aps-product-image {
@@ -46,12 +48,12 @@
 		}
 	}
 
-	// Responsive adjustments
-	@media (max-width: 1200px) {
+	// Responsive adjustments - using Tailwind breakpoint variables
+	@media (max-width: $aps-breakpoint-xl) {
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: $aps-breakpoint-md) {
 		grid-template-columns: 1fr;
 	}
 

@@ -36,11 +36,18 @@ class Enqueue {
      * @return void
      */
     public function enqueueStyles(): void {
+        wp_enqueue_style(
+            'affiliate-product-showcase-tokens',
+            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/tokens.css',
+            [],
+            self::VERSION
+        );
+
         // Main public CSS
         wp_enqueue_style(
             'affiliate-product-showcase-public',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/public.css',
-            [],
+            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/affiliate-product-showcase.css',
+            [ 'affiliate-product-showcase-tokens' ],
             self::VERSION
         );
 
@@ -48,23 +55,7 @@ class Enqueue {
         wp_enqueue_style(
             'affiliate-product-showcase-card',
             AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-card.css',
-            [ 'affiliate-product-showcase-public' ],
-            self::VERSION
-        );
-
-        // Grid layout styles
-        wp_enqueue_style(
-            'affiliate-product-showcase-grid',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/grid.css',
-            [ 'affiliate-product-showcase-public' ],
-            self::VERSION
-        );
-
-        // Responsive styles
-        wp_enqueue_style(
-            'affiliate-product-showcase-responsive',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/responsive.css',
-            [ 'affiliate-product-showcase-public' ],
+            [ 'affiliate-product-showcase-public', 'affiliate-product-showcase-tokens' ],
             self::VERSION
         );
 

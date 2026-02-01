@@ -22,25 +22,25 @@
 
 .aps-ribbon-status {
 	display: inline-block;
-	padding: 2px 8px;
-	border-radius: 12px;
+	padding: 2px $aps-spacing-2;
+	border-radius: $aps-radius-xl;
 	font-size: $aps-font-size-xs;
 	font-weight: $aps-font-weight-semibold;
 	line-height: 1.4;
 	text-decoration: none;
 
 	&--publish {
-		background-color: #22c55e;
+		background-color: $aps-color-success;
 		color: $aps-color-bg-card;
 	}
 
 	&--draft {
-		background-color: #6c757d;
+		background-color: $aps-color-gray;
 		color: $aps-color-bg-card;
 	}
 
 	&--pending {
-		background-color: #f59e0b;
+		background-color: $aps-color-warning;
 		color: $aps-color-bg-card;
 	}
 }
@@ -50,24 +50,24 @@
 // ============================================
 
 .aps-color-picker {
-	width: 100px;
+	width: $aps-width-color-picker;
 }
 
 // ============================================
 // Block: Color Presets
 // ============================================
 
-.color-presets {
+.aps-color-presets {
 	display: flex;
-	gap: 10px;
+	gap: $aps-spacing-2;
 	flex-wrap: wrap;
-	margin-top: 15px;
+	margin-top: $aps-spacing-4;
 }
 
-.preset-color {
+.aps-preset-color {
 	position: relative;
-	width: 35px;
-	height: 35px;
+	width: $aps-size-swatch;
+	height: $aps-size-swatch;
 	border: 2px solid transparent;
 	border-radius: 50%;
 	cursor: pointer;
@@ -77,56 +77,47 @@
 
 	&:hover {
 		transform: scale(1.1);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
 	}
 
-	&.active {
-		border-color: #0073aa;
-		box-shadow: 0 0 0 4px rgba(0, 115, 177, 0.3);
+	&--active {
+		border-color: $aps-color-primary;
+		box-shadow: 0 0 0 4px rgb(0 115 177 / 30%);
 	}
 }
 
-.color-swatch {
+.aps-color-swatch {
 	width: 100%;
 	height: 100%;
 	display: block;
 	border-radius: 50%;
 }
 
-// Preset color swatches using data attributes
-.preset-color[data-color="#ff0000"] .color-swatch { background-color: #ff0000; }
-.preset-color[data-color="#00ff00"] .color-swatch { background-color: #00ff00; }
-.preset-color[data-color="#0000ff"] .color-swatch { background-color: #0000ff; }
-.preset-color[data-color="#ffff00"] .color-swatch { background-color: #ffff00; }
-.preset-color[data-color="#ff00ff"] .color-swatch { background-color: #ff00ff; }
-.preset-color[data-color="#000000"] .color-swatch { background-color: #000000; }
-.preset-color[data-color="#ff6600"] .color-swatch { background-color: #ff6600; }
-
 // ============================================
 // Block: Live Preview
 // ============================================
 
-.ribbon-live-preview {
-	margin-top: 25px;
-	padding: 20px;
-	border: 2px solid #e0e0e0;
+.aps-ribbon-live-preview {
+	margin-top: $aps-spacing-6;
+	padding: $aps-spacing-5;
+	border: 2px solid $aps-color-border;
 	border-radius: $aps-radius-md;
-	background: #f9f9f9;
+	background: $aps-color-bg-light;
 }
 
-.preview-label {
+.aps-preview-label {
 	display: block;
 	font-size: $aps-font-size-xs;
 	font-weight: $aps-font-weight-semibold;
-	color: #444;
-	margin-bottom: 10px;
+	color: $aps-color-text-dark;
+	margin-bottom: $aps-spacing-2;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 }
 
-.ribbon-preview-badge {
+.aps-ribbon-preview-badge {
 	display: inline-block;
-	padding: 8px 16px;
+	padding: $aps-spacing-2 $aps-spacing-4;
 	border-radius: $aps-radius-sm;
 	font-weight: $aps-font-weight-bold;
 	font-size: $aps-font-size-base;
@@ -134,6 +125,19 @@
 	text-align: center;
 	min-width: 100px;
 	transition: all $aps-transition-slow ease;
+}
+
+// WordPress native ID compatibility
+.ribbon-live-preview {
+	@extend .aps-ribbon-live-preview;
+}
+
+.preview-label {
+	@extend .aps-preview-label;
+}
+
+.ribbon-preview-badge {
+	@extend .aps-ribbon-preview-badge;
 }
 
 // ============================================
@@ -145,11 +149,11 @@
 	width: 20px;
 	height: 20px;
 	border-radius: $aps-radius-sm;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
 }
 
-.aps-ribbon-color-empty {
-	color: #999;
+.aps-ribbon-color-swatch--empty {
+	color: $aps-color-text-light;
 	font-style: italic;
 }
 
@@ -162,12 +166,12 @@
 	width: 20px;
 	height: 20px;
 	border-radius: $aps-radius-sm;
-	border: 2px solid #ccc;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	border: 2px solid $aps-color-border-light;
+	box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
 }
 
-.aps-ribbon-bg-color-empty {
-	color: #999;
+.aps-ribbon-bg-color-swatch--empty {
+	color: $aps-color-text-light;
 	font-style: italic;
 }
 
@@ -177,16 +181,16 @@
 
 .aps-ribbon-icon-display {
 	display: inline-block;
-	padding: 3px 8px;
-	background: #f0f0f0;
-	border-radius: 3px;
+	padding: 3px $aps-spacing-2;
+	background: $aps-color-bg-hover;
+	border-radius: $aps-radius-sm;
 	font-size: $aps-font-size-xs;
-	font-family: monospace;
-	color: #444;
+	font-family: $aps-font-family-mono;
+	color: $aps-color-text-dark;
 }
 
-.aps-ribbon-icon-empty {
-	color: #999;
+.aps-ribbon-icon-display--empty {
+	color: $aps-color-text-light;
 	font-style: italic;
 }
 
@@ -194,8 +198,8 @@
 // Block: Ribbon Icon Prefix
 // ============================================
 
-.ribbon-icon-prefix {
-	margin-right: 4px;
+.aps-ribbon-icon-prefix {
+	margin-right: $aps-spacing-1;
 	font-weight: $aps-font-weight-bold;
 }
 
@@ -203,49 +207,83 @@
 // Ribbon Taxonomy Table Columns
 // ============================================
 
+.aps-ribbon-table {
+	&__column--cb {
+		width: 2.2em;
+	}
+
+	&__column--name {
+		width: 25%;
+		min-width: 150px;
+	}
+
+	&__column--slug {
+		width: 18%;
+		min-width: 120px;
+	}
+
+	&__column--color {
+		width: 60px;
+		text-align: center;
+	}
+
+	&__column--bg-color {
+		width: 80px;
+		text-align: center;
+	}
+
+	&__column--icon {
+		width: 100px;
+		text-align: center;
+	}
+
+	&__column--status {
+		width: 100px;
+		text-align: center;
+	}
+
+	&__column--count {
+		width: 80px;
+		text-align: center;
+	}
+}
+
+// WordPress native class compatibility
 .taxonomy-aps_ribbon {
 	.wp-list-table {
 		table-layout: fixed;
 	}
 
-	// Column widths
 	.column-cb {
-		width: 2.2em;
+		@extend .aps-ribbon-table__column--cb;
 	}
 
 	.column-name {
-		width: 25%;
-		min-width: 150px;
+		@extend .aps-ribbon-table__column--name;
 	}
 
 	.column-slug {
-		width: 18%;
-		min-width: 120px;
+		@extend .aps-ribbon-table__column--slug;
 	}
 
 	.column-color {
-		width: 60px;
-		text-align: center;
+		@extend .aps-ribbon-table__column--color;
 	}
 
 	.column-bg_color {
-		width: 80px;
-		text-align: center;
+		@extend .aps-ribbon-table__column--bg-color;
 	}
 
 	.column-ribbon_icon {
-		width: 100px;
-		text-align: center;
+		@extend .aps-ribbon-table__column--icon;
 	}
 
 	.column-status {
-		width: 100px;
-		text-align: center;
+		@extend .aps-ribbon-table__column--status;
 	}
 
 	.column-count {
-		width: 80px;
-		text-align: center;
+		@extend .aps-ribbon-table__column--count;
 	}
 }
 
@@ -253,22 +291,32 @@
 // Responsive Design
 // ============================================
 
-@media (max-width: 768px) {
-	.color-presets {
+@media (max-width: $aps-breakpoint-md) {
+	.aps-color-presets {
 		justify-content: center;
 	}
 
-	.ribbon-live-preview {
-		padding: 15px;
+	.aps-ribbon-live-preview {
+		padding: $aps-spacing-4;
 	}
 
-	.preset-color {
+	.aps-preset-color {
 		width: 40px;
 		height: 40px;
 	}
 }
 
-@media (max-width: 1200px) {
+@media (max-width: $aps-breakpoint-xl) {
+	.aps-ribbon-table {
+		&__column--name {
+			width: 22%;
+		}
+
+		&__column--slug {
+			width: 15%;
+		}
+	}
+
 	.taxonomy-aps_ribbon {
 		.column-name {
 			width: 22%;
@@ -280,7 +328,15 @@
 	}
 }
 
-@media (max-width: 782px) {
+@media (max-width: #{$aps-breakpoint-wp-tablet - 1px}) {
+	.aps-ribbon-table {
+		&__column--name,
+		&__column--slug {
+			width: auto;
+			min-width: 0;
+		}
+	}
+
 	.taxonomy-aps_ribbon {
 		.wp-list-table {
 			table-layout: auto;
@@ -294,23 +350,23 @@
 	}
 }
 
-@media (max-width: 480px) {
-	.ribbon-live-preview {
-		padding: 10px;
+@media (max-width: $aps-breakpoint-xs) {
+	.aps-ribbon-live-preview {
+		padding: $aps-spacing-2;
 	}
 
-	.ribbon-preview-badge {
-		padding: 6px 12px;
+	.aps-ribbon-preview-badge {
+		padding: 6px $aps-spacing-3;
 		font-size: $aps-font-size-xs;
 		min-width: 80px;
 	}
 
-	.color-presets {
-		gap: 8px;
+	.aps-color-presets {
+		gap: $aps-spacing-2;
 	}
 
-	.preset-color {
-		width: 35px;
-		height: 35px;
+	.aps-preset-color {
+		width: $aps-size-swatch;
+		height: $aps-size-swatch;
 	}
 }

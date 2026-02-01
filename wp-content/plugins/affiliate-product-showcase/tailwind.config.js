@@ -192,12 +192,21 @@ const config = {
       },
 
       // -----------------------------------------------------------------------
-      // BREAKPOINTS (WordPress Responsive Breakpoints)
+      // BREAKPOINTS (WordPress + Tailwind Standard Breakpoints)
       // -----------------------------------------------------------------------
       screens: {
+        'xs': '480px',
+        // WordPress-specific breakpoints
         'wp-mobile': '600px',   // WordPress mobile breakpoint
         'wp-tablet': '782px',   // WordPress admin menu breakpoint
         'wp-desktop': '1280px', // WordPress wide screen
+        
+        // Standard Tailwind breakpoints (single source of truth)
+        'sm': '640px',         // Small devices (landscape phones)
+        'md': '768px',         // Medium devices (tablets)
+        'lg': '1024px',        // Large devices (desktops)
+        'xl': '1280px',        // Extra large devices (large desktops)
+        '2xl': '1536px',       // 2X large devices (extra large desktops)
       },
 
       // -----------------------------------------------------------------------

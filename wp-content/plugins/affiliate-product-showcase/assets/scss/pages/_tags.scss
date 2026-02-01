@@ -24,19 +24,28 @@
 // Block: Tag Preview
 // ============================================
 
-.ribbon-live-preview#tag-preview-container {
-	margin-top: 10px;
+.aps-tag-preview-container {
+	margin-top: $aps-spacing-2;
 }
 
-.ribbon-preview-badge#tag-preview {
+.aps-tag-preview-badge {
 	display: inline-block;
-	padding: 4px 12px;
+	padding: 4px $aps-spacing-3;
 	border-radius: $aps-radius-sm;
 	font-weight: $aps-font-weight-semibold;
 	font-size: $aps-font-size-xs;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+}
+
+// WordPress native ID compatibility
+#tag-preview-container {
+	@extend .aps-tag-preview-container;
+}
+
+#tag-preview {
+	@extend .aps-tag-preview-badge;
 }
 
 // ============================================
@@ -45,29 +54,29 @@
 
 .aps-tag-checkboxes-inner {
 	display: flex;
-	gap: 20px;
-	margin-top: 10px;
+	gap: $aps-spacing-5;
+	margin-top: $aps-spacing-2;
 }
 
 .aps-tag-checkbox-item {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: $aps-spacing-1;
 
 	label {
 		font-weight: $aps-font-weight-semibold;
-		margin-bottom: 5px;
+		margin-bottom: $aps-spacing-1;
 	}
 
 	input[type="checkbox"] {
-		margin-right: 8px;
+		margin-right: $aps-spacing-2;
 	}
 
 	.description {
 		font-size: $aps-font-size-xs;
 		color: $aps-color-text-muted;
-		margin-top: 5px;
+		margin-top: $aps-spacing-1;
 	}
 }
 
@@ -77,8 +86,8 @@
 
 .aps-tag-settings {
 	h3 {
-		margin: 20px 0 15px 0;
-		padding-bottom: 10px;
+		margin: $aps-spacing-5 0 $aps-spacing-4 0;
+		padding-bottom: $aps-spacing-2;
 		border-bottom: 1px solid $aps-color-border-light;
 		font-size: $aps-font-size-base;
 		font-weight: $aps-font-weight-semibold;
@@ -91,20 +100,35 @@
 // ============================================
 
 // Tags page wrapper
-body.taxonomy-aps_tag {
-	#col-container {
+.aps-tags-page {
+	&__container {
 		display: flex;
-		gap: 30px;
+		gap: $aps-spacing-8;
 	}
 
 	// Left side: Form (40%)
-	#col-left {
+	&__left {
 		flex: 0 0 40%;
 	}
 
 	// Right side: Table (60%)
-	#col-right {
+	&__right {
 		flex: 0 0 60%;
+	}
+}
+
+// WordPress native class compatibility
+body.taxonomy-aps_tag {
+	#col-container {
+		@extend .aps-tags-page__container;
+	}
+
+	#col-left {
+		@extend .aps-tags-page__left;
+	}
+
+	#col-right {
+		@extend .aps-tags-page__right;
 	}
 }
 
@@ -112,31 +136,13 @@ body.taxonomy-aps_tag {
 // Block: Tag Top Controls
 // ============================================
 
-// Ensure top controls appear in right column above table
-body.taxonomy-aps_tag {
-	#col-right {
-		.aps-tag-top-controls {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			gap: 20px;
-			margin: 20px 0 15px 0;
-			padding: 15px;
-			background: $aps-color-bg-card;
-			border: 1px solid $aps-color-border;
-			border-radius: $aps-radius-sm;
-		}
-	}
-}
-
-// Fallback for broader selector
 .aps-tag-top-controls {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 20px;
-	margin: 20px 0 15px 0;
-	padding: 15px;
+	gap: $aps-spacing-5;
+	margin: $aps-spacing-5 0 $aps-spacing-4 0;
+	padding: $aps-spacing-4;
 	background: $aps-color-bg-card;
 	border: 1px solid $aps-color-border;
 	border-radius: $aps-radius-sm;
@@ -152,20 +158,20 @@ body.taxonomy-aps_tag {
 
 .aps-tag-status-links {
 	display: flex;
-	gap: 5px;
+	gap: $aps-spacing-1;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 
-	li {
+	&__item {
 		margin: 0;
 
 		a {
 			display: inline-block;
-			padding: 6px 12px;
+			padding: 6px $aps-spacing-3;
 			text-decoration: none;
 			color: $aps-color-primary;
-			border-radius: 3px;
+			border-radius: $aps-radius-sm;
 			transition: all $aps-transition-base ease;
 			font-size: $aps-font-size-sm;
 
@@ -176,7 +182,44 @@ body.taxonomy-aps_tag {
 
 			&:focus {
 				outline: 2px solid $aps-color-primary;
-				outline-offset: 2px;
+				outline-offset: $aps-spacing-2;
+			}
+		}
+
+		&--current a {
+			background-color: $aps-color-primary;
+			color: $aps-color-bg-card;
+
+			&:hover {
+				background-color: $aps-color-primary-hover;
+				color: $aps-color-bg-card;
+			}
+		}
+	}
+}
+
+// WordPress native class compatibility
+.aps-tag-status-links {
+	li {
+		@extend .aps-tag-status-links__item;
+
+		a {
+			display: inline-block;
+			padding: 6px $aps-spacing-3;
+			text-decoration: none;
+			color: $aps-color-primary;
+			border-radius: $aps-radius-sm;
+			transition: all $aps-transition-base ease;
+			font-size: $aps-font-size-sm;
+
+			&:hover {
+				background-color: $aps-color-bg-light;
+				color: $aps-color-primary-hover;
+			}
+
+			&:focus {
+				outline: 2px solid $aps-color-primary;
+				outline-offset: $aps-spacing-2;
 			}
 		}
 
@@ -199,7 +242,7 @@ body.taxonomy-aps_tag {
 .aps-tag-sort-controls {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: $aps-spacing-2;
 
 	label {
 		font-size: $aps-font-size-sm;
@@ -210,10 +253,10 @@ body.taxonomy-aps_tag {
 
 .aps-tag-date-sort {
 	min-width: 200px;
-	padding: 5px 10px;
+	padding: 5px $aps-spacing-2;
 	font-size: $aps-font-size-sm;
 	border: 1px solid $aps-color-border-dark;
-	border-radius: 3px;
+	border-radius: $aps-radius-sm;
 	background: $aps-color-bg-card;
 	cursor: pointer;
 
@@ -223,7 +266,7 @@ body.taxonomy-aps_tag {
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 }
 
@@ -232,21 +275,21 @@ body.taxonomy-aps_tag {
 // ============================================
 
 .aps-tag-featured {
-	margin-bottom: 15px;
+	margin-bottom: $aps-spacing-4;
 
 	label {
 		display: block;
-		margin-bottom: 5px;
+		margin-bottom: $aps-spacing-1;
 		font-weight: $aps-font-weight-semibold;
 		color: $aps-color-text-main;
 	}
 
 	input[type="checkbox"] {
-		margin-right: 8px;
+		margin-right: $aps-spacing-2;
 
 		&:focus {
 			outline: 2px solid $aps-color-primary;
-			outline-offset: 2px;
+			outline-offset: $aps-spacing-2;
 		}
 	}
 }
@@ -256,15 +299,15 @@ body.taxonomy-aps_tag {
 // ============================================
 
 .aps-tag-settings-divider {
-	margin: 20px 0 15px;
-	padding: 10px 0;
+	margin: $aps-spacing-5 0 $aps-spacing-4;
+	padding: $aps-spacing-2 0;
 	border-top: 2px solid $aps-color-border;
 	border-bottom: 2px solid $aps-color-border;
 	text-align: center;
 
 	h3 {
 		margin: 0;
-		padding: 0 15px;
+		padding: 0 $aps-spacing-4;
 		font-size: $aps-font-size-base;
 		font-weight: $aps-font-weight-semibold;
 		color: $aps-color-text-main;
@@ -278,11 +321,11 @@ body.taxonomy-aps_tag {
 // ============================================
 
 .aps-tag-image-url {
-	margin-bottom: 15px;
+	margin-bottom: $aps-spacing-4;
 
 	label {
 		display: block;
-		margin-bottom: 5px;
+		margin-bottom: $aps-spacing-1;
 		font-weight: $aps-font-weight-semibold;
 		color: $aps-color-text-main;
 	}
@@ -290,19 +333,19 @@ body.taxonomy-aps_tag {
 	input[type="url"] {
 		width: 100%;
 		max-width: 300px;
-		padding: 8px 12px;
+		padding: $aps-spacing-2 $aps-spacing-3;
 		font-size: $aps-font-size-sm;
 		border: 1px solid $aps-color-border-dark;
-		border-radius: 3px;
+		border-radius: $aps-radius-sm;
 
 		&:focus {
 			outline: 2px solid $aps-color-primary;
-			outline-offset: 2px;
+			outline-offset: $aps-spacing-2;
 		}
 	}
 
 	.description {
-		margin-top: 5px;
+		margin-top: $aps-spacing-1;
 		font-size: $aps-font-size-xs;
 		color: $aps-color-text-muted;
 	}
@@ -312,33 +355,51 @@ body.taxonomy-aps_tag {
 // Block: Table Column Styling
 // ============================================
 
-.fixed {
-	// Name column (WordPress native)
-	.column-name {
+.aps-tags-table {
+	&__column--name {
 		width: 20%;
 	}
 
-	// Slug column (WordPress native)
-	.column-slug {
+	&__column--slug {
 		width: 15%;
-		font-family: monospace;
+		font-family: $aps-font-family-mono;
 	}
 
-	// Icon column
-	.column-icon {
+	&__column--icon {
 		width: 10%;
 		text-align: center;
 	}
 
-	// Status column (inline editable)
-	.column-status {
+	&__column--status {
 		width: 10%;
 	}
 
-	// Count column
-	.column-count {
+	&__column--count {
 		width: 15%;
 		text-align: right;
+	}
+}
+
+// WordPress native class compatibility
+.fixed {
+	.column-name {
+		@extend .aps-tags-table__column--name;
+	}
+
+	.column-slug {
+		@extend .aps-tags-table__column--slug;
+	}
+
+	.column-icon {
+		@extend .aps-tags-table__column--icon;
+	}
+
+	.column-status {
+		@extend .aps-tags-table__column--status;
+	}
+
+	.column-count {
+		@extend .aps-tags-table__column--count;
 	}
 }
 
@@ -348,10 +409,10 @@ body.taxonomy-aps_tag {
 
 .aps-tag-status-inline {
 	min-width: 120px;
-	padding: 5px 8px;
+	padding: 5px $aps-spacing-2;
 	font-size: $aps-font-size-xs;
 	border: 1px solid $aps-color-border-dark;
-	border-radius: 3px;
+	border-radius: $aps-radius-sm;
 	background: $aps-color-bg-card;
 	cursor: pointer;
 	transition: all $aps-transition-base ease;
@@ -362,7 +423,7 @@ body.taxonomy-aps_tag {
 
 	&:focus {
 		outline: 2px solid $aps-color-primary;
-		outline-offset: 2px;
+		outline-offset: $aps-spacing-2;
 	}
 
 	// Status dropdown states
@@ -372,13 +433,13 @@ body.taxonomy-aps_tag {
 	}
 
 	&--updated {
-		background-color: #edfaef;
+		background-color: $aps-color-success-light;
 		border-color: $aps-color-success;
 		color: $aps-color-success;
 	}
 
 	&--error {
-		background-color: #f7edf0;
+		background-color: $aps-color-danger-light;
 		border-color: $aps-color-danger;
 		color: $aps-color-danger;
 	}
@@ -390,9 +451,9 @@ body.taxonomy-aps_tag {
 
 .aps-tag-count {
 	display: inline-block;
-	padding: 2px 8px;
+	padding: 2px $aps-spacing-2;
 	background-color: $aps-color-bg-light;
-	border-radius: 3px;
+	border-radius: $aps-radius-sm;
 	font-weight: $aps-font-weight-semibold;
 	font-size: $aps-font-size-xs;
 }
@@ -403,15 +464,15 @@ body.taxonomy-aps_tag {
 
 .aps-tag-icon-display {
 	display: inline-block;
-	font-size: 20px;
+	font-size: $aps-font-size-base;
 	line-height: 1;
 	vertical-align: middle;
 	color: $aps-color-text-main;
 
 	&.dashicons {
-		font-size: 18px;
-		width: 18px;
-		height: 18px;
+		font-size: $aps-font-size-base;
+		width: $aps-font-size-base;
+		height: $aps-font-size-base;
 	}
 
 	&:hover {
@@ -420,12 +481,11 @@ body.taxonomy-aps_tag {
 	}
 }
 
-// Empty icon state
-.aps-tag-icon-empty {
+.aps-tag-icon-display--empty {
 	display: inline-block;
 	width: 24px;
 	height: 24px;
-	border-radius: 3px;
+	border-radius: $aps-radius-sm;
 	border: 1px dashed $aps-color-border;
 	background-color: $aps-color-bg-hover;
 	vertical-align: middle;
@@ -439,26 +499,47 @@ body.taxonomy-aps_tag {
 // Block: Bulk Actions
 // ============================================
 
-// Bulk actions dropdown
-.select#bulk-action-selector-top {
-	min-width: 200px;
-	margin-right: 10px;
+.aps-bulk-actions {
+	&__select {
+		min-width: 200px;
+		margin-right: $aps-spacing-2;
+	}
+
+	&__button {
+		height: 30px;
+		padding: 0 $aps-spacing-4;
+		font-size: $aps-font-size-sm;
+		line-height: 28px;
+	}
 }
 
-// Apply button
+// WordPress native class compatibility
+.select#bulk-action-selector-top {
+	@extend .aps-bulk-actions__select;
+}
+
 button.button.action {
-	height: 30px;
-	padding: 0 15px;
-	font-size: $aps-font-size-sm;
-	line-height: 28px;
+	@extend .aps-bulk-actions__button;
 }
 
 // ============================================
 // Responsive Design
 // ============================================
 
-// Desktop (>1200px)
-@media (min-width: 1201px) {
+// Desktop (>1280px)
+@media (min-width: #{$aps-breakpoint-xl + 1px}) {
+	.aps-tags-page__container {
+		display: flex;
+	}
+
+	.aps-tags-page__left {
+		flex: 0 0 40%;
+	}
+
+	.aps-tags-page__right {
+		flex: 0 0 60%;
+	}
+
 	body.taxonomy-aps_tag {
 		#col-container {
 			display: flex;
@@ -474,26 +555,24 @@ button.button.action {
 	}
 }
 
-// Tablet (768px-1200px)
-@media (max-width: 1200px) and (min-width: 769px) {
-	body.taxonomy-aps_tag {
-		#col-container {
-			gap: 15px;
-		}
+// Tablet (769px-1280px)
+@media (max-width: $aps-breakpoint-xl) and (min-width: #{$aps-breakpoint-md + 1px}) {
+	.aps-tags-page__container {
+		gap: $aps-spacing-4;
+	}
 
-		#col-left {
-			flex: 0 0 45%;
-		}
+	.aps-tags-page__left {
+		flex: 0 0 45%;
+	}
 
-		#col-right {
-			flex: 0 0 55%;
-		}
+	.aps-tags-page__right {
+		flex: 0 0 55%;
 	}
 
 	.aps-tag-top-controls {
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 15px;
+		gap: $aps-spacing-4;
 	}
 
 	.aps-tag-sort-controls {
@@ -505,39 +584,47 @@ button.button.action {
 		flex: 1;
 		max-width: 300px;
 	}
-}
 
-// Mobile (<768px)
-@media (max-width: 768px) {
 	body.taxonomy-aps_tag {
 		#col-container {
-			flex-direction: column;
+			gap: $aps-spacing-4;
 		}
 
 		#col-left {
-			flex: 0 0 auto;
-			width: 100%;
+			flex: 0 0 45%;
 		}
 
 		#col-right {
-			flex: 0 0 auto;
-			width: 100%;
+			flex: 0 0 55%;
 		}
+	}
+}
+
+// Mobile (<768px)
+@media (max-width: $aps-breakpoint-md) {
+	.aps-tags-page__container {
+		flex-direction: column;
+	}
+
+	.aps-tags-page__left,
+	.aps-tags-page__right {
+		flex: 0 0 auto;
+		width: 100%;
 	}
 
 	.aps-tag-top-controls {
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 15px;
-		padding: 10px;
+		gap: $aps-spacing-4;
+		padding: $aps-spacing-2;
 	}
 
 	.aps-tag-status-links {
 		flex-wrap: wrap;
-		gap: 3px;
+		gap: $aps-spacing-xs;
 
-		li a {
-			padding: 5px 10px;
+		&__item a {
+			padding: 5px $aps-spacing-2;
 			font-size: $aps-font-size-xs;
 		}
 	}
@@ -547,7 +634,7 @@ button.button.action {
 
 		label {
 			display: block;
-			margin-bottom: 5px;
+			margin-bottom: $aps-spacing-1;
 		}
 	}
 
@@ -575,36 +662,53 @@ button.button.action {
 	.aps-tag-count {
 		font-size: $aps-font-size-xs;
 	}
+
+	body.taxonomy-aps_tag {
+		#col-container {
+			flex-direction: column;
+		}
+
+		#col-left,
+		#col-right {
+			flex: 0 0 auto;
+			width: 100%;
+		}
+
+		.aps-tag-status-links li a {
+			padding: 5px $aps-spacing-2;
+			font-size: $aps-font-size-xs;
+		}
+	}
 }
 
 // Small mobile (<480px)
-@media (max-width: 480px) {
+@media (max-width: $aps-breakpoint-xs) {
 	.aps-tag-top-controls {
-		margin: 10px 0;
-		padding: 8px;
+		margin: $aps-spacing-2 0;
+		padding: $aps-spacing-2;
 	}
 
 	.aps-tag-status-links {
-		gap: 2px;
+		gap: $aps-spacing-xs;
 
-		li a {
-			padding: 4px 8px;
+		&__item a {
+			padding: 4px $aps-spacing-2;
 			font-size: $aps-font-size-xs;
 		}
 	}
 
 	.aps-tag-featured,
 	.aps-tag-image-url {
-		margin-bottom: 12px;
+		margin-bottom: $aps-spacing-3;
 	}
 
 	.aps-tag-settings-divider {
-		margin: 15px 0 12px;
-		padding: 8px 0;
+		margin: $aps-spacing-4 0 $aps-spacing-3;
+		padding: $aps-spacing-2 0;
 
 		h3 {
 			font-size: $aps-font-size-sm;
-			padding: 0 10px;
+			padding: 0 $aps-spacing-2;
 		}
 	}
 }
@@ -616,64 +720,62 @@ button.button.action {
 // High contrast mode support
 @include prefers-high-contrast {
 	.aps-tag-status-links {
-		li a {
-			border: 2px solid currentColor;
+		&__item a {
+			border: 2px solid currentcolor;
 		}
 
-		li.current a {
-			background-color: #000;
+		&__item--current a {
+			background-color: $aps-color-black;
 			color: $aps-color-bg-card;
-			border-color: #000;
+			border-color: $aps-color-black;
 		}
 	}
 
 	.aps-tag-status-inline {
-		border: 2px solid #000;
+		border: 2px solid $aps-color-black;
 
 		&--updated {
-			background-color: #000;
+			background-color: $aps-color-black;
 			color: $aps-color-bg-card;
-			border-color: #000;
+			border-color: $aps-color-black;
 		}
 
 		&--error {
 			background-color: $aps-color-danger;
 			color: $aps-color-bg-card;
-			border-color: #000;
+			border-color: $aps-color-black;
 		}
 	}
 
 	.aps-tag-count {
-		background-color: #000;
+		background-color: $aps-color-black;
 		color: $aps-color-bg-card;
-		border: 2px solid #000;
+		border: 2px solid $aps-color-black;
 	}
 
 	.aps-tag-settings-divider {
-		border-top: 3px solid #000;
-		border-bottom: 3px solid #000;
+		border-top: 3px solid $aps-color-black;
+		border-bottom: 3px solid $aps-color-black;
+	}
+
+	// WordPress native class compatibility
+	.aps-tag-status-links li a {
+		border: 2px solid currentcolor;
+	}
+
+	.aps-tag-status-links li.current a {
+		background-color: $aps-color-black;
+		color: $aps-color-bg-card;
+		border-color: $aps-color-black;
 	}
 }
 
 // Reduced motion support
 @include prefers-reduced-motion {
-	.aps-tag-status-links li a,
+	.aps-tag-status-links__item a,
 	.aps-tag-status-inline {
 		transition: none;
 	}
-}
-
-// Screen reader only content
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border-width: 0;
 }
 
 // ============================================
@@ -687,6 +789,6 @@ button.button.action {
 	}
 
 	.aps-tag-status-inline {
-		border: 1px solid #000;
+		border: 1px solid $aps-color-black;
 	}
 }

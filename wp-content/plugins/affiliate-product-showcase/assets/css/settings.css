@@ -161,7 +161,7 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: var(--aps-breakpoint-md)) {
     .aps-settings-tabs {
         flex-direction: column;
         gap: 8px;

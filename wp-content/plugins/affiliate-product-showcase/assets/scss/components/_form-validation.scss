@@ -1,0 +1,78 @@
+/**
+ * Form Component - Validation Styles (BEM)
+ *
+ * Error and success message styles for form components.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Element: Error Message
+// ============================================
+
+.aps-form-field {
+	&__error {
+		display: flex;
+		align-items: flex-start;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-2;
+		background: $aps-color-danger-light;
+		border-left: 3px solid $aps-color-danger;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-danger-text;
+		font-size: $aps-font-size-sm;
+
+		&::before {
+			content: '⚠';
+			font-size: $aps-font-size-base;
+		}
+	}
+
+	// ============================================
+	// Element: Success Message
+	// ============================================
+
+	&__success {
+		display: flex;
+		align-items: flex-start;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-2;
+		background: $aps-color-success-light;
+		border-left: 3px solid $aps-color-success;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-success-text;
+		font-size: $aps-font-size-sm;
+
+		&::before {
+			content: '✓';
+			font-size: $aps-font-size-base;
+		}
+	}
+}
+
+// ============================================
+// Block: Form Field (Base)
+// ============================================
+
+.aps-form-field {
+	margin-bottom: $aps-spacing-4;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.aps-form-field__input,
+	.aps-form-field__select,
+	.aps-form-field__textarea {
+		border: 1px solid #000;
+	}
+}

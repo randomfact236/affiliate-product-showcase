@@ -82,7 +82,7 @@ body.post-type-aps_product.edit-php .wrap .page-title-action {
 }
 
 /* Responsive adjustments */
-@media (max-width: 782px) {
+@media (max-width: var(--aps-breakpoint-wp-tablet)) {
     .aps-featured-filter-label {
         margin-left: 0;
         margin-top: 0.5rem;

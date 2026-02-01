@@ -11,25 +11,6 @@
 @use '../mixins/breakpoints' as *;
 
 // ============================================
-// Block: Toast Container
-// ============================================
-
-.aps-toast-container {
-	position: fixed;
-	bottom: $aps-spacing-5;
-	right: $aps-spacing-5;
-	z-index: $aps-z-toast;
-	max-width: $aps-container-md;
-
-	@include mobile-only {
-		left: $aps-spacing-3;
-		right: $aps-spacing-3;
-		bottom: $aps-spacing-3;
-		max-width: calc(100% - #{$aps-spacing-3} * 2);
-	}
-}
-
-// ============================================
 // Block: Toast
 // ============================================
 
@@ -150,6 +131,7 @@
 		transform: translateX(100%);
 		opacity: 0;
 	}
+
 	to {
 		transform: translateX(0);
 		opacity: 1;
@@ -161,7 +143,7 @@
 // ============================================
 
 @media print {
-	.aps-toast-container {
+	.aps-toast {
 		display: none;
 	}
 }

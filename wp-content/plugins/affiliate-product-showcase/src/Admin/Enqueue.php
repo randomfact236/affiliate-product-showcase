@@ -50,6 +50,13 @@ class Enqueue {
      * @return void
      */
     public function enqueueStyles( string $hook ): void {
+        wp_enqueue_style(
+            'affiliate-product-showcase-tokens',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/tokens.css' ),
+            [],
+            self::VERSION
+        );
+
         // Load products page CSS regardless of plugin page check
         global $typenow;
         if ( $hook === 'edit.php' && $typenow === 'aps_product' ) {
@@ -65,7 +72,7 @@ class Enqueue {
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
                 \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-                [],
+                [ 'affiliate-product-showcase-tokens' ],
                 self::VERSION
             );
         }
@@ -79,7 +86,7 @@ class Enqueue {
         wp_enqueue_style(
             'affiliate-product-showcase-admin',
             \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
-            [],
+            [ 'affiliate-product-showcase-tokens' ],
             self::VERSION
         );
 
@@ -87,7 +94,7 @@ class Enqueue {
         wp_enqueue_style(
             'affiliate-product-showcase-form',
             \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-            [],
+            [ 'affiliate-product-showcase-tokens' ],
             self::VERSION
         );
 
@@ -116,7 +123,7 @@ class Enqueue {
             wp_enqueue_style(
                 'affiliate-product-showcase-settings',
                 \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/settings.css' ),
-                [],
+                [ 'affiliate-product-showcase-tokens' ],
                 self::VERSION
             );
         }
@@ -129,7 +136,7 @@ class Enqueue {
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
                 \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-                [],
+                [ 'affiliate-product-showcase-tokens' ],
                 self::VERSION
             );
             
