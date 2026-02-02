@@ -40,7 +40,7 @@ class TemplateHelpers {
 		<div class="aps-upload-group">
 			<label><?php echo esc_html($label); ?></label>
 			<div class="aps-upload-area" id="<?php echo esc_attr($id); ?>-upload">
-				<div class="upload-placeholder" style="<?php echo $placeholderStyle; ?>">
+				<div class="upload-placeholder" style="<?php echo esc_attr($placeholderStyle); ?>">
 					<i class="fas <?php echo esc_attr($icon); ?>"></i>
 					<p>Click to upload or enter URL below</p>
 				</div>
@@ -107,7 +107,7 @@ class TemplateHelpers {
 				   placeholder="<?php echo esc_attr($placeholder); ?>"
 				   value="<?php echo esc_attr($value); ?>"
 				   <?php echo $requiredAttr; ?>
-				   <?php echo $attrString; ?>>
+				   <?php echo $attrString; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		</div>
 		<?php
 		return ob_get_clean();

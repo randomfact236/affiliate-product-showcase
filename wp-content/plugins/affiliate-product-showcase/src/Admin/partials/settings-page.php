@@ -19,68 +19,68 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general
     <!-- Tab Navigation -->
     <div class="aps-settings-tabs">
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=general')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'general' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'general' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">⚙️</span>
             <span class="aps-tab-text"><?php esc_html_e('General', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=display')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'display' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'display' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🎨</span>
             <span class="aps-tab-text"><?php esc_html_e('Display', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=products')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'products' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'products' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">📦</span>
             <span class="aps-tab-text"><?php esc_html_e('Products', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=categories')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'categories' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'categories' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">📁</span>
             <span class="aps-tab-text"><?php esc_html_e('Categories', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=tags')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'tags' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'tags' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🏷️</span>
             <span class="aps-tab-text"><?php esc_html_e('Tags', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=ribbons')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'ribbons' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'ribbons' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🎀</span>
             <span class="aps-tab-text"><?php esc_html_e('Ribbons', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=performance')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'performance' ? 'active' : ''; ?> disabled">
+           class="aps-tab <?php echo esc_attr($active_tab === 'performance' ? 'active' : ''); ?> disabled">
             <span class="aps-tab-icon">⚡</span>
             <span class="aps-tab-text"><?php esc_html_e('Performance', 'affiliate-product-showcase'); ?></span>
             <span class="aps-tab-badge">Coming Soon</span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=security')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'security' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'security' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🔒</span>
             <span class="aps-tab-text"><?php esc_html_e('Security', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=import_export')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'import_export' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'import_export' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">📥📤</span>
             <span class="aps-tab-text"><?php esc_html_e('Import/Export', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=shortcodes')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'shortcodes' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'shortcodes' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🎬</span>
             <span class="aps-tab-text"><?php esc_html_e('Shortcodes', 'affiliate-product-showcase'); ?></span>
         </a>
         
         <a href="<?php echo esc_url(admin_url('admin.php?page=affiliate-manager-settings&tab=widgets')); ?>" 
-           class="aps-tab <?php echo $active_tab === 'widgets' ? 'active' : ''; ?>">
+           class="aps-tab <?php echo esc_attr($active_tab === 'widgets' ? 'active' : ''); ?>">
             <span class="aps-tab-icon">🧩</span>
             <span class="aps-tab-text"><?php esc_html_e('Widgets', 'affiliate-product-showcase'); ?></span>
         </a>

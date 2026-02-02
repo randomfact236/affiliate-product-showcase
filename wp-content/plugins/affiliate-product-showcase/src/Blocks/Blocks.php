@@ -110,15 +110,15 @@ final class Blocks {
 						
 						<?php if ( $show_rating && $product->rating ) : ?>
 							<div class="aps-product-rating">
-								<?php echo $this->render_stars( $product->rating ); ?>
+								<?php echo $this->render_stars( $product->rating ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</div>
 						<?php endif; ?>
 						
 						<?php if ( $show_price && $product->price ) : ?>
 							<div class="aps-product-price">
-								<span class="aps-current-price"><?php echo $this->price_formatter->format( $product->price, $product->currency ); ?></span>
+								<span class="aps-current-price"><?php echo esc_html( $this->price_formatter->format( $product->price, $product->currency ) ); ?></span>
 								<?php if ( $product->original_price ) : ?>
-									<span class="aps-original-price"><?php echo $this->price_formatter->format( $product->original_price, $product->currency ); ?></span>
+									<span class="aps-original-price"><?php echo esc_html( $this->price_formatter->format( $product->original_price, $product->currency ) ); ?></span>
 									<?php 
 									$discount = ( ( $product->original_price - $product->price ) / $product->original_price ) * 100;
 									if ( $discount > 0 ) :
@@ -172,9 +172,9 @@ final class Blocks {
 		?>
 		<div class="aps-block aps-block--showcase" 
 		     data-layout="<?php echo esc_attr( $layout ); ?>"
-		     data-show-price="<?php echo $show_price ? 'true' : 'false'; ?>"
-		     data-show-description="<?php echo $show_description ? 'true' : 'false'; ?>"
-		     data-show-button="<?php echo $show_button ? 'true' : 'false'; ?>"
+		     data-show-price="<?php echo $show_price ? 'true' : 'false'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+		     data-show-description="<?php echo $show_description ? 'true' : 'false'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+		     data-show-button="<?php echo $show_button ? 'true' : 'false'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
 		     style="--aps-showcase-columns: <?php echo esc_attr( $columns ); ?>; --aps-showcase-gap: <?php echo esc_attr( $gap ); ?>px;">
 			<?php 
 			// Determine word limit based on layout
@@ -203,9 +203,9 @@ final class Blocks {
 						
 						<?php if ( $show_price && $product->price ) : ?>
 							<div class="aps-product-price">
-								<span class="aps-current-price"><?php echo $this->price_formatter->format( $product->price, $product->currency ); ?></span>
+								<span class="aps-current-price"><?php echo esc_html( $this->price_formatter->format( $product->price, $product->currency ) ); ?></span>
 								<?php if ( $product->original_price ) : ?>
-									<span class="aps-original-price"><?php echo $this->price_formatter->format( $product->original_price, $product->currency ); ?></span>
+									<span class="aps-original-price"><?php echo esc_html( $this->price_formatter->format( $product->original_price, $product->currency ) ); ?></span>
 								<?php endif; ?>
 							</div>
 						<?php endif; ?>
