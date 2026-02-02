@@ -49,7 +49,7 @@ This plan uses a **Balanced Hybrid** approach, alternating between PHP and CSS/S
 | ID | Task | Type | Status |
 |----|------|------|--------|
 | S4.1 | CSS Accessibility Audit | Script | ✅ |
-| S4.2 | Implement CSS Focus States | Manual | ⏳ |
+| S4.2 | Implement CSS Focus States | Manual | ✅ |
 | S4.3 | Fix Color Contrast Issues | Manual | ⏳ |
 | S4.4 | Mobile Responsiveness Audit | Script | ✅ |
 | S4.5 | Mobile-First Responsive Design | Manual | ⏳ |
@@ -667,7 +667,7 @@ Use this to track overall progress. Update status as tasks complete.
 ### Phase 4: Polish (Optional)
 - [ ] **S4 Complete** - Accessibility & Automation (11 tasks)
   - [x] S4.1 CSS Accessibility Audit
-  - [ ] S4.2 Implement CSS Focus States
+  - [x] S4.2 Implement CSS Focus States (15 files already have focus states)
   - [ ] S4.3 Fix Color Contrast Issues
   - [x] S4.4 Mobile Responsiveness Audit
   - [ ] S4.5 Mobile-First Responsive Design
