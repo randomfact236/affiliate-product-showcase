@@ -90,7 +90,7 @@
 	// Accessibility
 	// ============================================
 
-	&:focus {
+	&:focus-visible {
 		outline: 2px solid $aps-color-primary;
 		outline-offset: 2px;
 		box-shadow: $aps-shadow-focus;
@@ -103,11 +103,10 @@
 			width: 1em;
 			height: 1em;
 			background: $aps-color-primary;
-			color: $aps-color-bg-card;
 			border-radius: 50%;
 			margin-right: $aps-spacing-2;
 			vertical-align: middle;
-			font-size: 0.875rem;
+			font-size: $aps-font-size-sm;
 			line-height: 1;
 		}
 	}
