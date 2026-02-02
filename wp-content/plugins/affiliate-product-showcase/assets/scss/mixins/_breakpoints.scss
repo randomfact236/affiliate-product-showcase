@@ -10,9 +10,18 @@
 @use '../variables' as *;
 
 // ============================================
-// Mixin: Mobile First
+// Mixin: Mobile Down (Small Screens)
 // ============================================
+// Note: These use max-width (desktop-first approach), not true mobile-first.
+// For mobile-first, use desktop-up and override with min-width.
 
+@mixin xs-down {
+	@media (max-width: $aps-breakpoint-xs) {
+		@content;
+	}
+}
+
+// Backward compatibility aliases (deprecated)
 @mixin mobile-first-320 {
 	@media (max-width: $aps-breakpoint-320) {
 		@content;

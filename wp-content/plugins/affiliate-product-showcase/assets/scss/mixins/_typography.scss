@@ -8,17 +8,25 @@
  */
 
 @use '../variables' as *;
+@use '../mixins/breakpoints' as *;
 
 // ============================================
 // Mixin: Text Truncation
 // ============================================
 
 @mixin text-truncate($lines: 1) {
-	display: -webkit-box;
-	-webkit-line-clamp: $lines;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	@if $lines == 1 {
+		// Single-line: more efficient, works with inline elements
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	} @else {
+		// Multi-line: requires -webkit-box
+		display: -webkit-box;
+		-webkit-line-clamp: $lines;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
 }
 
 // ============================================
@@ -35,14 +43,22 @@
 // ============================================
 
 @mixin line-clamp($lines: 1) {
-	display: -webkit-box;
-	-webkit-line-clamp: $lines;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	
-	// Fallback for browsers that don't support -webkit-line-clamp
-	@supports not (-webkit-line-clamp: 1) {
-		max-height: calc($aps-line-height-normal * $aps-font-size-base * $lines);
+	@if $lines == 1 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	} @else {
+		display: -webkit-box;
+		-webkit-line-clamp: $lines;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		
+		// Fallback for browsers that don't support -webkit-line-clamp
+		@supports not (-webkit-line-clamp: 1) {
+			max-height: calc($aps-line-height-normal * $aps-font-size-base * $lines);
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 }
 
@@ -65,23 +81,26 @@
 // ============================================
 // Mixin: Heading Styles
 // ============================================
+// Maps heading levels to design system type scale
+// Note: Larger sizes (h1-h3) use hardcoded values as tokens
+// only go up to 2xl (32px).
 
 @mixin heading($level: 1) {
 	font-weight: $aps-font-weight-semibold;
 	line-height: $aps-line-height-tight;
 	
 	@if $level == 1 {
-		font-size: 2.5rem; // 40px
+		font-size: 2.5rem; // 40px - larger than 2xl token
 	} @else if $level == 2 {
-		font-size: 2rem;     // 32px
+		font-size: $aps-font-size-2xl;  // 32px
 	} @else if $level == 3 {
-		font-size: 1.75rem;  // 28px
+		font-size: 1.75rem;  // 28px - between xl and 2xl
 	} @else if $level == 4 {
-		font-size: 1.5rem;   // 24px
+		font-size: $aps-font-size-xl;   // 24px
 	} @else if $level == 5 {
-		font-size: 1.25rem;  // 20px
+		font-size: $aps-font-size-lg;   // 18px
 	} @else if $level == 6 {
-		font-size: 1.125rem; // 18px
+		font-size: $aps-font-size-md;   // 16px
 	} @else {
 		font-size: $aps-font-size-base;
 	}
@@ -120,10 +139,14 @@
 		text-decoration: underline;
 	}
 	
-	&:focus {
+	&:focus-visible {
 		outline: 2px solid $aps-color-primary;
 		outline-offset: 2px;
 		border-radius: $aps-radius-sm;
+	}
+	
+	&:hover {
+		cursor: pointer;
 	}
 }
 
@@ -133,7 +156,7 @@
 
 @mixin code-text {
 	font-family: $aps-font-family-mono;
-	font-size: 0.875rem; // 14px
+	font-size: $aps-font-size-sm; // 14px
 	line-height: $aps-line-height-relaxed;
 	background: $aps-color-bg-light;
 	padding: $aps-spacing-1 $aps-spacing-2;

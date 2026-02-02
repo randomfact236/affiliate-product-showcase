@@ -14,7 +14,7 @@
 // ============================================
 
 @mixin focus-visible {
-	&:focus {
+	&:focus-visible {
 		outline: 2px solid $aps-color-primary;
 		outline-offset: 2px;
 		box-shadow: $aps-shadow-focus;
@@ -26,7 +26,7 @@
 // ============================================
 
 @mixin focus-ring($color: $aps-color-primary) {
-	&:focus {
+	&:focus-visible {
 		box-shadow: 0 0 0 3px rgba($color, 0.1);
 	}
 }
@@ -36,7 +36,7 @@
 // ============================================
 
 @mixin focus-error {
-	&:focus {
+	&:focus-visible {
 		outline: 2px solid $aps-color-danger;
 		outline-offset: 2px;
 		box-shadow: $aps-shadow-focus-error;
@@ -44,11 +44,14 @@
 }
 
 // ============================================
-// Mixin: Skip Focus
+// Mixin: Skip Focus (Use with Caution!)
 // ============================================
+// WARNING: This removes focus indicators entirely.
+// Only use on elements that have custom focus styling elsewhere,
+// or for non-interactive elements that shouldn't show focus.
 
 @mixin skip-focus {
-	&:focus {
+	&:focus:not(:focus-visible) {
 		outline: none;
 		box-shadow: none;
 	}
