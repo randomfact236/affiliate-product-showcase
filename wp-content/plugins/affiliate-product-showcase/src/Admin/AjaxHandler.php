@@ -219,6 +219,15 @@ class AjaxHandler {
         $products = [];
 
         if ($query->have_posts()) {
+            // Prime caches to prevent N+1 queries
+            $post_ids = wp_list_pluck($query->posts, 'ID');
+            
+            // Prime postmeta cache
+            update_postmeta_cache($post_ids);
+            
+            // Prime taxonomy cache
+            update_object_term_cache($post_ids, ['aps_product', 'aps_category', 'aps_tag', 'aps_ribbon']);
+            
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
@@ -455,6 +464,10 @@ class AjaxHandler {
         $results = [];
 
         if ($query->have_posts()) {
+            // Prime postmeta cache to prevent N+1 queries
+            $post_ids = wp_list_pluck($query->posts, 'ID');
+            update_postmeta_cache($post_ids);
+            
             while ($query->have_posts()) {
                 $query->the_post();
                 $results[] = $this->buildLinkCheckResult(get_the_ID());

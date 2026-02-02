@@ -197,6 +197,9 @@ class BulkActions {
 
             $product_post_ids = get_posts( $args );
 
+            // Prime postmeta cache to prevent N+1 queries
+            update_postmeta_cache($product_post_ids);
+            
             // Pre-fetch all meta data for batch to reduce queries
             $all_meta = [];
             foreach ( $product_post_ids as $product_post_id ) {
