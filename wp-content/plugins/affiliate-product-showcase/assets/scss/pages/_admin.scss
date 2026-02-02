@@ -42,214 +42,214 @@
 }
 
 .aps-dashboard-wrap {
-	max-width: 1200px;
-	margin: 20px auto;
+	max-width: $aps-container-xl;
+	margin: $aps-spacing-5 auto;
 }
 
 .aps-welcome-banner {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	border-radius: 12px;
-	padding: 40px;
-	color: #ffffff;
+	background: linear-gradient(135deg, $aps-color-primary 0%, $aps-color-secondary 100%);
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-10;
+	color: $aps-color-white;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 30px;
-	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+	margin-bottom: $aps-spacing-8;
+	box-shadow: 0 4px 12px rgba($aps-color-primary, 0.3);
 }
 
 .aps-welcome-content h2 {
-	margin: 0 0 10px 0;
-	font-size: 1.75rem;
-	font-weight: 700;
+	margin: 0 0 $aps-spacing-2 0;
+	font-size: $aps-font-size-xl;
+	font-weight: $aps-font-weight-bold;
 }
 
 .aps-welcome-content p {
 	margin: 0;
-	font-size: 1rem;
+	font-size: $aps-font-size-base;
 	opacity: 0.9;
 }
 
 .aps-welcome-actions {
 	display: flex;
-	gap: 12px;
+	gap: $aps-spacing-3;
 }
 
 .aps-welcome-actions .button {
-	background: #ffffff;
-	color: #5568d3;
+	background: $aps-color-white;
+	color: $aps-color-primary;
 	border: none;
-	font-weight: 600;
-	transition: all 0.2s ease;
+	font-weight: $aps-font-weight-semibold;
+	transition: all $aps-transition-base ease;
 }
 
 .aps-welcome-actions .button:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 4px 12px rgba($aps-color-black, 0.2);
 }
 
 .aps-stats-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 20px;
-	margin-bottom: 30px;
+	gap: $aps-spacing-5;
+	margin-bottom: $aps-spacing-8;
 }
 
 .aps-stat-card {
-	background: #ffffff;
-	border: 1px solid #e5e7eb;
-	border-radius: 12px;
-	padding: 24px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-6;
 	display: flex;
 	align-items: center;
-	gap: 16px;
-	transition: all 0.2s ease;
+	gap: $aps-spacing-4;
+	transition: all $aps-transition-base ease;
 }
 
 .aps-stat-card:hover {
 	transform: translateY(-4px);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 8px 24px rgba($aps-color-black, 0.1);
 }
 
 .aps-stat-icon {
-	font-size: 3rem;
+	font-size: $aps-font-size-2xl;
 	line-height: 1;
 }
 
 .aps-stat-content h3 {
-	margin: 0 0 4px 0;
-	font-size: 2rem;
-	font-weight: 700;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-1 0;
+	font-size: $aps-font-size-2xl;
+	font-weight: $aps-font-weight-bold;
+	color: $aps-color-text-main;
 }
 
 .aps-stat-content p {
 	margin: 0;
-	font-size: 0.875rem;
-	color: #6b7280;
+	font-size: $aps-font-size-sm;
+	color: $aps-color-text-muted;
 }
 
 .aps-quick-actions {
-	background: #ffffff;
-	border: 1px solid #e5e7eb;
-	border-radius: 12px;
-	padding: 24px;
-	margin-bottom: 30px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-6;
+	margin-bottom: $aps-spacing-8;
 }
 
 .aps-quick-actions h2 {
-	margin: 0 0 20px 0;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-5 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-quick-actions-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 12px;
+	gap: $aps-spacing-3;
 }
 
 .aps-quick-action {
 	display: flex;
 	align-items: center;
-	gap: 12px;
-	padding: 16px;
-	background: #f9fafb;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
+	gap: $aps-spacing-3;
+	padding: $aps-spacing-4;
+	background: $aps-color-bg-hover;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-md;
 	text-decoration: none;
-	color: #374151;
-	transition: all 0.2s ease;
+	color: $aps-color-text-main;
+	transition: all $aps-transition-base ease;
 }
 
 .aps-quick-action:hover {
-	background: #e5e7eb;
-	border-color: #d1d5db;
+	background: $aps-color-border-light;
+	border-color: $aps-color-border;
 	transform: translateY(-2px);
 }
 
 .aps-action-icon {
-	font-size: 1.5rem;
+	font-size: $aps-font-size-xl;
 }
 
 .aps-action-text {
-	font-weight: 500;
+	font-weight: $aps-font-weight-medium;
 }
 
 .aps-recent-products {
-	background: #ffffff;
-	border: 1px solid #e5e7eb;
-	border-radius: 12px;
-	padding: 24px;
-	margin-bottom: 30px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-6;
+	margin-bottom: $aps-spacing-8;
 }
 
 .aps-recent-products h2 {
-	margin: 0 0 20px 0;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-5 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-status-badge {
 	display: inline-block;
-	padding: 4px 12px;
-	border-radius: 12px;
-	font-size: 0.75rem;
-	font-weight: 600;
+	padding: $aps-spacing-1 $aps-spacing-3;
+	border-radius: $aps-radius-lg;
+	font-size: $aps-font-size-xs;
+	font-weight: $aps-font-weight-semibold;
 }
 
 .aps-status-publish {
-	background: #dcfce7;
-	color: #166534;
+	background: $aps-color-success-light;
+	color: $aps-color-success-text;
 }
 
 .aps-empty-state {
 	text-align: center;
-	padding: 40px;
-	background: #f9fafb;
-	border-radius: 8px;
+	padding: $aps-spacing-10;
+	background: $aps-color-bg-hover;
+	border-radius: $aps-radius-md;
 }
 
 .aps-help-resources {
-	background: #ffffff;
-	border: 1px solid #e5e7eb;
-	border-radius: 12px;
-	padding: 24px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-6;
 }
 
 .aps-help-resources h2 {
-	margin: 0 0 20px 0;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-5 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-help-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 20px;
+	gap: $aps-spacing-5;
 }
 
 .aps-help-card {
-	background: #f9fafb;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	padding: 20px;
+	background: $aps-color-bg-hover;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-md;
+	padding: $aps-spacing-5;
 }
 
 .aps-help-card h3 {
-	margin: 0 0 12px 0;
-	font-size: 1.125rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-3 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-help-card p {
-	margin: 0 0 16px 0;
-	font-size: 0.875rem;
-	color: #6b7280;
+	margin: 0 0 $aps-spacing-4 0;
+	font-size: $aps-font-size-sm;
+	color: $aps-color-text-muted;
 	line-height: 1.6;
 }
 
@@ -259,41 +259,41 @@
 }
 
 .aps-help-wrap {
-	max-width: 1200px;
-	margin: 20px auto;
+	max-width: $aps-container-xl;
+	margin: $aps-spacing-5 auto;
 }
 
 .aps-help-content {
-	margin-top: 20px;
+	margin-top: $aps-spacing-5;
 }
 
 .aps-help-section {
-	background: #ffffff;
-	border: 1px solid #e5e7eb;
-	border-radius: 12px;
-	padding: 30px;
-	margin-bottom: 30px;
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-lg;
+	padding: $aps-spacing-8;
+	margin-bottom: $aps-spacing-8;
 }
 
 .aps-help-section-title {
-	margin: 0 0 24px 0;
-	padding-bottom: 16px;
-	border-bottom: 2px solid #e5e7eb;
+	margin: 0 0 $aps-spacing-6 0;
+	padding-bottom: $aps-spacing-4;
+	border-bottom: 2px solid $aps-color-border-light;
 	display: flex;
 	align-items: center;
-	gap: 12px;
-	font-size: 1.5rem;
-	font-weight: 700;
+	gap: $aps-spacing-3;
+	font-size: $aps-font-size-xl;
+	font-weight: $aps-font-weight-bold;
 }
 
 .aps-section-icon {
-	font-size: 2rem;
+	font-size: $aps-font-size-2xl;
 }
 
 .aps-help-cards {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-	gap: 24px;
+	gap: $aps-spacing-6;
 }
 
 .aps-help-card ol {
@@ -302,48 +302,48 @@
 }
 
 .aps-help-card li {
-	margin-bottom: 12px;
-	color: #4b5563;
+	margin-bottom: $aps-spacing-3;
+	color: $aps-color-text-muted;
 	line-height: 1.6;
 }
 
 .aps-faq-accordion {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: $aps-spacing-3;
 }
 
 .aps-faq-item {
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-md;
 	overflow: hidden;
 }
 
 .aps-faq-question {
 	width: 100%;
-	padding: 20px;
-	background: #f9fafb;
+	padding: $aps-spacing-5;
+	background: $aps-color-bg-hover;
 	border: none;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	font-size: 1rem;
-	font-weight: 500;
-	color: #1f2937;
+	font-size: $aps-font-size-base;
+	font-weight: $aps-font-weight-medium;
+	color: $aps-color-text-main;
 	cursor: pointer;
-	transition: background 0.2s;
+	transition: background $aps-transition-base;
 	text-align: left;
 }
 
 .aps-faq-question:hover {
-	background: #e5e7eb;
+	background: $aps-color-border-light;
 }
 
 .aps-faq-icon {
-	font-size: 1.5rem;
+	font-size: $aps-font-size-xl;
 	font-weight: bold;
-	color: #6b7280;
-	transition: transform 0.3s;
+	color: $aps-color-text-muted;
+	transition: transform $aps-transition-base;
 }
 
 .aps-faq-item.active .aps-faq-icon {
@@ -353,40 +353,40 @@
 .aps-faq-answer {
 	max-height: 0;
 	overflow: hidden;
-	padding: 0 20px;
-	background: #ffffff;
-	transition: all 0.3s ease;
+	padding: 0 $aps-spacing-5;
+	background: $aps-color-bg-card;
+	transition: all $aps-transition-base ease;
 }
 
 .aps-faq-item.active .aps-faq-answer {
 	max-height: 500px;
-	padding: 20px;
+	padding: $aps-spacing-5;
 }
 
 .aps-faq-answer p {
 	margin: 0;
-	color: #4b5563;
+	color: $aps-color-text-muted;
 	line-height: 1.6;
 }
 
 .aps-shortcode-list {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: $aps-spacing-5;
 }
 
 .aps-shortcode-item {
-	background: #f9fafb;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	padding: 24px;
+	background: $aps-color-bg-hover;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-md;
+	padding: $aps-spacing-6;
 }
 
 .aps-shortcode-item h3 {
-	margin: 0 0 12px 0;
-	font-size: 1.125rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-3 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-shortcode-item code {
@@ -403,28 +403,28 @@
 
 .aps-shortcode-item p {
 	margin: 0;
-	color: #6b7280;
+	color: $aps-color-text-muted;
 	line-height: 1.6;
 }
 
 .aps-troubleshoot-list {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: $aps-spacing-5;
 }
 
 .aps-troubleshoot-item {
-	background: #fef3c7;
-	border: 1px solid #fcd34d;
-	border-radius: 8px;
-	padding: 24px;
+	background: $aps-color-warning-light;
+	border: 1px solid $aps-color-warning;
+	border-radius: $aps-radius-md;
+	padding: $aps-spacing-6;
 }
 
 .aps-troubleshoot-item h3 {
-	margin: 0 0 12px 0;
-	font-size: 1.125rem;
-	font-weight: 600;
-	color: #92400e;
+	margin: 0 0 $aps-spacing-3 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-warning-text;
 }
 
 .aps-troubleshoot-item ul {
@@ -433,35 +433,35 @@
 }
 
 .aps-troubleshoot-item li {
-	margin-bottom: 8px;
-	color: #92400e;
+	margin-bottom: $aps-spacing-2;
+	color: $aps-color-warning-text;
 	line-height: 1.6;
 }
 
 .aps-support-options {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 24px;
+	gap: $aps-spacing-6;
 }
 
 .aps-support-card {
-	background: #f9fafb;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	padding: 24px;
+	background: $aps-color-bg-hover;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-md;
+	padding: $aps-spacing-6;
 	text-align: center;
 }
 
 .aps-support-card h3 {
-	margin: 0 0 12px 0;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: #1f2937;
+	margin: 0 0 $aps-spacing-3 0;
+	font-size: $aps-font-size-lg;
+	font-weight: $aps-font-weight-semibold;
+	color: $aps-color-text-main;
 }
 
 .aps-support-card p {
-	margin: 0 0 20px 0;
-	color: #6b7280;
+	margin: 0 0 $aps-spacing-5 0;
+	color: $aps-color-text-muted;
 	line-height: 1.6;
 }
 
@@ -470,16 +470,16 @@
 }
 
 .aps-help-footer {
-	background: #1f2937;
-	color: #f9fafb;
-	padding: 24px;
-	border-radius: 8px;
+	background: $aps-color-text-main;
+	color: $aps-color-bg-hover;
+	padding: $aps-spacing-6;
+	border-radius: $aps-radius-md;
 	text-align: center;
 }
 
 .aps-help-footer p {
-	margin: 8px 0;
-	color: #d1d5db;
+	margin: $aps-spacing-2 0;
+	color: $aps-color-text-muted;
 }
 
 // Touch device specific styles for WCAG 2.5.5 compliance (44px minimum touch target)

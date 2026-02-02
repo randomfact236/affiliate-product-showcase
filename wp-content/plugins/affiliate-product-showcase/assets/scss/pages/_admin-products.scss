@@ -85,7 +85,7 @@
 
 	// Body
 	&__cell {
-		padding: 9px $aps-spacing-2;
+		padding: $aps-spacing-2 $aps-spacing-2;
 		vertical-align: middle;
 		font-size: $aps-font-size-sm;
 		border-bottom: 1px solid $aps-color-border;
@@ -213,9 +213,6 @@
 		display: inline-flex;
 		align-items: center;
 		padding: 8px 12px;
-	}
-
-	a {
 		text-decoration: none;
 		color: $aps-color-primary;
 

@@ -371,8 +371,8 @@
 
 		&:focus {
 			outline: none;
-			border-color: #667eea;
-			box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+			border-color: $aps-color-primary;
+			box-shadow: $aps-shadow-focus;
 		}
 	}
 
