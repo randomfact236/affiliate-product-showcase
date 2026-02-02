@@ -102,6 +102,12 @@ button {
 	font-size: inherit;
 	line-height: inherit;
 	cursor: pointer;
+
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.2);
+	}
 }
 
 input,
@@ -110,6 +116,13 @@ select {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
+
+	&:focus {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-color: $aps-color-primary;
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.2);
+	}
 }
 
 // ============================================

@@ -8,6 +8,7 @@
  */
 
 @use '../variables' as *;
+@use '../mixins/breakpoints' as *;
 
 // ============================================
 // Block: Settings Page
@@ -88,5 +89,52 @@
 		font-size: $aps-font-size-sm;
 		line-height: $aps-line-height-normal;
 		color: $aps-color-secondary;
+	}
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+
+// Touch device specific styles for WCAG 2.5.5 compliance
+@media (hover: none) and (pointer: coarse) {
+	.aps-settings__tab {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+	}
+	
+	.aps-btn {
+		min-height: 44px;
+		padding: 12px 24px;
+	}
+	
+	.aps-input,
+	.aps-select {
+		min-height: 44px;
+		padding: 12px 16px;
+	}
+}
+
+@media (max-width: $aps-breakpoint-md) {
+	.aps-settings {
+		&__tabs {
+			flex-wrap: wrap;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			padding-bottom: $aps-spacing-1;
+		}
+		
+		&__tab {
+			flex-shrink: 0;
+		}
+		
+		&__content {
+			padding: $aps-spacing-4;
+		}
+		
+		&__section {
+			margin-bottom: $aps-spacing-5;
+		}
 	}
 }

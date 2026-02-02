@@ -13,6 +13,12 @@
 // Mixin: Mobile First
 // ============================================
 
+@mixin mobile-first-320 {
+	@media (max-width: $aps-breakpoint-320) {
+		@content;
+	}
+}
+
 @mixin mobile-first {
 	@media (max-width: $aps-breakpoint-xs) {
 		@content;

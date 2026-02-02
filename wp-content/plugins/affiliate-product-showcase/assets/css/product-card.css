@@ -368,6 +368,31 @@
    Responsive Design
    ========================================== */
 
+/* Touch device specific styles for WCAG 2.5.5 compliance (44px minimum touch target) */
+@media (hover: none) and (pointer: coarse) {
+    .aps-card__cta {
+        min-height: 44px;
+        padding: 12px 24px;
+    }
+    
+    .aps-card__platform-toggle {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 479px) {
+    .aps-card__cta {
+        min-height: 44px;
+        padding: 12px 24px;
+    }
+    
+    .aps-card__media {
+        aspect-ratio: 4/3;
+    }
+}
+
 @media (max-width: var(--aps-breakpoint-md)) {
     .aps-card__footer {
         flex-direction: column;

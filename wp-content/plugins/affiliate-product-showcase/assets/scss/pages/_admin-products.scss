@@ -90,7 +90,7 @@
 		font-size: $aps-font-size-sm;
 		border-bottom: 1px solid $aps-color-border;
 		color: $aps-color-text-muted;
-		word-break: break-word;
+		overflow-wrap: break-word;
 	}
 
 	// Row Styling
@@ -206,7 +206,14 @@
 	font-size: $aps-font-size-xs;
 	color: $aps-color-text-light;
 	visibility: hidden;
-	margin-top: $aps-spacing-1;
+	margin-top: $aps-spacing-2;
+	
+	a {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 12px;
+	}
 
 	a {
 		text-decoration: none;
@@ -758,6 +765,27 @@
 // Responsive Design
 // ============================================
 
+// Touch device specific styles for WCAG 2.5.5 compliance
+@media (hover: none) and (pointer: coarse) {
+	// Always show row actions on touch devices
+	.aps-products-table__actions,
+	.row-actions {
+		visibility: visible !important;
+		margin-top: $aps-spacing-2;
+	}
+	
+	.aps-btn {
+		min-height: 44px;
+		padding: 12px 24px;
+	}
+	
+	.aps-input,
+	.aps-select {
+		min-height: 44px;
+		padding: 12px 16px;
+	}
+}
+
 // Mobile (< 782px)
 @media screen and (max-width: #{$aps-breakpoint-wp-tablet - 1px}) {
 	.aps-products-table {
@@ -852,6 +880,25 @@
 	.alignleft,
 	.alignright {
 		float: none;
+		width: 100%;
+	}
+	
+	// Modal width adjustment for small screens
+	.aps-modal__content {
+		max-width: 100%;
+		margin: $aps-spacing-2;
+	}
+	
+	// Toast positioning for mobile
+	.aps-toast-container {
+		left: $aps-spacing-2;
+		right: $aps-spacing-2;
+		bottom: $aps-spacing-2;
+		max-width: none;
+	}
+	
+	.aps-toast {
+		min-width: auto;
 		width: 100%;
 	}
 }

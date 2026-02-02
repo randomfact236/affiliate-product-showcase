@@ -207,23 +207,13 @@ class BulkActions {
             foreach ( $product_post_ids as $product_post_id ) {
                 $post = get_post( $product_post_id );
 
-                if ( ! $post ) {
+                if (!$post) {
                     continue;
                 }
 
-                $meta = $all_meta[ $product_post_id ] ?? [];
+                $meta = $all_meta[$product_post_id] ?? [];
 
-                yield [
-                    $post->ID,
-                    $post->post_title,
-                    $meta['_sku'][0] ?? '',
-                    $meta['_brand'][0] ?? '',
-                    $meta['_price'][0] ?? '',
-                    $meta['_rating'][0] ?? '',
-                    $meta['_in_stock'][0] ?? '',
-                    $meta['_affiliate_url'][0] ?? '',
-                    $meta['_image_url'][0] ?? '',
-                ];
+                yield $this->buildProductExportData($post, $meta);
             }
 
             // Clear meta array to free memory after each batch
@@ -232,59 +222,127 @@ class BulkActions {
     }
 
     /**
+     * Build product export data array
+     *
+     * @param \WP_Post $post Post object
+     * @param array $meta Meta data
+     * @return array Product export data
+     */
+    private function buildProductExportData(\WP_Post $post, array $meta): array
+    {
+        return [
+            $post->ID,
+            $post->post_title,
+            $meta['_sku'][0] ?? '',
+            $meta['_brand'][0] ?? '',
+            $meta['_price'][0] ?? '',
+            $meta['_rating'][0] ?? '',
+            $meta['_in_stock'][0] ?? '',
+            $meta['_affiliate_url'][0] ?? '',
+            $meta['_image_url'][0] ?? '',
+        ];
+    }
+
+    /**
      * Display bulk action notices
      *
      * @return void
      */
     public function bulkActionNotices(): void {
-        if ( ! isset( $_GET['bulk_action'] ) || ! isset( $_GET['processed'] ) ) {
+        if (!isset($_GET['bulk_action']) || !isset($_GET['processed'])) {
             return;
         }
 
-        $action = sanitize_text_field( wp_unslash( $_GET['bulk_action'] ) );
-        $processed = intval( $_GET['processed'] );
+        $action = sanitize_text_field(wp_unslash($_GET['bulk_action']));
+        $processed = intval($_GET['processed']);
 
         $message = '';
 
-        switch ( $action ) {
+        switch ($action) {
             case 'set_in_stock':
-                $message = sprintf(
-                    _n( '%d product set as in stock.', '%d products set as in stock.', $processed, 'affiliate-product-showcase' ),
-                    $processed
-                );
+                $message = $this->getInStockMessage($processed);
                 break;
             case 'set_out_of_stock':
-                $message = sprintf(
-                    _n( '%d product set as out of stock.', '%d products set as out of stock.', $processed, 'affiliate-product-showcase' ),
-                    $processed
-                );
+                $message = $this->getOutOfStockMessage($processed);
                 break;
             case 'reset_clicks':
-                $message = sprintf(
-                    _n( 'Click count reset for %d product.', 'Click count reset for %d products.', $processed, 'affiliate-product-showcase' ),
-                    $processed
-                );
+                $message = $this->getResetClicksMessage($processed);
                 break;
             case 'export_products':
-                $message = sprintf(
-                    _n( '%d product exported.', '%d products exported.', $processed, 'affiliate-product-showcase' ),
-                    $processed
-                );
-
-                // Add download link
-                $download_url = get_transient( 'product_export_url_' . get_current_user_id() );
-                if ( $download_url ) {
-                    $message .= ' <a href="' . esc_url( $download_url ) . '" class="button button-small">' . esc_html__( 'Download Export', 'affiliate-product-showcase' ) . '</a>';
-                }
+                $message = $this->getExportMessage($processed);
                 break;
         }
 
-        if ( $message ) {
+        if ($message) {
             printf(
                 '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-                wp_kses_post( $message )
+                wp_kses_post($message)
             );
         }
+    }
+
+    /**
+     * Get bulk action message for set in stock
+     *
+     * @param int $processed Number of products processed
+     * @return string Message
+     */
+    private function getInStockMessage(int $processed): string
+    {
+        return sprintf(
+            _n('%d product set as in stock.', '%d products set as in stock.', $processed, 'affiliate-product-showcase'),
+            $processed
+        );
+    }
+
+    /**
+     * Get bulk action message for set out of stock
+     *
+     * @param int $processed Number of products processed
+     * @return string Message
+     */
+    private function getOutOfStockMessage(int $processed): string
+    {
+        return sprintf(
+            _n('%d product set as out of stock.', '%d products set as out of stock.', $processed, 'affiliate-product-showcase'),
+            $processed
+        );
+    }
+
+    /**
+     * Get bulk action message for reset clicks
+     *
+     * @param int $processed Number of products processed
+     * @return string Message
+     */
+    private function getResetClicksMessage(int $processed): string
+    {
+        return sprintf(
+            _n('Click count reset for %d product.', 'Click count reset for %d products.', $processed, 'affiliate-product-showcase'),
+            $processed
+        );
+    }
+
+    /**
+     * Get bulk action message for export products
+     *
+     * @param int $processed Number of products processed
+     * @return string Message
+     */
+    private function getExportMessage(int $processed): string
+    {
+        $message = sprintf(
+            _n('%d product exported.', '%d products exported.', $processed, 'affiliate-product-showcase'),
+            $processed
+        );
+
+        // Add download link
+        $download_url = get_transient('product_export_url_' . get_current_user_id());
+        if ($download_url) {
+            $message .= ' <a href="' . esc_url($download_url) . '" class="button button-small">' . esc_html__('Download Export', 'affiliate-product-showcase') . '</a>';
+        }
+
+        return $message;
     }
 
     /**

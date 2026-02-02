@@ -371,6 +371,8 @@
 
 		&:focus {
 			outline: none;
+			border-color: #667eea;
+			box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 		}
 	}
 
@@ -619,6 +621,48 @@
 // ============================================
 // Responsive Design
 // ============================================
+
+// Touch device specific styles for WCAG 2.5.5 compliance (44px minimum touch target)
+@media (hover: none) and (pointer: coarse) {
+	.aps-quick-nav__link {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+	}
+	
+	.aps-input,
+	.aps-select {
+		min-height: 44px;
+		padding: 12px 16px;
+	}
+	
+	.aps-tag__remove {
+		min-width: 44px;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.aps-btn {
+		min-height: 44px;
+		padding: 12px 24px;
+	}
+}
+
+@media (max-width: 479px) {
+	.aps-upload-area {
+		min-height: 120px;
+	}
+	
+	.aps-multi-select__dropdown {
+		max-height: 150px;
+	}
+	
+	.aps-feature-list__list {
+		max-height: 200px;
+	}
+}
 
 @media (max-width: $aps-breakpoint-md) {
 	.aps-grid--2,

@@ -73,67 +73,146 @@ class AjaxHandler {
     }
 
     /**
+     * Verify nonce for AJAX requests
+     *
+     * @param string $action The nonce action to verify
+     * @return bool True if nonce is valid, false otherwise
+     */
+    private function verifyNonce(string $action): bool {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], $action)) {
+            wp_send_json_error(['message' => 'Invalid security token']);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Verify manage_options capability for AJAX requests
+     *
+     * @return bool True if user has capability, false otherwise
+     */
+    private function verifyManageOptionsCapability(): bool {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Insufficient permissions']);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update product title
+     *
+     * @param int $product_id The product ID
+     * @param string $title The title to set
+     * @return bool True if update successful, false otherwise
+     */
+    private function updateProductTitle(int $product_id, string $title): bool {
+        if (empty($title)) {
+            return false;
+        }
+        $updated = wp_update_post([
+            'ID' => $product_id,
+            'post_title' => $title,
+        ]);
+        return !is_wp_error($updated);
+    }
+
+    /**
+     * Update product status
+     *
+     * @param int $product_id The product ID
+     * @param string $status The status to set
+     * @return bool True if update successful, false otherwise
+     */
+    private function updateProductStatus(int $product_id, string $status): bool {
+        $valid_statuses = ['publish', 'draft', 'pending'];
+        if (!in_array($status, $valid_statuses)) {
+            return false;
+        }
+        $updated = wp_update_post([
+            'ID' => $product_id,
+            'post_status' => $status,
+        ]);
+        return !is_wp_error($updated);
+    }
+
+    /**
+     * Update product price
+     *
+     * @param int $product_id The product ID
+     * @param float $price The price to set
+     * @return bool True if update successful, false otherwise
+     */
+    private function updateProductPrice(int $product_id, float $price): bool {
+        if ($price < 0) {
+            return false;
+        }
+        update_post_meta($product_id, '_aps_price', $price);
+        return true;
+    }
+
+    /**
+     * Update product original price
+     *
+     * @param int $product_id The product ID
+     * @param float $original_price The original price to set
+     * @return bool True if update successful, false otherwise
+     */
+    private function updateProductOriginalPrice(int $product_id, float $original_price): bool {
+        if ($original_price < 0) {
+            return false;
+        }
+        update_post_meta($product_id, '_aps_original_price', $original_price);
+        return true;
+    }
+
+    /**
+     * Update product featured status
+     *
+     * @param int $product_id The product ID
+     * @param bool $featured Whether to feature the product
+     * @return bool Always true
+     */
+    private function updateProductFeatured(int $product_id, bool $featured): bool {
+        update_post_meta($product_id, '_aps_featured', $featured ? '1' : '0');
+        return true;
+    }
+
+    /**
+     * Update product ribbon
+     *
+     * @param int $product_id The product ID
+     * @param string $ribbon The ribbon term slug
+     * @return bool True if ribbon is not empty, false otherwise
+     */
+    private function updateProductRibbon(int $product_id, string $ribbon): bool {
+        if (!empty($ribbon)) {
+            wp_set_object_terms($product_id, [$ribbon], 'aps_ribbon', false);
+        }
+        return true;
+    }
+
+    /**
      * Handle filter products request
      *
      * @return void
      */
     public function handleFilterProducts(): void {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_product_table_ui')) {
-            wp_send_json_error(['message' => 'Invalid security token']);
+        if (!$this->verifyNonce('aps_product_table_ui')) {
             return;
         }
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'Insufficient permissions']);
+        if (!$this->verifyManageOptionsCapability()) {
             return;
         }
 
         // Get filter parameters
-        $search = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
-        $category = isset($_POST['category']) ? intval($_POST['category']) : 0;
-        $featured = isset($_POST['featured']) ? filter_var($_POST['featured'], FILTER_VALIDATE_BOOLEAN) : false;
-        $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : 'all';
-        $per_page = isset($_POST['per_page']) ? intval($_POST['per_page']) : 20;
-        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $params = $this->getFilterParameters();
 
         // Build query args
-        $args = [
-            'post_type' => 'aps_product',
-            'posts_per_page' => $per_page,
-            'paged' => $page,
-            'post_status' => $status === 'all' ? ['publish', 'draft', 'pending'] : $status,
-            'orderby' => 'date',
-            'order' => 'DESC',
-        ];
-
-        // Add search
-        if (!empty($search)) {
-            $args['s'] = $search;
-        }
-
-        // Add category filter
-        if ($category > 0) {
-            $args['tax_query'] = [
-                [
-                    'taxonomy' => 'aps_category',
-                    'field' => 'term_id',
-                    'terms' => $category,
-                ]
-            ];
-        }
-
-        // Add featured filter
-        if ($featured) {
-            $args['meta_query'] = [
-                [
-                    'key' => '_aps_featured',
-                    'value' => '1',
-                    'compare' => '=',
-                ]
-            ];
-        }
+        $args = $this->buildFilterQuery($params);
 
         // Get products
         $query = new \WP_Query($args);
@@ -143,24 +222,7 @@ class AjaxHandler {
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
-
-                // Get ribbon from taxonomy
-                $ribbon_terms = wp_get_post_terms($post_id, 'aps_ribbon', ['fields' => 'names']);
-
-                $products[] = [
-                    'id' => $post_id,
-                    'title' => get_the_title(),
-                    'logo' => get_post_meta($post_id, '_aps_logo', true),
-                    'price' => get_post_meta($post_id, '_aps_price', true),
-                    'original_price' => get_post_meta($post_id, '_aps_original_price', true),
-                    'discount_percentage' => $this->calculateDiscount($post_id),
-                    'status' => get_post_status($post_id),
-                    'featured' => get_post_meta($post_id, '_aps_featured', true) === '1',
-                    'ribbon' => !empty($ribbon_terms) ? $ribbon_terms[0] : '',
-                    'categories' => wp_get_post_terms($post_id, 'aps_category', ['fields' => 'names']),
-                    'tags' => wp_get_post_terms($post_id, 'aps_tag', ['fields' => 'names']),
-                    'affiliate_url' => get_post_meta($post_id, '_aps_affiliate_url', true),
-                ];
+                $products[] = $this->buildProductData($post_id);
             }
         }
 
@@ -171,8 +233,99 @@ class AjaxHandler {
             'products' => $products,
             'total' => $query->found_posts,
             'pages' => $query->max_num_pages,
-            'current_page' => $page,
+            'current_page' => $params['page'],
         ]);
+    }
+
+    /**
+     * Get and sanitize filter parameters from POST request
+     *
+     * @return array Filter parameters
+     */
+    private function getFilterParameters(): array
+    {
+        return [
+            'search' => isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '',
+            'category' => isset($_POST['category']) ? intval($_POST['category']) : 0,
+            'featured' => isset($_POST['featured']) ? filter_var($_POST['featured'], FILTER_VALIDATE_BOOLEAN) : false,
+            'status' => isset($_POST['status']) ? sanitize_text_field($_POST['status']) : 'all',
+            'per_page' => isset($_POST['per_page']) ? intval($_POST['per_page']) : 20,
+            'page' => isset($_POST['page']) ? intval($_POST['page']) : 1,
+        ];
+    }
+
+    /**
+     * Build WP_Query arguments based on filter parameters
+     *
+     * @param array $params Filter parameters
+     * @return array Query arguments
+     */
+    private function buildFilterQuery(array $params): array
+    {
+        $args = [
+            'post_type' => 'aps_product',
+            'posts_per_page' => $params['per_page'],
+            'paged' => $params['page'],
+            'post_status' => $params['status'] === 'all' ? ['publish', 'draft', 'pending'] : $params['status'],
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ];
+
+        // Add search
+        if (!empty($params['search'])) {
+            $args['s'] = $params['search'];
+        }
+
+        // Add category filter
+        if ($params['category'] > 0) {
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => 'aps_category',
+                    'field' => 'term_id',
+                    'terms' => $params['category'],
+                ]
+            ];
+        }
+
+        // Add featured filter
+        if ($params['featured']) {
+            $args['meta_query'] = [
+                [
+                    'key' => '_aps_featured',
+                    'value' => '1',
+                    'compare' => '=',
+                ]
+            ];
+        }
+
+        return $args;
+    }
+
+    /**
+     * Build product data array for JSON response
+     *
+     * @param int $post_id Product post ID
+     * @return array Product data
+     */
+    private function buildProductData(int $post_id): array
+    {
+        // Get ribbon from taxonomy
+        $ribbon_terms = wp_get_post_terms($post_id, 'aps_ribbon', ['fields' => 'names']);
+
+        return [
+            'id' => $post_id,
+            'title' => get_the_title($post_id),
+            'logo' => get_post_meta($post_id, '_aps_logo', true),
+            'price' => get_post_meta($post_id, '_aps_price', true),
+            'original_price' => get_post_meta($post_id, '_aps_original_price', true),
+            'discount_percentage' => $this->calculateDiscount($post_id),
+            'status' => get_post_status($post_id),
+            'featured' => get_post_meta($post_id, '_aps_featured', true) === '1',
+            'ribbon' => !empty($ribbon_terms) ? $ribbon_terms[0] : '',
+            'categories' => wp_get_post_terms($post_id, 'aps_category', ['fields' => 'names']),
+            'tags' => wp_get_post_terms($post_id, 'aps_tag', ['fields' => 'names']),
+            'affiliate_url' => get_post_meta($post_id, '_aps_affiliate_url', true),
+        ];
     }
 
     /**
@@ -182,14 +335,12 @@ class AjaxHandler {
      */
     public function handleBulkAction(): void {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_product_table_ui')) {
-            wp_send_json_error(['message' => 'Invalid security token']);
+        if (!$this->verifyNonce('aps_product_table_ui')) {
             return;
         }
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'Insufficient permissions']);
+        if (!$this->verifyManageOptionsCapability()) {
             return;
         }
 
@@ -201,28 +352,43 @@ class AjaxHandler {
             return;
         }
 
+        $result = $this->processBulkActions($action, $product_ids);
+
+        wp_send_json_success([
+            'message' => sprintf(
+                '%d products processed successfully. %d failed.',
+                $result['success_count'],
+                $result['error_count']
+            ),
+            'success_count' => $result['success_count'],
+            'error_count' => $result['error_count'],
+        ]);
+    }
+
+    /**
+     * Process bulk action for multiple products
+     *
+     * @param string $action Action to perform
+     * @param array $product_ids Product IDs
+     * @return array Result with success and error counts
+     */
+    private function processBulkActions(string $action, array $product_ids): array
+    {
         $success_count = 0;
         $error_count = 0;
 
         foreach ($product_ids as $product_id) {
-            $result = $this->processBulkAction($action, $product_id);
-            
-            if ($result) {
+            if ($this->processBulkAction($action, $product_id)) {
                 $success_count++;
             } else {
                 $error_count++;
             }
         }
 
-        wp_send_json_success([
-            'message' => sprintf(
-                '%d products processed successfully. %d failed.',
-                $success_count,
-                $error_count
-            ),
+        return [
             'success_count' => $success_count,
             'error_count' => $error_count,
-        ]);
+        ];
     }
 
     /**
@@ -232,14 +398,12 @@ class AjaxHandler {
      */
     public function handleStatusUpdate(): void {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_product_table_ui')) {
-            wp_send_json_error(['message' => 'Invalid security token']);
+        if (!$this->verifyNonce('aps_product_table_ui')) {
             return;
         }
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'Insufficient permissions']);
+        if (!$this->verifyManageOptionsCapability()) {
             return;
         }
 
@@ -287,36 +451,13 @@ class AjaxHandler {
         }
 
         // Get all products with affiliate URLs
-        $args = [
-            'post_type' => 'aps_product',
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
-            'meta_query' => [
-                [
-                    'key' => '_aps_affiliate_url',
-                    'compare' => 'EXISTS',
-                ]
-            ]
-        ];
-
-        $query = new \WP_Query($args);
+        $query = new \WP_Query($this->buildLinkCheckQuery());
         $results = [];
 
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                $product_id = get_the_ID();
-                $affiliate_url = get_post_meta($product_id, '_aps_affiliate_url', true);
-
-                // Check link (simulated for now)
-                $is_valid = $this->checkLink($affiliate_url);
-
-                $results[] = [
-                    'id' => $product_id,
-                    'title' => get_the_title(),
-                    'url' => $affiliate_url,
-                    'valid' => $is_valid,
-                ];
+                $results[] = $this->buildLinkCheckResult(get_the_ID());
             }
         }
 
@@ -336,6 +477,44 @@ class AjaxHandler {
             'valid_count' => $valid_count,
             'invalid_count' => $invalid_count,
         ]);
+    }
+
+    /**
+     * Build query arguments for checking links
+     *
+     * @return array Query arguments
+     */
+    private function buildLinkCheckQuery(): array
+    {
+        return [
+            'post_type' => 'aps_product',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'meta_query' => [
+                [
+                    'key' => '_aps_affiliate_url',
+                    'compare' => 'EXISTS',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Build link check result for a product
+     *
+     * @param int $product_id Product ID
+     * @return array Link check result
+     */
+    private function buildLinkCheckResult(int $product_id): array
+    {
+        $affiliate_url = get_post_meta($product_id, '_aps_affiliate_url', true);
+
+        return [
+            'id' => $product_id,
+            'title' => get_the_title($product_id),
+            'url' => $affiliate_url,
+            'valid' => $this->checkLink($affiliate_url),
+        ];
     }
 
     /**
@@ -429,18 +608,7 @@ class AjaxHandler {
         $trashed_ids = [];
 
         foreach ($product_ids as $product_id) {
-            // Validate product exists and is correct type
-            $post = get_post($product_id);
-            
-            if (!$post || $post->post_type !== 'aps_product') {
-                $error_count++;
-                continue;
-            }
-
-            // Trash the product
-            $result = wp_trash_post($product_id);
-            
-            if ($result) {
+            if ($this->trashProduct($product_id)) {
                 $success_count++;
                 $trashed_ids[] = $product_id;
             } else {
@@ -449,9 +617,7 @@ class AjaxHandler {
         }
 
         // Clear product cache
-        foreach ($trashed_ids as $product_id) {
-            wp_cache_delete("product_{$product_id}", 'products');
-        }
+        $this->clearProductCache($trashed_ids);
 
         wp_send_json_success([
             'message' => sprintf(
@@ -466,20 +632,50 @@ class AjaxHandler {
     }
 
     /**
+     * Validate and trash a single product
+     *
+     * @param int $product_id Product ID
+     * @return bool True if trashed successfully, false otherwise
+     */
+    private function trashProduct(int $product_id): bool
+    {
+        // Validate product exists and is correct type
+        $post = get_post($product_id);
+        
+        if (!$post || $post->post_type !== 'aps_product') {
+            return false;
+        }
+
+        // Trash the product
+        return (bool) wp_trash_post($product_id);
+    }
+
+    /**
+     * Clear cache for multiple products
+     *
+     * @param array $product_ids Product IDs
+     * @return void
+     */
+    private function clearProductCache(array $product_ids): void
+    {
+        foreach ($product_ids as $product_id) {
+            wp_cache_delete("product_{$product_id}", 'products');
+        }
+    }
+
+    /**
      * Handle trash product action
      *
      * @return void
      */
     public function handleTrashProduct(): void {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_products_nonce')) {
-            wp_send_json_error(['message' => 'Invalid security token']);
+        if (!$this->verifyNonce('aps_products_nonce')) {
             return;
         }
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'Insufficient permissions']);
+        if (!$this->verifyManageOptionsCapability()) {
             return;
         }
 
@@ -527,14 +723,12 @@ class AjaxHandler {
      */
     public function handleQuickEditProduct(): void {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'aps_products_nonce')) {
-            wp_send_json_error(['message' => 'Invalid security token']);
+        if (!$this->verifyNonce('aps_products_nonce')) {
             return;
         }
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'Insufficient permissions']);
+        if (!$this->verifyManageOptionsCapability()) {
             return;
         }
 
@@ -578,80 +772,103 @@ class AjaxHandler {
             return;
         }
 
-        $updated_fields = [];
-
-        // Update title
-        if (isset($product_data['title'])) {
-            $title = sanitize_text_field($product_data['title']);
-            if (!empty($title)) {
-                $updated = wp_update_post([
-                    'ID' => $product_id,
-                    'post_title' => $title,
-                ]);
-                
-                if (!is_wp_error($updated)) {
-                    $updated_fields['title'] = $title;
-                }
-            }
-        }
-
-        // Update status
-        if (isset($product_data['status'])) {
-            $status = sanitize_text_field($product_data['status']);
-            $valid_statuses = ['publish', 'draft', 'pending'];
-            
-            if (in_array($status, $valid_statuses)) {
-                $updated = wp_update_post([
-                    'ID' => $product_id,
-                    'post_status' => $status,
-                ]);
-                
-                if (!is_wp_error($updated)) {
-                    $updated_fields['status'] = $status;
-                }
-            }
-        }
-
-        // Update price
-        if (isset($product_data['price'])) {
-            $price = floatval($product_data['price']);
-            if ($price >= 0) {
-                update_post_meta($product_id, '_aps_price', $price);
-                $updated_fields['price'] = $price;
-            }
-        }
-
-        // Update original price
-        if (isset($product_data['original_price'])) {
-            $original_price = floatval($product_data['original_price']);
-            if ($original_price >= 0) {
-                update_post_meta($product_id, '_aps_original_price', $original_price);
-                $updated_fields['original_price'] = $original_price;
-            }
-        }
-
-        // Update featured
-        if (isset($product_data['featured'])) {
-            $featured = $product_data['featured'] === '1' || $product_data['featured'] === true;
-            update_post_meta($product_id, '_aps_featured', $featured ? '1' : '0');
-            $updated_fields['featured'] = $featured;
-        }
-
-        // Update ribbon
-        if (isset($product_data['ribbon'])) {
-            $ribbon = sanitize_text_field($product_data['ribbon']);
-            wp_set_object_terms($product_id, [$ribbon], 'aps_ribbon', false);
-            $updated_fields['ribbon'] = $ribbon;
-        }
+        // Update fields using dedicated methods
+        $field_updates = $this->processFieldUpdates($product_id, $product_data);
+        $updated_fields = array_merge($updated_fields, $field_updates);
 
         // Clear product cache
         wp_cache_delete("product_{$product_id}", 'products');
-
+        
         wp_send_json_success([
             'message' => 'Product updated successfully.',
             'product_id' => $product_id,
             'updated_fields' => $updated_fields,
         ]);
+    }
+
+    /**
+     * Process field updates for quick edit
+     *
+     * @param int $product_id Product ID
+     * @param array $product_data Product data from request
+     * @return array Updated fields
+     */
+    private function processFieldUpdates(int $product_id, array $product_data): array {
+        $updated_fields = [];
+        
+        // Define field update configuration
+        $field_config = [
+            'title' => [
+                'sanitize' => 'sanitize_text_field',
+                'update_method' => 'updateProductTitle',
+                'validate' => true,
+            ],
+            'status' => [
+                'sanitize' => 'sanitize_text_field',
+                'update_method' => 'updateProductStatus',
+                'validate' => true,
+            ],
+            'price' => [
+                'sanitize' => 'floatval',
+                'update_method' => 'updateProductPrice',
+                'validate' => true,
+                'min_value' => 0,
+            ],
+            'original_price' => [
+                'sanitize' => 'floatval',
+                'update_method' => 'updateProductOriginalPrice',
+                'validate' => true,
+                'min_value' => 0,
+            ],
+            'featured' => [
+                'sanitize' => null,
+                'update_method' => 'updateProductFeatured',
+                'validate' => false,
+                'allowed_values' => ['1', true],
+            ],
+            'ribbon' => [
+                'sanitize' => 'sanitize_text_field',
+                'update_method' => 'updateProductRibbon',
+                'validate' => true,
+            ],
+        ];
+
+        // Process each field
+        foreach ($field_config as $field => $config) {
+            if (!isset($product_data[$field])) {
+                continue;
+            }
+
+            $value = $product_data[$field];
+            
+            // Apply sanitization if configured
+            if ($config['sanitize']) {
+                $sanitized_value = $config['sanitize']($value);
+            } else {
+                $sanitized_value = $value;
+            }
+
+            // Apply validation if configured
+            if (isset($config['validate']) && $config['validate']) {
+                // Check min value
+                if (isset($config['min_value']) && $sanitized_value < $config['min_value']) {
+                    continue;
+                }
+                
+                // Check allowed values
+                if (isset($config['allowed_values']) && !in_array($sanitized_value, $config['allowed_values'], true)) {
+                    continue;
+                }
+            }
+
+            // Call update method
+            $update_method = $config['update_method'];
+            if ($this->$update_method($product_id, $sanitized_value)) {
+                $updated_fields[$field] = $sanitized_value;
+            }
+        }
+
+        return $updated_fields;
     }
 
     /**
@@ -665,39 +882,104 @@ class AjaxHandler {
 
         // Validate title
         if (isset($data['title'])) {
-            if (empty($data['title'])) {
-                $errors['title'] = 'Title is required';
-            } elseif (strlen($data['title']) > 200) {
-                $errors['title'] = 'Title must be less than 200 characters';
+            $error = $this->validateTitle($data['title']);
+            if ($error !== null) {
+                $errors['title'] = $error;
             }
         }
 
         // Validate price
         if (isset($data['price'])) {
-            $price = floatval($data['price']);
-            if ($price < 0) {
-                $errors['price'] = 'Price must be a positive number';
+            $error = $this->validatePrice($data['price']);
+            if ($error !== null) {
+                $errors['price'] = $error;
             }
         }
 
         // Validate original price
         if (isset($data['original_price'])) {
-            $original_price = floatval($data['original_price']);
-            if ($original_price < 0) {
-                $errors['original_price'] = 'Original price must be a positive number';
-            } elseif (isset($data['price']) && $original_price > 0 && $original_price < floatval($data['price'])) {
-                $errors['original_price'] = 'Original price cannot be less than price';
+            $price = isset($data['price']) ? $data['price'] : null;
+            $error = $this->validateOriginalPrice($data['original_price'], $price);
+            if ($error !== null) {
+                $errors['original_price'] = $error;
             }
         }
 
         // Validate status
         if (isset($data['status'])) {
-            $valid_statuses = ['publish', 'draft', 'pending'];
-            if (!in_array($data['status'], $valid_statuses)) {
-                $errors['status'] = 'Invalid status value';
+            $error = $this->validateStatus($data['status']);
+            if ($error !== null) {
+                $errors['status'] = $error;
             }
         }
 
         return $errors;
     }
+
+    /**
+     * Validate title field
+     *
+     * @param string|null $title Title value
+     * @return string|null Error message or null if valid
+     */
+    private function validateTitle(?string $title): ?string
+    {
+        if (empty($title)) {
+            return 'Title is required';
+        }
+        if (strlen($title) > 200) {
+            return 'Title must be less than 200 characters';
+        }
+        return null;
+    }
+
+    /**
+     * Validate price field
+     *
+     * @param mixed $price Price value
+     * @return string|null Error message or null if valid
+     */
+    private function validatePrice($price): ?string
+    {
+        $price = floatval($price);
+        if ($price < 0) {
+            return 'Price must be a positive number';
+        }
+        return null;
+    }
+
+    /**
+     * Validate original price field
+     *
+     * @param mixed $original_price Original price value
+     * @param mixed $price Current price value
+     * @return string|null Error message or null if valid
+     */
+    private function validateOriginalPrice($original_price, $price): ?string
+    {
+        $original_price = floatval($original_price);
+        if ($original_price < 0) {
+            return 'Original price must be a positive number';
+        }
+        if ($original_price > 0 && $price !== null && $original_price < floatval($price)) {
+            return 'Original price cannot be less than price';
+        }
+        return null;
+    }
+
+    /**
+     * Validate status field
+     *
+     * @param string|null $status Status value
+     * @return string|null Error message or null if valid
+     */
+    private function validateStatus(?string $status): ?string
+    {
+        $valid_statuses = ['publish', 'draft', 'pending'];
+        if (!in_array($status, $valid_statuses)) {
+            return 'Invalid status value';
+        }
+        return null;
+    }
+
 }

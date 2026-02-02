@@ -100,17 +100,10 @@ final class CategoryFormHandler {
 		}
 
 		// Get form data
-		$cat_id      = isset( $_POST['category_id'] ) ? absint( wp_unslash( $_POST['category_id'] ) ) : 0;
-		$name        = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-		$slug        = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
-		$description = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
-		$parent_id   = isset( $_POST['parent_id'] ) ? absint( wp_unslash( $_POST['parent_id'] ) ) : 0;
-		$featured     = isset( $_POST['featured'] ) && '1' === $_POST['featured'];
-		$image_url   = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
-		$sort_order  = isset( $_POST['sort_order'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_order'] ) ) : 'date';
+		$data = $this->getFormData();
 
 		// Validate required fields
-		if ( empty( $name ) ) {
+		if ( empty( $data['name'] ) ) {
 			$this->add_admin_notice(
 				__( 'Category name is required.', 'affiliate-product-showcase' ),
 				'error'
@@ -119,52 +112,12 @@ final class CategoryFormHandler {
 		}
 
 		try {
-			if ( $cat_id > 0 ) {
-				// Update existing category
-				$category = new Category(
-					$cat_id,
-					$name,
-					$slug,
-					$description,
-					$parent_id,
-					0, // count - will be updated by WordPress
-					$featured,
-					$image_url,
-					$sort_order
-				);
+			$category = $this->createCategoryFromData( $data );
 
-				$updated = $this->repository->update( $category );
-
-				$this->add_admin_notice(
-					sprintf(
-						__( 'Category "%s" updated successfully.', 'affiliate-product-showcase' ),
-						esc_html( $name )
-					),
-					'success'
-				);
+			if ( $data['cat_id'] > 0 ) {
+				$this->updateCategory( $category );
 			} else {
-				// Create new category
-				$category = new Category(
-					0,
-					$name,
-					$slug,
-					$description,
-					$parent_id,
-					0, // count - will be updated by WordPress
-					$featured,
-					$image_url,
-					$sort_order
-				);
-
-				$created = $this->repository->create( $category );
-
-				$this->add_admin_notice(
-					sprintf(
-						__( 'Category "%s" created successfully.', 'affiliate-product-showcase' ),
-						esc_html( $name )
-					),
-					'success'
-				);
+				$this->createCategory( $category );
 			}
 		} catch ( \AffiliateProductShowcase\Exceptions\PluginException $e ) {
 			$this->add_admin_notice(
@@ -175,6 +128,88 @@ final class CategoryFormHandler {
 				'error'
 			);
 		}
+	}
+
+	/**
+	 * Get and sanitize form data from POST request
+	 *
+	 * @return array Form data
+	 */
+	private function getFormData(): array
+	{
+		return [
+			'cat_id'      => isset( $_POST['category_id'] ) ? absint( wp_unslash( $_POST['category_id'] ) ) : 0,
+			'name'        => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+			'slug'        => isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '',
+			'description' => isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '',
+			'parent_id'   => isset( $_POST['parent_id'] ) ? absint( wp_unslash( $_POST['parent_id'] ) ) : 0,
+			'featured'    => isset( $_POST['featured'] ) && '1' === $_POST['featured'],
+			'image_url'   => isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '',
+			'sort_order'  => isset( $_POST['sort_order'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_order'] ) ) : 'date',
+		];
+	}
+
+	/**
+	 * Create Category object from form data
+	 *
+	 * @param array $data Form data
+	 * @return Category Category object
+	 */
+	private function createCategoryFromData( array $data ): Category
+	{
+		return new Category(
+			$data['cat_id'],
+			$data['name'],
+			$data['slug'],
+			$data['description'],
+			$data['parent_id'],
+			0, // count - will be updated by WordPress
+			$data['featured'],
+			$data['image_url'],
+			$data['sort_order']
+		);
+	}
+
+	/**
+	 * Update existing category
+	 *
+	 * @param Category $category Category object
+	 * @return bool Success status
+	 */
+	private function updateCategory( Category $category ): bool
+	{
+		$updated = $this->repository->update( $category );
+
+		$this->add_admin_notice(
+			sprintf(
+				__( 'Category "%s" updated successfully.', 'affiliate-product-showcase' ),
+				esc_html( $category->name )
+			),
+			'success'
+		);
+
+		return $updated;
+	}
+
+	/**
+	 * Create new category
+	 *
+	 * @param Category $category Category object
+	 * @return bool Success status
+	 */
+	private function createCategory( Category $category ): bool
+	{
+		$created = $this->repository->create( $category );
+
+		$this->add_admin_notice(
+			sprintf(
+				__( 'Category "%s" created successfully.', 'affiliate-product-showcase' ),
+				esc_html( $category->name )
+			),
+			'success'
+		);
+
+		return $created;
 	}
 
 	/**

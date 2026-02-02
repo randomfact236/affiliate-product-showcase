@@ -17,7 +17,7 @@
 .aps-products-grid {
 	display: grid;
 	gap: $aps-spacing-5;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
 
 	// ============================================
 	// Modifier: Columns
@@ -30,6 +30,11 @@
 	// ============================================
 	// Responsive Design
 	// ============================================
+
+	@include mobile-first-320 {
+		grid-template-columns: 1fr;
+		gap: $aps-spacing-3;
+	}
 
 	@include tablet-down {
 		grid-template-columns: repeat(2, 1fr);

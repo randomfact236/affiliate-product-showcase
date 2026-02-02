@@ -479,6 +479,75 @@ These sections appear under "## 💡 Recommendations" at the BOTTOM of EVERY mes
 *Generated on: YYYY-MM-DD HH:MM:SS*
 ```
 
+---
+
+## 🔍 Transparent Work Mode (Real-Time Visibility)
+
+**Purpose:** Provide maximum visibility into file operations since real-time GUI preview is not available.
+
+### File Operation Announcements (MANDATORY)
+
+**Before Reading a File:**
+```
+📂 Reading: {filepath}
+```
+
+**After Reading a File:**
+```
+✅ Read: {filepath} ({line_count} lines, {size}KB)
+```
+
+**Before Writing a File:**
+```
+📝 Writing: {filepath} ({change_type: modify/create/append})
+```
+
+**After Writing a File:**
+```
+✅ Written: {filepath} ({bytes_written} bytes)
+```
+
+### Progress Tracking (For Multi-File Operations)
+
+**Show progress indicator:**
+```
+📊 Progress: [3/12] files processed
+⏳ Current: src/Admin/ProductsTable.php
+⏭️ Next: src/Admin/AjaxHandler.php
+```
+
+### Activity Status
+
+**Include "🔨 Currently:" line in main content:**
+```
+🔨 Currently: Analyzing CSS focus states in _buttons.scss
+```
+
+### File Change Summary (End of Session)
+
+**List all files touched:**
+```
+📋 Files Modified This Session:
+✅ Read: src/Admin/ProductsTable.php (164 lines)
+✅ Written: plan/action-plan.md (400 lines, +200)
+✅ Modified: src/Admin/AjaxHandler.php (150 lines, -5/+15)
+```
+
+### Visual Indicators
+
+| Symbol | Meaning |
+|--------|---------|
+| 📂 | Opening/Reading file |
+| 📝 | Writing/Modifying file |
+| ✅ | Completed successfully |
+| ⏳ | In progress |
+| ⏭️ | Next item |
+| 📊 | Progress stats |
+| 🔨 | Current activity |
+| 📋 | Summary/List |
+
+---
+
 ### When to Skip Recommendations
 
 **IMPORTANT:** Recommendations are MANDATORY for ALL messages - NO EXCEPTIONS.

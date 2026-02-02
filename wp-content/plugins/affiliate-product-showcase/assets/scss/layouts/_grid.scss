@@ -29,7 +29,7 @@
 	&--cols-5 { grid-template-columns: repeat(5, 1fr); }
 	&--cols-6 { grid-template-columns: repeat(6, 1fr); }
 	&--cols-auto { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
-	&--cols-fit { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+	&--cols-fit { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 
 	// ============================================
 	// Modifier: Gap

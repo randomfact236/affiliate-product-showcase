@@ -177,6 +177,7 @@ $aps-z-toast: 9999;
 // Note: These match Tailwind's standard breakpoints defined in tailwind.config.js
 // Tailwind is the single source of truth for breakpoints
 
+$aps-breakpoint-320: 320px; // Very small phones (iPhone SE, older devices)
 $aps-breakpoint-xs: 480px;
 $aps-breakpoint-wp-mobile: 600px;
 $aps-breakpoint-sm: 640px;  // Tailwind 'sm' - Small devices (landscape phones)
