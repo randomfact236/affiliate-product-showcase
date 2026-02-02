@@ -41,8 +41,8 @@
 	&-muted { color: $aps-color-text-muted; }
 	&-light { color: $aps-color-text-light; }
 
-	&-white { color: #fff; }
-	&-black { color: #000; }
+	&-white { color: $aps-color-white; }
+	&-black { color: $aps-color-black; }
 }
 
 // ============================================
@@ -74,8 +74,8 @@
 	&-hover { background-color: $aps-color-bg-hover; }
 	&-input { background-color: $aps-color-bg-input; }
 
-	&-white { background-color: #fff; }
-	&-black { background-color: #000; }
+	&-white { background-color: $aps-color-white; }
+	&-black { background-color: $aps-color-black; }
 	&-transparent { background-color: transparent; }
 }
 
@@ -106,8 +106,8 @@
 	&-light { border-color: $aps-color-border-light; }
 	&-dark { border-color: $aps-color-border-dark; }
 
-	&-white { border-color: #fff; }
-	&-black { border-color: #000; }
+	&-white { border-color: $aps-color-white; }
+	&-black { border-color: $aps-color-black; }
 }
 
 // ============================================
