@@ -735,61 +735,29 @@ class AjaxHandler {
      * @return void
      */
     public function handleQuickEditProduct(): void {
-        // Verify nonce
-        if (!$this->verifyNonce('aps_products_nonce')) {
+        // Security and input validation
+        $product_id = $this->validateQuickEditRequest();
+        if (!$product_id) {
             return;
         }
 
-        // Check permissions
-        if (!$this->verifyManageOptionsCapability()) {
-            return;
-        }
-
-        // Get product ID
-        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
-
-        if ($product_id === 0) {
-            wp_send_json_error(['message' => 'Invalid product ID']);
-            return;
-        }
-
-        // Validate product exists and is correct type
-        $post = get_post($product_id);
-        
-        if (!$post) {
-            wp_send_json_error(['message' => 'Product not found']);
-            return;
-        }
-
-        if ($post->post_type !== 'aps_product') {
-            wp_send_json_error(['message' => 'Invalid product type']);
-            return;
-        }
-
-        // Get product data
-        $product_data = isset($_POST['data']) && is_array($_POST['data']) ? $_POST['data'] : [];
-
+        $product_data = $this->getQuickEditData();
         if (empty($product_data)) {
             wp_send_json_error(['message' => 'No data provided']);
             return;
         }
 
-        // Validate and sanitize fields
+        // Validate fields
         $errors = $this->validateQuickEditData($product_data);
-        
         if (!empty($errors)) {
-            wp_send_json_error([
-                'message' => 'Validation failed',
-                'errors' => $errors,
-            ]);
+            wp_send_json_error(['message' => 'Validation failed', 'errors' => $errors]);
             return;
         }
 
-        // Update fields using dedicated methods
-        $field_updates = $this->processFieldUpdates($product_id, $product_data);
-        $updated_fields = array_merge($updated_fields, $field_updates);
+        // Process updates
+        $updated_fields = $this->processFieldUpdates($product_id, $product_data);
 
-        // Clear product cache
+        // Clear cache and return success
         wp_cache_delete("product_{$product_id}", 'products');
         
         wp_send_json_success([
@@ -797,6 +765,51 @@ class AjaxHandler {
             'product_id' => $product_id,
             'updated_fields' => $updated_fields,
         ]);
+    }
+
+    /**
+     * Validate quick edit request (security + product validation)
+     *
+     * @return int Product ID if valid, 0 otherwise
+     */
+    private function validateQuickEditRequest(): int {
+        if (!$this->verifyNonce('aps_products_nonce')) {
+            return 0;
+        }
+
+        if (!$this->verifyManageOptionsCapability()) {
+            return 0;
+        }
+
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+
+        if ($product_id === 0) {
+            wp_send_json_error(['message' => 'Invalid product ID']);
+            return 0;
+        }
+
+        $post = get_post($product_id);
+        
+        if (!$post) {
+            wp_send_json_error(['message' => 'Product not found']);
+            return 0;
+        }
+
+        if ($post->post_type !== 'aps_product') {
+            wp_send_json_error(['message' => 'Invalid product type']);
+            return 0;
+        }
+
+        return $product_id;
+    }
+
+    /**
+     * Get quick edit data from request
+     *
+     * @return array Product data
+     */
+    private function getQuickEditData(): array {
+        return isset($_POST['data']) && is_array($_POST['data']) ? $_POST['data'] : [];
     }
 
     /**
