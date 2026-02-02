@@ -12,11 +12,21 @@ use AffiliateProductShowcase\Admin\TagFields;
 use AffiliateProductShowcase\Admin\RibbonFields;
 use AffiliateProductShowcase\Admin\ProductFilters;
 use AffiliateProductShowcase\Admin\Settings;
+use AffiliateProductShowcase\Admin\SettingsPage;
 use AffiliateProductShowcase\Admin\ProductsPage;
 use AffiliateProductShowcase\Admin\ProductsAjaxHandler;
 
+/**
+ * Admin class - Main admin controller
+ * 
+ * Coordinates all admin functionality with simple, clean architecture.
+ *
+ * @package AffiliateProductShowcase\Admin
+ * @since 1.0.0
+ */
 final class Admin {
 	private Settings $settings;
+	private SettingsPage $settings_page;
 	private ProductFormHandler $form_handler;
 	private Menu $menu;
 	private CategoryFields $category_fields;
@@ -36,6 +46,7 @@ final class Admin {
 		Settings $settings
 	) {
 		$this->settings = $settings;
+		$this->settings_page = new SettingsPage();
 		$this->form_handler = $form_handler;
 		$this->menu = $menu;
 		$this->category_fields = new CategoryFields();
@@ -50,16 +61,19 @@ final class Admin {
 		// Initialize settings
 		$this->settings->init();
 		
-		// Initialize category components (WordPress native + custom enhancements)
+		// Initialize settings page (pill tabs UI)
+		$this->settings_page->init();
+		
+		// Initialize category components
 		$this->category_fields->init();
 		
-		// Initialize tag components (WordPress native + custom enhancements)
+		// Initialize tag components
 		$this->tag_fields->init();
 		
-		// Initialize ribbon components (WordPress native + custom enhancements)
+		// Initialize ribbon components
 		$this->ribbon_fields->init();
 		
-		// Initialize product filters (WordPress default table extensions)
+		// Initialize product filters
 		$this->product_filters->init();
 		
 		// Initialize custom products page

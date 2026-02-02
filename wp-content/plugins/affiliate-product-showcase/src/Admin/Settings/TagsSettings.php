@@ -6,7 +6,7 @@ namespace AffiliateProductShowcase\Admin\Settings;
 /**
  * Tags Settings Section
  *
- * Handles tag settings including display styles, colors, icons, and filtering options.
+ * Enable tag colors and default background color using wpColorPicker.
  *
  * @package AffiliateProductShowcase\Admin\Settings
  * @since 1.0.0
@@ -16,6 +16,8 @@ final class TagsSettings extends AbstractSettingsSection {
 	const SECTION_ID = 'affiliate_product_showcase_tags';
 	const SECTION_TITLE = 'Tag Settings';
 	
+	const DEFAULT_BACKGROUND_COLOR = '#dbeafe';
+	
 	/**
 	 * Get default values for this section
 	 *
@@ -23,16 +25,8 @@ final class TagsSettings extends AbstractSettingsSection {
 	 */
 	public function get_defaults(): array {
 		return [
-			'tag_display_style' => 'pills',
 			'enable_tag_colors' => true,
-			'enable_tag_icons' => true,
-			'tag_cloud_limit' => 20,
-			'tag_cloud_orderby' => 'count',
-			'tag_cloud_order' => 'DESC',
-			'show_tag_description' => false,
-			'show_tag_count' => true,
-			'enable_tag_filtering' => true,
-			'tag_filter_display_mode' => 'checkboxes',
+			'tag_background_color' => self::DEFAULT_BACKGROUND_COLOR,
 		];
 	}
 	
@@ -50,15 +44,7 @@ final class TagsSettings extends AbstractSettingsSection {
 			['data-section' => 'tags']
 		);
 		
-		\add_settings_field(
-			'tag_display_style',
-			__('Tag Display Style', 'affiliate-product-showcase'),
-			[$this, 'render_tag_display_style_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'tag_display_style']
-		);
-		
+		// Enable tag colors toggle
 		\add_settings_field(
 			'enable_tag_colors',
 			__('Enable Tag Colors', 'affiliate-product-showcase'),
@@ -68,76 +54,14 @@ final class TagsSettings extends AbstractSettingsSection {
 			['label_for' => 'enable_tag_colors']
 		);
 		
+		// Default background color
 		\add_settings_field(
-			'enable_tag_icons',
-			__('Enable Tag Icons', 'affiliate-product-showcase'),
-			[$this, 'render_enable_tag_icons_field'],
+			'tag_background_color',
+			__('Default Background Color', 'affiliate-product-showcase'),
+			[$this, 'render_tag_background_color_field'],
 			'affiliate-product-showcase',
 			self::SECTION_ID,
-			['label_for' => 'enable_tag_icons']
-		);
-		
-		\add_settings_field(
-			'tag_cloud_limit',
-			__('Tag Cloud Limit', 'affiliate-product-showcase'),
-			[$this, 'render_tag_cloud_limit_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'tag_cloud_limit']
-		);
-		
-		\add_settings_field(
-			'tag_cloud_orderby',
-			__('Tag Cloud Order By', 'affiliate-product-showcase'),
-			[$this, 'render_tag_cloud_orderby_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'tag_cloud_orderby']
-		);
-		
-		\add_settings_field(
-			'tag_cloud_order',
-			__('Tag Cloud Order', 'affiliate-product-showcase'),
-			[$this, 'render_tag_cloud_order_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'tag_cloud_order']
-		);
-		
-		\add_settings_field(
-			'show_tag_description',
-			__('Show Tag Description', 'affiliate-product-showcase'),
-			[$this, 'render_show_tag_description_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'show_tag_description']
-		);
-		
-		\add_settings_field(
-			'show_tag_count',
-			__('Show Tag Count', 'affiliate-product-showcase'),
-			[$this, 'render_show_tag_count_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'show_tag_count']
-		);
-		
-		\add_settings_field(
-			'enable_tag_filtering',
-			__('Enable Tag Filtering', 'affiliate-product-showcase'),
-			[$this, 'render_enable_tag_filtering_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'enable_tag_filtering']
-		);
-		
-		\add_settings_field(
-			'tag_filter_display_mode',
-			__('Tag Filter Display Mode', 'affiliate-product-showcase'),
-			[$this, 'render_tag_filter_display_mode_field'],
-			'affiliate-product-showcase',
-			self::SECTION_ID,
-			['label_for' => 'tag_filter_display_mode']
+			['label_for' => 'tag_background_color']
 		);
 	}
 	
@@ -148,21 +72,12 @@ final class TagsSettings extends AbstractSettingsSection {
 	 * @return array
 	 */
 	public function sanitize_options(array $input): array {
-		$sanitized = [];
+		$color = sanitize_hex_color($input['tag_background_color'] ?? self::DEFAULT_BACKGROUND_COLOR);
 		
-		$sanitized['tag_display_style'] = in_array($input['tag_display_style'] ?? 'pills', ['pills', 'badges', 'links', 'dropdown']) ? $input['tag_display_style'] : 'pills';
-		$sanitized['enable_tag_colors'] = isset($input['enable_tag_colors']);
-		$sanitized['enable_tag_icons'] = isset($input['enable_tag_icons']);
-		$sanitized['tag_cloud_limit'] = intval($input['tag_cloud_limit'] ?? 20);
-		$sanitized['tag_cloud_limit'] = max(10, min(50, $sanitized['tag_cloud_limit']));
-		$sanitized['tag_cloud_orderby'] = in_array($input['tag_cloud_orderby'] ?? 'count', ['name', 'count', 'slug', 'random']) ? $input['tag_cloud_orderby'] : 'count';
-		$sanitized['tag_cloud_order'] = in_array($input['tag_cloud_order'] ?? 'DESC', ['ASC', 'DESC']) ? $input['tag_cloud_order'] : 'DESC';
-		$sanitized['show_tag_description'] = isset($input['show_tag_description']);
-		$sanitized['show_tag_count'] = isset($input['show_tag_count']);
-		$sanitized['enable_tag_filtering'] = isset($input['enable_tag_filtering']);
-		$sanitized['tag_filter_display_mode'] = in_array($input['tag_filter_display_mode'] ?? 'checkboxes', ['checkboxes', 'links', 'dropdown']) ? $input['tag_filter_display_mode'] : 'checkboxes';
-		
-		return $sanitized;
+		return [
+			'enable_tag_colors' => isset($input['enable_tag_colors']),
+			'tag_background_color' => $color ?: self::DEFAULT_BACKGROUND_COLOR,
+		];
 	}
 	
 	/**
@@ -171,29 +86,7 @@ final class TagsSettings extends AbstractSettingsSection {
 	 * @return void
 	 */
 	public function render_section_description(): void {
-		echo '<p>' . esc_html__('Configure tag display styles, colors, icons, and filtering options.', 'affiliate-product-showcase') . '</p>';
-	}
-	
-	/**
-	 * Render tag display style field
-	 *
-	 * @return void
-	 */
-	public function render_tag_display_style_field(): void {
-		$settings = $this->get_settings();
-		$styles = [
-			'pills' => __('Pills', 'affiliate-product-showcase'),
-			'badges' => __('Badges', 'affiliate-product-showcase'),
-			'links' => __('Links', 'affiliate-product-showcase'),
-			'dropdown' => __('Dropdown', 'affiliate-product-showcase'),
-		];
-		
-		echo '<select name="' . esc_attr($this->option_name) . '[tag_display_style]">';
-		foreach ($styles as $value => $label) {
-			$selected = selected($settings['tag_display_style'], $value, false);
-			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
-		}
-		echo '</select>';
+		echo '<p>' . esc_html__('Configure tag appearance. Individual tags can override the default color.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
@@ -204,146 +97,40 @@ final class TagsSettings extends AbstractSettingsSection {
 	public function render_enable_tag_colors_field(): void {
 		$settings = $this->get_settings();
 		$checked = checked($settings['enable_tag_colors'], true, false);
-		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_tag_colors]" value="1" ' . $checked . '> ';
-		echo esc_html__('Enable custom tag colors', 'affiliate-product-showcase');
-		echo '</label>';
-	}
-	
-	/**
-	 * Render enable tag icons field
-	 *
-	 * @return void
-	 */
-	public function render_enable_tag_icons_field(): void {
-		$settings = $this->get_settings();
-		$checked = checked($settings['enable_tag_icons'], true, false);
-		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_tag_icons]" value="1" ' . $checked . '> ';
-		echo esc_html__('Enable tag icons (emoji/SVG)', 'affiliate-product-showcase');
-		echo '</label>';
-	}
-	
-	/**
-	 * Render tag cloud limit field
-	 *
-	 * @return void
-	 */
-	public function render_tag_cloud_limit_field(): void {
-		$settings = $this->get_settings();
-		echo '<select name="' . esc_attr($this->option_name) . '[tag_cloud_limit]">';
-		foreach ([10, 20, 30, 40, 50] as $value) {
-			$selected = selected($settings['tag_cloud_limit'], $value, false);
-			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($value) . '</option>';
-		}
-		echo '</select>';
-		echo '<p class="description">' . esc_html__('Number of tags in tag cloud.', 'affiliate-product-showcase') . '</p>';
-	}
-	
-	/**
-	 * Render tag cloud orderby field
-	 *
-	 * @return void
-	 */
-	public function render_tag_cloud_orderby_field(): void {
-		$settings = $this->get_settings();
-		$options = [
-			'name' => __('Name', 'affiliate-product-showcase'),
-			'count' => __('Count', 'affiliate-product-showcase'),
-			'slug' => __('Slug', 'affiliate-product-showcase'),
-			'random' => __('Random', 'affiliate-product-showcase'),
-		];
 		
-		echo '<select name="' . esc_attr($this->option_name) . '[tag_cloud_orderby]">';
-		foreach ($options as $value => $label) {
-			$selected = selected($settings['tag_cloud_orderby'], $value, false);
-			echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
-		}
-		echo '</select>';
+		echo '<label class="aps-toggle-label">';
+		echo '<input type="checkbox" 
+			name="' . esc_attr($this->option_name) . '[enable_tag_colors]" 
+			id="enable_tag_colors" 
+			value="1" ' . $checked . ' 
+			class="aps-toggle"> ';
+		echo '<span class="aps-toggle-slider"></span>';
+		echo '</label>';
+		echo '<p class="description">' . esc_html__('Allow custom background colors for tags.', 'affiliate-product-showcase') . '</p>';
 	}
 	
 	/**
-	 * Render tag cloud order field
+	 * Render tag background color field
+	 * Uses WordPress wpColorPicker (same as tag add form)
 	 *
 	 * @return void
 	 */
-	public function render_tag_cloud_order_field(): void {
+	public function render_tag_background_color_field(): void {
 		$settings = $this->get_settings();
-		$options = [
-			'ASC' => __('Ascending', 'affiliate-product-showcase'),
-			'DESC' => __('Descending', 'affiliate-product-showcase'),
-		];
+		$color = $settings['tag_background_color'];
 		
-		foreach ($options as $value => $label) {
-			$checked = checked($settings['tag_cloud_order'], $value, false);
-			echo '<label>';
-			echo '<input type="radio" name="' . esc_attr($this->option_name) . '[tag_cloud_order]" value="' . esc_attr($value) . '" ' . $checked . '> ';
-			echo esc_html($label);
-			echo '</label><br>';
-		}
-	}
-	
-	/**
-	 * Render show tag description field
-	 *
-	 * @return void
-	 */
-	public function render_show_tag_description_field(): void {
-		$settings = $this->get_settings();
-		$checked = checked($settings['show_tag_description'], true, false);
-		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_tag_description]" value="1" ' . $checked . '> ';
-		echo esc_html__('Show tag description', 'affiliate-product-showcase');
-		echo '</label>';
-	}
-	
-	/**
-	 * Render show tag count field
-	 *
-	 * @return void
-	 */
-	public function render_show_tag_count_field(): void {
-		$settings = $this->get_settings();
-		$checked = checked($settings['show_tag_count'], true, false);
-		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[show_tag_count]" value="1" ' . $checked . '> ';
-		echo esc_html__('Show product count per tag', 'affiliate-product-showcase');
-		echo '</label>';
-	}
-	
-	/**
-	 * Render enable tag filtering field
-	 *
-	 * @return void
-	 */
-	public function render_enable_tag_filtering_field(): void {
-		$settings = $this->get_settings();
-		$checked = checked($settings['enable_tag_filtering'], true, false);
-		echo '<label>';
-		echo '<input type="checkbox" name="' . esc_attr($this->option_name) . '[enable_tag_filtering]" value="1" ' . $checked . '> ';
-		echo esc_html__('Enable tag filtering on product pages', 'affiliate-product-showcase');
-		echo '</label>';
-	}
-	
-	/**
-	 * Render tag filter display mode field
-	 *
-	 * @return void
-	 */
-	public function render_tag_filter_display_mode_field(): void {
-		$settings = $this->get_settings();
-		$modes = [
-			'checkboxes' => __('Checkboxes', 'affiliate-product-showcase'),
-			'links' => __('Links', 'affiliate-product-showcase'),
-			'dropdown' => __('Dropdown', 'affiliate-product-showcase'),
-		];
+		echo '<input type="text" 
+			name="' . esc_attr($this->option_name) . '[tag_background_color]" 
+			id="tag_background_color" 
+			value="' . esc_attr($color) . '" 
+			class="aps-color-picker regular-text"
+			placeholder="#dbeafe"
+			pattern="^#[0-9a-fA-F]{6}$"
+			maxlength="7"
+			' . disabled($settings['enable_tag_colors'], false, false) . '>';
 		
-		foreach ($modes as $value => $label) {
-			$checked = checked($settings['tag_filter_display_mode'], $value, false);
-			echo '<label>';
-			echo '<input type="radio" name="' . esc_attr($this->option_name) . '[tag_filter_display_mode]" value="' . esc_attr($value) . '" ' . $checked . '> ';
-			echo esc_html($label);
-			echo '</label><br>';
-		}
+		echo '<p class="description">' . 
+			esc_html__('Default background color for tag badges. Individual tags can override this when creating/editing.', 'affiliate-product-showcase') . 
+			'</p>';
 	}
 }

@@ -77,6 +77,16 @@ class Enqueue {
             );
         }
         
+        // Load settings CSS on settings page (before plugin page check)
+        if ( $this->isSettingsPage( $hook ) ) {
+            wp_enqueue_style(
+                'affiliate-product-showcase-settings',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/settings.css' ),
+                [],
+                self::VERSION . '.' . time() // Cache buster for development
+            );
+        }
+        
         // Only load other styles on our plugin pages
         if ( ! $this->isPluginPage( $hook ) ) {
             return;
@@ -118,15 +128,7 @@ class Enqueue {
             );
         }
 
-        // Settings styles
-        if ( $this->isSettingsPage( $hook ) ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-settings',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/settings.css' ),
-                [ 'affiliate-product-showcase-tokens' ],
-                self::VERSION
-            );
-        }
+        // Settings styles already enqueued earlier
 
         // Note: Product edit styles are inline in add-product-page.php
         // No separate CSS file needed for add-product page
@@ -270,10 +272,13 @@ class Enqueue {
         $plugin_pages = [
             'affiliate-product-showcase',
             'affiliate-manager',
+            'affiliate-manager-settings',
+            'affiliate-manager-help',
             'affiliate-product-showcase-analytics',
             'affiliate-product-showcase-settings',
             'affiliate-product-showcase-help',
             'toplevel_page_affiliate-product-showcase',
+            'toplevel_page_affiliate-manager',
             // Add Product page hook (under aps_product)
             'aps_product_page_add-product',
         ];

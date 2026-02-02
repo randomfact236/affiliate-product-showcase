@@ -1,178 +1,271 @@
 /**
  * Affiliate Product Showcase - Settings Page Styles
+ * Clean, modern pill tab design
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
  */
 
-/* Settings Page Container */
+/* Container */
 .aps-settings-wrap {
     max-width: 1200px;
     margin: 20px auto;
 }
 
-/* Tab Navigation */
+/* Tab Navigation Container */
 .aps-settings-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 25px 0 30px 0;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e5e7eb;
+    gap: 12px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 24px;
 }
 
+/* Individual Tab */
 .aps-tab {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
-    background: #f3f4f6;
-    border-radius: 25px;
-    color: #6b7280;
-    text-decoration: none;
+    padding: 12px 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    color: #64748b;
     font-size: 14px;
     font-weight: 500;
+    text-decoration: none;
     transition: all 0.2s ease;
-    position: relative;
-    border: 2px solid transparent;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .aps-tab:hover {
-    background: #e5e7eb;
-    color: #1f2937;
-    transform: translateY(-2px);
+    background: #ffffff;
+    border-color: #cbd5e1;
+    color: #334155;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transform: translateY(-1px);
 }
 
-.aps-tab.active {
+/* Active Tab */
+.aps-tab.is-active {
     background: #3b82f6;
+    border-color: #3b82f6;
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    border-color: #3b82f6;
+    font-weight: 600;
 }
 
-.aps-tab.active:hover {
+.aps-tab.is-active:hover {
     background: #2563eb;
-    transform: translateY(-2px);
+    border-color: #2563eb;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
 }
 
-/* Disabled Tab (Coming Soon) */
-.aps-tab.disabled {
-    opacity: 0.5;
+/* Disabled Tab */
+.aps-tab.is-disabled {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-.aps-tab-icon {
-    font-size: 18px;
+/* Tab Elements */
+.aps-tab__icon {
+    font-size: 16px;
     line-height: 1;
 }
 
-.aps-tab-text {
-    font-size: 14px;
-    line-height: 1.4;
+.aps-tab__text {
+    line-height: 1;
 }
 
-.aps-tab-badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
+.aps-tab__badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-left: 6px;
     background: #f59e0b;
     color: #ffffff;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 12px;
+    border-radius: 50px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
 }
 
-/* Settings Content */
+/* Content Card */
 .aps-settings-content {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
+    border-radius: 16px;
+    padding: 40px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
 }
 
-/* Coming Soon Section */
-.aps-coming-soon {
-    text-align: center;
-    padding: 60px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    color: #ffffff;
+.aps-settings-content h2 {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
 }
 
-.aps-coming-soon-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-}
-
-.aps-coming-soon h2 {
-    margin: 0 0 10px 0;
-    font-size: 28px;
-    font-weight: 700;
-}
-
-.aps-coming-soon p {
-    margin: 0;
-    font-size: 16px;
-    opacity: 0.9;
-}
-
-/* Form Styles */
-.aps-settings-content form input[type="text"],
-.aps-settings-content form input[type="number"],
-.aps-settings-content form select {
-    padding: 10px 15px;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
+.aps-settings-content > p {
+    margin: 0 0 30px 0;
+    color: #64748b;
     font-size: 14px;
+}
+
+/* Form Table */
+.aps-settings-content .form-table {
+    margin: 0;
+}
+
+.aps-settings-content .form-table th {
+    padding: 20px 20px 20px 0;
+    width: 200px;
+    font-weight: 500;
+    color: #334155;
+    vertical-align: top;
+}
+
+.aps-settings-content .form-table td {
+    padding: 20px 0;
+}
+
+/* Toggle Switch */
+.aps-toggle {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    background: #e2e8f0;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border: none;
+    vertical-align: middle;
+}
+
+.aps-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.aps-toggle:checked {
+    background: #3b82f6;
+}
+
+.aps-toggle:checked::after {
+    transform: translateX(20px);
+}
+
+/* Color Picker - WordPress wpColorPicker Style */
+.aps-color-picker {
+    padding: 3px 5px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #2c3338;
+}
+
+.aps-color-picker:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+    outline: none;
+}
+
+/* wpColorPicker container styling */
+.wp-picker-container {
+    display: inline-block;
+}
+
+.wp-picker-container .wp-color-result {
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.wp-picker-container .wp-color-result:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.wp-picker-open + .wp-picker-input-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Description Text */
+.aps-settings-content .description {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-style: normal;
+}
+
+/* Submit Button */
+.aps-settings-content .button-primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
     transition: all 0.2s ease;
 }
 
-.aps-settings-content form input[type="text"]:focus,
-.aps-settings-content form input[type="number"]:focus,
-.aps-settings-content form select:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.aps-settings-content .button-primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
 }
 
-.aps-settings-content form label {
-    display: block;
-    margin: 0 0 8px 0;
-    font-weight: 500;
-    color: #374151;
-}
-
-.aps-settings-content form .description {
-    margin-top: 8px;
-    color: #6b7280;
-    font-size: 13px;
-}
-
-/* Date/Time Format Examples */
-.aps-settings-content form select .example {
-    color: #6b7280;
-    font-size: 13px;
-    font-weight: normal;
-}
-
-/* Responsive Design */
-@media (max-width: var(--aps-breakpoint-md)) {
+/* Responsive */
+@media (max-width: 782px) {
     .aps-settings-tabs {
-        flex-direction: column;
-        gap: 8px;
+        padding: 16px;
+        gap: 10px;
     }
     
     .aps-tab {
-        width: 100%;
-        justify-content: center;
+        padding: 10px 16px;
+        font-size: 13px;
     }
     
     .aps-settings-content {
-        padding: 20px;
+        padding: 24px;
+    }
+    
+    .aps-settings-content .form-table th,
+    .aps-settings-content .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .aps-settings-tabs {
+        justify-content: center;
+    }
+    
+    .aps-tab {
+        flex: 1;
+        justify-content: center;
+        min-width: 120px;
     }
 }

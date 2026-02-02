@@ -90,16 +90,6 @@ class Menu {
 			[ $this, 'renderDashboardPage' ]
 		);
 
-		// Settings submenu
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Settings', 'affiliate-product-showcase' ),
-			__( 'Settings', 'affiliate-product-showcase' ),
-			'manage_options',
-			self::MENU_SLUG . '-settings',
-			[ $this, 'renderSettingsPage' ]
-		);
-
 		// Help submenu
 		add_submenu_page(
 			self::MENU_SLUG,
@@ -449,10 +439,6 @@ class Menu {
      * @since 1.0.0
      * @return void
      */
-    public function renderSettingsPage(): void {
-        include \AffiliateProductShowcase\Plugin\Constants::viewPath( 'src/Admin/partials/settings-page.php' );
-    }
-
     /**
      * Render add product page (custom WooCommerce-style editor)
      *
@@ -468,17 +454,17 @@ class Menu {
         // Enqueue admin add product styles
         wp_enqueue_style(
             'aps-admin-add-product',
-            plugins_url( 'assets/css/affiliate-product-showcase.css', APS_PLUGIN_FILE ),
+            plugins_url( 'assets/css/affiliate-product-showcase.css', \AffiliateProductShowcase\Plugin\Constants::FILE ),
             [],
-            defined( 'APS_VERSION' ) ? APS_VERSION : '1.0.0'
+            \AffiliateProductShowcase\Plugin\Constants::VERSION
         );
         
         // Enqueue admin add product script
         wp_enqueue_script(
             'aps-admin-add-product',
-            plugins_url( 'assets/js/admin-add-product.js', APS_PLUGIN_FILE ),
+            plugins_url( 'assets/js/admin-add-product.js', \AffiliateProductShowcase\Plugin\Constants::FILE ),
             ['jquery', 'media-editor'],
-            defined( 'APS_VERSION' ) ? APS_VERSION : '1.0.0',
+            \AffiliateProductShowcase\Plugin\Constants::VERSION,
             true
         );
         
