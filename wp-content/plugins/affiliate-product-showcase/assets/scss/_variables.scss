@@ -82,18 +82,19 @@ $aps-color-discount: #ef4444;
 // ============================================
 
 // Font Families
-$aps-font-family-base: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
-$aps-font-family-heading: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
+$aps-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+$aps-font-family-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $aps-font-family-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
 
 // Font Sizes (in rem)
-$aps-font-size-xs: 0.75rem;   // 12px
-$aps-font-size-sm: 0.8125rem; // 13px
-$aps-font-size-base: 0.875rem; // 14px
-$aps-font-size-md: 1rem;       // 16px
-$aps-font-size-lg: 1.125rem;   // 18px
-$aps-font-size-xl: 1.5rem;     // 24px
-$aps-font-size-2xl: 2rem;    // 32px
+$aps-font-size-xs: 0.75rem;    // 12px
+$aps-font-size-sm: 0.8125rem;   // 13px
+$aps-font-size-base: 0.875rem;  // 14px
+$aps-font-size-md: 1rem;        // 16px
+$aps-font-size-lg: 1.125rem;    // 18px
+$aps-font-size-xl: 1.5rem;      // 24px
+$aps-font-size-2xl: 2rem;       // 32px
+$aps-font-size-3xl: 2.5rem;     // 40px
 
 // Font Weights
 $aps-font-weight-light: 300;
@@ -107,26 +108,35 @@ $aps-line-height-tight: 1.25;
 $aps-line-height-normal: 1.5;
 $aps-line-height-relaxed: 1.75;
 
+// Letter Spacing
+$aps-letter-spacing-tight: -0.025em;
+$aps-letter-spacing-normal: 0;
+$aps-letter-spacing-wide: 0.5px;
+
 // ============================================
 // Spacing Scale (in rem)
 // ============================================
 
-$aps-spacing-xs: 0.125rem; // 2px
+// Numeric scale (sequential)
 $aps-spacing-0: 0;
-$aps-spacing-1: 0.25rem;  // 4px
-$aps-spacing-2: 0.5rem;   // 8px
-$aps-spacing-3: 0.75rem;  // 12px
-$aps-spacing-base: 1rem; // 16px (base spacing unit)
-$aps-letter-spacing-wide: 0.5px; // Wide letter spacing for badges, labels, tags
-$aps-icon-size-sm: 0.875rem; // 14px (small icon size)
+$aps-spacing-1: 0.25rem;   // 4px
+$aps-spacing-2: 0.5rem;    // 8px
+$aps-spacing-3: 0.75rem;   // 12px
 $aps-spacing-4: 1rem;      // 16px
 $aps-spacing-5: 1.25rem;   // 20px
 $aps-spacing-6: 1.5rem;    // 24px
+$aps-spacing-7: 1.75rem;   // 28px
 $aps-spacing-8: 2rem;      // 32px
+$aps-spacing-9: 2.25rem;   // 36px
 $aps-spacing-10: 2.5rem;   // 40px
+$aps-spacing-11: 2.75rem;  // 44px
 $aps-spacing-12: 3rem;     // 48px
 $aps-spacing-16: 4rem;     // 64px
-$aps-spacing-full: 100%; // Full width/height
+$aps-spacing-full: 100%;   // Full width/height
+
+// Semantic aliases
+$aps-spacing-xs: 0.125rem;  // 2px
+$aps-spacing-base: $aps-spacing-4;  // 16px (base spacing unit)
 
 // ============================================
 // Border Radius (in rem)
@@ -147,8 +157,8 @@ $aps-shadow-sm: 0 1px 2px rgb(0 0 0 / 5%);
 $aps-shadow-md: 0 4px 6px rgb(0 0 0 / 7%);
 $aps-shadow-lg: 0 10px 15px rgb(0 0 0 / 10%);
 $aps-shadow-xl: 0 20px 25px rgb(0 0 0 / 15%);
-$aps-shadow-focus: 0 0 0 3px rgb(34 113 177 / 10%);
-$aps-shadow-focus-error: 0 0 0 3px rgb(214 99 56 / 10%);
+$aps-shadow-focus: 0 0 0 3px rgba($aps-color-primary, 0.1);
+$aps-shadow-focus-error: 0 0 0 3px rgba($aps-color-danger, 0.1);
 
 // ============================================
 // Transitions
@@ -210,6 +220,7 @@ $aps-width-color-picker: 50px;
 // ============================================
 
 $aps-size-swatch: 32px;
+$aps-icon-size-sm: 14px;
 
 // ============================================
 // Legacy Variables (for backward compatibility)
