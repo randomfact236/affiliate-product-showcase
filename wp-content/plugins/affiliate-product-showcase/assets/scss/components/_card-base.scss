@@ -111,17 +111,21 @@
 		color: $aps-color-secondary;
 		animation: aps-slideDown $aps-transition-base ease;
 	}
+}
 
-	@keyframes aps-slideDown {
-		from {
-			opacity: 0;
-			transform: translateY(-10px);
-		}
+// ============================================
+// Keyframes: Slide Down Animation
+// ============================================
 
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+@keyframes aps-slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 

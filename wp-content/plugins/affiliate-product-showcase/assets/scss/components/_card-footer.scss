@@ -87,33 +87,38 @@
 		align-items: center;
 		padding: $aps-spacing-1 $aps-spacing-2;
 		background: $aps-color-danger;
-		color: $aps-color-bg-card;
+		color: $aps-color-white;
 		font-size: $aps-font-size-xs;
 		font-weight: $aps-font-weight-bold;
 		border-radius: $aps-radius-sm;
-		box-shadow: 0 2px 4px rgb(220 50 50 / 30%);
+		box-shadow: 0 2px 4px rgba($aps-color-danger, 0.3);
 		animation: aps-pulse 2s infinite;
 	}
+}
 
-	// Pulse animation for discount badge
-	@keyframes aps-pulse {
-		0%, 100% {
-			transform: scale(1);
-		}
+// ============================================
+// Keyframes: Pulse Animation
+// ============================================
 
-		50% {
-			transform: scale(1.05);
-		}
+@keyframes aps-pulse {
+	0%, 100% {
+		transform: scale(1);
 	}
 
-	// ============================================
-	// Element: CTA Button
-	// ============================================
+	50% {
+		transform: scale(1.05);
+	}
+}
 
+// ============================================
+// Element: CTA Button
+// ============================================
+
+.aps-card {
 	&__cta {
 		padding: $aps-spacing-2 $aps-spacing-5;
 		background: $aps-color-primary;
-		color: $aps-color-bg-card;
+		color: $aps-color-white;
 		font-size: $aps-font-size-base;
 		font-weight: $aps-font-weight-semibold;
 		border-radius: $aps-radius-sm;
