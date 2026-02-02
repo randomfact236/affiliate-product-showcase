@@ -301,8 +301,16 @@ final class Tag {
 		$query = new \WP_Query( $args );
 
 		$products = [];
-		foreach ( $query->posts as $post ) {
-			$products[] = Product::from_post( $post );
+		
+		if ( ! empty( $query->posts ) ) {
+			// Prime caches to prevent N+1 queries
+			$post_ids = wp_list_pluck( $query->posts, 'ID' );
+			update_postmeta_cache( $post_ids );
+			update_object_term_cache( $post_ids, [ Constants::POST_TYPE, Constants::TAX_CATEGORY, Constants::TAX_TAG, Constants::TAX_RIBBON ] );
+			
+			foreach ( $query->posts as $post ) {
+				$products[] = Product::from_post( $post );
+			}
 		}
 
 		return $products;
