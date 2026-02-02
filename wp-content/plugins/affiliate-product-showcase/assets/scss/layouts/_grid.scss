@@ -28,7 +28,8 @@
 	&--cols-4 { grid-template-columns: repeat(4, 1fr); }
 	&--cols-5 { grid-template-columns: repeat(5, 1fr); }
 	&--cols-6 { grid-template-columns: repeat(6, 1fr); }
-	&--cols-auto { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
+	&--cols-auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+	// 280px = minimum column width before wrapping (card grid optimized)
 	&--cols-fit { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 
 	// ============================================

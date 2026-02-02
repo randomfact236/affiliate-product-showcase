@@ -64,6 +64,8 @@
 	// ============================================
 	// Modifier: Centered Content
 	// ============================================
+	// Note: This changes display to flex. Ensure parent context allows this.
+	// For centering without display change, use flex/grid utilities on parent.
 
 	&--center {
 		display: flex;
