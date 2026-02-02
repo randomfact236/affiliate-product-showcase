@@ -1,18 +1,14 @@
 /**
- * Utilities Component (BEM)
+ * Utilities
  *
- * Utility classes for common styling needs.
+ * Utility classes using suffix notation: .aps-{property}-{value}
+ * These are NOT BEM components — they're single-purpose utility classes.
  *
  * @package AffiliateProductShowcase
  * @since 1.0.0
  */
 
 @use '../variables' as *;
-
-// NOTE: Spacing utilities have been moved to utilities/_spacing.scss
-// NOTE: Text color utilities have been moved to utilities/_colors.scss
-// NOTE: Background color utilities have been moved to utilities/_colors.scss
-// NOTE: Border color utilities have been moved to utilities/_colors.scss
 
 // ============================================
 // Text Utilities (non-color, non-typography)
@@ -28,11 +24,28 @@
 	&-lowercase { text-transform: lowercase; }
 	&-capitalize { text-transform: capitalize; }
 
-	&-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-	&-truncate-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-	&-truncate-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+	&-truncate { 
+		overflow: hidden; 
+		text-overflow: ellipsis; 
+		white-space: nowrap; 
+	}
+	&-truncate-2 { 
+		display: -webkit-box; 
+		-webkit-line-clamp: 2; 
+		-webkit-box-orient: vertical; 
+		overflow: hidden; 
+	}
+	&-truncate-3 { 
+		display: -webkit-box; 
+		-webkit-line-clamp: 3; 
+		-webkit-box-orient: vertical; 
+		overflow: hidden; 
+	}
 
-	&-wrap { word-wrap: break-word; overflow-wrap: break-word; }
+	&-wrap { 
+		word-wrap: break-word; 
+		overflow-wrap: break-word; 
+	}
 
 	&-no-decoration { text-decoration: none; }
 	&-underline { text-decoration: underline; }
@@ -41,11 +54,7 @@
 	&-break-word { overflow-wrap: break-word; }
 	&-break-all { word-break: break-all; }
 	&-hyphens { hyphens: auto; }
-	&-none { text-decoration: none; }
 }
-
-// NOTE: Text color utilities moved to utilities/_colors.scss
-// NOTE: Text typography utilities (font-size, font-weight, line-height) moved to utilities/_text.scss
 
 // ============================================
 // Display Utilities
@@ -59,10 +68,7 @@
 	&-inline-flex { display: inline-flex; }
 	&-grid { display: grid; }
 	&-hidden { display: none; }
-	&-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
-
-// NOTE: .aps-sr-only moved to utilities/_accessibility.scss
 
 // ============================================
 // Flexbox Utilities
@@ -198,8 +204,6 @@
 	&-double { border-style: double; }
 }
 
-// NOTE: Border color utilities moved to utilities/_colors.scss
-
 // ============================================
 // Background Utilities (non-color)
 // ============================================
@@ -207,8 +211,6 @@
 .aps-bg {
 	&-transparent { background-color: transparent; }
 }
-
-// NOTE: Background color utilities moved to utilities/_colors.scss
 
 // ============================================
 // Shadow Utilities
@@ -295,26 +297,14 @@
 }
 
 // ============================================
-// Accessibility Utilities
-// ============================================
-
-// NOTE: .aps-focus-visible moved to utilities/_accessibility.scss
-// NOTE: .aps-focus-ring moved to utilities/_accessibility.scss
-// NOTE: .aps-skip-link moved to utilities/_accessibility.scss
-
-// ============================================
 // Print Utilities
 // ============================================
 
 .aps-print-only {
 	@media print { display: block; }
-
 	@media screen { display: none; }
 }
 
 .aps-no-print {
 	@media print { display: none; }
 }
-
-// NOTE: Reduced motion media query moved to utilities/_accessibility.scss
-// NOTE: High contrast media query moved to utilities/_accessibility.scss

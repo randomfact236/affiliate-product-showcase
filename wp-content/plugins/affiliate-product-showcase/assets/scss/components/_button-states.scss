@@ -10,6 +10,20 @@
 @use '../variables' as *;
 
 // ============================================
+// Keyframes: Spin Animation
+// ============================================
+
+@keyframes aps-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+// ============================================
 // Modifier: Loading State
 // ============================================
 
@@ -28,21 +42,11 @@
 			left: 50%;
 			margin-top: -0.5rem;
 			margin-left: -0.5rem;
-			border: 2px solid $aps-color-bg-card;
+			border: 2px solid $aps-color-white;
 			border-top-color: transparent;
 			border-radius: 50%;
 			border-top: 2px solid $aps-color-primary;
 			animation: aps-spin 1s linear infinite;
-		}
-	}
-
-	@keyframes aps-spin {
-		0% {
-			transform: rotate(0deg);
-		}
-
-		100% {
-			transform: rotate(360deg);
 		}
 	}
 

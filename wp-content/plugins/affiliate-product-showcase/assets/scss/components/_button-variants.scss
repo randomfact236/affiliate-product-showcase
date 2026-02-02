@@ -17,7 +17,7 @@
 .aps-button {
 	&--primary {
 		background: $aps-color-primary;
-		color: $aps-color-bg-card;
+		color: $aps-color-white;
 
 		&:hover {
 			background: $aps-color-primary-hover;
@@ -55,7 +55,7 @@
 
 	&--danger {
 		background: $aps-color-danger;
-		color: $aps-color-bg-card;
+		color: $aps-color-white;
 
 		&:hover {
 			background: $aps-color-danger-text;
@@ -70,7 +70,7 @@
 
 	&--success {
 		background: $aps-color-success;
-		color: $aps-color-bg-card;
+		color: $aps-color-white;
 
 		&:hover {
 			background: $aps-color-success-text;
@@ -90,7 +90,7 @@
 
 		&:hover {
 			background: $aps-color-primary;
-			color: $aps-color-bg-card;
+			color: $aps-color-white;
 		}
 
 		@include focus-visible;
