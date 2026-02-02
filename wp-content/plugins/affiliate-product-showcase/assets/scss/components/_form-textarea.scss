@@ -15,6 +15,16 @@
 
 .aps-form-field {
 	&__textarea {
+		width: 100%;
+		padding: $aps-spacing-2 $aps-spacing-3;
+		font-size: $aps-font-size-base;
+		line-height: $aps-line-height-normal;
+		color: $aps-color-text-main;
+		background: $aps-color-bg-input;
+		border: 1px solid $aps-color-border;
+		border-radius: $aps-radius-sm;
+		box-shadow: $aps-shadow-sm;
+		transition: all $aps-transition-base ease;
 		min-height: 5rem;
 		resize: vertical;
 		font-family: $aps-font-family-base;
@@ -22,6 +32,11 @@
 		&:focus {
 			border-color: $aps-color-primary;
 			box-shadow: $aps-shadow-focus;
+			outline: none;
+		}
+
+		&::placeholder {
+			color: $aps-color-text-muted;
 		}
 	}
 }

@@ -21,6 +21,13 @@
 		font-weight: $aps-font-weight-medium;
 		color: $aps-color-text-main;
 		line-height: $aps-line-height-normal;
+
+		// Required indicator
+		&--required::after {
+			content: ' *';
+			color: $aps-color-danger;
+			margin-left: $aps-spacing-1;
+		}
 	}
 
 	&__tip {
@@ -35,17 +42,5 @@
 	&__required {
 		color: $aps-color-danger;
 		font-weight: $aps-font-weight-semibold;
-	}
-}
-
-// ============================================
-// Accessibility
-// ============================================
-
-.aps-form-field {
-	&__label--required::after {
-		content: ' *';
-		color: $aps-color-danger;
-		margin-left: $aps-spacing-1;
 	}
 }

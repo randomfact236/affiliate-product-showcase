@@ -54,7 +54,7 @@
 }
 
 // ============================================
-// Block: Form Field (Base)
+// Block: Form Field (Base Styles)
 // ============================================
 
 .aps-form-field {
@@ -62,6 +62,17 @@
 
 	&:last-child {
 		margin-bottom: 0;
+	}
+
+	// ============================================
+	// Accessibility: Required Field Indicators
+	// ============================================
+
+	&__input:required,
+	&__select:required {
+		&:focus {
+			border-color: $aps-color-danger;
+		}
 	}
 }
 
@@ -73,6 +84,6 @@
 	.aps-form-field__input,
 	.aps-form-field__select,
 	.aps-form-field__textarea {
-		border: 1px solid #000;
+		border: 1px solid $aps-color-black;
 	}
 }
