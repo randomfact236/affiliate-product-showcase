@@ -1,5 +1,50 @@
 # Refactoring Plan - Sequential Execution
 
+## Quick Checklist
+
+```
+Legend: [x] Done  [ ] Pending  [-] Optional  🔒 Locked until previous phase complete
+```
+
+### Phase 1: Security Foundation 🟡 IN PROGRESS
+- [x] 1.1 PHP Security Audit
+- [x] 1.2 PHP Performance Analysis
+- [x] 1.3 Fix N+1 Query Problems
+- [ ] 1.4 Sanitize PHP Inputs ← CURRENT
+- [ ] 1.5 Escape PHP Outputs
+- [x] 1.6 CSS Code Quality Audit
+- [x] 1.7 Fix Critical CSS Issues
+
+### Phase 2: CSS Architecture 🔒 LOCKED
+- [ ] 2.1 CSS Architecture Review
+- [ ] 2.2 SCSS Variable System
+- [ ] 2.3 SCSS Mixin Library
+- [ ] 2.4 File Structure
+- [x] 2.5 PHP Code Quality Audit (done early)
+- [ ] 2.6 Extract Duplicate PHP Code
+
+### Phase 3: Performance Optimization 🔒 LOCKED
+- [x] 3.1 CSS Performance Analysis (done early)
+- [x] 3.2 CSS Performance Fixes (done early)
+- [ ] 3.3 Break Long PHP Functions
+- [ ] 3.4 PHP Error Handling
+- [x] 3.5 Browser Compatibility Audit (done early)
+
+### Phase 4: Accessibility & Polish 🔒 LOCKED
+- [x] 4.1 CSS Accessibility Audit (done early)
+- [x] 4.2 Focus States (already implemented)
+- [ ] 4.3 Color Contrast
+- [x] 4.4 Mobile Responsiveness Audit (done early)
+- [ ] 4.5 Mobile-First Design
+- [-] 4.6 BEM Naming (optional)
+- [ ] 4.7 Nonce Verification
+- [ ] 4.8 Capability Checks
+- [-] 4.9 Logic/Presentation Separation (optional)
+- [ ] 4.10 PHPDoc Documentation
+- [ ] 4.11 Build Process Automation
+
+---
+
 ## Overview
 
 This plan follows **strict sequential execution**. Complete all tasks in Phase 1 before starting Phase 2, and so on.
