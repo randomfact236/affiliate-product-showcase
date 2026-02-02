@@ -27,14 +27,21 @@
 	&--cols-3 { grid-template-columns: repeat(3, 1fr); }
 	&--cols-4 { grid-template-columns: repeat(4, 1fr); }
 
+	// Responsive: Force single column on mobile for all column modifiers
+	@include mobile-only {
+		&--cols-2,
+		&--cols-3,
+		&--cols-4 {
+			grid-template-columns: 1fr;
+		}
+	}
+
 	// ============================================
 	// Responsive Design
 	// ============================================
-
-	@include mobile-first-320 {
-		grid-template-columns: 1fr;
-		gap: $aps-spacing-3;
-	}
+	// Note: Order matters! Smallest breakpoint (mobile-first-320) must come last
+	// since all use max-width. Tablet-down (768px) would override mobile-first-320 (320px)
+	// if placed after it in the cascade.
 
 	@include tablet-down {
 		grid-template-columns: repeat(2, 1fr);
@@ -42,6 +49,11 @@
 
 	@include mobile-only {
 		grid-template-columns: 1fr;
+	}
+
+	@include mobile-first-320 {
+		grid-template-columns: 1fr;
+		gap: $aps-spacing-3;
 	}
 }
 

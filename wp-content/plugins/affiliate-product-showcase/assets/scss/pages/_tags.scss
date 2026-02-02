@@ -199,38 +199,9 @@ body.taxonomy-aps_tag {
 }
 
 // WordPress native class compatibility
+// Note: Styles are inherited from .aps-tag-status-links__item via @extend
 .aps-tag-status-links > li {
 	@extend .aps-tag-status-links__item;
-
-	> a {
-		display: inline-block;
-		padding: 6px $aps-spacing-3;
-		text-decoration: none;
-		color: $aps-color-primary;
-		border-radius: $aps-radius-sm;
-		transition: all $aps-transition-base ease;
-		font-size: $aps-font-size-sm;
-
-		&:hover {
-			background-color: $aps-color-bg-light;
-			color: $aps-color-primary-hover;
-		}
-
-		&:focus {
-			outline: 2px solid $aps-color-primary;
-			outline-offset: $aps-spacing-2;
-		}
-	}
-
-	&.current > a {
-		background-color: $aps-color-primary;
-		color: $aps-color-bg-card;
-
-		&:hover {
-			background-color: $aps-color-primary-hover;
-			color: $aps-color-bg-card;
-		}
-	}
 }
 
 // ============================================
@@ -251,7 +222,7 @@ body.taxonomy-aps_tag {
 
 .aps-tag-date-sort {
 	min-width: 200px;
-	padding: 5px $aps-spacing-2;
+	padding: $aps-spacing-1 $aps-spacing-2;
 	font-size: $aps-font-size-sm;
 	border: 1px solid $aps-color-border-dark;
 	border-radius: $aps-radius-sm;
@@ -407,7 +378,7 @@ body.taxonomy-aps_tag {
 
 .aps-tag-status-inline {
 	min-width: 120px;
-	padding: 5px $aps-spacing-2;
+	padding: $aps-spacing-1 $aps-spacing-2;
 	font-size: $aps-font-size-xs;
 	border: 1px solid $aps-color-border-dark;
 	border-radius: $aps-radius-sm;

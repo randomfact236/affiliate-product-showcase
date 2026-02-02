@@ -82,7 +82,7 @@
 
 	&--active {
 		border-color: $aps-color-primary;
-		box-shadow: 0 0 0 4px rgb(0 115 177 / 30%);
+		box-shadow: 0 0 0 4px rgba($aps-color-primary, 0.3);
 	}
 }
 
