@@ -158,32 +158,7 @@
 // Responsive Design
 // ============================================
 
-@media (max-width: $aps-breakpoint-md) {
-	.aps-card__footer {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.aps-card__cta {
-		width: 100%;
-		text-align: center;
-	}
-
-	.aps-card__price-container {
-		justify-content: center;
-		width: 100%;
-	}
-}
-
 @media (max-width: $aps-breakpoint-xs) {
-	.aps-card__title {
-		font-size: $aps-font-size-md;
-	}
-
-	.aps-card__price {
-		font-size: $aps-font-size-lg;
-	}
-
 	.aps-card__platform {
 		font-size: $aps-font-size-xs;
 	}
