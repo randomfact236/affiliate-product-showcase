@@ -13,6 +13,7 @@ use AffiliateProductShowcase\Repositories\SettingsRepository;
 
 final class Shortcodes {
 	private AffiliateService $affiliate_service;
+	private static bool $vite_assets_loaded = false;
 
 	public function __construct( 
 		private ProductService $product_service, 
@@ -29,13 +30,68 @@ final class Shortcodes {
 	}
 
 	/**
-	 * NOTE: Asset loading is handled by Enqueue.php via wp_enqueue_scripts hook.
-	 * Shortcodes only render content - they don't manage assets.
-	 * This ensures single-source-of-truth for asset management.
+	 * Load Vite frontend assets for the showcase template.
+	 * 
+	 * NOTE: This is separate from Enqueue.php because the showcase uses
+	 * a different build system (Vite in frontend/ directory) than the
+	 * regular shortcodes (SCSS in assets/ directory).
 	 */
+	private function loadViteAssets(): void {
+		if ( self::$vite_assets_loaded ) {
+			return;
+		}
+
+		$dist_path = AFFILIATE_PRODUCT_SHOWCASE_DIR . 'frontend/dist/';
+		$dist_url  = plugin_dir_url( AFFILIATE_PRODUCT_SHOWCASE_FILE ) . 'frontend/dist/';
+		$manifest_path = $dist_path . '.vite/manifest.json';
+
+		// Enqueue Google Fonts (Inter)
+		wp_enqueue_style(
+			'aps-fonts',
+			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',
+			[],
+			null
+		);
+
+		// Load from Vite manifest if available
+		if ( file_exists( $manifest_path ) ) {
+			$manifest = json_decode( file_get_contents( $manifest_path ), true );
+			
+			if ( is_array( $manifest ) && isset( $manifest['index.html'] ) ) {
+				$entry = $manifest['index.html'];
+
+				// Enqueue CSS files
+				if ( isset( $entry['css'] ) && is_array( $entry['css'] ) ) {
+					foreach ( $entry['css'] as $index => $css_file ) {
+						wp_enqueue_style(
+							"aps-showcase-css-{$index}",
+							$dist_url . $css_file,
+							[],
+							AFFILIATE_PRODUCT_SHOWCASE_VERSION
+						);
+					}
+				}
+
+				// Enqueue JS file
+				if ( isset( $entry['file'] ) ) {
+					wp_enqueue_script(
+						'aps-showcase-js',
+						$dist_url . $entry['file'],
+						[],
+						AFFILIATE_PRODUCT_SHOWCASE_VERSION,
+						true
+					);
+				}
+			}
+		}
+
+		self::$vite_assets_loaded = true;
+	}
 
 	public function render_showcase( array $atts ): string {
-		// Assets are loaded automatically by Enqueue.php when shortcode is detected
+		// Load Vite frontend assets for showcase template
+		$this->loadViteAssets();
+		
 		ob_start();
 		include AFFILIATE_PRODUCT_SHOWCASE_DIR . '/frontend/templates/products-showcase.php';
 		return ob_get_clean();
