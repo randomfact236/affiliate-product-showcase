@@ -374,6 +374,19 @@ final class ProductService extends AbstractService {
 	}
 
 	/**
+	 * Get multiple products
+	 *
+	 * Retrieves a list of products with optional filtering, sorting, and pagination.
+	 *
+	 * @param array<string, mixed> $args Query arguments (per_page, category, tag, etc.)
+	 * @return array<int, Product> Array of product objects
+	 * @since 1.0.0
+	 */
+	public function get_products( array $args = [] ): array {
+		return $this->repository->list( $args );
+	}
+
+	/**
 	 * Delete a product
 	 *
 	 * Permanently deletes a product from database.

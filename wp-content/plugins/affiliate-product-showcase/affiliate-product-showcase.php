@@ -46,7 +46,7 @@ if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 		);
 	}
 	return;
-	}
+}
 
 
 // ==============================================================================
@@ -356,7 +356,7 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 			$ribbon_fix_run = get_option( 'affiliate_product_showcase_ribbon_demo_fix', false );
 			if ( ! $ribbon_fix_run ) {
 				require_once AFFILIATE_PRODUCT_SHOWCASE_PATH . 'src/Migrations/RibbonDemoColorFix.php';
-				$migration = new \Affiliate\ProductShowcase\Migrations\RibbonDemoColorFix();
+				$migration = new \AffiliateProductShowcase\Migrations\RibbonDemoColorFix();
 				
 				if ( ! $migration->has_run() ) {
 					$migration->run();

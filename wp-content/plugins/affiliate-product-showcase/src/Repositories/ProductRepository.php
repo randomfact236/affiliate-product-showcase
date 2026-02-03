@@ -156,6 +156,92 @@ final class ProductRepository extends AbstractRepository {
 	}
 
 	/**
+	 * Prepare query arguments for WP_Query
+	 *
+	 * @param array<string, mixed> $args Query arguments
+	 * @return array<string, mixed> Prepared WP_Query arguments
+	 */
+	private function prepareQueryArgs( array $args ): array {
+		$defaults = [
+			'post_type'      => Constants::CPT_PRODUCT,
+			'post_status'    => 'publish',
+			'posts_per_page' => $args['per_page'] ?? 10,
+			'paged'          => $args['page'] ?? 1,
+			'orderby'        => $args['orderby'] ?? 'date',
+			'order'          => $args['order'] ?? 'DESC',
+		];
+
+		// Handle category filter
+		if ( ! empty( $args['category'] ) ) {
+			$defaults['tax_query'][] = [
+				'taxonomy' => Constants::TAX_CATEGORY,
+				'field'    => 'slug',
+				'terms'    => $args['category'],
+			];
+		}
+
+		// Handle tag filter
+		if ( ! empty( $args['tag'] ) ) {
+			$defaults['tax_query'][] = [
+				'taxonomy' => Constants::TAX_TAG,
+				'field'    => 'slug',
+				'terms'    => $args['tag'],
+			];
+		}
+
+		// Handle search
+		if ( ! empty( $args['search'] ) ) {
+			$defaults['s'] = sanitize_text_field( $args['search'] );
+		}
+
+		// Handle featured filter
+		if ( ! empty( $args['featured'] ) ) {
+			$defaults['meta_query'][] = [
+				'key'   => '_aps_featured',
+				'value' => '1',
+			];
+		}
+
+		// Handle status filter
+		if ( ! empty( $args['status'] ) ) {
+			$defaults['post_status'] = $args['status'];
+		}
+
+		return wp_parse_args( $args, $defaults );
+	}
+
+	/**
+	 * Generate cache key from query args
+	 *
+	 * @param array<string, mixed> $query_args Query arguments
+	 * @return string Cache key
+	 */
+	private function generateCacheKey( array $query_args ): string {
+		return 'aps_products_list_' . md5( serialize( $query_args ) );
+	}
+
+	/**
+	 * Get cached items
+	 *
+	 * @param string $cache_key Cache key
+	 * @return array<int, Product>|false Cached items or false if not found
+	 */
+	private function getCachedItems( string $cache_key ): array|false {
+		$cached = wp_cache_get( $cache_key, 'aps_products' );
+		return is_array( $cached ) ? $cached : false;
+	}
+
+	/**
+	 * Execute WP_Query
+	 *
+	 * @param array<string, mixed> $query_args Query arguments
+	 * @return \WP_Query Query object
+	 */
+	private function executeQuery( array $query_args ): \WP_Query {
+		return new \WP_Query( $query_args );
+	}
+
+	/**
 	 * Process query results with N+1 query optimization
 	 *
 	 * Converts query results to Product objects with
@@ -207,10 +293,11 @@ final class ProductRepository extends AbstractRepository {
 		
 		// Organize results by post ID and meta key
 		foreach ( $results as $row ) {
-			if ( ! isset( $all_meta[ $row->post_id ] ) ) {
-				$all_meta[ $row->post_id ] = [];
+			$post_id = (int) $row['post_id'];
+			if ( ! isset( $all_meta[ $post_id ] ) ) {
+				$all_meta[ $post_id ] = [];
 			}
-			$all_meta[ $row->post_id ][ $row->meta_key ] = $row->meta_value;
+			$all_meta[ $post_id ][ $row['meta_key'] ] = $row['meta_value'];
 		}
 		
 		return $all_meta;

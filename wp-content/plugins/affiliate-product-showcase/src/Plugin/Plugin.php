@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AffiliateProductShowcase\Admin\Admin;
 use AffiliateProductShowcase\Assets\Assets;
-use AffiliateProductShowcase\Assets\Manifest;
-use AffiliateProductShowcase\Assets\SRI;
 use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Cache\Cache;
 use AffiliateProductShowcase\Cli\ProductsCommand;
@@ -34,8 +32,6 @@ final class Plugin {
 
 	private Loader $loader;
 	private Assets $assets;
-	private Manifest $manifest;
-	private SRI $sri;
 	private Cache $cache;
 	private ProductService $product_service;
 	private AffiliateService $affiliate_service;
@@ -64,8 +60,6 @@ final class Plugin {
 
 		// Resolve all services from container (automatic dependency injection)
 		$this->cache               = $container->get( Cache::class );
-		$this->manifest            = $container->get( Manifest::class );
-		$this->sri                 = $container->get( SRI::class );
 		$this->assets              = $container->get( Assets::class );
 		$this->product_service     = $container->get( ProductService::class );
 		$this->affiliate_service   = $container->get( AffiliateService::class );

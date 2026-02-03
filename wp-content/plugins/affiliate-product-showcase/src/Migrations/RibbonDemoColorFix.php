@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Affiliate\ProductShowcase\Migrations;
+namespace AffiliateProductShowcase\Migrations;
 
 /**
  * Ribbon Demo Color Fix Migration

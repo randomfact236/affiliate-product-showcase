@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}use AffiliateProductShowcase\Plugin\Constants;
+}
+
+use AffiliateProductShowcase\Plugin\Constants;
 
 function aps_array_get( array $array, string $key, $default = null ) {
 	return $array[ $key ] ?? $default;

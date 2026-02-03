@@ -3,39 +3,81 @@ declare(strict_types=1);
 
 namespace AffiliateProductShowcase\Assets;
 
-final class Assets {
-	private Manifest $manifest;
+use AffiliateProductShowcase\Plugin\Constants;
 
-	public function __construct( Manifest $manifest ) {
-		$this->manifest = $manifest;
+/**
+ * Assets Manager - Pure SCSS Architecture
+ *
+ * Handles enqueuing of CSS and JS files for the plugin.
+ * Uses direct file loading without Vite/Tailwind dependencies.
+ *
+ * @package AffiliateProductShowcase\Assets
+ * @since 1.0.0
+ */
+final class Assets {
+
+	/**
+	 * Plugin version for cache busting
+	 *
+	 * @var string
+	 */
+	private string $version;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->version = Constants::VERSION;
 		add_filter( 'script_loader_tag', [ $this, 'add_script_attributes' ], 10, 2 );
 	}
 
+	/**
+	 * Enqueue admin assets
+	 *
+	 * @return void
+	 */
 	public function enqueue_admin(): void {
-		$this->manifest->enqueue_script( 'aps-admin', 'admin.js', [ 'wp-element' ], true );
-		$this->manifest->enqueue_style( 'aps-admin-style', 'admin.css' );
-	}
-
-	public function enqueue_frontend(): void {
-		$this->manifest->enqueue_script( 'aps-frontend', 'frontend.js', [ 'wp-element' ], true );
-		$this->manifest->enqueue_style( 'aps-frontend-style', 'frontend.css' );
-	}
-
-	public function enqueue_editor(): void {
-		$this->manifest->enqueue_script(
-			'aps-blocks',
-			'blocks.js',
-			[ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
-			true
+		// Admin CSS is compiled from SCSS
+		wp_enqueue_style(
+			'aps-admin',
+			Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
+			[],
+			$this->version
 		);
-		$this->manifest->enqueue_style( 'aps-editor-style', 'editor.css' );
+	}
+
+	/**
+	 * Enqueue frontend assets
+	 *
+	 * @return void
+	 */
+	public function enqueue_frontend(): void {
+		// Frontend showcase CSS
+		wp_enqueue_style(
+			'aps-frontend',
+			Constants::assetUrl( 'assets/css/showcase-frontend-isolated.css' ),
+			[],
+			$this->version
+		);
+	}
+
+	/**
+	 * Enqueue block editor assets
+	 *
+	 * @return void
+	 */
+	public function enqueue_editor(): void {
+		// Editor uses same CSS as frontend/admin
+		wp_enqueue_style(
+			'aps-editor',
+			Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
+			[],
+			$this->version
+		);
 	}
 
 	/**
 	 * Add defer/async attributes to plugin scripts.
-	 * 
-	 * Adds 'defer' attribute to frontend scripts and 'async' 
-	 * to admin scripts for better performance.
 	 *
 	 * @param string $tag    The script tag.
 	 * @param string $handle The script handle.
@@ -48,7 +90,7 @@ final class Assets {
 		}
 
 		// Add defer to frontend scripts
-		if ( 'aps-frontend' === $handle || 'aps-blocks' === $handle ) {
+		if ( 'aps-frontend' === $handle ) {
 			if ( ! str_contains( $tag, ' defer' ) && ! str_contains( $tag, 'defer=' ) ) {
 				return str_replace( ' src=', ' defer src=', $tag );
 			}

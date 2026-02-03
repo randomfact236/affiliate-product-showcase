@@ -17,8 +17,6 @@ use AffiliateProductShowcase\Admin\ProductFormHandler;
 use AffiliateProductShowcase\Admin\RibbonFields;
 use AffiliateProductShowcase\Admin\Settings;
 use AffiliateProductShowcase\Assets\Assets;
-use AffiliateProductShowcase\Assets\Manifest;
-use AffiliateProductShowcase\Assets\SRI;
 use AffiliateProductShowcase\Blocks\Blocks;
 use AffiliateProductShowcase\Cache\Cache;
 use AffiliateProductShowcase\Cli\ProductsCommand;
@@ -120,8 +118,6 @@ final class ServiceProvider implements ServiceProviderInterface {
 			AnalyticsService::class,
 
 			// Assets
-			Manifest::class,
-			SRI::class,
 			Assets::class,
 
 			// Security
@@ -231,11 +227,7 @@ final class ServiceProvider implements ServiceProviderInterface {
 		// ============================================================================
 		// Assets (Shared - Performance Critical)
 		// ============================================================================
-		$this->getContainer()->addShared(Manifest::class);
-		$this->getContainer()->addShared(SRI::class)
-			->addArgument(Manifest::class);
-		$this->getContainer()->addShared(Assets::class)
-			->addArgument(Manifest::class);
+		$this->getContainer()->addShared(Assets::class);
 
 		// ============================================================================
 		// Security (Shared - Performance Critical)

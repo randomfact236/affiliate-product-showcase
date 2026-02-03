@@ -253,6 +253,11 @@ abstract class TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	final public function add_status_view_tabs( array $views ): array {
+		// Only filter in admin context
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) ) {
+			return $views;
+		}
+
 		// Only filter on current taxonomy
 		$screen = get_current_screen();
 		if ( ! $screen || $screen->taxonomy !== $this->get_taxonomy() ) {
@@ -332,6 +337,11 @@ abstract class TaxonomyFieldsAbstract {
 	final public function filter_terms_by_status( array $terms, array $taxonomies, array $args ): array {
 		// Only filter for current taxonomy
 		if ( ! in_array( $this->get_taxonomy(), $taxonomies, true ) ) {
+			return $terms;
+		}
+
+		// Only filter in admin context
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) ) {
 			return $terms;
 		}
 
@@ -877,6 +887,11 @@ abstract class TaxonomyFieldsAbstract {
 	 * @since 2.0.0
 	 */
 	final public function add_term_row_actions( array $actions, \WP_Term $term ): array {
+		// Only run in admin context
+		if ( ! is_admin() ) {
+			return $actions;
+		}
+
 		if ( $term->taxonomy !== $this->get_taxonomy() ) {
 			return $actions;
 		}
