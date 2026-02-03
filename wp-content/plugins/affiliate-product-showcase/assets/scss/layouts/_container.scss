@@ -1,0 +1,87 @@
+/**
+ * Container Layout (BEM)
+ *
+ * Container layout utilities for responsive design.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Container
+// ============================================
+
+.aps-container {
+	width: 100%;
+	max-width: $aps-container-max;
+	margin: 0 auto;
+	padding: 0 $aps-spacing-4;
+
+	// ============================================
+	// Modifier: Small Container
+	// ============================================
+
+	&--sm {
+		max-width: $aps-container-sm;
+	}
+
+	// ============================================
+	// Modifier: Medium Container
+	// ============================================
+
+	&--md {
+		max-width: $aps-container-md;
+	}
+
+	// ============================================
+	// Modifier: Large Container
+	// ============================================
+
+	&--lg {
+		max-width: $aps-container-lg;
+	}
+
+	// ============================================
+	// Modifier: XL Container
+	// ============================================
+
+	&--xl {
+		max-width: $aps-container-xl;
+	}
+
+	// ============================================
+	// Modifier: Full Width
+	// ============================================
+
+	&--fluid {
+		max-width: 100%;
+		padding: 0;
+	}
+
+	// ============================================
+	// Modifier: Centered Content
+	// ============================================
+	// Note: This changes display to flex. Ensure parent context allows this.
+	// For centering without display change, use flex/grid utilities on parent.
+
+	&--center {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+
+	@include tablet-down {
+		padding: 0 $aps-spacing-3;
+	}
+
+	@include mobile-only {
+		padding: 0 $aps-spacing-2;
+	}
+}

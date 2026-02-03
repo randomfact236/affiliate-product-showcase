@@ -1,0 +1,135 @@
+/**
+ * Products Page Styles (BEM)
+ *
+ * Styles for products display pages.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Products Grid
+// ============================================
+
+.aps-products-grid {
+	display: grid;
+	gap: $aps-spacing-5;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+
+	// ============================================
+	// Modifier: Columns
+	// ============================================
+
+	&--cols-2 { grid-template-columns: repeat(2, 1fr); }
+	&--cols-3 { grid-template-columns: repeat(3, 1fr); }
+	&--cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+	// Responsive: Force single column on mobile for all column modifiers
+	@include mobile-only {
+		&--cols-2,
+		&--cols-3,
+		&--cols-4 {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+	// Note: Order matters! Smallest breakpoint (mobile-first-320) must come last
+	// since all use max-width. Tablet-down (768px) would override mobile-first-320 (320px)
+	// if placed after it in the cascade.
+
+	@include tablet-down {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@include mobile-only {
+		grid-template-columns: 1fr;
+	}
+
+	@include mobile-first-320 {
+		grid-template-columns: 1fr;
+		gap: $aps-spacing-3;
+	}
+}
+
+// ============================================
+// Block: Products List
+// ============================================
+
+.aps-products-list {
+	display: flex;
+	flex-direction: column;
+	gap: $aps-spacing-4;
+}
+
+// ============================================
+// Block: Products Filter
+// ============================================
+
+.aps-products-filter {
+	background: $aps-color-bg-card;
+	border: 1px solid $aps-color-border-light;
+	border-radius: $aps-radius-sm;
+	padding: $aps-spacing-4;
+	margin-bottom: $aps-spacing-5;
+
+	&__title {
+		margin: 0 0 $aps-spacing-3;
+		font-size: $aps-font-size-md;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-main;
+	}
+
+	&__content {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $aps-spacing-3;
+	}
+}
+
+// ============================================
+// Block: Products Pagination
+// ============================================
+
+.aps-products-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $aps-spacing-2;
+	margin-top: $aps-spacing-6;
+
+	&__item {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		background: $aps-color-bg-card;
+		border: 1px solid $aps-color-border-light;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-text-main;
+		text-decoration: none;
+		transition: all $aps-transition-base ease;
+
+		&:hover {
+			background: $aps-color-bg-hover;
+			border-color: $aps-color-primary;
+		}
+
+		&--active {
+			background: $aps-color-primary;
+			color: $aps-color-bg-card;
+			border-color: $aps-color-primary;
+		}
+
+		&--disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	}
+}

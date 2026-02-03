@@ -1,0 +1,432 @@
+/**
+ * Modern Dashboard Page Styles
+ *
+ * Complete dashboard page layout with all components.
+ * Based on the design image analysis.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Dashboard Layout
+// ============================================
+
+.aps-dashboard-page {
+	display: flex;
+	min-height: 100vh;
+	background-color: $aps-color-bg-light;
+}
+
+// ============================================
+// Stats Section
+// ============================================
+
+.aps-dashboard-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: $aps-spacing-5;
+	margin-bottom: $aps-spacing-6;
+}
+
+// ============================================
+// Content Grid
+// ============================================
+
+.aps-dashboard-content {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: $aps-spacing-5;
+
+	@media (max-width: $aps-breakpoint-lg) {
+		grid-template-columns: 1fr;
+	}
+}
+
+// ============================================
+// Recent Activity
+// ============================================
+
+.aps-dashboard-activity {
+	&__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__item {
+		display: flex;
+		align-items: flex-start;
+		gap: $aps-spacing-3;
+		padding: $aps-spacing-3 0;
+		border-bottom: 1px solid $aps-color-border-alt;
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		flex-shrink: 0;
+		border-radius: $aps-radius-md;
+		font-size: $aps-font-size-sm;
+
+		&--product {
+			background-color: $aps-color-blue-100;
+			color: $aps-color-blue-600;
+		}
+
+		&--category {
+			background-color: $aps-color-green-100;
+			color: $aps-color-green-600;
+		}
+
+		&--tag {
+			background-color: $aps-color-warning-light;
+			color: $aps-color-warning-text;
+		}
+
+		&--user {
+			background-color: $aps-color-danger-light;
+			color: $aps-color-danger-text;
+		}
+	}
+
+	&__content {
+		flex: 1;
+		min-width: 0;
+	}
+
+	&__title {
+		font-size: $aps-font-size-sm;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-text-primary;
+		margin: 0 0 $aps-spacing-1;
+	}
+
+	&__description {
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-secondary;
+		margin: 0;
+	}
+
+	&__time {
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-tertiary;
+		white-space: nowrap;
+	}
+}
+
+// ============================================
+// Quick Actions
+// ============================================
+
+.aps-dashboard-quick-actions {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: $aps-spacing-3;
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: $aps-spacing-2;
+		padding: $aps-spacing-4;
+		text-align: center;
+		background-color: $aps-color-white;
+		border: 1px solid $aps-color-border-alt;
+		border-radius: $aps-radius-lg;
+		cursor: pointer;
+		transition: all $aps-transition-fast;
+
+		&:hover {
+			border-color: $aps-color-blue-300;
+			background-color: $aps-color-blue-50;
+			transform: translateY(-2px);
+		}
+	}
+
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		border-radius: $aps-radius-lg;
+		font-size: $aps-font-size-xl;
+		background-color: $aps-color-blue-100;
+		color: $aps-color-blue-600;
+	}
+
+	&__label {
+		font-size: $aps-font-size-sm;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-text-primary;
+		margin: 0;
+	}
+}
+
+// ============================================
+// Product Table
+// ============================================
+
+.aps-dashboard-table {
+	width: 100%;
+	border-collapse: collapse;
+
+	&__header {
+		&-row {
+			background-color: $aps-color-slate-50;
+		}
+
+		&-cell {
+			padding: $aps-spacing-3 $aps-spacing-4;
+			font-size: $aps-font-size-xs;
+			font-weight: $aps-font-weight-semibold;
+			text-transform: uppercase;
+			letter-spacing: $aps-letter-spacing-wide;
+			color: $aps-color-text-tertiary;
+			text-align: left;
+			border-bottom: 1px solid $aps-color-border-alt;
+
+			&:first-child {
+				border-top-left-radius: $aps-radius-md;
+			}
+
+			&:last-child {
+				border-top-right-radius: $aps-radius-md;
+			}
+		}
+	}
+
+	&__body {
+		&-row {
+			border-bottom: 1px solid $aps-color-border-alt;
+			transition: background-color $aps-transition-fast;
+
+			&:hover {
+				background-color: $aps-color-slate-50;
+			}
+		}
+
+		&-cell {
+			padding: $aps-spacing-3 $aps-spacing-4;
+			font-size: $aps-font-size-sm;
+			color: $aps-color-text-primary;
+		}
+	}
+
+	&__product {
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-3;
+	}
+
+	&__product-image {
+		width: 40px;
+		height: 40px;
+		border-radius: $aps-radius-md;
+		object-fit: cover;
+		background-color: $aps-color-slate-100;
+	}
+
+	&__product-info {
+		min-width: 0;
+	}
+
+	&__product-name {
+		font-size: $aps-font-size-sm;
+		font-weight: $aps-font-weight-medium;
+		color: $aps-color-text-primary;
+		margin: 0 0 $aps-spacing-1;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__product-category {
+		font-size: $aps-font-size-xs;
+		color: $aps-color-text-tertiary;
+	}
+
+	&__status {
+		display: inline-flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+		padding: $aps-spacing-1 $aps-spacing-2;
+		font-size: $aps-font-size-xs;
+		font-weight: $aps-font-weight-medium;
+		line-height: 1;
+		border-radius: $aps-radius-full;
+
+		&--active {
+			color: $aps-color-green-600;
+			background-color: $aps-color-green-100;
+		}
+
+		&--draft {
+			color: $aps-color-text-secondary;
+			background-color: $aps-color-slate-100;
+		}
+
+		&--pending {
+			color: $aps-color-warning-text;
+			background-color: $aps-color-warning-light;
+		}
+	}
+
+	&__status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background-color: currentColor;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-1;
+	}
+
+	&__action-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		color: $aps-color-text-tertiary;
+		background: transparent;
+		border: none;
+		border-radius: $aps-radius-md;
+		cursor: pointer;
+		transition: all $aps-transition-fast;
+
+		&:hover {
+			color: $aps-color-text-primary;
+			background-color: $aps-color-bg-hover-alt;
+		}
+	}
+}
+
+// ============================================
+// Empty State
+// ============================================
+
+.aps-dashboard-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: $aps-spacing-10;
+	text-align: center;
+
+	&__icon {
+		width: 80px;
+		height: 80px;
+		margin-bottom: $aps-spacing-4;
+		color: $aps-color-slate-300;
+	}
+
+	&__title {
+		font-size: $aps-font-size-lg;
+		font-weight: $aps-font-weight-semibold;
+		color: $aps-color-text-primary;
+		margin: 0 0 $aps-spacing-2;
+	}
+
+	&__description {
+		font-size: $aps-font-size-sm;
+		color: $aps-color-text-secondary;
+		max-width: 400px;
+		margin: 0 0 $aps-spacing-6;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-3;
+	}
+}
+
+// ============================================
+// Loading State
+// ============================================
+
+.aps-dashboard-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $aps-spacing-10;
+
+	&__spinner {
+		width: 40px;
+		height: 40px;
+		border: 3px solid $aps-color-slate-200;
+		border-top-color: $aps-color-blue-600;
+		border-radius: 50%;
+		animation: aps-dashboard-spin 0.8s linear infinite;
+	}
+}
+
+@keyframes aps-dashboard-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+// ============================================
+// Responsive
+// ============================================
+
+@media (max-width: $aps-breakpoint-md) {
+	.aps-dashboard-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.aps-dashboard-quick-actions {
+		grid-template-columns: 1fr;
+	}
+
+	.aps-dashboard-table {
+		&__header,
+		&__body {
+			display: block;
+		}
+
+		&__header-row {
+			display: none;
+		}
+
+		&__body-row {
+			display: flex;
+			flex-direction: column;
+			gap: $aps-spacing-3;
+			padding: $aps-spacing-4;
+			margin-bottom: $aps-spacing-3;
+			background-color: $aps-color-white;
+			border: 1px solid $aps-color-border-alt;
+			border-radius: $aps-radius-lg;
+		}
+
+		&__body-cell {
+			padding: 0;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			&::before {
+				content: attr(data-label);
+				font-weight: $aps-font-weight-medium;
+				color: $aps-color-text-tertiary;
+			}
+		}
+	}
+}

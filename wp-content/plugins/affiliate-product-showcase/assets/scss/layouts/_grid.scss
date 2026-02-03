@@ -1,0 +1,95 @@
+/**
+ * Grid Layout (BEM)
+ *
+ * Grid layout utilities for responsive design.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+@use '../mixins/breakpoints' as *;
+
+// ============================================
+// Block: Grid
+// ============================================
+
+.aps-grid {
+	display: grid;
+	gap: $aps-spacing-4;
+
+	// ============================================
+	// Modifier: Columns
+	// ============================================
+
+	&--cols-1 { grid-template-columns: repeat(1, 1fr); }
+	&--cols-2 { grid-template-columns: repeat(2, 1fr); }
+	&--cols-3 { grid-template-columns: repeat(3, 1fr); }
+	&--cols-4 { grid-template-columns: repeat(4, 1fr); }
+	&--cols-5 { grid-template-columns: repeat(5, 1fr); }
+	&--cols-6 { grid-template-columns: repeat(6, 1fr); }
+	&--cols-auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+	// 280px = minimum column width before wrapping (card grid optimized)
+	&--cols-fit { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+
+	// ============================================
+	// Modifier: Gap
+	// ============================================
+
+	&--gap-1 { gap: $aps-spacing-1; }
+	&--gap-2 { gap: $aps-spacing-2; }
+	&--gap-3 { gap: $aps-spacing-3; }
+	&--gap-4 { gap: $aps-spacing-4; }
+	&--gap-5 { gap: $aps-spacing-5; }
+	&--gap-6 { gap: $aps-spacing-6; }
+	&--gap-8 { gap: $aps-spacing-8; }
+
+	// ============================================
+	// Modifier: Auto Flow
+	// ============================================
+
+	&--row { grid-auto-flow: row; }
+	&--column { grid-auto-flow: column; }
+	&--dense { grid-auto-flow: dense; }
+
+	// ============================================
+	// Responsive Design
+	// ============================================
+
+	@include tablet-down {
+		&--md-cols-1 { grid-template-columns: repeat(1, 1fr); }
+		&--md-cols-2 { grid-template-columns: repeat(2, 1fr); }
+	}
+
+	@include mobile-only {
+		&--sm-cols-1 { grid-template-columns: repeat(1, 1fr); }
+		&--sm-cols-2 { grid-template-columns: repeat(2, 1fr); }
+	}
+}
+
+// ============================================
+// Block: Grid Item
+// ============================================
+
+.aps-grid-item {
+	&--col-span-1 { grid-column: span 1; }
+	&--col-span-2 { grid-column: span 2; }
+	&--col-span-3 { grid-column: span 3; }
+	&--col-span-4 { grid-column: span 4; }
+	&--col-span-full { grid-column: 1 / -1; }
+
+	&--row-span-1 { grid-row: span 1; }
+	&--row-span-2 { grid-row: span 2; }
+	&--row-span-3 { grid-row: span 3; }
+	&--row-span-full { grid-row: 1 / -1; }
+
+	&--col-start-1 { grid-column-start: 1; }
+	&--col-start-2 { grid-column-start: 2; }
+	&--col-start-3 { grid-column-start: 3; }
+	&--col-start-auto { grid-column-start: auto; }
+
+	&--col-end-1 { grid-column-end: 1; }
+	&--col-end-2 { grid-column-end: 2; }
+	&--col-end-3 { grid-column-end: 3; }
+	&--col-end-auto { grid-column-end: auto; }
+}

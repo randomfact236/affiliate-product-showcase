@@ -1,0 +1,25 @@
+/**
+ * Forms Component (BEM)
+ *
+ * Reusable form styles with consistent styling.
+ *
+ * This file imports all form sub-components:
+ * - Label styles (_form-label.scss)
+ * - Input styles (_form-input.scss)
+ * - Textarea styles (_form-textarea.scss)
+ * - Select styles (_form-select.scss)
+ * - Validation styles (_form-validation.scss)
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+// ============================================
+// Import Form Sub-Components
+// ============================================
+
+@use 'form-label';
+@use 'form-input';
+@use 'form-textarea';
+@use 'form-select';
+@use 'form-validation';

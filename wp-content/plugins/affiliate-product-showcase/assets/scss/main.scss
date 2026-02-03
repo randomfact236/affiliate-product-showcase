@@ -1,0 +1,161 @@
+/**
+ * Affiliate Product Showcase - Main SCSS Entry Point
+ *
+ * Modular SCSS architecture with BEM methodology.
+ * All styles are organized by component and feature.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+// ============================================
+// Import Variables
+// ============================================
+
+@use 'variables' as *;
+
+// ============================================
+// Import Mixins
+// ============================================
+
+@use 'mixins/breakpoints';
+@use 'mixins/focus';
+@use 'mixins/typography';
+
+// ============================================
+// Import Components
+// ============================================
+
+@use 'components/card';
+@use 'components/buttons';
+@use 'components/forms';
+@use 'components/modals';
+@use 'components/toasts';
+
+// ============================================
+// Import Layouts
+// ============================================
+
+@use 'layouts/container';
+@use 'layouts/grid';
+@use 'layouts/flex';
+
+// ============================================
+// Import Pages
+// ============================================
+
+@use 'pages/admin';
+@use 'pages/products';
+@use 'pages/admin-products';
+@use 'pages/add-product';
+@use 'pages/tags';
+@use 'pages/admin-form';
+@use 'pages/ribbons';
+@use 'pages/settings';
+
+// ============================================
+// Import Utilities
+// ============================================
+
+@use 'utilities/spacing';
+@use 'utilities/colors';
+@use 'utilities/text';
+@use 'utilities/accessibility';
+
+// ============================================
+// Base Styles
+// ============================================
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: $aps-font-size-md;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-ms-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: $aps-font-family-base;
+	font-size: $aps-font-size-base;
+	line-height: $aps-line-height-normal;
+	color: $aps-color-text-main;
+	background-color: $aps-color-bg-light;
+}
+
+// ============================================
+// Reset
+// ============================================
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+button {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	cursor: pointer;
+
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.2);
+	}
+}
+
+input,
+textarea,
+select {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-color: $aps-color-primary;
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.2);
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+// NOTE: .aps-skip-link and .aps-sr-only moved to utilities/_accessibility.scss
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	* {
+		background: transparent !important;
+		color: $aps-color-black !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+
+	a[href]::after {
+		content: " (" attr(href) ")";
+	}
+
+	img {
+		page-break-inside: avoid;
+	}
+}

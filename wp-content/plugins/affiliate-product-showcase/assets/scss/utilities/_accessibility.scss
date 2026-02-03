@@ -1,0 +1,294 @@
+/**
+ * Accessibility Utilities (BEM)
+ *
+ * Utility classes for accessibility (WCAG 2.1 AA compliance).
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Screen Reader Only
+// ============================================
+
+.aps-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+// ============================================
+// Focus Visible Styles
+// ============================================
+
+.aps-focus-visible {
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		box-shadow: $aps-shadow-focus;
+	}
+}
+
+// ============================================
+// Focus Ring
+// ============================================
+
+.aps-focus-ring {
+	&:focus {
+		box-shadow: 0 0 0 3px rgba($aps-color-primary, 0.1);
+	}
+}
+
+// ============================================
+// Skip Link
+// ============================================
+
+.aps-skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: $aps-color-primary;
+	color: $aps-color-bg-card;
+	padding: $aps-spacing-2 $aps-spacing-3;
+	z-index: $aps-z-tooltip;
+	transition: top $aps-transition-base ease;
+	text-decoration: none;
+	font-weight: $aps-font-weight-semibold;
+
+	&:focus {
+		top: 0;
+		outline: 2px solid $aps-color-primary-hover;
+		outline-offset: 2px;
+	}
+}
+
+// ============================================
+// Reduced Motion
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+	.aps-motion-reduce {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+// ============================================
+// High Contrast
+// ============================================
+
+@media (prefers-contrast: high) {
+	.aps-high-contrast {
+		border: 2px solid currentColor;
+	}
+
+	.aps-button,
+	.aps-badge,
+	.aps-card__cta,
+	.aps-card__discount {
+		border: 2px solid currentColor;
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.aps-print-only {
+		display: block;
+	}
+
+	.aps-no-print {
+		display: none;
+	}
+
+	.aps-print-break-after {
+		page-break-after: always;
+	}
+
+	.aps-print-break-before {
+		page-break-before: always;
+	}
+
+	.aps-print-break-inside-avoid {
+		page-break-inside: avoid;
+	}
+}
+
+// ============================================
+// Keyboard Navigation
+// ============================================
+
+.aps-keyboard {
+	&-focusable {
+		&:focus {
+			outline: 2px solid $aps-color-primary;
+			outline-offset: 2px;
+		}
+	}
+}
+
+// ============================================
+// Touch Targets (minimum 44x44px)
+// ============================================
+
+.aps-touch {
+	&-target {
+		min-width: 44px;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+// ============================================
+// Alt Text Indicators
+// ============================================
+
+.aps-alt {
+	&-missing {
+		border: 2px dashed $aps-color-warning;
+		background: $aps-color-warning-light;
+	}
+}
+
+// ============================================
+// Link Indicators
+// ============================================
+
+.aps-link {
+	&-external {
+		&::after {
+			content: ' ↗';
+			font-size: 0.75em;
+			vertical-align: super;
+		}
+	}
+
+	&-download {
+		&::after {
+			content: ' ⬇';
+			font-size: 0.75em;
+			vertical-align: super;
+		}
+	}
+}
+
+// ============================================
+// Error Indicators
+// ============================================
+
+.aps-error {
+	&-message {
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-2;
+		padding: $aps-spacing-3;
+		background: $aps-color-danger-light;
+		border: 2px solid $aps-color-danger;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-danger-text;
+
+		&::before {
+			content: '⚠';
+			font-size: $aps-font-size-lg;
+		}
+	}
+
+	&-field {
+		border: 2px solid $aps-color-danger;
+		background: $aps-color-danger-light;
+
+		&:focus {
+			outline: 2px solid $aps-color-danger;
+			outline-offset: 2px;
+		}
+	}
+}
+
+// ============================================
+// Success Indicators
+// ============================================
+
+.aps-success {
+	&-message {
+		display: flex;
+		align-items: center;
+		gap: $aps-spacing-2;
+		padding: $aps-spacing-3;
+		background: $aps-color-success-light;
+		border: 2px solid $aps-color-success;
+		border-radius: $aps-radius-sm;
+		color: $aps-color-success-text;
+
+		&::before {
+			content: '✓';
+			font-size: $aps-font-size-lg;
+		}
+	}
+}
+
+// ============================================
+// Loading Indicators
+// ============================================
+
+.aps-loading {
+	&-spinner {
+		display: inline-block;
+		width: 1.5rem;
+		height: 1.5rem;
+		border: 3px solid $aps-color-bg-light;
+		border-top-color: $aps-color-primary;
+		border-radius: 50%;
+		animation: aps-spin 1s linear infinite;
+
+		&[aria-hidden="true"] {
+			// Hidden from all users
+			display: none;
+		}
+	}
+
+	&-skeleton {
+		background: linear-gradient(
+			90deg,
+			$aps-color-bg-light 0%,
+			$aps-color-bg-hover 50%,
+			$aps-color-bg-light 100%
+		);
+		background-size: 200% 100%;
+		animation: aps-skeleton 1.5s ease-in-out infinite;
+	}
+}
+
+@keyframes aps-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes aps-skeleton {
+	0% {
+		background-position: 200% 0;
+	}
+
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+// ============================================
+// Landmark Roles
+// ============================================
+// NOTE: ARIA landmark roles are HTML attributes, not CSS properties.
+// They must be set in HTML markup, not in stylesheets.
+// Example: <header role="banner">, <nav role="navigation">, etc.

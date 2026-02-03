@@ -1,0 +1,11 @@
+:root {
+	--aps-breakpoint-xs: 480px;
+	--aps-breakpoint-wp-mobile: 600px;
+	--aps-breakpoint-sm: 640px;
+	--aps-breakpoint-md: 768px;
+	--aps-breakpoint-wp-tablet: 782px;
+	--aps-breakpoint-lg: 1024px;
+	--aps-breakpoint-xl: 1280px;
+	--aps-breakpoint-2xl: 1536px;
+}
+

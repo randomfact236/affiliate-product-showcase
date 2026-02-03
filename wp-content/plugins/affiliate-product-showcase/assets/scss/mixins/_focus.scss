@@ -1,0 +1,70 @@
+/**
+ * Focus Mixins
+ *
+ * Accessibility-focused mixins for keyboard navigation and screen readers.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Mixin: Focus Visible
+// ============================================
+
+@mixin focus-visible {
+	&:focus-visible {
+		outline: 2px solid $aps-color-primary;
+		outline-offset: 2px;
+		box-shadow: $aps-shadow-focus;
+	}
+}
+
+// ============================================
+// Mixin: Focus Ring
+// ============================================
+
+@mixin focus-ring($color: $aps-color-primary) {
+	&:focus-visible {
+		box-shadow: 0 0 0 3px rgba($color, 0.1);
+	}
+}
+
+// ============================================
+// Mixin: Focus Error
+// ============================================
+
+@mixin focus-error {
+	&:focus-visible {
+		outline: 2px solid $aps-color-danger;
+		outline-offset: 2px;
+		box-shadow: $aps-shadow-focus-error;
+	}
+}
+
+// ============================================
+// Mixin: Skip Focus (Use with Caution!)
+// ============================================
+// WARNING: This removes focus indicators entirely.
+// Only use on elements that have custom focus styling elsewhere,
+// or for non-interactive elements that shouldn't show focus.
+
+@mixin skip-focus {
+	&:focus:not(:focus-visible) {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
+// ============================================
+// Mixin: Focus Within
+// ============================================
+
+@mixin focus-within {
+	&:focus-within {
+		outline: 3px solid $aps-color-primary;
+		outline-offset: 2px;
+		border-radius: $aps-radius-lg;
+	}
+}

@@ -1,0 +1,102 @@
+/**
+ * Product Filters Styles
+ *
+ * Styles for custom filters added to WordPress default table.
+ *
+ * @package AffiliateProductShowcase
+ * @since1.0.0
+ */
+
+/* Hide native WordPress "Add New" button on products list page */
+body.post-type-aps_product.edit-php .page-title-action,
+body.post-type-aps_product.edit-php .wrap .page-title-action {
+    display: none !important;
+}
+
+/* Filter container in tablenav */
+.aps-featured-filter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.aps-featured-filter-label:hover {
+    color: #2271b1;
+}
+
+.aps-featured-filter-label input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Filter dropdowns */
+#aps_category_filter,
+#aps_tag_filter {
+    margin-right: 0.5rem;
+    padding: 5px 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1d2327;
+    background: #fff;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#aps_category_filter:focus,
+#aps_tag_filter:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.1);
+    outline: none;
+}
+
+/* Custom search input */
+#aps_search {
+    margin-left: 0.5rem;
+    padding: 5px 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1d2327;
+    background: #fff;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+    min-width: 200px;
+}
+
+#aps_search:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.1);
+    outline: none;
+}
+
+#aps_search::placeholder {
+    color: #646970;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: var(--aps-breakpoint-wp-tablet)) {
+    .aps-featured-filter-label {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    #aps_category_filter,
+    #aps_tag_filter {
+        margin-right: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #aps_search {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        min-width: 100%;
+    }
+}

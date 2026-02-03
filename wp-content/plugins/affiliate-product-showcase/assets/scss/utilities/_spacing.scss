@@ -1,0 +1,207 @@
+/**
+ * Spacing Utilities (BEM)
+ *
+ * Utility classes for spacing.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Margin Utilities
+// ============================================
+
+.aps-m {
+	&-0 { margin: 0; }
+	&-auto { margin: auto; }
+	&-1 { margin: $aps-spacing-1; }
+	&-2 { margin: $aps-spacing-2; }
+	&-3 { margin: $aps-spacing-3; }
+	&-4 { margin: $aps-spacing-4; }
+	&-5 { margin: $aps-spacing-5; }
+	&-6 { margin: $aps-spacing-6; }
+	&-8 { margin: $aps-spacing-8; }
+	&-10 { margin: $aps-spacing-10; }
+	&-12 { margin: $aps-spacing-12; }
+}
+
+.aps-mt {
+	&-0 { margin-top: 0; }
+	&-auto { margin-top: auto; }
+	&-1 { margin-top: $aps-spacing-1; }
+	&-2 { margin-top: $aps-spacing-2; }
+	&-3 { margin-top: $aps-spacing-3; }
+	&-4 { margin-top: $aps-spacing-4; }
+	&-5 { margin-top: $aps-spacing-5; }
+	&-6 { margin-top: $aps-spacing-6; }
+	&-8 { margin-top: $aps-spacing-8; }
+	&-10 { margin-top: $aps-spacing-10; }
+	&-12 { margin-top: $aps-spacing-12; }
+}
+
+.aps-mb {
+	&-0 { margin-bottom: 0; }
+	&-auto { margin-bottom: auto; }
+	&-1 { margin-bottom: $aps-spacing-1; }
+	&-2 { margin-bottom: $aps-spacing-2; }
+	&-3 { margin-bottom: $aps-spacing-3; }
+	&-4 { margin-bottom: $aps-spacing-4; }
+	&-5 { margin-bottom: $aps-spacing-5; }
+	&-6 { margin-bottom: $aps-spacing-6; }
+	&-8 { margin-bottom: $aps-spacing-8; }
+	&-10 { margin-bottom: $aps-spacing-10; }
+	&-12 { margin-bottom: $aps-spacing-12; }
+}
+
+.aps-ml {
+	&-0 { margin-left: 0; }
+	&-auto { margin-left: auto; }
+	&-1 { margin-left: $aps-spacing-1; }
+	&-2 { margin-left: $aps-spacing-2; }
+	&-3 { margin-left: $aps-spacing-3; }
+	&-4 { margin-left: $aps-spacing-4; }
+	&-5 { margin-left: $aps-spacing-5; }
+	&-6 { margin-left: $aps-spacing-6; }
+	&-8 { margin-left: $aps-spacing-8; }
+	&-10 { margin-left: $aps-spacing-10; }
+	&-12 { margin-left: $aps-spacing-12; }
+}
+
+.aps-mr {
+	&-0 { margin-right: 0; }
+	&-auto { margin-right: auto; }
+	&-1 { margin-right: $aps-spacing-1; }
+	&-2 { margin-right: $aps-spacing-2; }
+	&-3 { margin-right: $aps-spacing-3; }
+	&-4 { margin-right: $aps-spacing-4; }
+	&-5 { margin-right: $aps-spacing-5; }
+	&-6 { margin-right: $aps-spacing-6; }
+	&-8 { margin-right: $aps-spacing-8; }
+	&-10 { margin-right: $aps-spacing-10; }
+	&-12 { margin-right: $aps-spacing-12; }
+}
+
+.aps-mx {
+	&-0 { margin-left: 0; margin-right: 0; }
+	&-auto { margin-left: auto; margin-right: auto; }
+	&-1 { margin-left: $aps-spacing-1; margin-right: $aps-spacing-1; }
+	&-2 { margin-left: $aps-spacing-2; margin-right: $aps-spacing-2; }
+	&-3 { margin-left: $aps-spacing-3; margin-right: $aps-spacing-3; }
+	&-4 { margin-left: $aps-spacing-4; margin-right: $aps-spacing-4; }
+	&-5 { margin-left: $aps-spacing-5; margin-right: $aps-spacing-5; }
+	&-6 { margin-left: $aps-spacing-6; margin-right: $aps-spacing-6; }
+	&-8 { margin-left: $aps-spacing-8; margin-right: $aps-spacing-8; }
+	&-10 { margin-left: $aps-spacing-10; margin-right: $aps-spacing-10; }
+	&-12 { margin-left: $aps-spacing-12; margin-right: $aps-spacing-12; }
+}
+
+.aps-my {
+	&-0 { margin-top: 0; margin-bottom: 0; }
+	&-auto { margin-top: auto; margin-bottom: auto; }
+	&-1 { margin-top: $aps-spacing-1; margin-bottom: $aps-spacing-1; }
+	&-2 { margin-top: $aps-spacing-2; margin-bottom: $aps-spacing-2; }
+	&-3 { margin-top: $aps-spacing-3; margin-bottom: $aps-spacing-3; }
+	&-4 { margin-top: $aps-spacing-4; margin-bottom: $aps-spacing-4; }
+	&-5 { margin-top: $aps-spacing-5; margin-bottom: $aps-spacing-5; }
+	&-6 { margin-top: $aps-spacing-6; margin-bottom: $aps-spacing-6; }
+	&-8 { margin-top: $aps-spacing-8; margin-bottom: $aps-spacing-8; }
+	&-10 { margin-top: $aps-spacing-10; margin-bottom: $aps-spacing-10; }
+	&-12 { margin-top: $aps-spacing-12; margin-bottom: $aps-spacing-12; }
+}
+
+// ============================================
+// Padding Utilities
+// ============================================
+
+.aps-p {
+	&-0 { padding: 0; }
+	&-1 { padding: $aps-spacing-1; }
+	&-2 { padding: $aps-spacing-2; }
+	&-3 { padding: $aps-spacing-3; }
+	&-4 { padding: $aps-spacing-4; }
+	&-5 { padding: $aps-spacing-5; }
+	&-6 { padding: $aps-spacing-6; }
+	&-8 { padding: $aps-spacing-8; }
+	&-10 { padding: $aps-spacing-10; }
+	&-12 { padding: $aps-spacing-12; }
+}
+
+.aps-pt {
+	&-0 { padding-top: 0; }
+	&-1 { padding-top: $aps-spacing-1; }
+	&-2 { padding-top: $aps-spacing-2; }
+	&-3 { padding-top: $aps-spacing-3; }
+	&-4 { padding-top: $aps-spacing-4; }
+	&-5 { padding-top: $aps-spacing-5; }
+	&-6 { padding-top: $aps-spacing-6; }
+	&-8 { padding-top: $aps-spacing-8; }
+	&-10 { padding-top: $aps-spacing-10; }
+	&-12 { padding-top: $aps-spacing-12; }
+}
+
+.aps-pb {
+	&-0 { padding-bottom: 0; }
+	&-1 { padding-bottom: $aps-spacing-1; }
+	&-2 { padding-bottom: $aps-spacing-2; }
+	&-3 { padding-bottom: $aps-spacing-3; }
+	&-4 { padding-bottom: $aps-spacing-4; }
+	&-5 { padding-bottom: $aps-spacing-5; }
+	&-6 { padding-bottom: $aps-spacing-6; }
+	&-8 { padding-bottom: $aps-spacing-8; }
+	&-10 { padding-bottom: $aps-spacing-10; }
+	&-12 { padding-bottom: $aps-spacing-12; }
+}
+
+.aps-pl {
+	&-0 { padding-left: 0; }
+	&-1 { padding-left: $aps-spacing-1; }
+	&-2 { padding-left: $aps-spacing-2; }
+	&-3 { padding-left: $aps-spacing-3; }
+	&-4 { padding-left: $aps-spacing-4; }
+	&-5 { padding-left: $aps-spacing-5; }
+	&-6 { padding-left: $aps-spacing-6; }
+	&-8 { padding-left: $aps-spacing-8; }
+	&-10 { padding-left: $aps-spacing-10; }
+	&-12 { padding-left: $aps-spacing-12; }
+}
+
+.aps-pr {
+	&-0 { padding-right: 0; }
+	&-1 { padding-right: $aps-spacing-1; }
+	&-2 { padding-right: $aps-spacing-2; }
+	&-3 { padding-right: $aps-spacing-3; }
+	&-4 { padding-right: $aps-spacing-4; }
+	&-5 { padding-right: $aps-spacing-5; }
+	&-6 { padding-right: $aps-spacing-6; }
+	&-8 { padding-right: $aps-spacing-8; }
+	&-10 { padding-right: $aps-spacing-10; }
+	&-12 { padding-right: $aps-spacing-12; }
+}
+
+.aps-px {
+	&-0 { padding-left: 0; padding-right: 0; }
+	&-1 { padding-left: $aps-spacing-1; padding-right: $aps-spacing-1; }
+	&-2 { padding-left: $aps-spacing-2; padding-right: $aps-spacing-2; }
+	&-3 { padding-left: $aps-spacing-3; padding-right: $aps-spacing-3; }
+	&-4 { padding-left: $aps-spacing-4; padding-right: $aps-spacing-4; }
+	&-5 { padding-left: $aps-spacing-5; padding-right: $aps-spacing-5; }
+	&-6 { padding-left: $aps-spacing-6; padding-right: $aps-spacing-6; }
+	&-8 { padding-left: $aps-spacing-8; padding-right: $aps-spacing-8; }
+	&-10 { padding-left: $aps-spacing-10; padding-right: $aps-spacing-10; }
+	&-12 { padding-left: $aps-spacing-12; padding-right: $aps-spacing-12; }
+}
+
+.aps-py {
+	&-0 { padding-top: 0; padding-bottom: 0; }
+	&-1 { padding-top: $aps-spacing-1; padding-bottom: $aps-spacing-1; }
+	&-2 { padding-top: $aps-spacing-2; padding-bottom: $aps-spacing-2; }
+	&-3 { padding-top: $aps-spacing-3; padding-bottom: $aps-spacing-3; }
+	&-4 { padding-top: $aps-spacing-4; padding-bottom: $aps-spacing-4; }
+	&-5 { padding-top: $aps-spacing-5; padding-bottom: $aps-spacing-5; }
+	&-6 { padding-top: $aps-spacing-6; padding-bottom: $aps-spacing-6; }
+	&-8 { padding-top: $aps-spacing-8; padding-bottom: $aps-spacing-8; }
+	&-10 { padding-top: $aps-spacing-10; padding-bottom: $aps-spacing-10; }
+	&-12 { padding-top: $aps-spacing-12; padding-bottom: $aps-spacing-12; }
+}

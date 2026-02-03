@@ -1,0 +1,113 @@
+/**
+ * Breakpoint Mixins
+ *
+ * Responsive breakpoint utilities for media queries.
+ *
+ * @package AffiliateProductShowcase
+ * @since 1.0.0
+ */
+
+@use '../variables' as *;
+
+// ============================================
+// Mixin: Mobile Down (Small Screens)
+// ============================================
+// Note: These use max-width (desktop-first approach), not true mobile-first.
+// For mobile-first, use desktop-up and override with min-width.
+
+@mixin xs-down {
+	@media (max-width: $aps-breakpoint-xs) {
+		@content;
+	}
+}
+
+// Backward compatibility aliases (deprecated)
+@mixin mobile-first-320 {
+	@media (max-width: $aps-breakpoint-320) {
+		@content;
+	}
+}
+
+@mixin mobile-first {
+	@media (max-width: $aps-breakpoint-xs) {
+		@content;
+	}
+}
+
+@mixin mobile-only {
+	@media (min-width: $aps-breakpoint-xs) and (max-width: #{$aps-breakpoint-sm - 1px}) {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: Tablet
+// ============================================
+
+@mixin tablet {
+	@media (min-width: $aps-breakpoint-sm) and (max-width: $aps-breakpoint-lg) {
+		@content;
+	}
+}
+
+@mixin tablet-down {
+	@media (max-width: $aps-breakpoint-md) {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: Desktop
+// ============================================
+
+@mixin desktop {
+	@media (min-width: $aps-breakpoint-lg) {
+		@content;
+	}
+}
+
+@mixin desktop-up {
+	@media (min-width: #{$aps-breakpoint-md + 1px}) {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: Large Desktop
+// ============================================
+
+@mixin large-desktop {
+	@media (min-width: $aps-breakpoint-xl) {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: Print
+// ============================================
+
+@mixin print-only {
+	@media print {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: Reduced Motion
+// ============================================
+
+@mixin prefers-reduced-motion {
+	@media (prefers-reduced-motion: reduce) {
+		@content;
+	}
+}
+
+// ============================================
+// Mixin: High Contrast
+// ============================================
+
+@mixin prefers-high-contrast {
+	@media (prefers-contrast: high) {
+		@content;
+	}
+}
