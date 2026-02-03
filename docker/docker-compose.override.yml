@@ -1,11 +1,23 @@
 version: '3.8'
+
+# =============================================================================
+# DEVELOPMENT OVERRIDES - NETWORK ISOLATION
+# =============================================================================
+# This file extends docker-compose.yml with development-specific settings.
+# All services maintain strict network isolation:
+# - Ports bind to localhost (127.0.0.1) only
+# - Uses the isolated aps_network (defined in docker-compose.yml)
+# =============================================================================
+
 services:
   redis:
     volumes:
       - redis_data:/data
     command: ["redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof"]
     ports:
-      - "${REDIS_PORT:-6379}:6379" # expose for dev host access (optional)
+      # SECURITY: Bind to localhost only
+      # Redis port is NOT accessible from other Docker projects or external network
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -14,7 +26,9 @@ services:
       PMA_USER: ${MYSQL_USER:-root}
       PMA_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "${PHPMYADMIN_HOST_BIND:-127.0.0.1}:${PHPMYADMIN_PORT:-8080}:80" # dev-only override: bind to localhost only
+      # SECURITY: Already bound to localhost only
+      # Accessible only from host machine at http://127.0.0.1:8080
+      - "${PHPMYADMIN_HOST_BIND:-127.0.0.1}:${PHPMYADMIN_PORT:-8080}:80"
     depends_on:
       db:
         condition: service_healthy
