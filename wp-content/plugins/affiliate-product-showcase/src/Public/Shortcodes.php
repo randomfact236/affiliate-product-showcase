@@ -25,6 +25,20 @@ final class Shortcodes {
 	public function register(): void {
 		add_shortcode( 'aps_product', [ $this, 'render_single' ] );
 		add_shortcode( 'aps_products', [ $this, 'render_grid' ] );
+		add_shortcode( 'aps_showcase', [ $this, 'render_showcase' ] );
+	}
+
+	/**
+	 * NOTE: Asset loading is handled by Enqueue.php via wp_enqueue_scripts hook.
+	 * Shortcodes only render content - they don't manage assets.
+	 * This ensures single-source-of-truth for asset management.
+	 */
+
+	public function render_showcase( array $atts ): string {
+		// Assets are loaded automatically by Enqueue.php when shortcode is detected
+		ob_start();
+		include AFFILIATE_PRODUCT_SHOWCASE_DIR . '/frontend/templates/products-showcase.php';
+		return ob_get_clean();
 	}
 
 	public function render_single( array $atts ): string {

@@ -22,6 +22,13 @@ class Enqueue {
     private const VERSION = '1.0.0';
 
     /**
+     * Manifest cache
+     *
+     * @var array<string, mixed>|null
+     */
+    private static ?array $manifest = null;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -33,31 +40,45 @@ class Enqueue {
     /**
      * Enqueue public styles
      *
+     * FIXED: Added conditional loading check to prevent loading on every page.
+     * Assets now only load when the shortcode or block is present on the page.
+     * FIXED: Uses manifest.json to get hashed filenames for cache busting.
+     *
      * @return void
      */
     public function enqueueStyles(): void {
+        // FIX: Only load assets if shortcode/block is present on current page
+        if ( ! $this->shouldLoadOnCurrentPage() ) {
+            return;
+        }
+
+        // Enqueue Google Fonts (Inter) - used by product showcase
         wp_enqueue_style(
-            'affiliate-product-showcase-tokens',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/tokens.css',
+            'affiliate-product-showcase-fonts',
+            'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',
             [],
-            self::VERSION
+            null
         );
 
-        // Main public CSS
-        wp_enqueue_style(
-            'affiliate-product-showcase-public',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/affiliate-product-showcase.css',
-            [ 'affiliate-product-showcase-tokens' ],
-            self::VERSION
-        );
-
-        // Product card styles
-        wp_enqueue_style(
-            'affiliate-product-showcase-card',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/css/product-card.css',
-            [ 'affiliate-product-showcase-public', 'affiliate-product-showcase-tokens' ],
-            self::VERSION
-        );
+        // Get frontend CSS from manifest (hashed filename)
+        $frontend_css = $this->getAssetUrl( 'styles/frontend.scss' );
+        
+        if ( $frontend_css ) {
+            wp_enqueue_style(
+                'affiliate-product-showcase-public',
+                $frontend_css,
+                [],
+                null // Version is in filename hash
+            );
+        } else {
+            // Fallback to static file if manifest not available
+            wp_enqueue_style(
+                'affiliate-product-showcase-public',
+                AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/affiliate-product-showcase.css',
+                [],
+                self::VERSION
+            );
+        }
 
         // Custom CSS from settings
         $custom_css = get_option( 'affiliate_product_showcase_custom_css', '' );
@@ -72,26 +93,39 @@ class Enqueue {
     /**
      * Enqueue public scripts
      *
+     * FIXED: Added conditional loading check to prevent loading on every page.
+     * Assets now only load when the shortcode or block is present on the page.
+     * FIXED: Uses manifest.json to get hashed filenames for cache busting.
+     *
      * @return void
      */
     public function enqueueScripts(): void {
-        // Main public JS
-        wp_enqueue_script(
-            'affiliate-product-showcase-public',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/public.js',
-            [ 'jquery' ],
-            self::VERSION,
-            true
-        );
+        // FIX: Only load assets if shortcode/block is present on current page
+        if ( ! $this->shouldLoadOnCurrentPage() ) {
+            return;
+        }
 
-        // Product card JS
-        wp_enqueue_script(
-            'affiliate-product-showcase-card',
-            AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/product-card.js',
-            [ 'jquery', 'affiliate-product-showcase-public' ],
-            self::VERSION,
-            true
-        );
+        // Get frontend JS from manifest (hashed filename)
+        $frontend_js = $this->getAssetUrl( 'js/frontend.ts' );
+        
+        if ( $frontend_js ) {
+            wp_enqueue_script(
+                'affiliate-product-showcase-public',
+                $frontend_js,
+                [],
+                null, // Version is in filename hash
+                true
+            );
+        } else {
+            // Fallback to static file if manifest not available
+            wp_enqueue_script(
+                'affiliate-product-showcase-public',
+                AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/js/public.js',
+                [ 'jquery' ],
+                self::VERSION,
+                true
+            );
+        }
 
         // Localize script
         wp_localize_script(
@@ -104,7 +138,7 @@ class Enqueue {
         if ( $this->isTrackingEnabled() ) {
             wp_register_script(
                 'affiliate-product-showcase-tracking',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/tracking.js',
+                AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/js/tracking.js',
                 [],
                 self::VERSION,
                 true
@@ -120,7 +154,7 @@ class Enqueue {
         if ( $this->isLazyLoadEnabled() ) {
             wp_register_script(
                 'affiliate-product-showcase-lazyload',
-                AFFILIATE_PRODUCT_SHOWCASE_PLUGIN_URL . 'assets/js/lazyload.js',
+                AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/js/lazyload.js',
                 [],
                 self::VERSION,
                 true
@@ -155,6 +189,65 @@ class Enqueue {
             }
         </script>
         <?php
+    }
+
+    /**
+     * Get asset URL from manifest.json
+     *
+     * Reads the Vite manifest to get the hashed filename for cache busting.
+     *
+     * @param string $entry Entry point (e.g., 'js/frontend.ts', 'styles/frontend.scss')
+     * @return string|null Asset URL or null if not found
+     */
+    private function getAssetUrl( string $entry ): ?string {
+        $manifest = $this->getManifest();
+        
+        if ( ! isset( $manifest[ $entry ] ) ) {
+            return null;
+        }
+        
+        $file = $manifest[ $entry ]['file'] ?? null;
+        
+        if ( ! $file ) {
+            return null;
+        }
+        
+        return AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/dist/' . $file;
+    }
+
+    /**
+     * Load and cache manifest.json
+     *
+     * @return array<string, mixed> Manifest data
+     */
+    private function getManifest(): array {
+        if ( self::$manifest !== null ) {
+            return self::$manifest;
+        }
+        
+        $manifest_path = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'assets/dist/manifest.json';
+        
+        if ( ! file_exists( $manifest_path ) ) {
+            self::$manifest = [];
+            return self::$manifest;
+        }
+        
+        $content = file_get_contents( $manifest_path );
+        
+        if ( false === $content ) {
+            self::$manifest = [];
+            return self::$manifest;
+        }
+        
+        $manifest = json_decode( $content, true );
+        
+        if ( ! is_array( $manifest ) ) {
+            self::$manifest = [];
+            return self::$manifest;
+        }
+        
+        self::$manifest = $manifest;
+        return self::$manifest;
     }
 
     /**
@@ -206,6 +299,8 @@ class Enqueue {
     /**
      * Check if plugin should load on current page
      *
+     * FIXED: Corrected has_shortcode() usage to include post content parameter.
+     *
      * @return bool
      */
     private function shouldLoadOnCurrentPage(): bool {
@@ -214,8 +309,15 @@ class Enqueue {
             return false;
         }
 
-        // Check if current page has affiliate products
-        $has_products = has_shortcode( 'affiliate_products' );
+        // Check if current page has affiliate products shortcode
+        // FIX: has_shortcode() requires post_content as first parameter
+        $post = get_post();
+        // Check for all plugin shortcodes
+		$has_products = $post ? (
+			has_shortcode( $post->post_content, 'aps_product' ) ||
+			has_shortcode( $post->post_content, 'aps_products' ) ||
+			has_shortcode( $post->post_content, 'aps_showcase' )
+		) : false;
         $has_blocks = $this->hasAffiliateBlocks();
 
         return $has_products || $has_blocks;
