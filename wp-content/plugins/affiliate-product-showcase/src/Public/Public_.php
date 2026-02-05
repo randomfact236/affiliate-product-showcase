@@ -15,6 +15,7 @@ use AffiliateProductShowcase\Repositories\SettingsRepository;
 final class Public_ {
     private Shortcodes $shortcodes;
     private Widgets $widgets;
+    private AjaxHandler $ajax_handler;
 
     public function __construct(
         private Assets $assets,
@@ -24,10 +25,14 @@ final class Public_ {
     ) {
         $this->shortcodes = new Shortcodes( $this->product_service, $this->settings_repository, $this->affiliate_service );
         $this->widgets    = new Widgets( $this->product_service, $this->settings_repository, $this->affiliate_service );
+        $this->ajax_handler = new AjaxHandler( $this->product_service );
     }
 
     public function init(): void {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_assets' ] );
+        
+        // Register AJAX handlers
+        $this->ajax_handler->register();
     }
 
     public function enqueue_frontend_assets(): void {

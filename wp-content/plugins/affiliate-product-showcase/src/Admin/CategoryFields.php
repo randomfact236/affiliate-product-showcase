@@ -103,48 +103,45 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 		$is_default = $this->get_is_default( $category_id ) === '1';
 
 		?>
-	<!-- Featured and Default Checkboxes (side by side) -->
-	<fieldset class="aps-category-checkboxes-wrapper aps-hidden" aria-label="<?php esc_attr_e( 'Category options', 'affiliate-product-showcase' ); ?>">
-		<legend><?php esc_html_e( 'Category Options', 'affiliate-product-showcase' ); ?></legend>
-		
-		<!-- Featured Checkbox -->
-		<div class="form-field aps-category-featured">
-			<label for="_aps_category_featured">
-				<?php esc_html_e( 'Featured Category', 'affiliate-product-showcase' ); ?>
-			</label>
-			<input
-				type="checkbox"
-				id="_aps_category_featured"
-				name="_aps_category_featured"
-				value="1"
-				aria-describedby="_aps_category_featured_description"
-				<?php checked( $featured, true ); ?>
-			/>
-			<p class="description" id="_aps_category_featured_description">
-				<?php esc_html_e( 'Display this category prominently on frontend.', 'affiliate-product-showcase' ); ?>
-			</p>
+		<!-- Featured and Default Checkboxes -->
+		<div class="aps-category-checkboxes-wrapper">
+			<!-- Featured Checkbox -->
+			<div class="form-field aps-category-featured">
+				<label for="_aps_category_featured">
+					<input
+						type="checkbox"
+						id="_aps_category_featured"
+						name="_aps_category_featured"
+						value="1"
+						<?php checked( $featured, true ); ?>
+					/>
+					<?php esc_html_e( 'Featured Category', 'affiliate-product-showcase' ); ?>
+				</label>
+				<p class="description">
+					<?php esc_html_e( 'Display this category prominently on frontend.', 'affiliate-product-showcase' ); ?>
+				</p>
+			</div>
+
+			<!-- Default Category -->
+			<div class="form-field aps-category-default">
+				<label for="_aps_category_is_default">
+					<input
+						type="checkbox"
+						id="_aps_category_is_default"
+						name="_aps_category_is_default"
+						value="1"
+						<?php checked( $is_default, true ); ?>
+					/>
+					<?php esc_html_e( 'Default Category', 'affiliate-product-showcase' ); ?>
+				</label>
+				<p class="description">
+					<?php esc_html_e( 'Products without a category will be assigned to this category automatically.', 'affiliate-product-showcase' ); ?>
+				</p>
+			</div>
 		</div>
 
-		<!-- Default Category -->
-		<div class="form-field aps-category-default">
-			<label for="_aps_category_is_default">
-				<?php esc_html_e( 'Default Category', 'affiliate-product-showcase' ); ?>
-			</label>
-			<input
-				type="checkbox"
-				id="_aps_category_is_default"
-				name="_aps_category_is_default"
-				value="1"
-				aria-describedby="_aps_category_is_default_description"
-				<?php checked( $is_default, true ); ?>
-			/>
-			<p class="description" id="_aps_category_is_default_description">
-				<?php esc_html_e( 'Products without a category will be assigned to this category automatically.', 'affiliate-product-showcase' ); ?>
-			</p>
-		</div>
-	</fieldset>
-
-		<div class="form-field aps-category-fields">
+		<!-- Category Settings -->
+		<div class="aps-category-fields">
 			<h3><?php esc_html_e( 'Category Settings', 'affiliate-product-showcase' ); ?></h3>
 
 			<!-- Image URL -->
@@ -158,11 +155,9 @@ final class CategoryFields extends TaxonomyFieldsAbstract {
 					name="_aps_category_image"
 					value="<?php echo esc_attr( $image_url ); ?>"
 					class="regular-text"
-					placeholder="<?php esc_attr_e( 'https://example.com/image.jpg', 'affiliate-product-showcase' ); ?>"
-					aria-describedby="_aps_category_image_description"
-					aria-label="<?php esc_attr_e( 'Category image URL input field', 'affiliate-product-showcase' ); ?>"
+					placeholder="https://example.com/image.jpg"
 				/>
-				<p class="description" id="_aps_category_image_description">
+				<p class="description">
 					<?php esc_html_e( 'Enter URL for category image.', 'affiliate-product-showcase' ); ?>
 				</p>
 			</div>

@@ -1,9 +1,8 @@
 <?php
 /**
- * Add Product Page - Single-Page Form with Quick Navigation
+ * Add Product Page - Modern Design
  *
  * Supports both adding new products and editing existing products.
- * Detects edit mode via $_GET['post'] parameter.
  *
  * @package AffiliateProductShowcase\Admin\Partials
  * @since 1.0.0
@@ -29,34 +28,24 @@ if ( $is_editing ) {
 			'status' => $post->post_status,
 			'content' => $post->post_content,
 			'short_description' => $post->post_excerpt,
-			// Meta fields
 			'logo' => get_post_meta( $post->ID, '_aps_logo', true ),
 			'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
 			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
 			'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
 			'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
 			'original_price' => get_post_meta( $post->ID, '_aps_original_price', true ),
-			'currency' => get_post_meta( $post->ID, '_aps_currency', true ) ?: 'USD',
 			'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
 			'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
 			'views' => get_post_meta( $post->ID, '_aps_views', true ),
 			'user_count' => get_post_meta( $post->ID, '_aps_user_count', true ),
 			'reviews' => get_post_meta( $post->ID, '_aps_reviews', true ),
 			'features' => json_decode( get_post_meta( $post->ID, '_aps_features', true ) ?: '[]', true ),
-			'video_url' => get_post_meta( $post->ID, '_aps_video_url', true ),
-			'platform_requirements' => get_post_meta( $post->ID, '_aps_platform_requirements', true ),
-			'version_number' => get_post_meta( $post->ID, '_aps_version_number', true ),
-			'stock_status' => get_post_meta( $post->ID, '_aps_stock_status', true ) ?: 'instock',
-			'seo_title' => get_post_meta( $post->ID, '_aps_seo_title', true ),
-			'seo_description' => get_post_meta( $post->ID, '_aps_seo_description', true ),
 		];
 		
-		// Get product categories, tags, and ribbons
 		$product_data['categories'] = wp_get_object_terms( $post->ID, 'aps_category', [ 'fields' => 'slugs' ] );
 		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
 		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
 	} else {
-		// Post doesn't exist or wrong post type - show error
 		wp_die(
 			sprintf(
 				'<h1>%s</h1><p>%s</p>',
@@ -69,300 +58,1482 @@ if ( $is_editing ) {
 	}
 }
 
-// Enqueue styles
-wp_enqueue_style( 'aps-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', [], '6.4.0' );
-wp_enqueue_style( 'aps-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap', [], null );
+$form_action = $is_editing ? 'aps_update_product' : 'aps_save_product';
+$nonce_action = $is_editing ? 'aps_update_product' : 'aps_save_product';
+
+// Enqueue WordPress media
+wp_enqueue_media();
 ?>
- 
-<div class="wrap affiliate-product-showcase">
-	<div class="aps-header">
-		<h1><?php echo esc_html( $is_editing ? __( 'Edit Product', 'affiliate-product-showcase' ) : __( 'Add Product', 'affiliate-product-showcase' ) ); ?></h1>
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.aps-modern-form {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+	max-width: 1200px;
+	margin: 20px auto;
+}
+
+/* Header */
+.aps-form-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.aps-form-header h1 {
+	font-size: 24px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0;
+}
+
+.aps-close-btn {
+	background: #dc3232;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s;
+	font-size: 18px;
+}
+
+.aps-close-btn:hover {
+	background: #b32d2e;
+}
+
+/* Quick Navigation */
+.aps-quick-nav {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 20px;
+	flex-wrap: wrap;
+	background: #fff;
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.aps-quick-nav .nav-link {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #f0f0f1;
+	color: #1d2327;
+	text-decoration: none;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 500;
+	transition: all 0.2s;
+}
+
+.aps-quick-nav .nav-link:hover {
+	background: #2271b1;
+	color: #fff;
+}
+
+.aps-quick-nav .nav-link .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* Form Container */
+.aps-form-container {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	overflow: hidden;
+}
+
+/* Sections */
+.aps-section {
+	padding: 25px;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.aps-section:last-child {
+	border-bottom: none;
+}
+
+.section-title {
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 20px;
+	color: #1d2327;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Grid Layouts */
+.aps-grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.aps-grid-3 {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+/* Form Fields */
+.aps-field-group {
+	margin-bottom: 20px;
+}
+
+.aps-field-group:last-child {
+	margin-bottom: 0;
+}
+
+.aps-field-group label {
+	display: block;
+	font-weight: 500;
+	margin-bottom: 6px;
+	color: #1d2327;
+	font-size: 13px;
+}
+
+.required {
+	color: #d63638;
+}
+
+.aps-input,
+.aps-select,
+.aps-textarea {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	font-size: 14px;
+	background: #fff;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.aps-input:focus,
+.aps-select:focus,
+.aps-textarea:focus {
+	outline: none;
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.aps-textarea {
+	resize: vertical;
+	min-height: 100px;
+}
+
+.aps-textarea.aps-full-page {
+	min-height: 120px;
+}
+
+.aps-readonly {
+	background: #f6f7f7 !important;
+	color: #2271b1 !important;
+	font-weight: 600 !important;
+	text-align: center;
+}
+
+/* Checkbox */
+.aps-checkbox-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-weight: 500;
+	margin-top: 24px;
+}
+
+.aps-checkbox-label input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+}
+
+/* Upload Areas */
+.aps-upload-group {
+	margin-bottom: 10px;
+}
+
+.aps-upload-group > label {
+	font-size: 13px;
+	font-weight: 500;
+	margin-bottom: 8px;
+	display: block;
+}
+
+.aps-upload-area {
+	border: 2px dashed #c3c4c7;
+	border-radius: 8px;
+	padding: 30px 20px;
+	text-align: center;
+	background: #f6f7f7;
+	position: relative;
+	transition: all 0.2s;
+}
+
+.aps-upload-area:hover {
+	border-color: #2271b1;
+	background: #f0f6fc;
+}
+
+.upload-placeholder {
+	color: #646970;
+}
+
+.upload-placeholder .dashicons {
+	font-size: 40px;
+	width: 40px;
+	height: 40px;
+	margin-bottom: 10px;
+	color: #8c8f94;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.upload-placeholder p {
+	font-size: 14px;
+	margin: 0;
+}
+
+.image-preview {
+	margin: 0 0 15px 0;
+	border-radius: 4px;
+	overflow: hidden;
+	display: none;
+	max-height: 150px;
+}
+
+.image-preview.has-image {
+	display: block;
+}
+
+.image-preview img {
+	max-width: 100%;
+	max-height: 150px;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
+
+.aps-upload-btn {
+	background: #2271b1;
+	color: #fff;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 13px;
+	margin: 5px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: background 0.2s;
+}
+
+.aps-upload-btn:hover {
+	background: #135e96;
+}
+
+.aps-btn-cancel {
+	background: #d63638 !important;
+}
+
+.aps-btn-cancel:hover {
+	background: #b32d2e !important;
+}
+
+.aps-hidden {
+	display: none !important;
+}
+
+.aps-url-input {
+	margin-top: 10px;
+}
+
+/* Word Counter */
+.word-counter {
+	text-align: right;
+	font-size: 12px;
+	color: #646970;
+	margin-top: 5px;
+}
+
+/* Features */
+.aps-feature-list-input-group {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+
+.aps-feature-list-input-group .aps-input {
+	flex: 1;
+}
+
+.aps-btn {
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: all 0.2s;
+	text-decoration: none;
+	line-height: 1.5;
+}
+
+.aps-btn-primary {
+	background: #2271b1;
+	color: #fff;
+}
+
+.aps-btn-primary:hover {
+	background: #135e96;
+}
+
+.aps-btn-secondary {
+	background: #f0f0f1;
+	color: #1d2327;
+	border: 1px solid #c3c4c7;
+}
+
+.aps-btn-secondary:hover {
+	background: #dcdcde;
+}
+
+.aps-features-list {
+	margin-top: 15px;
+}
+
+/* Feature Items */
+.feature-item {
+	background: #f6f7f7;
+	padding: 10px 12px;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 14px;
+	cursor: grab;
+	transition: all 0.2s;
+}
+
+.feature-item:hover {
+	background: #f0f0f1;
+}
+
+.feature-item.dragging {
+	opacity: 0.5;
+	cursor: grabbing;
+}
+
+.feature-item-content {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+}
+
+.feature-item.drag-handle {
+	cursor: grab;
+	color: #8c8f94;
+	font-size: 16px;
+}
+
+.feature-item.drag-handle:active {
+	cursor: grabbing;
+}
+
+.feature-text {
+	flex: 1;
+}
+
+.feature-text.is-bold {
+	font-weight: 700;
+}
+
+.feature-actions {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+.feature-btn {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 3px;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	color: #646970;
+	transition: all 0.2s;
+}
+
+.feature-btn:hover {
+	background: #f0f0f1;
+	color: #1d2327;
+}
+
+.feature-btn.active {
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+}
+
+.feature-btn.move-btn {
+	cursor: pointer;
+}
+
+.feature-btn.move-btn:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.remove-feature {
+	background: #d63638;
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	line-height: 1;
+}
+
+.remove-feature:hover {
+	background: #b32d2e;
+}
+
+/* Taxonomy Multi-Select */
+.aps-taxonomy-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.aps-multi-select {
+	position: relative;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.aps-multi-select:hover {
+	border-color: #2271b1;
+}
+
+.aps-selected-tags {
+	padding: 8px 12px;
+	min-height: 38px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+	max-width: 100%;
+}
+
+.multi-select-placeholder {
+	color: #646970;
+	font-size: 14px;
+}
+
+.aps-dropdown-trigger {
+	position: absolute;
+	right: 8px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #646970;
+	pointer-events: none;
+}
+
+.aps-dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: #fff;
+	border: 1px solid #8c8f94;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	max-height: 200px;
+	overflow-y: auto;
+	z-index: 100;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+	display: none;
+}
+
+.aps-dropdown.open {
+	display: block;
+}
+
+.dropdown-item {
+	padding: 10px 12px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border-bottom: 1px solid #f0f0f1;
+	font-size: 14px;
+	transition: background 0.2s;
+}
+
+.dropdown-item:last-child {
+	border-bottom: none;
+}
+
+.dropdown-item:hover {
+	background: #f0f6fc;
+}
+
+.dropdown-item.selected {
+	background: #f0f6fc;
+	color: #2271b1;
+}
+
+.ribbon-badge-preview {
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.selected-tag {
+	background: #2271b1;
+	color: #fff;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: all 0.2s;
+	white-space: nowrap;
+	margin: 2px;
+}
+
+.selected-tag .tag-icon {
+	font-size: 14px;
+	line-height: 1;
+}
+
+.selected-tag .tag-text {
+	line-height: 1;
+}
+
+.selected-tag .remove {
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	margin-left: 4px;
+	font-weight: bold;
+}
+
+.selected-tag .remove:hover {
+	opacity: 0.8;
+}
+
+/* Tags Grid */
+.aps-tags-section {
+	margin-top: 20px;
+}
+
+.aps-tags-section label {
+	font-size: 13px;
+	font-weight: 500;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.aps-tags-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.aps-tag-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 14px;
+	background: #f6f7f7;
+	border-radius: 20px;
+	cursor: pointer;
+	font-size: 13px;
+	transition: all 0.2s;
+	white-space: nowrap;
+}
+
+.aps-tag-checkbox:hover {
+	background: #f0f6fc;
+	transform: translateY(-1px);
+}
+
+.aps-tag-checkbox input[type="checkbox"] {
+	margin: 0;
+	cursor: pointer;
+}
+
+.aps-tag-checkbox .tag-icon {
+	font-size: 14px;
+}
+
+/* Form Actions */
+.aps-form-actions {
+	padding: 20px 25px;
+	background: #f6f7f7;
+	border-top: 1px solid #dcdcde;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.aps-grid-2,
+	.aps-grid-3,
+	.aps-taxonomy-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.aps-quick-nav {
+		flex-direction: column;
+	}
+
+	.aps-form-actions {
+		flex-direction: column;
+	}
+
+	.aps-btn {
+		width: 100%;
+		justify-content: center;
+	}
+}
+</style>
+
+<div class="wrap aps-modern-form">
+	<!-- Header -->
+	<div class="aps-form-header">
+		<h1><?php echo $is_editing ? esc_html__( 'Edit Product', 'affiliate-product-showcase' ) : esc_html__( 'Add Product', 'affiliate-product-showcase' ); ?></h1>
 		<button type="button" class="aps-close-btn" onclick="window.location.href='<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>'">
-			<i class="fas fa-times"></i>
+			<span class="dashicons dashicons-no-alt"></span>
 		</button>
 	</div>
-	
+
+	<!-- Quick Navigation -->
 	<nav class="aps-quick-nav" aria-label="Form sections quick navigation">
-		<a href="#product-info" class="nav-link"><i class="fas fa-edit" aria-hidden="true"></i> Product Info</a>
-		<a href="#images" class="nav-link"><i class="fas fa-images" aria-hidden="true"></i> Images</a>
-		<a href="#affiliate" class="nav-link"><i class="fas fa-link" aria-hidden="true"></i> Affiliate</a>
-		<a href="#features" class="nav-link"><i class="fas fa-list" aria-hidden="true"></i> Features</a>
-		<a href="#pricing" class="nav-link"><i class="fas fa-tag" aria-hidden="true"></i> Pricing</a>
-		<a href="#taxonomy" class="nav-link"><i class="fas fa-folder" aria-hidden="true"></i> Categories & Tags</a>
-		<a href="#stats" class="nav-link"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistics</a>
+		<a href="#product-info" class="nav-link"><span class="dashicons dashicons-edit"></span> <?php esc_html_e( 'Product Info', 'affiliate-product-showcase' ); ?></a>
+		<a href="#images" class="nav-link"><span class="dashicons dashicons-format-image"></span> <?php esc_html_e( 'Images', 'affiliate-product-showcase' ); ?></a>
+		<a href="#affiliate" class="nav-link"><span class="dashicons dashicons-admin-links"></span> <?php esc_html_e( 'Affiliate', 'affiliate-product-showcase' ); ?></a>
+		<a href="#features" class="nav-link"><span class="dashicons dashicons-list-view"></span> <?php esc_html_e( 'Features', 'affiliate-product-showcase' ); ?></a>
+		<a href="#pricing" class="nav-link"><span class="dashicons dashicons-tag"></span> <?php esc_html_e( 'Pricing', 'affiliate-product-showcase' ); ?></a>
+		<a href="#taxonomy" class="nav-link"><span class="dashicons dashicons-category"></span> <?php esc_html_e( 'Categories', 'affiliate-product-showcase' ); ?></a>
+		<a href="#stats" class="nav-link"><span class="dashicons dashicons-chart-bar"></span> <?php esc_html_e( 'Statistics', 'affiliate-product-showcase' ); ?></a>
 	</nav>
-	
+
 	<div class="aps-form-container">
 		<form method="post" id="aps-product-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
-			<?php 
-			$form_action = $is_editing ? 'aps_update_product' : 'aps_save_product';
-			$nonce_action = $is_editing ? 'aps_update_product' : 'aps_save_product';
-			?>
-			
 			<?php wp_nonce_field( $nonce_action, 'aps_product_nonce' ); ?>
-			
 			<?php if ( $is_editing ) : ?>
 				<input type="hidden" name="post_id" value="<?php echo esc_attr( $post_id ); ?>">
 			<?php endif; ?>
-			
+
+			<!-- Product Info -->
 			<section id="product-info" class="aps-section" aria-labelledby="product-info-title">
-				<h2 id="product-info-title" class="section-title">PRODUCT INFO</h2>
+				<h2 id="product-info-title" class="section-title"><?php esc_html_e( 'Product Info', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-grid-2">
 					<div class="aps-field-group">
-						<label for="aps-product-title">Product Title <span class="required">*</span></label>
+						<label for="aps-product-title"><?php esc_html_e( 'Product Title', 'affiliate-product-showcase' ); ?> <span class="required">*</span></label>
 						<input type="text" id="aps-product-title" name="aps_title" class="aps-input"
-							   placeholder="Enter title..." required aria-required="true"
+							   placeholder="<?php esc_attr_e( 'Enter title...', 'affiliate-product-showcase' ); ?>" required
 							   value="<?php echo esc_attr( $product_data['title'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-product-status">Status</label>
+						<label for="aps-product-status"><?php esc_html_e( 'Status', 'affiliate-product-showcase' ); ?></label>
 						<select id="aps-product-status" name="aps_status" class="aps-select">
-							<option value="draft" <?php selected( $product_data['status'] ?? '', 'draft' ); ?>>Draft</option>
-							<option value="publish" <?php selected( $product_data['status'] ?? '', 'publish' ); ?>>Published</option>
+							<option value="draft" <?php selected( $product_data['status'] ?? '', 'draft' ); ?>><?php esc_html_e( 'Draft', 'affiliate-product-showcase' ); ?></option>
+							<option value="publish" <?php selected( $product_data['status'] ?? '', 'publish' ); ?>><?php esc_html_e( 'Published', 'affiliate-product-showcase' ); ?></option>
 						</select>
 					</div>
 				</div>
 				<div class="aps-field-group">
 					<label class="aps-checkbox-label">
-						<input type="checkbox" id="aps-featured" name="aps_featured" value="1" <?php checked( $product_data['featured'] ?? false ); ?>>
-						<span>Featured Product</span>
+						<input type="checkbox" name="aps_featured" value="1" <?php checked( $product_data['featured'] ?? false ); ?>>
+						<span><?php esc_html_e( 'Featured Product', 'affiliate-product-showcase' ); ?></span>
 					</label>
 				</div>
 			</section>
-			
+
+			<!-- Images -->
 			<section id="images" class="aps-section" aria-labelledby="images-title">
-				<h2 id="images-title" class="section-title">PRODUCT IMAGES</h2>
+				<h2 id="images-title" class="section-title"><?php esc_html_e( 'Product Images', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-grid-2">
 					<div class="aps-upload-group">
-						<label>Product Image (Featured)</label>
+						<label><?php esc_html_e( 'Product Image (Featured)', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-upload-area" id="aps-image-upload">
-							<div class="upload-placeholder">
-								<i class="fas fa-camera"></i>
-								<p>Click to upload or enter URL below</p>
+							<div class="upload-placeholder" id="aps-image-placeholder" <?php echo ! empty( $product_data['logo'] ) ? 'style="display:none;"' : ''; ?>>
+								<span class="dashicons dashicons-camera"></span>
+								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
-							<div class="image-preview aps-image-preview <?php echo !empty( $product_data['logo'] ) ? 'has-image' : 'no-image'; ?>" id="aps-image-preview" data-image-url="<?php echo esc_url( $product_data['logo'] ?? '' ); ?>"></div>
-							<input type="hidden" name="aps_image_url" id="aps-image-url" value="<?php echo esc_attr( $product_data['logo'] ?? '' ); ?>">
+							<div class="image-preview <?php echo ! empty( $product_data['logo'] ) ? 'has-image' : ''; ?>" id="aps-image-preview">
+								<?php if ( ! empty( $product_data['logo'] ) ) : ?>
+									<img src="<?php echo esc_url( $product_data['logo'] ); ?>" alt="">
+								<?php endif; ?>
+							</div>
+							<input type="hidden" name="aps_image_url" id="aps-image-url" value="<?php echo esc_url( $product_data['logo'] ?? '' ); ?>">
 							<button type="button" class="aps-upload-btn" id="aps-upload-image-btn">
-								<i class="fas fa-upload"></i> Select from Media Library
+								<span class="dashicons dashicons-upload"></span> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
 							</button>
-							<button type="button" class="aps-upload-btn aps-btn-cancel aps-hidden" id="aps-remove-image-btn">
-								<i class="fas fa-times"></i> Remove
+							<button type="button" class="aps-upload-btn aps-btn-cancel <?php echo empty( $product_data['logo'] ) ? 'aps-hidden' : ''; ?>" id="aps-remove-image-btn">
+								<span class="dashicons dashicons-no-alt"></span> <?php esc_html_e( 'Remove', 'affiliate-product-showcase' ); ?>
 							</button>
 						</div>
 						<div class="aps-url-input">
-							<input type="url" name="aps_image_url_input" class="aps-input"
-								   placeholder="https://..." id="aps-image-url-input"
-								   value="<?php echo esc_attr( $product_data['logo'] ?? '' ); ?>">
+							<input type="url" id="aps-image-url-input" class="aps-input"
+								   placeholder="https://..." value="<?php echo esc_url( $product_data['logo'] ?? '' ); ?>">
 						</div>
 					</div>
 					<div class="aps-upload-group">
-						<label>Logo</label>
+						<label><?php esc_html_e( 'Logo', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-upload-area" id="aps-brand-upload">
-							<div class="upload-placeholder">
-								<i class="fas fa-tshirt"></i>
-								<p>Click to upload or enter URL below</p>
+							<div class="upload-placeholder" id="aps-brand-placeholder" <?php echo ! empty( $product_data['brand_image'] ) ? 'style="display:none;"' : ''; ?>>
+								<span class="dashicons dashicons-format-image"></span>
+								<p><?php esc_html_e( 'Click to upload or enter URL below', 'affiliate-product-showcase' ); ?></p>
 							</div>
-							<div class="image-preview aps-brand-preview <?php echo !empty( $product_data['brand_image'] ) ? 'has-image' : 'no-image'; ?>" id="aps-brand-preview" data-image-url="<?php echo esc_url( $product_data['brand_image'] ?? '' ); ?>"></div>
-							<input type="hidden" name="aps_brand_image_url" id="aps-brand-image-url" value="<?php echo esc_attr( $product_data['brand_image'] ?? '' ); ?>">
+							<div class="image-preview <?php echo ! empty( $product_data['brand_image'] ) ? 'has-image' : ''; ?>" id="aps-brand-preview">
+								<?php if ( ! empty( $product_data['brand_image'] ) ) : ?>
+									<img src="<?php echo esc_url( $product_data['brand_image'] ); ?>" alt="">
+								<?php endif; ?>
+							</div>
+							<input type="hidden" name="aps_brand_image_url" id="aps-brand-image-url" value="<?php echo esc_url( $product_data['brand_image'] ?? '' ); ?>">
 							<button type="button" class="aps-upload-btn" id="aps-upload-brand-btn">
-								<i class="fas fa-upload"></i> Select from Media Library
+								<span class="dashicons dashicons-upload"></span> <?php esc_html_e( 'Select from Media Library', 'affiliate-product-showcase' ); ?>
 							</button>
-							<button type="button" class="aps-upload-btn aps-btn-cancel aps-hidden" id="aps-remove-brand-btn">
-								<i class="fas fa-times"></i> Remove
+							<button type="button" class="aps-upload-btn aps-btn-cancel <?php echo empty( $product_data['brand_image'] ) ? 'aps-hidden' : ''; ?>" id="aps-remove-brand-btn">
+								<span class="dashicons dashicons-no-alt"></span> <?php esc_html_e( 'Remove', 'affiliate-product-showcase' ); ?>
 							</button>
 						</div>
 						<div class="aps-url-input">
-							<input type="url" name="aps_brand_url_input" class="aps-input"
-								   placeholder="https://..." id="aps-brand-url-input"
-								   value="<?php echo esc_attr( $product_data['brand_image'] ?? '' ); ?>">
+							<input type="url" id="aps-brand-url-input" class="aps-input"
+								   placeholder="https://..." value="<?php echo esc_url( $product_data['brand_image'] ?? '' ); ?>">
 						</div>
 					</div>
 				</div>
 			</section>
-			
+
+			<!-- Affiliate -->
 			<section id="affiliate" class="aps-section" aria-labelledby="affiliate-title">
-				<h2 id="affiliate-title" class="section-title">AFFILIATE DETAILS</h2>
+				<h2 id="affiliate-title" class="section-title"><?php esc_html_e( 'Affiliate Details', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-grid-2">
 					<div class="aps-field-group">
-						<label for="aps-affiliate-url">Affiliate URL</label>
+						<label for="aps-affiliate-url"><?php esc_html_e( 'Affiliate URL', 'affiliate-product-showcase' ); ?></label>
 						<input type="url" id="aps-affiliate-url" name="aps_affiliate_url" class="aps-input"
 							   placeholder="https://example.com/..."
 							   value="<?php echo esc_url( $product_data['affiliate_url'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-button-name">Button Name</label>
+						<label for="aps-button-name"><?php esc_html_e( 'Button Name', 'affiliate-product-showcase' ); ?></label>
 						<input type="text" id="aps-button-name" name="aps_button_name" class="aps-input"
-							   placeholder=""
+							   placeholder="<?php esc_attr_e( 'Get Deal', 'affiliate-product-showcase' ); ?>"
 							   value="<?php echo esc_attr( $product_data['button_name'] ?? '' ); ?>">
 					</div>
 				</div>
 			</section>
-			
+
+			<!-- Short Description -->
 			<section id="short-description" class="aps-section" aria-labelledby="short-description-title">
-				<h2 id="short-description-title" class="section-title">SHORT DESCRIPTION</h2>
+				<h2 id="short-description-title" class="section-title"><?php esc_html_e( 'Short Description', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-field-group">
-					<label for="aps-short-description">Short Description <span class="required">*</span></label>
+					<label for="aps-short-description"><?php esc_html_e( 'Short Description', 'affiliate-product-showcase' ); ?> <span class="required">*</span></label>
 					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea aps-full-page"
-							  rows="6" maxlength="200"
-							  placeholder="Enter short description (max 40 words)..." required aria-required="true"
-							  aria-describedby="aps-word-counter"
+							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required
 							  data-initial="<?php echo esc_attr( $product_data['short_description'] ?? '' ); ?>"><?php echo esc_textarea( $product_data['short_description'] ?? '' ); ?></textarea>
-					<div class="word-counter" id="aps-word-counter" aria-live="polite">
-						<span id="aps-word-count">0</span>/40 Words
-					</div>
+					<div class="word-counter"><span id="aps-word-count">0</span>/40 <?php esc_html_e( 'words', 'affiliate-product-showcase' ); ?></div>
 				</div>
 			</section>
-			
+
+			<!-- Features -->
 			<section id="features" class="aps-section" aria-labelledby="features-title">
-				<h2 id="features-title" class="section-title">FEATURE LIST</h2>
+				<h2 id="features-title" class="section-title"><?php esc_html_e( 'Feature List', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-feature-list-input-group">
-					<input type="text" id="aps-new-feature" class="aps-input"
-						   placeholder="Add new feature...">
+					<input type="text" id="aps-new-feature" class="aps-input" placeholder="<?php esc_attr_e( 'Add new feature...', 'affiliate-product-showcase' ); ?>">
 					<button type="button" class="aps-btn aps-btn-primary" id="aps-add-feature">
-						<i class="fas fa-plus"></i> Add
+						<span class="dashicons dashicons-plus-alt2" style="font-size: 14px; width: 14px; height: 14px;"></span> <?php esc_html_e( 'Add', 'affiliate-product-showcase' ); ?>
 					</button>
 				</div>
-				<div class="aps-features-list" id="aps-features-list"></div>
-				<input type="hidden" name="aps_features" id="aps-features-input">
+				<div class="aps-features-list" id="aps-features-list">
+					<?php 
+					$features_data = $product_data['features'] ?? [];
+					// Convert simple array to structured format if needed
+					$structured_features = [];
+					foreach ( $features_data as $feature ) {
+						if ( is_array( $feature ) ) {
+							$structured_features[] = $feature;
+						} else {
+							$structured_features[] = [ 'text' => $feature, 'bold' => false ];
+						}
+					}
+					foreach ( $structured_features as $index => $feature ) : 
+						$is_bold = $feature['bold'] ?? false;
+						$text = $feature['text'] ?? $feature;
+					?>
+						<div class="feature-item" data-index="<?php echo esc_attr( $index ); ?>" data-bold="<?php echo $is_bold ? '1' : '0'; ?>">
+							<div class="feature-item-content">
+								<span class="dashicons dashicons-menu drag-handle"></span>
+								<span class="feature-text <?php echo $is_bold ? 'is-bold' : ''; ?>"><?php echo esc_html( $text ); ?></span>
+							</div>
+							<div class="feature-actions">
+								<button type="button" class="feature-btn move-btn move-up" title="<?php esc_attr_e( 'Move up', 'affiliate-product-showcase' ); ?>" <?php echo $index === 0 ? 'disabled' : ''; ?>>
+									<span class="dashicons dashicons-arrow-up-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>
+								</button>
+								<button type="button" class="feature-btn move-btn move-down" title="<?php esc_attr_e( 'Move down', 'affiliate-product-showcase' ); ?>" <?php echo $index === count( $structured_features ) - 1 ? 'disabled' : ''; ?>>
+									<span class="dashicons dashicons-arrow-down-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>
+								</button>
+								<button type="button" class="feature-btn bold-btn <?php echo $is_bold ? 'active' : ''; ?>" title="<?php esc_attr_e( 'Bold', 'affiliate-product-showcase' ); ?>">
+									<span class="dashicons dashicons-editor-bold" style="font-size: 12px; width: 12px; height: 12px;"></span>
+								</button>
+								<button type="button" class="remove-feature">&times;</button>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<input type="hidden" name="aps_features" id="aps-features-input" value="<?php echo esc_attr( json_encode( $structured_features ) ); ?>">
 			</section>
-			
+
+			<!-- Pricing -->
 			<section id="pricing" class="aps-section" aria-labelledby="pricing-title">
-				<h2 id="pricing-title" class="section-title">PRICING</h2>
+				<h2 id="pricing-title" class="section-title"><?php esc_html_e( 'Pricing', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-grid-3">
 					<div class="aps-field-group">
-						<label for="aps-current-price">Current Price <span class="required">*</span></label>
+						<label for="aps-current-price"><?php esc_html_e( 'Current Price', 'affiliate-product-showcase' ); ?> <span class="required">*</span></label>
 						<input type="number" id="aps-current-price" name="aps_current_price" class="aps-input"
 							   step="0.01" min="0" placeholder="30.00" required
 							   value="<?php echo esc_attr( $product_data['regular_price'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-original-price">Original Price</label>
+						<label for="aps-original-price"><?php esc_html_e( 'Original Price', 'affiliate-product-showcase' ); ?></label>
 						<input type="number" id="aps-original-price" name="aps_original_price" class="aps-input"
 							   step="0.01" min="0" placeholder="60.00"
 							   value="<?php echo esc_attr( $product_data['original_price'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label>Discount</label>
-						<input type="text" id="aps-discount" class="aps-input aps-readonly"
-							   readonly value="0% OFF">
+						<label><?php esc_html_e( 'Discount', 'affiliate-product-showcase' ); ?></label>
+						<input type="text" id="aps-discount" class="aps-input aps-readonly" readonly value="0% OFF">
 					</div>
 				</div>
 			</section>
-			
+
+			<!-- Taxonomy -->
 			<section id="taxonomy" class="aps-section" aria-labelledby="taxonomy-title">
-				<h2 id="taxonomy-title" class="section-title">CATEGORIES & RIBBONS</h2>
-				<div class="aps-grid-2">
+				<h2 id="taxonomy-title" class="section-title"><?php esc_html_e( 'Categories & Ribbons', 'affiliate-product-showcase' ); ?></h2>
+				<div class="aps-taxonomy-grid">
 					<div class="aps-field-group">
-						<label id="aps-categories-label">Category</label>
-						<div class="aps-multi-select" id="aps-categories-select" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="aps-categories-label">
-							<div class="aps-selected-tags" id="aps-selected-categories" role="listbox" aria-live="polite">
-								<span class="multi-select-placeholder">Select categories...</span>
+						<label><?php esc_html_e( 'Category', 'affiliate-product-showcase' ); ?></label>
+						<div class="aps-multi-select" id="aps-categories-select">
+							<div class="aps-selected-tags" id="aps-selected-categories">
+								<span class="multi-select-placeholder"><?php esc_html_e( 'Select categories...', 'affiliate-product-showcase' ); ?></span>
 							</div>
-							<input type="text" class="aps-multiselect-input" placeholder="Select categories..." aria-autocomplete="list" aria-controls="aps-categories-dropdown">
-							<div class="aps-dropdown aps-hidden" id="aps-categories-dropdown" role="listbox">
+							<span class="aps-dropdown-trigger dashicons dashicons-arrow-down-alt2"></span>
+							<div class="aps-dropdown" id="aps-categories-dropdown">
 								<?php
 								$categories = get_terms( [ 'taxonomy' => 'aps_category', 'hide_empty' => false ] );
+								$selected_cats = $product_data['categories'] ?? [];
 								foreach ( $categories as $category ) :
-									$category_image = get_term_meta( $category->term_id, '_aps_category_image', true );
-									$category_featured = get_term_meta( $category->term_id, '_aps_category_featured', true ) === '1';
-								?>
-									<div class="dropdown-item aps-taxonomy-item" data-value="<?php echo esc_attr( $category->slug ); ?>">
-										<?php if ( $category_image ) : ?>
-											<span class="taxonomy-image" style="background-image: url('<?php echo esc_url( $category_image ); ?>');"></span>
-										<?php endif; ?>
+									$is_selected = in_array( $category->slug, $selected_cats, true );
+									$cat_icon = get_term_meta( $category->term_id, '_aps_category_icon', true ) ?: '📁';
+									$cat_color = get_term_meta( $category->term_id, '_aps_category_color', true ) ?: '#2271b1';
+									?>
+									<div class="dropdown-item <?php echo $is_selected ? 'selected' : ''; ?>" 
+										 data-value="<?php echo esc_attr( $category->slug ); ?>"
+										 data-name="<?php echo esc_attr( $category->name ); ?>"
+										 data-icon="<?php echo esc_attr( $cat_icon ); ?>"
+										 data-color="<?php echo esc_attr( $cat_color ); ?>">
+										<span style="margin-right: 8px;"><?php echo esc_html( $cat_icon ); ?></span>
 										<span class="taxonomy-name"><?php echo esc_html( $category->name ); ?></span>
-										<?php if ( $category_featured ) : ?>
-											<span class="taxonomy-badge featured">★</span>
-										<?php endif; ?>
 									</div>
-								<?php endforeach; ?>
+									<?php
+								endforeach;
+								?>
 							</div>
 						</div>
-						<input type="hidden" name="aps_categories" id="aps-categories-input">
+						<input type="hidden" name="aps_categories" id="aps-categories-input" value="<?php echo esc_attr( implode( ',', $selected_cats ) ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label id="aps-ribbons-label">Ribbon Badge</label>
-						<div class="aps-multi-select" id="aps-ribbons-select" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="aps-ribbons-label">
-							<div class="aps-selected-tags" id="aps-selected-ribbons" role="listbox" aria-live="polite">
-								<span class="multi-select-placeholder">Select ribbons...</span>
+						<label><?php esc_html_e( 'Ribbon Badge', 'affiliate-product-showcase' ); ?></label>
+						<div class="aps-multi-select" id="aps-ribbons-select">
+							<div class="aps-selected-tags" id="aps-selected-ribbons">
+								<span class="multi-select-placeholder"><?php esc_html_e( 'Select ribbons...', 'affiliate-product-showcase' ); ?></span>
 							</div>
-							<input type="text" class="aps-multiselect-input" placeholder="Select ribbons..." aria-autocomplete="list" aria-controls="aps-ribbons-dropdown">
-							<div class="aps-dropdown aps-hidden" id="aps-ribbons-dropdown" role="listbox">
+							<span class="aps-dropdown-trigger dashicons dashicons-arrow-down-alt2"></span>
+							<div class="aps-dropdown" id="aps-ribbons-dropdown">
+								<div class="dropdown-item <?php echo empty( $product_data['ribbons'] ) ? 'selected' : ''; ?>" data-value="" data-name="<?php echo esc_attr( __( 'None', 'affiliate-product-showcase' ) ); ?>" data-icon="○" data-color="#646970">
+									<span class="ribbon-icon" style="margin-right: 8px;">○</span> <span class="ribbon-name"><?php esc_html_e( 'None', 'affiliate-product-showcase' ); ?></span>
+								</div>
 								<?php
 								$ribbons = get_terms( [ 'taxonomy' => 'aps_ribbon', 'hide_empty' => false ] );
+								$selected_ribbons = $product_data['ribbons'] ?? [];
 								foreach ( $ribbons as $ribbon ) :
-									$ribbon_color = get_term_meta( $ribbon->term_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';
-									$ribbon_bg = get_term_meta( $ribbon->term_id, '_aps_ribbon_bg_color', true ) ?: '#ff0000';
-									$ribbon_icon = get_term_meta( $ribbon->term_id, '_aps_ribbon_icon', true ) ?: '';
-								?>
-									<div class="dropdown-item aps-ribbon-item" data-value="<?php echo esc_attr( $ribbon->slug ); ?>">
-										<span class="ribbon-badge-preview" style="color: <?php echo esc_attr( $ribbon_color ); ?>; background-color: <?php echo esc_attr( $ribbon_bg ); ?>;">
-											<?php if ( $ribbon_icon ) : ?>
-												<span class="ribbon-icon"><?php echo esc_html( $ribbon_icon ); ?></span>
-											<?php endif; ?>
+									$is_selected = in_array( $ribbon->slug, $selected_ribbons, true );
+									$bg_color = get_term_meta( $ribbon->term_id, '_aps_ribbon_bg_color', true ) ?: '#2271b1';
+									$color = get_term_meta( $ribbon->term_id, '_aps_ribbon_color', true ) ?: '#fff';
+									$ribbon_icon = get_term_meta( $ribbon->term_id, '_aps_ribbon_icon', true ) ?: '🏷️';
+									?>
+									<div class="dropdown-item <?php echo $is_selected ? 'selected' : ''; ?>" 
+										 data-value="<?php echo esc_attr( $ribbon->slug ); ?>"
+										 data-name="<?php echo esc_attr( $ribbon->name ); ?>"
+										 data-icon="<?php echo esc_attr( $ribbon_icon ); ?>"
+										 data-color="<?php echo esc_attr( $bg_color ); ?>">
+										<span class="ribbon-badge-preview" style="background: <?php echo esc_attr( $bg_color ); ?>; color: <?php echo esc_attr( $color ); ?>">
+											<span class="ribbon-icon" style="margin-right: 4px;"><?php echo esc_html( $ribbon_icon ); ?></span>
 											<span class="ribbon-name"><?php echo esc_html( $ribbon->name ); ?></span>
 										</span>
 									</div>
-								<?php endforeach; ?>
+									<?php
+								endforeach;
+								?>
 							</div>
 						</div>
-						<input type="hidden" name="aps_ribbons" id="aps-ribbons-input">
+						<input type="hidden" name="aps_ribbons" id="aps-ribbons-input" value="<?php echo esc_attr( implode( ',', $selected_ribbons ) ); ?>">
+					</div>
+				</div>
+
+				<!-- Tags -->
+				<div class="aps-tags-section">
+					<label><?php esc_html_e( 'Tags', 'affiliate-product-showcase' ); ?></label>
+					<div class="aps-tags-grid">
+						<?php
+						$all_tags = get_terms( [ 'taxonomy' => 'aps_tag', 'hide_empty' => false ] );
+						$selected_tags = $product_data['tags'] ?? [];
+						foreach ( $all_tags as $tag ) :
+							$is_checked = in_array( $tag->slug, $selected_tags, true );
+							$icon = get_term_meta( $tag->term_id, '_aps_tag_icon', true ) ?: '🏷️';
+							?>
+							<label class="aps-tag-checkbox">
+								<input type="checkbox" name="aps_tags[]" value="<?php echo esc_attr( $tag->slug ); ?>" <?php checked( $is_checked ); ?>>
+								<span class="tag-icon"><?php echo esc_html( $icon ); ?></span>
+								<span><?php echo esc_html( $tag->name ); ?></span>
+							</label>
+						<?php endforeach; ?>
 					</div>
 				</div>
 			</section>
-			
+
+			<!-- Statistics -->
 			<section id="stats" class="aps-section" aria-labelledby="stats-title">
-				<h2 id="stats-title" class="section-title">PRODUCT STATISTICS</h2>
+				<h2 id="stats-title" class="section-title"><?php esc_html_e( 'Product Statistics', 'affiliate-product-showcase' ); ?></h2>
 				<div class="aps-grid-3">
 					<div class="aps-field-group">
-						<label for="aps-rating">Rating</label>
+						<label for="aps-rating"><?php esc_html_e( 'Rating', 'affiliate-product-showcase' ); ?></label>
 						<input type="number" id="aps-rating" name="aps_rating" class="aps-input"
 							   step="0.1" min="0" max="5" placeholder="4.5"
 							   value="<?php echo esc_attr( $product_data['rating'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-views">Views</label>
+						<label for="aps-views"><?php esc_html_e( 'Views', 'affiliate-product-showcase' ); ?></label>
 						<input type="number" id="aps-views" name="aps_views" class="aps-input"
 							   min="0" placeholder="325"
 							   value="<?php echo esc_attr( $product_data['views'] ?? '' ); ?>">
 					</div>
 					<div class="aps-field-group">
-						<label for="aps-user-count">User Count</label>
+						<label for="aps-user-count"><?php esc_html_e( 'User Count', 'affiliate-product-showcase' ); ?></label>
 						<input type="text" id="aps-user-count" name="aps_user_count" class="aps-input"
 							   placeholder="1.5K"
 							   value="<?php echo esc_attr( $product_data['user_count'] ?? '' ); ?>">
 					</div>
 				</div>
 				<div class="aps-field-group">
-					<label for="aps-reviews">No. of Reviews</label>
-						<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
-						   min="0" placeholder="12"
+					<label for="aps-reviews"><?php esc_html_e( 'No. of Reviews', 'affiliate-product-showcase' ); ?></label>
+					<input type="number" id="aps-reviews" name="aps_reviews" class="aps-input"
+						   min="0" placeholder="12" style="max-width: 200px;"
 						   value="<?php echo esc_attr( $product_data['reviews'] ?? '' ); ?>">
 				</div>
 			</section>
-			
-			<div class="aps-form-actions" role="group" aria-label="Form actions">
-				<?php if ( $is_editing ) : ?>
-					<button type="submit" class="aps-btn aps-btn-primary" name="publish">
-						<i class="fas fa-sync-alt"></i> Update Product
+
+			<!-- Form Actions -->
+			<div class="aps-form-actions">
+				<?php if ( ! $is_editing ) : ?>
+					<button type="submit" name="action" value="aps_save_product_draft" class="aps-btn aps-btn-secondary">
+						<span class="dashicons dashicons-media-document" style="font-size: 14px; width: 14px; height: 14px;"></span> <?php esc_html_e( 'Save Draft', 'affiliate-product-showcase' ); ?>
 					</button>
-					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>" class="aps-btn aps-btn-cancel">
-						Cancel
-					</a>
-				<?php else : ?>
-					<button type="submit" class="aps-btn aps-btn-secondary" name="draft">
-						<i class="fas fa-file-alt"></i> Save Draft
-					</button>
-					<button type="submit" class="aps-btn aps-btn-primary" name="publish">
-						<i class="fas fa-save"></i> Publish Product
-					</button>
-					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>" class="aps-btn aps-btn-cancel">
-						Cancel
-					</a>
 				<?php endif; ?>
+				<button type="submit" name="action" value="<?php echo esc_attr( $form_action ); ?>" class="aps-btn aps-btn-primary">
+					<span class="dashicons dashicons-yes" style="font-size: 14px; width: 14px; height: 14px;"></span> <?php echo $is_editing ? esc_html__( 'Update Product', 'affiliate-product-showcase' ) : esc_html__( 'Publish Product', 'affiliate-product-showcase' ); ?>
+				</button>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=aps_product' ) ); ?>" class="aps-btn aps-btn-cancel">
+					<span class="dashicons dashicons-no-alt" style="font-size: 14px; width: 14px; height: 14px;"></span> <?php esc_html_e( 'Cancel', 'affiliate-product-showcase' ); ?>
+				</a>
 			</div>
-			
-			<input type="hidden" name="action" value="<?php echo esc_attr( $form_action ); ?>">
 		</form>
 	</div>
 </div>
+
+<script>
+jQuery(document).ready(function($) {
+	// Word counter
+	var textarea = $('#aps-short-description');
+	var wordCount = $('#aps-word-count');
+	
+	function updateWordCount() {
+		var text = textarea.val().trim();
+		var words = text ? text.split(/\s+/).length : 0;
+		wordCount.text(words);
+		if (words > 40) {
+			wordCount.css('color', '#d63638');
+		} else {
+			wordCount.css('color', '#646970');
+		}
+	}
+	
+	textarea.on('input', updateWordCount);
+	updateWordCount();
+
+	// Discount calculator
+	var currentPrice = $('#aps-current-price');
+	var originalPrice = $('#aps-original-price');
+	var discountInput = $('#aps-discount');
+
+	function calculateDiscount() {
+		var current = parseFloat(currentPrice.val()) || 0;
+		var original = parseFloat(originalPrice.val()) || 0;
+
+		if (original > current && original > 0) {
+			var discount = Math.round(((original - current) / original) * 100);
+			discountInput.val(discount + '% OFF');
+			discountInput.css('color', '#00a32a');
+		} else {
+			discountInput.val('0% OFF');
+			discountInput.css('color', '#646970');
+		}
+	}
+
+	currentPrice.on('input', calculateDiscount);
+	originalPrice.on('input', calculateDiscount);
+	calculateDiscount();
+
+	// Features with bold toggle and drag reordering
+	var addFeatureBtn = $('#aps-add-feature');
+	var newFeatureInput = $('#aps-new-feature');
+	var featuresList = $('#aps-features-list');
+	var featuresInput = $('#aps-features-input');
+	var features = <?php echo json_encode( $structured_features ); ?>;
+
+	function updateFeaturesInput() {
+		featuresInput.val(JSON.stringify(features));
+	}
+
+	function renderFeatures() {
+		featuresList.empty();
+		features.forEach(function(feature, index) {
+			var text = typeof feature === 'object' ? feature.text : feature;
+			var isBold = typeof feature === 'object' ? feature.bold : false;
+			
+			var item = $('<div class="feature-item" data-index="' + index + '" data-bold="' + (isBold ? '1' : '0') + '">' +
+				'<div class="feature-item-content">' +
+					'<span class="dashicons dashicons-menu drag-handle" title="Drag to reorder"></span>' +
+					'<span class="feature-text ' + (isBold ? 'is-bold' : '') + '">' + $('<div>').text(text).html() + '</span>' +
+				'</div>' +
+				'<div class="feature-actions">' +
+					'<button type="button" class="feature-btn move-btn move-up" title="Move up" ' + (index === 0 ? 'disabled' : '') + '>' +
+						'<span class="dashicons dashicons-arrow-up-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
+					'</button>' +
+					'<button type="button" class="feature-btn move-btn move-down" title="Move down" ' + (index === features.length - 1 ? 'disabled' : '') + '>' +
+						'<span class="dashicons dashicons-arrow-down-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
+					'</button>' +
+					'<button type="button" class="feature-btn bold-btn ' + (isBold ? 'active' : '') + '" title="Toggle bold">' +
+						'<span class="dashicons dashicons-editor-bold" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
+					'</button>' +
+					'<button type="button" class="remove-feature">&times;</button>' +
+				'</div>' +
+			'</div>');
+			featuresList.append(item);
+		});
+		updateFeaturesInput();
+	}
+
+	addFeatureBtn.on('click', function() {
+		var text = newFeatureInput.val().trim();
+		if (text) {
+			// Check if already exists
+			var exists = features.some(function(f) {
+				var fText = typeof f === 'object' ? f.text : f;
+				return fText === text;
+			});
+			if (!exists) {
+				features.push({ text: text, bold: false });
+				renderFeatures();
+				newFeatureInput.val('');
+			}
+		}
+	});
+
+	newFeatureInput.on('keypress', function(e) {
+		if (e.which === 13) {
+			e.preventDefault();
+			addFeatureBtn.click();
+		}
+	});
+
+	// Remove feature
+	featuresList.on('click', '.remove-feature', function() {
+		var index = $(this).closest('.feature-item').data('index');
+		features.splice(index, 1);
+		renderFeatures();
+	});
+
+	// Toggle bold
+	featuresList.on('click', '.bold-btn', function() {
+		var item = $(this).closest('.feature-item');
+		var index = item.data('index');
+		var textSpan = item.find('.feature-text');
+		
+		if (typeof features[index] === 'object') {
+			features[index].bold = !features[index].bold;
+		} else {
+			features[index] = { text: features[index], bold: true };
+		}
+		
+		textSpan.toggleClass('is-bold');
+		$(this).toggleClass('active');
+		item.attr('data-bold', features[index].bold ? '1' : '0');
+		updateFeaturesInput();
+	});
+
+	// Move up
+	featuresList.on('click', '.move-up:not(:disabled)', function() {
+		var item = $(this).closest('.feature-item');
+		var index = item.data('index');
+		
+		if (index > 0) {
+			var temp = features[index];
+			features[index] = features[index - 1];
+			features[index - 1] = temp;
+			renderFeatures();
+		}
+	});
+
+	// Move down
+	featuresList.on('click', '.move-down:not(:disabled)', function() {
+		var item = $(this).closest('.feature-item');
+		var index = item.data('index');
+		
+		if (index < features.length - 1) {
+			var temp = features[index];
+			features[index] = features[index + 1];
+			features[index + 1] = temp;
+			renderFeatures();
+		}
+	});
+
+	// Drag and drop functionality
+	var draggedItem = null;
+
+	featuresList.on('dragstart', '.feature-item', function(e) {
+		draggedItem = $(this);
+		$(this).addClass('dragging');
+		e.originalEvent.dataTransfer.effectAllowed = 'move';
+	});
+
+	featuresList.on('dragend', '.feature-item', function() {
+		$(this).removeClass('dragging');
+		draggedItem = null;
+	});
+
+	featuresList.on('dragover', '.feature-item', function(e) {
+		e.preventDefault();
+		if (!draggedItem || draggedItem[0] === this) return;
+		
+		var targetIndex = $(this).data('index');
+		var draggedIndex = draggedItem.data('index');
+		
+		if (draggedIndex < targetIndex) {
+			$(this).after(draggedItem);
+		} else {
+			$(this).before(draggedItem);
+		}
+		
+		// Update array
+		var item = features.splice(draggedIndex, 1)[0];
+		features.splice(targetIndex, 0, item);
+		
+		renderFeatures();
+	});
+
+	// Make feature items draggable
+	featuresList.on('mousedown', '.drag-handle', function() {
+		$(this).closest('.feature-item').attr('draggable', 'true');
+	});
+
+	featuresList.on('mouseup', '.drag-handle', function() {
+		$(this).closest('.feature-item').attr('draggable', 'false');
+	});
+
+	// Multi-select functionality for Categories
+	var categoriesSelect = $('#aps-categories-select');
+	var categoriesDropdown = $('#aps-categories-dropdown');
+	var categoriesInput = $('#aps-categories-input');
+	var selectedCategories = $('#aps-selected-categories');
+	var selectedCats = categoriesInput.val() ? categoriesInput.val().split(',').filter(function(c) { return c !== ''; }) : [];
+
+	function updateCategoryDisplay() {
+		selectedCategories.empty();
+		if (!selectedCats || selectedCats.length === 0) {
+			selectedCategories.html('<span class="multi-select-placeholder"><?php echo esc_js( __( 'Select categories...', 'affiliate-product-showcase' ) ); ?></span>');
+		} else {
+			selectedCats.forEach(function(cat) {
+				if (cat) {
+					var item = categoriesDropdown.find('[data-value="' + cat + '"]').first();
+					if (item.length) {
+						var name = item.find('.taxonomy-name').text() || item.data('name') || cat;
+						var icon = item.data('icon') || '📁';
+						var color = item.data('color') || '#2271b1';
+						var tagHtml = '<span class="aps-tag" style="background:' + color + '; color:#fff;">';
+						tagHtml += '<span class="tag-icon">' + icon + '</span> ';
+						tagHtml += '<span class="tag-text">' + name + '</span>';
+						tagHtml += '<span class="remove-tag" data-value="' + cat + '">&times;</span>';
+						tagHtml += '</span>';
+						selectedCategories.append(tagHtml);
+					} else {
+						// Item not found in dropdown, show with default styling
+						var tagHtml = '<span class="aps-tag" style="background:#2271b1; color:#fff;">';
+						tagHtml += '<span class="tag-icon">📁</span> ';
+						tagHtml += '<span class="tag-text">' + cat + '</span>';
+						tagHtml += '<span class="remove-tag" data-value="' + cat + '">&times;</span>';
+						tagHtml += '</span>';
+						selectedCategories.append(tagHtml);
+					}
+				}
+			});
+		}
+		categoriesInput.val(selectedCats.join(','));
+	}
+
+	categoriesSelect.on('click', function(e) {
+		if (!$(e.target).closest('.aps-dropdown').length && !$(e.target).closest('.aps-tag').length) {
+			categoriesDropdown.toggleClass('open');
+		}
+	});
+
+	categoriesDropdown.on('click', '.dropdown-item', function() {
+		var value = $(this).data('value');
+		if (!value) return;
+		
+		$(this).toggleClass('selected');
+		
+		if ($(this).hasClass('selected')) {
+			if (selectedCats.indexOf(value) === -1) {
+				selectedCats.push(value);
+			}
+		} else {
+			selectedCats = selectedCats.filter(function(c) { return c !== value; });
+		}
+		updateCategoryDisplay();
+	});
+
+	selectedCategories.on('click', '.remove-tag', function(e) {
+		e.stopPropagation();
+		var value = $(this).data('value');
+		selectedCats = selectedCats.filter(function(c) { return c !== value; });
+		categoriesDropdown.find('[data-value="' + value + '"]').removeClass('selected');
+		updateCategoryDisplay();
+	});
+
+	$(document).on('click', function(e) {
+		if (!categoriesSelect.is(e.target) && categoriesSelect.has(e.target).length === 0) {
+			categoriesDropdown.removeClass('open');
+		}
+	});
+
+	updateCategoryDisplay();
+
+	// Multi-select functionality for Ribbons (single select)
+	var ribbonsSelect = $('#aps-ribbons-select');
+	var ribbonsDropdown = $('#aps-ribbons-dropdown');
+	var ribbonsInput = $('#aps-ribbons-input');
+	var selectedRibbons = $('#aps-selected-ribbons');
+	var selectedRibbon = ribbonsInput.val() || '';
+
+	function updateRibbonDisplay() {
+		selectedRibbons.empty();
+		if (!selectedRibbon) {
+			selectedRibbons.html('<span class="multi-select-placeholder"><?php echo esc_js( __( 'Select ribbons...', 'affiliate-product-showcase' ) ); ?></span>');
+		} else {
+			var item = ribbonsDropdown.find('[data-value="' + selectedRibbon + '"]').first();
+			if (item.length) {
+				var name = item.find('.ribbon-name').text() || item.data('name') || selectedRibbon;
+				var icon = item.data('icon') || '🏷️';
+				var color = item.data('color') || '#2271b1';
+				var tagHtml = '<span class="aps-tag" style="background:' + color + '; color:#fff;">';
+				tagHtml += '<span class="tag-icon">' + icon + '</span> ';
+				tagHtml += '<span class="tag-text">' + name + '</span>';
+				tagHtml += '<span class="remove-tag">&times;</span>';
+				tagHtml += '</span>';
+				selectedRibbons.html(tagHtml);
+			} else {
+				// Fallback if item not found
+				var tagHtml = '<span class="aps-tag" style="background:#2271b1; color:#fff;">';
+				tagHtml += '<span class="tag-icon">🏷️</span> ';
+				tagHtml += '<span class="tag-text">' + selectedRibbon + '</span>';
+				tagHtml += '<span class="remove-tag">&times;</span>';
+				tagHtml += '</span>';
+				selectedRibbons.html(tagHtml);
+			}
+		}
+		ribbonsInput.val(selectedRibbon);
+	}
+
+	ribbonsSelect.on('click', function(e) {
+		if (!$(e.target).closest('.aps-dropdown').length && !$(e.target).closest('.aps-tag').length) {
+			ribbonsDropdown.toggleClass('open');
+		}
+	});
+
+	ribbonsDropdown.on('click', '.dropdown-item', function() {
+		var value = $(this).data('value');
+		ribbonsDropdown.find('.dropdown-item').removeClass('selected');
+		$(this).addClass('selected');
+		selectedRibbon = value;
+		updateRibbonDisplay();
+		ribbonsDropdown.removeClass('open');
+	});
+
+	selectedRibbons.on('click', '.remove-tag', function(e) {
+		e.stopPropagation();
+		selectedRibbon = '';
+		ribbonsDropdown.find('.dropdown-item').removeClass('selected');
+		ribbonsDropdown.find('[data-value=""]').addClass('selected');
+		updateRibbonDisplay();
+	});
+
+	$(document).on('click', function(e) {
+		if (!ribbonsSelect.is(e.target) && ribbonsSelect.has(e.target).length === 0) {
+			ribbonsDropdown.removeClass('open');
+		}
+	});
+
+	updateRibbonDisplay();
+
+	// WordPress Media Upload for Product Image
+	$('#aps-upload-image-btn').on('click', function(e) {
+		e.preventDefault();
+		var frame = wp.media({
+			title: '<?php echo esc_js( __( 'Select Product Image', 'affiliate-product-showcase' ) ); ?>',
+			button: { text: '<?php echo esc_js( __( 'Use this image', 'affiliate-product-showcase' ) ); ?>' },
+			multiple: false
+		});
+
+		frame.on('select', function() {
+			var attachment = frame.state().get('selection').first().toJSON();
+			$('#aps-image-url').val(attachment.url);
+			$('#aps-image-url-input').val(attachment.url);
+			$('#aps-image-preview').html('<img src="' + attachment.url + '" alt="">').addClass('has-image').show();
+			$('#aps-image-placeholder').hide();
+			$('#aps-remove-image-btn').removeClass('aps-hidden');
+		});
+
+		frame.open();
+	});
+
+	// URL input for Product Image
+	$('#aps-image-url-input').on('change', function() {
+		var url = $(this).val();
+		if (url) {
+			$('#aps-image-url').val(url);
+			$('#aps-image-preview').html('<img src="' + url + '" alt="">').addClass('has-image').show();
+			$('#aps-image-placeholder').hide();
+			$('#aps-remove-image-btn').removeClass('aps-hidden');
+		}
+	});
+
+	$('#aps-remove-image-btn').on('click', function() {
+		$('#aps-image-url').val('');
+		$('#aps-image-url-input').val('');
+		$('#aps-image-preview').html('').removeClass('has-image').hide();
+		$('#aps-image-placeholder').show();
+		$(this).addClass('aps-hidden');
+	});
+
+	// WordPress Media Upload for Brand Logo
+	$('#aps-upload-brand-btn').on('click', function(e) {
+		e.preventDefault();
+		var frame = wp.media({
+			title: '<?php echo esc_js( __( 'Select Brand Logo', 'affiliate-product-showcase' ) ); ?>',
+			button: { text: '<?php echo esc_js( __( 'Use this image', 'affiliate-product-showcase' ) ); ?>' },
+			multiple: false
+		});
+
+		frame.on('select', function() {
+			var attachment = frame.state().get('selection').first().toJSON();
+			$('#aps-brand-image-url').val(attachment.url);
+			$('#aps-brand-url-input').val(attachment.url);
+			$('#aps-brand-preview').html('<img src="' + attachment.url + '" alt="">').addClass('has-image').show();
+			$('#aps-brand-placeholder').hide();
+			$('#aps-remove-brand-btn').removeClass('aps-hidden');
+		});
+
+		frame.open();
+	});
+
+	// URL input for Brand Logo
+	$('#aps-brand-url-input').on('change', function() {
+		var url = $(this).val();
+		if (url) {
+			$('#aps-brand-image-url').val(url);
+			$('#aps-brand-preview').html('<img src="' + url + '" alt="">').addClass('has-image').show();
+			$('#aps-brand-placeholder').hide();
+			$('#aps-remove-brand-btn').removeClass('aps-hidden');
+		}
+	});
+
+	$('#aps-remove-brand-btn').on('click', function() {
+		$('#aps-brand-image-url').val('');
+		$('#aps-brand-url-input').val('');
+		$('#aps-brand-preview').html('').removeClass('has-image').hide();
+		$('#aps-brand-placeholder').show();
+		$(this).addClass('aps-hidden');
+	});
+
+	// Smooth scroll for quick nav
+	$('.aps-quick-nav .nav-link').on('click', function(e) {
+		e.preventDefault();
+		var target = $($(this).attr('href'));
+		if (target.length) {
+			$('html, body').animate({
+				scrollTop: target.offset().top - 100
+			}, 500);
+		}
+	});
+});
+</script>

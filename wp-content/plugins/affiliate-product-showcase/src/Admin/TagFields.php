@@ -90,9 +90,163 @@ final class TagFields extends TaxonomyFieldsAbstract {
 			// Add inline script for initializing color picker
 			wp_add_inline_script( 'wp-color-picker', $this->get_color_picker_script() );
 
+			// Add custom CSS for taxonomy forms
+			wp_add_inline_style( 'wp-color-picker', $this->get_taxonomy_styles() );
+
 			// Enqueue taxonomy-specific JS/CSS if present (parent handles that too)
 			parent::enqueue_admin_assets( $hook_suffix );
 		}
+	}
+
+	/**
+	 * Get custom CSS styles for taxonomy forms
+	 *
+	 * @return string CSS styles
+	 * @since 2.0.0
+	 */
+	private function get_taxonomy_styles(): string {
+		return '
+			/* Taxonomy Form Styling */
+			.form-field {
+				margin-bottom: 20px;
+			}
+			
+			.form-field label {
+				display: block;
+				margin-bottom: 6px;
+				font-weight: 600;
+				color: #1d2327;
+			}
+			
+			.form-field input[type="text"],
+			.form-field input[type="url"] {
+				width: 100%;
+				padding: 8px 12px;
+				border: 1px solid #8c8f94;
+				border-radius: 4px;
+				font-size: 14px;
+				background: #fff;
+			}
+			
+			.form-field input[type="text"]:focus,
+			.form-field input[type="url"]:focus {
+				border-color: #2271b1;
+				box-shadow: 0 0 0 1px #2271b1;
+				outline: none;
+			}
+			
+			.form-field input[type="checkbox"] {
+				width: 18px;
+				height: 18px;
+				margin-right: 8px;
+				vertical-align: middle;
+			}
+			
+			.form-field .description {
+				margin-top: 6px;
+				font-size: 13px;
+				color: #646970;
+				font-style: normal;
+			}
+			
+			/* Checkbox wrapper */
+			.aps-tag-checkboxes-wrapper {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.aps-tag-featured,
+			.aps-tag-default {
+				background: #f6f7f7;
+				padding: 15px;
+				border-radius: 4px;
+				border: 1px solid #c3c4c7;
+			}
+			
+			.aps-tag-featured label,
+			.aps-tag-default label {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-weight: 600;
+				cursor: pointer;
+			}
+			
+			/* Tag Settings Section */
+			.aps-tag-settings {
+				background: #fff;
+				border: 1px solid #c3c4c7;
+				border-radius: 4px;
+				padding: 20px;
+				margin-top: 20px;
+			}
+			
+			.aps-tag-settings h3 {
+				margin: 0 0 15px 0;
+				padding-bottom: 10px;
+				border-bottom: 1px solid #dcdcde;
+				font-size: 14px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+			}
+			
+			/* Color picker styling */
+			.aps-color-picker {
+				max-width: 200px;
+			}
+			
+			.wp-picker-container {
+				display: inline-block;
+			}
+			
+			.wp-picker-input-wrap {
+				display: flex;
+				gap: 5px;
+			}
+			
+			.wp-picker-input-wrap input {
+				width: auto !important;
+			}
+			
+			/* Live Preview */
+			.ribbon-live-preview {
+				margin-top: 15px;
+				padding: 15px;
+				background: #f6f7f7;
+				border-radius: 4px;
+				border: 1px solid #dcdcde;
+			}
+			
+			.preview-label {
+				display: block;
+				margin-bottom: 10px;
+				font-weight: 600;
+				color: #1d2327;
+			}
+			
+			.ribbon-preview-badge {
+				display: inline-block;
+				padding: 8px 16px;
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 500;
+			}
+			
+			/* Fix for add form vs edit form */
+			#addtag .form-field,
+			#edittag .form-field {
+				margin-bottom: 20px;
+			}
+			
+			/* Responsive */
+			@media screen and (max-width: 782px) {
+				.aps-tag-checkboxes-wrapper {
+					grid-template-columns: 1fr;
+				}
+			}
+		';
 	}
 
 	/**
@@ -153,20 +307,20 @@ final class TagFields extends TaxonomyFieldsAbstract {
 		$is_default = $this->get_is_default( $tag_id ) === '1';
 
 		?>
-		<!-- Featured and Default Checkboxes (side by side) -->
+		<!-- Featured and Default Checkboxes -->
 		<div class="aps-tag-checkboxes-wrapper">
 			<!-- Featured Checkbox -->
 			<div class="form-field aps-tag-featured">
 				<label for="_aps_tag_featured">
+					<input
+						type="checkbox"
+						id="_aps_tag_featured"
+						name="_aps_tag_featured"
+						value="1"
+						<?php checked( $featured, true ); ?>
+					/>
 					<?php esc_html_e( 'Featured Tag', 'affiliate-product-showcase' ); ?>
 				</label>
-				<input
-					type="checkbox"
-					id="_aps_tag_featured"
-					name="_aps_tag_featured"
-					value="1"
-					<?php checked( $featured, true ); ?>
-				/>
 				<p class="description">
 					<?php esc_html_e( 'Display this tag prominently on frontend.', 'affiliate-product-showcase' ); ?>
 				</p>
@@ -175,22 +329,23 @@ final class TagFields extends TaxonomyFieldsAbstract {
 			<!-- Default Checkbox -->
 			<div class="form-field aps-tag-default">
 				<label for="_aps_tag_is_default">
+					<input
+						type="checkbox"
+						id="_aps_tag_is_default"
+						name="_aps_tag_is_default"
+						value="1"
+						<?php checked( $is_default, true ); ?>
+					/>
 					<?php esc_html_e( 'Default Tag', 'affiliate-product-showcase' ); ?>
 				</label>
-				<input
-					type="checkbox"
-					id="_aps_tag_is_default"
-					name="_aps_tag_is_default"
-					value="1"
-					<?php checked( $is_default, true ); ?>
-				/>
 				<p class="description">
 					<?php esc_html_e( 'Products without a tag will be assigned to this tag automatically.', 'affiliate-product-showcase' ); ?>
 				</p>
 			</div>
 		</div>
 
-		<div class="form-field aps-tag-settings">
+		<!-- Tag Settings Section -->
+		<div class="aps-tag-settings">
 			<h3><?php esc_html_e( 'Tag Settings', 'affiliate-product-showcase' ); ?></h3>
 
 			<!-- Tag Icon -->
@@ -228,7 +383,6 @@ final class TagFields extends TaxonomyFieldsAbstract {
 					<?php esc_html_e( 'Enter URL for tag image.', 'affiliate-product-showcase' ); ?>
 				</p>
 			</div>
-		</div>
 
 			<!-- Text Color -->
 			<div class="form-field">
@@ -270,13 +424,13 @@ final class TagFields extends TaxonomyFieldsAbstract {
 				</p>
 
 				<div class="ribbon-live-preview" id="tag-preview-container">
-					<span class="preview-label">Preview:</span>
+					<span class="preview-label"><?php esc_html_e( 'Preview:', 'affiliate-product-showcase' ); ?></span>
 					<div class="ribbon-preview-badge" id="tag-preview">
 						<?php esc_html_e( 'Tag', 'affiliate-product-showcase' ); ?>
 					</div>
 				</div>
-				</div>
 			</div>
+		</div>
 
 		<?php
 	}

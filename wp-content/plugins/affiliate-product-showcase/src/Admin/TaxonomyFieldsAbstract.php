@@ -154,7 +154,10 @@ abstract class TaxonomyFieldsAbstract {
 		$screen = get_current_screen();
 		
 		if ( $screen && $screen->taxonomy === $this->get_taxonomy() ) {
-			// Enqueue styles
+			// Add common taxonomy form styles
+			wp_add_inline_style( 'wp-admin', $this->get_common_taxonomy_styles() );
+			
+			// Enqueue taxonomy-specific styles if file exists
 			$css_file = 'assets/css/admin-' . $this->get_taxonomy() . '.css';
 			if ( file_exists( Constants::dirPath() . $css_file ) ) {
 				wp_enqueue_style(
@@ -187,6 +190,181 @@ abstract class TaxonomyFieldsAbstract {
 				] );
 			}
 		}
+	}
+	
+	/**
+	 * Get common CSS styles for all taxonomy forms
+	 *
+	 * @return string CSS styles
+	 * @since 2.0.0
+	 */
+	protected function get_common_taxonomy_styles(): string {
+		return '
+			/* Common Taxonomy Form Styles */
+			#addtag .form-field,
+			#edittag .form-field {
+				margin-bottom: 20px;
+				padding: 0;
+			}
+			
+			#addtag .form-field label,
+			#edittag .form-field label {
+				display: block;
+				margin-bottom: 6px;
+				font-weight: 600;
+				color: #1d2327;
+				font-size: 13px;
+			}
+			
+			#addtag .form-field input[type="text"],
+			#addtag .form-field input[type="url"],
+			#edittag .form-field input[type="text"],
+			#edittag .form-field input[type="url"] {
+				width: 100%;
+				max-width: 400px;
+				padding: 8px 12px;
+				border: 1px solid #8c8f94;
+				border-radius: 4px;
+				font-size: 14px;
+				background: #fff;
+				line-height: 1.5;
+			}
+			
+			#addtag .form-field input[type="text"]:focus,
+			#addtag .form-field input[type="url"]:focus,
+			#edittag .form-field input[type="text"]:focus,
+			#edittag .form-field input[type="url"]:focus {
+				border-color: #2271b1;
+				box-shadow: 0 0 0 1px #2271b1;
+				outline: none;
+			}
+			
+			#addtag .form-field input[type="checkbox"],
+			#edittag .form-field input[type="checkbox"] {
+				width: 18px;
+				height: 18px;
+				margin-right: 8px;
+				vertical-align: middle;
+			}
+			
+			#addtag .form-field .description,
+			#edittag .form-field .description {
+				margin-top: 6px;
+				font-size: 13px;
+				color: #646970;
+				font-style: normal;
+				line-height: 1.5;
+			}
+			
+			/* Checkbox wrapper layouts */
+			.aps-tag-checkboxes-wrapper,
+			.aps-category-checkboxes-wrapper {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 20px;
+				margin: 20px 0;
+			}
+			
+			.aps-tag-featured,
+			.aps-tag-default,
+			.aps-category-featured,
+			.aps-category-default {
+				background: #f6f7f7;
+				padding: 15px;
+				border-radius: 4px;
+				border: 1px solid #c3c4c7;
+				margin: 0 !important;
+			}
+			
+			.aps-tag-featured label,
+			.aps-tag-default label,
+			.aps-category-featured label,
+			.aps-category-default label {
+				display: flex !important;
+				align-items: center;
+				gap: 8px;
+				font-weight: 600;
+				cursor: pointer;
+				margin-bottom: 0 !important;
+			}
+			
+			/* Settings sections */
+			.aps-tag-settings,
+			.aps-category-fields,
+			.aps-ribbon-fields {
+				background: #fff;
+				border: 1px solid #c3c4c7;
+				border-radius: 4px;
+				padding: 20px;
+				margin-top: 20px;
+			}
+			
+			.aps-tag-settings h3,
+			.aps-category-fields h3,
+			.aps-ribbon-fields h3 {
+				margin: 0 0 15px 0;
+				padding-bottom: 10px;
+				border-bottom: 1px solid #dcdcde;
+				font-size: 14px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				color: #1d2327;
+			}
+			
+			/* Color picker styling */
+			.aps-color-picker {
+				max-width: 200px !important;
+			}
+			
+			.wp-picker-container {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			.wp-picker-input-wrap {
+				display: flex;
+				gap: 5px;
+				align-items: center;
+			}
+			
+			.wp-picker-input-wrap input {
+				width: auto !important;
+				min-width: 80px;
+			}
+			
+			/* Live Preview */
+			.ribbon-live-preview {
+				margin-top: 15px;
+				padding: 15px;
+				background: #f6f7f7;
+				border-radius: 4px;
+				border: 1px solid #dcdcde;
+			}
+			
+			.preview-label {
+				display: block;
+				margin-bottom: 10px;
+				font-weight: 600;
+				color: #1d2327;
+				font-size: 13px;
+			}
+			
+			.ribbon-preview-badge {
+				display: inline-block;
+				padding: 8px 16px;
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 500;
+			}
+			
+			/* Responsive */
+			@media screen and (max-width: 782px) {
+				.aps-tag-checkboxes-wrapper,
+				.aps-category-checkboxes-wrapper {
+					grid-template-columns: 1fr;
+				}
+			}
+		';
 	}
 	
 	/**
