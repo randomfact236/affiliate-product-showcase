@@ -73,6 +73,9 @@
             return;
         }
 
+        // Cache DOM elements for performance
+        cacheElements(container);
+
         // Initialize all handlers
         initSearch(container);
         initFilters(container);
@@ -82,11 +85,29 @@
     }
 
     /**
+     * Cache DOM elements for better performance
+     */
+    function cacheElements(container) {
+        container._cachedElements = {
+            searchInput: container.querySelector('#aps-search-input'),
+            searchSpinner: container.querySelector('.aps-search-spinner'),
+            tabs: container.querySelectorAll('.aps-tab'),
+            tags: container.querySelectorAll('.aps-tags-grid .aps-tag'),
+            clearBtn: container.querySelector('.aps-clear-all'),
+            sortSelect: container.querySelector('.aps-sort-select'),
+            grid: container.querySelector('.aps-cards-grid'),
+            pagination: container.querySelector('.aps-pagination'),
+            resultsInfo: container.querySelector('.aps-results-info')
+        };
+    }
+
+    /**
      * Search functionality with debouncing
      */
     function initSearch(container) {
-        const searchInput = container.querySelector('#aps-search-input');
-        const spinner = container.querySelector('.aps-search-spinner');
+        const cached = container._cachedElements;
+        const searchInput = cached.searchInput;
+        const spinner = cached.searchSpinner;
 
         if (!searchInput) return;
 
@@ -94,12 +115,12 @@
 
         searchInput.addEventListener('input', function (e) {
             clearTimeout(debounceTimer);
-            spinner?.classList.add('active');
+            if (spinner) spinner.classList.add('active');
 
             debounceTimer = setTimeout(() => {
                 const query = e.target.value.trim();
                 performFilter(container, { search: query });
-                spinner?.classList.remove('active');
+                if (spinner) spinner.classList.remove('active');
             }, CONFIG.debounceDelay);
         });
 
@@ -369,8 +390,9 @@
      * Update UI with new data
      */
     function updateUI(container, data, state) {
-        const grid = container.querySelector('.aps-cards-grid');
-        const pagination = container.querySelector('.aps-pagination');
+        const cached = container._cachedElements;
+        const grid = cached.grid || container.querySelector('.aps-cards-grid');
+        const pagination = cached.pagination || container.querySelector('.aps-pagination');
 
         if (!grid) return;
 
@@ -378,10 +400,27 @@
         grid.style.opacity = '0';
 
         setTimeout(() => {
+            // Clear grid safely
+            while (grid.firstChild) {
+                grid.removeChild(grid.firstChild);
+            }
+
             if (data.products && data.products.trim()) {
-                grid.innerHTML = data.products;
+                // Use DOMParser for safe HTML insertion
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.products, 'text/html');
+                // Move all children from parsed document to grid
+                const fragment = document.createDocumentFragment();
+                while (doc.body.firstChild) {
+                    fragment.appendChild(doc.body.firstChild);
+                }
+                grid.appendChild(fragment);
             } else {
-                grid.innerHTML = `<p class="aps-no-products">${apsData.i18n.noProducts}</p>`;
+                // Safe DOM construction - no innerHTML
+                const p = document.createElement('p');
+                p.className = 'aps-no-products';
+                p.textContent = apsData.i18n.noProducts || 'No products found';
+                grid.appendChild(p);
             }
 
             // Update pagination
@@ -409,12 +448,15 @@
      */
     function setLoadingState(container, isLoading) {
         state.isLoading = isLoading;
-        const grid = container.querySelector('.aps-cards-grid');
+        const cached = container._cachedElements;
+        const grid = cached.grid || container.querySelector('.aps-cards-grid');
 
-        if (isLoading) {
-            grid?.classList.add('loading');
-        } else {
-            grid?.classList.remove('loading');
+        if (grid) {
+            if (isLoading) {
+                grid.classList.add('loading');
+            } else {
+                grid.classList.remove('loading');
+            }
         }
     }
 
@@ -422,17 +464,33 @@
      * Show error message
      */
     function showError(container, message) {
-        const grid = container.querySelector('.aps-cards-grid');
-        if (grid) {
-            grid.innerHTML = `
-                <div class="aps-error">
-                    <p>${apsData.i18n.error}</p>
-                    <button type="button" class="aps-retry-btn" onclick="location.reload()">
-                        ${apsData.i18n.retry || 'Retry'}
-                    </button>
-                </div>
-            `;
+        const cached = container._cachedElements;
+        const grid = cached.grid || container.querySelector('.aps-cards-grid');
+        if (!grid) return;
+
+        // Clear grid safely
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild);
         }
+
+        // Safe DOM construction - no innerHTML
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'aps-error';
+
+        const p = document.createElement('p');
+        p.textContent = apsData.i18n?.error || message || 'An error occurred';
+        errorDiv.appendChild(p);
+
+        const retryBtn = document.createElement('button');
+        retryBtn.type = 'button';
+        retryBtn.className = 'aps-retry-btn';
+        retryBtn.textContent = apsData.i18n?.retry || 'Retry';
+        retryBtn.addEventListener('click', function() {
+            location.reload();
+        });
+        errorDiv.appendChild(retryBtn);
+
+        grid.appendChild(errorDiv);
     }
 
     /**
@@ -472,4 +530,3 @@
     };
 
 })(window, document);
-

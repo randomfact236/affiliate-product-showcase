@@ -113,7 +113,12 @@
      * @returns {DOMElements}
      */
     function getElements() {
-        return {
+        // Cache elements to avoid repeated DOM queries
+        if (window._apsElementsCache) {
+            return window._apsElementsCache;
+        }
+
+        const elements = {
             table: document.querySelector('.wp-list-table'),
             form: document.getElementById('aps-products-form'),
             bulkActionSelectors: [
@@ -138,6 +143,10 @@
             quickEditClose: document.querySelector('.aps-modal-close'),
             quickEditOverlay: document.querySelector('.aps-modal-overlay')
         };
+
+        // Cache for reuse
+        window._apsElementsCache = elements;
+        return elements;
     }
 
     /**
@@ -442,6 +451,9 @@
                 } else {
                     showToast(data.data?.message || 'Failed', 'error');
                 }
+            })
+            .catch(error => {
+                showToast('Network error: ' + (error.message || 'Request failed'), 'error');
             });
     }
 
@@ -450,8 +462,22 @@
      */
     function closeModal() {
         if (elements.quickEditModal) elements.quickEditModal.style.display = 'none';
-        elements.quickEditForm?.reset();
+        if (elements.quickEditForm) elements.quickEditForm.reset();
     }
+
+    /**
+     * Cleanup event listeners (call before page unload)
+     */
+    function cleanup() {
+        // Remove document-level event listeners
+        document.removeEventListener('keydown', handleEscapeKey);
+
+        // Note: Element-level listeners are automatically cleaned up 
+        // when elements are removed from DOM
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', cleanup);
 
     /**
      * Handle escape key to close modal

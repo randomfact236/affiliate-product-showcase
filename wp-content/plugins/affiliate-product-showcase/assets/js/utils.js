@@ -57,7 +57,7 @@
          * @returns {Function} Debounced function
          */
         debounce: function (func, wait) {
-            var timeout;
+            let timeout;
             return function () {
                 var context = this;
                 var args = arguments;
@@ -75,7 +75,7 @@
          */
         escapeHtml: function (str) {
             if (typeof str !== 'string') return '';
-            var div = document.createElement('div');
+            const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         },
@@ -90,7 +90,7 @@
             if (typeof url !== 'string') return '';
             url = url.trim();
             if (!url) return '';
-            var allowedProtocols = /^(https?:|data:)/i;
+            const allowedProtocols = /^(https?:|data:)/i;
             if (!allowedProtocols.test(url)) {
                 if (url.indexOf('//') === 0) {
                     return 'https:' + url;
@@ -105,7 +105,7 @@
          * @returns {string} Current status filter value or 'all'
          */
         getCurrentStatusView: function () {
-            var params = new URLSearchParams(window.location.search);
+            const params = new URLSearchParams(window.location.search);
             return params.get('status') || params.get('aps_status') || 'all';
         },
 
@@ -115,7 +115,7 @@
          * @returns {boolean} True if row should stay visible
          */
         shouldKeepRowInCurrentView: function (newStatus) {
-            var currentView = this.getCurrentStatusView();
+            const currentView = this.getCurrentStatusView();
             if (currentView === 'all') {
                 return newStatus !== 'trashed';
             }
@@ -129,7 +129,7 @@
          */
         parseQueryParamsFromUrl: function (url) {
             try {
-                var urlObj = new URL(url, window.location.origin);
+                const urlObj = new URL(url, window.location.origin);
                 return urlObj.searchParams;
             } catch (e) {
                 return new URLSearchParams();
@@ -142,42 +142,45 @@
          * @param {string} message - Message text
          */
         showNotice: function (type, message) {
-            var self = this;
+            const self = this;
 
             // Remove existing notices
-            var existingNotices = document.querySelectorAll('.aps-js-notice');
+            const existingNotices = document.querySelectorAll('.aps-js-notice');
             existingNotices.forEach(function (notice) {
                 notice.remove();
             });
 
             // Determine target
-            var target = document.querySelector('.wrap h1, .wrap h2');
+            let target = document.querySelector('.wrap h1, .wrap h2');
             if (!target) target = document.querySelector('.wrap');
             if (!target) return;
 
             // Normalize type
-            var validTypes = ['success', 'error', 'warning', 'info'];
-            var noticeType = validTypes.indexOf(type) !== -1 ? type : 'info';
+            const validTypes = ['success', 'error', 'warning', 'info'];
+            const noticeType = validTypes.indexOf(type) !== -1 ? type : 'info';
 
             // Create notice using vanilla JS
-            var notice = document.createElement('div');
+            const notice = document.createElement('div');
             notice.className = 'notice notice-' + noticeType + ' is-dismissible aps-js-notice';
 
-            var paragraph = document.createElement('p');
+            const paragraph = document.createElement('p');
             paragraph.textContent = message;
             notice.appendChild(paragraph);
 
             // Add dismiss button
-            var dismissBtn = document.createElement('button');
+            const dismissBtn = document.createElement('button');
             dismissBtn.type = 'button';
             dismissBtn.className = 'notice-dismiss';
-            dismissBtn.innerHTML = '<span class="screen-reader-text">Dismiss this notice.</span>';
+            const srText = document.createElement('span');
+            srText.className = 'screen-reader-text';
+            srText.textContent = 'Dismiss this notice.';
+            dismissBtn.appendChild(srText);
             notice.appendChild(dismissBtn);
 
             target.parentNode.insertBefore(notice, target.nextSibling);
 
             // Auto-dismiss after 5 seconds
-            var timeout = setTimeout(function () {
+            const timeout = setTimeout(function () {
                 notice.style.opacity = '0';
                 notice.style.transition = 'opacity 0.2s';
                 setTimeout(function () {
@@ -200,17 +203,18 @@
          * @returns {Promise} Fetch promise
          */
         ajax: function (options) {
-            var self = this;
-            var defaults = {
+            const self = this;
+            const defaults = {
                 url: this.getAjaxUrl(),
                 method: 'POST',
+                timeout: 30000, // 30 second timeout
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
 
-            var settings = Object.assign({}, defaults, options);
-            var formData = new FormData();
+            const settings = Object.assign({}, defaults, options);
+            const formData = new FormData();
 
             if (settings.data) {
                 Object.keys(settings.data).forEach(function (key) {
@@ -218,16 +222,30 @@
                 });
             }
 
+            // Create AbortController for timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(function () {
+                controller.abort();
+            }, settings.timeout);
+
             return fetch(settings.url, {
                 method: settings.method,
                 body: formData,
                 headers: settings.headers,
-                credentials: 'same-origin'
+                credentials: 'same-origin',
+                signal: controller.signal
             }).then(function (response) {
+                clearTimeout(timeoutId);
                 if (!response.ok) {
                     throw new Error('HTTP ' + response.status);
                 }
                 return response.json();
+            }).catch(function (error) {
+                clearTimeout(timeoutId);
+                if (error.name === 'AbortError') {
+                    throw new Error('Request timed out');
+                }
+                throw error;
             });
         }
     };

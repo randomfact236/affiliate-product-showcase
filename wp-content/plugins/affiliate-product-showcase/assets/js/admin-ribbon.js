@@ -90,13 +90,18 @@
 
 	/**
 	 * Calculate contrast color for text readability
-	 * @param {string} bgColor - Hex color
+	 * @param {string} bgColor - Hex color (3 or 6 char)
 	 * @returns {string} Hex color (white or black)
 	 */
 	function calculateContrastColor(bgColor) {
-		const r = parseInt(bgColor.substr(1, 2), 16);
-		const g = parseInt(bgColor.substr(3, 2), 16);
-		const b = parseInt(bgColor.substr(5, 2), 16);
+		// Normalize shorthand hex (#fff) to full hex (#ffffff)
+		let hex = bgColor.replace('#', '');
+		if (hex.length === 3) {
+			hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+		}
+		const r = parseInt(hex.substr(0, 2), 16);
+		const g = parseInt(hex.substr(2, 2), 16);
+		const b = parseInt(hex.substr(4, 2), 16);
 		const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 		return luminance > 0.5 ? '#000000' : '#ffffff';
 	}

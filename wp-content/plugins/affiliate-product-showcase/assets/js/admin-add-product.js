@@ -11,6 +11,17 @@
 (function ($) {
 	'use strict';
 
+	// Check for required dependencies BEFORE using them
+	if (typeof wp === 'undefined' || typeof wp.i18n === 'undefined') {
+		console.error('APS: WordPress i18n not loaded');
+		return;
+	}
+
+	if (typeof window.APS === 'undefined' || !window.APS.Utils) {
+		console.error('APS: Utils not loaded');
+		return;
+	}
+
 	const { __ } = wp.i18n;
 
 	// ============================================
@@ -61,7 +72,7 @@
 			e.stopPropagation();
 
 			if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-				APS_Utils.showNotice('error', __('WordPress media library is not loaded. Please refresh page.', 'affiliate-product-showcase'));
+				window.APS.Utils.showNotice('error', __('WordPress media library is not loaded. Please refresh page.', 'affiliate-product-showcase'));
 				return;
 			}
 
@@ -79,15 +90,15 @@
 				mediaUploader.on('select', function () {
 					const attachment = mediaUploader.state().get('selection').first().toJSON();
 					// Validate and sanitize URL before using
-					const safeUrl = APS_Utils.sanitizeUrl(attachment.url);
+					const safeUrl = window.APS.Utils.sanitizeUrl(attachment.url);
 					if (!safeUrl) {
-						APS_Utils.showNotice('error', __('Invalid image URL from media library. Please try a different image.', 'affiliate-product-showcase'));
+						window.APS.Utils.showNotice('error', __('Invalid image URL from media library. Please try a different image.', 'affiliate-product-showcase'));
 						return;
 					}
 					$(`#${hiddenUrlId}`).val(safeUrl);
 					$(`#${urlInputId}`).val(safeUrl);
 					// Use img tag to match HTML structure - escape URL for safety
-					$(`#${previewId}`).html('<img src="' + APS_Utils.escapeHtml(safeUrl) + '" alt="">').addClass('has-image').show();
+					$(`#${previewId}`).html('<img src="' + window.APS.Utils.escapeHtml(safeUrl) + '" alt="">').addClass('has-image').show();
 					$(`${placeholderId}`).hide();
 					$(`#${removeBtnId}`).removeClass('aps-hidden');
 				});
@@ -102,16 +113,16 @@
 		// URL input change handler
 		$(`#${urlInputId}`).on('change', function () {
 			const url = $(this).val().trim();
-			const safeUrl = APS_Utils.sanitizeUrl(url);
+			const safeUrl = window.APS.Utils.sanitizeUrl(url);
 			if (safeUrl) {
 				$(`#${hiddenUrlId}`).val(safeUrl);
 				// Use img tag to match HTML structure - sanitize URL for safety
-				$(`#${previewId}`).html('<img src="' + APS_Utils.escapeHtml(safeUrl) + '" alt="">').addClass('has-image').show();
+				$(`#${previewId}`).html('<img src="' + window.APS.Utils.escapeHtml(safeUrl) + '" alt="">').addClass('has-image').show();
 				$(`${placeholderId}`).hide();
 				$(`#${removeBtnId}`).removeClass('aps-hidden');
 			} else if (url) {
 				// URL was entered but is invalid
-				APS_Utils.showNotice('error', __('Invalid URL. Only http, https, and data URLs are allowed.', 'affiliate-product-showcase'));
+				window.APS.Utils.showNotice('error', __('Invalid URL. Only http, https, and data URLs are allowed.', 'affiliate-product-showcase'));
 				// Reset the input
 				$(this).val('');
 			}
@@ -260,20 +271,35 @@
 
 		// Consolidated global data check
 		const appData = (typeof apsAddProductData !== 'undefined') ? apsAddProductData : null;
+
+		// Cache DOM elements for performance
+		const $cache = {
+			wordCount: $('#aps-word-count'),
+			shortDescription: $('#aps-short-description'),
+			discountInput: $('#aps-discount'),
+			currentPrice: $('#aps-current-price'),
+			originalPrice: $('#aps-original-price'),
+			featuresList: $('#aps-features-list'),
+			featuresInput: $('#aps-features-input'),
+			newFeatureInput: $('#aps-new-feature')
+		};
 		// ============================================
 		// Quick Navigation
 		// ============================================
 		$('.aps-quick-nav .nav-link').on('click', function (e) {
 			e.preventDefault();
 			const target = $(this).attr('href');
-			$('html, body').animate({ scrollTop: $(target).offset().top - CONFIG.SCROLL_OFFSET }, CONFIG.ANIMATION_DURATION);
+			const $target = $(target);
+			if ($target.length && $target.offset()) {
+				$('html, body').animate({ scrollTop: $target.offset().top - CONFIG.SCROLL_OFFSET }, CONFIG.ANIMATION_DURATION);
+			}
 		});
 
 		// ============================================
 		// Word Counter (with debouncing and color feedback)
 		// ============================================
-		const $wordCount = $('#aps-word-count');
-		$('#aps-short-description').on('input', APS_Utils.debounce(function () {
+		const $wordCount = $cache.wordCount;
+		$cache.shortDescription.on('input', window.APS.Utils.debounce(function () {
 			const text = $(this).val().trim();
 			const words = text === '' ? 0 : text.split(/\s+/).length;
 			const displayCount = Math.min(words, CONFIG.SHORT_DESCRIPTION_MAX_WORDS);
@@ -289,7 +315,7 @@
 
 		// Initialize word count on page load
 		(function initWordCount() {
-			const text = $('#aps-short-description').val().trim();
+			const text = $cache.shortDescription.val().trim();
 			const words = text === '' ? 0 : text.split(/\s+/).length;
 			$wordCount.text(Math.min(words, CONFIG.SHORT_DESCRIPTION_MAX_WORDS));
 			if (words > CONFIG.SHORT_DESCRIPTION_MAX_WORDS) {
@@ -300,9 +326,9 @@
 		// ============================================
 		// Discount Calculator (with color feedback)
 		// ============================================
-		const $discountInput = $('#aps-discount');
-		const $currentPrice = $('#aps-current-price');
-		const $originalPrice = $('#aps-original-price');
+		const $discountInput = $cache.discountInput;
+		const $currentPrice = $cache.currentPrice;
+		const $originalPrice = $cache.originalPrice;
 
 		function calculateDiscount() {
 			const current = parseFloat($currentPrice.val()) || 0;
@@ -334,7 +360,7 @@
 			selectedContainerId: 'aps-selected-categories',
 			hiddenInputId: 'aps-categories-input',
 			renderItem: function (item) {
-				return APS_Utils.escapeHtml(item.find('.taxonomy-name').text());
+				return window.APS.Utils.escapeHtml(item.find('.taxonomy-name').text());
 			}
 		});
 
@@ -465,10 +491,11 @@
 		// ============================================
 		$('[data-image-url]').each(function () {
 			const url = $(this).data('image-url');
-			const safeUrl = APS_Utils.sanitizeUrl(url);
+			const safeUrl = window.APS.Utils.sanitizeUrl(url);
 			if (safeUrl) {
-				// Use CSS class with custom property - escape URL for CSS context
-				$(this).addClass('has-bg-image').css('--bg-image-url', 'url(' + safeUrl + ')');
+				// Escape URL for CSS context - prevent CSS injection via parentheses
+				const cssEscapedUrl = safeUrl.replace(/[()'"\\]/g, '\\$&');
+				$(this).addClass('has-bg-image').css('--bg-image-url', 'url("' + cssEscapedUrl + '")');
 			}
 		});
 
@@ -718,9 +745,11 @@
 					$(this).before(draggedItem);
 				}
 
-				// Update array
+				// Update array - adjust index when moving to lower position
 				const item = features.splice(draggedIndex, 1)[0];
-				features.splice(targetIndex, 0, item);
+				// If dragging down, target index needs adjustment since we removed an item above it
+				const adjustedTargetIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
+				features.splice(adjustedTargetIndex, 0, item);
 
 				renderFeatures();
 				announce(__('Item reordered', 'affiliate-product-showcase'));
