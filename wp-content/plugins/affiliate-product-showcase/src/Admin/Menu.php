@@ -502,10 +502,13 @@ class Menu {
         wp_enqueue_script(
             'aps-admin-add-product',
             plugins_url( 'assets/js/admin-add-product.js', \AffiliateProductShowcase\Plugin\Constants::FILE ),
-            ['jquery', 'media-editor'],
+            ['jquery', 'media-editor', 'wp-i18n'],
             \AffiliateProductShowcase\Plugin\Constants::VERSION,
             true
         );
+
+        // Set script translations
+        wp_set_script_translations( 'aps-admin-add-product', 'affiliate-product-showcase' );
         
         // Localize script with PHP data (now includes categories and ribbons)
         wp_localize_script('aps-admin-add-product', 'apsAddProductData', [

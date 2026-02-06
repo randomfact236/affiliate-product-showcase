@@ -135,7 +135,7 @@
 }
 
 .aps-block-showcase__title {
-	margin: 0 0 $spacing-3 0;
+	margin: 0 0 $spacing-3;
 	font-size: $font-size-lg;
 	font-weight: $font-weight-bold;
 	line-height: $line-height-tight;
@@ -177,6 +177,7 @@
 	color: $color-slate-500;
 	margin-bottom: $spacing-6;
 	flex: 1;
+
 	@include line-clamp(2);
 
 	.aps-block-showcase--list & {

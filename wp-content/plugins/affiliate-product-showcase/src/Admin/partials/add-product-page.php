@@ -680,6 +680,52 @@ wp_enqueue_media();
 	opacity: 0.8;
 }
 
+/* JS-generated tag styles (aps-tag, remove-tag) */
+.aps-tag {
+	background: #2271b1;
+	color: #fff;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: all 0.2s;
+	white-space: nowrap;
+	margin: 2px;
+}
+
+.aps-tag .remove-tag {
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	margin-left: 4px;
+	font-weight: bold;
+	color: inherit;
+}
+
+.aps-tag .remove-tag:hover {
+	opacity: 0.8;
+}
+
+.aps-tag .remove-tag:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+/* Ribbon tag preview - colors applied via inline styles from JS */
+.ribbon-tag-preview {
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 13px;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
 /* Tags Grid */
 .aps-tags-section {
 	margin-top: 20px;
@@ -895,7 +941,7 @@ wp_enqueue_media();
 					<textarea id="aps-short-description" name="aps_short_description" class="aps-textarea aps-full-page"
 							  placeholder="<?php esc_attr_e( 'Enter short description (max 40 words)...', 'affiliate-product-showcase' ); ?>" required
 							  data-initial="<?php echo esc_attr( $product_data['short_description'] ?? '' ); ?>"><?php echo esc_textarea( $product_data['short_description'] ?? '' ); ?></textarea>
-					<div class="word-counter"><span id="aps-word-count">0</span>/40 <?php esc_html_e( 'words', 'affiliate-product-showcase' ); ?></div>
+					<div class="word-counter"><span id="aps-word-count" aria-live="polite" aria-atomic="true">0</span>/40 <?php esc_html_e( 'words', 'affiliate-product-showcase' ); ?></div>
 				</div>
 			</section>
 
@@ -1113,409 +1159,3 @@ wp_enqueue_media();
 		</form>
 	</div>
 </div>
-
-<script>
-jQuery(document).ready(function($) {
-	// Word counter
-	var textarea = $('#aps-short-description');
-	var wordCount = $('#aps-word-count');
-	
-	function updateWordCount() {
-		var text = textarea.val().trim();
-		var words = text ? text.split(/\s+/).length : 0;
-		wordCount.text(words);
-		if (words > 40) {
-			wordCount.css('color', '#d63638');
-		} else {
-			wordCount.css('color', '#646970');
-		}
-	}
-	
-	textarea.on('input', updateWordCount);
-	updateWordCount();
-
-	// Discount calculator
-	var currentPrice = $('#aps-current-price');
-	var originalPrice = $('#aps-original-price');
-	var discountInput = $('#aps-discount');
-
-	function calculateDiscount() {
-		var current = parseFloat(currentPrice.val()) || 0;
-		var original = parseFloat(originalPrice.val()) || 0;
-
-		if (original > current && original > 0) {
-			var discount = Math.round(((original - current) / original) * 100);
-			discountInput.val(discount + '% OFF');
-			discountInput.css('color', '#00a32a');
-		} else {
-			discountInput.val('0% OFF');
-			discountInput.css('color', '#646970');
-		}
-	}
-
-	currentPrice.on('input', calculateDiscount);
-	originalPrice.on('input', calculateDiscount);
-	calculateDiscount();
-
-	// Features with bold toggle and drag reordering
-	var addFeatureBtn = $('#aps-add-feature');
-	var newFeatureInput = $('#aps-new-feature');
-	var featuresList = $('#aps-features-list');
-	var featuresInput = $('#aps-features-input');
-	var features = <?php echo json_encode( $structured_features ); ?>;
-
-	function updateFeaturesInput() {
-		featuresInput.val(JSON.stringify(features));
-	}
-
-	function renderFeatures() {
-		featuresList.empty();
-		features.forEach(function(feature, index) {
-			var text = typeof feature === 'object' ? feature.text : feature;
-			var isBold = typeof feature === 'object' ? feature.bold : false;
-			
-			var item = $('<div class="feature-item" data-index="' + index + '" data-bold="' + (isBold ? '1' : '0') + '">' +
-				'<div class="feature-item-content">' +
-					'<span class="dashicons dashicons-menu drag-handle" title="Drag to reorder"></span>' +
-					'<span class="feature-text ' + (isBold ? 'is-bold' : '') + '">' + $('<div>').text(text).html() + '</span>' +
-				'</div>' +
-				'<div class="feature-actions">' +
-					'<button type="button" class="feature-btn move-btn move-up" title="Move up" ' + (index === 0 ? 'disabled' : '') + '>' +
-						'<span class="dashicons dashicons-arrow-up-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
-					'</button>' +
-					'<button type="button" class="feature-btn move-btn move-down" title="Move down" ' + (index === features.length - 1 ? 'disabled' : '') + '>' +
-						'<span class="dashicons dashicons-arrow-down-alt2" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
-					'</button>' +
-					'<button type="button" class="feature-btn bold-btn ' + (isBold ? 'active' : '') + '" title="Toggle bold">' +
-						'<span class="dashicons dashicons-editor-bold" style="font-size: 12px; width: 12px; height: 12px;"></span>' +
-					'</button>' +
-					'<button type="button" class="remove-feature">&times;</button>' +
-				'</div>' +
-			'</div>');
-			featuresList.append(item);
-		});
-		updateFeaturesInput();
-	}
-
-	addFeatureBtn.on('click', function() {
-		var text = newFeatureInput.val().trim();
-		if (text) {
-			// Check if already exists
-			var exists = features.some(function(f) {
-				var fText = typeof f === 'object' ? f.text : f;
-				return fText === text;
-			});
-			if (!exists) {
-				features.push({ text: text, bold: false });
-				renderFeatures();
-				newFeatureInput.val('');
-			}
-		}
-	});
-
-	newFeatureInput.on('keypress', function(e) {
-		if (e.which === 13) {
-			e.preventDefault();
-			addFeatureBtn.click();
-		}
-	});
-
-	// Remove feature
-	featuresList.on('click', '.remove-feature', function() {
-		var index = $(this).closest('.feature-item').data('index');
-		features.splice(index, 1);
-		renderFeatures();
-	});
-
-	// Toggle bold
-	featuresList.on('click', '.bold-btn', function() {
-		var item = $(this).closest('.feature-item');
-		var index = item.data('index');
-		var textSpan = item.find('.feature-text');
-		
-		if (typeof features[index] === 'object') {
-			features[index].bold = !features[index].bold;
-		} else {
-			features[index] = { text: features[index], bold: true };
-		}
-		
-		textSpan.toggleClass('is-bold');
-		$(this).toggleClass('active');
-		item.attr('data-bold', features[index].bold ? '1' : '0');
-		updateFeaturesInput();
-	});
-
-	// Move up
-	featuresList.on('click', '.move-up:not(:disabled)', function() {
-		var item = $(this).closest('.feature-item');
-		var index = item.data('index');
-		
-		if (index > 0) {
-			var temp = features[index];
-			features[index] = features[index - 1];
-			features[index - 1] = temp;
-			renderFeatures();
-		}
-	});
-
-	// Move down
-	featuresList.on('click', '.move-down:not(:disabled)', function() {
-		var item = $(this).closest('.feature-item');
-		var index = item.data('index');
-		
-		if (index < features.length - 1) {
-			var temp = features[index];
-			features[index] = features[index + 1];
-			features[index + 1] = temp;
-			renderFeatures();
-		}
-	});
-
-	// Drag and drop functionality
-	var draggedItem = null;
-
-	featuresList.on('dragstart', '.feature-item', function(e) {
-		draggedItem = $(this);
-		$(this).addClass('dragging');
-		e.originalEvent.dataTransfer.effectAllowed = 'move';
-	});
-
-	featuresList.on('dragend', '.feature-item', function() {
-		$(this).removeClass('dragging');
-		draggedItem = null;
-	});
-
-	featuresList.on('dragover', '.feature-item', function(e) {
-		e.preventDefault();
-		if (!draggedItem || draggedItem[0] === this) return;
-		
-		var targetIndex = $(this).data('index');
-		var draggedIndex = draggedItem.data('index');
-		
-		if (draggedIndex < targetIndex) {
-			$(this).after(draggedItem);
-		} else {
-			$(this).before(draggedItem);
-		}
-		
-		// Update array
-		var item = features.splice(draggedIndex, 1)[0];
-		features.splice(targetIndex, 0, item);
-		
-		renderFeatures();
-	});
-
-	// Edit feature inline - click on text to edit
-	featuresList.on('click', '.feature-text', function(e) {
-		e.preventDefault();
-		var $textSpan = $(this);
-		var $item = $textSpan.closest('.feature-item');
-		var index = $item.data('index');
-		var currentText = typeof features[index] === 'object' ? features[index].text : features[index];
-		
-		// Create input field
-		var $input = $('<input type="text" class="aps-input feature-edit-input" style="flex: 1; min-width: 200px;" value="' + $('<div>').text(currentText).html() + '">');
-		
-		// Replace text with input
-		$textSpan.replaceWith($input);
-		$input.focus().select();
-		
-		// Save on blur or enter key
-		function saveEdit() {
-			var newText = $input.val().trim();
-			if (newText && newText !== currentText) {
-				if (typeof features[index] === 'object') {
-					features[index].text = newText;
-				} else {
-					features[index] = newText;
-				}
-				updateFeaturesInput();
-			}
-			renderFeatures();
-		}
-		
-		$input.on('blur', saveEdit);
-		
-		$input.on('keypress', function(e) {
-			if (e.which === 13) {
-				e.preventDefault();
-				$input.off('blur');
-				saveEdit();
-			}
-		});
-		
-		$input.on('keydown', function(e) {
-			if (e.which === 27) {
-				e.preventDefault();
-				$input.off('blur');
-				renderFeatures();
-			}
-		});
-	});
-
-	// Make feature items draggable
-	featuresList.on('mousedown', '.drag-handle', function() {
-		$(this).closest('.feature-item').attr('draggable', 'true');
-	});
-
-	featuresList.on('mouseup', '.drag-handle', function() {
-		$(this).closest('.feature-item').attr('draggable', 'false');
-	});
-
-	// Multi-select functionality for Categories
-	var categoriesSelect = $('#aps-categories-select');
-	var categoriesDropdown = $('#aps-categories-dropdown');
-	var categoriesInput = $('#aps-categories-input');
-	var selectedCategories = $('#aps-selected-categories');
-	var selectedCats = categoriesInput.val() ? categoriesInput.val().split(',').filter(function(c) { return c !== ''; }) : [];
-
-	function updateCategoryDisplay() {
-		selectedCategories.empty();
-		if (!selectedCats || selectedCats.length === 0) {
-			selectedCategories.html('<span class="multi-select-placeholder"><?php echo esc_js( __( 'Select categories...', 'affiliate-product-showcase' ) ); ?></span>');
-		} else {
-			selectedCats.forEach(function(cat) {
-				if (cat) {
-					var item = categoriesDropdown.find('[data-value="' + cat + '"]').first();
-					if (item.length) {
-						var name = item.find('.taxonomy-name').text() || item.data('name') || cat;
-						var icon = item.data('icon') || '📁';
-						var color = item.data('color') || '#2271b1';
-						var tagHtml = '<span class="aps-tag" style="background:' + color + '; color:#fff;">';
-						tagHtml += '<span class="tag-icon">' + icon + '</span> ';
-						tagHtml += '<span class="tag-text">' + name + '</span>';
-						tagHtml += '<span class="remove-tag" data-value="' + cat + '">&times;</span>';
-						tagHtml += '</span>';
-						selectedCategories.append(tagHtml);
-					} else {
-						// Item not found in dropdown, show with default styling
-						var tagHtml = '<span class="aps-tag" style="background:#2271b1; color:#fff;">';
-						tagHtml += '<span class="tag-icon">📁</span> ';
-						tagHtml += '<span class="tag-text">' + cat + '</span>';
-						tagHtml += '<span class="remove-tag" data-value="' + cat + '">&times;</span>';
-						tagHtml += '</span>';
-						selectedCategories.append(tagHtml);
-					}
-				}
-			});
-		}
-		categoriesInput.val(selectedCats.join(','));
-	}
-
-	categoriesSelect.on('click', function(e) {
-		if (!$(e.target).closest('.aps-dropdown').length && !$(e.target).closest('.aps-tag').length) {
-			categoriesDropdown.toggleClass('open');
-		}
-	});
-
-	categoriesDropdown.on('click', '.dropdown-item', function() {
-		var value = $(this).data('value');
-		if (!value) return;
-		
-		$(this).toggleClass('selected');
-		
-		if ($(this).hasClass('selected')) {
-			if (selectedCats.indexOf(value) === -1) {
-				selectedCats.push(value);
-			}
-		} else {
-			selectedCats = selectedCats.filter(function(c) { return c !== value; });
-		}
-		updateCategoryDisplay();
-	});
-
-	selectedCategories.on('click', '.remove-tag', function(e) {
-		e.stopPropagation();
-		var value = $(this).data('value');
-		selectedCats = selectedCats.filter(function(c) { return c !== value; });
-		categoriesDropdown.find('[data-value="' + value + '"]').removeClass('selected');
-		updateCategoryDisplay();
-	});
-
-	$(document).on('click', function(e) {
-		if (!categoriesSelect.is(e.target) && categoriesSelect.has(e.target).length === 0) {
-			categoriesDropdown.removeClass('open');
-		}
-	});
-
-	updateCategoryDisplay();
-
-	// Multi-select functionality for Ribbons (single select)
-	var ribbonsSelect = $('#aps-ribbons-select');
-	var ribbonsDropdown = $('#aps-ribbons-dropdown');
-	var ribbonsInput = $('#aps-ribbons-input');
-	var selectedRibbons = $('#aps-selected-ribbons');
-	var selectedRibbon = ribbonsInput.val() || '';
-
-	function updateRibbonDisplay() {
-		selectedRibbons.empty();
-		if (!selectedRibbon) {
-			selectedRibbons.html('<span class="multi-select-placeholder"><?php echo esc_js( __( 'Select ribbons...', 'affiliate-product-showcase' ) ); ?></span>');
-		} else {
-			var item = ribbonsDropdown.find('[data-value="' + selectedRibbon + '"]').first();
-			if (item.length) {
-				var name = item.find('.ribbon-name').text() || item.data('name') || selectedRibbon;
-				var icon = item.data('icon') || '🏷️';
-				var color = item.data('color') || '#2271b1';
-				var tagHtml = '<span class="aps-tag" style="background:' + color + '; color:#fff;">';
-				tagHtml += '<span class="tag-icon">' + icon + '</span> ';
-				tagHtml += '<span class="tag-text">' + name + '</span>';
-				tagHtml += '<span class="remove-tag">&times;</span>';
-				tagHtml += '</span>';
-				selectedRibbons.html(tagHtml);
-			} else {
-				// Fallback if item not found
-				var tagHtml = '<span class="aps-tag" style="background:#2271b1; color:#fff;">';
-				tagHtml += '<span class="tag-icon">🏷️</span> ';
-				tagHtml += '<span class="tag-text">' + selectedRibbon + '</span>';
-				tagHtml += '<span class="remove-tag">&times;</span>';
-				tagHtml += '</span>';
-				selectedRibbons.html(tagHtml);
-			}
-		}
-		ribbonsInput.val(selectedRibbon);
-	}
-
-	ribbonsSelect.on('click', function(e) {
-		if (!$(e.target).closest('.aps-dropdown').length && !$(e.target).closest('.aps-tag').length) {
-			ribbonsDropdown.toggleClass('open');
-		}
-	});
-
-	ribbonsDropdown.on('click', '.dropdown-item', function() {
-		var value = $(this).data('value');
-		ribbonsDropdown.find('.dropdown-item').removeClass('selected');
-		$(this).addClass('selected');
-		selectedRibbon = value;
-		updateRibbonDisplay();
-		ribbonsDropdown.removeClass('open');
-	});
-
-	selectedRibbons.on('click', '.remove-tag', function(e) {
-		e.stopPropagation();
-		selectedRibbon = '';
-		ribbonsDropdown.find('.dropdown-item').removeClass('selected');
-		ribbonsDropdown.find('[data-value=""]').addClass('selected');
-		updateRibbonDisplay();
-	});
-
-	$(document).on('click', function(e) {
-		if (!ribbonsSelect.is(e.target) && ribbonsSelect.has(e.target).length === 0) {
-			ribbonsDropdown.removeClass('open');
-		}
-	});
-
-	updateRibbonDisplay();
-
-	// Smooth scroll for quick nav
-	$('.aps-quick-nav .nav-link').on('click', function(e) {
-		e.preventDefault();
-		var target = $($(this).attr('href'));
-		if (target.length) {
-			$('html, body').animate({
-				scrollTop: target.offset().top - 100
-			}, 500);
-		}
-	});
-});
-</script>

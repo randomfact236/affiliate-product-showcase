@@ -11,14 +11,14 @@
 // === CSS Custom Properties (output :root blocks) ===
 // Shared tokens first
 @use '01-settings/tokens-shared';
+
 // Frontend-only tokens (--aps-frontend-* variables)
 @use '01-settings/tokens-frontend';
 
 // === Abstracts (Vars/Mixins - NO CSS Output) ===
 @use 'abstracts' as *;
 
-// === Objects (Layout primitives) ===
-@use '05-objects' as objects;
+
 
 // === Frontend Components ===
 @use '06-components/card';

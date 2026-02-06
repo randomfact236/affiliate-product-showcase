@@ -24,6 +24,7 @@
 
 .aps-form-select {
 	@include input-base;
+
 	appearance: none;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23646970' d='M6 9L2 5h8z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
@@ -37,6 +38,7 @@
 
 .aps-form-textarea {
 	@include input-base;
+
 	min-height: 5rem;
 	resize: vertical;
 }
@@ -83,4 +85,13 @@
 	margin-top: $spacing-1;
 	font-size: $font-size-xs;
 	color: $color-text-muted;
+}
+
+// ============================================
+// Feature Edit Input
+// ============================================
+
+.aps-input-flex {
+	flex: 1;
+	min-width: 200px;
 }

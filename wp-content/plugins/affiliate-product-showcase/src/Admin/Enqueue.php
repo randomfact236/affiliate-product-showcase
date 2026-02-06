@@ -140,64 +140,18 @@ class Enqueue {
         // Ensure jQuery is available in admin pages we control
         wp_enqueue_script( 'jquery' );
 
-        // Main admin JS
+        // Shared Utilities (Dependency for all APS admin scripts)
         wp_enqueue_script(
-            'affiliate-product-showcase-admin',
-            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/admin.js' ),
+            'affiliate-product-showcase-utils',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/utils.js' ),
             [ 'jquery' ],
             self::VERSION,
             true
         );
 
-        // Localize script
-        wp_localize_script(
-            'affiliate-product-showcase-admin',
-            'affiliateProductShowcaseAdmin',
-            $this->getScriptData()
-        );
 
-        // Dashboard scripts
-        if ( $this->isDashboardPage( $hook ) ) {
-            wp_register_script(
-                'affiliate-product-showcase-dashboard',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/dashboard.js' ),
-                [ 'jquery', 'wp-util' ],
-                self::VERSION,
-                true
-            );
-            
-            // Add defer attribute for non-critical script (WordPress 6.3+)
-            wp_script_add_data( 'affiliate-product-showcase-dashboard', 'defer', true );
-            
-            wp_enqueue_script( 'affiliate-product-showcase-dashboard' );
-        }
 
-        // Analytics scripts
-        if ( $this->isAnalyticsPage( $hook ) ) {
-            wp_register_script(
-                'affiliate-product-showcase-analytics',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/analytics.js' ),
-                [ 'jquery', 'wp-util', 'chart.js' ],
-                self::VERSION,
-                true
-            );
-            
-            // Add defer attribute for non-critical script (WordPress 6.3+)
-            wp_script_add_data( 'affiliate-product-showcase-analytics', 'defer', true );
-            
-            wp_enqueue_script( 'affiliate-product-showcase-analytics' );
-        }
 
-        // Settings scripts
-        if ( $this->isSettingsPage( $hook ) ) {
-            wp_enqueue_script(
-                'affiliate-product-showcase-settings',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/js/settings.js' ),
-                [ 'jquery', 'wp-util' ],
-                self::VERSION,
-                true
-            );
-        }
 
         // Products list page scripts - WordPress default table only
         if ( $this->isProductsListPage( $hook ) ) {

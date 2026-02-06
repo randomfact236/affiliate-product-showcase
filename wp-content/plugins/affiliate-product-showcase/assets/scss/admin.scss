@@ -11,14 +11,14 @@
 // === CSS Custom Properties (output :root blocks) ===
 // Shared tokens first
 @use '01-settings/tokens-shared';
+
 // Admin-only tokens (--aps-admin-* variables)
 @use '01-settings/tokens-admin';
 
 // === Abstracts (Vars/Mixins - NO CSS Output) ===
 @use 'abstracts' as *;
 
-// === Objects (Layout primitives) ===
-@use '05-objects' as objects;
+
 
 // === Admin Components ===
 @use '06-components/tabs';

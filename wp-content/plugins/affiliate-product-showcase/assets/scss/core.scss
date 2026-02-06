@@ -25,5 +25,8 @@
 // 4. Elements (Base HTML - CSS output)
 @use '04-elements' as elements;
 
+// 5. Objects (Layout primitives)
+@use '05-objects' as objects;
+
 // 7. Utilities - Shared (CSS output)
 @use '07-utilities' as utilities;
