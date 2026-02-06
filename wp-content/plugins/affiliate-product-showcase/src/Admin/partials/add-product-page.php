@@ -12,50 +12,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Determine if we're editing or adding
-$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
-$is_editing = $post_id > 0;
+// Determine if we're editing or adding (these are already set by Menu.php, but we ensure they're available)
+if ( ! isset( $post_id ) ) {
+    $post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+}
+if ( ! isset( $is_editing ) ) {
+    $is_editing = $post_id > 0;
+}
 
-// Get product data if editing
-$product_data = [];
-if ( $is_editing ) {
-	$post = get_post( $post_id );
-	
-	if ( $post && $post->post_type === 'aps_product' ) {
-		$product_data = [
-			'id' => $post->ID,
-			'title' => $post->post_title,
-			'status' => $post->post_status,
-			'content' => $post->post_content,
-			'short_description' => $post->post_excerpt,
-			'logo' => get_post_meta( $post->ID, '_aps_logo', true ),
-			'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
-			'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
-			'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
-			'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
-			'original_price' => get_post_meta( $post->ID, '_aps_original_price', true ),
-			'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
-			'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
-			'views' => get_post_meta( $post->ID, '_aps_views', true ),
-			'user_count' => get_post_meta( $post->ID, '_aps_user_count', true ),
-			'reviews' => get_post_meta( $post->ID, '_aps_reviews', true ),
-			'features' => json_decode( get_post_meta( $post->ID, '_aps_features', true ) ?: '[]', true ),
-		];
-		
-		$product_data['categories'] = wp_get_object_terms( $post->ID, 'aps_category', [ 'fields' => 'slugs' ] );
-		$product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
-		$product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
-	} else {
-		wp_die(
-			sprintf(
-				'<h1>%s</h1><p>%s</p>',
-				esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
-				esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
-			),
-			esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
-			403
-		);
-	}
+// Get product data if editing (if not already populated by Menu.php)
+if ( ! isset( $product_data ) || empty( $product_data ) ) {
+    $product_data = [];
+    if ( $is_editing ) {
+        $post = get_post( $post_id );
+        
+        if ( $post && $post->post_type === 'aps_product' ) {
+            $product_data = [
+                'id' => $post->ID,
+                'title' => $post->post_title,
+                'status' => $post->post_status,
+                'content' => $post->post_content,
+                'short_description' => $post->post_excerpt,
+                'logo' => get_post_meta( $post->ID, '_aps_logo', true ),
+                'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
+                'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
+                'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
+                'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
+                'original_price' => get_post_meta( $post->ID, '_aps_original_price', true ),
+                'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
+                'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
+                'views' => get_post_meta( $post->ID, '_aps_views', true ),
+                'user_count' => get_post_meta( $post->ID, '_aps_user_count', true ),
+                'reviews' => get_post_meta( $post->ID, '_aps_reviews', true ),
+                'features' => json_decode( get_post_meta( $post->ID, '_aps_features', true ) ?: '[]', true ),
+            ];
+            
+            $product_data['categories'] = wp_get_object_terms( $post->ID, 'aps_category', [ 'fields' => 'slugs' ] );
+            $product_data['tags'] = wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] );
+            $product_data['ribbons'] = wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] );
+        } else {
+            wp_die(
+                sprintf(
+                    '<h1>%s</h1><p>%s</p>',
+                    esc_html__( 'Invalid Product', 'affiliate-product-showcase' ),
+                    esc_html__( 'The product you are trying to edit does not exist or is not the correct type.', 'affiliate-product-showcase' )
+                ),
+                esc_html__( 'Product Not Found', 'affiliate-product-showcase' ),
+                403
+            );
+        }
+    }
 }
 
 $form_action = $is_editing ? 'aps_update_product' : 'aps_save_product';
@@ -467,6 +473,14 @@ wp_enqueue_media();
 
 .feature-text {
 	flex: 1;
+	cursor: text;
+	padding: 4px 8px;
+	border-radius: 3px;
+	transition: background 0.2s;
+}
+
+.feature-text:hover {
+	background: #f0f6fc;
 }
 
 .feature-text.is-bold {
@@ -827,7 +841,7 @@ wp_enqueue_media();
 						</div>
 					</div>
 					<div class="aps-upload-group">
-						<label><?php esc_html_e( 'Logo', 'affiliate-product-showcase' ); ?></label>
+						<label><?php esc_html_e( 'Brand Logo', 'affiliate-product-showcase' ); ?></label>
 						<div class="aps-upload-area" id="aps-brand-upload">
 							<div class="upload-placeholder" id="aps-brand-placeholder" <?php echo ! empty( $product_data['brand_image'] ) ? 'style="display:none;"' : ''; ?>>
 								<span class="dashicons dashicons-format-image"></span>
@@ -1291,6 +1305,54 @@ jQuery(document).ready(function($) {
 		renderFeatures();
 	});
 
+	// Edit feature inline - click on text to edit
+	featuresList.on('click', '.feature-text', function(e) {
+		e.preventDefault();
+		var $textSpan = $(this);
+		var $item = $textSpan.closest('.feature-item');
+		var index = $item.data('index');
+		var currentText = typeof features[index] === 'object' ? features[index].text : features[index];
+		
+		// Create input field
+		var $input = $('<input type="text" class="aps-input feature-edit-input" style="flex: 1; min-width: 200px;" value="' + $('<div>').text(currentText).html() + '">');
+		
+		// Replace text with input
+		$textSpan.replaceWith($input);
+		$input.focus().select();
+		
+		// Save on blur or enter key
+		function saveEdit() {
+			var newText = $input.val().trim();
+			if (newText && newText !== currentText) {
+				if (typeof features[index] === 'object') {
+					features[index].text = newText;
+				} else {
+					features[index] = newText;
+				}
+				updateFeaturesInput();
+			}
+			renderFeatures();
+		}
+		
+		$input.on('blur', saveEdit);
+		
+		$input.on('keypress', function(e) {
+			if (e.which === 13) {
+				e.preventDefault();
+				$input.off('blur');
+				saveEdit();
+			}
+		});
+		
+		$input.on('keydown', function(e) {
+			if (e.which === 27) {
+				e.preventDefault();
+				$input.off('blur');
+				renderFeatures();
+			}
+		});
+	});
+
 	// Make feature items draggable
 	featuresList.on('mousedown', '.drag-handle', function() {
 		$(this).closest('.feature-item').attr('draggable', 'true');
@@ -1444,86 +1506,6 @@ jQuery(document).ready(function($) {
 	});
 
 	updateRibbonDisplay();
-
-	// WordPress Media Upload for Product Image
-	$('#aps-upload-image-btn').on('click', function(e) {
-		e.preventDefault();
-		var frame = wp.media({
-			title: '<?php echo esc_js( __( 'Select Product Image', 'affiliate-product-showcase' ) ); ?>',
-			button: { text: '<?php echo esc_js( __( 'Use this image', 'affiliate-product-showcase' ) ); ?>' },
-			multiple: false
-		});
-
-		frame.on('select', function() {
-			var attachment = frame.state().get('selection').first().toJSON();
-			$('#aps-image-url').val(attachment.url);
-			$('#aps-image-url-input').val(attachment.url);
-			$('#aps-image-preview').html('<img src="' + attachment.url + '" alt="">').addClass('has-image').show();
-			$('#aps-image-placeholder').hide();
-			$('#aps-remove-image-btn').removeClass('aps-hidden');
-		});
-
-		frame.open();
-	});
-
-	// URL input for Product Image
-	$('#aps-image-url-input').on('change', function() {
-		var url = $(this).val();
-		if (url) {
-			$('#aps-image-url').val(url);
-			$('#aps-image-preview').html('<img src="' + url + '" alt="">').addClass('has-image').show();
-			$('#aps-image-placeholder').hide();
-			$('#aps-remove-image-btn').removeClass('aps-hidden');
-		}
-	});
-
-	$('#aps-remove-image-btn').on('click', function() {
-		$('#aps-image-url').val('');
-		$('#aps-image-url-input').val('');
-		$('#aps-image-preview').html('').removeClass('has-image').hide();
-		$('#aps-image-placeholder').show();
-		$(this).addClass('aps-hidden');
-	});
-
-	// WordPress Media Upload for Brand Logo
-	$('#aps-upload-brand-btn').on('click', function(e) {
-		e.preventDefault();
-		var frame = wp.media({
-			title: '<?php echo esc_js( __( 'Select Brand Logo', 'affiliate-product-showcase' ) ); ?>',
-			button: { text: '<?php echo esc_js( __( 'Use this image', 'affiliate-product-showcase' ) ); ?>' },
-			multiple: false
-		});
-
-		frame.on('select', function() {
-			var attachment = frame.state().get('selection').first().toJSON();
-			$('#aps-brand-image-url').val(attachment.url);
-			$('#aps-brand-url-input').val(attachment.url);
-			$('#aps-brand-preview').html('<img src="' + attachment.url + '" alt="">').addClass('has-image').show();
-			$('#aps-brand-placeholder').hide();
-			$('#aps-remove-brand-btn').removeClass('aps-hidden');
-		});
-
-		frame.open();
-	});
-
-	// URL input for Brand Logo
-	$('#aps-brand-url-input').on('change', function() {
-		var url = $(this).val();
-		if (url) {
-			$('#aps-brand-image-url').val(url);
-			$('#aps-brand-preview').html('<img src="' + url + '" alt="">').addClass('has-image').show();
-			$('#aps-brand-placeholder').hide();
-			$('#aps-remove-brand-btn').removeClass('aps-hidden');
-		}
-	});
-
-	$('#aps-remove-brand-btn').on('click', function() {
-		$('#aps-brand-image-url').val('');
-		$('#aps-brand-url-input').val('');
-		$('#aps-brand-preview').html('').removeClass('has-image').hide();
-		$('#aps-brand-placeholder').show();
-		$(this).addClass('aps-hidden');
-	});
 
 	// Smooth scroll for quick nav
 	$('.aps-quick-nav .nav-link').on('click', function(e) {

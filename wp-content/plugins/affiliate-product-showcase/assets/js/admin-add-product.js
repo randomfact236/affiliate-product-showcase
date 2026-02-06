@@ -58,6 +58,9 @@
 			mediaTitle = 'Select Image'
 		} = config;
 
+		// Store media uploader instance to prevent recreation
+		let mediaUploader = null;
+
 		// Upload button click handler
 		$(`#${uploadBtnId}`).on('click', function(e) {
 			e.preventDefault();
@@ -68,46 +71,37 @@
 				return;
 			}
 
-			const mediaUploader = wp.media({
-				title: mediaTitle,
-				button: { text: 'Use This Image' },
-				multiple: false
-			});
+			// Create media uploader only once and reuse it
+			if (!mediaUploader) {
+				mediaUploader = wp.media({
+					title: mediaTitle,
+					button: { text: 'Use This Image' },
+					multiple: false
+				});
 
-			mediaUploader.on('select', function() {
-				const attachment = mediaUploader.state().get('selection').first().toJSON();
-				$(`#${hiddenUrlId}`).val(attachment.url);
-				$(`#${urlInputId}`).val(attachment.url);
-				$(`#${previewId}`)
-					.css('background-image', `url(${attachment.url})`)
-					.removeClass('no-image')
-					.addClass('has-image');
-				$(`${placeholderId}`).hide();
-				$(`#${removeBtnId}`).removeClass('aps-hidden');
-			});
+				mediaUploader.on('select', function() {
+					const attachment = mediaUploader.state().get('selection').first().toJSON();
+					$(`#${hiddenUrlId}`).val(attachment.url);
+					$(`#${urlInputId}`).val(attachment.url);
+					// Use img tag to match HTML structure
+					$(`#${previewId}`).html('<img src="' + attachment.url + '" alt="">').addClass('has-image').show();
+					$(`${placeholderId}`).hide();
+					$(`#${removeBtnId}`).removeClass('aps-hidden');
+				});
+			}
 
 			mediaUploader.open();
 		});
 
-		// URL input blur handler
-		$(`#${urlInputId}`).on('blur', function() {
+		// URL input change handler
+		$(`#${urlInputId}`).on('change', function() {
 			const url = $(this).val();
 			if (url) {
 				$(`#${hiddenUrlId}`).val(url);
-				$(`#${previewId}`)
-					.css('background-image', `url(${url})`)
-					.removeClass('no-image')
-					.addClass('has-image');
+				// Use img tag to match HTML structure
+				$(`#${previewId}`).html('<img src="' + url + '" alt="">').addClass('has-image').show();
 				$(`${placeholderId}`).hide();
 				$(`#${removeBtnId}`).removeClass('aps-hidden');
-			} else {
-				$(`#${hiddenUrlId}`).val('');
-				$(`#${previewId}`)
-					.css('background-image', 'none')
-					.removeClass('has-image')
-					.addClass('no-image');
-				$(`${placeholderId}`).show();
-				$(`#${removeBtnId}`).addClass('aps-hidden');
 			}
 		});
 
@@ -115,10 +109,7 @@
 		$(`#${removeBtnId}`).on('click', function() {
 			$(`#${hiddenUrlId}`).val('');
 			$(`#${urlInputId}`).val('');
-			$(`#${previewId}`)
-				.css('background-image', 'none')
-				.removeClass('has-image')
-				.addClass('no-image');
+			$(`#${previewId}`).html('').removeClass('has-image').hide();
 			$(`${placeholderId}`).show();
 			$(this).addClass('aps-hidden');
 		});
@@ -203,28 +194,6 @@
 	}
 
 	// ============================================
-	// Features List Handler
-	// ============================================
-	const features = [];
-
-	function renderFeatures() {
-		const container = $('#aps-features-list');
-		container.empty();
-		features.forEach((feature, index) => {
-			const html = `<div class="aps-feature-item ${feature.highlighted ? 'highlighted' : ''}" data-index="${index}">
-				<span class="feature-text">${feature.text.replace(/</g, '<')}</span>
-				<div class="feature-actions">
-					<button type="button" class="highlight-btn" title="Highlight"><i class="fas fa-bold"></i></button>
-					<button type="button" class="move-up" title="Move Up"><i class="fas fa-arrow-up"></i></button>
-					<button type="button" class="move-down" title="Move Down"><i class="fas fa-arrow-down"></i></button>
-					<button type="button" class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
-				</div>`;
-			container.append(html);
-		});
-		$('#aps-features-input').val(JSON.stringify(features));
-	}
-
-	// ============================================
 	// Document Ready Handler
 	// ============================================
 	$(document).ready(function() {
@@ -261,60 +230,6 @@
 			} else {
 				$('#aps-discount').val('0% OFF');
 			}
-		});
-
-		// ============================================
-		// Features List
-		// ============================================
-		if (apsAddProductData.isEditing && apsAddProductData.productData.features && Array.isArray(apsAddProductData.productData.features)) {
-			features.push(...apsAddProductData.productData.features);
-			renderFeatures();
-		}
-
-		$('#aps-add-feature').on('click', function() {
-			const input = $('#aps-new-feature');
-			const featureText = input.val().trim();
-			if (featureText) {
-				features.push({ text: featureText, highlighted: false });
-				input.val('');
-				renderFeatures();
-			}
-		});
-
-		$('#aps-new-feature').on('keypress', function(e) {
-			if (e.which === 13) {
-				e.preventDefault();
-				$('#aps-add-feature').click();
-			}
-		});
-
-		// Feature item actions
-		$(document).on('click', '.aps-feature-item .highlight-btn', function() {
-			const index = $(this).closest('.aps-feature-item').data('index');
-			features[index].highlighted = !features[index].highlighted;
-			renderFeatures();
-		});
-
-		$(document).on('click', '.aps-feature-item .move-up', function() {
-			const index = $(this).closest('.aps-feature-item').data('index');
-			if (index > 0) {
-				[features[index], features[index - 1]] = [features[index - 1], features[index]];
-				renderFeatures();
-			}
-		});
-
-		$(document).on('click', '.aps-feature-item .move-down', function() {
-			const index = $(this).closest('.aps-feature-item').data('index');
-			if (index < features.length - 1) {
-				[features[index], features[index + 1]] = [features[index + 1], features[index]];
-				renderFeatures();
-			}
-		});
-
-		$(document).on('click', '.aps-feature-item .delete-btn', function() {
-			const index = $(this).closest('.aps-feature-item').data('index');
-			features.splice(index, 1);
-			renderFeatures();
 		});
 
 		// ============================================

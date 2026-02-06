@@ -448,6 +448,39 @@ class Menu {
     public function renderAddProductPage(): void {
         global $post_id, $is_editing, $product_data;
         
+        // Get product data if editing (before enqueue to have data available for localization)
+        $post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+        $is_editing = $post_id > 0;
+        $product_data = [];
+        
+        if ( $is_editing ) {
+            $post = get_post( $post_id );
+            if ( $post && $post->post_type === 'aps_product' ) {
+                $product_data = [
+                    'id' => $post->ID,
+                    'title' => $post->post_title,
+                    'status' => $post->post_status,
+                    'content' => $post->post_content,
+                    'short_description' => $post->post_excerpt,
+                    'logo' => get_post_meta( $post->ID, '_aps_logo', true ),
+                    'brand_image' => get_post_meta( $post->ID, '_aps_brand_image', true ),
+                    'affiliate_url' => get_post_meta( $post->ID, '_aps_affiliate_url', true ),
+                    'button_name' => get_post_meta( $post->ID, '_aps_button_name', true ),
+                    'regular_price' => get_post_meta( $post->ID, '_aps_price', true ),
+                    'original_price' => get_post_meta( $post->ID, '_aps_original_price', true ),
+                    'featured' => get_post_meta( $post->ID, '_aps_featured', true ) === '1',
+                    'rating' => get_post_meta( $post->ID, '_aps_rating', true ),
+                    'views' => get_post_meta( $post->ID, '_aps_views', true ),
+                    'user_count' => get_post_meta( $post->ID, '_aps_user_count', true ),
+                    'reviews' => get_post_meta( $post->ID, '_aps_reviews', true ),
+                    'features' => json_decode( get_post_meta( $post->ID, '_aps_features', true ) ?: '[]', true ),
+                    'categories' => wp_get_object_terms( $post->ID, 'aps_category', [ 'fields' => 'slugs' ] ),
+                    'tags' => wp_get_object_terms( $post->ID, 'aps_tag', [ 'fields' => 'slugs' ] ),
+                    'ribbons' => wp_get_object_terms( $post->ID, 'aps_ribbon', [ 'fields' => 'slugs' ] ),
+                ];
+            }
+        }
+        
         // Enqueue WordPress media library scripts
         wp_enqueue_media();
         
@@ -468,10 +501,10 @@ class Menu {
             true
         );
         
-        // Localize script with PHP data
+        // Localize script with PHP data (now includes categories and ribbons)
         wp_localize_script('aps-admin-add-product', 'apsAddProductData', [
-            'productData' => $product_data ?? [],
-            'isEditing' => $is_editing ?? false,
+            'productData' => $product_data,
+            'isEditing' => $is_editing,
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('aps_product_nonce')
         ]);
