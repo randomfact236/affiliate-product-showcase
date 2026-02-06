@@ -2,7 +2,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "jquery": true
   },
   "globals": {
     "$": "readonly",
@@ -11,68 +11,44 @@
     "ajaxurl": "readonly",
     "apsAddProductData": "readonly",
     "apsProductsData": "readonly",
-    "aps_admin_vars": "readonly"
+    "apsAdminVars": "readonly",
+    "apsData": "readonly",
+    "APS": "writable"
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+    "ecmaVersion": 2020,
+    "sourceType": "script"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "eslint-plugin-react",
-    "eslint-plugin-react-hooks",
-    "eslint-plugin-jsx-a11y"
-  ],
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended"
+    "eslint:recommended"
   ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "rules": {
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-undef": "error",
+    "prefer-const": "warn",
+    "no-var": "warn"
   },
   "ignorePatterns": [
     "node_modules",
     "dist",
     "build",
     "vendor",
-    "assets/dist",
-    ".vite",
-    "coverage",
-    "*.config.js",
-    "*.config.ts",
-    "scripts",
-    "vite-plugins",
-    "tools",
+    "*.min.js",
     "tests"
-  ],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": "./tsconfig.json"
-      },
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:jsx-a11y/recommended"
-      ]
-    }
   ]
 }

@@ -14,9 +14,17 @@
 (function ($) {
 	'use strict';
 
+	/**
+	 * @typedef {Object} TagConfig
+	 * @property {string} nonce - Security nonce for AJAX requests
+	 * @property {string} row_action_nonce - Nonce for row actions
+	 * @property {string} success_text - Success message text
+	 * @property {string} error_text - Error message text
+	 */
+
 	const { showNotice, ajax, shouldKeepRowInCurrentView, parseQueryParamsFromUrl } = window.APS_Utils;
 
-	// Localize config
+	/** @type {TagConfig} */
 	const config = typeof apsAdminVars !== 'undefined' ? apsAdminVars : {};
 
 	$(function () {

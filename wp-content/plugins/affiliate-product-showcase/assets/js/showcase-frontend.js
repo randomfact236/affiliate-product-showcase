@@ -6,10 +6,43 @@
  * @since   2.0.0
  */
 
-(function(window, document) {
+(function (window, document) {
     'use strict';
 
-    // Configuration
+    /**
+     * @typedef {Object} FrontendConfig
+     * @property {number} debounceDelay - Delay for search debouncing in ms
+     * @property {number} animationDuration - Duration for UI animations in ms
+     * @property {number} maxRetries - Maximum retry attempts for failed requests
+     * @property {number} retryDelay - Base delay between retries in ms
+     */
+
+    /**
+     * @typedef {Object} FrontendState
+     * @property {boolean} isLoading - Whether a request is in progress
+     * @property {AbortController|null} currentRequest - Current request controller
+     * @property {number} retryCount - Current retry attempt count
+     * @property {Map<string, Object>} cache - Response cache
+     */
+
+    /**
+     * @typedef {Object} FilterState
+     * @property {string} category - Selected category filter
+     * @property {string[]} tags - Selected tag filters
+     * @property {string} sort - Sort order
+     * @property {string} search - Search query
+     * @property {number} page - Current page number
+     * @property {number} per_page - Items per page
+     */
+
+    /**
+     * @typedef {Object} ApsData
+     * @property {string} ajaxUrl - WordPress AJAX endpoint
+     * @property {string} nonce - Security nonce
+     * @property {Object} i18n - Localized strings
+     */
+
+    /** @type {FrontendConfig} */
     const CONFIG = {
         debounceDelay: 300,
         animationDuration: 200,
@@ -17,7 +50,7 @@
         retryDelay: 1000
     };
 
-    // State management
+    /** @type {FrontendState} */
     const state = {
         isLoading: false,
         currentRequest: null,
@@ -54,15 +87,15 @@
     function initSearch(container) {
         const searchInput = container.querySelector('#aps-search-input');
         const spinner = container.querySelector('.aps-search-spinner');
-        
+
         if (!searchInput) return;
 
         let debounceTimer;
 
-        searchInput.addEventListener('input', function(e) {
+        searchInput.addEventListener('input', function (e) {
             clearTimeout(debounceTimer);
             spinner?.classList.add('active');
-            
+
             debounceTimer = setTimeout(() => {
                 const query = e.target.value.trim();
                 performFilter(container, { search: query });
@@ -71,7 +104,7 @@
         });
 
         // Clear search on Escape
-        searchInput.addEventListener('keydown', function(e) {
+        searchInput.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 this.value = '';
                 performFilter(container, { search: '' });
@@ -86,7 +119,7 @@
     function initFilters(container) {
         // Category tabs
         container.querySelectorAll('.aps-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', function () {
                 if (this.classList.contains('active')) return;
 
                 // Update UI
@@ -98,7 +131,7 @@
                 this.setAttribute('aria-selected', 'true');
 
                 // Trigger filter
-                performFilter(container, { 
+                performFilter(container, {
                     category: this.dataset.category,
                     page: 1 // Reset to first page on filter change
                 });
@@ -107,12 +140,12 @@
 
         // Tags
         container.querySelectorAll('.aps-tags-grid .aps-tag').forEach(tag => {
-            tag.addEventListener('click', function() {
+            tag.addEventListener('click', function () {
                 this.classList.toggle('active');
                 const isPressed = this.classList.contains('active');
                 this.setAttribute('aria-pressed', isPressed.toString());
 
-                performFilter(container, { 
+                performFilter(container, {
                     tags: getSelectedTags(container),
                     page: 1
                 });
@@ -122,7 +155,7 @@
         // Clear all
         const clearBtn = container.querySelector('.aps-clear-all');
         if (clearBtn) {
-            clearBtn.addEventListener('click', function(e) {
+            clearBtn.addEventListener('click', function (e) {
                 e.preventDefault();
                 clearAllFilters(container);
             });
@@ -136,7 +169,7 @@
         const sortSelect = container.querySelector('.aps-sort-select');
         if (!sortSelect) return;
 
-        sortSelect.addEventListener('change', function() {
+        sortSelect.addEventListener('change', function () {
             performFilter(container, { sort: this.value });
         });
     }
@@ -145,7 +178,7 @@
      * Pagination controls
      */
     function initPagination(container) {
-        container.addEventListener('click', function(e) {
+        container.addEventListener('click', function (e) {
             const btn = e.target.closest('.aps-pagination-number, .aps-pagination-prev, .aps-pagination-next');
             if (!btn || btn.classList.contains('disabled') || btn.classList.contains('active')) return;
 
@@ -153,7 +186,7 @@
             if (isNaN(page)) return;
 
             performFilter(container, { page });
-            
+
             // Scroll to top of grid
             const grid = container.querySelector('.aps-cards-grid');
             grid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -174,10 +207,10 @@
 
         // Keyboard navigation for tags
         container.querySelectorAll('.aps-tags-grid').forEach(grid => {
-            grid.addEventListener('keydown', function(e) {
+            grid.addEventListener('keydown', function (e) {
                 const tags = Array.from(this.querySelectorAll('.aps-tag'));
                 const currentIndex = tags.indexOf(document.activeElement);
-                
+
                 if (e.key === 'ArrowRight' && currentIndex < tags.length - 1) {
                     e.preventDefault();
                     tags[currentIndex + 1].focus();
@@ -262,10 +295,10 @@
 
         const currentState = getFilterState(container);
         const newState = { ...currentState, ...updates };
-        
+
         // Generate cache key
         const cacheKey = JSON.stringify(newState);
-        
+
         // Check cache
         if (state.cache.has(cacheKey)) {
             updateUI(container, state.cache.get(cacheKey), newState);
@@ -299,37 +332,37 @@
             credentials: 'same-origin',
             signal: controller.signal
         })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            if (!data.success) throw new Error(data.data?.message || 'Unknown error');
-            
-            // Cache successful response
-            state.cache.set(cacheKey, data.data);
-            if (state.cache.size > 50) state.cache.delete(state.cache.keys().next().value);
-            
-            updateUI(container, data.data, newState);
-            state.retryCount = 0;
-        })
-        .catch(error => {
-            if (error.name === 'AbortError') return;
-            
-            console.error('APS: Filter error', error);
-            
-            if (state.retryCount < CONFIG.maxRetries) {
-                state.retryCount++;
-                setTimeout(() => performFilter(container, updates), CONFIG.retryDelay * state.retryCount);
-            } else {
-                showError(container, error.message);
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) throw new Error(data.data?.message || 'Unknown error');
+
+                // Cache successful response
+                state.cache.set(cacheKey, data.data);
+                if (state.cache.size > 50) state.cache.delete(state.cache.keys().next().value);
+
+                updateUI(container, data.data, newState);
                 state.retryCount = 0;
-            }
-        })
-        .finally(() => {
-            setLoadingState(container, false);
-            state.isLoading = false;
-        });
+            })
+            .catch(error => {
+                if (error.name === 'AbortError') return;
+
+                console.error('APS: Filter error', error);
+
+                if (state.retryCount < CONFIG.maxRetries) {
+                    state.retryCount++;
+                    setTimeout(() => performFilter(container, updates), CONFIG.retryDelay * state.retryCount);
+                } else {
+                    showError(container, error.message);
+                    state.retryCount = 0;
+                }
+            })
+            .finally(() => {
+                setLoadingState(container, false);
+                state.isLoading = false;
+            });
     }
 
     /**
@@ -338,31 +371,31 @@
     function updateUI(container, data, state) {
         const grid = container.querySelector('.aps-cards-grid');
         const pagination = container.querySelector('.aps-pagination');
-        
+
         if (!grid) return;
 
         // Update grid with animation
         grid.style.opacity = '0';
-        
+
         setTimeout(() => {
             if (data.products && data.products.trim()) {
                 grid.innerHTML = data.products;
             } else {
                 grid.innerHTML = `<p class="aps-no-products">${apsData.i18n.noProducts}</p>`;
             }
-            
+
             // Update pagination
             if (pagination && data.pagination) {
                 pagination.outerHTML = data.pagination;
             }
-            
+
             // Update state attributes
             container.dataset.currentPage = state.page;
             container.dataset.totalPages = data.total_pages || 1;
-            
+
             // Fade in
             grid.style.opacity = '1';
-            
+
             // Announce to screen readers
             const liveRegion = container.querySelector('.aps-results-info');
             if (liveRegion && data.count !== undefined) {
@@ -377,7 +410,7 @@
     function setLoadingState(container, isLoading) {
         state.isLoading = isLoading;
         const grid = container.querySelector('.aps-cards-grid');
-        
+
         if (isLoading) {
             grid?.classList.add('loading');
         } else {
@@ -409,7 +442,7 @@
         if (!window.history || !window.URLSearchParams) return;
 
         const params = new URLSearchParams();
-        
+
         if (state.category !== 'all') params.set('aps_category', state.category);
         if (state.tags.length) params.set('aps_tags', state.tags.join(','));
         if (state.sort !== 'featured') params.set('aps_sort', state.sort);
@@ -427,10 +460,16 @@
         init();
     }
 
-    // Expose for external use
-    window.APS = {
-        refresh: (container) => performFilter(container || document.querySelector('.aps-showcase-container'), {}),
-        clearFilters: (container) => clearAllFilters(container || document.querySelector('.aps-showcase-container'))
+    // Expose for external use using unified namespace
+    window.APS = window.APS || {};
+    window.APS.Frontend = {
+        refresh: function (container) {
+            performFilter(container || document.querySelector('.aps-showcase-container'), {});
+        },
+        clearFilters: function (container) {
+            clearAllFilters(container || document.querySelector('.aps-showcase-container'));
+        }
     };
 
 })(window, document);
+

@@ -16,9 +16,17 @@
 (function ($) {
 	'use strict';
 
+	/**
+	 * @typedef {Object} RibbonConfig
+	 * @property {string} nonce - Security nonce for AJAX requests
+	 * @property {string} row_action_nonce - Nonce for row actions
+	 * @property {string} success_text - Success message text
+	 * @property {string} error_text - Error message text
+	 */
+
 	const { showNotice, ajax, getCurrentStatusView, shouldKeepRowInCurrentView, parseQueryParamsFromUrl } = window.APS_Utils;
 
-	// Localize config
+	/** @type {RibbonConfig} */
 	const config = typeof apsAdminVars !== 'undefined' ? apsAdminVars : {};
 
 	/**
@@ -110,7 +118,12 @@
 				const icon = $iconDisplay.length ? $iconDisplay.text().trim() : '';
 
 				if (icon && $nameLink.find('.ribbon-icon-prefix').length === 0) {
-					$nameLink.html(`<span class="ribbon-icon-prefix">${icon}</span> ${$nameLink.text()}`);
+					// Safe DOM construction using jQuery to prevent XSS
+					const escapedIcon = APS_Utils.escapeHtml ? APS_Utils.escapeHtml(icon) : icon;
+					const originalText = $nameLink.text();
+					$nameLink.empty()
+						.append($('<span>').addClass('ribbon-icon-prefix').text(escapedIcon))
+						.append(document.createTextNode(' ' + originalText));
 				}
 
 				// Set CSS variables for the specific row item

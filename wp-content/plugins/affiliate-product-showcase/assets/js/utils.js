@@ -11,14 +11,38 @@
 (function (window) {
     'use strict';
 
-    window.APS_Utils = {
+    /**
+     * @typedef {Object} AjaxOptions
+     * @property {string} [url] - AJAX endpoint URL
+     * @property {string} [type] - HTTP method (GET, POST, etc.)
+     * @property {Object} [data] - Request data
+     * @property {string} [dataType] - Expected response type
+     */
+
+    /**
+     * @typedef {Object} NoticeOptions
+     * @property {'success'|'error'|'warning'|'info'} type - Notice type
+     * @property {string} message - Notice message
+     */
+
+    // Initialize main namespace
+    window.APS = window.APS || {};
+
+    /**
+     * Utility functions namespace
+     * @namespace APS.Utils
+     */
+    window.APS.Utils = {
         /**
-         * Get AJAX URL
+         * Get AJAX URL from available WordPress globals
          * @returns {string} WordPress AJAX URL
          */
         getAjaxUrl: function () {
-            if (typeof aps_admin_vars !== 'undefined' && aps_admin_vars.ajax_url) {
-                return aps_admin_vars.ajax_url;
+            if (typeof apsAdminVars !== 'undefined' && apsAdminVars.ajax_url) {
+                return apsAdminVars.ajax_url;
+            }
+            if (typeof apsData !== 'undefined' && apsData.ajaxUrl) {
+                return apsData.ajaxUrl;
             }
             if (typeof ajaxurl !== 'undefined') {
                 return ajaxurl;
@@ -33,27 +57,31 @@
          * @returns {Function} Debounced function
          */
         debounce: function (func, wait) {
-            let timeout;
-            return function (...args) {
-                const context = this;
+            var timeout;
+            return function () {
+                var context = this;
+                var args = arguments;
                 clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), wait);
+                timeout = setTimeout(function () {
+                    func.apply(context, args);
+                }, wait);
             };
         },
 
         /**
-         * Escape HTML string
+         * Escape HTML string to prevent XSS
          * @param {string} str - String to escape
          * @returns {string} Escaped string
          */
         escapeHtml: function (str) {
-            const div = document.createElement('div');
+            if (typeof str !== 'string') return '';
+            var div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         },
 
         /**
-         * Sanitize URL for safe use in CSS context
+         * Sanitize URL for safe use in CSS/HTML context
          * Only allows http:, https:, and data: protocols
          * @param {string} url - URL to sanitize
          * @returns {string} Sanitized URL or empty string
@@ -62,65 +90,149 @@
             if (typeof url !== 'string') return '';
             url = url.trim();
             if (!url) return '';
-            const allowedProtocols = /^(https?:|data:)/i;
+            var allowedProtocols = /^(https?:|data:)/i;
             if (!allowedProtocols.test(url)) {
-                return 'https:' + url;
+                if (url.indexOf('//') === 0) {
+                    return 'https:' + url;
+                }
+                return '';
             }
             return url;
         },
 
         /**
-         * Show admin notice
-         * @param {string} type - 'success', 'error', 'warning', 'info'
+         * Get current status view from URL parameters
+         * @returns {string} Current status filter value or 'all'
+         */
+        getCurrentStatusView: function () {
+            var params = new URLSearchParams(window.location.search);
+            return params.get('status') || params.get('aps_status') || 'all';
+        },
+
+        /**
+         * Determine if a row should remain visible in current view
+         * @param {string} newStatus - The new status of the item
+         * @returns {boolean} True if row should stay visible
+         */
+        shouldKeepRowInCurrentView: function (newStatus) {
+            var currentView = this.getCurrentStatusView();
+            if (currentView === 'all') {
+                return newStatus !== 'trashed';
+            }
+            return currentView === newStatus;
+        },
+
+        /**
+         * Parse URL query parameters
+         * @param {string} url - URL to parse
+         * @returns {URLSearchParams} Parsed parameters
+         */
+        parseQueryParamsFromUrl: function (url) {
+            try {
+                var urlObj = new URL(url, window.location.origin);
+                return urlObj.searchParams;
+            } catch (e) {
+                return new URLSearchParams();
+            }
+        },
+
+        /**
+         * Show admin notice with auto-dismiss (vanilla JS - no jQuery dependency)
+         * @param {'success'|'error'|'warning'|'info'} type - Notice type
          * @param {string} message - Message text
          */
         showNotice: function (type, message) {
+            var self = this;
+
             // Remove existing notices
-            const existingNotices = document.querySelectorAll('.aps-js-notice');
-            existingNotices.forEach(notice => notice.remove());
+            var existingNotices = document.querySelectorAll('.aps-js-notice');
+            existingNotices.forEach(function (notice) {
+                notice.remove();
+            });
 
             // Determine target
-            let target = document.querySelector('.wrap h1, .wrap h2');
+            var target = document.querySelector('.wrap h1, .wrap h2');
             if (!target) target = document.querySelector('.wrap');
             if (!target) return;
 
             // Normalize type
-            const noticeType = ['success', 'error', 'warning', 'info'].includes(type) ? type : 'info';
+            var validTypes = ['success', 'error', 'warning', 'info'];
+            var noticeType = validTypes.indexOf(type) !== -1 ? type : 'info';
 
-            // Create notice using jQuery for consistency with animation
-            const $notice = $(`<div class="notice notice-${noticeType} is-dismissible aps-js-notice"><p>${this.escapeHtml(message)}</p></div>`);
+            // Create notice using vanilla JS
+            var notice = document.createElement('div');
+            notice.className = 'notice notice-' + noticeType + ' is-dismissible aps-js-notice';
 
-            $(target).after($notice);
+            var paragraph = document.createElement('p');
+            paragraph.textContent = message;
+            notice.appendChild(paragraph);
+
+            // Add dismiss button
+            var dismissBtn = document.createElement('button');
+            dismissBtn.type = 'button';
+            dismissBtn.className = 'notice-dismiss';
+            dismissBtn.innerHTML = '<span class="screen-reader-text">Dismiss this notice.</span>';
+            notice.appendChild(dismissBtn);
+
+            target.parentNode.insertBefore(notice, target.nextSibling);
 
             // Auto-dismiss after 5 seconds
-            const timeout = setTimeout(() => {
-                $notice.fadeOut(200, function () {
-                    $(this).remove();
-                });
+            var timeout = setTimeout(function () {
+                notice.style.opacity = '0';
+                notice.style.transition = 'opacity 0.2s';
+                setTimeout(function () {
+                    if (notice.parentNode) {
+                        notice.remove();
+                    }
+                }, 200);
             }, 5000);
 
-            // Clear timeout if manually dismissed
-            $notice.on('click', '.notice-dismiss', function () {
+            // Manual dismiss handler
+            dismissBtn.addEventListener('click', function () {
                 clearTimeout(timeout);
+                notice.remove();
             });
         },
 
         /**
-         * Standardized AJAX Request
-         * @param {Object} options - jQuery AJAX options
-         * @returns {Promise} jQuery AJAX promise
+         * Standardized AJAX Request wrapper using fetch API
+         * @param {AjaxOptions} options - AJAX options
+         * @returns {Promise} Fetch promise
          */
         ajax: function (options) {
-            const defaults = {
+            var self = this;
+            var defaults = {
                 url: this.getAjaxUrl(),
-                type: 'POST',
-                dataType: 'json'
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             };
 
-            const settings = { ...defaults, ...options };
+            var settings = Object.assign({}, defaults, options);
+            var formData = new FormData();
 
-            return $.ajax(settings);
+            if (settings.data) {
+                Object.keys(settings.data).forEach(function (key) {
+                    formData.append(key, settings.data[key]);
+                });
+            }
+
+            return fetch(settings.url, {
+                method: settings.method,
+                body: formData,
+                headers: settings.headers,
+                credentials: 'same-origin'
+            }).then(function (response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.json();
+            });
         }
     };
+
+    // Backward compatibility alias
+    window.APS_Utils = window.APS.Utils;
 
 })(window);

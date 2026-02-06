@@ -15,9 +15,19 @@
 (function ($) {
 	'use strict';
 
+	/**
+	 * @typedef {Object} CategoryConfig
+	 * @property {string} nonce - Security nonce for AJAX requests
+	 * @property {string} row_action_nonce - Nonce for row actions
+	 * @property {string} cancel_url - URL for cancel action
+	 * @property {string} cancel_text - Cancel button text
+	 * @property {string} success_text - Success message text
+	 * @property {string} error_text - Error message text
+	 */
+
 	const { showNotice, ajax, getAjaxUrl, getCurrentStatusView } = window.APS_Utils;
 
-	// Localize config
+	/** @type {CategoryConfig} */
 	const config = typeof apsAdminVars !== 'undefined' ? apsAdminVars : {};
 
 	/**
