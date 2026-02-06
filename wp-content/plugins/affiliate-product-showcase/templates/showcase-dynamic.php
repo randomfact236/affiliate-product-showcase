@@ -297,8 +297,13 @@ $content_classes = apply_filters('aps_showcase_content_classes', ['aps-main-cont
                     $product_category_slugs = wp_list_pluck($product_categories, 'slug');
                     $product_tag_slugs = wp_list_pluck($product_tags, 'slug');
 
-                    // Validate features array - Product model doesn't have features, so we'll use an empty array
-                    $features = [];
+                    // Get features from product meta
+                    $features_raw = get_post_meta($product->id, '_aps_features', true);
+                    $features = !empty($features_raw) ? json_decode($features_raw, true) : [];
+                    // Ensure features is an array
+                    if (!is_array($features)) {
+                        $features = [];
+                    }
                     
                     // Apply filters for card customization
                     $card_classes = apply_filters('aps_product_card_classes', ['aps-tool-card'], $product);
@@ -385,6 +390,33 @@ $content_classes = apply_filters('aps_showcase_content_classes', ['aps-main-cont
                                     ); 
                                     ?>
                                 </p>
+                            <?php endif; ?>
+
+                            <!-- Features List -->
+                            <?php if (!empty($features)) : ?>
+                                <div class="aps-features-list">
+                                    <?php 
+                                    $display_features = array_slice($features, 0, 3);
+                                    foreach ($display_features as $index => $feature) : 
+                                        $feature_text = is_array($feature) ? ($feature['text'] ?? '') : $feature;
+                                        $is_highlighted = is_array($feature) && ($feature['highlighted'] ?? false);
+                                        if (empty($feature_text)) continue;
+                                    ?>
+                                        <div class="aps-feature-item <?php echo $index >= 2 ? 'aps-dimmed' : ''; ?> <?php echo $is_highlighted ? 'aps-bolt' : ''; ?>">
+                                            <?php echo esc_html($feature_text); ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    <?php if (count($features) > 3) : ?>
+                                        <div class="aps-feature-item aps-dimmed">
+                                            <?php 
+                                            printf(
+                                                esc_html__('+%d more features', 'affiliate-product-showcase'),
+                                                count($features) - 3
+                                            ); 
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif; ?>
 
                             <!-- Tags -->
