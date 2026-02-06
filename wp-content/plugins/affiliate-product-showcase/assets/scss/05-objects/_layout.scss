@@ -1,0 +1,45 @@
+/**
+ * Layout Object
+ * 
+ * Page layout patterns.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../02-tools/mixins' as *;
+
+.aps-o-layout {
+	display: flex;
+	gap: $spacing-5;
+	
+	&--sidebar {
+		> :first-child {
+			width: 240px;
+			flex-shrink: 0;
+		}
+		
+		> :last-child {
+			flex: 1;
+		}
+		
+		@include md-down {
+			flex-direction: column;
+			
+			> :first-child {
+				width: 100%;
+			}
+		}
+	}
+	
+	&--split {
+		> * {
+			flex: 1;
+		}
+		
+		@include md-down {
+			flex-direction: column;
+		}
+	}
+}

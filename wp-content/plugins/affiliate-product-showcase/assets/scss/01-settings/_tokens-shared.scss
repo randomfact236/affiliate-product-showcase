@@ -1,0 +1,53 @@
+/**
+ * Shared CSS Custom Properties
+ * 
+ * CSS custom properties used by BOTH admin and frontend.
+ * Outputs :root block with shared tokens.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use 'tokens-vars' as *;
+
+:root {
+    // Universal Brand Colors
+    --aps-color-primary: #{$color-primary};
+    --aps-color-primary-hover: #{$color-primary-hover};
+    --aps-color-secondary: #{$color-secondary};
+
+    // Semantic Colors
+    --aps-color-success: #{$color-success};
+    --aps-color-warning: #{$color-warning};
+    --aps-color-danger: #{$color-danger};
+    --aps-color-info: #{$color-info};
+
+    // Text Colors
+    --aps-color-text-primary: #{$color-text-primary};
+    --aps-color-text-secondary: #{$color-text-secondary};
+    --aps-color-text-muted: #{$color-text-muted};
+
+    // Background Colors
+    --aps-color-bg-primary: #{$color-bg-primary};
+    --aps-color-bg-secondary: #{$color-bg-secondary};
+    --aps-color-bg-hover: #{$color-bg-hover};
+
+    // Border Colors
+    --aps-color-border: #{$color-border};
+    --aps-color-border-light: #{$color-border-light};
+
+    // Spacing
+    --aps-spacing-unit: #{$spacing-4};
+
+    // Typography
+    --aps-font-family-base: #{$font-family-base};
+    --aps-font-size-base: #{$font-size-base};
+
+    // Border Radius
+    --aps-radius-base: #{$radius-md};
+
+    // Shadows
+    --aps-shadow-sm: #{$shadow-sm};
+    --aps-shadow-md: #{$shadow-md};
+    --aps-shadow-lg: #{$shadow-lg};
+}

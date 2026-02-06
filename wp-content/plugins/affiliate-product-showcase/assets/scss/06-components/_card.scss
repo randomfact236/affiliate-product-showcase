@@ -1,0 +1,489 @@
+/**
+ * Card Component
+ * 
+ * Product card styles with full BEM methodology.
+ * Consolidates: product-card.css + showcase frontend card styles
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../02-tools/mixins' as *;
+@use '../07-utilities/animations' as *;
+
+// ============================================
+// Card Container
+// ============================================
+
+.aps-card {
+	@include card-base;
+
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	&:hover {
+		border-color: $color-primary;
+	}
+
+	&:focus-within {
+		outline: 3px solid $color-primary;
+		outline-offset: 2px;
+		border-radius: $radius-lg;
+	}
+
+	// List layout variant
+	&--list {
+		flex-direction: row;
+		gap: $spacing-6;
+		padding: $spacing-6;
+		align-items: stretch;
+
+		&:hover {
+			transform: none;
+			box-shadow: $shadow-md;
+		}
+
+		@include md-down {
+			flex-direction: column;
+		}
+	}
+
+	// Compact variant
+	&--compact {
+		padding: $spacing-4;
+
+		.aps-card__media {
+			height: 180px;
+		}
+
+		.aps-card__title {
+			font-size: $font-size-md;
+		}
+
+		.aps-card__price {
+			font-size: $font-size-xl;
+		}
+	}
+}
+
+// ============================================
+// Card Media
+// ============================================
+
+.aps-card__media {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: $color-bg-secondary;
+
+	@supports not (aspect-ratio: 1) {
+		&::before {
+			content: '';
+			display: block;
+			padding-bottom: 56.25%;
+		}
+
+		img {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform $transition-base;
+	}
+
+	.aps-card:hover & img {
+		transform: scale(1.05);
+	}
+
+	// List layout adjustments
+	.aps-card--list & {
+		width: 200px;
+		height: 150px;
+		flex-shrink: 0;
+
+		@include md-down {
+			width: 100%;
+			height: 200px;
+		}
+	}
+}
+
+// ============================================
+// Card Body
+// ============================================
+
+.aps-card__body {
+	padding: $spacing-5;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-3;
+
+	// List layout
+	.aps-card--list & {
+		padding: 0;
+	}
+}
+
+.aps-card__title {
+	margin: 0;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	line-height: $line-height-tight;
+	color: $color-text-primary;
+	@include line-clamp(2);
+
+	a {
+		color: inherit;
+		transition: color $transition-fast;
+
+		&:hover {
+			color: $color-primary;
+		}
+	}
+}
+
+.aps-card__description {
+	margin: 0;
+	font-size: $font-size-base;
+	line-height: $line-height-normal;
+	color: $color-text-tertiary;
+	@include line-clamp(3);
+
+	// List layout
+	.aps-card--list & {
+		-webkit-line-clamp: 3;
+	}
+}
+
+// ============================================
+// Card Meta (Badges)
+// ============================================
+
+.aps-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-2;
+	align-items: center;
+}
+
+.aps-card__badge {
+	display: inline-block;
+	padding: $spacing-1 $spacing-3;
+	background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+	color: $color-white;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	border-radius: $radius-sm;
+	text-transform: uppercase;
+	letter-spacing: $letter-spacing-wide;
+}
+
+.aps-card__rating {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-1;
+	padding: $spacing-1 $spacing-2;
+	background: $color-rating-bg;
+	border: 1px solid $color-rating-border;
+	border-radius: $radius-sm;
+	font-size: $font-size-sm;
+	color: $color-rating-text;
+	font-weight: $font-weight-medium;
+
+	&[aria-hidden='true'] {
+		color: $color-rating-border;
+	}
+}
+
+.aps-card__version {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-1;
+	padding: $spacing-1 $spacing-2;
+	background: $color-version-bg;
+	border: 1px solid $color-version-border;
+	border-radius: $radius-sm;
+	font-size: $font-size-xs;
+	color: $color-version-text;
+	font-weight: $font-weight-medium;
+	font-family: $font-family-base;
+	transition:
+		background-color 150ms ease-in-out,
+		border-color 150ms ease-in-out,
+		color 150ms ease-in-out;
+
+	&:hover {
+		background: $color-primary;
+		color: $color-white;
+		border-color: $color-primary;
+	}
+}
+
+// ============================================
+// Card Footer
+// ============================================
+
+.aps-card__footer {
+	margin-top: auto;
+	padding: $spacing-4 $spacing-5;
+	border-top: 1px solid $color-bg-hover;
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-3;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.aps-card__price-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: $spacing-2;
+}
+
+.aps-card__price {
+	display: flex;
+	align-items: baseline;
+	gap: $spacing-1;
+	font-size: $font-size-2xl;
+	font-weight: $font-weight-bold;
+	color: $color-text-primary;
+	line-height: 1;
+
+	&-currency {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-medium;
+		color: $color-text-muted;
+	}
+
+	&--original {
+		font-size: $font-size-md;
+		color: $color-text-muted;
+		text-decoration: line-through;
+	}
+}
+
+.aps-card__discount {
+	display: inline-flex;
+	align-items: center;
+	padding: $spacing-1 $spacing-2;
+	background: $color-discount;
+	color: $color-white;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-bold;
+	border-radius: $radius-sm;
+	box-shadow: 0 2px 4px rgba($color-danger, 0.3);
+	@include pulse;
+}
+
+.aps-card__cta {
+	@include button-base;
+
+	background: $color-primary;
+	color: $color-white;
+
+	&:hover {
+		background: $color-primary-hover;
+		transform: translateY(-1px);
+		box-shadow: $shadow-md;
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+
+	// Touch device sizing
+	@include touch-only {
+		min-height: 44px;
+		padding: $spacing-3 $spacing-6;
+	}
+}
+
+// ============================================
+// Platform Section
+// ============================================
+
+.aps-card__platform {
+	margin-top: $spacing-3;
+	padding: $spacing-3;
+	background: $color-bg-tertiary;
+	border: 1px solid $color-border-light;
+	border-radius: $radius-md;
+	font-size: $font-size-sm;
+}
+
+.aps-card__platform-details {
+	transition: background-color 200ms ease-in-out;
+
+	&[open] {
+		background: $color-bg-primary;
+	}
+}
+
+.aps-card__platform-toggle {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: $spacing-1;
+	font-weight: $font-weight-medium;
+	color: $color-primary;
+	padding: $spacing-1 0;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+
+	&:hover {
+		color: $color-primary-hover;
+	}
+
+	@include focus-outline;
+
+	.dashicons {
+		font-size: $font-size-base;
+		width: $font-size-base;
+		height: $font-size-base;
+		transition: transform $transition-base;
+	}
+
+	// Touch device sizing
+	@include touch-only {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+	}
+}
+
+.aps-card__platform-details[open] .aps-card__platform-toggle .dashicons {
+	transform: rotate(90deg);
+}
+
+.aps-card__platform-content {
+	margin-top: $spacing-2;
+	padding: $spacing-2 $spacing-3;
+	background: $color-bg-primary;
+	border: 1px solid $color-border-light;
+	border-radius: $radius-sm;
+	font-size: $font-size-sm;
+	line-height: $line-height-relaxed;
+	color: $color-text-tertiary;
+	animation: aps-slide-down $transition-base ease;
+}
+
+// ============================================
+// Disclosure Notice
+// ============================================
+
+.aps-disclosure {
+	padding: $spacing-3;
+	margin-bottom: $spacing-3;
+	font-size: $font-size-xs;
+	line-height: $line-height-normal;
+	color: $color-text-tertiary;
+	background: $color-bg-secondary;
+	border: 1px solid $color-border-light;
+	border-radius: $radius-sm;
+
+	&--top {
+		margin-top: 0;
+		margin-bottom: $spacing-4;
+	}
+
+	&--bottom {
+		margin-top: $spacing-4;
+		margin-bottom: 0;
+	}
+}
+
+// ============================================
+// Responsive
+// ============================================
+
+@include md-down {
+	.aps-card__footer {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.aps-card__cta {
+		width: 100%;
+		text-align: center;
+	}
+
+	.aps-card__price-container {
+		justify-content: center;
+		width: 100%;
+	}
+}
+
+@include xs-down {
+	.aps-card__media {
+		aspect-ratio: 4 / 3;
+	}
+
+	.aps-card__title {
+		font-size: $font-size-md;
+	}
+
+	.aps-card__price {
+		font-size: $font-size-xl;
+	}
+}
+
+// ============================================
+// Print
+// ============================================
+
+@include print {
+	.aps-card {
+		break-inside: avoid;
+		border: 1px solid $color-black;
+		box-shadow: none;
+	}
+
+	.aps-card__cta,
+	.aps-card__platform-details {
+		display: none;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+@include reduced-motion {
+
+	.aps-card,
+	.aps-card__media img,
+	.aps-card__platform-details,
+	.aps-card__platform-toggle .dashicons {
+		transition: none;
+	}
+
+	.aps-card:hover .aps-card__media img {
+		transform: none;
+	}
+}
+
+@include high-contrast {
+	.aps-card {
+		border-width: 2px;
+	}
+
+	.aps-card__badge,
+	.aps-card__discount {
+		border: 2px solid $color-black;
+	}
+}
+
+// ============================================
+// Keyframes
+// ============================================

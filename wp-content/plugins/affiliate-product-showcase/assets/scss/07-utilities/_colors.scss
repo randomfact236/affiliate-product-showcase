@@ -1,0 +1,23 @@
+/**
+ * Color Utilities
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+
+// Text colors
+.u-text-primary { color: $color-text-primary; }
+.u-text-secondary { color: $color-text-secondary; }
+.u-text-muted { color: $color-text-muted; }
+.u-text-success { color: $color-success; }
+.u-text-warning { color: $color-warning; }
+.u-text-danger { color: $color-danger; }
+
+// Background colors
+.u-bg-primary { background-color: $color-bg-primary; }
+.u-bg-secondary { background-color: $color-bg-secondary; }
+.u-bg-success { background-color: $color-success-light; }
+.u-bg-warning { background-color: $color-warning-light; }
+.u-bg-danger { background-color: $color-danger-light; }

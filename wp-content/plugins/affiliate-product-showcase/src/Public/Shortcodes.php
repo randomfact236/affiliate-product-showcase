@@ -193,16 +193,27 @@ final class Shortcodes {
 		];
 
 		// Enqueue assets with version busting
-		$css_path = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'assets/css/showcase-frontend.min.css';
+		$core_path = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'assets/css/core.css';
+		$css_path = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'assets/css/frontend.css';
 		$js_path = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'assets/js/showcase-frontend.min.js';
 		
+		$core_version = file_exists($core_path) ? filemtime($core_path) : '2.0.0';
 		$css_version = file_exists($css_path) ? filemtime($css_path) : '2.0.0';
 		$js_version = file_exists($js_path) ? filemtime($js_path) : '2.0.0';
 
+		// Core styles first
+		wp_enqueue_style(
+			'affiliate-product-showcase-core',
+			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/core.css',
+			[],
+			$core_version
+		);
+		
+		// Frontend-specific styles
 		wp_enqueue_style(
 			'affiliate-product-showcase',
-			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/showcase-frontend.min.css',
-			[],
+			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/frontend.css',
+			[ 'affiliate-product-showcase-core' ],
 			$css_version
 		);
 
@@ -298,12 +309,18 @@ final class Shortcodes {
 	 * Exact copy of design from plan/frontend-design.md
 	 */
 	public function renderShowcaseStatic( array $atts ): string {
-		// Enqueue the isolated CSS
+		// Enqueue core + frontend CSS
+		wp_enqueue_style(
+			'affiliate-product-showcase-core',
+			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/core.css',
+			[],
+			'2.0.0'
+		);
 		wp_enqueue_style(
 			'affiliate-product-showcase-static',
-			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/showcase-frontend-isolated.css',
-			[],
-			'1.0.0'
+			AFFILIATE_PRODUCT_SHOWCASE_URL . 'assets/css/frontend.css',
+			[ 'affiliate-product-showcase-core' ],
+			'2.0.0'
 		);
 		
 		$template = AFFILIATE_PRODUCT_SHOWCASE_PATH . 'templates/showcase-static.php';

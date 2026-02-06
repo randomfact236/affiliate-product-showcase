@@ -1,0 +1,113 @@
+/**
+ * Generic Reset
+ * 
+ * Low-specificity reset and base styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+
+// Box-sizing reset
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+// Remove default margins
+* {
+	margin: 0;
+	padding: 0;
+}
+
+// Document
+html {
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-size-adjust: 100%;
+}
+
+body {
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	line-height: $line-height-normal;
+	color: $color-text-primary;
+	background-color: $color-bg-secondary;
+}
+
+// Media defaults
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+// Form elements inherit font
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+// Remove button default styles
+button {
+	cursor: pointer;
+	background: none;
+	border: none;
+}
+
+// Remove list styles
+ul,
+ol {
+	list-style: none;
+}
+
+// Links
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+// Tables
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+// Screen reader only
+.aps-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+// Skip link
+.aps-skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: $color-primary;
+	color: $color-white;
+	padding: $spacing-2 $spacing-4;
+	z-index: $z-toast;
+	transition: top $transition-fast;
+	
+	&:focus {
+		top: 0;
+	}
+}

@@ -484,11 +484,17 @@ class Menu {
         // Enqueue WordPress media library scripts
         wp_enqueue_media();
         
-        // Enqueue admin add product styles
+        // Enqueue core + admin add product styles (compiled from SCSS)
+        wp_enqueue_style(
+            'aps-core',
+            plugins_url( 'assets/css/core.css', \AffiliateProductShowcase\Plugin\Constants::FILE ),
+            [],
+            \AffiliateProductShowcase\Plugin\Constants::VERSION
+        );
         wp_enqueue_style(
             'aps-admin-add-product',
-            plugins_url( 'assets/css/affiliate-product-showcase.css', \AffiliateProductShowcase\Plugin\Constants::FILE ),
-            [],
+            plugins_url( 'assets/css/admin.css', \AffiliateProductShowcase\Plugin\Constants::FILE ),
+            [ 'aps-core' ],
             \AffiliateProductShowcase\Plugin\Constants::VERSION
         );
         

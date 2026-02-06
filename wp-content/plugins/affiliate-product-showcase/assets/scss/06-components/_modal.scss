@@ -1,0 +1,102 @@
+/**
+ * Modal Component
+ * 
+ * Dialog/modal window styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../02-tools/mixins' as *;
+@use '../07-utilities/animations' as *;
+
+.aps-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: $z-modal;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: aps-fade-in $transition-base ease;
+
+	&:focus-within {
+		outline: 3px solid $color-primary;
+		outline-offset: 2px;
+	}
+
+	@include reduced-motion {
+		animation: none;
+	}
+}
+
+.aps-modal__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.aps-modal__content {
+	position: relative;
+	background: $color-white;
+	border-radius: $radius-lg;
+	box-shadow: $shadow-xl;
+	width: 100%;
+	max-width: 500px;
+	max-height: 90vh;
+	overflow-y: auto;
+	margin: $spacing-5;
+	animation: aps-slide-up $transition-base ease;
+
+	@include reduced-motion {
+		animation: none;
+	}
+}
+
+.aps-modal__header {
+	padding: $spacing-5;
+	border-bottom: 1px solid $color-border-light;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.aps-modal__title {
+	margin: 0;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+}
+
+.aps-modal__close {
+	background: none;
+	border: none;
+	font-size: $font-size-2xl;
+	color: $color-text-muted;
+	cursor: pointer;
+	padding: $spacing-1;
+	line-height: 1;
+
+	&:hover {
+		color: $color-text-primary;
+	}
+
+	@include focus-outline;
+}
+
+.aps-modal__body {
+	padding: $spacing-5;
+}
+
+.aps-modal__footer {
+	padding: $spacing-5;
+	border-top: 1px solid $color-border-light;
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-3;
+}

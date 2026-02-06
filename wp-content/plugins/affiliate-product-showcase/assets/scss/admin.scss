@@ -1,0 +1,28 @@
+/**
+ * Admin Styles
+ * 
+ * WordPress Admin-specific styles.
+ * Includes: shared tokens + admin tokens + admin components.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// === CSS Custom Properties (output :root blocks) ===
+// Shared tokens first
+@use '01-settings/tokens-shared';
+// Admin-only tokens (--aps-admin-* variables)
+@use '01-settings/tokens-admin';
+
+// === Abstracts (Vars/Mixins - NO CSS Output) ===
+@use 'abstracts' as *;
+
+// === Objects (Layout primitives) ===
+@use '05-objects' as objects;
+
+// === Admin Components ===
+@use '06-components/tabs';
+@use '06-components/filters';
+@use '06-components/taxonomy';
+@use '06-components/modal';
+@use '06-components/toast';

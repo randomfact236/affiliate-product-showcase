@@ -1,0 +1,17 @@
+/**
+ * Frontend-Only CSS Custom Properties
+ * 
+ * CSS custom properties for public website only.
+ * NOT included in admin bundle.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use 'tokens-vars' as *;
+
+:root {
+    // Frontend Brand Colors
+    --aps-frontend-primary: #{$color-blue-500};
+    --aps-frontend-primary-hover: #{$color-blue-600};
+}

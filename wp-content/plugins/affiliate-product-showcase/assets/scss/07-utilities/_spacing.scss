@@ -1,0 +1,15 @@
+/**
+ * Spacing Utilities
+ * 
+ * Auto-generated utility classes for margin and padding.
+ * Generated via the spacing-utilities mixin.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../02-tools/mixins' as *;
+
+// Generate all spacing utilities from the $spacing map
+@include spacing-utilities;

@@ -50,40 +50,40 @@ class Enqueue {
      * @return void
      */
     public function enqueueStyles( string $hook ): void {
+        // Core CSS (shared base styles)
         wp_enqueue_style(
-            'affiliate-product-showcase-tokens',
-            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/tokens.css' ),
+            'affiliate-product-showcase-core',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/core.css' ),
             [],
             self::VERSION
         );
+        
+        // Admin CSS (compiled from SCSS)
+        wp_enqueue_style(
+            'affiliate-product-showcase-admin',
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
+            [ 'affiliate-product-showcase-core' ],
+            self::VERSION
+        );
 
-        // Load products page CSS regardless of plugin page check
+        // Load products page CSS
         global $typenow;
         if ( $hook === 'edit.php' && $typenow === 'aps_product' ) {
-            // Table filters CSS
-            wp_enqueue_style(
-                'affiliate-product-showcase-table-filters',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin-table-filters.css' ),
-                [],
-                self::VERSION
-            );
-            
-            // Products table CSS for custom columns (Logo, Ribbon, Status, etc.)
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-                [ 'affiliate-product-showcase-tokens' ],
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
+                [ 'affiliate-product-showcase-core' ],
                 self::VERSION
             );
         }
         
-        // Load settings CSS on settings page (before plugin page check)
+        // Settings page
         if ( $this->isSettingsPage( $hook ) ) {
             wp_enqueue_style(
-                'affiliate-product-showcase-settings',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/settings.css' ),
-                [],
-                self::VERSION . '.' . time() // Cache buster for development
+                'affiliate-product-showcase',
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
+                [ 'affiliate-product-showcase-core' ],
+                self::VERSION
             );
         }
         
@@ -92,53 +92,20 @@ class Enqueue {
             return;
         }
 
-        // Main admin CSS
-        wp_enqueue_style(
-            'affiliate-product-showcase-admin',
-            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
-            [ 'affiliate-product-showcase-tokens' ],
-            self::VERSION
-        );
-
-        // Form styles (WooCommerce-style product form)
+        // Form styles
         wp_enqueue_style(
             'affiliate-product-showcase-form',
-            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-            [ 'affiliate-product-showcase-tokens' ],
+            \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
+            [ 'affiliate-product-showcase-core' ],
             self::VERSION
         );
-
-        // Dashboard styles
-        if ( $this->isDashboardPage( $hook ) ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-dashboard',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/dashboard.css' ),
-                [],
-                self::VERSION
-            );
-        }
-
-        // Analytics styles
-        if ( $this->isAnalyticsPage( $hook ) ) {
-            wp_enqueue_style(
-                'affiliate-product-showcase-analytics',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/analytics.css' ),
-                [],
-                self::VERSION
-            );
-        }
-
-        // Settings styles already enqueued earlier
-
-        // Note: Product edit styles are inline in add-product-page.php
-        // No separate CSS file needed for add-product page
 
         // Custom products page
         if ( $hook === 'aps_product_page_aps-products' ) {
             wp_enqueue_style(
                 'affiliate-product-showcase-products',
-                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-                [ 'affiliate-product-showcase-tokens' ],
+                \AffiliateProductShowcase\Plugin\Constants::assetUrl( 'assets/css/admin.css' ),
+                [ 'affiliate-product-showcase-core' ],
                 self::VERSION
             );
             

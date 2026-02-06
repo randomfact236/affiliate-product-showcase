@@ -1,0 +1,208 @@
+/**
+ * Taxonomy Component
+ * 
+ * Category/Tag/Ribbon taxonomy management styles.
+ * Consolidates: admin-aps_category.css
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../02-tools/mixins' as *;
+
+// ============================================
+// Utility Classes
+// ============================================
+
+.aps-hidden {
+	display: none !important;
+}
+
+// ============================================
+// Status Icons
+// ============================================
+
+.aps-status-icon {
+	&--success {
+		color: $color-success;
+	}
+	
+	&--neutral {
+		color: $color-text-muted;
+	}
+}
+
+// ============================================
+// Cancel Button
+// ============================================
+
+.aps-cancel-term-edit {
+	margin-right: $spacing-2;
+}
+
+// ============================================
+// Status Select
+// ============================================
+
+.aps-term-status-select {
+	@include input-base;
+	
+	min-width: 120px;
+	cursor: pointer;
+	
+	&:focus {
+		outline: 2px solid $wp-admin-theme-color;
+		border-color: $wp-admin-theme-color;
+	}
+	
+	@include wp-tablet-down {
+		width: 100%;
+		min-width: auto;
+	}
+}
+
+// ============================================
+// Read-only Status
+// ============================================
+
+.aps-term-status-readonly {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-1;
+	color: $color-text-muted;
+	font-size: $font-size-sm;
+	
+	.dashicons {
+		font-size: $font-size-md;
+		width: $font-size-md;
+		height: $font-size-md;
+	}
+}
+
+.aps-status-note {
+	display: inline-block;
+	padding: $spacing-0-5 $spacing-2;
+	background: $color-info-light;
+	color: $color-info-dark;
+	border-radius: $radius-sm;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	margin-left: $spacing-1;
+}
+
+// ============================================
+// Term Count
+// ============================================
+
+.aps-term-count {
+	font-weight: $font-weight-semibold;
+	color: $color-text-primary;
+}
+
+// ============================================
+// Featured Star
+// ============================================
+
+.aps-featured-star {
+	color: $color-star;
+	font-size: $font-size-lg;
+	line-height: 1;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+// ============================================
+// WordPress Override: Edit Form
+// ============================================
+
+.edittag {
+	p.submit {
+		a.button {
+			margin-left: $spacing-3;
+			text-decoration: none;
+			transition: background-color $transition-fast;
+			
+			&:hover {
+				background: $color-bg-hover;
+			}
+			
+			&:focus-visible {
+				outline: 2px solid $wp-admin-theme-color;
+				outline-offset: 2px;
+			}
+		}
+	}
+}
+
+// ============================================
+// Checkbox Wrapper
+// ============================================
+
+.aps-taxonomy-checkboxes {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: $spacing-5;
+	margin: $spacing-5 0;
+	
+	@include wp-tablet-down {
+		grid-template-columns: 1fr;
+	}
+}
+
+.aps-taxonomy-checkbox {
+	background: $color-bg-tertiary;
+	padding: $spacing-4;
+	border-radius: $radius-md;
+	border: 1px solid $color-border;
+	margin: 0 !important;
+	
+	label {
+		display: flex !important;
+		align-items: center;
+		gap: $spacing-2;
+		font-weight: $font-weight-semibold;
+		cursor: pointer;
+		margin-bottom: 0 !important;
+	}
+	
+	input[type="checkbox"] {
+		width: 18px;
+		height: 18px;
+		margin: 0;
+	}
+}
+
+// ============================================
+// Settings Section
+// ============================================
+
+.aps-taxonomy-settings {
+	background: $color-white;
+	border: 1px solid $color-border;
+	border-radius: $radius-md;
+	padding: $spacing-5;
+	margin-top: $spacing-5;
+	
+	h3 {
+		margin: 0 0 $spacing-4 0;
+		padding-bottom: $spacing-3;
+		border-bottom: 1px solid $color-border-light;
+		font-size: $font-size-sm;
+		text-transform: uppercase;
+		letter-spacing: $letter-spacing-wide;
+		color: $color-text-primary;
+		font-weight: $font-weight-semibold;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+@include reduced-motion {
+	.aps-term-status-select,
+	.edittag p.submit a.button {
+		transition: none;
+	}
+}

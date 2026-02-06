@@ -1,0 +1,18 @@
+/**
+ * Admin-Only CSS Custom Properties
+ * 
+ * CSS custom properties for WordPress admin only.
+ * NOT included in frontend bundle.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use 'tokens-vars' as *;
+
+:root {
+    // WordPress Admin Theme Integration
+    --aps-admin-primary: #{$wp-admin-theme-color};
+    --aps-admin-primary-darker: #{$wp-admin-theme-color-darker-10};
+    --aps-admin-primary-darkest: #{$wp-admin-theme-color-darker-20};
+}

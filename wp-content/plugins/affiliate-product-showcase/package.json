@@ -1,18 +1,23 @@
 {
   "name": "affiliate-product-showcase",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0",
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "build": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --style compressed",
-    "watch": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --watch",
-    "dev": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --watch",
-    "scss:build": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --style compressed",
-    "scss:watch": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --watch"
+    "build": "npm run build:core && npm run build:admin && npm run build:frontend && npm run build:main",
+    "build:core": "sass assets/scss/core.scss assets/css/core.css --style compressed --source-map",
+    "build:admin": "sass assets/scss/admin.scss assets/css/admin.css --style compressed --source-map",
+    "build:frontend": "sass assets/scss/frontend.scss assets/css/frontend.css --style compressed --source-map",
+    "build:main": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --style compressed --source-map",
+    "watch": "sass assets/scss --watch --style compressed",
+    "dev": "sass assets/scss --watch --style expanded --source-map",
+    "clean": "rimraf assets/css/*.css assets/css/*.map",
+    "lint": "stylelint assets/scss/**/*.scss",
+    "lint:fix": "stylelint assets/scss/**/*.scss --fix"
   },
   "devDependencies": {
     "sass": "^1.77.8"

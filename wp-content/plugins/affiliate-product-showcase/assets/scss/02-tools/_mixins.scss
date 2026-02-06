@@ -1,0 +1,508 @@
+/**
+ * SCSS Mixins
+ * 
+ * Reusable mixins for common patterns.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../01-settings/breakpoints' as *;
+@use '../01-settings/breakpoints' as bp;
+@use 'sass:meta';
+@use 'sass:map';
+
+// ============================================
+// Map-based Responsive Breakpoints (New Architecture)
+// ============================================
+
+/// Mobile-first breakpoint using EM-based map
+/// @param {String} $breakpoint - The breakpoint key from $breakpoints map
+/// @example @include respond-to('md') { ... }
+@mixin respond-to($breakpoint) {
+	@if not map.has-key(bp.$breakpoints, $breakpoint) {
+		@error 'Breakpoint "#{$breakpoint}" not found in $breakpoints map.';
+	}
+
+	@media (min-width: map.get(bp.$breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint using EM-based map
+/// @param {String} $breakpoint - The breakpoint key from $breakpoints map
+/// @example @include respond-down('md') { ... }
+@mixin respond-down($breakpoint) {
+	@if not map.has-key(bp.$breakpoints, $breakpoint) {
+		@error 'Breakpoint "#{$breakpoint}" not found in $breakpoints map.';
+	}
+
+	@media (max-width: map.get(bp.$breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+// ============================================
+// Legacy Responsive Breakpoints (Backward Compatibility)
+// ============================================
+
+/// Mobile-first breakpoint: extra small
+@mixin xs-up {
+	@media (min-width: #{$breakpoint-xs}) {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: small
+@mixin sm-up {
+	@media (min-width: #{$breakpoint-sm}) {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: medium
+@mixin md-up {
+	@media (min-width: #{$breakpoint-md}) {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: large
+@mixin lg-up {
+	@media (min-width: #{$breakpoint-lg}) {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: extra large
+@mixin xl-up {
+	@media (min-width: #{$breakpoint-xl}) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: extra small (phones only)
+@mixin xs-down {
+	@media (max-width: #{$breakpoint-xs - 1px}) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: small
+@mixin sm-down {
+	@media (max-width: #{$breakpoint-sm - 1px}) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: medium (tablets and below)
+@mixin md-down {
+	@media (max-width: #{$breakpoint-md - 1px}) {
+		@content;
+	}
+}
+
+/// WordPress tablet breakpoint (782px and below)
+@mixin wp-tablet-down {
+	@media (max-width: #{$breakpoint-wp-tablet}) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: large
+@mixin lg-down {
+	@media (max-width: #{$breakpoint-lg - 1px}) {
+		@content;
+	}
+}
+
+/// Range breakpoint: tablet only
+@mixin tablet-only {
+	@media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-lg - 1px}) {
+		@content;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+/// Reduced motion preference
+@mixin reduced-motion {
+	@media (prefers-reduced-motion: reduce) {
+		@content;
+	}
+}
+
+/// High contrast preference
+@mixin high-contrast {
+	@media (prefers-contrast: high) {
+		@content;
+	}
+}
+
+/// Dark mode preference
+@mixin dark-mode {
+	@media (prefers-color-scheme: dark) {
+		@content;
+	}
+}
+
+/// Touch device detection
+@mixin touch-only {
+	@media (hover: none) and (pointer: coarse) {
+		@content;
+	}
+}
+
+/// Hover-capable device
+@mixin hover-device {
+	@media (hover: hover) and (pointer: fine) {
+		@content;
+	}
+}
+
+// ============================================
+// Focus States
+// ============================================
+
+/// Standard focus outline
+/// @param {Color} $color [$color-primary] - The focus color
+/// @param {Number} $offset [2px] - The outline offset
+@mixin focus-outline($color: $color-primary, $offset: 2px) {
+	&:focus-visible {
+		outline: 2px solid $color;
+		outline-offset: $offset;
+	}
+
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
+
+/// Focus ring with box-shadow
+/// @param {Color} $color [$color-primary] - The focus color
+@mixin focus-ring($color: $color-primary) {
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 3px rgba($color, 0.3);
+	}
+}
+
+/// WordPress admin style focus
+@mixin focus-wp-admin {
+	&:focus {
+		border-color: $wp-admin-theme-color;
+		box-shadow: 0 0 0 1px $wp-admin-theme-color;
+		outline: none;
+	}
+}
+
+// ============================================
+// Typography
+// ============================================
+
+/// Screen reader only text
+@mixin sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/// Reset screen reader only (for interactive elements)
+@mixin sr-only-focusable {
+
+	&:active,
+	&:focus {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip: auto;
+		white-space: normal;
+	}
+}
+
+/// Truncate text with ellipsis
+@mixin text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/// Multi-line text clamp
+/// @param {Number} $lines [3] - Number of lines to show
+@mixin line-clamp($lines: 3) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+// ============================================
+// Layout
+// ============================================
+
+/// Clearfix
+@mixin clearfix {
+	&::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+/// Visually hidden but accessible
+@mixin visually-hidden {
+	@include sr-only;
+}
+
+/// Reset list styles
+@mixin list-reset {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+// ============================================
+// Components
+// ============================================
+
+/// Button base styles
+@mixin button-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-2 $spacing-4;
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	line-height: $line-height-normal;
+	text-decoration: none;
+	border-radius: $radius-md;
+	border: 1px solid transparent;
+	cursor: pointer;
+	cursor: pointer;
+	transition:
+		background-color $transition-base,
+		border-color $transition-base,
+		color $transition-base,
+		transform $transition-base,
+		box-shadow $transition-base;
+	white-space: nowrap;
+
+	@include focus-outline;
+
+	&:disabled,
+	&.is-disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+}
+
+/// Card base styles
+@mixin card-base {
+	position: relative;
+	background: $color-bg-primary;
+	border: 1px solid $color-border-light;
+	border-radius: $radius-lg;
+	overflow: hidden;
+	transition: transform $transition-base, box-shadow $transition-base;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: $shadow-lg;
+	}
+}
+
+/// Form input base
+@mixin input-base {
+	width: 100%;
+	padding: $spacing-2 $spacing-3;
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	line-height: $line-height-normal;
+	color: $color-text-primary;
+	background: $color-bg-primary;
+	border: 1px solid $color-border-dark;
+	border-radius: $radius-sm;
+	box-shadow: $shadow-sm;
+	transition: border-color $transition-fast, box-shadow $transition-fast;
+
+	&:focus {
+		@include focus-wp-admin;
+	}
+
+	&::placeholder {
+		color: $color-text-muted;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		background: $color-bg-secondary;
+	}
+}
+
+// ============================================
+// Animations
+// ============================================
+
+
+
+// ============================================
+// Print
+// ============================================
+
+/// Print styles
+@mixin print {
+	@media print {
+		@content;
+	}
+}
+
+/// Hide for print
+@mixin print-hide {
+	@media print {
+		display: none !important;
+	}
+}
+
+/// Show only for print
+@mixin print-only {
+	display: none !important;
+
+	@media print {
+		display: block !important;
+	}
+}
+
+// ============================================
+// Utility Generators
+// ============================================
+
+/// Sanitizes a spacing key for use in CSS class names
+/// Converts '0.5' to '05', 'px' stays as 'px'
+/// @param {String} $key - The spacing map key
+/// @return {String} The sanitized class name suffix
+@function sanitize-spacing-key($key) {
+	// Replace dots with empty string to create valid class names
+	// e.g., '0.5' becomes '05'
+	$sanitized: $key;
+
+	@if $key =='0.5' {
+		@return '05';
+	}
+
+	@return $sanitized;
+}
+
+/// Generates spacing utility classes for margin and padding
+/// Creates atomic utility classes like .u-m-1, .u-p-2, .u-mt-3, etc.
+/// @example @include spacing-utilities;
+@mixin spacing-utilities {
+	@each $key, $value in $spacing {
+		$class-key: sanitize-spacing-key($key);
+
+		// Margin utilities
+		.u-m-#{$class-key} {
+			margin: $value;
+		}
+
+		.u-mt-#{$class-key} {
+			margin-top: $value;
+		}
+
+		.u-mb-#{$class-key} {
+			margin-bottom: $value;
+		}
+
+		.u-ml-#{$class-key} {
+			margin-left: $value;
+		}
+
+		.u-mr-#{$class-key} {
+			margin-right: $value;
+		}
+
+		.u-mx-#{$class-key} {
+			margin-left: $value;
+			margin-right: $value;
+		}
+
+		.u-my-#{$class-key} {
+			margin-top: $value;
+			margin-bottom: $value;
+		}
+
+		// Padding utilities
+		.u-p-#{$class-key} {
+			padding: $value;
+		}
+
+		.u-pt-#{$class-key} {
+			padding-top: $value;
+		}
+
+		.u-pb-#{$class-key} {
+			padding-bottom: $value;
+		}
+
+		.u-pl-#{$class-key} {
+			padding-left: $value;
+		}
+
+		.u-pr-#{$class-key} {
+			padding-right: $value;
+		}
+
+		.u-px-#{$class-key} {
+			padding-left: $value;
+			padding-right: $value;
+		}
+
+		.u-py-#{$class-key} {
+			padding-top: $value;
+			padding-bottom: $value;
+		}
+	}
+
+	// Auto margin utilities
+	.u-m-auto {
+		margin: auto;
+	}
+
+	.u-mx-auto {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.u-my-auto {
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
+	.u-mt-auto {
+		margin-top: auto;
+	}
+
+	.u-mb-auto {
+		margin-bottom: auto;
+	}
+
+	.u-ml-auto {
+		margin-left: auto;
+	}
+
+	.u-mr-auto {
+		margin-right: auto;
+	}
+}

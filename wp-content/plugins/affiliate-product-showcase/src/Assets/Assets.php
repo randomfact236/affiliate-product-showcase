@@ -37,11 +37,17 @@ final class Assets {
 	 * @return void
 	 */
 	public function enqueue_admin(): void {
-		// Admin CSS is compiled from SCSS
+		// Core + Admin CSS (compiled from SCSS)
+		wp_enqueue_style(
+			'aps-core',
+			Constants::assetUrl( 'assets/css/core.css' ),
+			[],
+			$this->version
+		);
 		wp_enqueue_style(
 			'aps-admin',
-			Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),
-			[],
+			Constants::assetUrl( 'assets/css/admin.css' ),
+			[ 'aps-core' ],
 			$this->version
 		);
 	}
@@ -52,11 +58,17 @@ final class Assets {
 	 * @return void
 	 */
 	public function enqueue_frontend(): void {
-		// Frontend showcase CSS
+		// Core + Frontend CSS (compiled from SCSS)
+		wp_enqueue_style(
+			'aps-core',
+			Constants::assetUrl( 'assets/css/core.css' ),
+			[],
+			$this->version
+		);
 		wp_enqueue_style(
 			'aps-frontend',
-			Constants::assetUrl( 'assets/css/showcase-frontend-isolated.css' ),
-			[],
+			Constants::assetUrl( 'assets/css/frontend.css' ),
+			[ 'aps-core' ],
 			$this->version
 		);
 	}
@@ -67,7 +79,7 @@ final class Assets {
 	 * @return void
 	 */
 	public function enqueue_editor(): void {
-		// Editor uses same CSS as frontend/admin
+		// Block editor gets complete bundle
 		wp_enqueue_style(
 			'aps-editor',
 			Constants::assetUrl( 'assets/css/affiliate-product-showcase.css' ),

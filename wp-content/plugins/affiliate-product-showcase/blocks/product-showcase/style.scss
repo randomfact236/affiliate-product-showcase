@@ -35,8 +35,8 @@
 
 	// Showcase item
 	.aps-showcase-item {
-		background: #fff;
-		border: 1px solid #e5e7eb;
+		background: $aps-color-white;
+		border: 1px solid $aps-color-border-alt;
 		border-radius: 12px;
 		overflow: hidden;
 		transition: all 0.3s ease;
@@ -94,7 +94,7 @@
 			height: 250px;
 			object-fit: cover;
 			display: block;
-			background: #f9fafb;
+			background: $aps-color-bg-sidebar;
 
 			@media (max-width: $aps-breakpoint-md) {
 				height: 200px;
@@ -115,14 +115,14 @@
 			top: 12px;
 			left: 12px;
 			padding: 6px 14px;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background: linear-gradient(135deg, $aps-color-blue-500 0%, $aps-color-primary 100%);
 			color: #fff;
 			font-size: 12px;
 			font-weight: 600;
 			border-radius: 6px;
 			text-transform: uppercase;
 			letter-spacing: 0.5px;
-			box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+			box-shadow: 0 2px 8px rgba($aps-color-blue-500, 0.3);
 		}
 
 		// Product title
@@ -131,7 +131,7 @@
 			font-size: 1.25rem;
 			font-weight: 700;
 			line-height: 1.4;
-			color: #1f2937;
+			color: $aps-color-text-primary;
 
 			a {
 				color: inherit;
@@ -139,7 +139,7 @@
 				transition: color 0.2s ease;
 
 				&:hover {
-					color: var(--aps-primary-color, #667eea);
+					color: var(--aps-primary-color, #{$aps-color-blue-500});
 				}
 			}
 		}
@@ -159,7 +159,7 @@
 
 			.aps-original-price {
 				font-size: 1.125rem;
-				color: #9ca3af;
+				color: $aps-color-text-tertiary;
 				text-decoration: line-through;
 			}
 		}
@@ -168,7 +168,7 @@
 		.aps-product-description {
 			font-size: 0.9375rem;
 			line-height: 1.7;
-			color: #6b7280;
+			color: $aps-color-text-secondary;
 			margin-bottom: 1.5rem;
 			flex: 1;
 			display: -webkit-box;
@@ -182,7 +182,7 @@
 			display: inline-block;
 			width: 100%;
 			padding: 0.875rem 2rem;
-			background: var(--aps-primary-color, #667eea);
+			background: var(--aps-primary-color, #{$aps-color-blue-500});
 			color: #fff;
 			text-align: center;
 			text-decoration: none;
@@ -191,17 +191,17 @@
 			transition: all 0.2s ease;
 			border: none;
 			cursor: pointer;
-			box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+			box-shadow: 0 4px 6px rgba($aps-color-blue-500, 0.2);
 
 			&:hover {
-				background: var(--aps-primary-hover, #5568d3);
+				background: var(--aps-primary-hover, #{$aps-color-blue-600});
 				transform: translateY(-2px);
-				box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+				box-shadow: 0 8px 16px rgba($aps-color-blue-500, 0.3);
 			}
 
 			&:active {
 				transform: translateY(0);
-				box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+				box-shadow: 0 2px 4px rgba($aps-color-blue-500, 0.2);
 			}
 		}
 
@@ -264,7 +264,7 @@
 	align-items: center;
 	justify-content: center;
 	background: #f9fafb;
-	border: 2px dashed #d1d5db;
+	border: 2px dashed $aps-color-slate-300;
 	border-radius: 8px;
 	padding: 2rem;
 	color: #6b7280;

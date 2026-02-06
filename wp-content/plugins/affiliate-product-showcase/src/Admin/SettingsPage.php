@@ -131,12 +131,18 @@ class SettingsPage {
 			return;
 		}
 
-		// Main settings CSS
+		// Core + Admin CSS (compiled from SCSS)
+		wp_enqueue_style(
+			'aps-core',
+			\AffiliateProductShowcase\Plugin\Constants::assetUrl('assets/css/core.css'),
+			[],
+			'2.0.0'
+		);
 		wp_enqueue_style(
 			'aps-settings',
-			\AffiliateProductShowcase\Plugin\Constants::assetUrl('assets/css/settings.css'),
-			[],
-			'1.0.0'
+			\AffiliateProductShowcase\Plugin\Constants::assetUrl('assets/css/admin.css'),
+			[ 'aps-core' ],
+			'2.0.0'
 		);
 
 		// WordPress color picker (same as tag add form)

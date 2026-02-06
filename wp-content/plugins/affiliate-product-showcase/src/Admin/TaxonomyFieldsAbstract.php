@@ -157,16 +157,19 @@ abstract class TaxonomyFieldsAbstract {
 			// Add common taxonomy form styles
 			wp_add_inline_style( 'wp-admin', $this->get_common_taxonomy_styles() );
 			
-			// Enqueue taxonomy-specific styles if file exists
-			$css_file = 'assets/css/admin-' . $this->get_taxonomy() . '.css';
-			if ( file_exists( Constants::dirPath() . $css_file ) ) {
-				wp_enqueue_style(
-					'aps-admin-' . $this->get_taxonomy(),
-					Constants::assetUrl( $css_file ),
-					[],
-					Constants::VERSION
-				);
-			}
+			// Enqueue core + admin CSS (compiled from SCSS)
+			wp_enqueue_style(
+				'aps-core',
+				Constants::assetUrl( 'assets/css/core.css' ),
+				[],
+				Constants::VERSION
+			);
+			wp_enqueue_style(
+				'aps-admin-taxonomy',
+				Constants::assetUrl( 'assets/css/admin.css' ),
+				[ 'aps-core' ],
+				Constants::VERSION
+			);
 			
 			// Enqueue custom JavaScript for taxonomy management
 			$js_file = 'assets/js/admin-' . $this->get_taxonomy() . '.js';

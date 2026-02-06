@@ -1,0 +1,289 @@
+/**
+ * Token Variables (NO CSS OUTPUT)
+ * 
+ * SCSS variables only - used by all stylesheets.
+ * This file produces ZERO CSS output.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// ============================================
+// WordPress Admin Integration
+// ============================================
+
+$wp-admin-theme-color: var(--wp-admin-theme-color, #2271b1) !default;
+$wp-admin-theme-color-darker-10: var(--wp-admin-theme-color-darker-10, #135e96) !default;
+$wp-admin-theme-color-darker-20: var(--wp-admin-theme-color-darker-20, #0d4a8a) !default;
+
+// ============================================
+// Color Maps
+// ============================================
+
+$colors: (
+	'primary': #2271b1,
+	'primary-hover': #135e96,
+	'primary-dark': #0d4a8a,
+	'primary-light': #4f94d4,
+	'secondary': #646970,
+	'secondary-light': #a7aaad,
+	'secondary-dark': #3c434a,
+	'success': #00a32a,
+	'success-light': #e5f7ed,
+	'success-dark': #008a20,
+	'warning': #d97706,
+	'warning-light': #fef3c7,
+	'warning-dark': #b45309,
+	'danger': #d63638,
+	'danger-light': #fee2e2,
+	'danger-dark': #b32d2e,
+	'info': #3b82f6,
+	'info-light': #dbeafe,
+	'info-dark': #1d4ed8,
+	'text-primary': #1d2327,
+	'text-secondary': #3c434a,
+	'text-tertiary': #646970,
+	'text-muted': #8c8f94,
+	'bg-primary': #ffffff,
+	'bg-secondary': #f0f0f1,
+	'bg-tertiary': #f6f7f7,
+	'bg-hover': #f6f7f7,
+	'border': #c3c4c7,
+	'border-light': #dcdcde,
+	'border-dark': #8c8f94,
+	'white': #ffffff,
+	'black': #000000,
+) !default;
+
+$frontend-colors: (
+	'primary': #3b82f6,
+	'primary-hover': #2563eb,
+) !default;
+
+// ============================================
+// Legacy Color Variables
+// ============================================
+
+$color-primary: #2271b1 !default;
+$color-primary-hover: #135e96 !default;
+$color-primary-dark: #0d4a8a !default;
+$color-primary-light: #4f94d4 !default;
+
+$color-secondary: #646970 !default;
+$color-secondary-light: #a7aaad !default;
+$color-secondary-dark: #3c434a !default;
+
+$color-success: #00a32a !default;
+$color-success-light: #e5f7ed !default;
+$color-success-dark: #008a20 !default;
+
+$color-warning: #d97706 !default;
+$color-warning-light: #fef3c7 !default;
+$color-warning-dark: #b45309 !default;
+
+$color-danger: #d63638 !default;
+$color-danger-light: #fee2e2 !default;
+$color-danger-dark: #b32d2e !default;
+
+$color-info: #3b82f6 !default;
+$color-info-light: #dbeafe !default;
+$color-info-dark: #1d4ed8 !default;
+
+// Blue Scale
+$color-blue-50: #eff6ff !default;
+$color-blue-100: #dbeafe !default;
+$color-blue-200: #bfdbfe !default;
+$color-blue-300: #93c5fd !default;
+$color-blue-400: #60a5fa !default;
+$color-blue-500: #3b82f6 !default;
+$color-blue-600: #2563eb !default;
+$color-blue-700: #1d4ed8 !default;
+$color-blue-800: #1e40af !default;
+$color-blue-900: #1e3a8a !default;
+
+// Neutral Colors
+$color-white: #ffffff !default;
+$color-black: #000000 !default;
+
+$color-slate-50: #f8fafc !default;
+$color-slate-100: #f1f5f9 !default;
+$color-slate-200: #e2e8f0 !default;
+$color-slate-300: #cbd5e1 !default;
+$color-slate-400: #94a3b8 !default;
+$color-slate-500: #64748b !default;
+$color-slate-600: #475569 !default;
+$color-slate-700: #334155 !default;
+$color-slate-800: #1e293b !default;
+$color-slate-900: #0f172a !default;
+
+// Background Colors
+$color-bg-primary: $color-white !default;
+$color-bg-secondary: #f0f0f1 !default;
+$color-bg-tertiary: #f6f7f7 !default;
+$color-bg-hover: #f6f7f7 !default;
+
+// Text Colors
+$color-text-primary: #1d2327 !default;
+$color-text-secondary: #3c434a !default;
+$color-text-tertiary: #646970 !default;
+$color-text-muted: #8c8f94 !default;
+$color-text-disabled: #a7aaad !default;
+$color-text-dark: #2c3338 !default;
+
+// Border Colors
+$color-border-light: #dcdcde !default;
+$color-border: #c3c4c7 !default;
+$color-border-dark: #8c8f94 !default;
+
+// Specialty Colors
+$color-gold: #ffd700 !default;
+$color-star: #e6b800 !default;
+$color-discount: #ef4444 !default;
+$color-ribbon: #d63638 !default;
+
+$color-rating-bg: #fff8e5 !default;
+$color-rating-border: #ffd700 !default;
+$color-rating-text: #b84a00 !default;
+
+$color-version-bg: #f0f6ff !default;
+$color-version-border: #b3d7ff !default;
+$color-version-text: #2271b1 !default;
+
+// ============================================
+// Typography
+// ============================================
+
+$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !default;
+$font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !default;
+
+$font-size-xs: 0.75rem !default;
+$font-size-sm: 0.8125rem !default;
+$font-size-base: 0.875rem !default;
+$font-size-md: 1rem !default;
+$font-size-lg: 1.125rem !default;
+$font-size-xl: 1.25rem !default;
+$font-size-2xl: 1.5rem !default;
+$font-size-3xl: 2rem !default;
+$font-size-4xl: 2.5rem !default;
+
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-extrabold: 800 !default;
+
+$line-height-tight: 1.25 !default;
+$line-height-normal: 1.5 !default;
+$line-height-relaxed: 1.75 !default;
+
+$letter-spacing-tight: -0.025em !default;
+$letter-spacing-normal: 0 !default;
+$letter-spacing-wide: 0.025em !default;
+$letter-spacing-wider: 0.05em !default;
+
+// ============================================
+// Spacing
+// ============================================
+
+$spacing: (
+	'0': 0,
+	'px': 1px,
+	'0.5': 0.125rem,
+	'1': 0.25rem,
+	'2': 0.5rem,
+	'3': 0.75rem,
+	'4': 1rem,
+	'5': 1.25rem,
+	'6': 1.5rem,
+	'8': 2rem,
+	'10': 2.5rem,
+	'12': 3rem,
+	'16': 4rem,
+) !default;
+
+$spacing-0: 0 !default;
+$spacing-px: 1px !default;
+$spacing-0-5: 0.125rem !default;
+$spacing-1: 0.25rem !default;
+$spacing-2: 0.5rem !default;
+$spacing-3: 0.75rem !default;
+$spacing-4: 1rem !default;
+$spacing-5: 1.25rem !default;
+$spacing-6: 1.5rem !default;
+$spacing-8: 2rem !default;
+$spacing-10: 2.5rem !default;
+$spacing-12: 3rem !default;
+$spacing-16: 4rem !default;
+
+// ============================================
+// Border Radius
+// ============================================
+
+$radius: (
+	'none': 0,
+	'sm': 0.25rem,
+	'md': 0.375rem,
+	'lg': 0.5rem,
+	'xl': 0.75rem,
+	'2xl': 1rem,
+	'full': 9999px,
+) !default;
+
+$radius-none: 0 !default;
+$radius-sm: 0.25rem !default;
+$radius-md: 0.375rem !default;
+$radius-lg: 0.5rem !default;
+$radius-xl: 0.75rem !default;
+$radius-2xl: 1rem !default;
+$radius-full: 9999px !default;
+
+// ============================================
+// Shadows
+// ============================================
+
+$shadows: (
+	'sm': 0 1px 2px 0 rgba(0, 0, 0, 0.05),
+	'md': 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+	'lg': 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+	'xl': 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+) !default;
+
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !default;
+
+$shadow-focus: 0 0 0 3px rgba($color-primary, 0.1) !default;
+$shadow-focus-error: 0 0 0 3px rgba($color-danger, 0.1) !default;
+
+// ============================================
+// Transitions
+// ============================================
+
+$transition-fast: 150ms ease-in-out !default;
+$transition-base: 200ms ease-in-out !default;
+$transition-slow: 300ms ease-in-out !default;
+
+// ============================================
+// Z-Index Scale
+// ============================================
+
+$z-dropdown: 1000 !default;
+$z-sticky: 1020 !default;
+$z-fixed: 1030 !default;
+$z-modal-backdrop: 1040 !default;
+$z-modal: 1050 !default;
+$z-popover: 1060 !default;
+$z-tooltip: 1070 !default;
+$z-toast: 9999 !default;
+
+// ============================================
+// Container Widths
+// ============================================
+
+$container-sm: 640px !default;
+$container-md: 768px !default;
+$container-lg: 1024px !default;
+$container-xl: 1200px !default;
+$container-2xl: 1400px !default;

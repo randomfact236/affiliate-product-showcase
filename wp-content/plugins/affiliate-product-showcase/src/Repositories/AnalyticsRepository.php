@@ -105,52 +105,40 @@ class AnalyticsRepository extends AbstractRepository {
      * @return array Statistics
      */
     public function getProductStats( int $product_id, int $days = 30 ): array {
+        $cache_key = "aps_stats_product_{$product_id}_{$days}";
+        $cached = get_transient( $cache_key );
+        
+        if ( false !== $cached ) {
+            return $cached;
+        }
+
         global $wpdb;
 
         $date = date( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
-        $clicks = $wpdb->get_var(
+        $row = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
+                "SELECT 
+                    COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks,
+                    COUNT(CASE WHEN event_type = 'conversion' THEN 1 END) as conversions,
+                    SUM(CASE WHEN event_type = 'conversion' THEN revenue ELSE 0 END) as revenue
+                FROM {$this->table_name} 
                 WHERE product_id = %d 
-                AND event_type = 'click'
                 AND created_at >= %s",
                 $product_id,
                 $date
             )
         );
 
-        $conversions = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
-                WHERE product_id = %d 
-                AND event_type = 'conversion'
-                AND created_at >= %s",
-                $product_id,
-                $date
-            )
-        );
-
-        $revenue = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT SUM(revenue) FROM {$this->table_name} 
-                WHERE product_id = %d 
-                AND event_type = 'conversion'
-                AND created_at >= %s",
-                $product_id,
-                $date
-            )
-        );
-
-        $total_clicks = (int) ( $clicks ?: 0 );
-        $total_conversions = (int) ( $conversions ?: 0 );
-        $total_revenue = (float) ( $revenue ?: 0 );
+        $total_clicks      = (int) ( $row->clicks ?? 0 );
+        $total_conversions = (int) ( $row->conversions ?? 0 );
+        $total_revenue     = (float) ( $row->revenue ?? 0 );
 
         $conversion_rate = $total_clicks > 0 
             ? ( $total_conversions / $total_clicks ) * 100 
             : 0;
 
-        return [
+        $stats = [
             'product_id'       => $product_id,
             'total_clicks'      => $total_clicks,
             'total_conversions' => $total_conversions,
@@ -158,6 +146,10 @@ class AnalyticsRepository extends AbstractRepository {
             'conversion_rate'   => round( $conversion_rate, 2 ),
             'period_days'       => $days,
         ];
+
+        set_transient( $cache_key, $stats, 15 * MINUTE_IN_SECONDS );
+
+        return $stats;
     }
 
     /**
@@ -167,52 +159,48 @@ class AnalyticsRepository extends AbstractRepository {
      * @return array Statistics
      */
     public function getOverallStats( int $days = 30 ): array {
+        $cache_key = "aps_stats_overall_{$days}";
+        $cached = get_transient( $cache_key );
+
+        if ( false !== $cached ) {
+            return $cached;
+        }
+
         global $wpdb;
 
         $date = date( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
-        $clicks = $wpdb->get_var(
+        $row = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
-                WHERE event_type = 'click'
-                AND created_at >= %s",
+                "SELECT 
+                    COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks,
+                    COUNT(CASE WHEN event_type = 'conversion' THEN 1 END) as conversions,
+                    SUM(CASE WHEN event_type = 'conversion' THEN revenue ELSE 0 END) as revenue
+                FROM {$this->table_name} 
+                WHERE created_at >= %s",
                 $date
             )
         );
 
-        $conversions = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} 
-                WHERE event_type = 'conversion'
-                AND created_at >= %s",
-                $date
-            )
-        );
-
-        $revenue = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT SUM(revenue) FROM {$this->table_name} 
-                WHERE event_type = 'conversion'
-                AND created_at >= %s",
-                $date
-            )
-        );
-
-        $total_clicks = (int) ( $clicks ?: 0 );
-        $total_conversions = (int) ( $conversions ?: 0 );
-        $total_revenue = (float) ( $revenue ?: 0 );
+        $total_clicks      = (int) ( $row->clicks ?? 0 );
+        $total_conversions = (int) ( $row->conversions ?? 0 );
+        $total_revenue     = (float) ( $row->revenue ?? 0 );
 
         $conversion_rate = $total_clicks > 0 
             ? ( $total_conversions / $total_clicks ) * 100 
             : 0;
 
-        return [
+        $stats = [
             'total_clicks'      => $total_clicks,
             'total_conversions' => $total_conversions,
             'total_revenue'     => $total_revenue,
             'conversion_rate'   => round( $conversion_rate, 2 ),
             'period_days'       => $days,
         ];
+
+        set_transient( $cache_key, $stats, 15 * MINUTE_IN_SECONDS );
+
+        return $stats;
     }
 
     /**

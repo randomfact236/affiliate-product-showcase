@@ -1,0 +1,208 @@
+/**
+ * SCSS Functions
+ * 
+ * Utility functions for calculations and token access.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as *;
+@use '../01-settings/breakpoints' as *;
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:map';
+
+// ============================================
+// Token Getter Functions (Map-based Architecture)
+// ============================================
+
+/// Gets a color value from the $colors map
+/// @param {String} $key - The color key (e.g., 'primary', 'success', 'text-primary')
+/// @return {Color} The color value
+/// @example color('primary') => #2271b1
+@function color($key) {
+	@if not map.has-key($colors, $key) {
+		@error 'Color "#{$key}" not found in $colors map. Available keys: #{map.keys($colors)}';
+	}
+	@return map.get($colors, $key);
+}
+
+/// Gets a frontend-specific color value
+/// @param {String} $key - The color key
+/// @return {Color} The color value
+/// @example frontend-color('primary') => #3b82f6
+@function frontend-color($key) {
+	@if not map.has-key($frontend-colors, $key) {
+		@error 'Color "#{$key}" not found in $frontend-colors map. Available keys: #{map.keys($frontend-colors)}';
+	}
+	@return map.get($frontend-colors, $key);
+}
+
+/// Gets a spacing value from the $spacing map
+/// @param {String} $key - The spacing key (e.g., '1', '4', '8')
+/// @return {Number} The spacing value in rem
+/// @example spacing('4') => 1rem
+@function spacing($key) {
+	@if not map.has-key($spacing, $key) {
+		@error 'Spacing "#{$key}" not found in $spacing map. Available keys: #{map.keys($spacing)}';
+	}
+	@return map.get($spacing, $key);
+}
+
+/// Gets a border radius value from the $radius map
+/// @param {String} $key - The radius key (e.g., 'sm', 'md', 'lg')
+/// @return {Number} The radius value
+/// @example radius('md') => 0.375rem
+@function radius($key) {
+	@if not map.has-key($radius, $key) {
+		@error 'Radius "#{$key}" not found in $radius map. Available keys: #{map.keys($radius)}';
+	}
+	@return map.get($radius, $key);
+}
+
+/// Gets a shadow value from the $shadows map
+/// @param {String} $key - The shadow key (e.g., 'sm', 'md', 'lg')
+/// @return {List} The shadow value
+/// @example shadow('md') => 0 4px 6px -1px rgba(...)
+@function shadow($key) {
+	@if not map.has-key($shadows, $key) {
+		@error 'Shadow "#{$key}" not found in $shadows map. Available keys: #{map.keys($shadows)}';
+	}
+	@return map.get($shadows, $key);
+}
+
+/// Gets a breakpoint value from the $breakpoints map
+/// @param {String} $key - The breakpoint key (e.g., 'sm', 'md', 'lg')
+/// @return {Number} The breakpoint value in em
+/// @example breakpoint('md') => 47.9375em
+@function breakpoint($key) {
+	@if not map.has-key($breakpoints, $key) {
+		@error 'Breakpoint "#{$key}" not found in $breakpoints map. Available keys: #{map.keys($breakpoints)}';
+	}
+	@return map.get($breakpoints, $key);
+}
+
+// ============================================
+// Unit Conversion
+// ============================================
+
+/// Removes the unit from a value
+/// @param {Number} $value - The value with unit
+/// @return {Number} The value without unit
+@function strip-unit($value) {
+	@if meta.type-of($value) != 'number' {
+		@error "strip-unit: #{$value} is not a number";
+	}
+
+	@if math.unit($value) == '' {
+		@return $value;
+	}
+
+	@return math.div($value, ($value * 0 + 1));
+}
+
+/// Converts pixels to rem
+/// @param {Number} $pixels - The pixel value
+/// @param {Number} $base [16] - The base font size
+/// @return {Number} The rem value
+@function rem($pixels, $base: 16) {
+	@if meta.type-of($pixels) != 'number' {
+		@error "rem: #{$pixels} is not a number";
+	}
+
+	@if math.unit($pixels) == 'rem' {
+		@return $pixels;
+	}
+
+	@return math.div(strip-unit($pixels), $base) * 1rem;
+}
+
+/// Converts pixels to em
+/// @param {Number} $pixels - The pixel value
+/// @param {Number} $context [16] - The context font size
+/// @return {Number} The em value
+@function em($pixels, $context: 16) {
+	@if meta.type-of($pixels) != 'number' {
+		@error "em: #{$pixels} is not a number";
+	}
+
+	@return math.div(strip-unit($pixels), $context) * 1em;
+}
+
+// ============================================
+// Color Functions
+// ============================================
+
+/// Returns a contrasting text color (black or white) for a given background
+/// @param {Color} $background - The background color
+/// @return {Color} #000 or #fff based on luminance
+@function contrast-text($background) {
+	$r: red($background);
+	$g: green($background);
+	$b: blue($background);
+
+	// Calculate luminance
+	$luminance: math.div((0.299 * $r + 0.587 * $g + 0.114 * $b), 255);
+
+	@if $luminance > 0.5 {
+		@return #000000;
+	} @else {
+		@return #ffffff;
+	}
+}
+
+// ============================================
+// Legacy Spacing Functions
+// ============================================
+
+/// Gets a spacing value from the scale (legacy - use spacing() function instead)
+/// @param {Number} $multiplier - The multiplier (1-16)
+/// @return {Number} The spacing value in rem
+@function spacing-legacy($multiplier) {
+	@return $multiplier * $spacing-1;
+}
+
+// ============================================
+// Z-Index Functions
+// ============================================
+
+/// Gets a z-index value from the scale
+/// @param {String} $layer - The layer name (dropdown, sticky, fixed, modal, etc.)
+/// @return {Number} The z-index value
+@function z($layer) {
+	$z-layers: (
+		'dropdown': $z-dropdown,
+		'sticky': $z-sticky,
+		'fixed': $z-fixed,
+		'modal-backdrop': $z-modal-backdrop,
+		'modal': $z-modal,
+		'popover': $z-popover,
+		'tooltip': $z-tooltip,
+		'toast': $z-toast,
+	);
+
+	@if map.has-key($z-layers, $layer) {
+		@return map.get($z-layers, $layer);
+	}
+
+	@error "z: #{$layer} is not a valid z-index layer";
+}
+
+// ============================================
+// String Functions
+// ============================================
+
+/// Encodes a string for use in URL/data-URI
+/// @param {String} $string - The string to encode
+/// @return {String} The encoded string
+@function encode-uri($string) {
+	$encoded: '';
+
+	@for $i from 1 through str-length($string) {
+		$char: str-slice($string, $i, $i);
+		$encoded: $encoded + $char;
+	}
+
+	@return $encoded;
+}
