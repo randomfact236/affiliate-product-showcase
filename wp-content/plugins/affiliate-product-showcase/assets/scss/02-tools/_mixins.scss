@@ -7,9 +7,9 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../01-settings/breakpoints' as *;
+@use '../01-settings/tokens-vars' as tokens;
 @use '../01-settings/breakpoints' as bp;
+@use 'functions';
 @use 'sass:meta';
 @use 'sass:map';
 
@@ -48,78 +48,105 @@
 // ============================================
 
 /// Mobile-first breakpoint: extra small
+/// @deprecated Use respond-to('xs') instead.
 @mixin xs-up {
-	@media (min-width: #{$breakpoint-xs}) {
+	@warn 'xs-up is deprecated. Use respond-to("xs") instead.';
+
+	@include respond-to('xs') {
 		@content;
 	}
 }
 
 /// Mobile-first breakpoint: small
+/// @deprecated Use respond-to('sm') instead.
 @mixin sm-up {
-	@media (min-width: #{$breakpoint-sm}) {
+	@warn 'sm-up is deprecated. Use respond-to("sm") instead.';
+
+	@include respond-to('sm') {
 		@content;
 	}
 }
 
 /// Mobile-first breakpoint: medium
+/// @deprecated Use respond-to('md') instead.
 @mixin md-up {
-	@media (min-width: #{$breakpoint-md}) {
+	@warn 'md-up is deprecated. Use respond-to("md") instead.';
+
+	@include respond-to('md') {
 		@content;
 	}
 }
 
 /// Mobile-first breakpoint: large
+/// @deprecated Use respond-to('lg') instead.
 @mixin lg-up {
-	@media (min-width: #{$breakpoint-lg}) {
+	@warn 'lg-up is deprecated. Use respond-to("lg") instead.';
+
+	@include respond-to('lg') {
 		@content;
 	}
 }
 
 /// Mobile-first breakpoint: extra large
+/// @deprecated Use respond-to('xl') instead.
 @mixin xl-up {
-	@media (min-width: #{$breakpoint-xl}) {
+	@warn 'xl-up is deprecated. Use respond-to("xl") instead.';
+
+	@include respond-to('xl') {
 		@content;
 	}
 }
 
 /// Desktop-first breakpoint: extra small (phones only)
+/// @deprecated Use respond-down('xs') instead.
 @mixin xs-down {
-	@media (max-width: #{$breakpoint-xs - 1px}) {
+	@warn 'xs-down is deprecated. Use respond-down("xs") instead.';
+
+	@include respond-down('xs') {
 		@content;
 	}
 }
 
 /// Desktop-first breakpoint: small
+/// @deprecated Use respond-down('sm') instead.
 @mixin sm-down {
-	@media (max-width: #{$breakpoint-sm - 1px}) {
+	@warn 'sm-down is deprecated. Use respond-down("sm") instead.';
+
+	@include respond-down('sm') {
 		@content;
 	}
 }
 
 /// Desktop-first breakpoint: medium (tablets and below)
+/// @deprecated Use respond-down('md') instead.
 @mixin md-down {
-	@media (max-width: #{$breakpoint-md - 1px}) {
+	@warn 'md-down is deprecated. Use respond-down("md") instead.';
+
+	@include respond-down('md') {
 		@content;
 	}
 }
 
 /// WordPress tablet breakpoint (782px and below)
 @mixin wp-tablet-down {
-	@media (max-width: #{$breakpoint-wp-tablet}) {
+	@media (max-width: #{bp.$breakpoint-wp-tablet}) {
 		@content;
 	}
 }
 
 /// Desktop-first breakpoint: large
+/// @deprecated Use respond-down('lg') instead.
 @mixin lg-down {
-	@media (max-width: #{$breakpoint-lg - 1px}) {
+	@warn 'lg-down is deprecated. Use respond-down("lg") instead.';
+
+	@include respond-down('lg') {
 		@content;
 	}
 }
 
 /// Range breakpoint: tablet only
 @mixin tablet-only {
-	@media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-lg - 1px}) {
+	@media (min-width: #{bp.$breakpoint-sm}) and (max-width: #{bp.$breakpoint-lg - 1px}) {
 		@content;
 	}
 }
@@ -170,7 +197,7 @@
 /// Standard focus outline
 /// @param {Color} $color [$color-primary] - The focus color
 /// @param {Number} $offset [2px] - The outline offset
-@mixin focus-outline($color: $color-primary, $offset: 2px) {
+@mixin focus-outline($color: tokens.$color-primary, $offset: 2px) {
 	&:focus-visible {
 		outline: 2px solid $color;
 		outline-offset: $offset;
@@ -183,7 +210,7 @@
 
 /// Focus ring with box-shadow
 /// @param {Color} $color [$color-primary] - The focus color
-@mixin focus-ring($color: $color-primary) {
+@mixin focus-ring($color: tokens.$color-primary) {
 	&:focus-visible {
 		outline: none;
 		box-shadow: 0 0 0 3px rgba($color, 0.3);
@@ -193,8 +220,8 @@
 /// WordPress admin style focus
 @mixin focus-wp-admin {
 	&:focus {
-		border-color: $wp-admin-theme-color;
-		box-shadow: 0 0 0 1px $wp-admin-theme-color;
+		border-color: tokens.$wp-admin-theme-color;
+		box-shadow: 0 0 0 1px tokens.$wp-admin-theme-color;
 		outline: none;
 	}
 }
@@ -242,6 +269,7 @@
 @mixin line-clamp($lines: 3) {
 	display: -webkit-box;
 	-webkit-line-clamp: $lines;
+	line-clamp: $lines; // Standard property
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 }
@@ -280,21 +308,21 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: $spacing-2 $spacing-4;
-	font-family: $font-family-base;
-	font-size: $font-size-base;
-	font-weight: $font-weight-medium;
-	line-height: $line-height-normal;
+	padding: functions.spacing('2') functions.spacing('4');
+	font-family: tokens.$font-family-base;
+	font-size: tokens.$font-size-base;
+	font-weight: tokens.$font-weight-medium;
+	line-height: tokens.$line-height-normal;
 	text-decoration: none;
-	border-radius: $radius-md;
+	border-radius: tokens.$radius-md;
 	border: 1px solid transparent;
 	cursor: pointer;
 	transition:
-		background-color $transition-base,
-		border-color $transition-base,
-		color $transition-base,
-		transform $transition-base,
-		box-shadow $transition-base;
+		background-color tokens.$transition-base,
+		border-color tokens.$transition-base,
+		color tokens.$transition-base,
+		transform tokens.$transition-base,
+		box-shadow tokens.$transition-base;
 	white-space: nowrap;
 
 	@include focus-outline;
@@ -310,44 +338,49 @@
 /// Card base styles
 @mixin card-base {
 	position: relative;
-	background: $color-bg-primary;
-	border: 1px solid $color-border-light;
-	border-radius: $radius-lg;
+	background: tokens.$color-bg-primary;
+	border: 1px solid tokens.$color-border-light;
+	border-radius: tokens.$radius-lg;
 	overflow: hidden;
-	transition: transform $transition-base, box-shadow $transition-base;
+	transition: transform tokens.$transition-base, box-shadow tokens.$transition-base;
 
 	&:hover {
+		@include reduced-motion {
+			transform: none;
+			box-shadow: tokens.$shadow-lg;
+		}
+
 		transform: translateY(-4px);
-		box-shadow: $shadow-lg;
+		box-shadow: tokens.$shadow-lg;
 	}
 }
 
 /// Form input base
 @mixin input-base {
 	width: 100%;
-	padding: $spacing-2 $spacing-3;
-	font-family: $font-family-base;
-	font-size: $font-size-base;
-	line-height: $line-height-normal;
-	color: $color-text-primary;
-	background: $color-bg-primary;
-	border: 1px solid $color-border-dark;
-	border-radius: $radius-sm;
-	box-shadow: $shadow-sm;
-	transition: border-color $transition-fast, box-shadow $transition-fast;
+	padding: tokens.$spacing-2 tokens.$spacing-3;
+	font-family: tokens.$font-family-base;
+	font-size: tokens.$font-size-base;
+	line-height: tokens.$line-height-normal;
+	color: tokens.$color-text-primary;
+	background: tokens.$color-bg-primary;
+	border: 1px solid tokens.$color-border-dark;
+	border-radius: tokens.$radius-sm;
+	box-shadow: tokens.$shadow-sm;
+	transition: border-color tokens.$transition-fast, box-shadow tokens.$transition-fast;
 
 	&:focus {
 		@include focus-wp-admin;
 	}
 
 	&::placeholder {
-		color: $color-text-muted;
+		color: tokens.$color-text-muted;
 	}
 
 	&:disabled {
 		opacity: 0.6;
 		cursor: not-allowed;
-		background: $color-bg-secondary;
+		background: tokens.$color-bg-secondary;
 	}
 }
 
@@ -371,16 +404,16 @@
 /// Hide for print
 @mixin print-hide {
 	@media print {
-		display: none !important;
+		display: none;
 	}
 }
 
 /// Show only for print
 @mixin print-only {
-	display: none !important;
+	display: none;
 
 	@media print {
-		display: block !important;
+		display: block;
 	}
 }
 
@@ -388,28 +421,14 @@
 // Utility Generators
 // ============================================
 
-/// Sanitizes a spacing key for use in CSS class names
-/// Converts '0.5' to '05', 'px' stays as 'px'
-/// @param {String} $key - The spacing map key
-/// @return {String} The sanitized class name suffix
-@function sanitize-spacing-key($key) {
-	// Replace dots with empty string to create valid class names
-	// e.g., '0.5' becomes '05'
-	$sanitized: $key;
-
-	@if $key =='0.5' {
-		@return '05';
-	}
-
-	@return $sanitized;
-}
+// sanitize-spacing-key moved to _functions.scss
 
 /// Generates spacing utility classes for margin and padding
 /// Creates atomic utility classes like .u-m-1, .u-p-2, .u-mt-3, etc.
 /// @example @include spacing-utilities;
 @mixin spacing-utilities {
-	@each $key, $value in $spacing {
-		$class-key: sanitize-spacing-key($key);
+	@each $key, $value in tokens.$spacing {
+		$class-key: functions.sanitize-spacing-key($key);
 
 		// Margin utilities
 		.u-m-#{$class-key} {

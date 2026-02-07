@@ -31,9 +31,9 @@ $colors: (
 	'success': #00a32a,
 	'success-light': #e5f7ed,
 	'success-dark': #008a20,
-	'warning': #d97706,
+	'warning': #b45309,
 	'warning-light': #fef3c7,
-	'warning-dark': #b45309,
+	'warning-dark': #92400e,
 	'danger': #d63638,
 	'danger-light': #fee2e2,
 	'danger-dark': #b32d2e,
@@ -43,7 +43,7 @@ $colors: (
 	'text-primary': #1d2327,
 	'text-secondary': #3c434a,
 	'text-tertiary': #646970,
-	'text-muted': #8c8f94,
+	'text-muted': #6b6e75,
 	'bg-primary': #ffffff,
 	'bg-secondary': #f0f0f1,
 	'bg-tertiary': #f6f7f7,
@@ -53,12 +53,12 @@ $colors: (
 	'border-dark': #8c8f94,
 	'white': #ffffff,
 	'black': #000000,
-) !default;
+	) !default;
 
 $frontend-colors: (
 	'primary': #3b82f6,
 	'primary-hover': #2563eb,
-) !default;
+	) !default;
 
 // ============================================
 // Legacy Color Variables
@@ -77,9 +77,9 @@ $color-success: #00a32a !default;
 $color-success-light: #e5f7ed !default;
 $color-success-dark: #008a20 !default;
 
-$color-warning: #d97706 !default;
+$color-warning: #b45309 !default;
 $color-warning-light: #fef3c7 !default;
-$color-warning-dark: #b45309 !default;
+$color-warning-dark: #92400e !default;
 
 $color-danger: #d63638 !default;
 $color-danger-light: #fee2e2 !default;
@@ -126,8 +126,8 @@ $color-bg-hover: #f6f7f7 !default;
 $color-text-primary: #1d2327 !default;
 $color-text-secondary: #3c434a !default;
 $color-text-tertiary: #646970 !default;
-$color-text-muted: #8c8f94 !default;
-$color-text-disabled: #a7aaad !default;
+$color-text-muted: #6b6e75 !default;
+$color-text-disabled: #8c9196 !default;
 $color-text-dark: #2c3338 !default;
 
 // Border Colors
@@ -137,7 +137,7 @@ $color-border-dark: #8c8f94 !default;
 
 // Specialty Colors
 $color-gold: #ffd700 !default;
-$color-star: #e6b800 !default;
+$color-star: #e6b800 !default; // Decorative only - not for text
 $color-discount: #ef4444 !default;
 $color-ribbon: #d63638 !default;
 
@@ -153,9 +153,22 @@ $color-version-text: #2271b1 !default;
 // Typography
 // ============================================
 
-$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !default;
-$font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !default;
+$font-family-base: -apple-system,
+	BlinkMacSystemFont,
+	"Segoe UI",
+	Roboto,
+	Oxygen-Sans,
+	Ubuntu,
+	Cantarell,
+	"Helvetica Neue",
+	sans-serif !default;
+$font-family-mono: "SFMono-Regular",
+	Consolas,
+	"Liberation Mono",
+	Menlo,
+	monospace !default;
 
+$font-size-2xs: 0.6875rem !default; // 11px
 $font-size-xs: 0.75rem !default;
 $font-size-sm: 0.8125rem !default;
 $font-size-base: 0.875rem !default;
@@ -194,13 +207,16 @@ $spacing: (
 	'2': 0.5rem,
 	'3': 0.75rem,
 	'4': 1rem,
+	'4.5': 1.125rem,
 	'5': 1.25rem,
 	'6': 1.5rem,
 	'8': 2rem,
 	'10': 2.5rem,
+	'11': 2.75rem,
 	'12': 3rem,
 	'16': 4rem,
-) !default;
+	'44': 11rem,
+	) !default;
 
 $spacing-0: 0 !default;
 $spacing-px: 1px !default;
@@ -228,7 +244,7 @@ $radius: (
 	'xl': 0.75rem,
 	'2xl': 1rem,
 	'full': 9999px,
-) !default;
+	) !default;
 
 $radius-none: 0 !default;
 $radius-sm: 0.25rem !default;
@@ -242,20 +258,23 @@ $radius-full: 9999px !default;
 // Shadows
 // ============================================
 
-$shadows: (
-	'sm': 0 1px 2px 0 rgba(0, 0, 0, 0.05),
-	'md': 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-	'lg': 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-	'xl': 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-) !default;
-
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !default;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+	0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+	0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+	0 10px 10px -5px rgba(0, 0, 0, 0.04) !default;
 
-$shadow-focus: 0 0 0 3px rgba($color-primary, 0.1) !default;
-$shadow-focus-error: 0 0 0 3px rgba($color-danger, 0.1) !default;
+$shadow-focus: 0 0 0 3px rgba(#2271b1, 0.1) !default;
+$shadow-focus-error: 0 0 0 3px rgba(#d63638, 0.1) !default;
+
+$shadows: (
+	'sm': #{$shadow-sm},
+	'md': #{$shadow-md},
+	'lg': #{$shadow-lg},
+	'xl': #{$shadow-xl},
+	) !default;
 
 // ============================================
 // Transitions
@@ -287,3 +306,16 @@ $container-md: 768px !default;
 $container-lg: 1024px !default;
 $container-xl: 1200px !default;
 $container-2xl: 1400px !default;
+
+// ============================================
+// Component Dimensions
+// ============================================
+
+$card-media-width: 12.5rem !default; // 200px
+$card-media-height: 9.375rem !default; // 150px
+$showcase-image-height: 15.625rem !default; // 250px
+$showcase-image-height-mobile: 12.5rem !default; // 200px
+$showcase-compact-image-height: 11.25rem !default; // 180px
+$grid-item-min-width: 280px !default;
+$admin-input-height: 1.875rem !default; // 30px - WordPress admin standard
+$empty-state-min-height: 12.5rem !default; // 200px

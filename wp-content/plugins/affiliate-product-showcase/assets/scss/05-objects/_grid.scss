@@ -7,41 +7,41 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
 
 .aps-o-grid {
 	display: grid;
-	gap: $spacing-4;
-	
+	gap: tokens.$spacing-4;
+
 	&--2cols {
 		grid-template-columns: repeat(2, 1fr);
-		
-		@include md-down {
+
+		@include mixins.respond-down('md') {
 			grid-template-columns: 1fr;
 		}
 	}
-	
+
 	&--3cols {
 		grid-template-columns: repeat(3, 1fr);
-		
-		@include md-down {
+
+		@include mixins.respond-down('md') {
 			grid-template-columns: repeat(2, 1fr);
 		}
-		
-		@include sm-down {
+
+		@include mixins.respond-down('sm') {
 			grid-template-columns: 1fr;
 		}
 	}
-	
+
 	&--4cols {
 		grid-template-columns: repeat(4, 1fr);
-		
-		@include lg-down {
+
+		@include mixins.respond-down('lg') {
 			grid-template-columns: repeat(2, 1fr);
 		}
-		
-		@include sm-down {
+
+		@include mixins.respond-down('sm') {
 			grid-template-columns: 1fr;
 		}
 	}

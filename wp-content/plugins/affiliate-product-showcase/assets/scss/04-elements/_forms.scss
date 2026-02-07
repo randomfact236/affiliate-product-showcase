@@ -7,15 +7,16 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
 
 // ============================================
 // Form Control Base
 // ============================================
 
 .aps-form-control {
-	@include input-base;
+	@include mixins.input-base;
 }
 
 // ============================================
@@ -23,13 +24,15 @@
 // ============================================
 
 .aps-form-select {
-	@include input-base;
+	@include mixins.input-base;
 
 	appearance: none;
+
+	// Optimization Note: Inline SVG is used for critical rendering path.
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23646970' d='M6 9L2 5h8z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
-	background-position: right $spacing-3 center;
-	padding-right: $spacing-8;
+	background-position: inset-inline-end tokens.$spacing-3 center;
+	padding-inline-end: tokens.$spacing-8;
 }
 
 // ============================================
@@ -37,9 +40,9 @@
 // ============================================
 
 .aps-form-textarea {
-	@include input-base;
+	@include mixins.input-base;
 
-	min-height: 5rem;
+	min-height: functions.spacing('16') + functions.spacing('4'); // 5rem
 	resize: vertical;
 }
 
@@ -50,18 +53,16 @@
 .aps-form-check {
 	display: flex;
 	align-items: center;
-	gap: $spacing-2;
+	gap: tokens.$spacing-2;
 	cursor: pointer;
-	
+
 	input[type="checkbox"],
 	input[type="radio"] {
 		width: 1.125rem;
 		height: 1.125rem;
 		cursor: pointer;
-		
-		&:focus-visible {
-			@include focus-outline;
-		}
+
+		@include mixins.focus-outline;
 	}
 }
 
@@ -70,21 +71,21 @@
 // ============================================
 
 .aps-form-group {
-	margin-bottom: $spacing-4;
+	margin-bottom: tokens.$spacing-4;
 }
 
 .aps-form-label {
 	display: block;
-	margin-bottom: $spacing-2;
-	font-size: $font-size-sm;
-	font-weight: $font-weight-medium;
-	color: $color-text-primary;
+	margin-bottom: tokens.$spacing-2;
+	font-size: tokens.$font-size-sm;
+	font-weight: tokens.$font-weight-medium;
+	color: tokens.$color-text-primary;
 }
 
 .aps-form-hint {
-	margin-top: $spacing-1;
-	font-size: $font-size-xs;
-	color: $color-text-muted;
+	margin-top: tokens.$spacing-1;
+	font-size: tokens.$font-size-xs;
+	color: tokens.$color-text-muted;
 }
 
 // ============================================
@@ -93,5 +94,5 @@
 
 .aps-input-flex {
 	flex: 1;
-	min-width: 200px;
+	min-width: tokens.$empty-state-min-height;
 }

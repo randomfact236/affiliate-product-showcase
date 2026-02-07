@@ -5,19 +5,50 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
+@use '../01-settings/tokens-vars' as tokens;
 
 // Text colors
-.u-text-primary { color: $color-text-primary; }
-.u-text-secondary { color: $color-text-secondary; }
-.u-text-muted { color: $color-text-muted; }
-.u-text-success { color: $color-success; }
-.u-text-warning { color: $color-warning; }
-.u-text-danger { color: $color-danger; }
+.u-text-primary {
+    color: tokens.$color-text-primary;
+}
+
+.u-text-secondary {
+    color: tokens.$color-text-secondary;
+}
+
+.u-text-muted {
+    color: tokens.$color-text-muted;
+}
+
+.u-text-success {
+    color: tokens.$color-success;
+}
+
+.u-text-warning {
+    color: tokens.$color-warning;
+}
+
+.u-text-danger {
+    color: tokens.$color-danger;
+}
 
 // Background colors
-.u-bg-primary { background-color: $color-bg-primary; }
-.u-bg-secondary { background-color: $color-bg-secondary; }
-.u-bg-success { background-color: $color-success-light; }
-.u-bg-warning { background-color: $color-warning-light; }
-.u-bg-danger { background-color: $color-danger-light; }
+.u-bg-primary {
+    background-color: tokens.$color-bg-primary;
+}
+
+.u-bg-secondary {
+    background-color: tokens.$color-bg-secondary;
+}
+
+.u-bg-success {
+    background-color: tokens.$color-success-light;
+}
+
+.u-bg-warning {
+    background-color: tokens.$color-warning-light;
+}
+
+.u-bg-danger {
+    background-color: tokens.$color-danger-light;
+}

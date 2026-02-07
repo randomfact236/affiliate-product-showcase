@@ -7,54 +7,55 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
 
 .aps-block-showcase {
 	display: grid;
 	grid-template-columns: repeat(var(--aps-showcase-columns, 3), 1fr);
-	gap: var(--aps-showcase-gap, #{$spacing-4});
+	gap: var(--aps-showcase-gap, #{tokens.$spacing-4});
 
-	@include xl-up {
+	@include mixins.respond-to('xl') {
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 3), 1fr);
 	}
 
-	@include lg-down {
+	@include mixins.respond-down('lg') {
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
 	}
 
-	@include md-down {
+	@include mixins.respond-down('md') {
 		grid-template-columns: 1fr;
-		gap: calc(var(--aps-showcase-gap, #{$spacing-4}) * 0.75);
+		gap: calc(var(--aps-showcase-gap, #{tokens.$spacing-4}) * 0.75);
 	}
 
 	&--list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--aps-showcase-gap, #{$spacing-4});
+		gap: var(--aps-showcase-gap, #{tokens.$spacing-4});
 	}
 
 	&--compact &__item {
-		padding: $spacing-4;
+		padding: tokens.$spacing-4;
 
 		&__image {
-			height: 180px;
+			height: tokens.$showcase-compact-image-height;
 		}
 
 		&__title {
-			font-size: $font-size-md;
+			font-size: tokens.$font-size-md;
 		}
 
 		&__price-current {
-			font-size: $font-size-xl;
+			font-size: tokens.$font-size-xl;
 		}
 	}
 }
 
 .aps-block-showcase__item {
-	background: $color-white;
-	border: 1px solid $color-slate-200;
-	border-radius: $radius-xl;
+	background: tokens.$color-white;
+	border: 1px solid tokens.$color-slate-200;
+	border-radius: tokens.$radius-xl;
 	overflow: hidden;
 	transition:
 		transform 200ms ease-in-out,
@@ -65,21 +66,21 @@
 
 	&:hover {
 		transform: translateY(-4px);
-		box-shadow: $shadow-lg;
+		box-shadow: tokens.$shadow-lg;
 	}
 
 	.aps-block-showcase--list & {
 		flex-direction: row;
-		gap: $spacing-6;
-		padding: $spacing-6;
+		gap: tokens.$spacing-6;
+		padding: tokens.$spacing-6;
 		align-items: stretch;
 
 		&:hover {
 			transform: none;
-			box-shadow: $shadow-md;
+			box-shadow: tokens.$shadow-md;
 		}
 
-		@include md-down {
+		@include mixins.respond-down('md') {
 			flex-direction: column;
 		}
 	}
@@ -87,29 +88,29 @@
 
 .aps-block-showcase__image {
 	width: 100%;
-	height: 250px;
+	height: tokens.$showcase-image-height;
 	object-fit: cover;
 	display: block;
-	background: $color-slate-50;
+	background: tokens.$color-slate-50;
 
-	@include md-down {
-		height: 200px;
+	@include mixins.respond-down('md') {
+		height: tokens.$showcase-image-height-mobile;
 	}
 
 	.aps-block-showcase--list & {
-		width: 200px;
-		height: 150px;
+		width: tokens.$showcase-image-height-mobile;
+		height: tokens.$card-media-height;
 		flex-shrink: 0;
 
-		@include md-down {
+		@include mixins.respond-down('md') {
 			width: 100%;
-			height: 200px;
+			height: tokens.$showcase-image-height-mobile;
 		}
 	}
 }
 
 .aps-block-showcase__content {
-	padding: $spacing-6;
+	padding: tokens.$spacing-6;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -121,33 +122,33 @@
 
 .aps-block-showcase__badge {
 	position: absolute;
-	top: $spacing-3;
-	left: $spacing-3;
-	padding: $spacing-1 $spacing-3;
-	background: linear-gradient(135deg, $color-blue-500 0%, $color-primary 100%);
-	color: $color-white;
-	font-size: $font-size-xs;
-	font-weight: $font-weight-semibold;
-	border-radius: $radius-md;
+	inset-block-start: tokens.$spacing-3;
+	inset-inline-start: tokens.$spacing-3;
+	padding: tokens.$spacing-1 tokens.$spacing-3;
+	background: linear-gradient(135deg, tokens.$color-blue-500 0%, tokens.$color-primary 100%);
+	color: tokens.$color-white;
+	font-size: tokens.$font-size-xs;
+	font-weight: tokens.$font-weight-semibold;
+	border-radius: tokens.$radius-md;
 	text-transform: uppercase;
-	letter-spacing: $letter-spacing-wide;
-	box-shadow: 0 2px 8px rgba($color-blue-500, 0.3);
+	letter-spacing: tokens.$letter-spacing-wide;
+	box-shadow: 0 2px 8px rgba(tokens.$color-blue-500, 0.3);
 }
 
 .aps-block-showcase__title {
-	margin: 0 0 $spacing-3;
-	font-size: $font-size-lg;
-	font-weight: $font-weight-bold;
-	line-height: $line-height-tight;
-	color: $color-slate-800;
+	margin: 0 0 tokens.$spacing-3;
+	font-size: tokens.$font-size-lg;
+	font-weight: tokens.$font-weight-bold;
+	line-height: tokens.$line-height-tight;
+	color: tokens.$color-slate-800;
 
 	a {
 		color: inherit;
 		text-decoration: none;
-		transition: color $transition-fast;
+		transition: color tokens.$transition-fast;
 
 		&:hover {
-			color: $color-blue-500;
+			color: tokens.$color-blue-500;
 		}
 	}
 }
@@ -155,66 +156,67 @@
 .aps-block-showcase__price {
 	display: flex;
 	align-items: baseline;
-	gap: $spacing-3;
-	margin-bottom: $spacing-4;
+	gap: tokens.$spacing-3;
+	margin-bottom: tokens.$spacing-4;
 }
 
 .aps-block-showcase__price-current {
-	font-size: $font-size-xl;
-	font-weight: $font-weight-extrabold;
-	color: var(--aps-frontend-primary, #{$color-blue-500});
+	font-size: tokens.$font-size-xl;
+	font-weight: tokens.$font-weight-extrabold;
+	color: var(--aps-frontend-primary, #{tokens.$color-blue-500});
 }
 
 .aps-block-showcase__price-original {
-	font-size: $font-size-md;
-	color: $color-slate-400;
+	font-size: tokens.$font-size-md;
+	color: tokens.$color-slate-400;
 	text-decoration: line-through;
 }
 
 .aps-block-showcase__description {
-	font-size: $font-size-sm;
-	line-height: $line-height-relaxed;
-	color: $color-slate-500;
-	margin-bottom: $spacing-6;
+	font-size: tokens.$font-size-sm;
+	line-height: tokens.$line-height-relaxed;
+	color: tokens.$color-slate-500;
+	margin-bottom: tokens.$spacing-6;
 	flex: 1;
 
-	@include line-clamp(2);
+	@include mixins.line-clamp(2);
 
 	.aps-block-showcase--list & {
 		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 }
 
 .aps-block-showcase__button {
 	display: inline-block;
 	width: 100%;
-	padding: $spacing-3 $spacing-8;
-	background: var(--aps-frontend-primary, #{$color-blue-500});
-	color: $color-white;
+	padding: tokens.$spacing-3 tokens.$spacing-8;
+	background: var(--aps-frontend-primary, #{tokens.$color-blue-500});
+	color: tokens.$color-white;
 	text-align: center;
 	text-decoration: none;
-	border-radius: $radius-md;
-	font-weight: $font-weight-semibold;
+	border-radius: tokens.$radius-md;
+	font-weight: tokens.$font-weight-semibold;
 	transition:
 		background-color 150ms ease-in-out,
 		transform 150ms ease-in-out,
 		box-shadow 150ms ease-in-out;
 	border: none;
 	cursor: pointer;
-	box-shadow: 0 4px 6px rgba($color-blue-500, 0.2);
+	box-shadow: 0 4px 6px rgba(tokens.$color-blue-500, 0.2);
 
 	&:hover {
-		background: var(--aps-frontend-primary-hover, #{$color-blue-600});
+		background: var(--aps-frontend-primary-hover, #{tokens.$color-blue-600});
 		transform: translateY(-2px);
-		box-shadow: 0 8px 16px rgba($color-blue-500, 0.3);
+		box-shadow: 0 8px 16px rgba(tokens.$color-blue-500, 0.3);
 	}
 
 	&:active {
 		transform: translateY(0);
-		box-shadow: 0 2px 4px rgba($color-blue-500, 0.2);
+		box-shadow: 0 2px 4px rgba(tokens.$color-blue-500, 0.2);
 	}
 
-	@include focus-outline;
+	@include mixins.focus-outline;
 }
 
 // Loading state modifier
@@ -225,20 +227,20 @@
 
 // Empty state modifier
 .aps-block-showcase.is-empty {
-	min-height: 200px;
+	min-height: tokens.$empty-state-min-height;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: $color-slate-50;
-	border: 2px dashed $color-slate-300;
-	border-radius: $radius-lg;
-	padding: $spacing-8;
-	color: $color-slate-500;
+	background: tokens.$color-slate-50;
+	border: 2px dashed tokens.$color-slate-300;
+	border-radius: tokens.$radius-lg;
+	padding: tokens.$spacing-8;
+	color: tokens.$color-slate-500;
 	text-align: center;
 }
 
 // Print
-@include print {
+@include mixins.print {
 	.aps-block-showcase__button {
 		display: none;
 	}
@@ -249,7 +251,7 @@
 }
 
 // Reduced motion
-@include reduced-motion {
+@include mixins.reduced-motion {
 
 	.aps-block-showcase__item,
 	.aps-block-showcase__button {

@@ -7,6 +7,6 @@
  * @since 2.0.0
  */
 
-@use 'grid';
-@use 'layout';
-@use 'container';
+@forward 'grid';
+@forward 'layout';
+@forward 'container';

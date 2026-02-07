@@ -8,17 +8,20 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
 
 // ============================================
 // Hide Native Add New Button
 // ============================================
 
+// stylelint-disable-next-line selector-class-pattern
 body.post-type-aps_product.edit-php {
+
 	.page-title-action,
 	.wrap .page-title-action {
-		display: none !important;
+		display: none !important; // Override WP core styles
 	}
 }
 
@@ -29,34 +32,34 @@ body.post-type-aps_product.edit-php {
 .aps-featured-filter {
 	display: inline-flex;
 	align-items: center;
-	gap: $spacing-2;
-	margin-left: $spacing-4;
-	font-size: $font-size-sm;
-	color: $color-text-primary;
+	gap: tokens.$spacing-2;
+	margin-inline-start: tokens.$spacing-4;
+	font-size: tokens.$font-size-sm;
+	color: tokens.$color-text-primary;
 	cursor: pointer;
 	user-select: none;
-	transition: color $transition-fast;
-	
+	transition: color tokens.$transition-fast;
+
 	&:hover {
-		color: $wp-admin-theme-color;
+		color: tokens.$wp-admin-theme-color;
 	}
-	
+
 	input[type="checkbox"] {
 		margin: 0;
-		width: 16px;
-		height: 16px;
+		width: tokens.$spacing-4;
+		height: tokens.$spacing-4;
 		cursor: pointer;
-		accent-color: $wp-admin-theme-color;
-		
+		accent-color: tokens.$wp-admin-theme-color;
+
 		&:focus-visible {
-			outline: 2px solid $wp-admin-theme-color;
+			outline: 2px solid tokens.$wp-admin-theme-color;
 			outline-offset: 2px;
 		}
 	}
-	
-	@include wp-tablet-down {
-		margin-left: 0;
-		margin-top: $spacing-2;
+
+	@include mixins.wp-tablet-down {
+		margin-inline-start: 0;
+		margin-block-start: tokens.$spacing-2;
 		width: 100%;
 	}
 }
@@ -66,52 +69,56 @@ body.post-type-aps_product.edit-php {
 // ============================================
 
 .aps-filter-dropdown {
-	@include input-base;
-	
-	margin-right: $spacing-2;
-	padding: $spacing-1 $spacing-2;
-	font-size: $font-size-sm;
-	min-height: 30px;
-	
-	@include wp-tablet-down {
-		margin-right: $spacing-1;
-		margin-bottom: $spacing-2;
+	@include mixins.input-base;
+
+	margin-inline-end: tokens.$spacing-2;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	font-size: tokens.$font-size-sm;
+	min-height: tokens.$admin-input-height;
+
+	@include mixins.wp-tablet-down {
+		margin-inline-end: tokens.$spacing-1;
+		margin-block-end: tokens.$spacing-2;
 		flex: 1;
 	}
 }
 
 // ID selectors for WordPress compatibility
+// stylelint-disable selector-id-pattern
 #aps_category_filter,
 #aps_tag_filter {
 	@extend .aps-filter-dropdown;
 }
+
+// stylelint-enable selector-id-pattern
 
 // ============================================
 // Search Input
 // ============================================
 
 .aps-search-input {
-	@include input-base;
-	
-	margin-left: $spacing-2;
-	padding: $spacing-1 $spacing-2;
-	font-size: $font-size-sm;
-	min-width: 200px;
-	min-height: 30px;
-	
+	@include mixins.input-base;
+
+	margin-inline-start: tokens.$spacing-2;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	font-size: tokens.$font-size-sm;
+	min-width: tokens.$empty-state-min-height;
+	min-height: tokens.$admin-input-height;
+
 	&::placeholder {
-		color: $color-text-muted;
+		color: tokens.$color-text-muted;
 		font-style: italic;
 	}
-	
-	@include wp-tablet-down {
-		margin-left: 0;
-		margin-top: $spacing-2;
+
+	@include mixins.wp-tablet-down {
+		margin-inline-start: 0;
+		margin-block-start: tokens.$spacing-2;
 		width: 100%;
 		min-width: auto;
 	}
 }
 
+// stylelint-disable-next-line selector-id-pattern
 #aps_search {
 	@extend .aps-search-input;
 }
@@ -121,27 +128,27 @@ body.post-type-aps_product.edit-php {
 // ============================================
 
 .aps-sort-filter {
-	float: left;
+	// Replaced float:left with inline-flex
 	display: inline-flex;
 	align-items: center;
-	margin-right: $spacing-3;
-	margin-bottom: $spacing-3;
-	
+	margin-inline-end: tokens.$spacing-3;
+	margin-block-end: tokens.$spacing-3;
+
 	.postform {
-		@include input-base;
-		
-		margin-right: $spacing-2;
-		padding: $spacing-1 $spacing-3;
-		font-size: $font-size-sm;
-		min-height: 30px;
+		@include mixins.input-base;
+
+		margin-inline-end: tokens.$spacing-2;
+		padding: tokens.$spacing-1 tokens.$spacing-3;
+		font-size: tokens.$font-size-sm;
+		min-height: tokens.$admin-input-height;
 	}
-	
-	@include wp-tablet-down {
+
+	@include mixins.wp-tablet-down {
 		float: none;
 		display: flex;
 		width: 100%;
-		margin-right: 0;
-		
+		margin-inline-end: 0;
+
 		.postform {
 			flex: 1;
 		}
@@ -153,9 +160,10 @@ body.post-type-aps_product.edit-php {
 // ============================================
 
 .tablenav {
+
 	.aps-sort-filter,
 	.aps-featured-filter {
-		@include wp-tablet-down {
+		@include mixins.wp-tablet-down {
 			float: none;
 			display: flex;
 			width: 100%;
@@ -167,7 +175,8 @@ body.post-type-aps_product.edit-php {
 // Accessibility
 // ============================================
 
-@include reduced-motion {
+@include mixins.reduced-motion {
+
 	.aps-featured-filter,
 	.aps-filter-dropdown,
 	.aps-search-input {
@@ -175,11 +184,12 @@ body.post-type-aps_product.edit-php {
 	}
 }
 
-@include high-contrast {
+@include mixins.high-contrast {
+
 	.aps-filter-dropdown,
 	.aps-search-input {
 		border-width: 2px;
-		
+
 		&:focus {
 			outline-width: 3px;
 		}

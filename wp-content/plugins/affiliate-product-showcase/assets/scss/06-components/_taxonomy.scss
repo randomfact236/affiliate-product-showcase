@@ -8,15 +8,16 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
 
 // ============================================
 // Utility Classes
 // ============================================
 
 .aps-hidden {
-	display: none !important;
+	display: none !important; // Override WP core styles
 }
 
 // ============================================
@@ -25,11 +26,11 @@
 
 .aps-status-icon {
 	&--success {
-		color: $color-success;
+		color: tokens.$color-success;
 	}
-	
+
 	&--neutral {
-		color: $color-text-muted;
+		color: tokens.$color-text-muted;
 	}
 }
 
@@ -38,7 +39,7 @@
 // ============================================
 
 .aps-cancel-term-edit {
-	margin-right: $spacing-2;
+	margin-inline-end: tokens.$spacing-2;
 }
 
 // ============================================
@@ -46,17 +47,17 @@
 // ============================================
 
 .aps-term-status-select {
-	@include input-base;
-	
-	min-width: 120px;
+	@include mixins.input-base;
+
+	min-width: 7.5rem; // 120px
 	cursor: pointer;
-	
+
 	&:focus {
-		outline: 2px solid $wp-admin-theme-color;
-		border-color: $wp-admin-theme-color;
+		outline: 2px solid tokens.$wp-admin-theme-color;
+		border-color: tokens.$wp-admin-theme-color;
 	}
-	
-	@include wp-tablet-down {
+
+	@include mixins.wp-tablet-down {
 		width: 100%;
 		min-width: auto;
 	}
@@ -69,26 +70,26 @@
 .aps-term-status-readonly {
 	display: inline-flex;
 	align-items: center;
-	gap: $spacing-1;
-	color: $color-text-muted;
-	font-size: $font-size-sm;
-	
+	gap: tokens.$spacing-1;
+	color: tokens.$color-text-muted;
+	font-size: tokens.$font-size-sm;
+
 	.dashicons {
-		font-size: $font-size-md;
-		width: $font-size-md;
-		height: $font-size-md;
+		font-size: tokens.$font-size-md;
+		width: tokens.$font-size-md;
+		height: tokens.$font-size-md;
 	}
 }
 
 .aps-status-note {
 	display: inline-block;
-	padding: $spacing-0-5 $spacing-2;
-	background: $color-info-light;
-	color: $color-info-dark;
-	border-radius: $radius-sm;
-	font-size: $font-size-xs;
-	font-weight: $font-weight-medium;
-	margin-left: $spacing-1;
+	padding: 0.125rem tokens.$spacing-2; // $spacing-0-5
+	background: tokens.$color-info-light;
+	color: tokens.$color-info-dark;
+	border-radius: tokens.$radius-sm;
+	font-size: tokens.$font-size-xs;
+	font-weight: tokens.$font-weight-medium;
+	margin-inline-start: tokens.$spacing-1;
 }
 
 // ============================================
@@ -96,8 +97,8 @@
 // ============================================
 
 .aps-term-count {
-	font-weight: $font-weight-semibold;
-	color: $color-text-primary;
+	font-weight: tokens.$font-weight-semibold;
+	color: tokens.$color-text-primary;
 }
 
 // ============================================
@@ -105,8 +106,8 @@
 // ============================================
 
 .aps-featured-star {
-	color: $color-star;
-	font-size: $font-size-lg;
+	color: tokens.$color-star;
+	font-size: tokens.$font-size-lg;
 	line-height: 1;
 	display: inline-block;
 	vertical-align: middle;
@@ -119,16 +120,16 @@
 .edittag {
 	p.submit {
 		a.button {
-			margin-left: $spacing-3;
+			margin-inline-start: tokens.$spacing-3;
 			text-decoration: none;
-			transition: background-color $transition-fast;
-			
+			transition: background-color tokens.$transition-fast;
+
 			&:hover {
-				background: $color-bg-hover;
+				background: tokens.$color-bg-hover;
 			}
-			
+
 			&:focus-visible {
-				outline: 2px solid $wp-admin-theme-color;
+				outline: 2px solid tokens.$wp-admin-theme-color;
 				outline-offset: 2px;
 			}
 		}
@@ -142,33 +143,33 @@
 .aps-taxonomy-checkboxes {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: $spacing-5;
-	margin: $spacing-5 0;
-	
-	@include wp-tablet-down {
+	gap: tokens.$spacing-5;
+	margin: tokens.$spacing-5 0;
+
+	@include mixins.wp-tablet-down {
 		grid-template-columns: 1fr;
 	}
 }
 
 .aps-taxonomy-checkbox {
-	background: $color-bg-tertiary;
-	padding: $spacing-4;
-	border-radius: $radius-md;
-	border: 1px solid $color-border;
-	margin: 0 !important;
-	
+	background: tokens.$color-bg-tertiary;
+	padding: tokens.$spacing-4;
+	border-radius: tokens.$radius-md;
+	border: 1px solid tokens.$color-border;
+	margin: 0 !important; // Override WP core styles
+
 	label {
-		display: flex !important;
+		display: flex !important; // Override WP core styles
 		align-items: center;
-		gap: $spacing-2;
-		font-weight: $font-weight-semibold;
+		gap: tokens.$spacing-2;
+		font-weight: tokens.$font-weight-semibold;
 		cursor: pointer;
-		margin-bottom: 0 !important;
+		margin-bottom: 0 !important; // Override WP core styles
 	}
-	
+
 	input[type="checkbox"] {
-		width: 18px;
-		height: 18px;
+		width: functions.spacing('4.5'); // 18px
+		height: functions.spacing('4.5'); // 18px
 		margin: 0;
 	}
 }
@@ -178,21 +179,21 @@
 // ============================================
 
 .aps-taxonomy-settings {
-	background: $color-white;
-	border: 1px solid $color-border;
-	border-radius: $radius-md;
-	padding: $spacing-5;
-	margin-top: $spacing-5;
-	
+	background: tokens.$color-white;
+	border: 1px solid tokens.$color-border;
+	border-radius: tokens.$radius-md;
+	padding: tokens.$spacing-5;
+	margin-top: tokens.$spacing-5;
+
 	h3 {
-		margin: 0 0 $spacing-4;
-		padding-bottom: $spacing-3;
-		border-bottom: 1px solid $color-border-light;
-		font-size: $font-size-sm;
+		margin: 0 0 tokens.$spacing-4;
+		padding-bottom: tokens.$spacing-3;
+		border-bottom: 1px solid tokens.$color-border-light;
+		font-size: tokens.$font-size-sm;
 		text-transform: uppercase;
-		letter-spacing: $letter-spacing-wide;
-		color: $color-text-primary;
-		font-weight: $font-weight-semibold;
+		letter-spacing: tokens.$letter-spacing-wide;
+		color: tokens.$color-text-primary;
+		font-weight: tokens.$font-weight-semibold;
 	}
 }
 
@@ -200,7 +201,8 @@
 // Accessibility
 // ============================================
 
-@include reduced-motion {
+@include mixins.reduced-motion {
+
 	.aps-term-status-select,
 	.edittag p.submit a.button {
 		transition: none;

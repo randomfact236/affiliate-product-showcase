@@ -8,8 +8,9 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
 @use '../07-utilities/animations' as *;
 
 // ============================================
@@ -17,53 +18,53 @@
 // ============================================
 
 .aps-card {
-	@include card-base;
+	@include mixins.card-base;
 
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 
 	&:hover {
-		border-color: $color-primary;
+		border-color: tokens.$color-primary;
 	}
 
 	&:focus-within {
-		outline: 3px solid $color-primary;
+		outline: 3px solid tokens.$color-primary;
 		outline-offset: 2px;
-		border-radius: $radius-lg;
+		border-radius: tokens.$radius-lg;
 	}
 
 	// List layout variant
 	&--list {
 		flex-direction: row;
-		gap: $spacing-6;
-		padding: $spacing-6;
+		gap: tokens.$spacing-6;
+		padding: tokens.$spacing-6;
 		align-items: stretch;
 
 		&:hover {
 			transform: none;
-			box-shadow: $shadow-md;
+			box-shadow: tokens.$shadow-md;
 		}
 
-		@include md-down {
+		@include mixins.respond-down('md') {
 			flex-direction: column;
 		}
 	}
 
 	// Compact variant
 	&--compact {
-		padding: $spacing-4;
+		padding: tokens.$spacing-4;
 
 		.aps-card__media {
-			height: 180px;
+			height: functions.spacing('44'); // 180px approx
 		}
 
 		.aps-card__title {
-			font-size: $font-size-md;
+			font-size: tokens.$font-size-md;
 		}
 
 		.aps-card__price {
-			font-size: $font-size-xl;
+			font-size: tokens.$font-size-xl;
 		}
 	}
 }
@@ -77,7 +78,7 @@
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
-	background: $color-bg-secondary;
+	background: tokens.$color-bg-secondary;
 
 	@supports not (aspect-ratio: 1) {
 		&::before {
@@ -97,7 +98,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform $transition-base;
+		transition: transform tokens.$transition-base;
 	}
 
 	.aps-card:hover & img {
@@ -106,13 +107,13 @@
 
 	// List layout adjustments
 	.aps-card--list & {
-		width: 200px;
-		height: 150px;
+		width: tokens.$card-media-width;
+		height: tokens.$card-media-height;
 		flex-shrink: 0;
 
-		@include md-down {
+		@include mixins.respond-down('md') {
 			width: 100%;
-			height: 200px;
+			height: tokens.$card-media-width;
 		}
 	}
 }
@@ -122,11 +123,11 @@
 // ============================================
 
 .aps-card__body {
-	padding: $spacing-5;
+	padding: tokens.$spacing-5;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: $spacing-3;
+	gap: tokens.$spacing-3;
 
 	// List layout
 	.aps-card--list & {
@@ -136,34 +137,35 @@
 
 .aps-card__title {
 	margin: 0;
-	font-size: $font-size-lg;
-	font-weight: $font-weight-semibold;
-	line-height: $line-height-tight;
-	color: $color-text-primary;
+	font-size: tokens.$font-size-lg;
+	font-weight: tokens.$font-weight-semibold;
+	line-height: tokens.$line-height-tight;
+	color: tokens.$color-text-primary;
 
-	@include line-clamp(2);
+	@include mixins.line-clamp(2);
 
 	a {
 		color: inherit;
-		transition: color $transition-fast;
+		transition: color tokens.$transition-fast;
 
 		&:hover {
-			color: $color-primary;
+			color: tokens.$color-primary;
 		}
 	}
 }
 
 .aps-card__description {
 	margin: 0;
-	font-size: $font-size-base;
-	line-height: $line-height-normal;
-	color: $color-text-tertiary;
+	font-size: tokens.$font-size-base;
+	line-height: tokens.$line-height-normal;
+	color: tokens.$color-text-tertiary;
 
-	@include line-clamp(3);
+	@include mixins.line-clamp(3);
 
 	// List layout
 	.aps-card--list & {
 		-webkit-line-clamp: 3;
+		line-clamp: 3;
 	}
 }
 
@@ -174,60 +176,60 @@
 .aps-card__meta {
 	display: flex;
 	flex-wrap: wrap;
-	gap: $spacing-2;
+	gap: tokens.$spacing-2;
 	align-items: center;
 }
 
 .aps-card__badge {
 	display: inline-block;
-	padding: $spacing-1 $spacing-3;
-	background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
-	color: $color-white;
-	font-size: $font-size-xs;
-	font-weight: $font-weight-semibold;
-	border-radius: $radius-sm;
+	padding: tokens.$spacing-1 tokens.$spacing-3;
+	background: linear-gradient(135deg, tokens.$color-primary 0%, tokens.$color-primary-dark 100%);
+	color: tokens.$color-white;
+	font-size: tokens.$font-size-xs;
+	font-weight: tokens.$font-weight-semibold;
+	border-radius: tokens.$radius-sm;
 	text-transform: uppercase;
-	letter-spacing: $letter-spacing-wide;
+	letter-spacing: tokens.$letter-spacing-wide;
 }
 
 .aps-card__rating {
 	display: inline-flex;
 	align-items: center;
-	gap: $spacing-1;
-	padding: $spacing-1 $spacing-2;
-	background: $color-rating-bg;
-	border: 1px solid $color-rating-border;
-	border-radius: $radius-sm;
-	font-size: $font-size-sm;
-	color: $color-rating-text;
-	font-weight: $font-weight-medium;
+	gap: tokens.$spacing-1;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	background: tokens.$color-rating-bg;
+	border: 1px solid tokens.$color-rating-border;
+	border-radius: tokens.$radius-sm;
+	font-size: tokens.$font-size-sm;
+	color: tokens.$color-rating-text;
+	font-weight: tokens.$font-weight-medium;
 
 	&[aria-hidden='true'] {
-		color: $color-rating-border;
+		color: tokens.$color-rating-border;
 	}
 }
 
 .aps-card__version {
 	display: inline-flex;
 	align-items: center;
-	gap: $spacing-1;
-	padding: $spacing-1 $spacing-2;
-	background: $color-version-bg;
-	border: 1px solid $color-version-border;
-	border-radius: $radius-sm;
-	font-size: $font-size-xs;
-	color: $color-version-text;
-	font-weight: $font-weight-medium;
-	font-family: $font-family-base;
+	gap: tokens.$spacing-1;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	background: tokens.$color-version-bg;
+	border: 1px solid tokens.$color-version-border;
+	border-radius: tokens.$radius-sm;
+	font-size: tokens.$font-size-xs;
+	color: tokens.$color-version-text;
+	font-weight: tokens.$font-weight-medium;
+	font-family: tokens.$font-family-base;
 	transition:
 		background-color 150ms ease-in-out,
 		border-color 150ms ease-in-out,
 		color 150ms ease-in-out;
 
 	&:hover {
-		background: $color-primary;
-		color: $color-white;
-		border-color: $color-primary;
+		background: tokens.$color-primary;
+		color: tokens.$color-white;
+		border-color: tokens.$color-primary;
 	}
 }
 
@@ -237,11 +239,11 @@
 
 .aps-card__footer {
 	margin-top: auto;
-	padding: $spacing-4 $spacing-5;
-	border-top: 1px solid $color-bg-hover;
+	padding: tokens.$spacing-4 tokens.$spacing-5;
+	border-top: 1px solid tokens.$color-bg-hover;
 	display: flex;
 	flex-wrap: wrap;
-	gap: $spacing-3;
+	gap: tokens.$spacing-3;
 	align-items: center;
 	justify-content: space-between;
 }
@@ -250,27 +252,27 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	gap: $spacing-2;
+	gap: tokens.$spacing-2;
 }
 
 .aps-card__price {
 	display: flex;
 	align-items: baseline;
-	gap: $spacing-1;
-	font-size: $font-size-2xl;
-	font-weight: $font-weight-bold;
-	color: $color-text-primary;
+	gap: tokens.$spacing-1;
+	font-size: tokens.$font-size-2xl;
+	font-weight: tokens.$font-weight-bold;
+	color: tokens.$color-text-primary;
 	line-height: 1;
 
 	&-currency {
-		font-size: $font-size-sm;
-		font-weight: $font-weight-medium;
-		color: $color-text-muted;
+		font-size: tokens.$font-size-sm;
+		font-weight: tokens.$font-weight-medium;
+		color: tokens.$color-text-muted;
 	}
 
 	&--original {
-		font-size: $font-size-md;
-		color: $color-text-muted;
+		font-size: tokens.$font-size-md;
+		color: tokens.$color-text-muted;
 		text-decoration: line-through;
 	}
 }
@@ -278,30 +280,30 @@
 .aps-card__discount {
 	display: inline-flex;
 	align-items: center;
-	padding: $spacing-1 $spacing-2;
-	background: $color-discount;
-	color: $color-white;
-	font-size: $font-size-xs;
-	font-weight: $font-weight-bold;
-	border-radius: $radius-sm;
-	box-shadow: 0 2px 4px rgba($color-danger, 0.3);
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	background: tokens.$color-discount;
+	color: tokens.$color-white;
+	font-size: tokens.$font-size-xs;
+	font-weight: tokens.$font-weight-bold;
+	border-radius: tokens.$radius-sm;
+	box-shadow: 0 2px 4px rgba(tokens.$color-danger, 0.3);
 	animation: aps-pulse 2s infinite;
 
-	@include reduced-motion {
+	@include mixins.reduced-motion {
 		animation: none;
 	}
 }
 
 .aps-card__cta {
-	@include button-base;
+	@include mixins.button-base;
 
-	background: $color-primary;
-	color: $color-white;
+	background: tokens.$color-primary;
+	color: tokens.$color-white;
 
 	&:hover {
-		background: $color-primary-hover;
+		background: tokens.$color-primary-hover;
 		transform: translateY(-1px);
-		box-shadow: $shadow-md;
+		box-shadow: tokens.$shadow-md;
 	}
 
 	&:active {
@@ -309,9 +311,9 @@
 	}
 
 	// Touch device sizing
-	@include touch-only {
+	@include mixins.touch-only {
 		min-height: 44px;
-		padding: $spacing-3 $spacing-6;
+		padding: tokens.$spacing-3 tokens.$spacing-6;
 	}
 }
 
@@ -320,19 +322,19 @@
 // ============================================
 
 .aps-card__platform {
-	margin-top: $spacing-3;
-	padding: $spacing-3;
-	background: $color-bg-tertiary;
-	border: 1px solid $color-border-light;
-	border-radius: $radius-md;
-	font-size: $font-size-sm;
+	margin-top: tokens.$spacing-3;
+	padding: tokens.$spacing-3;
+	background: tokens.$color-bg-tertiary;
+	border: 1px solid tokens.$color-border-light;
+	border-radius: tokens.$radius-md;
+	font-size: tokens.$font-size-sm;
 }
 
 .aps-card__platform-details {
 	transition: background-color 200ms ease-in-out;
 
 	&[open] {
-		background: $color-bg-primary;
+		background: tokens.$color-bg-primary;
 	}
 }
 
@@ -340,28 +342,28 @@
 	cursor: pointer;
 	display: flex;
 	align-items: center;
-	gap: $spacing-1;
-	font-weight: $font-weight-medium;
-	color: $color-primary;
-	padding: $spacing-1 0;
+	gap: tokens.$spacing-1;
+	font-weight: tokens.$font-weight-medium;
+	color: tokens.$color-primary;
+	padding: tokens.$spacing-1 0;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
 
 	&:hover {
-		color: $color-primary-hover;
+		color: tokens.$color-primary-hover;
 	}
 
-	@include focus-outline;
+	@include mixins.focus-outline;
 
 	.dashicons {
-		font-size: $font-size-base;
-		width: $font-size-base;
-		height: $font-size-base;
-		transition: transform $transition-base;
+		font-size: tokens.$font-size-base;
+		width: tokens.$font-size-base;
+		height: tokens.$font-size-base;
+		transition: transform tokens.$transition-base;
 	}
 
 	// Touch device sizing
-	@include touch-only {
+	@include mixins.touch-only {
 		min-height: 44px;
 		display: inline-flex;
 		align-items: center;
@@ -373,15 +375,15 @@
 }
 
 .aps-card__platform-content {
-	margin-top: $spacing-2;
-	padding: $spacing-2 $spacing-3;
-	background: $color-bg-primary;
-	border: 1px solid $color-border-light;
-	border-radius: $radius-sm;
-	font-size: $font-size-sm;
-	line-height: $line-height-relaxed;
-	color: $color-text-tertiary;
-	animation: aps-slide-down $transition-base ease;
+	margin-top: tokens.$spacing-2;
+	padding: tokens.$spacing-2 tokens.$spacing-3;
+	background: tokens.$color-bg-primary;
+	border: 1px solid tokens.$color-border-light;
+	border-radius: tokens.$radius-sm;
+	font-size: tokens.$font-size-sm;
+	line-height: tokens.$line-height-relaxed;
+	color: tokens.$color-text-tertiary;
+	animation: aps-slide-down tokens.$transition-base ease;
 }
 
 // ============================================
@@ -389,22 +391,22 @@
 // ============================================
 
 .aps-disclosure {
-	padding: $spacing-3;
-	margin-bottom: $spacing-3;
-	font-size: $font-size-xs;
-	line-height: $line-height-normal;
-	color: $color-text-tertiary;
-	background: $color-bg-secondary;
-	border: 1px solid $color-border-light;
-	border-radius: $radius-sm;
+	padding: tokens.$spacing-3;
+	margin-bottom: tokens.$spacing-3;
+	font-size: tokens.$font-size-xs;
+	line-height: tokens.$line-height-normal;
+	color: tokens.$color-text-tertiary;
+	background: tokens.$color-bg-secondary;
+	border: 1px solid tokens.$color-border-light;
+	border-radius: tokens.$radius-sm;
 
 	&--top {
 		margin-top: 0;
-		margin-bottom: $spacing-4;
+		margin-bottom: tokens.$spacing-4;
 	}
 
 	&--bottom {
-		margin-top: $spacing-4;
+		margin-top: tokens.$spacing-4;
 		margin-bottom: 0;
 	}
 }
@@ -413,7 +415,7 @@
 // Responsive
 // ============================================
 
-@include md-down {
+@include mixins.respond-down('md') {
 	.aps-card__footer {
 		flex-direction: column;
 		align-items: stretch;
@@ -430,17 +432,17 @@
 	}
 }
 
-@include xs-down {
+@include mixins.respond-down('xs') {
 	.aps-card__media {
 		aspect-ratio: 4 / 3;
 	}
 
 	.aps-card__title {
-		font-size: $font-size-md;
+		font-size: tokens.$font-size-md;
 	}
 
 	.aps-card__price {
-		font-size: $font-size-xl;
+		font-size: tokens.$font-size-xl;
 	}
 }
 
@@ -448,10 +450,10 @@
 // Print
 // ============================================
 
-@include print {
+@include mixins.print {
 	.aps-card {
 		break-inside: avoid;
-		border: 1px solid $color-black;
+		border: 1px solid tokens.$color-black;
 		box-shadow: none;
 	}
 
@@ -465,7 +467,7 @@
 // Accessibility
 // ============================================
 
-@include reduced-motion {
+@include mixins.reduced-motion {
 
 	.aps-card,
 	.aps-card__media img,
@@ -479,14 +481,14 @@
 	}
 }
 
-@include high-contrast {
+@include mixins.high-contrast {
 	.aps-card {
 		border-width: 2px;
 	}
 
 	.aps-card__badge,
 	.aps-card__discount {
-		border: 2px solid $color-black;
+		border: 2px solid tokens.$color-black;
 	}
 }
 

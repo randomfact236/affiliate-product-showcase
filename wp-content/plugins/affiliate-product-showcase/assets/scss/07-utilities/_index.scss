@@ -7,9 +7,9 @@
  * @since 2.0.0
  */
 
-@use 'spacing';
-@use 'colors';
-@use 'display';
-@use 'text';
-@use 'images';
-@use 'accessibility';
+@forward 'spacing';
+@forward 'colors';
+@forward 'display';
+@forward 'text';
+@forward 'images';
+@forward 'accessibility';

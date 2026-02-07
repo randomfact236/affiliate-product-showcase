@@ -7,6 +7,6 @@
  * @since 2.0.0
  */
 
-@use 'buttons';
-@use 'forms';
-@use 'typography';
+@forward 'buttons';
+@forward 'forms';
+@forward 'typography';

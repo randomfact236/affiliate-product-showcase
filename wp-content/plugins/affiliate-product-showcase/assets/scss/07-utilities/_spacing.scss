@@ -8,8 +8,8 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
 
 // Generate all spacing utilities from the $spacing map
-@include spacing-utilities;
+@include mixins.spacing-utilities;

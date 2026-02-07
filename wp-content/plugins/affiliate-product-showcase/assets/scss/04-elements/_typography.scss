@@ -7,38 +7,48 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+
+// ============================================
+// Internal Mixins
+// ============================================
+
+@mixin heading-base {
+	line-height: tokens.$line-height-tight;
+	color: tokens.$color-text-primary;
+}
 
 // ============================================
 // Headings
 // ============================================
 
 .aps-h1 {
-	font-size: $font-size-3xl;
-	font-weight: $font-weight-bold;
-	line-height: $line-height-tight;
-	color: $color-text-primary;
+	@include heading-base;
+
+	font-size: clamp(tokens.$font-size-2xl, 5vw, tokens.$font-size-3xl);
+	font-weight: tokens.$font-weight-bold;
 }
 
 .aps-h2 {
-	font-size: $font-size-2xl;
-	font-weight: $font-weight-bold;
-	line-height: $line-height-tight;
-	color: $color-text-primary;
+	@include heading-base;
+
+	font-size: clamp(tokens.$font-size-xl, 4vw, tokens.$font-size-2xl);
+	font-weight: tokens.$font-weight-bold;
 }
 
 .aps-h3 {
-	font-size: $font-size-xl;
-	font-weight: $font-weight-semibold;
-	line-height: $line-height-tight;
-	color: $color-text-primary;
+	@include heading-base;
+
+	font-size: clamp(tokens.$font-size-lg, 3vw, tokens.$font-size-xl);
+	font-weight: tokens.$font-weight-semibold;
 }
 
 .aps-h4 {
-	font-size: $font-size-lg;
-	font-weight: $font-weight-semibold;
-	line-height: $line-height-tight;
-	color: $color-text-primary;
+	@include heading-base;
+
+	font-size: tokens.$font-size-lg;
+	font-weight: tokens.$font-weight-semibold;
 }
 
 // ============================================
@@ -46,16 +56,16 @@
 // ============================================
 
 .aps-text-lead {
-	font-size: $font-size-lg;
-	color: $color-text-secondary;
-	line-height: $line-height-relaxed;
+	font-size: tokens.$font-size-lg;
+	color: tokens.$color-text-secondary;
+	line-height: tokens.$line-height-relaxed;
 }
 
 .aps-text-small {
-	font-size: $font-size-sm;
-	color: $color-text-muted;
+	font-size: tokens.$font-size-sm;
+	color: tokens.$color-text-muted;
 }
 
 .aps-text-muted {
-	color: $color-text-muted;
+	color: tokens.$color-text-muted;
 }

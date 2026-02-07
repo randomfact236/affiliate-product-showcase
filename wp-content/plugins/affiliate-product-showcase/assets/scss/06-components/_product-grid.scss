@@ -7,29 +7,38 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
-@use '../02-tools/mixins' as *;
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
 
 .aps-block-grid {
 	display: grid;
-	gap: $spacing-5;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-	
-	&--cols-2 { grid-template-columns: repeat(2, 1fr); }
-	&--cols-3 { grid-template-columns: repeat(3, 1fr); }
-	&--cols-4 { grid-template-columns: repeat(4, 1fr); }
-	
-	@include md-down {
+	gap: tokens.$spacing-5;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, tokens.$grid-item-min-width), 1fr));
+
+	&--cols-2 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	&--cols-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	&--cols-4 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@include mixins.respond-down('md') {
+
 		&--cols-2,
 		&--cols-3,
 		&--cols-4 {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
-	
-	@include xs-down {
+
+	@include mixins.respond-down('xs') {
 		grid-template-columns: 1fr;
-		
+
 		&--cols-2,
 		&--cols-3,
 		&--cols-4 {

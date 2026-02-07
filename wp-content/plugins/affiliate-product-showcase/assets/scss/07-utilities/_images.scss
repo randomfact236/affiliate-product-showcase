@@ -7,7 +7,7 @@
  * @since 2.0.0
  */
 
-@use '../01-settings/tokens-vars' as *;
+@use '../01-settings/tokens-vars' as tokens;
 
 // ============================================
 // Background Image from CSS Custom Property
@@ -36,5 +36,5 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	border-radius: $radius-md;
+	border-radius: tokens.$radius-md;
 }
