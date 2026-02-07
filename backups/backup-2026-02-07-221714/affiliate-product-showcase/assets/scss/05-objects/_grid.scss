@@ -1,0 +1,48 @@
+/**
+ * Grid Object
+ * 
+ * Grid layout patterns.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+
+.aps-o-grid {
+	display: grid;
+	gap: tokens.$spacing-4;
+
+	&--2cols {
+		grid-template-columns: repeat(2, 1fr);
+
+		@include mixins.respond-down('md') {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	&--3cols {
+		grid-template-columns: repeat(3, 1fr);
+
+		@include mixins.respond-down('md') {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include mixins.respond-down('sm') {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	&--4cols {
+		grid-template-columns: repeat(4, 1fr);
+
+		@include mixins.respond-down('lg') {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include mixins.respond-down('sm') {
+			grid-template-columns: 1fr;
+		}
+	}
+}

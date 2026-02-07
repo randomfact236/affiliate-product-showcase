@@ -1,0 +1,17 @@
+/**
+ * Components Index
+ * 
+ * Import all UI components.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@forward 'card';
+@forward 'tabs';
+@forward 'modal';
+@forward 'toast';
+@forward 'filters';
+@forward 'taxonomy';
+@forward 'product-showcase';
+@forward 'product-grid';

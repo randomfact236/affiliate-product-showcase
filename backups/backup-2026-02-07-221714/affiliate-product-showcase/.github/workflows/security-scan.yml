@@ -1,0 +1,316 @@
+name: Security Scan
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    # Run security scans daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  # PHP Security Audit
+  composer-audit:
+    name: PHP Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Composer Audit
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer audit --format=json > composer-audit.json
+          composer audit
+
+      - name: Upload Composer Audit Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: composer-audit-report
+          path: wp-content/plugins/affiliate-product-showcase/composer-audit.json
+
+  # JavaScript Security Audit
+  npm-audit:
+    name: NPM Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run NPM Audit
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm audit --audit-level=moderate --json > npm-audit.json
+          npm audit --audit-level=moderate
+
+      - name: Upload NPM Audit Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: npm-audit-report
+          path: wp-content/plugins/affiliate-product-showcase/npm-audit.json
+
+  # PHP Security Analysis (Psalm)
+  psalm-security:
+    name: Psalm Security Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Psalm Security Analysis
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/psalm --output-format=json --report=psalm-security.json
+          vendor/bin/psalm --taint-analysis
+
+      - name: Upload Psalm Security Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: psalm-security-report
+          path: wp-content/plugins/affiliate-product-showcase/psalm-security.json
+
+  # Sensitive Data Detection
+  sensitive-data:
+    name: Sensitive Data Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Check for Debug Code
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run check-debug
+
+      - name: Scan for Hardcoded Secrets
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          # Scan for common patterns that might indicate secrets
+          echo "Scanning for potential hardcoded secrets..."
+          
+          # Check for API keys, tokens, passwords
+          if grep -r -E "(api[_-]?key|secret|token|password|private[_-]?key)" \
+            --include="*.php" --include="*.js" --include="*.json" \
+            --exclude-dir=node_modules --exclude-dir=vendor \
+            --exclude-dir=.git \
+            src/ blocks/ frontend/ 2>/dev/null; then
+            echo "⚠️  Potential hardcoded secrets found - please review"
+          else
+            echo "✅ No obvious hardcoded secrets detected"
+          fi
+
+      - name: Check for Debug Statements
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          echo "Checking for debug statements..."
+          
+          # Check for var_dump, print_r, echo in production code
+          if grep -r -E "(var_dump|print_r|echo\s+['\"]|error_log\()" \
+            --include="*.php" \
+            --exclude-dir=vendor \
+            src/ blocks/ 2>/dev/null; then
+            echo "⚠️  Debug statements found in production code"
+          else
+            echo "✅ No debug statements in production code"
+          fi
+
+  # WordPress Security Compliance
+  wordpress-security:
+    name: WordPress Security Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Check WordPress Security Standards
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          echo "Checking WordPress security compliance..."
+          
+          # Check for common WordPress security issues
+          echo "1. Checking for direct file access prevention..."
+          if grep -r "defined('ABSPATH')" src/ | head -5; then
+            echo "✅ ABSPATH check found"
+          else
+            echo "⚠️  Missing ABSPATH check in some files"
+          fi
+          
+          echo "2. Checking for proper nonce verification..."
+          if grep -r "check_ajax_referer\|wp_verify_nonce" src/ | head -5; then
+            echo "✅ Nonce verification found"
+          else
+            echo "⚠️  Missing nonce verification in some files"
+          fi
+          
+          echo "3. Checking for proper capability checks..."
+          if grep -r "current_user_can\|capability" src/ | head -5; then
+            echo "✅ Capability checks found"
+          else
+            echo "⚠️  Missing capability checks in some files"
+          fi
+          
+          echo "4. Checking for proper input sanitization..."
+          if grep -r "sanitize_text_field\|sanitize_email\|esc_" src/ | head -5; then
+            echo "✅ Sanitization functions found"
+          else
+            echo "⚠️  Missing sanitization in some files"
+          fi
+          
+          echo "5. Checking for proper output escaping..."
+          if grep -r "esc_html\|esc_attr\|esc_url" src/ | head -5; then
+            echo "✅ Escaping functions found"
+          else
+            echo "⚠️  Missing escaping in some files"
+          fi
+
+  # Security Summary
+  security-summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs:
+      - composer-audit
+      - npm-audit
+      - psalm-security
+      - sensitive-data
+      - wordpress-security
+    if: always()
+    steps:
+      - name: Download All Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: security-reports
+
+      - name: Generate Security Summary
+        run: |
+          echo "# Security Scan Summary" > security-summary.md
+          echo "" >> security-summary.md
+          echo "**Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S")" >> security-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> security-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> security-summary.md
+          echo "" >> security-summary.md
+          
+          echo "## PHP Dependencies" >> security-summary.md
+          if [ -f "security-reports/composer-audit-report/composer-audit.json" ]; then
+            echo "✅ Composer audit completed" >> security-summary.md
+          else
+            echo "❌ Composer audit report not found" >> security-summary.md
+          fi
+          
+          echo "" >> security-summary.md
+          echo "## JavaScript Dependencies" >> security-summary.md
+          if [ -f "security-reports/npm-audit-report/npm-audit.json" ]; then
+            echo "✅ NPM audit completed" >> security-summary.md
+          else
+            echo "❌ NPM audit report not found" >> security-summary.md
+          fi
+          
+          echo "" >> security-summary.md
+          echo "## PHP Security Analysis" >> security-summary.md
+          if [ -f "security-reports/psalm-security-report/psalm-security.json" ]; then
+            echo "✅ Psalm security analysis completed" >> security-summary.md
+          else
+            echo "❌ Psalm security report not found" >> security-summary.md
+          fi
+          
+          echo "" >> security-summary.md
+          echo "## Sensitive Data Detection" >> security-summary.md
+          echo "✅ Sensitive data scan completed" >> security-summary.md
+          
+          echo "" >> security-summary.md
+          echo "## WordPress Security Compliance" >> security-summary.md
+          echo "✅ WordPress security compliance check completed" >> security-summary.md
+          
+          echo "" >> security-summary.md
+          echo "---" >> security-summary.md
+          echo "Generated by GitHub Actions Security Scan" >> security-summary.md
+          
+          cat security-summary.md
+
+      - name: Upload Security Summary
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-summary
+          path: security-summary.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('security-summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

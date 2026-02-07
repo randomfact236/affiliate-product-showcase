@@ -1,0 +1,15 @@
+/**
+ * Settings Index
+ * 
+ * Design tokens and configuration.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// Forward SCSS variables (no CSS output)
+@forward 'tokens-vars';
+@forward 'breakpoints';
+
+// Note: tokens-shared, tokens-admin, and tokens-frontend 
+// are imported directly in entry point files to control CSS output

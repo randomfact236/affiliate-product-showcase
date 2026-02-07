@@ -1,0 +1,54 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true
+  },
+  "globals": {
+    "$": "readonly",
+    "jQuery": "readonly",
+    "wp": "readonly",
+    "ajaxurl": "readonly",
+    "apsAddProductData": "readonly",
+    "apsProductsData": "readonly",
+    "apsAdminVars": "readonly",
+    "apsData": "readonly",
+    "APS": "writable"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "script"
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-undef": "error",
+    "prefer-const": "warn",
+    "no-var": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "build",
+    "vendor",
+    "*.min.js",
+    "tests"
+  ]
+}

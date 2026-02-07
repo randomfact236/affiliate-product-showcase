@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit quality checks..."
+
+# Run lint-staged for fast checks on staged files
+echo "→ Linting staged files..."
+npx lint-staged || exit 1
+
+# Run debug artifact scanner
+echo "→ Scanning for debug code..."
+node scripts/check-debug.js || exit 1
+
+# Check for merge conflict markers
+echo "→ Checking for merge conflicts..."
+if git diff --cached --name-only | xargs grep -l '^<<<<<<<\|^=======\|^>>>>>>>' 2>/dev/null; then
+  echo "❌ Error: Merge conflict markers detected"
+  exit 1
+fi
+
+# Check for trailing whitespace
+echo "→ Checking for trailing whitespace..."
+if ! git diff --check --cached; then
+  echo "❌ Error: Trailing whitespace detected"
+  exit 1
+fi
+
+# Check PHP files for declare(strict_types=1)
+echo "→ Validating strict_types declaration..."
+for file in $(git diff --cached --name-only --diff-filter=ACM | grep '\.php$' | grep -v 'vendor/'); do
+  if [ -f "$file" ]; then
+    if ! grep -q "declare(strict_types=1);" "$file"; then
+      echo "❌ Error: Missing declare(strict_types=1) in $file"
+      exit 1
+    fi
+  fi
+done
+
+# Check line endings (must be LF, not CRLF)
+echo "→ Checking line endings..."
+for file in $(git diff --cached --name-only --diff-filter=ACM); do
+  if [ -f "$file" ]; then
+    if file "$file" | grep -q "CRLF"; then
+      echo "❌ Error: CRLF line endings detected in $file. Use LF only."
+      exit 1
+    fi
+  fi
+done
+
+echo "✅ All pre-commit checks passed!"

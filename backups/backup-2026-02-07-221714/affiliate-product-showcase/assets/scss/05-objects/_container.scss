@@ -1,0 +1,31 @@
+/**
+ * Container Object
+ * 
+ * Width-constrained containers.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+
+.aps-o-container {
+	width: 100%;
+	max-width: tokens.$container-xl;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: tokens.$spacing-4;
+	padding-right: tokens.$spacing-4;
+
+	&--narrow {
+		max-width: tokens.$container-md;
+	}
+
+	&--wide {
+		max-width: tokens.$container-2xl;
+	}
+
+	&--full {
+		max-width: none;
+	}
+}

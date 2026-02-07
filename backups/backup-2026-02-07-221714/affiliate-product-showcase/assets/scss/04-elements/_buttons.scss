@@ -1,0 +1,126 @@
+/**
+ * Button Elements
+ * 
+ * Base button styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
+@use '../07-utilities/animations' as *;
+
+// ============================================
+// Base Button
+// ============================================
+
+.aps-btn {
+	@include mixins.button-base;
+}
+
+// ============================================
+// Button Variants
+// ============================================
+
+.aps-btn--primary {
+	background: tokens.$color-primary;
+	color: tokens.$color-white;
+
+	&:hover {
+		background: tokens.$color-primary-hover;
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 3px rgba(tokens.$color-primary, 0.3);
+	}
+}
+
+.aps-btn--secondary {
+	background: tokens.$color-white;
+	color: tokens.$color-text-primary;
+	border-color: tokens.$color-border;
+
+	&:hover {
+		background: tokens.$color-bg-hover;
+		border-color: tokens.$color-border-dark;
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 3px rgba(tokens.$color-border, 0.3);
+	}
+}
+
+.aps-btn--danger {
+	background: tokens.$color-danger;
+	color: tokens.$color-white;
+
+	&:hover {
+		background: tokens.$color-danger-dark;
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 3px rgba(tokens.$color-danger, 0.3);
+	}
+}
+
+.aps-btn--ghost {
+	background: transparent;
+	color: tokens.$color-primary;
+
+	&:hover {
+		background: rgba(tokens.$color-primary, 0.1);
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 3px rgba(tokens.$color-primary, 0.3);
+	}
+}
+
+// ============================================
+// Button Sizes
+// ============================================
+
+.aps-btn--sm {
+	padding: tokens.$spacing-1 tokens.$spacing-3;
+	font-size: tokens.$font-size-sm;
+}
+
+.aps-btn--lg {
+	padding: tokens.$spacing-3 tokens.$spacing-6;
+	font-size: tokens.$font-size-lg;
+}
+
+// ============================================
+// Button States
+// ============================================
+
+.aps-btn--block {
+	display: flex;
+	width: 100%;
+}
+
+.aps-btn--loading {
+	position: relative;
+	color: transparent;
+
+	&::after {
+		content: '';
+		position: absolute;
+		width: functions.spacing('4');
+		height: functions.spacing('4');
+		top: 50%;
+		left: 50%;
+		margin-top: calc(functions.spacing('4') / -2);
+		margin-left: calc(functions.spacing('4') / -2);
+		border: 2px solid currentColor;
+		border-top-color: transparent;
+		border-radius: 50%;
+		animation: aps-spin 1s linear infinite;
+
+		@include mixins.reduced-motion {
+			animation: none;
+		}
+	}
+}

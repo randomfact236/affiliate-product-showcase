@@ -1,0 +1,1955 @@
+{
+  "analysis_date": "2026-02-02T16:23:02.924720",
+  "summary": {
+    "total_files_analyzed": 152,
+    "total_issues": 215,
+    "performance_impact": "high",
+    "critical_issues": 42,
+    "medium_issues": 8,
+    "low_issues": 165
+  },
+  "database_queries": [
+    {
+      "severity": "high",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 313,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 313 (loop started at 305)",
+      "code_snippet": "$ribbon_terms = wp_get_post_terms($post_id, 'aps_ribbon', ['fields' => 'names']);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 510,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 510 (loop started at 503)",
+      "code_snippet": "$affiliate_url = get_post_meta($product_id, '_aps_affiliate_url', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 96,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 96 (loop started at 86)",
+      "code_snippet": "$result = update_post_meta( $post_id, '_in_stock', $in_stock );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 96,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 96 (loop started at 95)",
+      "code_snippet": "$result = update_post_meta( $post_id, '_in_stock', $in_stock );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 198,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 198 (loop started at 179)",
+      "code_snippet": "$product_post_ids = get_posts( $args );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 198,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 198 (loop started at 186)",
+      "code_snippet": "$product_post_ids = get_posts( $args );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 198,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 198 (loop started at 189)",
+      "code_snippet": "$product_post_ids = get_posts( $args );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 203,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 203 (loop started at 200)",
+      "code_snippet": "$all_meta[ $product_post_id ] = get_post_meta( $product_post_id );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 203,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 203 (loop started at 202)",
+      "code_snippet": "$all_meta[ $product_post_id ] = get_post_meta( $product_post_id );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\RibbonFields.php",
+      "line": 200,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 200 (loop started at 194)",
+      "code_snippet": "$color = get_term_meta( $ribbon_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\RibbonFields.php",
+      "line": 380,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 380 (loop started at 373)",
+      "code_snippet": "$color = get_term_meta( $term_id, '_aps_ribbon_color', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\TagFields.php",
+      "line": 512,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 512 (loop started at 505)",
+      "code_snippet": "$color = get_term_meta( $term_id, '_aps_tag_color', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Factories\\ProductFactory.php",
+      "line": 50,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 50 (loop started at 49)",
+      "code_snippet": "$meta = $meta_cache ?? get_post_meta( $post->ID );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Helpers\\TermMetaHelper.php",
+      "line": 35,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 35 (loop started at 18)",
+      "code_snippet": "$value = get_term_meta($term_id, '_' . $prefix . $meta_key, true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\RibbonDemoColorFix.php",
+      "line": 33,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 33 (loop started at 32)",
+      "code_snippet": "$current_bg = get_term_meta($term_id, '_aps_ribbon_bg_color', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\RibbonDemoColorFix.php",
+      "line": 55,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 55 (loop started at 49)",
+      "code_snippet": "$current_icon = get_term_meta($term_id, '_aps_ribbon_icon', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\RibbonMigration.php",
+      "line": 54,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 54 (loop started at 53)",
+      "code_snippet": "$ribbon_term_id = (int) get_post_meta( $product->ID, '_aps_ribbon', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 144,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 144 (loop started at 134)",
+      "code_snippet": "$existing_status = get_term_meta($tag->term_id, '_aps_tag_status', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 144,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 144 (loop started at 141)",
+      "code_snippet": "$existing_status = get_term_meta($tag->term_id, '_aps_tag_status', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 144,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 144 (loop started at 142)",
+      "code_snippet": "$existing_status = get_term_meta($tag->term_id, '_aps_tag_status', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 231,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 231 (loop started at 221)",
+      "code_snippet": "$existing_featured = get_term_meta($tag->term_id, '_aps_tag_featured', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 231,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 231 (loop started at 228)",
+      "code_snippet": "$existing_featured = get_term_meta($tag->term_id, '_aps_tag_featured', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 231,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 231 (loop started at 229)",
+      "code_snippet": "$existing_featured = get_term_meta($tag->term_id, '_aps_tag_featured', true);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Repositories\\RibbonRepository.php",
+      "line": 229,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 229 (loop started at 210)",
+      "code_snippet": "$existing_created = get_term_meta( $term_id, '_aps_ribbon_created_at', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Rest\\ProductsController.php",
+      "line": 1082,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 1082 (loop started at 1067)",
+      "code_snippet": "$result = wp_update_post( $post_data, true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Services\\AffiliateService.php",
+      "line": 364,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 364 (loop started at 349)",
+      "code_snippet": "$affiliate_url = get_post_meta( $product_id, 'affiliate_url', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Database\\seeders\\sample-products.php",
+      "line": 219,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 219 (loop started at 210)",
+      "code_snippet": "$post_id = wp_insert_post([",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Database\\seeders\\sample-products.php",
+      "line": 267,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 267 (loop started at 265)",
+      "code_snippet": "update_post_meta($product_id, 'affiliate_product_' . $key, $value);",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 266,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 266 (loop started at 265)",
+      "code_snippet": "$category_image = get_term_meta( $category->term_id, '_aps_category_image', true );",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 294,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 294 (loop started at 278)",
+      "code_snippet": "$ribbon_color = get_term_meta( $ribbon->term_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 294,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 294 (loop started at 293)",
+      "code_snippet": "$ribbon_color = get_term_meta( $ribbon->term_id, '_aps_ribbon_color', true ) ?: '#ff6b6b';",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\Services\\ProductDataService.php",
+      "line": 38,
+      "type": "n_plus_one",
+      "description": "Query inside loop at line 38 (loop started at 19)",
+      "code_snippet": "'logo' => get_post_meta($post->ID, '_aps_logo', true),",
+      "suggestion": "Cache query results before loop or use wp_cache_get()"
+    }
+  ],
+  "loops": [
+    {
+      "severity": "low",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 380,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($product_ids as $product_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 610,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($product_ids as $product_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 661,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($product_ids as $product_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 837,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($field_config as $field => $config) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 203,
+      "type": "query_in_loop",
+      "description": "Database query inside loop (started at line 189)",
+      "code_snippet": "$all_meta[ $product_post_id ] = get_post_meta( $product_post_id );",
+      "suggestion": "Move query outside loop or use batch operations"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 95,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $post_ids as $post_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 162,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->getProductsForExport( $post_ids ) as $product_data ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 189,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( array_chunk( $post_ids, $batch_size ) as $chunk ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 202,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $product_post_ids as $product_post_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 207,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $product_post_ids as $product_post_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\CategoryFields.php",
+      "line": 439,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $columns as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Enqueue.php",
+      "line": 281,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $plugin_pages as $page ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 367,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $existing_items as $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 378,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $existing_items as $index => $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 389,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $existing_items as $index => $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 405,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $desired_taxonomy_order as $desired_slug ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 406,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $existing_items as $index => $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 418,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $existing_items as $index => $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 429,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $reordered_items as $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Menu.php",
+      "line": 565,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $submenu[ $parent_slug ] as $index => $item ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\ProductFilters.php",
+      "line": 62,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($categories as $category) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\ProductFilters.php",
+      "line": 102,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tags as $tag) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\ProductFormHandler.php",
+      "line": 261,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $features as $feature ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\ProductsAjaxHandler.php",
+      "line": 78,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($product_ids as $product_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\RibbonFields.php",
+      "line": 349,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $columns as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TagFields.php",
+      "line": 458,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $terms as $tag_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TagFields.php",
+      "line": 481,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $columns as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 354,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $terms as $term ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 398,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $terms as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 458,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $columns as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 642,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $term_ids as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 663,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $term_ids as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 684,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $term_ids as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\TaxonomyFieldsAbstract.php",
+      "line": 701,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $term_ids as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Assets\\Manifest.php",
+      "line": 279,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $manifest as $entry_key => $payload ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\Blocks.php",
+      "line": 30,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $blocks as $block ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\Blocks.php",
+      "line": 91,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php foreach ( $products as $product ) : ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\Blocks.php",
+      "line": 145,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\Blocks.php",
+      "line": 183,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $products as $product ) :",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\Blocks.php",
+      "line": 230,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\index.php",
+      "line": 43,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $products as $product ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Blocks\\index.php",
+      "line": 80,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $products as $product ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Core\\Application.php",
+      "line": 76,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $providers as $provider ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Core\\Application.php",
+      "line": 121,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->providers as $provider ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Core\\Application.php",
+      "line": 126,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->providers as $provider ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Database\\Database.php",
+      "line": 323,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($column_array as $column) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Events\\EventDispatcher.php",
+      "line": 70,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->listeners[$event] as $item) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\CategoryFactory.php",
+      "line": 87,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $categories_data as $category_data ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\CategoryFactory.php",
+      "line": 126,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $terms as $term ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\CategoryFactory.php",
+      "line": 191,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $categories as $category ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\CategoryFactory.php",
+      "line": 196,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $categories as $category ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\TagFactory.php",
+      "line": 86,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $tags_data as $tag_data ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Factories\\TagFactory.php",
+      "line": 114,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $terms as $term ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Formatters\\DateFormatter.php",
+      "line": 138,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $intervals as $seconds => $label ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Helpers\\CategoryMetaKeys.php",
+      "line": 114,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $keys as $key ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Helpers\\CategoryMetaKeys.php",
+      "line": 217,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $all_keys as $key ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Helpers\\Env.php",
+      "line": 197,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $pairs as $pair ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Helpers\\Env.php",
+      "line": 288,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $all_env as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Helpers\\Options.php",
+      "line": 172,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $keys as $key ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\RibbonMigration.php",
+      "line": 54,
+      "type": "query_in_loop",
+      "description": "Database query inside loop (started at line 53)",
+      "code_snippet": "$ribbon_term_id = (int) get_post_meta( $product->ID, '_aps_ribbon', true );",
+      "suggestion": "Move query outside loop or use batch operations"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\RibbonMigration.php",
+      "line": 53,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $products as $product ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 144,
+      "type": "query_in_loop",
+      "description": "Database query inside loop (started at line 113)",
+      "code_snippet": "$existing_status = get_term_meta($tag->term_id, '_aps_tag_status', true);",
+      "suggestion": "Move query outside loop or use batch operations"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 231,
+      "type": "query_in_loop",
+      "description": "Database query inside loop (started at line 200)",
+      "code_snippet": "$existing_featured = get_term_meta($tag->term_id, '_aps_tag_featured', true);",
+      "suggestion": "Move query outside loop or use batch operations"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 113,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($visibility_terms as $visibility_term) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 134,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tag_ids as $tag_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 142,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tags as $tag) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 200,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($flag_terms as $flag_term) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 221,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tag_ids as $tag_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 229,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tags as $tag) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Migrations\\TagMetaMigration.php",
+      "line": 275,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($tags as $tag) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Models\\Category.php",
+      "line": 387,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $query->posts as $post ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Models\\Tag.php",
+      "line": 304,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $query->posts as $post ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\CategoryRepository.php",
+      "line": 522,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $categories as $category ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\CategoryRepository.php",
+      "line": 603,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $keys as $key ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\ProductRepository.php",
+      "line": 209,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $results as $row ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\ProductRepository.php",
+      "line": 232,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $posts as $post ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\ProductRepository.php",
+      "line": 364,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $meta_fields as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\RibbonRepository.php",
+      "line": 210,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $all_ribbons as $other_ribbon_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\TagRepository.php",
+      "line": 419,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $tag_ids as $tag_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Repositories\\TagRepository.php",
+      "line": 437,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $tag_ids as $tag_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\AffiliatesController.php",
+      "line": 193,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $query->posts as $post ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\CategoriesController.php",
+      "line": 313,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $args as $key => $arg ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\HealthController.php",
+      "line": 64,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $checks as $check ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\HealthController.php",
+      "line": 155,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $required_classes as $class ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Rest\\ProductsController.php",
+      "line": 1082,
+      "type": "query_in_loop",
+      "description": "Database query inside loop (started at line 1067)",
+      "code_snippet": "$result = wp_update_post( $post_data, true );",
+      "suggestion": "Move query outside loop or use batch operations"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\ProductsController.php",
+      "line": 447,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $args as $key => $arg ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\ProductsController.php",
+      "line": 1067,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $product_ids as $product_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\RestController.php",
+      "line": 24,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $headers as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\RibbonsController.php",
+      "line": 464,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $schema['properties'] as $key => $property ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Rest\\TagsController.php",
+      "line": 246,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $args as $key => $arg ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Headers.php",
+      "line": 215,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $headers_list as $header ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Headers.php",
+      "line": 216,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $security_headers as $security_header ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\PermissionManager.php",
+      "line": 132,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( self::CAPABILITIES as $cap => $description ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\PermissionManager.php",
+      "line": 151,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( self::CAPABILITIES as $cap => $description ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Sanitizer.php",
+      "line": 455,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $input as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Validator.php",
+      "line": 80,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->rules as $field => $rule ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Validator.php",
+      "line": 104,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $rule as $single_rule ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Security\\Validator.php",
+      "line": 376,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->errors as $field => $errors ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\AffiliateService.php",
+      "line": 206,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( self::BLOCKED_DOMAINS as $blockedDomain ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\AffiliateService.php",
+      "line": 327,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $params as $key => $value ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\AnalyticsService.php",
+      "line": 113,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $queue as $event ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\NotificationService.php",
+      "line": 67,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( self::$admin_notices as $notice ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\SettingsValidator.php",
+      "line": 232,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $settings_array as $key => $settings ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\SettingsValidator.php",
+      "line": 263,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $errors as $field => $messages ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Services\\SettingsValidator.php",
+      "line": 264,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( (array) $messages as $message ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Traits\\HooksTrait.php",
+      "line": 20,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->actions() as $definition ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Traits\\HooksTrait.php",
+      "line": 24,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $this->filters() as $definition ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Validators\\ProductValidator.php",
+      "line": 59,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $term_ids as $term_id ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Validators\\UrlValidator.php",
+      "line": 180,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $urls as $url ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Public\\partials\\product-grid.php",
+      "line": 15,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php foreach ( $products as $product ) : ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Public\\partials\\product-grid.php",
+      "line": 22,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Database\\seeders\\sample-products.php",
+      "line": 186,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->category_names as $category_name) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Database\\seeders\\sample-products.php",
+      "line": 265,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($meta_data as $key => $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Database\\seeders\\sample-products.php",
+      "line": 413,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->category_ids as $category_id) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Core\\DependencyInjection\\Container.php",
+      "line": 219,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $parameters as $parameter ) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 95,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($attributes as $key => $val) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 143,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($attributes as $key => $val) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 190,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php foreach ($options as $value => $optionLabel): ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 194,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 263,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php foreach ($items as $item): ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 267,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\TemplateHelpers.php",
+      "line": 331,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($attributes as $key => $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 265,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $categories as $category ) :",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 278,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 293,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ( $ribbons as $ribbon ) :",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\partials\\add-product-page.php",
+      "line": 306,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "<?php endforeach; ?>",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\partials\\products-page.php",
+      "line": 99,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($categories as $category) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 274,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($categories as $category) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 309,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach (self::DISPLAY_STYLES as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 326,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach (self::PRODUCTS_PER_PAGE_OPTIONS as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 343,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach (self::SORT_OPTIONS as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 360,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach (self::SORT_ORDERS as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\CategoriesSettings.php",
+      "line": 439,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach (self::FEATURED_PRODUCTS_LIMIT_OPTIONS as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\DisplaySettings.php",
+      "line": 213,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($layouts as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\DisplaySettings.php",
+      "line": 228,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ([6, 12, 18, 24, 36, 48] as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\DisplaySettings.php",
+      "line": 339,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($ratios as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\DisplaySettings.php",
+      "line": 375,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($effects as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\GeneralSettings.php",
+      "line": 142,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($currencies as $code => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\GeneralSettings.php",
+      "line": 164,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($formats as $format => $example) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\GeneralSettings.php",
+      "line": 187,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($formats as $format => $example) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 283,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->encoding_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 299,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->export_format_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 339,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->delimiter_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 355,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->enclosure_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 371,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->line_ending_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ImportExportSettings.php",
+      "line": 399,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->backup_frequency_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ProductsSettings.php",
+      "line": 266,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($statuses as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ProductsSettings.php",
+      "line": 303,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($platforms as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\RibbonsSettings.php",
+      "line": 175,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($positions as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\RibbonsSettings.php",
+      "line": 211,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($animations as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\RibbonsSettings.php",
+      "line": 232,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($sizes as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\RibbonsSettings.php",
+      "line": 262,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ([1, 2, 3, 4, 5] as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\SecuritySettings.php",
+      "line": 378,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\SecuritySettings.php",
+      "line": 419,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ShortcodeSettings.php",
+      "line": 269,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->grid_products_per_page_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ShortcodeSettings.php",
+      "line": 285,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->featured_products_per_page_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ShortcodeSettings.php",
+      "line": 301,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->slider_products_per_page_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\ShortcodeSettings.php",
+      "line": 317,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->button_style_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\TagsSettings.php",
+      "line": 192,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($styles as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\TagsSettings.php",
+      "line": 235,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ([10, 20, 30, 40, 50] as $value) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\TagsSettings.php",
+      "line": 258,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\TagsSettings.php",
+      "line": 277,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\TagsSettings.php",
+      "line": 341,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($modes as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\WidgetSettings.php",
+      "line": 237,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->widget_layout_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Settings\\WidgetSettings.php",
+      "line": 253,
+      "type": "nested_loop",
+      "description": "Nested loop detected - O(n\u00b2) complexity risk",
+      "code_snippet": "foreach ($this->image_size_options as $value => $label) {",
+      "suggestion": "Consider optimizing or using lookup arrays"
+    }
+  ],
+  "lazy_loading": [],
+  "memory_usage": [
+    {
+      "severity": "high",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 491,
+      "type": "unlimited_query",
+      "description": "Query with unlimited posts_per_page (-1)",
+      "code_snippet": "'posts_per_page' => -1,",
+      "suggestion": "Use pagination with reasonable limits (20-100)"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 194,
+      "type": "unlimited_query",
+      "description": "Query with unlimited posts_per_page (-1)",
+      "code_snippet": "'posts_per_page' => -1,",
+      "suggestion": "Use pagination with reasonable limits (20-100)"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\CategoryFields.php",
+      "line": 333,
+      "type": "full_data_load",
+      "description": "Loading all fields without specifying what is needed",
+      "code_snippet": "$terms = wp_get_object_terms( $post_id, 'aps_category' );",
+      "suggestion": "Use 'fields' parameter to limit returned data"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Admin\\ProductsTable.php",
+      "line": 89,
+      "type": "unlimited_query",
+      "description": "Query with unlimited posts_per_page (-1)",
+      "code_snippet": "'posts_per_page' => -1,",
+      "suggestion": "Use pagination with reasonable limits (20-100)"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Models\\Category.php",
+      "line": 371,
+      "type": "unlimited_query",
+      "description": "Query with unlimited posts_per_page (-1)",
+      "code_snippet": "'posts_per_page' => -1,",
+      "suggestion": "Use pagination with reasonable limits (20-100)"
+    },
+    {
+      "severity": "high",
+      "file": "src\\Models\\Tag.php",
+      "line": 288,
+      "type": "unlimited_query",
+      "description": "Query with unlimited posts_per_page (-1)",
+      "code_snippet": "'posts_per_page' => -1,",
+      "suggestion": "Use pagination with reasonable limits (20-100)"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\ProductHelpers.php",
+      "line": 33,
+      "type": "full_data_load",
+      "description": "Loading all fields without specifying what is needed",
+      "code_snippet": "$terms = \\wp_get_object_terms(",
+      "suggestion": "Use 'fields' parameter to limit returned data"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\ProductHelpers.php",
+      "line": 49,
+      "type": "full_data_load",
+      "description": "Loading all fields without specifying what is needed",
+      "code_snippet": "$terms = \\wp_get_object_terms(",
+      "suggestion": "Use 'fields' parameter to limit returned data"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\ProductHelpers.php",
+      "line": 65,
+      "type": "full_data_load",
+      "description": "Loading all fields without specifying what is needed",
+      "code_snippet": "$terms = \\wp_get_object_terms(",
+      "suggestion": "Use 'fields' parameter to limit returned data"
+    },
+    {
+      "severity": "low",
+      "file": "src\\Admin\\Helpers\\ProductHelpers.php",
+      "line": 193,
+      "type": "full_data_load",
+      "description": "Loading all fields without specifying what is needed",
+      "code_snippet": "$terms = \\wp_get_object_terms(",
+      "suggestion": "Use 'fields' parameter to limit returned data"
+    }
+  ],
+  "caching": [
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 313,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$ribbon_terms = wp_get_post_terms($post_id, 'aps_ribbon', ['fields' => 'names']);",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 325,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "'categories' => wp_get_post_terms($post_id, 'aps_category', ['fields' => 'names']),",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\AjaxHandler.php",
+      "line": 326,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "'tags' => wp_get_post_terms($post_id, 'aps_tag', ['fields' => 'names']),",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\BulkActions.php",
+      "line": 198,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$product_post_ids = get_posts( $args );",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\ProductsPage.php",
+      "line": 72,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$published = wp_count_posts('aps_product');",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Migrations\\RibbonMigration.php",
+      "line": 43,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$products = get_posts( [",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\partials\\dashboard-page.php",
+      "line": 16,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$total_products = wp_count_posts('aps_product');",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    },
+    {
+      "severity": "medium",
+      "file": "src\\Admin\\partials\\dashboard-page.php",
+      "line": 123,
+      "type": "missing_cache",
+      "description": "Database query without caching mechanism",
+      "code_snippet": "$recent_products = new WP_Query([",
+      "suggestion": "Use wp_cache_get() / wp_cache_set() or transients"
+    }
+  ]
+}

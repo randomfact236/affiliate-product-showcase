@@ -1,0 +1,34 @@
+/**
+ * Accessibility Utilities
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+
+// Screen reader only
+.u-sr-only {
+	@include mixins.sr-only;
+}
+
+.u-sr-only-focusable {
+	@include mixins.sr-only-focusable;
+}
+
+// Skip link
+.u-skip-link {
+	position: absolute;
+	top: -2.5rem; // -40px
+	left: 0;
+	background: tokens.$color-primary;
+	color: tokens.$color-white;
+	padding: tokens.$spacing-2 tokens.$spacing-4;
+	z-index: tokens.$z-toast;
+	transition: top tokens.$transition-fast;
+
+	&:focus {
+		top: 0;
+	}
+}

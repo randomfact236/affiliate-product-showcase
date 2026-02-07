@@ -1,0 +1,32 @@
+/**
+ * Core Styles (Base Layer)
+ * 
+ * Shared base styles for both admin and frontend.
+ * Includes: reset, elements, base typography, shared utilities.
+ * 
+ * NOTE: CSS custom properties (:root) are NOT output here.
+ * They are output in admin.scss and frontend.scss entry points
+ * to prevent duplication.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// 1. Settings - Variables only (NO CSS output)
+@use '01-settings/tokens-vars' as *;
+@use '01-settings/breakpoints' as *;
+
+// 2. Tools (Mixins, Functions - NO CSS output)
+@use '02-tools' as tools;
+
+// 3. Generic (Reset, Box-sizing - CSS output)
+@use '03-generic' as generic;
+
+// 4. Elements (Base HTML - CSS output)
+@use '04-elements' as elements;
+
+// 5. Objects (Layout primitives)
+@use '05-objects' as objects;
+
+// 7. Utilities - Shared (CSS output)
+@use '07-utilities' as utilities;

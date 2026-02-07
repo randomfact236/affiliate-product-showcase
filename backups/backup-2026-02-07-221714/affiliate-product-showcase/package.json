@@ -1,0 +1,37 @@
+{
+  "name": "affiliate-product-showcase",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "npm run build:scss && npm run build:js",
+    "build:scss": "npm run build:core && npm run build:admin && npm run build:frontend && npm run build:main",
+    "build:core": "sass assets/scss/core.scss assets/css/core.css --style compressed --source-map",
+    "build:admin": "sass assets/scss/admin.scss assets/css/admin.css --style compressed --source-map",
+    "build:frontend": "sass assets/scss/frontend.scss assets/css/frontend.css --style compressed --source-map",
+    "build:main": "sass assets/scss/main.scss assets/css/affiliate-product-showcase.css --style compressed --source-map",
+    "build:js": "npm run build:js:utils && npm run build:js:admin && npm run build:js:frontend",
+    "build:js:utils": "terser assets/js/utils.js -o assets/js/utils.min.js --compress --mangle --source-map",
+    "build:js:admin": "terser assets/js/admin-add-product.js -o assets/js/admin-add-product.min.js --compress --mangle --source-map && terser assets/js/admin-products.js -o assets/js/admin-products.min.js --compress --mangle --source-map && terser assets/js/admin-ribbon.js -o assets/js/admin-ribbon.min.js --compress --mangle --source-map && terser assets/js/admin-tag.js -o assets/js/admin-tag.min.js --compress --mangle --source-map && terser assets/js/admin-aps_category.js -o assets/js/admin-aps_category.min.js --compress --mangle --source-map",
+    "build:js:frontend": "terser assets/js/showcase-frontend.js -o assets/js/showcase-frontend.min.js --compress --mangle --source-map",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:scss": "sass assets/scss --watch --style compressed",
+    "dev": "sass assets/scss --watch --style expanded --source-map",
+    "clean": "rimraf assets/css/*.css assets/css/*.map assets/js/*.min.js assets/js/*.min.js.map",
+    "lint": "npm run lint:scss && npm run lint:js",
+    "lint:scss": "stylelint assets/scss/**/*.scss",
+    "lint:scss:fix": "stylelint assets/scss/**/*.scss --fix",
+    "lint:js": "eslint assets/js/*.js --ignore-pattern *.min.js",
+    "lint:js:fix": "eslint assets/js/*.js --ignore-pattern *.min.js --fix"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8",
+    "terser": "^5.31.6",
+    "npm-run-all": "^4.1.5",
+    "eslint": "^8.57.0"
+  }
+}

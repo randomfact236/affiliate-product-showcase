@@ -1,0 +1,248 @@
+/**
+ * SCSS Functions
+ * 
+ * Utility functions for calculations and token access.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+@use '../01-settings/tokens-vars' as tokens;
+@use '../01-settings/breakpoints' as bp;
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:color';
+
+// ============================================
+// Internal Helpers
+// ============================================
+
+/// Strict map getter with error handling
+/// @param {Map} $map - The map to get from
+/// @param {String} $key - The key to find
+/// @param {String} $map-name - The name of the map for error messages
+/// @return {Any} The value from the map
+@function map-get-strict($map, $key, $map-name) {
+	@if not map.has-key($map, $key) {
+		@error '"#{$key}" not found in $#{$map-name} map. Available keys: #{map.keys($map)}';
+	}
+
+	@return map.get($map, $key);
+}
+
+// ============================================
+// Token Getter Functions (Map-based Architecture)
+// ============================================
+
+/// Gets a color value from the $colors map
+/// @param {String} $key - The color key (e.g., 'primary', 'success', 'text-primary')
+/// @return {Color} The color value
+/// @example color('primary') => #2271b1
+@function color($key) {
+	@return map-get-strict(tokens.$colors, $key, 'colors');
+}
+
+/// Gets a frontend-specific color value
+/// @param {String} $key - The color key
+/// @return {Color} The color value
+/// @example frontend-color('primary') => #3b82f6
+@function frontend-color($key) {
+	@return map-get-strict(tokens.$frontend-colors, $key, 'frontend-colors');
+}
+
+/// Gets a spacing value from the $spacing map
+/// @param {String} $key - The spacing key (e.g., '1', '4', '8')
+/// @return {Number} The spacing value in rem
+/// @example spacing('4') => 1rem
+@function spacing($key) {
+	@return map-get-strict(tokens.$spacing, $key, 'spacing');
+}
+
+/// Gets a border radius value from the $radius map
+/// @param {String} $key - The radius key (e.g., 'sm', 'md', 'lg')
+/// @return {Number} The radius value
+/// @example radius('md') => 0.375rem
+@function radius($key) {
+	@return map-get-strict(tokens.$radius, $key, 'radius');
+}
+
+/// Gets a shadow value from the $shadows map
+/// @param {String} $key - The shadow key (e.g., 'sm', 'md', 'lg')
+/// @return {List} The shadow value
+/// @example shadow('md') => 0 4px 6px -1px rgba(...)
+@function shadow($key) {
+	@return map-get-strict(tokens.$shadows, $key, 'shadows');
+}
+
+/// Gets a breakpoint value from the $breakpoints map
+/// @param {String} $key - The breakpoint key (e.g., 'sm', 'md', 'lg')
+/// @return {Number} The breakpoint value in em
+/// @example breakpoint('md') => 47.9375em
+@function breakpoint($key) {
+	@return map-get-strict(bp.$breakpoints, $key, 'breakpoints');
+}
+
+// ============================================
+// Unit Conversion
+// ============================================
+
+/// Removes the unit from a value
+/// @param {Number} $value - The value with unit
+/// @return {Number} The value without unit
+@function strip-unit($value) {
+	@if meta.type-of($value) !='number' {
+		@error "strip-unit: #{$value} is not a number";
+	}
+
+	@if math.unit($value)=='' {
+		@return $value;
+	}
+
+	@return math.div($value, ($value * 0 + 1));
+}
+
+/// Converts pixels to rem
+/// @param {Number} $pixels - The pixel value
+/// @param {Number} $base [16] - The base font size
+/// @return {Number} The rem value
+@function rem($pixels, $base: 16) {
+	@if meta.type-of($pixels) !='number' {
+		@error "rem: #{$pixels} is not a number";
+	}
+
+	@if math.unit($pixels)=='rem' {
+		@return $pixels;
+	}
+
+	@return math.div(strip-unit($pixels), $base) * 1rem;
+}
+
+/// Converts pixels to em
+/// @param {Number} $pixels - The pixel value
+/// @param {Number} $context [16] - The context font size
+/// @return {Number} The em value
+@function em($pixels, $context: 16) {
+	@if meta.type-of($pixels) !='number' {
+		@error "em: #{$pixels} is not a number";
+	}
+
+	@return math.div(strip-unit($pixels), $context) * 1em;
+}
+
+// ============================================
+// Color Functions
+// ============================================
+
+/// Returns a contrasting text color (black or white) for a given background
+/// @param {Color} $background - The background color
+/// @return {Color} #000 or #fff based on luminance
+@function contrast-text($background) {
+	$r: color.red($background);
+	$g: color.green($background);
+	$b: color.blue($background);
+
+	// Calculate luminance
+	$luminance: math.div((0.299 * $r + 0.587 * $g + 0.114 * $b), 255);
+
+	@if $luminance >0.5 {
+		@return #000000;
+	}
+
+	@else {
+		@return #ffffff;
+	}
+}
+
+// ============================================
+// Legacy Spacing Functions
+// ============================================
+
+/// Gets a spacing value from the scale (legacy - use spacing() function instead)
+/// @param {Number} $multiplier - The multiplier (1-16)
+/// @return {Number} The spacing value in rem
+/// @deprecated Use spacing() instead
+@function spacing-legacy($multiplier) {
+	@warn 'spacing-legacy() is deprecated. Use spacing() function instead.';
+	@return $multiplier * tokens.$spacing-1;
+}
+
+// ============================================
+// Z-Index Functions
+// ============================================
+
+/// Gets a z-index value from the scale
+/// @param {String} $layer - The layer name (dropdown, sticky, fixed, modal, etc.)
+/// @return {Number} The z-index value
+@function z($layer) {
+	$z-layers: (
+		'dropdown': tokens.$z-dropdown,
+		'sticky': tokens.$z-sticky,
+		'fixed': tokens.$z-fixed,
+		'modal-backdrop': tokens.$z-modal-backdrop,
+		'modal': tokens.$z-modal,
+		'popover': tokens.$z-popover,
+		'tooltip': tokens.$z-tooltip,
+		'toast': tokens.$z-toast,
+	);
+
+@if map.has-key($z-layers, $layer) {
+	@return map.get($z-layers, $layer);
+}
+
+@error "z: #{$layer} is not a valid z-index layer. Available layers: #{map.keys($z-layers)}";
+}
+
+// ============================================
+// String Functions
+// ============================================
+
+/// Encodes a string for use in URL/data-URI
+/// @param {String} $string - The string to encode
+/// @return {String} The encoded string
+@function encode-uri($string) {
+	$replacements: (
+		'<': '%3C',
+		'>': '%3E',
+		'#': '%23',
+		'"': '%22',
+		"'": '%27',
+		'(': '%28',
+		')': '%29'
+	);
+
+$result: $string;
+
+@each $char, $code in $replacements {
+	// Simple string replacement loop
+	$index: string.index($result, $char);
+
+	// stylelint-disable-next-line at-rule-no-unknown
+	@while $index {
+		$header: string.slice($result, 1, $index - 1);
+		$trailer: string.slice($result, $index + 1);
+		$result: $header + $code + $trailer;
+		$index: string.index($result, $char);
+	}
+}
+
+@return $result;
+}
+
+/// Sanitizes a spacing key for use in CSS class names
+/// Converts decimal keys like '0.5', '4.5' to '05', '45'
+/// @param {String} $key - The spacing map key
+/// @return {String} The sanitized class name suffix
+@function sanitize-spacing-key($key) {
+	// Handle decimal keys by removing the dot
+	// e.g., '0.5' becomes '05', '4.5' becomes '45'
+	@if $key == '0.5' {
+		@return '05';
+	}
+
+	@if $key == '4.5' {
+		@return '45';
+	}
+
+	@return $key;
+}

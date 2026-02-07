@@ -1,0 +1,130 @@
+/**
+ * Product Grid Block - Editor Styles
+ *
+ * Styles for the block editor interface
+ */
+
+@use '../../assets/scss/variables' as *;
+
+.aps-block--grid {
+	// Container
+	margin: 0;
+	padding: 0;
+
+	// Grid layout
+	display: grid;
+	grid-template-columns: repeat(var(--aps-grid-columns, 3), 1fr);
+	gap: var(--aps-grid-gap, 16px);
+
+	// Responsive adjustments - using Tailwind breakpoint variables
+	@media (max-width: $aps-breakpoint-xl) {
+		grid-template-columns: repeat(min(var(--aps-grid-columns, 3), 2), 1fr);
+	}
+
+	@media (max-width: $aps-breakpoint-md) {
+		grid-template-columns: 1fr;
+	}
+
+	// Placeholder state
+	&:empty::before {
+		content: 'Product Grid Block';
+		display: block;
+		padding: 2rem;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.03);
+		border: 2px dashed rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		color: #666;
+	}
+
+	// Hover effects preview
+	&[data-hover-effect="lift"] {
+		.aps-grid-item {
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+			&:hover {
+				transform: translateY(-8px);
+				box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+			}
+		}
+	}
+
+	&[data-hover-effect="scale"] {
+		.aps-grid-item {
+			transition: transform 0.3s ease;
+
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+	}
+
+	&[data-hover-effect="shadow"] {
+		.aps-grid-item {
+			transition: box-shadow 0.3s ease;
+
+			&:hover {
+				box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+			}
+		}
+	}
+
+	// Grid item placeholder
+	.aps-grid-item {
+		background: #f0f0f1;
+		border: 1px solid #dcdcde;
+		border-radius: 4px;
+		padding: 1rem;
+		min-height: 200px;
+
+		// Image placeholder
+		&::before {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 120px;
+			background: #e0e0e0;
+			margin-bottom: 1rem;
+			border-radius: 2px;
+		}
+
+		// Title placeholder
+		&::after {
+			content: '';
+			display: block;
+			width: 80%;
+			height: 1.5rem;
+			background: #e0e0e0;
+			border-radius: 2px;
+		}
+	}
+}
+
+// Compact style
+.aps-block--grid.is-style-compact {
+	--aps-grid-columns: 4;
+	--aps-grid-gap: 12px;
+
+	.aps-grid-item {
+		min-height: 160px;
+		padding: 0.75rem;
+	}
+}
+
+// Featured style
+.aps-block--grid.is-style-featured {
+	--aps-grid-columns: 2;
+	--aps-grid-gap: 24px;
+
+	.aps-grid-item {
+		min-height: 280px;
+		padding: 1.5rem;
+	}
+}
+
+// Inspector controls help text
+.components-panel__body-title .components-button {
+	&:focus {
+		box-shadow: 0 0 0 2px var(--wp-admin-theme-color);
+	}
+}

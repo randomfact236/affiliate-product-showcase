@@ -1,0 +1,527 @@
+/**
+ * SCSS Mixins
+ * 
+ * Reusable mixins for common patterns.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../01-settings/breakpoints' as bp;
+@use 'functions';
+@use 'sass:meta';
+@use 'sass:map';
+
+// ============================================
+// Map-based Responsive Breakpoints (New Architecture)
+// ============================================
+
+/// Mobile-first breakpoint using EM-based map
+/// @param {String} $breakpoint - The breakpoint key from $breakpoints map
+/// @example @include respond-to('md') { ... }
+@mixin respond-to($breakpoint) {
+	@if not map.has-key(bp.$breakpoints, $breakpoint) {
+		@error 'Breakpoint "#{$breakpoint}" not found in $breakpoints map.';
+	}
+
+	@media (min-width: map.get(bp.$breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint using EM-based map
+/// @param {String} $breakpoint - The breakpoint key from $breakpoints map
+/// @example @include respond-down('md') { ... }
+@mixin respond-down($breakpoint) {
+	@if not map.has-key(bp.$breakpoints, $breakpoint) {
+		@error 'Breakpoint "#{$breakpoint}" not found in $breakpoints map.';
+	}
+
+	@media (max-width: map.get(bp.$breakpoints, $breakpoint)) {
+		@content;
+	}
+}
+
+// ============================================
+// Legacy Responsive Breakpoints (Backward Compatibility)
+// ============================================
+
+/// Mobile-first breakpoint: extra small
+/// @deprecated Use respond-to('xs') instead.
+@mixin xs-up {
+	@warn 'xs-up is deprecated. Use respond-to("xs") instead.';
+
+	@include respond-to('xs') {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: small
+/// @deprecated Use respond-to('sm') instead.
+@mixin sm-up {
+	@warn 'sm-up is deprecated. Use respond-to("sm") instead.';
+
+	@include respond-to('sm') {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: medium
+/// @deprecated Use respond-to('md') instead.
+@mixin md-up {
+	@warn 'md-up is deprecated. Use respond-to("md") instead.';
+
+	@include respond-to('md') {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: large
+/// @deprecated Use respond-to('lg') instead.
+@mixin lg-up {
+	@warn 'lg-up is deprecated. Use respond-to("lg") instead.';
+
+	@include respond-to('lg') {
+		@content;
+	}
+}
+
+/// Mobile-first breakpoint: extra large
+/// @deprecated Use respond-to('xl') instead.
+@mixin xl-up {
+	@warn 'xl-up is deprecated. Use respond-to("xl") instead.';
+
+	@include respond-to('xl') {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: extra small (phones only)
+/// @deprecated Use respond-down('xs') instead.
+@mixin xs-down {
+	@warn 'xs-down is deprecated. Use respond-down("xs") instead.';
+
+	@include respond-down('xs') {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: small
+/// @deprecated Use respond-down('sm') instead.
+@mixin sm-down {
+	@warn 'sm-down is deprecated. Use respond-down("sm") instead.';
+
+	@include respond-down('sm') {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: medium (tablets and below)
+/// @deprecated Use respond-down('md') instead.
+@mixin md-down {
+	@warn 'md-down is deprecated. Use respond-down("md") instead.';
+
+	@include respond-down('md') {
+		@content;
+	}
+}
+
+/// WordPress tablet breakpoint (782px and below)
+@mixin wp-tablet-down {
+	@media (max-width: #{bp.$breakpoint-wp-tablet}) {
+		@content;
+	}
+}
+
+/// Desktop-first breakpoint: large
+/// @deprecated Use respond-down('lg') instead.
+@mixin lg-down {
+	@warn 'lg-down is deprecated. Use respond-down("lg") instead.';
+
+	@include respond-down('lg') {
+		@content;
+	}
+}
+
+/// Range breakpoint: tablet only
+@mixin tablet-only {
+	@media (min-width: #{bp.$breakpoint-sm}) and (max-width: #{bp.$breakpoint-lg - 1px}) {
+		@content;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+/// Reduced motion preference
+@mixin reduced-motion {
+	@media (prefers-reduced-motion: reduce) {
+		@content;
+	}
+}
+
+/// High contrast preference
+@mixin high-contrast {
+	@media (prefers-contrast: high) {
+		@content;
+	}
+}
+
+/// Dark mode preference
+@mixin dark-mode {
+	@media (prefers-color-scheme: dark) {
+		@content;
+	}
+}
+
+/// Touch device detection
+@mixin touch-only {
+	@media (hover: none) and (pointer: coarse) {
+		@content;
+	}
+}
+
+/// Hover-capable device
+@mixin hover-device {
+	@media (hover: hover) and (pointer: fine) {
+		@content;
+	}
+}
+
+// ============================================
+// Focus States
+// ============================================
+
+/// Standard focus outline
+/// @param {Color} $color [$color-primary] - The focus color
+/// @param {Number} $offset [2px] - The outline offset
+@mixin focus-outline($color: tokens.$color-primary, $offset: 2px) {
+	&:focus-visible {
+		outline: 2px solid $color;
+		outline-offset: $offset;
+	}
+
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
+
+/// Focus ring with box-shadow
+/// @param {Color} $color [$color-primary] - The focus color
+@mixin focus-ring($color: tokens.$color-primary) {
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 3px rgba($color, 0.3);
+	}
+}
+
+/// WordPress admin style focus
+@mixin focus-wp-admin {
+	&:focus {
+		border-color: tokens.$wp-admin-theme-color;
+		box-shadow: 0 0 0 1px tokens.$wp-admin-theme-color;
+		outline: 2px solid transparent; // HCM fallback
+		outline-offset: 2px;
+	}
+}
+
+// ============================================
+// Typography
+// ============================================
+
+/// Screen reader only text
+@mixin sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/// Reset screen reader only (for interactive elements)
+@mixin sr-only-focusable {
+
+	&:active,
+	&:focus {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip: auto;
+		white-space: normal;
+	}
+}
+
+/// Truncate text with ellipsis
+@mixin text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/// Multi-line text clamp
+/// @param {Number} $lines [3] - Number of lines to show
+@mixin line-clamp($lines: 3) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	line-clamp: $lines; // Standard property
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+// ============================================
+// Layout
+// ============================================
+
+/// Clearfix
+@mixin clearfix {
+	&::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+/// Visually hidden but accessible
+@mixin visually-hidden {
+	@include sr-only;
+}
+
+/// Reset list styles
+@mixin list-reset {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+// ============================================
+// Components
+// ============================================
+
+/// Button base styles
+@mixin button-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: functions.spacing('2') functions.spacing('4');
+	font-family: tokens.$font-family-base;
+	font-size: tokens.$font-size-base;
+	font-weight: tokens.$font-weight-medium;
+	line-height: tokens.$line-height-normal;
+	text-decoration: none;
+	border-radius: tokens.$radius-md;
+	border: 1px solid transparent;
+	cursor: pointer;
+	transition:
+		background-color tokens.$transition-base,
+		border-color tokens.$transition-base,
+		color tokens.$transition-base,
+		transform tokens.$transition-base,
+		box-shadow tokens.$transition-base;
+	white-space: nowrap;
+
+	@include focus-outline;
+
+	&:disabled,
+	&.is-disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+}
+
+/// Card base styles
+@mixin card-base {
+	position: relative;
+	background: tokens.$color-bg-primary;
+	border: 1px solid tokens.$color-border-light;
+	border-radius: tokens.$radius-lg;
+	overflow: hidden;
+	transition: transform tokens.$transition-base, box-shadow tokens.$transition-base;
+
+	&:hover {
+		@include reduced-motion {
+			transform: none;
+			box-shadow: tokens.$shadow-lg;
+		}
+
+		transform: translateY(-4px);
+		box-shadow: tokens.$shadow-lg;
+	}
+}
+
+/// Form input base
+@mixin input-base {
+	width: 100%;
+	padding: tokens.$spacing-2 tokens.$spacing-3;
+	font-family: tokens.$font-family-base;
+	font-size: tokens.$font-size-base;
+	line-height: tokens.$line-height-normal;
+	color: tokens.$color-text-primary;
+	background: tokens.$color-bg-primary;
+	border: 1px solid tokens.$color-border-dark;
+	border-radius: tokens.$radius-sm;
+	box-shadow: tokens.$shadow-sm;
+	transition: border-color tokens.$transition-fast, box-shadow tokens.$transition-fast;
+
+	&:focus {
+		@include focus-wp-admin;
+	}
+
+	&::placeholder {
+		color: tokens.$color-text-muted;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		background: tokens.$color-bg-secondary;
+	}
+}
+
+// ============================================
+// Animations
+// ============================================
+
+
+
+// ============================================
+// Print
+// ============================================
+
+/// Print styles
+@mixin print {
+	@media print {
+		@content;
+	}
+}
+
+/// Hide for print
+@mixin print-hide {
+	@media print {
+		display: none;
+	}
+}
+
+/// Show only for print
+@mixin print-only {
+	display: none;
+
+	@media print {
+		display: block;
+	}
+}
+
+// ============================================
+// Utility Generators
+// ============================================
+
+// sanitize-spacing-key moved to _functions.scss
+
+/// Generates spacing utility classes for margin and padding
+/// Creates atomic utility classes like .u-m-1, .u-p-2, .u-mt-3, etc.
+/// @example @include spacing-utilities;
+@mixin spacing-utilities {
+	@each $key, $value in tokens.$spacing {
+		$class-key: functions.sanitize-spacing-key($key);
+
+		// Margin utilities
+		.u-m-#{$class-key} {
+			margin: $value;
+		}
+
+		.u-mt-#{$class-key} {
+			margin-top: $value;
+		}
+
+		.u-mb-#{$class-key} {
+			margin-bottom: $value;
+		}
+
+		.u-ml-#{$class-key} {
+			margin-left: $value;
+		}
+
+		.u-mr-#{$class-key} {
+			margin-right: $value;
+		}
+
+		.u-mx-#{$class-key} {
+			margin-left: $value;
+			margin-right: $value;
+		}
+
+		.u-my-#{$class-key} {
+			margin-top: $value;
+			margin-bottom: $value;
+		}
+
+		// Padding utilities
+		.u-p-#{$class-key} {
+			padding: $value;
+		}
+
+		.u-pt-#{$class-key} {
+			padding-top: $value;
+		}
+
+		.u-pb-#{$class-key} {
+			padding-bottom: $value;
+		}
+
+		.u-pl-#{$class-key} {
+			padding-left: $value;
+		}
+
+		.u-pr-#{$class-key} {
+			padding-right: $value;
+		}
+
+		.u-px-#{$class-key} {
+			padding-left: $value;
+			padding-right: $value;
+		}
+
+		.u-py-#{$class-key} {
+			padding-top: $value;
+			padding-bottom: $value;
+		}
+	}
+
+	// Auto margin utilities
+	.u-m-auto {
+		margin: auto;
+	}
+
+	.u-mx-auto {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.u-my-auto {
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
+	.u-mt-auto {
+		margin-top: auto;
+	}
+
+	.u-mb-auto {
+		margin-bottom: auto;
+	}
+
+	.u-ml-auto {
+		margin-left: auto;
+	}
+
+	.u-mr-auto {
+		margin-right: auto;
+	}
+}

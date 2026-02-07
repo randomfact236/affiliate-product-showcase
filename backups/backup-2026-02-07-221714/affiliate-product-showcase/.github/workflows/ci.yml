@@ -1,0 +1,272 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  # PHP Code Sniffer
+  phpcs:
+    name: PHPCS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPCS
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpcs --standard=phpcs.xml.dist
+
+  # PHP Static Analysis
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpstan analyse src --level=max --configuration=phpstan.neon
+
+  # PHP Type Checking
+  psalm:
+    name: Psalm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Psalm
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/psalm --no-cache
+
+  # PHP Unit Tests
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPUnit
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpunit --configuration=phpunit.xml.dist
+
+  # JavaScript Linting
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run ESLint
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run lint:js
+
+  # CSS Linting
+  stylelint:
+    name: Stylelint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run Stylelint
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run lint:css
+
+  # Build Verification
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Build assets
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run build
+
+      - name: Check for uncommitted changes
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          git diff --exit-code || (echo "Build generated uncommitted changes" && exit 1)
+
+  # CI Summary
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs:
+      - phpcs
+      - phpstan
+      - psalm
+      - phpunit
+      - eslint
+      - stylelint
+      - build
+    if: always()
+    steps:
+      - name: Generate CI Summary
+        run: |
+          echo "# CI Report" > ci-summary.md
+          echo "" >> ci-summary.md
+          echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S")" >> ci-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> ci-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> ci-summary.md
+          echo "" >> ci-summary.md
+          
+          echo "## Job Status" >> ci-summary.md
+          echo "" >> ci-summary.md
+          
+          jobs=(
+            "phpcs:PHPCS"
+            "phpstan:PHPStan"
+            "psalm:Psalm"
+            "phpunit:PHPUnit"
+            "eslint:ESLint"
+            "stylelint:Stylelint"
+            "build:Build"
+          )
+          
+          for job in "${jobs[@]}"; do
+            IFS=':' read -r job_name job_display <<< "$job"
+            status_var="${job_name}_result"
+            status="${!status_var}"
+            
+            if [ "$status" = "success" ]; then
+              echo "**${job_display}:** ✅ Pass" >> ci-summary.md
+            elif [ "$status" = "failure" ]; then
+              echo "**${job_display}:** ❌ Fail" >> ci-summary.md
+            elif [ "$status" = "skipped" ]; then
+              echo "**${job_display}:** ⏭️ Skipped" >> ci-summary.md
+            else
+              echo "**${job_display}:** ⚠️ Unknown" >> ci-summary.md
+            fi
+          done
+          
+          echo "" >> ci-summary.md
+          echo "---" >> ci-summary.md
+          echo "Generated by GitHub Actions CI Workflow" >> ci-summary.md
+          
+          cat ci-summary.md
+
+      - name: Upload CI Summary
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-summary
+          path: ci-summary.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (fs.existsSync('ci-summary.md')) {
+              const summary = fs.readFileSync('ci-summary.md', 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            }

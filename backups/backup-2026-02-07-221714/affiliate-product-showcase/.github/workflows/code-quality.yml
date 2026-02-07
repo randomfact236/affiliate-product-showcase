@@ -1,0 +1,315 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  # PHP Static Analysis - PHPStan
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpstan analyse src --level=max --configuration=phpstan.neon --error-format=json > phpstan-report.json
+          vendor/bin/phpstan analyse src --level=max --configuration=phpstan.neon
+
+      - name: Upload PHPStan Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phpstan-report
+          path: wp-content/plugins/affiliate-product-showcase/phpstan-report.json
+
+  # PHP Type Checking - Psalm
+  psalm:
+    name: Psalm Type Checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Psalm
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/psalm --output-format=json --report=psalm-report.json
+          vendor/bin/psalm --no-cache
+
+      - name: Upload Psalm Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: psalm-report
+          path: wp-content/plugins/affiliate-product-showcase/psalm-report.json
+
+  # PHP Code Style - PHPCS
+  phpcs:
+    name: PHPCS Code Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPCS
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          vendor/bin/phpcs --standard=phpcs.xml.dist --report=json --report-file=phpcs-report.json
+          vendor/bin/phpcs --standard=phpcs.xml.dist
+
+      - name: Upload PHPCS Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phpcs-report
+          path: wp-content/plugins/affiliate-product-showcase/phpcs-report.json
+
+  # JavaScript Linting - ESLint
+  eslint:
+    name: ESLint JavaScript Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run ESLint
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run lint:js -- --format=json > eslint-report.json
+          npm run lint:js
+
+      - name: Upload ESLint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eslint-report
+          path: wp-content/plugins/affiliate-product-showcase/eslint-report.json
+
+  # CSS Linting - Stylelint
+  stylelint:
+    name: Stylelint CSS Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Run Stylelint
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run lint:css -- --formatter=json > stylelint-report.json
+          npm run lint:css
+
+      - name: Upload Stylelint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stylelint-report
+          path: wp-content/plugins/affiliate-product-showcase/stylelint-report.json
+
+  # Code Quality Summary
+  quality-summary:
+    name: Code Quality Summary
+    runs-on: ubuntu-latest
+    needs:
+      - phpstan
+      - psalm
+      - phpcs
+      - eslint
+      - stylelint
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download All Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: quality-reports
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist
+
+      - name: Generate Quality Summary
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          
+          echo "# Code Quality Report" > quality-summary.md
+          echo "" >> quality-summary.md
+          echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S")" >> quality-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> quality-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> quality-summary.md
+          echo "" >> quality-summary.md
+          
+          # PHPStan Analysis
+          echo "## PHPStan (Static Analysis)" >> quality-summary.md
+          if [ -f "../quality-reports/phpstan-report/phpstan-report.json" ]; then
+            phpstan_errors=$(cat ../quality-reports/phpstan-report/phpstan-report.json | jq '.totals.errors // 0')
+            phpstan_warnings=$(cat ../quality-reports/phpstan-report/phpstan-report.json | jq '.totals.warnings // 0')
+            echo "**Status:** $([ $phpstan_errors -eq 0 ] && echo '✅ PASS' || echo '❌ FAIL')" >> quality-summary.md
+            echo "**Errors:** $phpstan_errors" >> quality-summary.md
+            echo "**Warnings:** $phpstan_warnings" >> quality-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> quality-summary.md
+          fi
+          echo "" >> quality-summary.md
+          
+          # Psalm Analysis
+          echo "## Psalm (Type Checking)" >> quality-summary.md
+          if [ -f "../quality-reports/psalm-report/psalm-report.json" ]; then
+            psalm_errors=$(cat ../quality-reports/psalm-report/psalm-report.json | jq '.error // 0')
+            echo "**Status:** $([ $psalm_errors -eq 0 ] && echo '✅ PASS' || echo '❌ FAIL')" >> quality-summary.md
+            echo "**Errors:** $psalm_errors" >> quality-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> quality-summary.md
+          fi
+          echo "" >> quality-summary.md
+          
+          # PHPCS Analysis
+          echo "## PHPCS (Code Style)" >> quality-summary.md
+          if [ -f "../quality-reports/phpcs-report/phpcs-report.json" ]; then
+            phpcs_errors=$(cat ../quality-reports/phpcs-report/phpcs-report.json | jq '.totals.errors // 0')
+            phpcs_warnings=$(cat ../quality-reports/phpcs-report/phpcs-report.json | jq '.totals.warnings // 0')
+            echo "**Status:** $([ $phpcs_errors -eq 0 ] && echo '✅ PASS' || echo '❌ FAIL')" >> quality-summary.md
+            echo "**Errors:** $phpcs_errors" >> quality-summary.md
+            echo "**Warnings:** $phpcs_warnings" >> quality-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> quality-summary.md
+          fi
+          echo "" >> quality-summary.md
+          
+          # ESLint Analysis
+          echo "## ESLint (JavaScript)" >> quality-summary.md
+          if [ -f "../quality-reports/eslint-report/eslint-report.json" ]; then
+            eslint_errors=$(cat ../quality-reports/eslint-report/eslint-report.json | jq '.errorCount // 0')
+            eslint_warnings=$(cat ../quality-reports/eslint-report/eslint-report.json | jq '.warningCount // 0')
+            echo "**Status:** $([ $eslint_errors -eq 0 ] && echo '✅ PASS' || echo '❌ FAIL')" >> quality-summary.md
+            echo "**Errors:** $eslint_errors" >> quality-summary.md
+            echo "**Warnings:** $eslint_warnings" >> quality-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> quality-summary.md
+          fi
+          echo "" >> quality-summary.md
+          
+          # Stylelint Analysis
+          echo "## Stylelint (CSS)" >> quality-summary.md
+          if [ -f "../quality-reports/stylelint-report/stylelint-report.json" ]; then
+            stylelint_errors=$(cat ../quality-reports/stylelint-report/stylelint-report.json | jq '.errored // false')
+            echo "**Status:** $([ "$stylelint_errors" = "false" ] && echo '✅ PASS' || echo '❌ FAIL')" >> quality-summary.md
+          else
+            echo "**Status:** ⚠️ Report not found" >> quality-summary.md
+          fi
+          echo "" >> quality-summary.md
+          
+          # Overall Status
+          echo "## Overall Status" >> quality-summary.md
+          echo "" >> quality-summary.md
+          echo "---" >> quality-summary.md
+          echo "Generated by GitHub Actions Code Quality Workflow" >> quality-summary.md
+          
+          cat quality-summary.md
+
+      - name: Upload Quality Summary
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-summary
+          path: wp-content/plugins/affiliate-product-showcase/quality-summary.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const summaryPath = path.join('wp-content/plugins/affiliate-product-showcase', 'quality-summary.md');
+            
+            if (fs.existsSync(summaryPath)) {
+              const summary = fs.readFileSync(summaryPath, 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            }

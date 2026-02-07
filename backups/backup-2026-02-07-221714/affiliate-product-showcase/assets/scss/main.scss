@@ -1,0 +1,22 @@
+/**
+ * Main Styles (Complete Bundle)
+ * 
+ * All styles combined for block editor.
+ * Includes ALL tokens (shared + admin + frontend).
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// === CSS Custom Properties (all tokens for block editor) ===
+@use '01-settings/tokens-shared';
+@use '01-settings/tokens-admin';
+@use '01-settings/tokens-frontend';
+
+// === Core Base Styles ===
+@use 'core';
+
+
+
+// === All Components ===
+@use '06-components' as components;

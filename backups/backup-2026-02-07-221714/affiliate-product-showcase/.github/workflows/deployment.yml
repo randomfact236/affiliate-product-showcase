@@ -1,0 +1,350 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  # Build and Package
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      artifact-name: ${{ steps.get-artifact-name.outputs.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, intl
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Get Version
+        id: get-version
+        run: |
+          VERSION=$(grep "Version:" wp-content/plugins/affiliate-product-showcase/affiliate-product-showcase.php | head -1 | awk '{print $2}' | tr -d '\r')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Install Composer dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          composer install --no-interaction --prefer-dist --no-dev
+
+      - name: Install NPM dependencies
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm ci
+
+      - name: Build Assets
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          npm run build
+
+      - name: Run Quality Checks
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          echo "Running quality checks before deployment..."
+          
+          # Check for uncommitted changes
+          if ! git diff --quiet; then
+            echo "❌ Build generated uncommitted changes"
+            git diff
+            exit 1
+          fi
+          
+          # Verify build output exists
+          if [ ! -d "dist" ]; then
+            echo "❌ Build output directory not found"
+            exit 1
+          fi
+          
+          echo "✅ Quality checks passed"
+
+      - name: Create Distribution Package
+        run: |
+          cd wp-content/plugins/affiliate-product-showcase
+          
+          # Create temporary directory for package
+          mkdir -p /tmp/affiliate-product-showcase
+          
+          # Copy essential files
+          cp -r assets/ /tmp/affiliate-product-showcase/
+          cp -r blocks/ /tmp/affiliate-product-showcase/
+          cp -r dist/ /tmp/affiliate-product-showcase/
+          cp -r frontend/ /tmp/affiliate-product-showcase/
+          cp -r includes/ /tmp/affiliate-product-showcase/
+          cp -r languages/ /tmp/affiliate-product-showcase/
+          cp -r src/ /tmp/affiliate-product-showcase/
+          
+          # Copy root files
+          cp affiliate-product-showcase.php /tmp/affiliate-product-showcase/
+          cp CHANGELOG.md /tmp/affiliate-product-showcase/
+          cp README.md /tmp/affiliate-product-showcase/
+          cp readme.txt /tmp/affiliate-product-showcase/
+          cp uninstall.php /tmp/affiliate-product-showcase/
+          
+          # Create zip
+          cd /tmp
+          zip -r affiliate-product-showcase-${{ steps.get-version.outputs.version }}.zip affiliate-product-showcase/
+          
+          # Move to workspace
+          mv affiliate-product-showcase-${{ steps.get-version.outputs.version }}.zip wp-content/plugins/affiliate-product-showcase/
+
+      - name: Get Artifact Name
+        id: get-artifact-name
+        run: |
+          echo "name=affiliate-product-showcase-${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Upload Distribution Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.get-artifact-name.outputs.name }}
+          path: wp-content/plugins/affiliate-product-showcase/affiliate-product-showcase-${{ steps.get-version.outputs.version }}.zip
+
+  # Deploy to Staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging'
+    environment: staging
+    steps:
+      - name: Download Distribution Package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Deploy to Staging Server
+        run: |
+          echo "Deploying to staging server..."
+          echo "Artifact: ${{ needs.build.outputs.artifact-name }}.zip"
+          echo "Version: ${{ needs.build.outputs.version }}"
+          echo ""
+          echo "Deployment steps:"
+          echo "1. Upload zip to staging server"
+          echo "2. Extract and replace existing plugin"
+          echo "3. Run database migrations if needed"
+          echo "4. Clear caches"
+          echo "5. Run smoke tests"
+          echo ""
+          echo "✅ Ready for deployment"
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Download Distribution Package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Deploy to Production Server
+        run: |
+          echo "Deploying to production server..."
+          echo "Artifact: ${{ needs.build.outputs.artifact-name }}.zip"
+          echo "Version: ${{ needs.build.outputs.version }}"
+          echo ""
+          echo "Deployment steps:"
+          echo "1. Upload zip to production server"
+          echo "2. Extract and replace existing plugin"
+          echo "3. Run database migrations if needed"
+          echo "4. Clear caches"
+          echo "5. Run smoke tests"
+          echo "6. Monitor for errors"
+          echo ""
+          echo "✅ Ready for deployment"
+
+  # WordPress.org Deployment
+  deploy-wordpress-org:
+    name: Deploy to WordPress.org
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment: wordpress-org
+    steps:
+      - name: Download Distribution Package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Deploy to WordPress.org
+        run: |
+          echo "Deploying to WordPress.org..."
+          echo "Tag: ${{ github.ref_name }}"
+          echo "Version: ${{ needs.build.outputs.version }}"
+          echo ""
+          echo "Deployment steps:"
+          echo "1. Upload plugin to WordPress.org SVN"
+          echo "2. Create new tag in SVN"
+          echo "3. Update trunk with new version"
+          echo "4. Commit changes"
+          echo "5. Wait for WordPress.org to process"
+          echo ""
+          echo "✅ Ready for WordPress.org deployment"
+
+  # GitHub Release
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download Distribution Package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            ## Release ${{ needs.build.outputs.version }}
+            
+            ### Changes
+            - See CHANGELOG.md for details
+            
+            ### Installation
+            1. Download the zip file
+            2. Upload to WordPress plugins directory
+            3. Activate the plugin
+            
+            ### Requirements
+            - PHP 8.1+
+            - WordPress 6.0+
+            
+            ### Support
+            For issues and questions, please open an issue on GitHub.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./${{ needs.build.outputs.artifact-name }}.zip
+          asset_name: ${{ needs.build.outputs.artifact-name }}.zip
+          asset_content_type: application/zip
+
+  # Deployment Summary
+  deployment-summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - deploy-staging
+      - deploy-production
+      - deploy-wordpress-org
+      - create-release
+    if: always()
+    steps:
+      - name: Generate Deployment Summary
+        run: |
+          echo "# Deployment Report" > deployment-summary.md
+          echo "" >> deployment-summary.md
+          echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S")" >> deployment-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> deployment-summary.md
+          echo "**Commit:** ${{ github.sha }}" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          
+          echo "## Build Status" >> deployment-summary.md
+          echo "**Version:** ${{ needs.build.outputs.version }}" >> deployment-summary.md
+          echo "**Artifact:** ${{ needs.build.outputs.artifact-name }}" >> deployment-summary.md
+          echo "**Status:** ✅ Build completed" >> deployment-summary.md
+          echo "" >> deployment-summary.md
+          
+          echo "## Deployment Status" >> deployment-summary.md
+          if [ "${{ needs.deploy-staging.result }}" = "success" ]; then
+            echo "**Staging:** ✅ Deployed" >> deployment-summary.md
+          elif [ "${{ needs.deploy-staging.result }}" = "skipped" ]; then
+            echo "**Staging:** ⏭️ Skipped" >> deployment-summary.md
+          else
+            echo "**Staging:** ❌ Failed" >> deployment-summary.md
+          fi
+          
+          if [ "${{ needs.deploy-production.result }}" = "success" ]; then
+            echo "**Production:** ✅ Deployed" >> deployment-summary.md
+          elif [ "${{ needs.deploy-production.result }}" = "skipped" ]; then
+            echo "**Production:** ⏭️ Skipped" >> deployment-summary.md
+          else
+            echo "**Production:** ❌ Failed" >> deployment-summary.md
+          fi
+          
+          if [ "${{ needs.deploy-wordpress-org.result }}" = "success" ]; then
+            echo "**WordPress.org:** ✅ Deployed" >> deployment-summary.md
+          elif [ "${{ needs.deploy-wordpress-org.result }}" = "skipped" ]; then
+            echo "**WordPress.org:** ⏭️ Skipped" >> deployment-summary.md
+          else
+            echo "**WordPress.org:** ❌ Failed" >> deployment-summary.md
+          fi
+          
+          if [ "${{ needs.create-release.result }}" = "success" ]; then
+            echo "**GitHub Release:** ✅ Created" >> deployment-summary.md
+          elif [ "${{ needs.create-release.result }}" = "skipped" ]; then
+            echo "**GitHub Release:** ⏭️ Skipped" >> deployment-summary.md
+          else
+            echo "**GitHub Release:** ❌ Failed" >> deployment-summary.md
+          fi
+          
+          echo "" >> deployment-summary.md
+          echo "---" >> deployment-summary.md
+          echo "Generated by GitHub Actions Deployment Workflow" >> deployment-summary.md
+          
+          cat deployment-summary.md
+
+      - name: Upload Deployment Summary
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deployment-summary
+          path: deployment-summary.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (fs.existsSync('deployment-summary.md')) {
+              const summary = fs.readFileSync('deployment-summary.md', 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            }

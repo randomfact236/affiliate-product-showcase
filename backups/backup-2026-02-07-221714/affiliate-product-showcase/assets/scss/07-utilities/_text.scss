@@ -1,0 +1,49 @@
+/**
+ * Text Utilities
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+
+// Text alignment
+.u-text-left {
+	text-align: left;
+}
+
+.u-text-center {
+	text-align: center;
+}
+
+.u-text-right {
+	text-align: right;
+}
+
+// Font weight
+.u-font-normal {
+	font-weight: tokens.$font-weight-normal;
+}
+
+.u-font-medium {
+	font-weight: tokens.$font-weight-medium;
+}
+
+.u-font-semibold {
+	font-weight: tokens.$font-weight-semibold;
+}
+
+.u-font-bold {
+	font-weight: tokens.$font-weight-bold;
+}
+
+// Text transform
+.u-text-uppercase {
+	text-transform: uppercase;
+}
+
+.u-text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

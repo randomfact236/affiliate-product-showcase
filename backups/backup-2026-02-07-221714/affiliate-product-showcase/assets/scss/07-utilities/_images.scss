@@ -1,0 +1,40 @@
+/**
+ * Image Utilities
+ * 
+ * Background image and related utilities.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+
+// ============================================
+// Background Image from CSS Custom Property
+// ============================================
+
+/**
+ * Apply background image from CSS custom property
+ * Usage: <div class="has-bg-image" style="--bg-image-url: url(...)">
+ * Note: Class name preserved for backward compatibility
+ */
+.has-bg-image {
+	background-image: var(--bg-image-url);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+// ============================================
+// Image Preview Components
+// ============================================
+
+/**
+ * Image preview container
+ */
+.aps-image-preview {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: tokens.$radius-md;
+}

@@ -1,0 +1,77 @@
+/**
+ * Toast Component
+ * 
+ * Notification toast styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
+@use '../07-utilities/animations' as *;
+
+.aps-toast-container {
+	position: fixed;
+	bottom: tokens.$spacing-5;
+	right: tokens.$spacing-5;
+	inset-inline-end: tokens.$spacing-5;
+	z-index: tokens.$z-toast;
+	display: flex;
+	flex-direction: column;
+	gap: tokens.$spacing-3;
+	max-width: 25rem; // 400px
+}
+
+.aps-toast {
+	background: tokens.$color-white;
+	border-left: 4px solid tokens.$color-info;
+	border-inline-start: 4px solid tokens.$color-info;
+	box-shadow: tokens.$shadow-md;
+	padding: tokens.$spacing-4;
+	display: flex;
+	align-items: center;
+	gap: tokens.$spacing-3;
+	border-radius: tokens.$radius-sm;
+	animation: aps-slide-in tokens.$transition-base ease;
+
+	&--success {
+		border-left-color: tokens.$color-success;
+		border-inline-start-color: tokens.$color-success;
+	}
+
+	&--error {
+		border-left-color: tokens.$color-danger;
+		border-inline-start-color: tokens.$color-danger;
+	}
+
+	&--warning {
+		border-left-color: tokens.$color-warning;
+		border-inline-start-color: tokens.$color-warning;
+	}
+
+	@include mixins.reduced-motion {
+		animation: none;
+	}
+}
+
+.aps-toast__message {
+	flex: 1;
+	font-size: tokens.$font-size-base;
+	color: tokens.$color-text-primary;
+}
+
+.aps-toast__close {
+	background: none;
+	border: none;
+	color: tokens.$color-text-muted;
+	cursor: pointer;
+	padding: tokens.$spacing-1;
+
+	&:hover {
+		color: tokens.$color-text-primary;
+	}
+
+	@include mixins.focus-outline;
+}

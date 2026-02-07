@@ -1,0 +1,390 @@
+/**
+ * Tabs Component
+ * 
+ * Settings page pill tab navigation.
+ * Consolidates: settings.css tab styles
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
+
+// ============================================
+// Tabs Container
+// ============================================
+
+.aps-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: tokens.$spacing-3;
+	padding: tokens.$spacing-5;
+	background: tokens.$color-slate-50;
+	border-radius: tokens.$radius-xl;
+	border: 1px solid tokens.$color-slate-200;
+	margin-bottom: tokens.$spacing-6;
+
+	@include mixins.respond-down('md') {
+		justify-content: center;
+		padding: tokens.$spacing-4;
+		gap: tokens.$spacing-2;
+	}
+}
+
+// ============================================
+// Individual Tab
+// ============================================
+
+.aps-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: tokens.$spacing-2;
+	padding: tokens.$spacing-3 tokens.$spacing-5;
+	background: tokens.$color-white;
+	border: 1px solid tokens.$color-slate-200;
+	border-radius: tokens.$radius-full;
+	color: tokens.$color-slate-500;
+	font-size: tokens.$font-size-sm;
+	font-weight: tokens.$font-weight-medium;
+	text-decoration: none;
+	transition:
+		background-color 200ms ease-in-out,
+		border-color 200ms ease-in-out,
+		color 200ms ease-in-out,
+		transform 200ms ease-in-out,
+		box-shadow 200ms ease-in-out;
+	cursor: pointer;
+	white-space: nowrap;
+	box-shadow: tokens.$shadow-sm;
+	position: relative;
+	overflow: hidden;
+
+	// Shine effect
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg,
+				transparent,
+				rgba(255, 255, 255, 0.4),
+				transparent);
+		transition: left 0.5s ease;
+	}
+
+	&:hover {
+		background: tokens.$color-white;
+		border-color: tokens.$color-slate-300;
+		color: tokens.$color-slate-700;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+		transform: translateY(-1px);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 3px rgba(tokens.$color-info, 0.3), 0 4px 6px rgba(0, 0, 0, 0.07);
+		border-color: tokens.$color-info;
+	}
+
+	&:active {
+		transform: translateY(0);
+		box-shadow: tokens.$shadow-sm;
+	}
+
+	// Active state
+	&.is-active {
+		background: tokens.$wp-admin-theme-color;
+		border-color: tokens.$wp-admin-theme-color;
+		color: tokens.$color-white;
+		box-shadow: 0 4px 12px rgba(tokens.$color-primary, 0.4);
+		font-weight: tokens.$font-weight-semibold;
+
+		&:hover {
+			background: tokens.$wp-admin-theme-color-darker-10;
+			border-color: tokens.$wp-admin-theme-color-darker-10;
+			box-shadow: 0 6px 16px rgba(tokens.$color-primary, 0.5);
+		}
+
+		&:focus-visible {
+			box-shadow: 0 0 0 3px rgba(tokens.$color-info, 0.4), 0 6px 16px rgba(tokens.$color-primary, 0.5);
+		}
+
+		&::before {
+			display: none;
+		}
+	}
+
+	// Disabled state
+	&.is-disabled {
+		background: tokens.$color-slate-100;
+		border-color: tokens.$color-slate-200;
+		color: tokens.$color-slate-400;
+		cursor: not-allowed;
+		pointer-events: none;
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+
+		&:hover {
+			transform: none;
+			box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+		}
+
+		&::before {
+			display: none;
+		}
+	}
+
+	// Responsive
+	@include mixins.respond-down('md') {
+		padding: tokens.$spacing-2 tokens.$spacing-4;
+		font-size: tokens.$font-size-xs;
+	}
+
+	@include mixins.respond-down('xs') {
+		flex: 1;
+		justify-content: center;
+		min-width: 7.5rem; // 120px
+	}
+}
+
+.aps-tab__icon {
+	font-size: tokens.$font-size-lg;
+	line-height: 1;
+	filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+
+	@include mixins.respond-down('md') {
+		font-size: tokens.$font-size-base;
+	}
+}
+
+.aps-tab__badge {
+	display: inline-block;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	margin-inline-start: tokens.$spacing-2;
+	background: linear-gradient(135deg, tokens.$color-warning 0%, tokens.$color-warning-dark 100%);
+	color: tokens.$color-white;
+	font-size: tokens.$font-size-2xs;
+	font-weight: tokens.$font-weight-bold;
+	border-radius: tokens.$radius-full;
+	text-transform: uppercase;
+	letter-spacing: tokens.$letter-spacing-wide;
+	box-shadow: tokens.$shadow-sm;
+}
+
+// ============================================
+// Settings Content Card
+// ============================================
+
+.aps-settings-card {
+	background: tokens.$color-white;
+	border-radius: tokens.$radius-xl;
+	padding: tokens.$spacing-10;
+	box-shadow: tokens.$shadow-sm;
+	border: 1px solid tokens.$color-slate-200;
+
+	&__title {
+		margin: 0 0 tokens.$spacing-3;
+		font-size: tokens.$font-size-lg;
+		font-weight: tokens.$font-weight-semibold;
+		color: tokens.$color-slate-800;
+	}
+
+	&__description {
+		margin: 0 0 tokens.$spacing-8;
+		color: tokens.$color-slate-500;
+		font-size: tokens.$font-size-sm;
+	}
+
+	@include mixins.respond-down('md') {
+		padding: tokens.$spacing-6;
+	}
+}
+
+// ============================================
+// Toggle Switch
+// ============================================
+
+.aps-toggle {
+	appearance: none;
+	width: functions.spacing('11'); // 44px
+	height: functions.spacing('6'); // 24px
+	background: tokens.$color-slate-200;
+	border-radius: tokens.$radius-full;
+	position: relative;
+	cursor: pointer;
+	transition: background tokens.$transition-fast;
+	border: none;
+	vertical-align: middle;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: functions.spacing('5'); // 20px
+		height: functions.spacing('5'); // 20px
+		background: tokens.$color-white;
+		border-radius: 50%;
+		transition: transform tokens.$transition-fast;
+		box-shadow: tokens.$shadow-sm;
+	}
+
+	&:checked {
+		background: tokens.$wp-admin-theme-color;
+
+		&::after {
+			transform: translateX(functions.spacing('5')); // 20px
+		}
+	}
+
+	&:focus-visible {
+		outline: 2px solid tokens.$wp-admin-theme-color;
+		outline-offset: 2px;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+.aps-toggle-label {
+	display: inline-flex;
+	align-items: center;
+	gap: tokens.$spacing-3;
+	cursor: pointer;
+	user-select: none;
+}
+
+// ============================================
+// Color Picker
+// ============================================
+
+.aps-color-picker {
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	border: 1px solid tokens.$color-border-dark;
+	border-radius: tokens.$radius-sm;
+	background: tokens.$color-white;
+	font-size: tokens.$font-size-base;
+	line-height: tokens.$line-height-normal;
+	color: tokens.$color-text-dark;
+
+	&:focus {
+		border-color: tokens.$wp-admin-theme-color;
+		box-shadow: 0 0 0 1px tokens.$wp-admin-theme-color;
+		outline: none;
+	}
+}
+
+// WordPress color picker override
+.aps-settings-card .wp-picker-container {
+	display: inline-block;
+
+	.wp-color-result {
+		border: 1px solid tokens.$color-border-dark;
+		border-radius: tokens.$radius-sm;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+		&:focus {
+			border-color: tokens.$wp-admin-theme-color;
+			box-shadow: 0 0 0 1px tokens.$wp-admin-theme-color;
+		}
+	}
+
+	.wp-picker-open+.wp-picker-input-wrap {
+		display: inline-flex;
+		align-items: center;
+		gap: tokens.$spacing-2;
+	}
+}
+
+// ============================================
+// Form Table (WordPress Override)
+// ============================================
+
+.aps-settings-card .form-table {
+	margin: 0;
+
+	th {
+		padding: tokens.$spacing-5 tokens.$spacing-5 tokens.$spacing-5 tokens.$spacing-0;
+		width: tokens.$empty-state-min-height;
+		font-weight: tokens.$font-weight-medium;
+		color: tokens.$color-slate-700;
+		vertical-align: top;
+	}
+
+	td {
+		padding: tokens.$spacing-5 0;
+	}
+
+	@include mixins.respond-down('md') {
+
+		th,
+		td {
+			display: block;
+			width: 100%;
+			padding: tokens.$spacing-2 0;
+		}
+	}
+}
+
+.aps-settings-card .description {
+	margin-top: tokens.$spacing-2;
+	color: tokens.$color-slate-500;
+	font-size: tokens.$font-size-sm;
+	font-style: normal;
+}
+
+// ============================================
+// Primary Button Override
+// ============================================
+
+.aps-settings-card .button-primary {
+	background: tokens.$wp-admin-theme-color;
+	border-color: tokens.$wp-admin-theme-color;
+	padding: tokens.$spacing-2 tokens.$spacing-6;
+	font-size: tokens.$font-size-base;
+	font-weight: tokens.$font-weight-medium;
+	border-radius: tokens.$radius-md;
+	transition:
+		background-color 200ms ease-in-out,
+		border-color 200ms ease-in-out,
+		box-shadow 200ms ease-in-out;
+
+	&:hover {
+		background: tokens.$wp-admin-theme-color-darker-10;
+		border-color: tokens.$wp-admin-theme-color-darker-10;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 1px tokens.$color-white, 0 0 0 3px tokens.$wp-admin-theme-color;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+@include mixins.reduced-motion {
+
+	.aps-tab,
+	.aps-toggle,
+	.aps-settings-card .button-primary {
+		transition: none;
+
+		&:hover {
+			transform: none;
+		}
+	}
+
+	.aps-tab::before {
+		transition: none;
+	}
+}

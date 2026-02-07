@@ -1,0 +1,17 @@
+/**
+ * SCSS Abstracts
+ * 
+ * Exposes all variables, mixins, and functions.
+ * NO CSS OUTPUT.
+ * Safely importable by any file without duplication.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+// 1. Settings (Variables)
+@forward '01-settings/tokens-vars';
+@forward '01-settings/breakpoints';
+
+// 2. Tools (Mixins, Functions)
+@forward '02-tools';

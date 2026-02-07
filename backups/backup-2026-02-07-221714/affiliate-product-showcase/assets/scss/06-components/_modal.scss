@@ -1,0 +1,105 @@
+/**
+ * Modal Component
+ * 
+ * Dialog/modal window styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
+@use '../07-utilities/animations' as *;
+
+.aps-modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	inset: 0;
+	z-index: tokens.$z-modal;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: aps-fade-in tokens.$transition-base ease;
+
+	&:focus-within {
+		outline: 3px solid tokens.$color-primary;
+		outline-offset: 2px;
+	}
+
+	@include mixins.reduced-motion {
+		animation: none;
+	}
+}
+
+.aps-modal__overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.aps-modal__content {
+	position: relative;
+	background: tokens.$color-white;
+	border-radius: tokens.$radius-lg;
+	box-shadow: tokens.$shadow-xl;
+	width: 100%;
+	max-width: 31.25rem; // 500px
+	max-height: 90vh;
+	overflow-y: auto;
+	margin: tokens.$spacing-5;
+	animation: aps-slide-up tokens.$transition-base ease;
+
+	@include mixins.reduced-motion {
+		animation: none;
+	}
+}
+
+.aps-modal__header {
+	padding: tokens.$spacing-5;
+	border-bottom: 1px solid tokens.$color-border-light;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.aps-modal__title {
+	margin: 0;
+	font-size: tokens.$font-size-lg;
+	font-weight: tokens.$font-weight-semibold;
+}
+
+.aps-modal__close {
+	background: none;
+	border: none;
+	font-size: tokens.$font-size-2xl;
+	color: tokens.$color-text-muted;
+	cursor: pointer;
+	padding: tokens.$spacing-1;
+	line-height: 1;
+
+	&:hover {
+		color: tokens.$color-text-primary;
+	}
+
+	@include mixins.focus-outline;
+}
+
+.aps-modal__body {
+	padding: tokens.$spacing-5;
+}
+
+.aps-modal__footer {
+	padding: tokens.$spacing-5;
+	border-top: 1px solid tokens.$color-border-light;
+	display: flex;
+	justify-content: flex-end;
+	gap: tokens.$spacing-3;
+}

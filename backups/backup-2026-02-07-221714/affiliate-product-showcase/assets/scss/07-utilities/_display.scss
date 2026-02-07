@@ -1,0 +1,21 @@
+/**
+ * Display Utilities
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+.u-d-none { display: none; }
+.u-d-block { display: block; }
+.u-d-inline { display: inline; }
+.u-d-inline-block { display: inline-block; }
+.u-d-flex { display: flex; }
+.u-d-grid { display: grid; }
+
+// Flex utilities
+.u-flex-row { flex-direction: row; }
+.u-flex-column { flex-direction: column; }
+.u-justify-start { justify-content: flex-start; }
+.u-justify-center { justify-content: center; }
+.u-justify-between { justify-content: space-between; }
+.u-items-center { align-items: center; }

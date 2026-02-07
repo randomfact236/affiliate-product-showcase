@@ -1,0 +1,98 @@
+/**
+ * Form Elements
+ * 
+ * Base form input styles.
+ * 
+ * @package AffiliateProductShowcase
+ * @since 2.0.0
+ */
+
+@use '../01-settings/tokens-vars' as tokens;
+@use '../02-tools/mixins';
+@use '../02-tools/functions';
+
+// ============================================
+// Form Control Base
+// ============================================
+
+.aps-form-control {
+	@include mixins.input-base;
+}
+
+// ============================================
+// Select
+// ============================================
+
+.aps-form-select {
+	@include mixins.input-base;
+
+	appearance: none;
+
+	// Optimization Note: Inline SVG is used for critical rendering path.
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23646970' d='M6 9L2 5h8z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right tokens.$spacing-3 center;
+	padding-inline-end: tokens.$spacing-8;
+}
+
+// ============================================
+// Textarea
+// ============================================
+
+.aps-form-textarea {
+	@include mixins.input-base;
+
+	min-height: functions.spacing('16') + functions.spacing('4'); // 5rem
+	resize: vertical;
+}
+
+// ============================================
+// Checkbox & Radio
+// ============================================
+
+.aps-form-check {
+	display: flex;
+	align-items: center;
+	gap: tokens.$spacing-2;
+	cursor: pointer;
+
+	input[type="checkbox"],
+	input[type="radio"] {
+		width: 1.125rem;
+		height: 1.125rem;
+		cursor: pointer;
+
+		@include mixins.focus-outline;
+	}
+}
+
+// ============================================
+// Form Group
+// ============================================
+
+.aps-form-group {
+	margin-bottom: tokens.$spacing-4;
+}
+
+.aps-form-label {
+	display: block;
+	margin-bottom: tokens.$spacing-2;
+	font-size: tokens.$font-size-sm;
+	font-weight: tokens.$font-weight-medium;
+	color: tokens.$color-text-primary;
+}
+
+.aps-form-hint {
+	margin-top: tokens.$spacing-1;
+	font-size: tokens.$font-size-xs;
+	color: tokens.$color-text-muted;
+}
+
+// ============================================
+// Feature Edit Input
+// ============================================
+
+.aps-input-flex {
+	flex: 1;
+	min-width: tokens.$empty-state-min-height;
+}
