@@ -68,7 +68,7 @@ body.post-type-aps_product.edit-php {
 // Filter Dropdowns
 // ============================================
 
-.aps-filter-dropdown {
+@mixin aps-filter-dropdown {
 	@include mixins.input-base;
 
 	margin-inline-end: tokens.$spacing-2;
@@ -83,11 +83,15 @@ body.post-type-aps_product.edit-php {
 	}
 }
 
+.aps-filter-dropdown {
+	@include aps-filter-dropdown;
+}
+
 // ID selectors for WordPress compatibility
 // stylelint-disable selector-id-pattern
 #aps_category_filter,
 #aps_tag_filter {
-	@extend .aps-filter-dropdown;
+	@include aps-filter-dropdown;
 }
 
 // stylelint-enable selector-id-pattern
@@ -120,7 +124,25 @@ body.post-type-aps_product.edit-php {
 
 // stylelint-disable-next-line selector-id-pattern
 #aps_search {
-	@extend .aps-search-input;
+	@include mixins.input-base;
+
+	margin-inline-start: tokens.$spacing-2;
+	padding: tokens.$spacing-1 tokens.$spacing-2;
+	font-size: tokens.$font-size-sm;
+	min-width: tokens.$empty-state-min-height;
+	min-height: tokens.$admin-input-height;
+
+	&::placeholder {
+		color: tokens.$color-text-muted;
+		font-style: italic;
+	}
+
+	@include mixins.wp-tablet-down {
+		margin-inline-start: 0;
+		margin-block-start: tokens.$spacing-2;
+		width: 100%;
+		min-width: auto;
+	}
 }
 
 // ============================================

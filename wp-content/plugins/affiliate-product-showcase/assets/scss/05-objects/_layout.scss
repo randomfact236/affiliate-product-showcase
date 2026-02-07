@@ -16,7 +16,7 @@
 
 	&--sidebar {
 		> :first-child {
-			width: 240px;
+			width: tokens.$sidebar-width;
 			flex-shrink: 0;
 		}
 

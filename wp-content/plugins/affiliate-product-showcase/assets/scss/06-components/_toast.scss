@@ -15,6 +15,7 @@
 .aps-toast-container {
 	position: fixed;
 	bottom: tokens.$spacing-5;
+	right: tokens.$spacing-5;
 	inset-inline-end: tokens.$spacing-5;
 	z-index: tokens.$z-toast;
 	display: flex;
@@ -25,6 +26,7 @@
 
 .aps-toast {
 	background: tokens.$color-white;
+	border-left: 4px solid tokens.$color-info;
 	border-inline-start: 4px solid tokens.$color-info;
 	box-shadow: tokens.$shadow-md;
 	padding: tokens.$spacing-4;
@@ -35,14 +37,17 @@
 	animation: aps-slide-in tokens.$transition-base ease;
 
 	&--success {
+		border-left-color: tokens.$color-success;
 		border-inline-start-color: tokens.$color-success;
 	}
 
 	&--error {
+		border-left-color: tokens.$color-danger;
 		border-inline-start-color: tokens.$color-danger;
 	}
 
 	&--warning {
+		border-left-color: tokens.$color-warning;
 		border-inline-start-color: tokens.$color-warning;
 	}
 

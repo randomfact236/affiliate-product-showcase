@@ -17,10 +17,12 @@
 	gap: var(--aps-showcase-gap, #{tokens.$spacing-4});
 
 	@include mixins.respond-to('xl') {
+		grid-template-columns: repeat(3, 1fr);
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 3), 1fr);
 	}
 
 	@include mixins.respond-down('lg') {
+		grid-template-columns: repeat(2, 1fr);
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
 	}
 
@@ -58,8 +60,8 @@
 	border-radius: tokens.$radius-xl;
 	overflow: hidden;
 	transition:
-		transform 200ms ease-in-out,
-		box-shadow 200ms ease-in-out;
+		transform tokens.$transition-base,
+		box-shadow tokens.$transition-base;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -122,6 +124,8 @@
 
 .aps-block-showcase__badge {
 	position: absolute;
+	top: tokens.$spacing-3;
+	left: tokens.$spacing-3;
 	inset-block-start: tokens.$spacing-3;
 	inset-inline-start: tokens.$spacing-3;
 	padding: tokens.$spacing-1 tokens.$spacing-3;
@@ -163,12 +167,12 @@
 .aps-block-showcase__price-current {
 	font-size: tokens.$font-size-xl;
 	font-weight: tokens.$font-weight-extrabold;
-	color: var(--aps-frontend-primary, #{tokens.$color-blue-500});
+	color: var(--aps-frontend-primary, #{tokens.frontend-color('primary')});
 }
 
 .aps-block-showcase__price-original {
 	font-size: tokens.$font-size-md;
-	color: tokens.$color-slate-400;
+	color: tokens.$color-slate-500;
 	text-decoration: line-through;
 }
 
@@ -191,7 +195,7 @@
 	display: inline-block;
 	width: 100%;
 	padding: tokens.$spacing-3 tokens.$spacing-8;
-	background: var(--aps-frontend-primary, #{tokens.$color-blue-500});
+	background: var(--aps-frontend-primary, #{tokens.frontend-color('primary')});
 	color: tokens.$color-white;
 	text-align: center;
 	text-decoration: none;
@@ -206,7 +210,7 @@
 	box-shadow: 0 4px 6px rgba(tokens.$color-blue-500, 0.2);
 
 	&:hover {
-		background: var(--aps-frontend-primary-hover, #{tokens.$color-blue-600});
+		background: var(--aps-frontend-primary-hover, #{tokens.frontend-color('primary-hover')});
 		transform: translateY(-2px);
 		box-shadow: 0 8px 16px rgba(tokens.$color-blue-500, 0.3);
 	}

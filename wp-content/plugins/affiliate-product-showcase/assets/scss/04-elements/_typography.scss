@@ -26,6 +26,7 @@
 .aps-h1 {
 	@include heading-base;
 
+	font-size: tokens.$font-size-2xl;
 	font-size: clamp(tokens.$font-size-2xl, 5vw, tokens.$font-size-3xl);
 	font-weight: tokens.$font-weight-bold;
 }
@@ -33,6 +34,7 @@
 .aps-h2 {
 	@include heading-base;
 
+	font-size: tokens.$font-size-xl;
 	font-size: clamp(tokens.$font-size-xl, 4vw, tokens.$font-size-2xl);
 	font-weight: tokens.$font-weight-bold;
 }
@@ -40,6 +42,7 @@
 .aps-h3 {
 	@include heading-base;
 
+	font-size: tokens.$font-size-lg;
 	font-size: clamp(tokens.$font-size-lg, 3vw, tokens.$font-size-xl);
 	font-weight: tokens.$font-weight-semibold;
 }

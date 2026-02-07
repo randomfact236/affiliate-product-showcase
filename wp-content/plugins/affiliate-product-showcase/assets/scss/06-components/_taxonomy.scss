@@ -16,7 +16,7 @@
 // Utility Classes
 // ============================================
 
-.aps-hidden {
+.aps-u-hidden {
 	display: none !important; // Override WP core styles
 }
 
@@ -49,7 +49,7 @@
 .aps-term-status-select {
 	@include mixins.input-base;
 
-	min-width: 7.5rem; // 120px
+	min-width: tokens.$term-status-min-width;
 	cursor: pointer;
 
 	&:focus {

@@ -222,7 +222,8 @@
 	&:focus {
 		border-color: tokens.$wp-admin-theme-color;
 		box-shadow: 0 0 0 1px tokens.$wp-admin-theme-color;
-		outline: none;
+		outline: 2px solid transparent; // HCM fallback
+		outline-offset: 2px;
 	}
 }
 

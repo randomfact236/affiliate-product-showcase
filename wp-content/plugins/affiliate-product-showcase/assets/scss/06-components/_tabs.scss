@@ -189,14 +189,14 @@
 	box-shadow: tokens.$shadow-sm;
 	border: 1px solid tokens.$color-slate-200;
 
-	h2 {
+	&__title {
 		margin: 0 0 tokens.$spacing-3;
 		font-size: tokens.$font-size-lg;
 		font-weight: tokens.$font-weight-semibold;
 		color: tokens.$color-slate-800;
 	}
 
-	>p {
+	&__description {
 		margin: 0 0 tokens.$spacing-8;
 		color: tokens.$color-slate-500;
 		font-size: tokens.$font-size-sm;
@@ -284,7 +284,7 @@
 }
 
 // WordPress color picker override
-.wp-picker-container {
+.aps-settings-card .wp-picker-container {
 	display: inline-block;
 
 	.wp-color-result {
