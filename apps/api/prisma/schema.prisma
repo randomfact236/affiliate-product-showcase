@@ -13,14 +13,104 @@ model User {
   password  String
   firstName String?
   lastName  String?
+  avatar    String?
   
   status    UserStatus @default(ACTIVE)
   emailVerified Boolean @default(false)
   
+  roles     UserRole[]
+  sessions  Session[]
+  refreshTokens RefreshToken[]
+  passwordResets PasswordReset[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  lastLoginAt DateTime?
   
+  @@index([email])
+  @@index([status])
   @@map("users")
+}
+
+model Role {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String?
+  
+  permissions Permission[]
+  users       UserRole[]
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  resource    String
+  action      String
+  description String?
+  
+  roles Role[]
+  
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model UserRole {
+  userId String
+  roleId String
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  
+  ipAddress String?
+  userAgent String?
+  
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([token])
+  @@map("password_resets")
 }
 
 enum UserStatus {
@@ -28,4 +118,284 @@ enum UserStatus {
   INACTIVE
   SUSPENDED
   PENDING_VERIFICATION
+}
+
+// ==================== PRODUCT CATALOG ====================
+
+model Product {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  description      String?
+  shortDescription String?
+  
+  // Status
+  status      ProductStatus @default(DRAFT)
+  publishedAt DateTime?
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Relations
+  variants    ProductVariant[]
+  categories  ProductCategory[]
+  tags        ProductTag[]
+  attributes  ProductAttributeValue[]
+  images      ProductImage[]
+  ribbons     ProductRibbon[]
+  affiliateLinks AffiliateLink[]
+  
+  // Analytics
+  viewCount   Int      @default(0)
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String
+  updatedBy   String?
+  
+  @@index([slug])
+  @@index([status])
+  @@index([createdAt])
+  @@map("products")
+}
+
+model ProductVariant {
+  id           String   @id @default(cuid())
+  productId    String
+  sku          String   @unique
+  name         String
+  
+  // Pricing (in cents)
+  price        Int
+  comparePrice Int?    // Original price for "sale" display
+  costPrice    Int?    // For margin calculations
+  
+  // Inventory
+  inventory        Int      @default(0)
+  inventoryPolicy  InventoryPolicy @default(DENY)
+  
+  // Options (e.g., {"color": "red", "size": "L"})
+  options     Json?
+  
+  // Relations
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Status
+  isDefault   Boolean  @default(false)
+  status      VariantStatus @default(ACTIVE)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([productId])
+  @@index([sku])
+  @@map("product_variants")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  
+  // Tree structure (Nested Set Model)
+  left        Int
+  right       Int
+  depth       Int      @default(0)
+  parentId    String?
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Media
+  image       String?
+  
+  // Relations
+  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  products    ProductCategory[]
+  
+  // Status
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([left, right])
+  @@index([parentId])
+  @@index([slug])
+  @@map("categories")
+}
+
+model ProductCategory {
+  productId  String
+  categoryId String
+  
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  @@id([productId, categoryId])
+  @@map("product_categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  
+  products  ProductTag[]
+  
+  createdAt DateTime @default(now())
+  
+  @@map("tags")
+}
+
+model ProductTag {
+  productId String
+  tagId     String
+  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@id([productId, tagId])
+  @@map("product_tags")
+}
+
+model Attribute {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  type        AttributeType
+  
+  // For SELECT type
+  options     AttributeOption[]
+  
+  // Configuration
+  isFilterable Boolean @default(false)
+  isVisible   Boolean @default(true)
+  
+  values      ProductAttributeValue[]
+  
+  createdAt   DateTime @default(now())
+  
+  @@map("attributes")
+}
+
+model AttributeOption {
+  id           String @id @default(cuid())
+  attributeId  String
+  value        String
+  displayValue String
+  sortOrder    Int    @default(0)
+  
+  attribute Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  
+  @@map("attribute_options")
+}
+
+model ProductAttributeValue {
+  id          String @id @default(cuid())
+  productId   String
+  attributeId String
+  value       String // Can be JSON for complex types
+  
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, attributeId])
+  @@map("product_attribute_values")
+}
+
+model ProductImage {
+  id        String @id @default(cuid())
+  productId String
+  url       String
+  alt       String?
+  sortOrder Int    @default(0)
+  
+  // Variants
+  isPrimary Boolean @default(false)
+  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductRibbon {
+  id          String @id @default(cuid())
+  productId   String
+  name        String
+  color       String    // CSS color or tailwind class
+  bgColor     String
+  position    RibbonPosition @default(TOP_RIGHT)
+  priority    Int       @default(0)
+  startAt     DateTime?
+  endAt       DateTime?
+  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("product_ribbons")
+}
+
+model AffiliateLink {
+  id          String   @id @default(cuid())
+  productId   String
+  platform    String   // e.g., "amazon", "aliexpress"
+  url         String
+  price       Int?     // Current price on platform (cents)
+  originalPrice Int?   // Original price for comparison
+  isActive    Boolean  @default(true)
+  clicks      Int      @default(0)
+  conversions Int      @default(0)
+  lastChecked DateTime?
+  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([productId])
+  @@index([platform])
+  @@map("affiliate_links")
+}
+
+enum ProductStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum VariantStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+}
+
+enum InventoryPolicy {
+  DENY      // Don't allow purchase if out of stock
+  CONTINUE  // Allow backorders
+}
+
+enum AttributeType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  SELECT
+  MULTI_SELECT
+  DATE
+}
+
+enum RibbonPosition {
+  TOP_LEFT
+  TOP_RIGHT
+  BOTTOM_LEFT
+  BOTTOM_RIGHT
 }
