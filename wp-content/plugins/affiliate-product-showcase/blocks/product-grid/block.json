@@ -5,7 +5,13 @@
     "description": "Display affiliate products in a responsive grid layout with customizable columns and spacing",
     "category": "widgets",
     "icon": "grid-view",
-    "keywords": ["product", "grid", "affiliate", "showcase", "layout"],
+    "keywords": [
+        "product",
+        "grid",
+        "affiliate",
+        "showcase",
+        "layout"
+    ],
     "version": "1.0.0",
     "textdomain": "affiliate-product-showcase",
     "attributes": {
@@ -36,7 +42,12 @@
         "hoverEffect": {
             "type": "string",
             "default": "lift",
-            "enum": ["none", "lift", "scale", "shadow"]
+            "enum": [
+                "none",
+                "lift",
+                "scale",
+                "shadow"
+            ]
         }
     },
     "supports": {
@@ -88,5 +99,6 @@
     },
     "editorScript": "aps-blocks-editor",
     "editorStyle": "aps-blocks-editor",
-    "style": "aps-blocks"
+    "style": "aps-blocks",
+    "viewScript": "aps-blocks-frontend"
 }

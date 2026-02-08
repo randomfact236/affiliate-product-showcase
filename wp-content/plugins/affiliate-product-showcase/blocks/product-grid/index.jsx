@@ -7,17 +7,22 @@ import save from './save.jsx';
 // Lazy load edit component for code splitting
 const Edit = lazy(() => import('./edit.jsx'));
 
+// Wrapper component to handle Suspense
+const EditWithSuspense = (props) => (
+	<Suspense
+		fallback={
+			<div className="aps-block-loading-fallback">
+				<Spinner />
+			</div>
+		}
+	>
+		<Edit {...props} />
+	</Suspense>
+);
+
+EditWithSuspense.displayName = 'EditWithSuspense';
+
 registerBlockType(metadata.name, {
-	edit: (props) => (
-		<Suspense
-			fallback={
-				<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-					<Spinner />
-				</div>
-			}
-		>
-			<Edit {...props} />
-		</Suspense>
-	),
+	edit: EditWithSuspense,
 	save,
 });

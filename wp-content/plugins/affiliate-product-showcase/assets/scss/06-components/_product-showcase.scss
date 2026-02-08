@@ -167,7 +167,7 @@
 .aps-block-showcase__price-current {
 	font-size: tokens.$font-size-xl;
 	font-weight: tokens.$font-weight-extrabold;
-	color: var(--aps-frontend-primary, #{tokens.frontend-color('primary')});
+	color: var(--aps-frontend-primary, #{functions.frontend-color('primary')});
 }
 
 .aps-block-showcase__price-original {
@@ -195,7 +195,7 @@
 	display: inline-block;
 	width: 100%;
 	padding: tokens.$spacing-3 tokens.$spacing-8;
-	background: var(--aps-frontend-primary, #{tokens.frontend-color('primary')});
+	background: var(--aps-frontend-primary, #{functions.frontend-color('primary')});
 	color: tokens.$color-white;
 	text-align: center;
 	text-decoration: none;
@@ -210,7 +210,7 @@
 	box-shadow: 0 4px 6px rgba(tokens.$color-blue-500, 0.2);
 
 	&:hover {
-		background: var(--aps-frontend-primary-hover, #{tokens.frontend-color('primary-hover')});
+		background: var(--aps-frontend-primary-hover, #{functions.frontend-color('primary-hover')});
 		transform: translateY(-2px);
 		box-shadow: 0 8px 16px rgba(tokens.$color-blue-500, 0.3);
 	}

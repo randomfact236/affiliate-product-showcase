@@ -4,7 +4,7 @@
  * Styles for block editor interface
  */
 
-@use '../../assets/scss/variables' as *;
+@use '../../../assets/scss/abstracts' as *;
 
 .aps-block--showcase {
 	// Container
@@ -37,7 +37,7 @@
 				flex: 1;
 			}
 
-			@media (max-width: $aps-breakpoint-md) {
+			@media (max-width: $breakpoint-md) {
 				flex-direction: column;
 
 				.aps-product-image {
@@ -49,11 +49,11 @@
 	}
 
 	// Responsive adjustments - using Tailwind breakpoint variables
-	@media (max-width: $aps-breakpoint-xl) {
+	@media (max-width: $breakpoint-xl) {
 		grid-template-columns: repeat(min(var(--aps-showcase-columns, 3), 2), 1fr);
 	}
 
-	@media (max-width: $aps-breakpoint-md) {
+	@media (max-width: $breakpoint-md) {
 		grid-template-columns: 1fr;
 	}
 
@@ -61,20 +61,20 @@
 	&:empty::before {
 		content: 'Product Showcase Block';
 		display: block;
-		padding: 2rem;
+		padding: $spacing-8;
 		text-align: center;
-		background: rgba(0, 0, 0, 0.03);
-		border: 2px dashed rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-		color: #666;
+		background: rgba($color-slate-900, 0.03);
+		border: 2px dashed rgba($color-slate-900, 0.1);
+		border-radius: $radius-sm;
+		color: $color-slate-500;
 	}
 
 	// Showcase item placeholder
 	.aps-showcase-item {
-		background: #f0f0f1;
-		border: 1px solid #dcdcde;
-		border-radius: 8px;
-		padding: 1.5rem;
+		background: $color-slate-100;
+		border: 1px solid $color-border-light;
+		border-radius: $radius-lg;
+		padding: $spacing-6;
 		min-height: 280px;
 		display: flex;
 		flex-direction: column;
@@ -85,9 +85,9 @@
 			display: block;
 			width: 100%;
 			height: 180px;
-			background: #e0e0e0;
-			margin-bottom: 1rem;
-			border-radius: 4px;
+			background: $color-slate-200;
+			margin-bottom: $spacing-4;
+			border-radius: $radius-sm;
 		}
 
 		// Title placeholder
@@ -96,9 +96,9 @@
 			display: block;
 			width: 75%;
 			height: 1.5rem;
-			background: #e0e0e0;
-			border-radius: 2px;
-			margin-bottom: 1rem;
+			background: $color-slate-200;
+			border-radius: $radius-xs;
+			margin-bottom: $spacing-4;
 		}
 
 		// Button placeholder
@@ -106,8 +106,8 @@
 			margin-top: auto;
 			width: 50%;
 			height: 2rem;
-			background: #e0e0e0;
-			border-radius: 4px;
+			background: $color-slate-200;
+			border-radius: $radius-sm;
 		}
 	}
 }
@@ -125,16 +125,14 @@
 }
 
 // List style
-.aps-block--showcase.is-style-list {
-	[data-layout="list"] & {
-		.aps-showcase-item {
-			min-height: 180px;
+.aps-block--showcase.is-style-list[data-layout="list"] {
+	.aps-showcase-item {
+		min-height: 180px;
 
-			&::before {
-				width: 200px;
-				height: 150px;
-				margin-bottom: 0;
-			}
+		&::before {
+			width: 200px;
+			height: 150px;
+			margin-bottom: 0;
 		}
 	}
 }
@@ -149,18 +147,18 @@
 // Layout indicator
 .aps-layout-indicator {
 	display: flex;
-	gap: 8px;
-	padding: 8px 12px;
-	background: #f0f0f1;
-	border-radius: 4px;
-	font-size: 12px;
-	color: #646970;
-	margin-top: 12px;
+	gap: $spacing-2;
+	padding: $spacing-2 $spacing-3;
+	background: $color-slate-100;
+	border-radius: $radius-sm;
+	font-size: $font-size-xs;
+	color: $color-slate-500;
+	margin-top: $spacing-3;
 }
 
 .aps-layout-icon {
 	width: 16px;
 	height: 16px;
-	background: #667eea;
-	border-radius: 2px;
+	background: $color-blue-500;
+	border-radius: $radius-xs;
 }
