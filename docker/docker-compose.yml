@@ -1,0 +1,67 @@
+version: '3.8'
+
+name: affiliate-website
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: affiliate-website-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: affiliate_platform
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - affiliate-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: affiliate-website-cache
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - affiliate-network
+
+  # Elasticsearch - Uncomment when needed in Phase 4
+  # elasticsearch:
+  #   image: elasticsearch:8.11.0
+  #   container_name: affiliate-website-search
+  #   environment:
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=false
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ports:
+  #     - "9200:9200"
+  #   volumes:
+  #     - es_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     - affiliate-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  # es_data:
+  #   driver: local
+
+networks:
+  affiliate-network:
+    driver: bridge

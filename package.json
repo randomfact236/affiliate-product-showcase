@@ -1,0 +1,31 @@
+{
+  "name": "affiliate-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise Affiliate Platform - Next.js + NestJS",
+  "scripts": {
+    "dev": "echo 'Use pnpm dev:api or pnpm dev:web'",
+    "dev:api": "cd apps/api && npm run dev",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api:secure": "powershell -ExecutionPolicy Bypass -File scripts/dev-secure.ps1 -App api -Port 3003",
+    "dev:web:secure": "powershell -ExecutionPolicy Bypass -File scripts/dev-secure.ps1 -App web",
+    "ports:check": "powershell -ExecutionPolicy Bypass -File scripts/port-check.ps1",
+    "ports:release": "Remove-Item .port-locks/*.pid -ErrorAction SilentlyContinue",
+    "infra:up": "docker-compose -p affiliate-website -f docker/docker-compose.yml up -d",
+    "infra:down": "docker-compose -p affiliate-website -f docker/docker-compose.yml down",
+    "infra:logs": "docker-compose -p affiliate-website -f docker/docker-compose.yml logs -f",
+    "db:migrate": "cd apps/api && npx prisma migrate dev",
+    "db:seed": "cd apps/api && npx prisma db seed",
+    "db:studio": "cd apps/api && npx prisma studio",
+    "start:dev": "powershell -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
+    "diagnose": "powershell -ExecutionPolicy Bypass -File scripts/diagnose.ps1",
+    "start:all": "powershell -ExecutionPolicy Bypass -File start-all.ps1"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
