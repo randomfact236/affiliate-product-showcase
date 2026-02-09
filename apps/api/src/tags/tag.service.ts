@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateTagDto, UpdateTagDto } from './dto/create-tag.dto';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateTagDto, UpdateTagDto } from "./dto/create-tag.dto";
 
 @Injectable()
 export class TagService {
@@ -11,7 +15,7 @@ export class TagService {
       where: { slug: dto.slug },
     });
     if (existing) {
-      throw new ConflictException('Tag with this slug already exists');
+      throw new ConflictException("Tag with this slug already exists");
     }
 
     return this.prisma.tag.create({
@@ -21,7 +25,7 @@ export class TagService {
 
   async findAll() {
     return this.prisma.tag.findMany({
-      orderBy: { name: 'asc' },
+      orderBy: { name: "asc" },
       include: {
         _count: {
           select: { products: true },
@@ -50,7 +54,7 @@ export class TagService {
     });
 
     if (!tag) {
-      throw new NotFoundException('Tag not found');
+      throw new NotFoundException("Tag not found");
     }
 
     return tag;
@@ -76,7 +80,7 @@ export class TagService {
     });
 
     if (!tag) {
-      throw new NotFoundException('Tag not found');
+      throw new NotFoundException("Tag not found");
     }
 
     return tag;

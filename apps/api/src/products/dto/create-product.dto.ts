@@ -1,13 +1,21 @@
-import { IsString, IsOptional, IsEnum, IsNumber, IsArray, Min, IsJSON } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { ProductStatus } from '@prisma/client';
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsNumber,
+  IsArray,
+  Min,
+  IsJSON,
+} from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { ProductStatus } from "@prisma/client";
 
 export class CreateVariantDto {
-  @ApiProperty({ example: 'Default' })
+  @ApiProperty({ example: "Default" })
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'PROD-001-RED', required: false })
+  @ApiProperty({ example: "PROD-001-RED", required: false })
   @IsString()
   @IsOptional()
   sku?: string;
@@ -32,7 +40,7 @@ export class CreateVariantDto {
   @Min(0)
   inventory: number = 0;
 
-  @ApiProperty({ example: { color: 'red', size: 'L' }, required: false })
+  @ApiProperty({ example: { color: "red", size: "L" }, required: false })
   @IsOptional()
   options?: Record<string, string>;
 
@@ -42,16 +50,22 @@ export class CreateVariantDto {
 }
 
 export class CreateProductDto {
-  @ApiProperty({ example: 'Premium Wireless Headphones' })
+  @ApiProperty({ example: "Premium Wireless Headphones" })
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'High-quality wireless headphones...', required: false })
+  @ApiProperty({
+    example: "High-quality wireless headphones...",
+    required: false,
+  })
   @IsString()
   @IsOptional()
   description?: string;
 
-  @ApiProperty({ example: 'Best wireless headphones with noise cancellation', required: false })
+  @ApiProperty({
+    example: "Best wireless headphones with noise cancellation",
+    required: false,
+  })
   @IsString()
   @IsOptional()
   shortDescription?: string;
@@ -61,12 +75,15 @@ export class CreateProductDto {
   @IsOptional()
   status?: ProductStatus = ProductStatus.DRAFT;
 
-  @ApiProperty({ example: 'Premium Wireless Headphones', required: false })
+  @ApiProperty({ example: "Premium Wireless Headphones", required: false })
   @IsString()
   @IsOptional()
   metaTitle?: string;
 
-  @ApiProperty({ example: 'Buy the best wireless headphones...', required: false })
+  @ApiProperty({
+    example: "Buy the best wireless headphones...",
+    required: false,
+  })
   @IsString()
   @IsOptional()
   metaDescription?: string;

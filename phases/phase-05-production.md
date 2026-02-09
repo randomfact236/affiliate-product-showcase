@@ -1342,6 +1342,80 @@ export class MetricsService {
 }
 ```
 
+### 4.4 Sentry Error Tracking
+```typescript
+// apps/api/src/config/sentry.config.ts
+import * as Sentry from '@sentry/nestjs';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
+
+export function initSentry(dsn: string) {
+  Sentry.init({
+    dsn,
+    environment: process.env.NODE_ENV,
+    release: process.env.APP_VERSION,
+    integrations: [
+      nodeProfilingIntegration(),
+    ],
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+    profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.01 : 1.0,
+    beforeSend(event) {
+      // Filter out sensitive data
+      if (event.request) {
+        delete event.request.cookies;
+        delete event.request.headers?.authorization;
+        delete event.request.headers?.cookie;
+      }
+      return event;
+    },
+  });
+}
+
+// apps/api/src/main.ts
+import { initSentry } from './config/sentry.config';
+
+async function bootstrap() {
+  // Initialize Sentry before app creation
+  if (process.env.SENTRY_DSN) {
+    initSentry(process.env.SENTRY_DSN);
+  }
+  
+  const app = await NestFactory.create(AppModule, { 
+    bufferLogs: true,
+    rawBody: true,
+  });
+  
+  // ... rest of bootstrap
+}
+```
+
+```typescript
+// apps/web/sentry.client.config.ts
+import * as Sentry from '@sentry/nextjs';
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  release: process.env.NEXT_PUBLIC_APP_VERSION,
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+  replaysSessionSampleRate: 0.01,
+  replaysOnErrorSampleRate: 1.0,
+  integrations: [
+    Sentry.replayIntegration({
+      maskAllText: true,
+      blockAllMedia: true,
+    }),
+  ],
+  beforeSend(event) {
+    // Filter out PII
+    if (event.user) {
+      delete event.user.email;
+      delete event.user.ip_address;
+    }
+    return event;
+  },
+});
+```
+
 ---
 
 ## 5. Deployment Automation

@@ -1,23 +1,33 @@
 {
   "name": "@affiliate/web",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node simple-server.js",
-    "dev:next": "next dev -p 3002",
+    "dev": "next dev",
     "build": "next build",
-    "start": "node simple-server.js",
-    "lint": "next lint"
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
-    "next": "^15.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tanstack/react-query": "^5.90.20",
+    "clsx": "^2.1.1",
+    "glob": "^13.0.1",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "typescript": "^5.0.0"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9",
+    "eslint-config-next": "^16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

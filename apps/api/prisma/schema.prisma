@@ -22,13 +22,19 @@ model User {
   sessions  Session[]
   refreshTokens RefreshToken[]
   passwordResets PasswordReset[]
+  consent   UserConsent?
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   lastLoginAt DateTime?
+  deletedAt DateTime? // Soft delete for GDPR
+  
+  createdProducts Product[] @relation("ProductCreator")
+  updatedProducts Product[] @relation("ProductUpdater")
   
   @@index([email])
   @@index([status])
+  @@index([deletedAt])
   @@map("users")
 }
 
@@ -152,12 +158,19 @@ model Product {
   // Timestamps
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  deletedAt   DateTime? // Soft delete
   createdBy   String
   updatedBy   String?
+  
+  // Relations
+  creator     User     @relation("ProductCreator", fields: [createdBy], references: [id])
+  updater     User?    @relation("ProductUpdater", fields: [updatedBy], references: [id])
   
   @@index([slug])
   @@index([status])
   @@index([createdAt])
+  @@index([name])
+  @@index([deletedAt])
   @@map("products")
 }
 
@@ -224,10 +237,12 @@ model Category {
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  deletedAt   DateTime? // Soft delete
   
   @@index([left, right])
   @@index([parentId])
   @@index([slug])
+  @@index([deletedAt])
   @@map("categories")
 }
 
@@ -398,4 +413,19 @@ enum RibbonPosition {
   TOP_RIGHT
   BOTTOM_LEFT
   BOTTOM_RIGHT
+}
+
+// GDPR Consent Management
+model UserConsent {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  analytics   Boolean  @default(false)
+  marketing   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("user_consents")
 }

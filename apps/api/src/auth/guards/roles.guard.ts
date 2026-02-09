@@ -1,6 +1,7 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { Observable } from "rxjs";
+import { RequestWithUser } from "../../common/interfaces/request-with-user.interface";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -9,7 +10,7 @@ export class RolesGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>('roles', [
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>("roles", [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -18,11 +19,14 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const { user } = context.switchToHttp().getRequest();
-    const userRoles = user.roles || [];
-    
-    return requiredRoles.some(role => 
-      userRoles.includes(role) || userRoles.some((r: any) => r.role?.name === role)
-    );
+    const request = context.switchToHttp().getRequest<RequestWithUser>();
+    const user = request.user;
+
+    if (!user || !user.roles || user.roles.length === 0) {
+      return false;
+    }
+
+    // user.roles is now an array of strings (role names)
+    return requiredRoles.some((role) => user.roles.includes(role));
   }
 }

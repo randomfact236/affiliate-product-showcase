@@ -1,13 +1,13 @@
-import { IsString, IsOptional, IsBoolean, IsEnum } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { AttributeType } from '@prisma/client';
+import { IsString, IsOptional, IsBoolean, IsEnum } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { AttributeType } from "@prisma/client";
 
 export class CreateAttributeOptionDto {
-  @ApiProperty({ example: 'red' })
+  @ApiProperty({ example: "red" })
   @IsString()
   value: string;
 
-  @ApiProperty({ example: 'Red' })
+  @ApiProperty({ example: "Red" })
   @IsString()
   displayValue: string;
 
@@ -17,11 +17,11 @@ export class CreateAttributeOptionDto {
 }
 
 export class CreateAttributeDto {
-  @ApiProperty({ example: 'color' })
+  @ApiProperty({ example: "color" })
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'Color' })
+  @ApiProperty({ example: "Color" })
   @IsString()
   displayName: string;
 

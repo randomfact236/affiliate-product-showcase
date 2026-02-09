@@ -10,7 +10,7 @@ $apiJob = Start-Job -ScriptBlock {
 }
 
 # Start Web in background  
-Write-Host "🌐 Starting Web Server on port 3002..." -ForegroundColor Cyan
+Write-Host "🌐 Starting Web Server on port 3000..." -ForegroundColor Cyan
 $webJob = Start-Job -ScriptBlock {
     Set-Location $using:PWD\apps\web
     npm run dev 2>&1
@@ -45,9 +45,9 @@ try {
 
 # Try to connect to Web
 try {
-    $webResponse = Invoke-WebRequest -Uri "http://localhost:3002" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
+    $webResponse = Invoke-WebRequest -Uri "http://localhost:3000" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
     if ($webResponse.StatusCode -eq 200) {
-        Write-Host "✅ Web Server is running on http://localhost:3002" -ForegroundColor Green
+        Write-Host "✅ Web Server is running on http://localhost:3000" -ForegroundColor Green
         $webReady = $true
     }
 } catch {
@@ -62,11 +62,11 @@ Write-Host ""
 
 # Open browser automatically
 Write-Host "🌐 Opening browser..." -ForegroundColor Green
-Start-Process "http://localhost:3002"
+Start-Process "http://localhost:3000"
 
 Write-Host ""
 Write-Host "🔗 URLs:" -ForegroundColor White
-Write-Host "   Frontend: http://localhost:3002" -ForegroundColor Yellow
+Write-Host "   Frontend: http://localhost:3000" -ForegroundColor Yellow
 Write-Host "   API:      http://localhost:3003/api/v1/health" -ForegroundColor Yellow
 Write-Host ""
 

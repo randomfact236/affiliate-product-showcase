@@ -1,6 +1,13 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateAttributeDto, UpdateAttributeDto } from './dto/create-attribute.dto';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import {
+  CreateAttributeDto,
+  UpdateAttributeDto,
+} from "./dto/create-attribute.dto";
 
 @Injectable()
 export class AttributeService {
@@ -11,7 +18,7 @@ export class AttributeService {
       where: { name: dto.name },
     });
     if (existing) {
-      throw new ConflictException('Attribute with this name already exists');
+      throw new ConflictException("Attribute with this name already exists");
     }
 
     return this.prisma.attribute.create({
@@ -33,10 +40,10 @@ export class AttributeService {
 
   async findAll() {
     return this.prisma.attribute.findMany({
-      orderBy: { name: 'asc' },
+      orderBy: { name: "asc" },
       include: {
         options: {
-          orderBy: { sortOrder: 'asc' },
+          orderBy: { sortOrder: "asc" },
         },
         _count: {
           select: { values: true },
@@ -50,7 +57,7 @@ export class AttributeService {
       where: { id },
       include: {
         options: {
-          orderBy: { sortOrder: 'asc' },
+          orderBy: { sortOrder: "asc" },
         },
         values: {
           include: {
@@ -67,7 +74,7 @@ export class AttributeService {
     });
 
     if (!attribute) {
-      throw new NotFoundException('Attribute not found');
+      throw new NotFoundException("Attribute not found");
     }
 
     return attribute;
@@ -92,7 +99,11 @@ export class AttributeService {
   }
 
   // Product Attribute Value methods
-  async setProductAttribute(productId: string, attributeId: string, value: string) {
+  async setProductAttribute(
+    productId: string,
+    attributeId: string,
+    value: string,
+  ) {
     return this.prisma.productAttributeValue.upsert({
       where: {
         productId_attributeId: {
