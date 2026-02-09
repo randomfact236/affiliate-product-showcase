@@ -297,7 +297,7 @@ export default function ProductsPage() {
           {/* Main Content - Product Grid */}
           <main className="flex-1 min-w-0">
             {/* Product Cards - 3 Column Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {mockProducts.map((product) => (
                 <div key={product.id} className="relative">
                   {/* Featured Badge - Above the card, aligned left */}
