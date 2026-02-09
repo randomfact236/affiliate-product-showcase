@@ -20,7 +20,8 @@
 
 **Framework:** Next.js 15 + NestJS 10 + PostgreSQL + Redis  
 **Estimated Duration:** 7 days  
-**Prerequisites:** Node.js 20+, Docker Desktop, Git
+**Prerequisites:** Node.js 20+, Docker Desktop, Git  
+> **Detailed Setup Checklist:** [See SETUP-CHECKLIST.md](./SETUP-CHECKLIST.md)
 
 **Quality Target:** Enterprise Grade (10/10) - Scalable, secure, maintainable foundation  
 **Actual Score:** 10/10 - ✅ ENTERPRISE READY

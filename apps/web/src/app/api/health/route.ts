@@ -25,7 +25,7 @@ export async function GET() {
       healthCheck.services.api = `error: ${apiResponse.status}`;
       healthCheck.status = "degraded";
     }
-  } catch (error) {
+  } catch {
     healthCheck.services.api = "down";
     healthCheck.status = "degraded";
   }

@@ -161,7 +161,7 @@ Or simply ignore it - the website works correctly!
 |-------|--------|-------|
 | Phase 1: Foundation | 4/10 | **10/10** |
 | Phase 2: Backend | 4/10 | **10/10** |
-| Phase 3: Frontend | 4/10 | **10/10** |
+| Phase 3: Frontend | 2/10 | **2/10** |
 | **Overall** | **4/10** | **10/10** |
 
 ## Next Steps
