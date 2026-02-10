@@ -20,6 +20,7 @@ export function Navbar({ className }: NavbarProps) {
     { href: "/", label: "Home" },
     { href: "/blog", label: "Blog" },
     { href: "/products", label: "Products" },
+    { href: "/admin", label: "Admin" },
   ]
 
   return (
