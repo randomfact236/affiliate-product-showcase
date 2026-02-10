@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { Clock, MessageCircle, ArrowLeft, Share2, Bookmark, Facebook, Twitter, Linkedin, Copy, Check } from "lucide-react"
+import { Clock, MessageCircle, ArrowLeft, Share2, Bookmark, Facebook, Twitter, Linkedin, Copy, Check, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
@@ -302,6 +302,7 @@ export default function BlogPostPage() {
   const params = useParams()
   const slug = params?.slug as string
   const [copied, setCopied] = useState(false)
+  const [tocExpanded, setTocExpanded] = useState(false)
   
   const post = blogPosts["best-web-hosting-providers-2024"]
 
@@ -385,6 +386,34 @@ export default function BlogPostPage() {
           <div className="grid lg:grid-cols-[1fr_300px] gap-12">
             {/* Article Content */}
             <div>
+              {/* Mobile/Tablet Table of Contents - Expandable */}
+              <div className="lg:hidden mb-6">
+                <button
+                  onClick={() => setTocExpanded(!tocExpanded)}
+                  className="w-full flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-4 rounded-xl transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
+                    <span className="font-semibold text-gray-900">Table of Contents</span>
+                  </div>
+                  <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform ${tocExpanded ? 'rotate-180' : ''}`} />
+                </button>
+                {tocExpanded && (
+                  <nav className="mt-2 bg-gray-50 rounded-xl p-4 space-y-1">
+                    {post.tableOfContents.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        onClick={() => setTocExpanded(false)}
+                        className="block text-gray-600 hover:text-blue-600 py-2 px-3 rounded-lg transition-colors text-sm"
+                      >
+                        {item.title}
+                      </a>
+                    ))}
+                  </nav>
+                )}
+              </div>
+
               {/* Author Bar */}
               <div className="flex items-center justify-between py-6 border-b border-gray-100 mb-8">
                 <div className="flex items-center gap-4">
