@@ -390,23 +390,30 @@ export default function BlogPostPage() {
               <div className="lg:hidden mb-6">
                 <button
                   onClick={() => setTocExpanded(!tocExpanded)}
-                  className="w-full flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-4 rounded-xl transition-colors"
+                  className="w-full flex items-center justify-between bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 p-4 rounded-xl transition-all shadow-lg shadow-blue-200"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
-                    <span className="font-semibold text-gray-900">Table of Contents</span>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-white/20 p-1.5 rounded-lg">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                      </svg>
+                    </span>
+                    <span className="font-bold text-white text-lg">Table of Contents</span>
                   </div>
-                  <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform ${tocExpanded ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-6 w-6 text-white transition-transform duration-300 ${tocExpanded ? 'rotate-180' : ''}`} />
                 </button>
                 {tocExpanded && (
-                  <nav className="mt-2 bg-gray-50 rounded-xl p-4 space-y-1">
-                    {post.tableOfContents.map((item) => (
+                  <nav className="mt-3 bg-white border-2 border-blue-100 rounded-xl p-4 space-y-2 shadow-xl">
+                    {post.tableOfContents.map((item, index) => (
                       <a
                         key={item.id}
                         href={`#${item.id}`}
                         onClick={() => setTocExpanded(false)}
-                        className="block text-gray-600 hover:text-blue-600 py-2 px-3 rounded-lg transition-colors text-sm"
+                        className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 py-3 px-4 rounded-lg transition-all font-medium"
                       >
+                        <span className="w-7 h-7 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                          {index + 1}
+                        </span>
                         {item.title}
                       </a>
                     ))}
@@ -480,18 +487,25 @@ export default function BlogPostPage() {
             <aside className="hidden lg:block">
               <div className="sticky top-32 space-y-6">
                 {/* Table of Contents */}
-                <div className="bg-gray-50 rounded-2xl p-6">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span className="w-1 h-5 bg-blue-600 rounded-full"></span>
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-100">
+                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-3 text-lg">
+                    <span className="bg-blue-600 text-white p-2 rounded-lg">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                      </svg>
+                    </span>
                     Table of Contents
                   </h3>
                   <nav className="space-y-2">
-                    {post.tableOfContents.map((item) => (
+                    {post.tableOfContents.map((item, index) => (
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className="block text-gray-600 hover:text-blue-600 hover:bg-white py-2 px-3 rounded-lg transition-colors text-sm"
+                        className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-white py-2.5 px-3 rounded-lg transition-all font-medium border border-transparent hover:border-blue-100"
                       >
+                        <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                          {index + 1}
+                        </span>
                         {item.title}
                       </a>
                     ))}
