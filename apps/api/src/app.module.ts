@@ -21,6 +21,8 @@ import { RibbonsModule } from "./ribbons/ribbons.module";
 import { UsersModule } from "./users/users.module";
 import { AnalyticsModule } from "./analytics/analytics.module";
 import { BlogModule } from "./blog/blog.module";
+import { SettingsModule } from "./settings/settings.module";
+import { DontMissModule } from "./dont-miss/dont-miss.module";
 import { RequestIdMiddleware } from "./common/middleware";
 
 @Module({
@@ -91,6 +93,8 @@ import { RequestIdMiddleware } from "./common/middleware";
     UsersModule,
     AnalyticsModule,
     BlogModule,
+    SettingsModule,
+    DontMissModule,
   ],
   controllers: [AppController],
   providers: [

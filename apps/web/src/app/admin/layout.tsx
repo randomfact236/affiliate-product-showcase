@@ -1,103 +1,20 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import {
-  LayoutDashboard,
-  Package,
-  Tags,
-  BarChart3,
-  Settings,
-  LogOut,
-  Store,
-  Bookmark,
-  Image,
-  Ribbon,
-  PlusCircle,
-  BookOpen,
-  FileText,
-  PenLine,
-} from "lucide-react"
-
-const adminNavItems = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/products", label: "Products", icon: Package },
-  { href: "/admin/products/new", label: "Add Product", icon: PlusCircle },
-  { href: "/admin/categories", label: "Categories", icon: Tags },
-  { href: "/admin/tags", label: "Tags", icon: Bookmark },
-  { href: "/admin/ribbons", label: "Ribbons", icon: Ribbon },
-  { href: "/admin/blog", label: "Blog Posts", icon: BookOpen },
-  { href: "/admin/blog/new", label: "Add Blog Post", icon: PenLine },
-  { href: "/admin/media", label: "Media Library", icon: Image },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
-]
+import { Store, LogOut } from "lucide-react"
+import { SidebarNav } from "@/components/admin/sidebar-nav"
+import { ThemeToggleSimple } from "@/components/theme-toggle"
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const pathname = usePathname()
-
   return (
     <div className="flex min-h-screen bg-muted/50">
       {/* Sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-64 flex-col border-r bg-background lg:flex">
-        {/* Logo */}
-        <div className="flex h-16 items-center border-b px-6">
-          <Link href="/admin" className="flex items-center space-x-2">
-            <Store className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold">Admin Panel</span>
-          </Link>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-4">
-          {adminNavItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                )}
-                aria-current={isActive ? "page" : undefined}
-              >
-                <Icon className="mr-3 h-4 w-4" />
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
-
-        {/* Footer */}
-        <div className="border-t p-4">
-          <div className="mb-4 flex items-center gap-3 px-3">
-            <div className="h-8 w-8 rounded-full bg-primary/10" />
-            <div className="flex-1 overflow-hidden">
-              <p className="truncate text-sm font-medium">Admin User</p>
-              <p className="truncate text-xs text-muted-foreground">
-                admin@example.com
-              </p>
-            </div>
-          </div>
-          <Button variant="outline" className="w-full" asChild>
-            <Link href="/">
-              <LogOut className="mr-2 h-4 w-4" />
-              Back to Site
-            </Link>
-          </Button>
-        </div>
-      </aside>
+      <SidebarNav />
 
       {/* Mobile Header */}
       <div className="sticky top-0 z-50 w-full border-b bg-background lg:hidden">

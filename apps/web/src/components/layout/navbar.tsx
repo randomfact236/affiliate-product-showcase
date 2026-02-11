@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Menu, Search, ShoppingBag } from "lucide-react"
 import { MobileMenuDrawer } from "./mobile-menu-drawer"
+import { ThemeToggleSimple } from "@/components/theme-toggle"
 
 interface NavbarProps {
   className?: string
@@ -90,6 +91,9 @@ export function Navbar({ className }: NavbarProps) {
                 aria-label="Search products"
               />
             </form>
+
+            {/* Theme Toggle */}
+            <ThemeToggleSimple />
 
             {/* Admin Link */}
             <Button variant="ghost" size="sm" asChild className="-mr-2 lg:mr-0">

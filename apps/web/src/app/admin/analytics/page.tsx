@@ -28,14 +28,14 @@ import {
 
 const tabs = [
   { id: 'overview', label: 'Overview' },
-  { id: 'revenue', label: 'Revenue' },
-  { id: 'links', label: 'Links' },
-  { id: 'traffic', label: 'Traffic' },
-  { id: 'audience', label: 'Audience' },
   { id: 'journey', label: 'Journey' },
+  { id: 'revenue', label: 'Revenue' },
   { id: 'content', label: 'Content' },
-  { id: 'devices', label: 'Devices' },
+  { id: 'audience', label: 'Audience' },
   { id: 'performance', label: 'Performance' },
+  { id: 'traffic', label: 'Traffic' },
+  { id: 'devices', label: 'Devices' },
+  { id: 'links', label: 'Links' },
   { id: 'seo', label: 'SEO' },
 ];
 

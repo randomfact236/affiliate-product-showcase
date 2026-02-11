@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { getBlogPostBySlug, getBlogPosts, getLatestPosts } from "@/lib/api/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { TableOfContents, addIdsToHeadings } from "@/components/blog/table-of-contents";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -208,7 +209,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Article Body */}
               <div
                 className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-xl prose-img:shadow-lg"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: addIdsToHeadings(post.content) }}
               />
 
               {/* Tags */}
@@ -249,6 +250,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Sidebar */}
             <aside className="space-y-8">
+              {/* Table of Contents */}
+              <TableOfContents content={post.content} />
+
               {/* Related Posts */}
               {relatedPosts.length > 0 && (
                 <div className="bg-gray-50 rounded-2xl p-6">

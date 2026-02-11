@@ -1085,3 +1085,74 @@ model GeoAnalytics {
   @@map("geo_analytics")
 }
 
+// ==================== SETTINGS ====================
+
+model Setting {
+  id          String  @id @default(cuid())
+  key         String  @unique
+  value       String  @db.Text
+  
+  // Type for proper casting
+  type        String  @default("string") // string, number, boolean, json, text
+  
+  // Grouping for organization
+  group       String  @default("general") // general, blog, products, appearance, home
+  
+  // Display info
+  label       String?
+  description String?
+  
+  // Visibility
+  isPublic    Boolean @default(true) @map("is_public")
+  
+  // Audit
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  @@index([group])
+  @@index([key])
+  @@map("settings")
+}
+
+// ==================== DON'T MISS SECTIONS ====================
+
+model DontMissSection {
+  id          String   @id @default(cuid())
+  name        String   // Internal name for admin reference
+  shortcode   String   @unique // Auto-generated: [dont_miss_xxx]
+  
+  // Content configuration
+  title       String
+  subtitle    String?
+  layout      String   @default("mixed") // mixed, blogs_only, products_only
+  
+  // Counts
+  blogCount       Int    @default(3) @map("blog_count")
+  productCount    Int    @default(2) @map("product_count")
+  
+  // Category filters (optional)
+  blogCategoryId    String? @map("blog_category_id")
+  productCategoryId String? @map("product_category_id")
+  
+  // Display options
+  showViewAll   Boolean @default(true) @map("show_view_all")
+  sortBy        String  @default("latest") // latest, popular, featured
+  
+  // Styling
+  backgroundColor String? @map("background_color")
+  textColor       String? @map("text_color")
+  
+  // Status
+  isActive    Boolean  @default(true) @map("is_active")
+  sortOrder   Int      @default(0) @map("sort_order")
+  
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  
+  @@index([isActive, sortOrder])
+  @@index([shortcode])
+  @@map("dont_miss_sections")
+}
+
