@@ -34,6 +34,10 @@ export function generateSlug(name: string): string {
     .replace(/(^-|-$)+/g, "")
 }
 
+export function slugify(text: string): string {
+  return generateSlug(text)
+}
+
 export function debounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
   delay: number

@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateProductDto, UpdateProductDto, ProductFilterDto } from "./dto";
-import { Prisma } from "@prisma/client";
+import { Prisma, RibbonPosition, ProductStatus } from "@prisma/client";
 import { REDIS_CLIENT } from "../common/constants/injection-tokens";
 import type { Redis } from "ioredis";
 
@@ -40,6 +40,15 @@ export class ProductService {
       // Generate unique slug with collision handling
       const slug = await this.generateUniqueSlug(dto.name, tx);
 
+      // Fetch ribbons if ribbonIds provided (for denormalized data)
+      let ribbonData: Map<string, { name: string; label: string; textColor: string; bgColor: string; position: string; sortOrder: number }> = new Map();
+      if (dto.ribbonIds?.length) {
+        const ribbons = await tx.ribbon.findMany({
+          where: { id: { in: dto.ribbonIds } },
+        });
+        ribbonData = new Map(ribbons.map(r => [r.id, r]));
+      }
+
       return tx.product.create({
         data: {
           name: dto.name,
@@ -67,6 +76,21 @@ export class ProductService {
           },
           tags: {
             create: dto.tagIds?.map((id) => ({ tagId: id })),
+          },
+          ribbons: {
+            create: dto.ribbonIds
+              ?.filter(id => ribbonData.has(id))
+              .map((ribbonId) => {
+                const ribbon = ribbonData.get(ribbonId)!;
+                return {
+                  ribbon: { connect: { id: ribbonId } },
+                  name: ribbon.label,
+                  color: ribbon.textColor,
+                  bgColor: ribbon.bgColor,
+                  position: ribbon.position as RibbonPosition,
+                  priority: ribbon.sortOrder ?? 0,
+                };
+              }),
           },
         },
         include: {
@@ -109,6 +133,12 @@ export class ProductService {
           variants: { where: { isDefault: true } },
           images: { where: { isPrimary: true } },
           categories: { include: { category: true } },
+          ribbons: {
+            where: {
+              OR: [{ endAt: null }, { endAt: { gt: new Date() } }],
+            },
+            include: { ribbon: true },
+          },
         },
         skip,
         take: limit,
@@ -146,6 +176,7 @@ export class ProductService {
         images: { orderBy: { sortOrder: "asc" } },
         ribbons: {
           where: { OR: [{ endAt: null }, { endAt: { gt: new Date() } }] },
+          include: { ribbon: true },
         },
       },
     });
@@ -178,6 +209,7 @@ export class ProductService {
         images: { orderBy: { sortOrder: "asc" } },
         ribbons: {
           where: { OR: [{ endAt: null }, { endAt: { gt: new Date() } }] },
+          include: { ribbon: true },
         },
       },
     });
@@ -198,17 +230,22 @@ export class ProductService {
     // Invalidate caches BEFORE updating to prevent stale data
     await this.invalidateProductCache(id, existing.slug);
 
+    // Build update data with only provided fields
+    const updateData: Prisma.ProductUpdateInput = {
+      updater: { connect: { id: userId } },
+    };
+
+    const dtoAny = dto as unknown as Record<string, unknown>;
+    if (dtoAny.name !== undefined) updateData.name = dtoAny.name as string;
+    if (dtoAny.description !== undefined) updateData.description = dtoAny.description as string;
+    if (dtoAny.shortDescription !== undefined) updateData.shortDescription = dtoAny.shortDescription as string;
+    if (dtoAny.status !== undefined) updateData.status = dtoAny.status as ProductStatus;
+    if (dtoAny.metaTitle !== undefined) updateData.metaTitle = dtoAny.metaTitle as string;
+    if (dtoAny.metaDescription !== undefined) updateData.metaDescription = dtoAny.metaDescription as string;
+
     const updated = await this.prisma.product.update({
       where: { id },
-      data: {
-        name: dto.name,
-        description: dto.description,
-        shortDescription: dto.shortDescription,
-        status: dto.status,
-        metaTitle: dto.metaTitle,
-        metaDescription: dto.metaDescription,
-        updatedBy: userId,
-      },
+      data: updateData,
       include: {
         variants: true,
         categories: { include: { category: true } },

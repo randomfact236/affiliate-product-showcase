@@ -1,185 +1,392 @@
-import { Injectable, Logger, BadRequestException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from "uuid";
-
-// Magic numbers for file type validation
-const FILE_SIGNATURES: Record<string, string[]> = {
-  "image/jpeg": ["FFD8FF"], // JPEG
-  "image/png": ["89504E47"], // PNG
-  "image/webp": ["52494646"], // WEBP (RIFF header)
-  "image/gif": ["47494638"], // GIF
-};
-
-const ALLOWED_MIME_TYPES = Object.keys(FILE_SIGNATURES);
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-// Custom file interface to avoid Express.Multer dependency issues
-export interface MulterFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  size: number;
-  buffer: Buffer;
-}
-
-export interface FileUploadResult {
-  url: string;
-  key: string;
-  filename: string;
-  mimetype: string;
-  size: number;
-}
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { PrismaService } from '../prisma/prisma.service';
+import {
+  CreateMediaDto,
+  MediaConversionDto,
+  BulkConvertDto,
+  QueryMediaDto,
+  ScanUnconvertedDto,
+  MediaResponseDto,
+  MediaListResponseDto,
+  ConversionStatsDto,
+  ConversionJobResponseDto,
+} from './dto';
+import { Prisma, ConversionStatus } from '@prisma/client';
 
 @Injectable()
 export class MediaService {
-  private readonly logger = new Logger(MediaService.name);
-  private readonly s3Client: S3Client;
-  private readonly bucketName: string;
-  private readonly publicUrlBase: string;
+  constructor(
+    private readonly prisma: PrismaService,
+    @InjectQueue('image-conversion') private readonly conversionQueue: Queue,
+  ) {}
 
-  constructor(private readonly configService: ConfigService) {
-    this.bucketName =
-      this.configService.get("STORAGE_BUCKET") || "affiliate-media";
-
-    const endpoint = this.configService.get("STORAGE_ENDPOINT") || "localhost";
-    const port = this.configService.get("STORAGE_PORT") || "9000";
-    const accessKey = this.configService.get("STORAGE_ACCESS_KEY");
-    const secretKey = this.configService.get("STORAGE_SECRET_KEY");
-    const region = this.configService.get("STORAGE_REGION") || "us-east-1";
-
-    // Fail fast if required credentials are missing in production
-    const nodeEnv = this.configService.get("NODE_ENV") || "development";
-    if (nodeEnv === "production") {
-      if (!accessKey || !secretKey) {
-        throw new Error(
-          "FATAL: STORAGE_ACCESS_KEY and STORAGE_SECRET_KEY are required in production",
-        );
-      }
-    }
-
-    this.publicUrlBase =
-      this.configService.get("STORAGE_PUBLIC_URL") ||
-      `http://${endpoint}:${port}/${this.bucketName}`;
-
-    this.s3Client = new S3Client({
-      region,
-      endpoint: `http://${endpoint}:${port}`,
-      forcePathStyle: true,
-      credentials: {
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey,
+  /**
+   * Create a new media record and queue for conversion
+   */
+  async create(createDto: CreateMediaDto, userId?: string): Promise<MediaResponseDto> {
+    const media = await this.prisma.media.create({
+      data: {
+        ...createDto,
+        createdBy: userId,
+        conversionStatus: ConversionStatus.PENDING,
       },
     });
-  }
 
-  async uploadFile(file: MulterFile): Promise<FileUploadResult> {
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      throw new BadRequestException(
-        `File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`,
-      );
+    // Auto-queue for conversion if it's an image
+    if (createDto.mimeType.startsWith('image/')) {
+      await this.queueForConversion(media.id);
+    } else {
+      // Mark non-images as skipped
+      await this.prisma.media.update({
+        where: { id: media.id },
+        data: { conversionStatus: ConversionStatus.SKIPPED },
+      });
     }
 
-    // Validate file content using magic numbers (not just mimetype)
-    const detectedType = await this.detectFileType(file.buffer);
-
-    if (!detectedType) {
-      throw new BadRequestException(
-        "Invalid file content. File type could not be verified.",
-      );
-    }
-
-    if (!ALLOWED_MIME_TYPES.includes(detectedType)) {
-      throw new BadRequestException(
-        `File type not allowed. Allowed types: ${ALLOWED_MIME_TYPES.join(", ")}`,
-      );
-    }
-
-    // Validate mimetype matches content (prevents mime spoofing)
-    if (
-      file.mimetype !== detectedType &&
-      !this.isMimeTypeCompatible(file.mimetype, detectedType)
-    ) {
-      throw new BadRequestException(
-        "File mimetype does not match file content. Possible file spoofing detected.",
-      );
-    }
-
-    // Generate secure filename with validated extension
-    const extension = this.getExtensionFromMimeType(detectedType);
-    const fileName = `${uuidv4()}.${extension}`;
-    const key = `uploads/${fileName}`;
-
-    try {
-      await this.s3Client.send(
-        new PutObjectCommand({
-          Bucket: this.bucketName,
-          Key: key,
-          Body: file.buffer,
-          ContentType: detectedType,
-          // Don't set ACL - use bucket policy instead for better security
-        }),
-      );
-
-      const publicUrl = `${this.publicUrlBase}/${key}`;
-      this.logger.log(`File uploaded successfully: ${publicUrl}`);
-
-      return {
-        url: publicUrl,
-        key,
-        filename: fileName,
-        mimetype: detectedType,
-        size: file.size,
-      };
-    } catch (error) {
-      this.logger.error(`Failed to upload file: ${(error as Error).message}`);
-      throw new BadRequestException("Failed to upload file. Please try again.");
-    }
+    return this.mapToResponseDto(media);
   }
 
   /**
-   * Detect file type by examining magic numbers in the file buffer
+   * Find all media with pagination and filtering
    */
-  private async detectFileType(buffer: Buffer): Promise<string | null> {
-    // Get hex signature from first bytes
-    const hexSignature = buffer.slice(0, 8).toString("hex").toUpperCase();
+  async findAll(query: QueryMediaDto): Promise<MediaListResponseDto> {
+    const { search, mimeType, conversionStatus, isConverted, page = 1, limit = 20 } = query;
 
-    for (const [mimeType, signatures] of Object.entries(FILE_SIGNATURES)) {
-      for (const signature of signatures) {
-        if (hexSignature.startsWith(signature)) {
-          return mimeType;
-        }
+    const where: Prisma.MediaWhereInput = {};
+
+    if (search) {
+      where.filename = { contains: search, mode: 'insensitive' };
+    }
+
+    if (mimeType) {
+      where.mimeType = { contains: mimeType };
+    }
+
+    if (conversionStatus) {
+      where.conversionStatus = conversionStatus;
+    }
+
+    if (isConverted !== undefined) {
+      where.isConverted = isConverted;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [items, total] = await Promise.all([
+      this.prisma.media.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.media.count({ where }),
+    ]);
+
+    return {
+      items: items.map(this.mapToResponseDto),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
+  /**
+   * Find media by ID
+   */
+  async findOne(id: string): Promise<MediaResponseDto> {
+    const media = await this.prisma.media.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { usedBy: true },
+        },
+      },
+    });
+
+    if (!media) {
+      throw new NotFoundException(`Media with ID '${id}' not found`);
+    }
+
+    return this.mapToResponseDto(media);
+  }
+
+  /**
+   * Update media metadata
+   */
+  async update(id: string, updateDto: Partial<CreateMediaDto>): Promise<MediaResponseDto> {
+    const existing = await this.prisma.media.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Media with ID '${id}' not found`);
+    }
+
+    const media = await this.prisma.media.update({
+      where: { id },
+      data: updateDto,
+    });
+
+    return this.mapToResponseDto(media);
+  }
+
+  /**
+   * Delete media
+   */
+  async remove(id: string): Promise<void> {
+    const existing = await this.prisma.media.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { usedBy: true },
+        },
+      },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Media with ID '${id}' not found`);
+    }
+
+    // Check if media is in use
+    const usageCount = (existing as unknown as { _count: { usedBy: number } })._count.usedBy;
+    if (usageCount > 0) {
+      throw new BadRequestException(
+        `Cannot delete media '${existing.filename}' because it is used by ${usageCount} product(s).`,
+      );
+    }
+
+    await this.prisma.media.delete({
+      where: { id },
+    });
+
+    // TODO: Also delete files from storage
+  }
+
+  /**
+   * Queue a single media for conversion
+   */
+  async queueForConversion(
+    mediaId: string,
+    options?: MediaConversionDto,
+  ): Promise<ConversionJobResponseDto> {
+    const media = await this.prisma.media.findUnique({
+      where: { id: mediaId },
+    });
+
+    if (!media) {
+      throw new NotFoundException(`Media with ID '${mediaId}' not found`);
+    }
+
+    if (!media.mimeType.startsWith('image/')) {
+      throw new BadRequestException(`Media '${media.filename}' is not an image`);
+    }
+
+    const job = await this.conversionQueue.add('convert', {
+      mediaId,
+      ...options,
+    });
+
+    return {
+      jobId: job.id.toString(),
+      status: 'queued',
+      queued: 1,
+    };
+  }
+
+  /**
+   * Bulk convert multiple media files
+   */
+  async bulkConvert(bulkDto: BulkConvertDto): Promise<ConversionJobResponseDto> {
+    const { mediaIds, options } = bulkDto;
+
+    // Validate all media exist and are images
+    const media = await this.prisma.media.findMany({
+      where: {
+        id: { in: mediaIds },
+        mimeType: { startsWith: 'image/' },
+      },
+    });
+
+    if (media.length === 0) {
+      throw new BadRequestException('No valid images found for conversion');
+    }
+
+    // Queue all for conversion
+    const jobs = await Promise.all(
+      media.map((m) =>
+        this.conversionQueue.add('convert', {
+          mediaId: m.id,
+          ...options,
+        }),
+      ),
+    );
+
+    return {
+      jobId: jobs[0].id.toString(), // Return first job ID as reference
+      status: 'queued',
+      queued: jobs.length,
+    };
+  }
+
+  /**
+   * Scan for unconverted images
+   */
+  async scanUnconverted(query: ScanUnconvertedDto): Promise<MediaResponseDto[]> {
+    const { missingWebpOnly = false, missingAvifOnly = false } = query;
+
+    const where: Prisma.MediaWhereInput = {
+      mimeType: { startsWith: 'image/' },
+      OR: [
+        { isConverted: false },
+        { conversionStatus: ConversionStatus.FAILED },
+      ],
+    };
+
+    const media = await this.prisma.media.findMany({
+      where,
+      orderBy: { fileSize: 'desc' },
+    });
+
+    // Additional filtering based on missing formats
+    return media
+      .filter((m) => {
+        const variants = (m.variants as Record<string, unknown>) || {};
+        if (missingWebpOnly && 'webp' in variants) return false;
+        if (missingAvifOnly && 'avif' in variants) return false;
+        return true;
+      })
+      .map(this.mapToResponseDto);
+  }
+
+  /**
+   * Get conversion statistics
+   */
+  async getConversionStats(): Promise<ConversionStatsDto> {
+    const [
+      totalImages,
+      fullyOptimized,
+      needsConversion,
+    ] = await Promise.all([
+      this.prisma.media.count({
+        where: { mimeType: { startsWith: 'image/' } },
+      }),
+      this.prisma.media.count({
+        where: {
+          mimeType: { startsWith: 'image/' },
+          isConverted: true,
+          conversionStatus: ConversionStatus.COMPLETED,
+        },
+      }),
+      this.prisma.media.count({
+        where: {
+          mimeType: { startsWith: 'image/' },
+          OR: [
+            { isConverted: false },
+            { conversionStatus: ConversionStatus.FAILED },
+            { conversionStatus: ConversionStatus.PENDING },
+          ],
+        },
+      }),
+    ]);
+
+    // Calculate storage saved (this is a simplified calculation)
+    const convertedMedia = await this.prisma.media.findMany({
+      where: { isConverted: true },
+      select: { fileSize: true, variants: true },
+    });
+
+    let storageSaved = 0;
+    for (const media of convertedMedia) {
+      const variants = (media.variants as Record<string, { fileSize: number }>) || {};
+      const variantSizes = Object.values(variants).map((v) => v.fileSize);
+      if (variantSizes.length > 0) {
+        const avgVariantSize = variantSizes.reduce((a, b) => a + b, 0) / variantSizes.length;
+        storageSaved += Math.max(0, media.fileSize - avgVariantSize);
       }
     }
 
-    return null;
+    return {
+      totalImages,
+      fullyOptimized,
+      needsConversion,
+      storageSaved,
+      storageSavedFormatted: this.formatBytes(storageSaved),
+      optimizationPercentage: totalImages > 0 ? Math.round((fullyOptimized / totalImages) * 100) : 0,
+    };
   }
 
   /**
-   * Check if claimed mimetype is compatible with detected type
+   * Get queue status
    */
-  private isMimeTypeCompatible(claimed: string, detected: string): boolean {
-    // Allow some common aliases
-    const compatibleMap: Record<string, string[]> = {
-      "image/jpeg": ["image/jpg"],
-      "image/jpg": ["image/jpeg"],
-    };
+  async getQueueStatus(): Promise<{ active: number; waiting: number; completed: number; failed: number }> {
+    const [active, waiting, completed, failed] = await Promise.all([
+      this.conversionQueue.getActiveCount(),
+      this.conversionQueue.getWaitingCount(),
+      this.conversionQueue.getCompletedCount(),
+      this.conversionQueue.getFailedCount(),
+    ]);
 
-    return compatibleMap[detected]?.includes(claimed) || false;
+    return { active, waiting, completed, failed };
   }
 
   /**
-   * Get file extension from mimetype
+   * Map database media to response DTO
    */
-  private getExtensionFromMimeType(mimeType: string): string {
-    const extMap: Record<string, string> = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/webp": "webp",
-      "image/gif": "gif",
+  private mapToResponseDto(media: unknown): MediaResponseDto {
+    const m = media as {
+      id: string;
+      filename: string;
+      originalUrl: string;
+      alt: string | null;
+      mimeType: string;
+      fileSize: number;
+      width: number | null;
+      height: number | null;
+      conversionStatus: ConversionStatus;
+      isConverted: boolean;
+      variants: Record<string, unknown> | null;
+      thumbnailUrl: string | null;
+      mediumUrl: string | null;
+      largeUrl: string | null;
+      createdAt: Date;
+      updatedAt: Date;
     };
-    return extMap[mimeType] || "bin";
+
+    return {
+      id: m.id,
+      filename: m.filename,
+      originalUrl: m.originalUrl,
+      alt: m.alt,
+      mimeType: m.mimeType,
+      fileSize: m.fileSize,
+      width: m.width,
+      height: m.height,
+      conversionStatus: m.conversionStatus,
+      isConverted: m.isConverted,
+      variants: m.variants as unknown as MediaResponseDto['variants'],
+      thumbnailUrl: m.thumbnailUrl,
+      mediumUrl: m.mediumUrl,
+      largeUrl: m.largeUrl,
+      createdAt: m.createdAt,
+      updatedAt: m.updatedAt,
+    };
+  }
+
+  /**
+   * Format bytes to human readable string
+   */
+  private formatBytes(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 }

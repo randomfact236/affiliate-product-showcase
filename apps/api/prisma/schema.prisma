@@ -8,30 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String  @id @default(cuid())
+  email     String  @unique
   password  String
   firstName String?
   lastName  String?
   avatar    String?
-  
-  status    UserStatus @default(ACTIVE)
-  emailVerified Boolean @default(false)
-  
-  roles     UserRole[]
-  sessions  Session[]
-  refreshTokens RefreshToken[]
+
+  status        UserStatus @default(ACTIVE)
+  emailVerified Boolean    @default(false)
+
+  roles          UserRole[]
+  sessions       Session[]
+  refreshTokens  RefreshToken[]
   passwordResets PasswordReset[]
-  consent   UserConsent?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  consent        UserConsent?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   lastLoginAt DateTime?
-  deletedAt DateTime? // Soft delete for GDPR
-  
+  deletedAt   DateTime? // Soft delete for GDPR
+
   createdProducts Product[] @relation("ProductCreator")
   updatedProducts Product[] @relation("ProductUpdater")
   
+  // Blog relations
+  createdBlogPosts BlogPost[] @relation("BlogPostCreator")
+  updatedBlogPosts BlogPost[] @relation("BlogPostUpdater")
+  authoredPosts    BlogPost[] @relation("BlogPostAuthor")
+  blogPostViews    BlogPostView[]
+
   @@index([email])
   @@index([status])
   @@index([deletedAt])
@@ -39,24 +45,24 @@ model User {
 }
 
 model Role {
-  id          String @id @default(cuid())
-  name        String @unique
+  id          String  @id @default(cuid())
+  name        String  @unique
   description String?
-  
+
   permissions Permission[]
   users       UserRole[]
-  
+
   @@map("roles")
 }
 
 model Permission {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   resource    String
   action      String
   description String?
-  
+
   roles Role[]
-  
+
   @@unique([resource, action])
   @@map("permissions")
 }
@@ -64,27 +70,27 @@ model Permission {
 model UserRole {
   userId String
   roleId String
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  
+
   @@id([userId, roleId])
   @@map("user_roles")
 }
 
 model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
-  
+  id     String @id @default(cuid())
+  userId String
+  token  String @unique
+
   ipAddress String?
   userAgent String?
-  
+
   expiresAt DateTime
   createdAt DateTime @default(now())
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([token])
   @@index([userId])
   @@index([expiresAt])
@@ -92,29 +98,29 @@ model Session {
 }
 
 model RefreshToken {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  token     String   @unique
+  token     String    @unique
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   revokedAt DateTime?
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([token])
   @@map("refresh_tokens")
 }
 
 model PasswordReset {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  token     String   @unique
+  token     String    @unique
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
-  
+  createdAt DateTime  @default(now())
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([token])
   @@map("password_resets")
 }
@@ -129,43 +135,51 @@ enum UserStatus {
 // ==================== PRODUCT CATALOG ====================
 
 model Product {
-  id               String   @id @default(cuid())
-  slug             String   @unique
+  id               String  @id @default(cuid())
+  slug             String  @unique
   name             String
   description      String?
   shortDescription String?
-  
+
   // Status
   status      ProductStatus @default(DRAFT)
   publishedAt DateTime?
-  
+
   // SEO
   metaTitle       String?
   metaDescription String?
-  
+
   // Relations
-  variants    ProductVariant[]
-  categories  ProductCategory[]
-  tags        ProductTag[]
-  attributes  ProductAttributeValue[]
-  images      ProductImage[]
-  ribbons     ProductRibbon[]
+  variants       ProductVariant[]
+  categories     ProductCategory[]
+  tags           ProductTag[]
+  attributes     ProductAttributeValue[]
+  images         ProductImage[]
+  ribbons        ProductRibbon[]
   affiliateLinks AffiliateLink[]
-  
+  mediaUsages    MediaUsage[]
+
   // Analytics
-  viewCount   Int      @default(0)
-  
-  // Timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime? // Soft delete
-  createdBy   String
-  updatedBy   String?
+  viewCount Int @default(0)
+  clickCount Int @default(0) @map("click_count")
   
   // Relations
-  creator     User     @relation("ProductCreator", fields: [createdBy], references: [id])
-  updater     User?    @relation("ProductUpdater", fields: [updatedBy], references: [id])
-  
+  analyticsEvents AnalyticsEvent[]
+  linkClicks      AffiliateLinkClick[]
+  conversionRecords Conversion[]
+  funnelAnalytics FunnelAnalytics[]
+
+  // Timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+  createdBy String
+  updatedBy String?
+
+  // Relations
+  creator User  @relation("ProductCreator", fields: [createdBy], references: [id])
+  updater User? @relation("ProductUpdater", fields: [updatedBy], references: [id])
+
   @@index([slug])
   @@index([status])
   @@index([createdAt])
@@ -175,70 +189,75 @@ model Product {
 }
 
 model ProductVariant {
-  id           String   @id @default(cuid())
-  productId    String
-  sku          String   @unique
-  name         String
-  
+  id        String @id @default(cuid())
+  productId String
+  sku       String @unique
+  name      String
+
   // Pricing (in cents)
   price        Int
-  comparePrice Int?    // Original price for "sale" display
-  costPrice    Int?    // For margin calculations
-  
+  comparePrice Int? // Original price for "sale" display
+  costPrice    Int? // For margin calculations
+
   // Inventory
-  inventory        Int      @default(0)
-  inventoryPolicy  InventoryPolicy @default(DENY)
-  
+  inventory       Int             @default(0)
+  inventoryPolicy InventoryPolicy @default(DENY)
+
   // Options (e.g., {"color": "red", "size": "L"})
-  options     Json?
-  
+  options Json?
+
   // Relations
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   // Status
-  isDefault   Boolean  @default(false)
-  status      VariantStatus @default(ACTIVE)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  isDefault Boolean       @default(false)
+  status    VariantStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([productId])
   @@index([sku])
   @@map("product_variants")
 }
 
 model Category {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String  @id @default(cuid())
+  slug        String  @unique
   name        String
   description String?
-  
+
   // Tree structure (Nested Set Model)
-  left        Int
-  right       Int
-  depth       Int      @default(0)
-  parentId    String?
-  
+  left     Int
+  right    Int
+  depth    Int     @default(0)
+  parentId String?
+
   // SEO
   metaTitle       String?
   metaDescription String?
-  
+
   // Media
-  image       String?
-  
+  image String?
+
   // Relations
-  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
-  children    Category[] @relation("CategoryTree")
-  products    ProductCategory[]
+  parent   Category?         @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[]        @relation("CategoryTree")
+  products ProductCategory[]
+  analyticsEvents AnalyticsEvent[]
+  funnelAnalytics FunnelAnalytics[]
   
+  // Blog relations
+  blogPosts BlogPostCategory[]
+
   // Status
-  isActive    Boolean  @default(true)
-  sortOrder   Int      @default(0)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime? // Soft delete
-  
+  isActive  Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
   @@index([left, right])
   @@index([parentId])
   @@index([slug])
@@ -249,54 +268,68 @@ model Category {
 model ProductCategory {
   productId  String
   categoryId String
-  
+
   product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  
+
   @@id([productId, categoryId])
   @@map("product_categories")
 }
 
 model Tag {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  name      String
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String? // Tag description
+  color       String? @db.VarChar(7) // Hex color for tag badge (e.g., #3B82F6)
+  icon        String? // Lucide icon name
+  isActive    Boolean @default(true) @map("is_active")
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  products ProductTag[]
   
-  products  ProductTag[]
-  
-  createdAt DateTime @default(now())
-  
+  // Blog relations
+  blogPosts BlogPostTag[]
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  @@index([isActive, sortOrder])
+  @@index([slug])
   @@map("tags")
 }
 
 model ProductTag {
   productId String
   tagId     String
-  
+
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  
+
   @@id([productId, tagId])
   @@map("product_tags")
 }
 
 model Attribute {
-  id          String   @id @default(cuid())
-  name        String   @unique
+  id          String        @id @default(cuid())
+  name        String        @unique
   displayName String
   type        AttributeType
-  
+
   // For SELECT type
-  options     AttributeOption[]
-  
+  options AttributeOption[]
+
   // Configuration
   isFilterable Boolean @default(false)
-  isVisible   Boolean @default(true)
-  
-  values      ProductAttributeValue[]
-  
-  createdAt   DateTime @default(now())
-  
+  isVisible    Boolean @default(true)
+
+  values ProductAttributeValue[]
+
+  createdAt DateTime @default(now())
+
   @@map("attributes")
 }
 
@@ -306,9 +339,9 @@ model AttributeOption {
   value        String
   displayValue String
   sortOrder    Int    @default(0)
-  
+
   attribute Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
-  
+
   @@map("attribute_options")
 }
 
@@ -317,65 +350,127 @@ model ProductAttributeValue {
   productId   String
   attributeId String
   value       String // Can be JSON for complex types
-  
+
   product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   attribute Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
-  
+
   @@unique([productId, attributeId])
   @@map("product_attribute_values")
 }
 
-model ProductImage {
-  id        String @id @default(cuid())
-  productId String
-  url       String
-  alt       String?
-  sortOrder Int    @default(0)
+// Media Library with Auto-Conversion Support
+model Media {
+  id          String  @id @default(cuid())
+  filename    String // Original filename
+  originalUrl String  @map("original_url") // Original file path
+  alt         String? // Alt text for accessibility
+
+  // File metadata
+  mimeType String @map("mime_type") // image/jpeg, image/png, etc.
+  fileSize Int    @map("file_size") // Original size in bytes
+  width    Int? // Image width in pixels
+  height   Int? // Image height in pixels
+
+  // Conversion status
+  isConverted      Boolean          @default(false) @map("is_converted")
+  conversionStatus ConversionStatus @default(PENDING) @map("conversion_status")
+
+  // Generated formats (stored as JSON for flexibility)
+  variants Json? // { "webp": { "url": "...", "size": 12345 }, "avif": {...} }
+
+  // Size variants
+  thumbnailUrl String? @map("thumbnail_url") // 300px
+  mediumUrl    String? @map("medium_url") // 600px
+  largeUrl     String? @map("large_url") // 1200px
+
+  // Usage tracking
+  usedBy MediaUsage[]
+
+  // Audit
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  createdBy    String?        @map("created_by")
+  ProductImage ProductImage[]
   
-  // Variants
-  isPrimary Boolean @default(false)
-  
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
-  createdAt DateTime @default(now())
-  
+  // Blog relations
+  blogPostFeatured BlogPost? @relation("BlogPostFeaturedImage")
+  blogPostImages   BlogPostImage[]
+
+  @@index([mimeType])
+  @@index([isConverted])
+  @@index([conversionStatus])
+  @@index([createdAt])
+  @@map("media")
+}
+
+// Media usage tracking (which products use which media)
+model MediaUsage {
+  id        String  @id @default(cuid())
+  mediaId   String  @map("media_id")
+  media     Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  purpose   String  @default("gallery") // gallery, thumbnail, banner, etc.
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([mediaId, productId])
   @@index([productId])
+  @@index([mediaId])
+  @@map("media_usage")
+}
+
+enum ConversionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  SKIPPED // For non-image files
+}
+
+// Legacy Product Image model (links to Media)
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  mediaId   String? @map("media_id")
+  media     Media?  @relation(fields: [mediaId], references: [id], onDelete: SetNull)
+  url       String // Fallback URL for backward compatibility
+  alt       String?
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([mediaId])
   @@map("product_images")
 }
 
-model ProductRibbon {
-  id          String @id @default(cuid())
-  productId   String
-  name        String
-  color       String    // CSS color or tailwind class
-  bgColor     String
-  position    RibbonPosition @default(TOP_RIGHT)
-  priority    Int       @default(0)
-  startAt     DateTime?
-  endAt       DateTime?
-  
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
-  @@map("product_ribbons")
-}
-
 model AffiliateLink {
-  id          String   @id @default(cuid())
-  productId   String
-  platform    String   // e.g., "amazon", "aliexpress"
-  url         String
-  price       Int?     // Current price on platform (cents)
-  originalPrice Int?   // Original price for comparison
-  isActive    Boolean  @default(true)
-  clicks      Int      @default(0)
-  conversions Int      @default(0)
-  lastChecked DateTime?
-  
+  id            String    @id @default(cuid())
+  productId     String
+  platform      String // e.g., "amazon", "aliexpress"
+  url           String
+  price         Int? // Current price on platform (cents)
+  originalPrice Int? // Original price for comparison
+  isActive      Boolean   @default(true)
+  clicks        Int       @default(0)
+  conversions   Int       @default(0)
+  lastChecked   DateTime?
+
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  // Analytics
+  analyticsEvents AnalyticsEvent[]
+  linkClicks      AffiliateLinkClick[]
+  conversionRecords Conversion[]
+  funnelAnalytics FunnelAnalytics[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([productId])
   @@index([platform])
   @@map("affiliate_links")
@@ -395,8 +490,8 @@ enum VariantStatus {
 }
 
 enum InventoryPolicy {
-  DENY      // Don't allow purchase if out of stock
-  CONTINUE  // Allow backorders
+  DENY // Don't allow purchase if out of stock
+  CONTINUE // Allow backorders
 }
 
 enum AttributeType {
@@ -415,17 +510,578 @@ enum RibbonPosition {
   BOTTOM_RIGHT
 }
 
+// Ribbon Management
+model Ribbon {
+  id        String         @id @default(cuid())
+  name      String         @unique // "Featured", "New", "Sale"
+  label     String // Display text
+  bgColor   String         @map("bg_color") @db.VarChar(7) // Hex: #3B82F6
+  textColor String         @map("text_color") @db.VarChar(7) // Hex: #FFFFFF
+  icon      String? // Lucide icon name
+  position  RibbonPosition @default(TOP_LEFT)
+  sortOrder Int            @default(0) @map("sort_order")
+  isActive  Boolean        @default(true) @map("is_active")
+
+  // Relations
+  products ProductRibbon[]
+
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  @@index([isActive, sortOrder])
+  @@index([name])
+  @@map("ribbons")
+}
+
+model ProductRibbon {
+  id        String  @id @default(cuid())
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ribbonId  String  @map("ribbon_id")
+  ribbon    Ribbon  @relation(fields: [ribbonId], references: [id], onDelete: Cascade)
+
+  // Denormalized fields for performance (can override ribbon defaults)
+  name     String // Display text override
+  color    String         @db.VarChar(7) // Text color hex
+  bgColor  String         @map("bg_color") @db.VarChar(7) // Background color hex
+  position RibbonPosition @default(TOP_RIGHT)
+  priority Int            @default(0)
+
+  // Scheduling
+  startAt DateTime? @map("start_at")
+  endAt   DateTime? @map("end_at")
+
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+
+  @@unique([productId, ribbonId])
+  @@index([productId])
+  @@index([ribbonId])
+  @@index([startAt, endAt])
+  @@map("product_ribbons")
+}
+
 // GDPR Consent Management
 model UserConsent {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  analytics   Boolean  @default(false)
-  marketing   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  analytics Boolean  @default(false)
+  marketing Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId])
   @@map("user_consents")
 }
+
+// ==================== BLOG SYSTEM ====================
+
+model BlogPost {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  excerpt     String? // Short description/summary
+  content     String  @db.Text // Full HTML/Markdown content
+  contentType String  @default("html") // html, markdown
+  
+  // Status
+  status      BlogPostStatus @default(DRAFT)
+  publishedAt DateTime?
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  keywords        String? // Comma-separated keywords
+  
+  // Media
+  featuredImageId String? @unique @map("featured_image_id")
+  featuredImage   Media?  @relation("BlogPostFeaturedImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
+  images          BlogPostImage[]
+  
+  // Relations
+  categories BlogPostCategory[]
+  tags       BlogPostTag[]
+  
+  // Author info
+  authorId  String? @map("author_id")
+  author    User?   @relation("BlogPostAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  
+  // Reading time estimation (minutes)
+  readingTime Int @default(0) @map("reading_time")
+  
+  // Analytics
+  viewCount   Int @default(0) @map("view_count")
+  likeCount   Int @default(0) @map("like_count")
+  shareCount  Int @default(0) @map("share_count")
+  
+  // Related products (for affiliate linking)
+  relatedProducts BlogPostProduct[] @relation("BlogPostToProducts")
+  
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
+  
+  // Relations
+  creator User  @relation("BlogPostCreator", fields: [createdBy], references: [id])
+  updater User? @relation("BlogPostUpdater", fields: [updatedBy], references: [id])
+  
+  // Track views
+  views BlogPostView[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([publishedAt])
+  @@index([createdAt])
+  @@index([authorId])
+  @@map("blog_posts")
+}
+
+enum BlogPostStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model BlogPostCategory {
+  blogPostId String @map("blog_post_id")
+  categoryId String @map("category_id")
+
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([blogPostId, categoryId])
+  @@map("blog_post_categories")
+}
+
+model BlogPostTag {
+  blogPostId String @map("blog_post_id")
+  tagId      String @map("tag_id")
+
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([blogPostId, tagId])
+  @@map("blog_post_tags")
+}
+
+model BlogPostImage {
+  id         String @id @default(cuid())
+  blogPostId String @map("blog_post_id")
+  mediaId    String @map("media_id")
+  
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  media    Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  
+  caption   String?
+  alt       String?
+  sortOrder Int     @default(0) @map("sort_order")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([blogPostId])
+  @@map("blog_post_images")
+}
+
+model BlogPostProduct {
+  id         String @id @default(cuid())
+  blogPostId String @map("blog_post_id")
+  productId  String @map("product_id")
+  
+  blogPost BlogPost @relation("BlogPostToProducts", fields: [blogPostId], references: [id], onDelete: Cascade)
+  
+  // Position in content (for inline display)
+  position String? // e.g., "sidebar", "inline", "bottom"
+  sortOrder Int    @default(0) @map("sort_order")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([blogPostId, productId])
+  @@index([blogPostId])
+  @@map("blog_post_products")
+}
+
+model BlogPostView {
+  id         String   @id @default(cuid())
+  blogPostId String   @map("blog_post_id")
+  userId     String?  @map("user_id")
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  referrer   String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([blogPostId])
+  @@index([createdAt])
+  @@map("blog_post_views")
+}
+
+// ==================== ANALYTICS ====================
+
+// Page/Product View Events
+model AnalyticsEvent {
+  id          String         @id @default(cuid())
+  type        AnalyticsType
+  event       String // view, click, conversion, etc.
+  
+  // Entity references
+  productId   String?        @map("product_id")
+  product     Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
+  categoryId  String?        @map("category_id")
+  category    Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  linkId      String?        @map("link_id")
+  link        AffiliateLink? @relation(fields: [linkId], references: [id], onDelete: SetNull)
+  
+  // Session/User tracking
+  sessionId   String?        @map("session_id")
+  userId      String?        @map("user_id")
+  
+  // Request metadata
+  ipAddress   String?        @map("ip_address")
+  userAgent   String?        @map("user_agent")
+  referrer    String?
+  url         String?
+  
+  // Geographic data (from IP)
+  country     String?
+  city        String?
+  deviceType  String?        @map("device_type") // mobile, desktop, tablet
+  browser     String?
+  os          String?
+  
+  // Event data (JSON for flexibility)
+  metadata    Json?
+  
+  createdAt   DateTime       @default(now()) @map("created_at")
+  
+  @@index([type, createdAt])
+  @@index([productId, createdAt])
+  @@index([categoryId, createdAt])
+  @@index([linkId, createdAt])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
+// Daily aggregated metrics (for performance)
+model AnalyticsMetric {
+  id          String        @id @default(cuid())
+  date        DateTime      @db.Date
+  type        MetricType
+  
+  // Entity reference
+  productId   String?       @map("product_id")
+  categoryId  String?       @map("category_id")
+  
+  // Metrics
+  views       Int           @default(0)
+  clicks      Int           @default(0)
+  conversions Int           @default(0)
+  revenue     Int           @default(0) // in cents
+  uniqueVisitors Int        @default(0) @map("unique_visitors")
+  
+  // Breakdown by source
+  directViews    Int        @default(0) @map("direct_views")
+  searchViews    Int        @default(0) @map("search_views")
+  socialViews    Int        @default(0) @map("social_views")
+  referralViews  Int        @default(0) @map("referral_views")
+  
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  
+  @@unique([date, type, productId])
+  @@index([date, type])
+  @@index([productId, date])
+  @@index([categoryId, date])
+  @@map("analytics_metrics")
+}
+
+// Real-time tracking sessions
+model AnalyticsSession {
+  id           String   @id @default(cuid())
+  sessionId    String   @unique @map("session_id")
+  
+  // User info
+  userId       String?  @map("user_id")
+  
+  // Session metadata
+  startedAt    DateTime @default(now()) @map("started_at")
+  endedAt      DateTime? @map("ended_at")
+  lastActivity DateTime @default(now()) @map("last_activity")
+  
+  // Page views in session
+  pageViews    Int      @default(0) @map("page_views")
+  events       Int      @default(0)
+  
+  // Device info
+  ipAddress    String?  @map("ip_address")
+  userAgent    String?  @map("user_agent")
+  country      String?
+  deviceType   String?  @map("device_type")
+  browser      String?
+  os           String?
+  
+  // Referrer tracking
+  landingPage  String?  @map("landing_page")
+  referrer     String?
+  source       String?  // utm_source
+  medium       String?  // utm_medium
+  campaign     String?  // utm_campaign
+  
+  @@index([sessionId])
+  @@index([userId])
+  @@index([startedAt])
+  @@index([lastActivity])
+  @@map("analytics_sessions")
+}
+
+enum AnalyticsType {
+  PAGE_VIEW
+  PRODUCT_VIEW
+  CATEGORY_VIEW
+  CLICK
+  CONVERSION
+  SEARCH
+  ADD_TO_CART
+  CHECKOUT_START
+  CHECKOUT_COMPLETE
+  SCROLL
+  ENGAGEMENT
+}
+
+enum MetricType {
+  OVERALL
+  PRODUCT
+  CATEGORY
+  AFFILIATE_LINK
+}
+
+// ==================== ADVANCED ANALYTICS ====================
+
+// Detailed affiliate link click tracking
+model AffiliateLinkClick {
+  id              String   @id @default(cuid())
+  
+  // Link reference
+  linkId          String   @map("link_id")
+  link            AffiliateLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  productId       String   @map("product_id")
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Click context
+  pageUrl         String   @map("page_url")
+  clickPosition   String   @map("click_position") // "above_fold", "below_fold", "sidebar"
+  clickType       String   @map("click_type")     // "text_link", "button", "image", "banner"
+  
+  // Session
+  sessionId       String   @map("session_id")
+  userId          String?  @map("user_id")
+  
+  // Device
+  deviceType      String   @map("device_type")
+  browser         String?
+  os              String?
+  
+  // Geo
+  country         String?
+  city            String?
+  
+  // Time analysis
+  hourOfDay       Int      @map("hour_of_day")   // 0-23
+  dayOfWeek       Int      @map("day_of_week")   // 0-6
+  
+  // Conversion tracking
+  converted       Boolean  @default(false)
+  conversionValue Int?     @map("conversion_value")
+  timeToConvert   Int?     @map("time_to_convert") // Minutes
+  
+  createdAt       DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  conversion Conversion?
+  
+  @@index([linkId, createdAt])
+  @@index([productId, createdAt])
+  @@index([converted, createdAt])
+  @@index([sessionId])
+  @@map("affiliate_link_clicks")
+}
+
+// Conversion tracking with revenue
+model Conversion {
+  id              String   @id @default(cuid())
+  
+  // Attribution
+  linkId          String   @map("link_id")
+  link            AffiliateLink @relation(fields: [linkId], references: [id], onDelete: SetNull)
+  productId       String   @map("product_id")
+  product         Product  @relation(fields: [productId], references: [id], onDelete: SetNull)
+  clickId         String?  @unique @map("click_id")
+  click           AffiliateLinkClick? @relation(fields: [clickId], references: [id], onDelete: SetNull)
+  
+  // Financial
+  orderValue      Int      @map("order_value")
+  commission      Int
+  currency        String   @default("USD")
+  
+  // Order details
+  orderId         String?  @map("order_id")
+  items           Json?
+  
+  // Attribution path
+  touchpointCount Int      @default(1) @map("touchpoint_count")
+  attributionModel String  @default("last_click") @map("attribution_model")
+  
+  // Time metrics
+  clickToConvert  Int      @map("click_to_convert") // Minutes
+  sessionDuration Int      @map("session_duration") // Minutes
+  
+  // Session/User
+  sessionId       String   @map("session_id")
+  userId          String?  @map("user_id")
+  
+  // Device/Geo
+  deviceType      String   @map("device_type")
+  country         String?
+  
+  createdAt       DateTime @default(now()) @map("created_at")
+  
+  @@index([linkId, createdAt])
+  @@index([productId, createdAt])
+  @@index([createdAt])
+  @@map("conversions")
+}
+
+// Funnel analytics for conversion paths
+model FunnelAnalytics {
+  id              String   @id @default(cuid())
+  
+  // Dimensions
+  productId       String?  @map("product_id")
+  product         Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  categoryId      String?  @map("category_id")
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  linkId          String?  @map("link_id")
+  link            AffiliateLink? @relation(fields: [linkId], references: [id], onDelete: SetNull)
+  date            DateTime @db.Date
+  
+  // Funnel stages
+  impressions     Int      @default(0)
+  clicks          Int      @default(0)
+  landings        Int      @default(0)  // Reached merchant
+  addsToCart      Int      @default(0)  @map("adds_to_cart")
+  checkouts       Int      @default(0)  // Started checkout
+  purchases       Int      @default(0)
+  
+  // Drop-off rates (calculated)
+  viewToClick     Float    @default(0)  @map("view_to_click")
+  clickToCart     Float    @default(0)  @map("click_to_cart")
+  cartToPurchase  Float    @default(0)  @map("cart_to_purchase")
+  overallConv     Float    @default(0)  @map("overall_conv")
+  
+  // Revenue
+  revenue         Int      @default(0)
+  commission      Int      @default(0)
+  
+  @@unique([productId, linkId, date])
+  @@index([date])
+  @@index([productId])
+  @@map("funnel_analytics")
+}
+
+// Campaign/UTM analytics
+model CampaignAnalytics {
+  id              String   @id @default(cuid())
+  
+  // Campaign identifiers
+  utmSource       String   @map("utm_source")
+  utmMedium       String   @map("utm_medium")
+  utmCampaign     String   @map("utm_campaign")
+  utmContent      String?  @map("utm_content")
+  utmTerm         String?  @map("utm_term")
+  
+  // Date
+  date            DateTime @db.Date
+  
+  // Metrics
+  impressions     Int      @default(0)
+  clicks          Int      @default(0)
+  conversions     Int      @default(0)
+  revenue         Int      @default(0)
+  commission      Int      @default(0)
+  cost            Int      @default(0)  // Ad spend
+  
+  // Calculated metrics
+  ctr             Float    @default(0)
+  cpc             Int      @default(0)  // Cost per click
+  roas            Float    @default(0)  // Return on ad spend
+  
+  @@unique([utmSource, utmMedium, utmCampaign, date])
+  @@index([date])
+  @@map("campaign_analytics")
+}
+
+// Search analytics
+model SearchAnalytics {
+  id              String   @id @default(cuid())
+  query           String
+  normalizedQuery String   @map("normalized_query") // Lowercase, trimmed
+  date            DateTime @db.Date
+  
+  // Usage
+  searchCount     Int      @default(0) @map("search_count")
+  uniqueUsers     Int      @default(0) @map("unique_users")
+  
+  // Results
+  avgResults      Float    @default(0) @map("avg_results")
+  clickThroughRate Float   @default(0) @map("click_through_rate")
+  
+  // Conversions
+  conversions     Int      @default(0)
+  revenue         Int      @default(0)
+  
+  @@unique([normalizedQuery, date])
+  @@index([date])
+  @@index([searchCount])
+  @@map("search_analytics")
+}
+
+// Geo analytics
+model GeoAnalytics {
+  id              String   @id @default(cuid())
+  date            DateTime @db.Date
+  
+  // Location
+  country         String
+  countryCode     String   @db.Char(2) @map("country_code")
+  city            String?
+  region          String?
+  
+  // Metrics
+  views           Int      @default(0)
+  clicks          Int      @default(0)
+  conversions     Int      @default(0)
+  revenue         Int      @default(0)
+  commission      Int      @default(0)
+  
+  // Performance
+  avgSessionDuration Int   @default(0) @map("avg_session_duration")
+  bounceRate      Float    @default(0) @map("bounce_rate")
+  
+  @@unique([country, city, date])
+  @@index([date])
+  @@index([country])
+  @@map("geo_analytics")
+}
+

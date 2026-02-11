@@ -1,26 +1,21 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Clock, MessageCircle, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
+import { ArrowRight, Search, Loader2, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { BlogCard } from "@/components/blog/BlogCard";
+import { getBlogPosts, type BlogPost } from "@/lib/api/blog";
 
-interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  image: string
-  category: string
-  categoryColor: string
-  author: string
-  authorImage: string
-  date: string
-  comments: number
+interface Category {
+  id: string;
+  name: string;
+  color: string;
 }
 
-const categories = [
+const categories: Category[] = [
   { id: "all", name: "All", color: "bg-gray-800" },
   { id: "hosting", name: "Hosting", color: "bg-blue-600" },
   { id: "ai", name: "AI", color: "bg-purple-600" },
@@ -29,141 +24,112 @@ const categories = [
   { id: "writing", name: "Writing", color: "bg-pink-600" },
   { id: "design", name: "Design", color: "bg-red-600" },
   { id: "analytics", name: "Analytics", color: "bg-teal-600" },
-]
-
-const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "Best Web Hosting Providers for 2024",
-    excerpt: "Discover the top hosting services with excellent uptime, speed, and customer support for your website needs.",
-    image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=500&fit=crop",
-    category: "Hosting",
-    categoryColor: "bg-blue-600",
-    author: "Sarah Johnson",
-    authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    date: "Dec 15, 2024",
-    comments: 28,
-  },
-  {
-    id: "2",
-    title: "AI Tools Revolutionizing Content Creation",
-    excerpt: "Explore how artificial intelligence is transforming the way we create and optimize content online.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop",
-    category: "AI",
-    categoryColor: "bg-purple-600",
-    author: "Mike Chen",
-    authorImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-    date: "Dec 14, 2024",
-    comments: 45,
-  },
-  {
-    id: "3",
-    title: "SEO Best Practices for 2024",
-    excerpt: "Stay ahead of the competition with these proven SEO strategies and ranking factors.",
-    image: "https://images.unsplash.com/photo-1571721795195-a2ca2d3370a9?w=800&h=500&fit=crop",
-    category: "SEO",
-    categoryColor: "bg-green-600",
-    author: "Emily Davis",
-    authorImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-    date: "Dec 13, 2024",
-    comments: 32,
-  },
-  {
-    id: "4",
-    title: "Email Marketing Strategies That Convert",
-    excerpt: "Learn how to create email campaigns that drive engagement and boost your conversion rates.",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=500&fit=crop",
-    category: "Marketing",
-    categoryColor: "bg-orange-600",
-    author: "David Wilson",
-    authorImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-    date: "Dec 12, 2024",
-    comments: 19,
-  },
-  {
-    id: "5",
-    title: "Top AI Writing Assistants Compared",
-    excerpt: "A comprehensive comparison of the best AI writing tools to help you create content faster.",
-    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=500&fit=crop",
-    category: "Writing",
-    categoryColor: "bg-pink-600",
-    author: "Lisa Park",
-    authorImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
-    date: "Dec 11, 2024",
-    comments: 56,
-  },
-  {
-    id: "6",
-    title: "Design Tools Every Marketer Should Know",
-    excerpt: "Create stunning visuals with these beginner-friendly design tools and resources.",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop",
-    category: "Design",
-    categoryColor: "bg-red-600",
-    author: "Tom Anderson",
-    authorImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-    date: "Dec 10, 2024",
-    comments: 23,
-  },
-  {
-    id: "7",
-    title: "Understanding Google Analytics 4",
-    excerpt: "Master the new Google Analytics interface and unlock powerful insights about your audience.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
-    category: "Analytics",
-    categoryColor: "bg-teal-600",
-    author: "Alex Rivera",
-    authorImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
-    date: "Dec 9, 2024",
-    comments: 34,
-  },
-  {
-    id: "8",
-    title: "Cloud Hosting vs Shared Hosting",
-    excerpt: "Which hosting solution is right for your business? We break down the pros and cons.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=500&fit=crop",
-    category: "Hosting",
-    categoryColor: "bg-blue-600",
-    author: "Sarah Johnson",
-    authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    date: "Dec 8, 2024",
-    comments: 41,
-  },
-  {
-    id: "9",
-    title: "ChatGPT Tips for Better Results",
-    excerpt: "Unlock the full potential of AI with these advanced prompting techniques and strategies.",
-    image: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&h=500&fit=crop",
-    category: "AI",
-    categoryColor: "bg-purple-600",
-    author: "Mike Chen",
-    authorImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-    date: "Dec 7, 2024",
-    comments: 67,
-  },
-]
+];
 
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState("all")
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+
+  const fetchPosts = async (pageNum: number = 1, append: boolean = false) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await getBlogPosts({
+        page: pageNum,
+        limit: 9,
+        search: searchQuery || undefined,
+        sortBy: "publishedAt",
+        sortOrder: "desc",
+      });
+
+      if (append) {
+        setPosts((prev) => [...prev, ...response.data]);
+      } else {
+        setPosts(response.data);
+      }
+
+      setTotalPages(response.meta.totalPages);
+      setHasMore(pageNum < response.meta.totalPages);
+    } catch (err) {
+      console.error("Failed to fetch blog posts:", err);
+      setError(
+        err instanceof Error 
+          ? `Failed to load blog posts: ${err.message}. Make sure the API server is running on port 3003.` 
+          : "Failed to load blog posts. Make sure the API server is running on port 3003."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    fetchPosts(1, false);
+  }, []);
+
+  // Search debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPage(1);
+      fetchPosts(1, false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchPosts(nextPage, true);
+  };
 
   const filteredPosts = useMemo(() => {
-    if (activeCategory === "all") return blogPosts
-    return blogPosts.filter(post => 
-      post.category.toLowerCase() === activeCategory.toLowerCase()
-    )
-  }, [activeCategory])
+    if (activeCategory === "all") return posts;
+    return posts.filter((post) =>
+      post.categories.some(
+        (cat) => cat.slug.toLowerCase() === activeCategory.toLowerCase()
+      )
+    );
+  }, [posts, activeCategory]);
+
+  const featuredPost = filteredPosts[0];
+  const regularPosts = filteredPosts.slice(1);
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-gray-50 border-b">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Blog</h1>
-          <p className="text-gray-600">Latest articles, guides, and insights</p>
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="container mx-auto px-4 py-16 md:py-20">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Blog</h1>
+            <p className="text-xl text-gray-300 mb-8">
+              Discover the latest insights, guides, and expert recommendations
+            </p>
+
+            {/* Search Bar */}
+            <div className="relative max-w-xl mx-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 pr-4 py-6 bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-full focus:bg-white/20"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Category Tabs */}
-      <div className="border-b bg-white sticky top-16 z-30">
+      <div className="border-b bg-white sticky top-16 z-30 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
             {categories.map((cat) => (
@@ -171,9 +137,9 @@ export default function BlogPage() {
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
+                  "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
                   activeCategory === cat.id
-                    ? `${cat.color} text-white`
+                    ? `${cat.color} text-white shadow-md`
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 )}
               >
@@ -184,82 +150,88 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Blog Grid */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post) => (
-            <article key={post.id} className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-              <Link href={`/blog/${post.id}`} className="block">
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <span className={`absolute top-3 left-3 px-3 py-1 ${post.categoryColor} text-white text-xs font-medium rounded`}>
-                    {post.category}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <h2 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={post.authorImage}
-                        alt={post.author}
-                        width={28}
-                        height={28}
-                        className="rounded-full"
-                      />
-                      <span className="text-sm text-gray-700">{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-500 text-xs">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {post.date}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MessageCircle className="h-3 w-3" />
-                        {post.comments}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </article>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {filteredPosts.length === 0 && (
+      {/* Blog Content */}
+      <div className="container mx-auto px-4 py-12">
+        {loading && posts.length === 0 ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-16 max-w-xl mx-auto">
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <p className="text-red-600 text-lg mb-2 font-medium">Unable to Load Blog Posts</p>
+            <p className="text-gray-500 mb-6">{error}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button onClick={() => fetchPosts(1, false)} variant="outline" className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Try Again
+              </Button>
+              <Button asChild variant="default">
+                <Link href="/">Go Home</Link>
+              </Button>
+            </div>
+          </div>
+        ) : filteredPosts.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No articles found in this category.</p>
-            <Button 
-              variant="outline" 
-              className="mt-4"
-              onClick={() => setActiveCategory("all")}
-            >
-              View All Articles
-            </Button>
+            <p className="text-gray-500 text-lg">No articles found.</p>
+            {searchQuery && (
+              <Button
+                variant="outline"
+                className="mt-4"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveCategory("all");
+                }}
+              >
+                Clear Filters
+              </Button>
+            )}
           </div>
-        )}
+        ) : (
+          <>
+            {/* Featured Post */}
+            {featuredPost && !searchQuery && activeCategory === "all" && page === 1 && (
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Article</h2>
+                <BlogCard post={featuredPost} variant="featured" />
+              </div>
+            )}
 
-        {/* Load More */}
-        {filteredPosts.length > 0 && (
-          <div className="text-center mt-10">
-            <Button variant="outline" size="lg">
-              Load More Articles
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+            {/* Blog Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(searchQuery || activeCategory !== "all" ? filteredPosts : regularPosts).map(
+                (post) => (
+                  <BlogCard key={post.id} post={post} variant="default" />
+                )
+              )}
+            </div>
+
+            {/* Load More */}
+            {hasMore && (
+              <div className="text-center mt-12">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleLoadMore}
+                  disabled={loading}
+                  className="min-w-[200px]"
+                >
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <ArrowRight className="mr-2 h-4 w-4" />
+                  )}
+                  Load More Articles
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
-  )
+  );
 }

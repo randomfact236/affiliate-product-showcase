@@ -1,7 +1,8 @@
 import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { LoggerModule } from "nestjs-pino";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
+import { BullModule } from "@nestjs/bull";
 import { APP_GUARD } from "@nestjs/core";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -10,12 +11,16 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { AuthModule } from "./auth/auth.module";
 import { ProductModule } from "./products/product.module";
 import { CategoryModule } from "./categories/category.module";
-import { TagModule } from "./tags/tag.module";
+import { TagsModule } from "./tags/tags.module";
 import { AttributeModule } from "./attributes/attribute.module";
 import { MediaModule } from "./media/media.module";
 import { RedisModule } from "./common/modules/redis.module";
 import { QueueModule } from "./common/modules/queue.module";
 import { HealthModule } from "./health/health.module";
+import { RibbonsModule } from "./ribbons/ribbons.module";
+import { UsersModule } from "./users/users.module";
+import { AnalyticsModule } from "./analytics/analytics.module";
+import { BlogModule } from "./blog/blog.module";
 import { RequestIdMiddleware } from "./common/middleware";
 
 @Module({
@@ -59,17 +64,33 @@ import { RequestIdMiddleware } from "./common/middleware";
       ],
     }),
 
+    // Bull Queue with Redis
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST', 'localhost'),
+          port: configService.get('REDIS_PORT', 6379),
+        },
+      }),
+      inject: [ConfigService],
+    }),
+
     // Feature modules
     PrismaModule,
     AuthModule,
     ProductModule,
     CategoryModule,
-    TagModule,
+    TagsModule,
     AttributeModule,
     MediaModule,
     RedisModule,
     QueueModule,
     HealthModule,
+    RibbonsModule,
+    UsersModule,
+    AnalyticsModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [

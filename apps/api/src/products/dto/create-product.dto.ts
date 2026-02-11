@@ -102,4 +102,9 @@ export class CreateProductDto {
   @IsArray()
   @IsOptional()
   tagIds?: string[];
+
+  @ApiProperty({ type: [String], required: false, description: 'Ribbon IDs to assign to product' })
+  @IsArray()
+  @IsOptional()
+  ribbonIds?: string[];
 }

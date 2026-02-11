@@ -6,14 +6,18 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   UseGuards,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 import { AttributeService } from "./attribute.service";
 import {
   CreateAttributeDto,
   UpdateAttributeDto,
 } from "./dto/create-attribute.dto";
+import { QueryAttributesDto } from "./dto/query-attributes.dto";
 import { JwtAuthGuard, RolesGuard } from "../auth/guards";
 import { Roles } from "../auth/decorators";
 
@@ -23,9 +27,20 @@ export class AttributeController {
   constructor(private attributeService: AttributeService) {}
 
   @Get()
-  @ApiOperation({ summary: "Get all attributes" })
-  findAll() {
-    return this.attributeService.findAll();
+  @ApiOperation({ summary: "Get all attributes with pagination" })
+  @ApiQuery({ name: "search", required: false, description: "Search by name" })
+  @ApiQuery({ name: "type", required: false, enum: ["TEXT", "NUMBER", "SELECT", "MULTISELECT", "BOOLEAN", "COLOR"], description: "Filter by type" })
+  @ApiQuery({ name: "isFilterable", required: false, type: Boolean, description: "Filter by filterable status" })
+  @ApiQuery({ name: "skip", required: false, type: Number, description: "Number of items to skip" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of items to return" })
+  findAll(@Query() query: QueryAttributesDto) {
+    return this.attributeService.findAll(query);
+  }
+
+  @Get("stats")
+  @ApiOperation({ summary: "Get attribute statistics" })
+  getStats() {
+    return this.attributeService.getStats();
   }
 
   @Get(":id")
@@ -89,5 +104,11 @@ export class AttributeController {
     @Param("attributeId") attributeId: string,
   ) {
     return this.attributeService.removeProductAttribute(productId, attributeId);
+  }
+
+  @Get("product/:productId")
+  @ApiOperation({ summary: "Get product attribute values" })
+  getProductAttributes(@Param("productId") productId: string) {
+    return this.attributeService.getProductAttributes(productId);
   }
 }

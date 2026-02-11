@@ -12,12 +12,25 @@ import {
   Settings,
   LogOut,
   Store,
+  Bookmark,
+  Image,
+  Ribbon,
+  PlusCircle,
+  BookOpen,
+  FileText,
+  PenLine,
 } from "lucide-react"
 
 const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/products/new", label: "Add Product", icon: PlusCircle },
   { href: "/admin/categories", label: "Categories", icon: Tags },
+  { href: "/admin/tags", label: "Tags", icon: Bookmark },
+  { href: "/admin/ribbons", label: "Ribbons", icon: Ribbon },
+  { href: "/admin/blog", label: "Blog Posts", icon: BookOpen },
+  { href: "/admin/blog/new", label: "Add Blog Post", icon: PenLine },
+  { href: "/admin/media", label: "Media Library", icon: Image },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ]

@@ -162,6 +162,63 @@ async function main() {
   });
   console.log('✅ Attribute created:', warrantyAttr.displayName);
 
+  // Create default ribbons
+  const ribbons = await Promise.all([
+    prisma.ribbon.upsert({
+      where: { name: 'Featured' },
+      update: {},
+      create: {
+        name: 'Featured',
+        label: 'Featured',
+        bgColor: '#3B82F6',
+        textColor: '#FFFFFF',
+        position: 'TOP_RIGHT',
+        sortOrder: 1,
+        isActive: true,
+      },
+    }),
+    prisma.ribbon.upsert({
+      where: { name: 'New' },
+      update: {},
+      create: {
+        name: 'New',
+        label: 'New Arrival',
+        bgColor: '#10B981',
+        textColor: '#FFFFFF',
+        position: 'TOP_LEFT',
+        sortOrder: 2,
+        isActive: true,
+      },
+    }),
+    prisma.ribbon.upsert({
+      where: { name: 'Sale' },
+      update: {},
+      create: {
+        name: 'Sale',
+        label: 'On Sale',
+        bgColor: '#EF4444',
+        textColor: '#FFFFFF',
+        position: 'TOP_RIGHT',
+        sortOrder: 3,
+        isActive: true,
+      },
+    }),
+    prisma.ribbon.upsert({
+      where: { name: 'Best Seller' },
+      update: {},
+      create: {
+        name: 'Best Seller',
+        label: 'Best Seller',
+        bgColor: '#F59E0B',
+        textColor: '#FFFFFF',
+        position: 'TOP_RIGHT',
+        sortOrder: 4,
+        isActive: true,
+      },
+    }),
+  ]);
+  console.log('✅ Ribbons created:', ribbons.map(r => r.name).join(', '));
+
   // Create sample product
   const product1 = await prisma.product.create({
     data: {
@@ -225,6 +282,7 @@ async function main() {
       ribbons: {
         create: [
           {
+            ribbon: { connect: { id: ribbons[3].id } }, // Best Seller
             name: 'Best Seller',
             color: '#FFFFFF',
             bgColor: '#EF4444',
@@ -297,6 +355,7 @@ async function main() {
       ribbons: {
         create: [
           {
+            ribbon: { connect: { id: ribbons[2].id } }, // Sale
             name: 'Sale',
             color: '#FFFFFF',
             bgColor: '#10B981',
