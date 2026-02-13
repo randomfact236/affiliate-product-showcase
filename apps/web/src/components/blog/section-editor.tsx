@@ -187,7 +187,7 @@ export function SectionEditor({
               <Label className="text-xs text-muted-foreground">Top Spacing</Label>
               <Select
                 value={section.spacing.top.toString()}
-                onValueChange={(value) => updateSpacing("top", parseInt(value))}
+                onValueChange={(value: string) => updateSpacing("top", parseInt(value))}
               >
                 <SelectTrigger className="h-8">
                   <SelectValue />
@@ -205,7 +205,7 @@ export function SectionEditor({
               <Label className="text-xs text-muted-foreground">Bottom Spacing</Label>
               <Select
                 value={section.spacing.bottom.toString()}
-                onValueChange={(value) => updateSpacing("bottom", parseInt(value))}
+                onValueChange={(value: string) => updateSpacing("bottom", parseInt(value))}
               >
                 <SelectTrigger className="h-8">
                   <SelectValue />

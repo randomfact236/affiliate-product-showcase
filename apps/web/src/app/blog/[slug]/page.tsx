@@ -16,7 +16,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { getBlogPostBySlug, getBlogPosts, getLatestPosts } from "@/lib/api/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { TableOfContents, addIdsToHeadings } from "@/components/blog/table-of-contents";
+import { TableOfContents } from "@/components/blog/table-of-contents";
+import { addIdsToHeadings } from "@/lib/blog-utils";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;

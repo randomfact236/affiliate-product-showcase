@@ -177,3 +177,62 @@ export async function getLatestPosts(limit: number = 5): Promise<BlogPostsRespon
 
   return response.json();
 }
+
+// Bulk operations
+export async function bulkDeleteBlogPosts(ids: string[]): Promise<{ deleted: number }> {
+  const response = await fetch(`${API_URL}/api/v1/blog/bulk-delete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete blog posts");
+  }
+
+  return response.json();
+}
+
+export async function bulkUpdateBlogPosts(
+  ids: string[],
+  data: Partial<Pick<BlogPost, "status" | "publishedAt">>
+): Promise<{ updated: number }> {
+  const response = await fetch(`${API_URL}/api/v1/blog/bulk-update`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids, data }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update blog posts");
+  }
+
+  return response.json();
+}
+
+export async function updateBlogPost(
+  id: string,
+  data: Partial<BlogPost>
+): Promise<BlogPost> {
+  const response = await fetch(`${API_URL}/api/v1/blog/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update blog post");
+  }
+
+  return response.json();
+}
+
+export async function deleteBlogPost(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/api/v1/blog/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete blog post");
+  }
+}

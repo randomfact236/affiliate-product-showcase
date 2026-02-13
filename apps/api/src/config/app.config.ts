@@ -2,7 +2,7 @@ import { registerAs } from "@nestjs/config";
 
 export const appConfig = registerAs("app", () => {
   const nodeEnv = process.env.NODE_ENV || "development";
-  const apiPort = parseInt(process.env.API_PORT || "3001", 10);
+  const apiPort = parseInt(process.env.API_PORT || "3003", 10);
 
   // Parse allowed origins for CORS
   const allowedOriginsStr = process.env.ALLOWED_ORIGINS;
@@ -11,7 +11,7 @@ export const appConfig = registerAs("app", () => {
   if (allowedOriginsStr) {
     allowedOrigins = allowedOriginsStr.split(",").map((o) => o.trim());
   } else if (nodeEnv === "development") {
-    allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+    allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
   } else {
     throw new Error(
       "FATAL: ALLOWED_ORIGINS environment variable is required in production. " +

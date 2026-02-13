@@ -1,0 +1,108 @@
+{
+  "_schema": "Affiliate Product Showcase - Port Registry v1.0",
+  "_warning": "DO NOT MODIFY MANUALLY - Use scripts/port-manager.ps1",
+  "project": {
+    "name": "affiliate-product-showcase",
+    "id": "aps-2026",
+    "reservedPorts": [3000, 3001, 3002, 3003, 5433, 6380, 9000, 9001, 5672, 15672]
+  },
+  "ports": {
+    "web": {
+      "port": 3000,
+      "name": "Next.js Web Frontend",
+      "description": "Main user-facing website",
+      "protocol": "http",
+      "required": true,
+      "envVar": "WEB_PORT"
+    },
+    "api": {
+      "port": 3003,
+      "name": "API Server",
+      "description": "REST API backend",
+      "protocol": "http",
+      "required": true,
+      "envVar": "API_PORT"
+    },
+    "postgres": {
+      "port": 5433,
+      "name": "PostgreSQL Database",
+      "description": "Primary transactional database",
+      "protocol": "tcp",
+      "required": true,
+      "envVar": "POSTGRES_PORT",
+      "containerPort": 5432
+    },
+    "redis": {
+      "port": 6380,
+      "name": "Redis Cache",
+      "description": "Session store and caching",
+      "protocol": "tcp",
+      "required": true,
+      "envVar": "REDIS_PORT",
+      "containerPort": 6379
+    },
+    "minio_api": {
+      "port": 9000,
+      "name": "MinIO S3 API",
+      "description": "Object storage API",
+      "protocol": "http",
+      "required": false,
+      "envVar": "MINIO_API_PORT",
+      "containerPort": 9000
+    },
+    "minio_console": {
+      "port": 9001,
+      "name": "MinIO Console",
+      "description": "Object storage web UI",
+      "protocol": "http",
+      "required": false,
+      "envVar": "MINIO_CONSOLE_PORT",
+      "containerPort": 9001
+    },
+    "rabbitmq_amqp": {
+      "port": 5672,
+      "name": "RabbitMQ AMQP",
+      "description": "Message queue protocol",
+      "protocol": "tcp",
+      "required": false,
+      "envVar": "RABBITMQ_AMQP_PORT",
+      "containerPort": 5672
+    },
+    "rabbitmq_mgmt": {
+      "port": 15672,
+      "name": "RabbitMQ Management",
+      "description": "RabbitMQ web management UI",
+      "protocol": "http",
+      "required": false,
+      "envVar": "RABBITMQ_MGMT_PORT",
+      "containerPort": 15672
+    }
+  },
+  "legacy_ports": {
+    "_comment": "These ports are reserved to prevent conflicts with old documentation/scripts",
+    "web_legacy": {
+      "port": 3002,
+      "name": "Web Legacy Port",
+      "reason": "Old Next.js port - Reserved to prevent conflicts"
+    },
+    "api_legacy": {
+      "port": 3001,
+      "name": "API Legacy Port",
+      "reason": "Old NestJS API port - Reserved to prevent conflicts"
+    }
+  },
+  "firewall": {
+    "enabled": true,
+    "blockExternal": true,
+    "allowedHosts": [
+      "localhost",
+      "127.0.0.1",
+      "::1"
+    ]
+  },
+  "isolation": {
+    "windowsFirewallRules": true,
+    "processIsolation": true,
+    "portBinding": "127.0.0.1"
+  }
+}

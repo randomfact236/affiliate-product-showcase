@@ -13,7 +13,7 @@ export async function GET() {
 
   // Check API health
   try {
-    const apiResponse = await fetch("http://localhost:3001/api/health", {
+    const apiResponse = await fetch("http://localhost:3003/api/v1/health", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       cache: "no-store",

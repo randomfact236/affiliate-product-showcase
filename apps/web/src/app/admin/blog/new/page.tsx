@@ -22,6 +22,7 @@ import {
   SectionEditor,
   BlogSection,
   createSection,
+  createSectionWithSpacing,
   SectionType,
 } from "@/components/blog/section-editor"
 

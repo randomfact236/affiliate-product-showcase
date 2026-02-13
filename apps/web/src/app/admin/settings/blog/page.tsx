@@ -77,7 +77,7 @@ export default function BlogSettingsPage() {
               <Label htmlFor="postsPerPage">Posts Per Page</Label>
               <Select
                 value={settings.postsPerPage}
-                onValueChange={(value) => setSettings({ ...settings, postsPerPage: value })}
+                onValueChange={(value: string) => setSettings({ ...settings, postsPerPage: value })}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -113,7 +113,7 @@ export default function BlogSettingsPage() {
               </div>
               <Switch
                 checked={settings.showAuthor}
-                onCheckedChange={(checked) => setSettings({ ...settings, showAuthor: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showAuthor: checked })}
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function BlogSettingsPage() {
               </div>
               <Switch
                 checked={settings.showReadingTime}
-                onCheckedChange={(checked) => setSettings({ ...settings, showReadingTime: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showReadingTime: checked })}
               />
             </div>
 
@@ -135,7 +135,7 @@ export default function BlogSettingsPage() {
               </div>
               <Switch
                 checked={settings.showRelatedPosts}
-                onCheckedChange={(checked) => setSettings({ ...settings, showRelatedPosts: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showRelatedPosts: checked })}
               />
             </div>
 
@@ -144,7 +144,7 @@ export default function BlogSettingsPage() {
                 <Label>Number of Related Posts</Label>
                 <Select
                   value={settings.relatedPostsCount}
-                  onValueChange={(value) => setSettings({ ...settings, relatedPostsCount: value })}
+                  onValueChange={(value: string) => setSettings({ ...settings, relatedPostsCount: value })}
                 >
                   <SelectTrigger className="w-32">
                     <SelectValue />
@@ -167,7 +167,7 @@ export default function BlogSettingsPage() {
               </div>
               <Switch
                 checked={settings.enableSocialShare}
-                onCheckedChange={(checked) => setSettings({ ...settings, enableSocialShare: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, enableSocialShare: checked })}
               />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function BlogSettingsPage() {
             <Label htmlFor="defaultSectionSpacing">Default Space Between Heading & Content</Label>
             <Select
               value={settings.defaultSectionSpacing}
-              onValueChange={(value) => setSettings({ ...settings, defaultSectionSpacing: value })}
+              onValueChange={(value: string) => setSettings({ ...settings, defaultSectionSpacing: value })}
             >
               <SelectTrigger className="w-64">
                 <SelectValue />
@@ -220,7 +220,7 @@ export default function BlogSettingsPage() {
             </div>
             <Switch
               checked={settings.enableComments}
-              onCheckedChange={(checked) => setSettings({ ...settings, enableComments: checked })}
+              onCheckedChange={(checked: boolean) => setSettings({ ...settings, enableComments: checked })}
             />
           </div>
 
@@ -232,7 +232,7 @@ export default function BlogSettingsPage() {
               </div>
               <Switch
                 checked={settings.requireApproval}
-                onCheckedChange={(checked) => setSettings({ ...settings, requireApproval: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, requireApproval: checked })}
               />
             </div>
           )}

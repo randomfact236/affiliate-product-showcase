@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { List, ChevronRight } from "lucide-react"
+import { extractHeadings } from "@/lib/blog-utils"
 
 interface TOCItem {
   id: string
@@ -22,25 +23,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
   // Extract headings from HTML content
   useEffect(() => {
     if (!content) return
-
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(content, "text/html")
-    const headingElements = doc.querySelectorAll("h2, h3")
-
-    const items: TOCItem[] = []
-    headingElements.forEach((heading, index) => {
-      const text = heading.textContent?.trim() || ""
-      const level = heading.tagName === "H2" ? 2 : 3
-      const id = `heading-${index}-${text.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
-      
-      items.push({
-        id,
-        text,
-        level,
-      })
-    })
-
-    setHeadings(items)
+    setHeadings(extractHeadings(content))
   }, [content])
 
   // Track active heading on scroll
@@ -116,23 +99,4 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
   )
 }
 
-// Helper function to add IDs to headings in HTML content
-export function addIdsToHeadings(content: string): string {
-  if (!content) return content
 
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(content, "text/html")
-  const headingElements = doc.querySelectorAll("h2, h3")
-
-  headingElements.forEach((heading, index) => {
-    const text = heading.textContent?.trim() || ""
-    const id = `heading-${index}-${text.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
-    heading.setAttribute("id", id)
-    heading.setAttribute("data-toc-id", id)
-    
-    // Add scroll-margin for sticky header offset
-    heading.style.scrollMarginTop = "120px"
-  })
-
-  return doc.body.innerHTML
-}

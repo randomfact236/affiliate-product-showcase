@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/blog/BlogCard"
-import { ProductCard } from "@/components/product/ProductCard"
+import { ProductCard } from "@/components/product/product-card"
 import { getLatestPosts } from "@/lib/api/blog"
 import { getProducts } from "@/lib/api/products"
 
@@ -74,7 +74,7 @@ export function DontMissSection() {
             limit: config.productCount,
             featured: true 
           })
-          setProducts(productResponse.data)
+          setProducts(productResponse.items)
         }
       } catch (error) {
         console.error("Failed to fetch content:", error)

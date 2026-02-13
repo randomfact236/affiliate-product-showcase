@@ -49,17 +49,33 @@ interface DontMissSection {
   sortOrder: number
 }
 
-const defaultFormData = {
+type FormData = {
+  name: string
+  title: string
+  subtitle: string
+  layout: "mixed" | "blogs_only" | "products_only"
+  blogCount: number
+  productCount: number
+  blogCategoryId: string
+  productCategoryId: string
+  showViewAll: boolean
+  sortBy: "latest" | "popular" | "featured"
+  backgroundColor: string
+  textColor: string
+  isActive: boolean
+}
+
+const defaultFormData: FormData = {
   name: "",
   title: "Don't Miss",
   subtitle: "",
-  layout: "mixed" as const,
+  layout: "mixed",
   blogCount: 3,
   productCount: 2,
   blogCategoryId: "",
   productCategoryId: "",
   showViewAll: true,
-  sortBy: "latest" as const,
+  sortBy: "latest",
   backgroundColor: "",
   textColor: "",
   isActive: true,
@@ -426,7 +442,7 @@ export default function DontMissSettingsPage() {
                   <Label>Blog Posts Count</Label>
                   <Select
                     value={formData.blogCount.toString()}
-                    onValueChange={(value) => setFormData({ ...formData, blogCount: parseInt(value) })}
+                    onValueChange={(value: string) => setFormData({ ...formData, blogCount: parseInt(value) })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -444,7 +460,7 @@ export default function DontMissSettingsPage() {
                   <Label>Products Count</Label>
                   <Select
                     value={formData.productCount.toString()}
-                    onValueChange={(value) => setFormData({ ...formData, productCount: parseInt(value) })}
+                    onValueChange={(value: string) => setFormData({ ...formData, productCount: parseInt(value) })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -464,7 +480,7 @@ export default function DontMissSettingsPage() {
                 <Label>Blog Category (Optional)</Label>
                 <Select
                   value={formData.blogCategoryId}
-                  onValueChange={(value) => setFormData({ ...formData, blogCategoryId: value })}
+                  onValueChange={(value: string) => setFormData({ ...formData, blogCategoryId: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="All Categories" />
@@ -480,7 +496,7 @@ export default function DontMissSettingsPage() {
                 <Label>Product Category (Optional)</Label>
                 <Select
                   value={formData.productCategoryId}
-                  onValueChange={(value) => setFormData({ ...formData, productCategoryId: value })}
+                  onValueChange={(value: string) => setFormData({ ...formData, productCategoryId: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="All Categories" />
@@ -555,7 +571,7 @@ export default function DontMissSettingsPage() {
               </div>
               <Switch
                 checked={formData.showViewAll}
-                onCheckedChange={(checked) => setFormData({ ...formData, showViewAll: checked })}
+                onCheckedChange={(checked: boolean) => setFormData({ ...formData, showViewAll: checked })}
               />
             </div>
 
@@ -566,7 +582,7 @@ export default function DontMissSettingsPage() {
               </div>
               <Switch
                 checked={formData.isActive}
-                onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                onCheckedChange={(checked: boolean) => setFormData({ ...formData, isActive: checked })}
               />
             </div>
           </div>

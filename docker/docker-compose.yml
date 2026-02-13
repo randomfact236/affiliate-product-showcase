@@ -3,15 +3,16 @@ version: '3.8'
 name: affiliate-website
 
 services:
+  # PostgreSQL Database - Port 5433 (Standard)
   postgres:
     image: postgres:16-alpine
-    container_name: affiliate-website-db
+    container_name: aps-2026-postgres
     environment:
       POSTGRES_USER: ${DB_USER:-affiliate}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme_in_production}
       POSTGRES_DB: ${DB_NAME:-affiliate_platform}
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -22,26 +23,15 @@ services:
       retries: 5
       start_period: 30s
     networks:
-      - affiliate-network
-    # Security hardening
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          memory: 256M
+      - aps-2026-network
     security_opt:
       - no-new-privileges:true
-    read_only: true
-    tmpfs:
-      - /tmp
-      - /var/run/postgresql
     restart: unless-stopped
 
+  # Redis Cache - Port 6380 (Standard)
   redis:
     image: redis:7-alpine
-    container_name: affiliate-website-cache
+    container_name: aps-2026-redis
     command: >
       redis-server
       --appendonly yes
@@ -50,7 +40,7 @@ services:
       --maxmemory 256mb
       --maxmemory-policy allkeys-lru
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -60,34 +50,23 @@ services:
       retries: 5
       start_period: 10s
     networks:
-      - affiliate-network
-    # Security hardening
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          memory: 128M
+      - aps-2026-network
     security_opt:
       - no-new-privileges:true
-    read_only: true
-    tmpfs:
-      - /tmp
     restart: unless-stopped
 
-  # MinIO - Object Storage (S3-compatible)
+  # MinIO Object Storage - Ports 9000-9001 (Standard)
   minio:
     image: minio/minio:latest
-    container_name: affiliate-website-minio
+    container_name: aps-2026-minio
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:-changeme_in_production_min_16_chars}
       MINIO_BROWSER: "on"
     ports:
-      - "9000:9000"   # API
-      - "9001:9001"   # Console
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
     volumes:
       - minio_data:/data
     healthcheck:
@@ -97,29 +76,21 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - affiliate-network
-    # Security hardening
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          memory: 128M
+      - aps-2026-network
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
 
-  # RabbitMQ - Message Queue
+  # RabbitMQ Message Queue - Ports 5672, 15672 (Standard)
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: affiliate-website-rabbitmq
+    container_name: aps-2026-rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBIT_USER:-affiliate}
       RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD:-changeme_in_production}
     ports:
-      - "5672:5672"     # AMQP port
-      - "15672:15672"   # Management UI
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
@@ -129,74 +100,10 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - affiliate-network
-    # Security hardening
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          memory: 128M
+      - aps-2026-network
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
-
-  # API Service
-  api:
-    build:
-      context: ../apps/api
-      dockerfile: Dockerfile
-    container_name: affiliate-website-api
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: postgresql://${DB_USER:-affiliate}:${DB_PASSWORD:-changeme_in_production}@postgres:5432/${DB_NAME:-affiliate_platform}?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-changeme_in_production}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      STORAGE_ENDPOINT: minio
-      STORAGE_PORT: 9000
-      STORAGE_ACCESS_KEY: ${MINIO_USER:-minio}
-      STORAGE_SECRET_KEY: ${MINIO_PASSWORD:-changeme_in_production_min_16_chars}
-      RABBIT_HOST: rabbitmq
-      RABBIT_PORT: 5672
-      RABBIT_USER: ${RABBIT_USER:-affiliate}
-      RABBIT_PASSWORD: ${RABBIT_PASSWORD:-changeme_in_production}
-    ports:
-      - "3001:3001"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-    networks:
-      - affiliate-network
-    # Security hardening
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
-    read_only: true
-    tmpfs:
-      - /tmp
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
 
 volumes:
   postgres_data:
@@ -209,7 +116,7 @@ volumes:
     driver: local
 
 networks:
-  affiliate-network:
+  aps-2026-network:
     driver: bridge
     ipam:
       config:

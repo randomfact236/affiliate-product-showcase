@@ -48,40 +48,62 @@ app.get('/api/v1/health', (req, res) => {
 });
 
 // ========== RIBBONS API ==========
-app.get('/ribbons', (req, res) => {
-  res.json({
-    items: ribbons,
-    total: ribbons.length,
-    page: 1,
-    limit: 20,
-    totalPages: 1
-  });
+app.get('/api/v1/ribbons', (req, res) => {
+  res.json(ribbons);
 });
 
-app.get('/ribbons/active', (req, res) => {
+app.get('/api/v1/ribbons/active', (req, res) => {
   res.json(ribbons.filter(r => r.isActive));
 });
 
-app.get('/ribbons/:id', (req, res) => {
+app.get('/api/v1/ribbons/:id', (req, res) => {
   const ribbon = ribbons.find(r => r.id === req.params.id);
   if (!ribbon) return res.status(404).json({ message: 'Ribbon not found' });
   res.json(ribbon);
 });
 
-app.post('/ribbons', (req, res) => {
-  const newRibbon = { ...req.body, id: Date.now().toString(), createdAt: new Date(), updatedAt: new Date() };
+app.post('/api/v1/ribbons', (req, res) => {
+  const { name, label, description, color, bgColor, icon, position, priority, isActive } = req.body;
+  
+  // Check for duplicate name
+  if (ribbons.find(r => r.name === name)) {
+    return res.status(409).json({ message: 'Ribbon with this name already exists' });
+  }
+  
+  const newRibbon = { 
+    id: Date.now().toString(), 
+    name,
+    label: label || name,
+    description: description || null,
+    color: color || '#FFFFFF',
+    bgColor: bgColor || '#3B82F6',
+    icon: icon || null,
+    position: position || 'TOP_RIGHT',
+    priority: priority || 1,
+    isActive: isActive !== undefined ? isActive : true,
+    createdAt: new Date(), 
+    updatedAt: new Date() 
+  };
   ribbons.push(newRibbon);
   res.status(201).json(newRibbon);
 });
 
-app.put('/ribbons/:id', (req, res) => {
+app.put('/api/v1/ribbons/:id', (req, res) => {
   const index = ribbons.findIndex(r => r.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Ribbon not found' });
+  
+  const { name } = req.body;
+  
+  // Check for duplicate name (excluding current ribbon)
+  if (name && ribbons.find(r => r.name === name && r.id !== req.params.id)) {
+    return res.status(409).json({ message: 'Ribbon with this name already exists' });
+  }
+  
   ribbons[index] = { ...ribbons[index], ...req.body, updatedAt: new Date() };
   res.json(ribbons[index]);
 });
 
-app.patch('/ribbons/:id/toggle-active', (req, res) => {
+app.patch('/api/v1/ribbons/:id/toggle-active', (req, res) => {
   const index = ribbons.findIndex(r => r.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Ribbon not found' });
   ribbons[index].isActive = !ribbons[index].isActive;
@@ -89,48 +111,105 @@ app.patch('/ribbons/:id/toggle-active', (req, res) => {
   res.json(ribbons[index]);
 });
 
-app.delete('/ribbons/:id', (req, res) => {
+app.delete('/api/v1/ribbons/:id', (req, res) => {
   const index = ribbons.findIndex(r => r.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Ribbon not found' });
   ribbons.splice(index, 1);
   res.status(204).send();
 });
 
-// ========== TAGS API ==========
-app.get('/tags', (req, res) => {
-  res.json({
-    items: tags,
-    total: tags.length,
-    page: 1,
-    limit: 20,
-    totalPages: 1
+app.post('/api/v1/ribbons/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = ribbons.findIndex(r => r.id === id);
+    if (index !== -1) {
+      ribbons.splice(index, 1);
+      deleted++;
+    }
   });
+  
+  res.json({ deleted, total: ids.length });
 });
 
-app.get('/tags/active', (req, res) => {
+app.post('/api/v1/ribbons/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let updated = 0;
+  ids.forEach(id => {
+    const index = ribbons.findIndex(r => r.id === id);
+    if (index !== -1) {
+      ribbons[index] = { ...ribbons[index], ...data, updatedAt: new Date() };
+      updated++;
+    }
+  });
+  
+  res.json({ updated, total: ids.length });
+});
+
+// ========== TAGS API ==========
+app.get('/api/v1/tags', (req, res) => {
+  res.json(tags);
+});
+
+app.get('/api/v1/tags/active', (req, res) => {
   res.json(tags.filter(t => t.isActive));
 });
 
-app.get('/tags/:id', (req, res) => {
+app.get('/api/v1/tags/:id', (req, res) => {
   const tag = tags.find(t => t.id === req.params.id);
   if (!tag) return res.status(404).json({ message: 'Tag not found' });
   res.json(tag);
 });
 
-app.post('/tags', (req, res) => {
-  const newTag = { ...req.body, id: Date.now().toString(), productCount: 0, createdAt: new Date(), updatedAt: new Date() };
+app.post('/api/v1/tags', (req, res) => {
+  const { name, slug, description, color, icon, isActive, sortOrder } = req.body;
+  
+  // Check for duplicate slug
+  if (tags.find(t => t.slug === slug)) {
+    return res.status(409).json({ message: 'Tag with this slug already exists' });
+  }
+  
+  const newTag = { 
+    id: Date.now().toString(), 
+    name,
+    slug,
+    description: description || null,
+    color: color || null,
+    icon: icon || null,
+    productCount: 0, 
+    isActive: isActive !== undefined ? isActive : true,
+    sortOrder: sortOrder || 0,
+    createdAt: new Date(), 
+    updatedAt: new Date() 
+  };
   tags.push(newTag);
   res.status(201).json(newTag);
 });
 
-app.put('/tags/:id', (req, res) => {
+app.put('/api/v1/tags/:id', (req, res) => {
   const index = tags.findIndex(t => t.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Tag not found' });
+  
+  const { slug } = req.body;
+  
+  // Check for duplicate slug (excluding current tag)
+  if (slug && tags.find(t => t.slug === slug && t.id !== req.params.id)) {
+    return res.status(409).json({ message: 'Tag with this slug already exists' });
+  }
+  
   tags[index] = { ...tags[index], ...req.body, updatedAt: new Date() };
   res.json(tags[index]);
 });
 
-app.patch('/tags/:id/toggle-active', (req, res) => {
+app.patch('/api/v1/tags/:id/toggle-active', (req, res) => {
   const index = tags.findIndex(t => t.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Tag not found' });
   tags[index].isActive = !tags[index].isActive;
@@ -138,30 +217,534 @@ app.patch('/tags/:id/toggle-active', (req, res) => {
   res.json(tags[index]);
 });
 
-app.delete('/tags/:id', (req, res) => {
+app.delete('/api/v1/tags/:id', (req, res) => {
   const index = tags.findIndex(t => t.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Tag not found' });
   tags.splice(index, 1);
   res.status(204).send();
 });
 
-app.post('/tags/merge', (req, res) => {
+app.post('/api/v1/tags/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = tags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      tags.splice(index, 1);
+      deleted++;
+    }
+  });
+  
+  res.json({ deleted, total: ids.length });
+});
+
+app.post('/api/v1/tags/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let updated = 0;
+  ids.forEach(id => {
+    const index = tags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      tags[index] = { ...tags[index], ...data, updatedAt: new Date() };
+      updated++;
+    }
+  });
+  
+  res.json({ updated, total: ids.length });
+});
+
+app.post('/api/v1/tags/merge', (req, res) => {
   const { sourceTagIds, targetTagId } = req.body;
   res.json({ message: `Merged ${sourceTagIds.length} tags`, merged: sourceTagIds.length });
 });
 
-// ========== MEDIA API ==========
-app.get('/media', (req, res) => {
+// ========== BLOG CATEGORIES API ==========
+let blogCategories = [
+  { id: '1', slug: 'technology', name: 'Technology', description: 'Tech articles and news', parentId: null, depth: 0, isActive: true, sortOrder: 1, postCount: 15, createdAt: new Date(), updatedAt: new Date() },
+  { id: '2', slug: 'programming', name: 'Programming', description: 'Coding tutorials', parentId: '1', depth: 1, isActive: true, sortOrder: 1, postCount: 8, createdAt: new Date(), updatedAt: new Date() },
+  { id: '3', slug: 'lifestyle', name: 'Lifestyle', description: 'Lifestyle articles', parentId: null, depth: 0, isActive: true, sortOrder: 2, postCount: 12, createdAt: new Date(), updatedAt: new Date() },
+  { id: '4', slug: 'reviews', name: 'Reviews', description: 'Product reviews', parentId: null, depth: 0, isActive: true, sortOrder: 3, postCount: 6, createdAt: new Date(), updatedAt: new Date() },
+];
+
+app.get('/api/v1/blog/categories', (req, res) => {
+  res.json(blogCategories);
+});
+
+app.get('/api/v1/blog/categories/:id', (req, res) => {
+  const category = blogCategories.find(c => c.id === req.params.id);
+  if (!category) return res.status(404).json({ message: 'Category not found' });
+  res.json(category);
+});
+
+app.post('/api/v1/blog/categories', (req, res) => {
+  const { name, slug, description, parentId, isActive, sortOrder } = req.body;
+  
+  if (blogCategories.find(c => c.slug === slug)) {
+    return res.status(409).json({ message: 'Category with this slug already exists' });
+  }
+  
+  const newCategory = {
+    id: Date.now().toString(),
+    name,
+    slug,
+    description: description || null,
+    parentId: parentId || null,
+    depth: parentId ? 1 : 0,
+    isActive: isActive !== undefined ? isActive : true,
+    sortOrder: sortOrder || 0,
+    postCount: 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  blogCategories.push(newCategory);
+  res.status(201).json(newCategory);
+});
+
+app.put('/api/v1/blog/categories/:id', (req, res) => {
+  const index = blogCategories.findIndex(c => c.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Category not found' });
+  
+  const { slug } = req.body;
+  if (slug && blogCategories.find(c => c.slug === slug && c.id !== req.params.id)) {
+    return res.status(409).json({ message: 'Category with this slug already exists' });
+  }
+  
+  blogCategories[index] = { ...blogCategories[index], ...req.body, updatedAt: new Date() };
+  res.json(blogCategories[index]);
+});
+
+app.delete('/api/v1/blog/categories/:id', (req, res) => {
+  const index = blogCategories.findIndex(c => c.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Category not found' });
+  
+  const hasChildren = blogCategories.some(c => c.parentId === req.params.id);
+  if (hasChildren) {
+    return res.status(400).json({ message: 'Cannot delete category with subcategories' });
+  }
+  
+  blogCategories.splice(index, 1);
+  res.status(204).send();
+});
+
+app.post('/api/v1/blog/categories/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = blogCategories.findIndex(c => c.id === id);
+    if (index !== -1 && !blogCategories.some(c => c.parentId === id)) {
+      blogCategories.splice(index, 1);
+      deleted++;
+    }
+  });
+  res.json({ deleted, total: ids.length });
+});
+
+app.post('/api/v1/blog/categories/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  let updated = 0;
+  ids.forEach(id => {
+    const index = blogCategories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      blogCategories[index] = { ...blogCategories[index], ...data, updatedAt: new Date() };
+      updated++;
+    }
+  });
+  res.json({ updated, total: ids.length });
+});
+
+// ========== BLOG TAGS API ==========
+let blogTags = [
+  { id: '1', slug: 'javascript', name: 'JavaScript', description: 'JS articles', color: '#F7DF1E', isActive: true, postCount: 10, createdAt: new Date(), updatedAt: new Date() },
+  { id: '2', slug: 'react', name: 'React', description: 'React tutorials', color: '#61DAFB', isActive: true, postCount: 8, createdAt: new Date(), updatedAt: new Date() },
+  { id: '3', slug: 'nodejs', name: 'Node.js', description: 'Backend JS', color: '#339933', isActive: true, postCount: 6, createdAt: new Date(), updatedAt: new Date() },
+  { id: '4', slug: 'tutorial', name: 'Tutorial', description: 'How-to guides', color: '#FF6B6B', isActive: true, postCount: 15, createdAt: new Date(), updatedAt: new Date() },
+];
+
+app.get('/api/v1/blog/tags', (req, res) => {
+  res.json(blogTags);
+});
+
+app.get('/api/v1/blog/tags/:id', (req, res) => {
+  const tag = blogTags.find(t => t.id === req.params.id);
+  if (!tag) return res.status(404).json({ message: 'Tag not found' });
+  res.json(tag);
+});
+
+app.post('/api/v1/blog/tags', (req, res) => {
+  const { name, slug, description, color, isActive } = req.body;
+  
+  if (blogTags.find(t => t.slug === slug)) {
+    return res.status(409).json({ message: 'Tag with this slug already exists' });
+  }
+  
+  const newTag = {
+    id: Date.now().toString(),
+    name,
+    slug,
+    description: description || null,
+    color: color || null,
+    isActive: isActive !== undefined ? isActive : true,
+    postCount: 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  blogTags.push(newTag);
+  res.status(201).json(newTag);
+});
+
+app.put('/api/v1/blog/tags/:id', (req, res) => {
+  const index = blogTags.findIndex(t => t.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Tag not found' });
+  
+  const { slug } = req.body;
+  if (slug && blogTags.find(t => t.slug === slug && t.id !== req.params.id)) {
+    return res.status(409).json({ message: 'Tag with this slug already exists' });
+  }
+  
+  blogTags[index] = { ...blogTags[index], ...req.body, updatedAt: new Date() };
+  res.json(blogTags[index]);
+});
+
+app.delete('/api/v1/blog/tags/:id', (req, res) => {
+  const index = blogTags.findIndex(t => t.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Tag not found' });
+  blogTags.splice(index, 1);
+  res.status(204).send();
+});
+
+app.post('/api/v1/blog/tags/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = blogTags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      blogTags.splice(index, 1);
+      deleted++;
+    }
+  });
+  res.json({ deleted, total: ids.length });
+});
+
+app.post('/api/v1/blog/tags/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  let updated = 0;
+  ids.forEach(id => {
+    const index = blogTags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      blogTags[index] = { ...blogTags[index], ...data, updatedAt: new Date() };
+      updated++;
+    }
+  });
+  res.json({ updated, total: ids.length });
+});
+
+// ========== BLOG POSTS API ==========
+let blogPosts = [
+  { 
+    id: '1', 
+    title: 'Getting Started with Affiliate Marketing', 
+    slug: 'getting-started-affiliate-marketing',
+    excerpt: 'Learn the basics of affiliate marketing and how to get started.',
+    content: '<p>Affiliate marketing is a great way to earn passive income...</p>',
+    contentType: 'HTML',
+    status: 'PUBLISHED',
+    publishedAt: new Date().toISOString(),
+    metaTitle: 'Getting Started with Affiliate Marketing',
+    metaDescription: 'Learn the basics of affiliate marketing',
+    keywords: 'affiliate, marketing, beginner',
+    readingTime: 5,
+    viewCount: 1250,
+    likeCount: 45,
+    shareCount: 12,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    author: { id: '1', firstName: 'John', lastName: 'Doe', avatar: null },
+    featuredImage: null,
+    categories: [{ id: '1', name: 'Technology', slug: 'technology' }],
+    tags: [{ id: '1', name: 'JavaScript', slug: 'javascript', color: '#F7DF1E' }]
+  },
+  { 
+    id: '2', 
+    title: 'Top 10 Gadgets for 2024', 
+    slug: 'top-10-gadgets-2024',
+    excerpt: 'Discover the best tech gadgets for this year.',
+    content: '<p>Here are the top 10 gadgets you should consider...</p>',
+    contentType: 'HTML',
+    status: 'PUBLISHED',
+    publishedAt: new Date(Date.now() - 86400000).toISOString(),
+    metaTitle: 'Top 10 Gadgets for 2024',
+    metaDescription: 'Best tech gadgets 2024',
+    keywords: 'gadgets, tech, 2024',
+    readingTime: 8,
+    viewCount: 3400,
+    likeCount: 128,
+    shareCount: 56,
+    createdAt: new Date(Date.now() - 86400000).toISOString(),
+    updatedAt: new Date(Date.now() - 86400000).toISOString(),
+    author: { id: '1', firstName: 'John', lastName: 'Doe', avatar: null },
+    featuredImage: null,
+    categories: [{ id: '1', name: 'Technology', slug: 'technology' }],
+    tags: [{ id: '2', name: 'React', slug: 'react', color: '#61DAFB' }]
+  },
+  { 
+    id: '3', 
+    title: 'How to Choose the Right Laptop', 
+    slug: 'how-to-choose-laptop',
+    excerpt: 'A comprehensive guide to selecting the perfect laptop.',
+    content: '<p>Choosing a laptop can be overwhelming...</p>',
+    contentType: 'HTML',
+    status: 'DRAFT',
+    publishedAt: null,
+    metaTitle: 'How to Choose the Right Laptop',
+    metaDescription: 'Laptop buying guide',
+    keywords: 'laptop, guide, buying',
+    readingTime: 10,
+    viewCount: 0,
+    likeCount: 0,
+    shareCount: 0,
+    createdAt: new Date(Date.now() - 172800000).toISOString(),
+    updatedAt: new Date(Date.now() - 172800000).toISOString(),
+    author: { id: '1', firstName: 'John', lastName: 'Doe', avatar: null },
+    featuredImage: null,
+    categories: [{ id: '3', name: 'Reviews', slug: 'reviews' }],
+    tags: [{ id: '3', name: 'Tutorial', slug: 'tutorial', color: '#FF6B6B' }]
+  }
+];
+
+app.get('/api/v1/blog', (req, res) => {
+  const { 
+    page = 1, 
+    limit = 10, 
+    search, 
+    status,
+    sortBy = 'createdAt',
+    sortOrder = 'desc'
+  } = req.query;
+  
+  let filtered = [...blogPosts];
+  
+  // Search
+  if (search) {
+    const q = search.toLowerCase();
+    filtered = filtered.filter(p => 
+      p.title.toLowerCase().includes(q) || 
+      (p.excerpt && p.excerpt.toLowerCase().includes(q))
+    );
+  }
+  
+  // Filter by status
+  if (status) {
+    filtered = filtered.filter(p => p.status === status);
+  }
+  
+  // Sort
+  filtered.sort((a, b) => {
+    let comparison = 0;
+    switch (sortBy) {
+      case 'title':
+        comparison = a.title.localeCompare(b.title);
+        break;
+      case 'viewCount':
+        comparison = a.viewCount - b.viewCount;
+        break;
+      case 'publishedAt':
+        comparison = (a.publishedAt || '') > (b.publishedAt || '') ? 1 : -1;
+        break;
+      case 'updatedAt':
+        comparison = new Date(a.updatedAt) - new Date(b.updatedAt);
+        break;
+      case 'createdAt':
+      default:
+        comparison = new Date(a.createdAt) - new Date(b.createdAt);
+        break;
+    }
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
+  
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / limit);
+  const start = (page - 1) * limit;
+  const paginatedItems = filtered.slice(start, start + parseInt(limit));
+  
   res.json({
-    items: media,
-    total: media.length,
-    page: 1,
-    limit: 20,
-    totalPages: 1
+    data: paginatedItems,
+    meta: {
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages
+    }
   });
 });
 
-app.get('/media/stats', (req, res) => {
+app.get('/api/v1/blog/featured', (req, res) => {
+  const { limit = 5 } = req.query;
+  const featured = blogPosts
+    .filter(p => p.status === 'PUBLISHED')
+    .slice(0, parseInt(limit));
+  res.json({ data: featured, meta: { total: featured.length } });
+});
+
+app.get('/api/v1/blog/latest', (req, res) => {
+  const { limit = 5 } = req.query;
+  const latest = [...blogPosts]
+    .filter(p => p.status === 'PUBLISHED')
+    .sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt))
+    .slice(0, parseInt(limit));
+  res.json({ data: latest, meta: { total: latest.length } });
+});
+
+app.get('/api/v1/blog/:id', (req, res) => {
+  const post = blogPosts.find(p => p.id === req.params.id);
+  if (!post) return res.status(404).json({ message: 'Post not found' });
+  res.json(post);
+});
+
+app.get('/api/v1/blog/slug/:slug', (req, res) => {
+  const post = blogPosts.find(p => p.slug === req.params.slug);
+  if (!post) return res.status(404).json({ message: 'Post not found' });
+  res.json(post);
+});
+
+app.post('/api/v1/blog', (req, res) => {
+  const newPost = {
+    ...req.body,
+    id: Date.now().toString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  blogPosts.push(newPost);
+  res.status(201).json(newPost);
+});
+
+app.put('/api/v1/blog/:id', (req, res) => {
+  const index = blogPosts.findIndex(p => p.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Post not found' });
+  
+  blogPosts[index] = { 
+    ...blogPosts[index], 
+    ...req.body, 
+    updatedAt: new Date().toISOString() 
+  };
+  res.json(blogPosts[index]);
+});
+
+app.delete('/api/v1/blog/:id', (req, res) => {
+  const index = blogPosts.findIndex(p => p.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Post not found' });
+  
+  blogPosts.splice(index, 1);
+  res.status(204).send();
+});
+
+app.post('/api/v1/blog/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = blogPosts.findIndex(p => p.id === id);
+    if (index !== -1) {
+      blogPosts.splice(index, 1);
+      deleted++;
+    }
+  });
+  res.json({ deleted, total: ids.length });
+});
+
+app.post('/api/v1/blog/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  let updated = 0;
+  ids.forEach(id => {
+    const index = blogPosts.findIndex(p => p.id === id);
+    if (index !== -1) {
+      blogPosts[index] = { 
+        ...blogPosts[index], 
+        ...data, 
+        updatedAt: new Date().toISOString() 
+      };
+      updated++;
+    }
+  });
+  res.json({ updated, total: ids.length });
+});
+
+// ========== MEDIA API ==========
+// ========== MEDIA API ==========
+app.get('/api/v1/media', (req, res) => {
+  const { 
+    page = 1, 
+    limit = 20, 
+    search, 
+    status, 
+    sortBy = 'createdAt', 
+    sortOrder = 'desc',
+    type
+  } = req.query;
+  
+  let filtered = [...media];
+  
+  // Search by filename
+  if (search) {
+    const q = search.toLowerCase();
+    filtered = filtered.filter(m => m.filename.toLowerCase().includes(q));
+  }
+  
+  // Filter by conversion status
+  if (status) {
+    switch (status) {
+      case 'converted':
+        filtered = filtered.filter(m => m.isConverted);
+        break;
+      case 'pending':
+        filtered = filtered.filter(m => !m.isConverted);
+        break;
+    }
+  }
+  
+  // Filter by file type
+  if (type) {
+    filtered = filtered.filter(m => m.mimeType?.startsWith(type));
+  }
+  
+  // Sort
+  filtered.sort((a, b) => {
+    let comparison = 0;
+    switch (sortBy) {
+      case 'filename':
+        comparison = a.filename.localeCompare(b.filename);
+        break;
+      case 'fileSize':
+        comparison = a.fileSize - b.fileSize;
+        break;
+      case 'createdAt':
+      default:
+        comparison = new Date(a.createdAt) - new Date(b.createdAt);
+        break;
+    }
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
+  
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / limit);
+  const start = (page - 1) * limit;
+  const paginatedItems = filtered.slice(start, start + parseInt(limit));
+  
+  res.json({
+    items: paginatedItems,
+    total,
+    page: parseInt(page),
+    limit: parseInt(limit),
+    totalPages
+  });
+});
+
+app.get('/api/v1/media/stats', (req, res) => {
   const totalImages = media.length;
   const fullyOptimized = media.filter(m => m.isConverted).length;
   const needsConversion = media.filter(m => !m.isConverted).length;
@@ -173,22 +756,62 @@ app.get('/media/stats', (req, res) => {
     needsConversion,
     storageSaved,
     storageSavedFormatted: `${(storageSaved / 1024 / 1024).toFixed(1)} MB`,
-    optimizationPercentage: Math.round((fullyOptimized / totalImages) * 100)
+    optimizationPercentage: totalImages > 0 ? Math.round((fullyOptimized / totalImages) * 100) : 0
   });
 });
 
-app.get('/media/unconverted', (req, res) => {
+app.get('/api/v1/media/unconverted', (req, res) => {
   res.json(media.filter(m => !m.isConverted));
 });
 
-app.post('/media', (req, res) => {
-  const newMedia = { ...req.body, id: Date.now().toString(), createdAt: new Date(), updatedAt: new Date() };
+app.get('/api/v1/media/:id', (req, res) => {
+  const item = media.find(m => m.id === req.params.id);
+  if (!item) return res.status(404).json({ message: 'Media not found' });
+  res.json(item);
+});
+
+app.post('/api/v1/media', (req, res) => {
+  const newMedia = { 
+    ...req.body, 
+    id: Date.now().toString(), 
+    createdAt: new Date(), 
+    updatedAt: new Date() 
+  };
   media.push(newMedia);
   res.status(201).json(newMedia);
 });
 
+app.put('/api/v1/media/:id', (req, res) => {
+  const index = media.findIndex(m => m.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Media not found' });
+  
+  media[index] = { ...media[index], ...req.body, updatedAt: new Date() };
+  res.json(media[index]);
+});
+
+app.delete('/api/v1/media/:id', (req, res) => {
+  const index = media.findIndex(m => m.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Media not found' });
+  
+  media.splice(index, 1);
+  res.status(204).send();
+});
+
+app.post('/api/v1/media/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = media.findIndex(m => m.id === id);
+    if (index !== -1) {
+      media.splice(index, 1);
+      deleted++;
+    }
+  });
+  res.json({ deleted, total: ids.length });
+});
+
 // ========== PRODUCTS API ==========
-app.get('/products', (req, res) => {
+app.get('/api/v1/products', (req, res) => {
   const { status, category, search, featured, page = 1, limit = 10 } = req.query;
   
   let filtered = [...products];
@@ -214,7 +837,7 @@ app.get('/products', (req, res) => {
   });
 });
 
-app.get('/products/stats', (req, res) => {
+app.get('/api/v1/products/stats', (req, res) => {
   const stats = {
     all: products.length,
     published: products.filter(p => p.status === 'PUBLISHED').length,
@@ -224,13 +847,13 @@ app.get('/products/stats', (req, res) => {
   res.json(stats);
 });
 
-app.get('/products/:id', (req, res) => {
+app.get('/api/v1/products/:id', (req, res) => {
   const product = products.find(p => p.id === req.params.id);
   if (!product) return res.status(404).json({ message: 'Product not found' });
   res.json(product);
 });
 
-app.post('/products', (req, res) => {
+app.post('/api/v1/products', (req, res) => {
   const newProduct = { 
     ...req.body, 
     id: Date.now().toString(), 
@@ -241,19 +864,118 @@ app.post('/products', (req, res) => {
   res.status(201).json(newProduct);
 });
 
-app.put('/products/:id', (req, res) => {
+app.put('/api/v1/products/:id', (req, res) => {
   const index = products.findIndex(p => p.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Product not found' });
   products[index] = { ...products[index], ...req.body, updatedAt: new Date() };
   res.json(products[index]);
 });
 
-app.delete('/products/:id', (req, res) => {
+app.delete('/api/v1/products/:id', (req, res) => {
   const index = products.findIndex(p => p.id === req.params.id);
   if (index === -1) return res.status(404).json({ message: 'Product not found' });
   products[index].status = 'ARCHIVED';
   products[index].updatedAt = new Date();
   res.json(products[index]);
+});
+
+app.post('/api/v1/products/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  let deleted = 0;
+  ids.forEach(id => {
+    const index = products.findIndex(p => p.id === id);
+    if (index !== -1) {
+      products[index].status = 'ARCHIVED';
+      products[index].updatedAt = new Date();
+      deleted++;
+    }
+  });
+  res.json({ deleted, total: ids.length });
+});
+
+app.post('/api/v1/products/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  let updated = 0;
+  ids.forEach(id => {
+    const index = products.findIndex(p => p.id === id);
+    if (index !== -1) {
+      products[index] = { ...products[index], ...data, updatedAt: new Date() };
+      updated++;
+    }
+  });
+  res.json({ updated, total: ids.length });
+});
+
+// ========== AUDIT TRAIL API ==========
+let auditLogs = [
+  { id: '1', action: 'CREATE', entity: 'Product', entityId: '1', entityName: 'Wireless Headphones', userId: '1', userEmail: 'admin@example.com', userName: 'Admin User', timestamp: new Date(Date.now() - 86400000).toISOString() },
+  { id: '2', action: 'UPDATE', entity: 'BlogPost', entityId: '1', entityName: 'Getting Started with Affiliate Marketing', userId: '1', userEmail: 'admin@example.com', userName: 'Admin User', timestamp: new Date(Date.now() - 43200000).toISOString(), changes: { title: { old: 'Getting Started', new: 'Getting Started with Affiliate Marketing' } } },
+  { id: '3', action: 'DELETE', entity: 'Category', entityId: '5', entityName: 'Old Category', userId: '1', userEmail: 'admin@example.com', userName: 'Admin User', timestamp: new Date(Date.now() - 21600000).toISOString() },
+  { id: '4', action: 'BULK_UPDATE', entity: 'Product', userId: '1', userEmail: 'admin@example.com', userName: 'Admin User', timestamp: new Date(Date.now() - 10800000).toISOString(), metadata: { count: 5, field: 'status' } },
+  { id: '5', action: 'CREATE', entity: 'Media', entityId: '1', entityName: 'product-image.jpg', userId: '1', userEmail: 'admin@example.com', userName: 'Admin User', timestamp: new Date().toISOString() },
+];
+
+app.get('/api/v1/audit', (req, res) => {
+  const { page = 1, limit = 20, search, action, entity } = req.query;
+  
+  let filtered = [...auditLogs];
+  
+  if (search) {
+    const q = search.toLowerCase();
+    filtered = filtered.filter(l => 
+      l.entity.toLowerCase().includes(q) ||
+      l.entityName?.toLowerCase().includes(q) ||
+      l.userEmail?.toLowerCase().includes(q) ||
+      l.userName?.toLowerCase().includes(q)
+    );
+  }
+  
+  if (action && action !== 'all') {
+    filtered = filtered.filter(l => l.action === action);
+  }
+  
+  if (entity && entity !== 'all') {
+    filtered = filtered.filter(l => l.entity === entity);
+  }
+  
+  // Sort by timestamp desc
+  filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  
+  const total = filtered.length;
+  const start = (page - 1) * limit;
+  const items = filtered.slice(start, start + parseInt(limit));
+  
+  res.json({
+    items,
+    total,
+    page: parseInt(page),
+    limit: parseInt(limit),
+    totalPages: Math.ceil(total / limit)
+  });
+});
+
+app.get('/api/v1/audit/stats', (req, res) => {
+  const stats = {
+    total: auditLogs.length,
+    createCount: auditLogs.filter(l => l.action === 'CREATE').length,
+    updateCount: auditLogs.filter(l => l.action === 'UPDATE' || l.action === 'BULK_UPDATE').length,
+    deleteCount: auditLogs.filter(l => l.action === 'DELETE' || l.action === 'BULK_DELETE').length,
+  };
+  res.json(stats);
+});
+
+app.post('/api/v1/audit', (req, res) => {
+  const newLog = {
+    ...req.body,
+    id: Date.now().toString(),
+    timestamp: new Date().toISOString()
+  };
+  auditLogs.unshift(newLog);
+  // Keep only last 1000 logs
+  if (auditLogs.length > 1000) {
+    auditLogs = auditLogs.slice(0, 1000);
+  }
+  res.status(201).json(newLog);
 });
 
 // ========== USERS API ==========
@@ -339,6 +1061,180 @@ app.patch('/users/:id/toggle-status', (req, res) => {
   users[index].status = users[index].status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
   users[index].updatedAt = new Date();
   res.json(users[index]);
+});
+
+// ========== CATEGORIES API ==========
+let categories = [
+  { id: '1', name: 'Electronics', slug: 'electronics', description: 'Electronic devices and gadgets', parentId: null, depth: 0, left: 1, right: 8, metaTitle: 'Electronics', metaDescription: 'Browse electronics', image: null, isActive: true, sortOrder: 1, createdAt: new Date('2024-01-01'), updatedAt: new Date() },
+  { id: '2', name: 'Computers', slug: 'computers', description: 'Laptops and desktops', parentId: null, depth: 0, left: 9, right: 14, metaTitle: 'Computers', metaDescription: 'Browse computers', image: null, isActive: true, sortOrder: 2, createdAt: new Date('2024-01-02'), updatedAt: new Date() },
+  { id: '3', name: 'Smartphones', slug: 'smartphones', description: 'Mobile phones', parentId: '1', depth: 1, left: 2, right: 3, metaTitle: 'Smartphones', metaDescription: 'Browse smartphones', image: null, isActive: true, sortOrder: 1, createdAt: new Date('2024-01-03'), updatedAt: new Date() },
+  { id: '4', name: 'Audio', slug: 'audio', description: 'Audio equipment', parentId: '1', depth: 1, left: 4, right: 7, metaTitle: 'Audio', metaDescription: 'Browse audio', image: null, isActive: true, sortOrder: 2, createdAt: new Date('2024-01-04'), updatedAt: new Date() },
+  { id: '5', name: 'Headphones', slug: 'headphones', description: 'Wired and wireless headphones', parentId: '4', depth: 2, left: 5, right: 6, metaTitle: 'Headphones', metaDescription: 'Browse headphones', image: null, isActive: true, sortOrder: 1, createdAt: new Date('2024-01-05'), updatedAt: new Date() },
+  { id: '6', name: 'Laptops', slug: 'laptops', description: 'Portable computers', parentId: '2', depth: 1, left: 10, right: 11, metaTitle: 'Laptops', metaDescription: 'Browse laptops', image: null, isActive: true, sortOrder: 1, createdAt: new Date('2024-01-06'), updatedAt: new Date() },
+  { id: '7', name: 'Desktops', slug: 'desktops', description: 'Desktop computers', parentId: '2', depth: 1, left: 12, right: 13, metaTitle: 'Desktops', metaDescription: 'Browse desktops', image: null, isActive: false, sortOrder: 2, createdAt: new Date('2024-01-07'), updatedAt: new Date() },
+];
+
+// Get all categories
+app.get('/api/v1/categories', (req, res) => {
+  res.json(categories);
+});
+
+// Get category tree
+app.get('/api/v1/categories/tree', (req, res) => {
+  const buildTree = (items, parentId = null) => {
+    return items
+      .filter(item => item.parentId === parentId)
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .map(item => ({
+        ...item,
+        children: buildTree(items, item.id)
+      }));
+  };
+  res.json(buildTree(categories));
+});
+
+// Get category by ID
+app.get('/api/v1/categories/:id', (req, res) => {
+  const category = categories.find(c => c.id === req.params.id);
+  if (!category) return res.status(404).json({ message: 'Category not found' });
+  res.json(category);
+});
+
+// Get category by slug
+app.get('/api/v1/categories/slug/:slug', (req, res) => {
+  const category = categories.find(c => c.slug === req.params.slug);
+  if (!category) return res.status(404).json({ message: 'Category not found' });
+  res.json(category);
+});
+
+// Create category
+app.post('/api/v1/categories', (req, res) => {
+  const { name, slug, description, parentId, metaTitle, metaDescription, image, isActive, sortOrder } = req.body;
+  
+  // Check for duplicate slug
+  if (categories.find(c => c.slug === slug)) {
+    return res.status(409).json({ message: 'Category with this slug already exists' });
+  }
+  
+  // Calculate depth and tree properties
+  let depth = 0;
+  let parentLeft = 0;
+  let parentRight = categories.length * 2 + 2;
+  
+  if (parentId) {
+    const parent = categories.find(c => c.id === parentId);
+    if (parent) {
+      depth = parent.depth + 1;
+      parentLeft = parent.left;
+      parentRight = parent.right;
+    }
+  }
+  
+  const newCategory = {
+    id: Date.now().toString(),
+    name,
+    slug,
+    description: description || null,
+    parentId: parentId || null,
+    depth,
+    left: parentLeft + 1,
+    right: parentLeft + 2,
+    metaTitle: metaTitle || null,
+    metaDescription: metaDescription || null,
+    image: image || null,
+    isActive: isActive !== undefined ? isActive : true,
+    sortOrder: sortOrder || 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  
+  categories.push(newCategory);
+  res.status(201).json(newCategory);
+});
+
+// Update category
+app.put('/api/v1/categories/:id', (req, res) => {
+  const index = categories.findIndex(c => c.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Category not found' });
+  
+  const { slug } = req.body;
+  
+  // Check for duplicate slug (excluding current category)
+  if (slug && categories.find(c => c.slug === slug && c.id !== req.params.id)) {
+    return res.status(409).json({ message: 'Category with this slug already exists' });
+  }
+  
+  categories[index] = { 
+    ...categories[index], 
+    ...req.body, 
+    updatedAt: new Date() 
+  };
+  res.json(categories[index]);
+});
+
+// Delete category
+app.delete('/api/v1/categories/:id', (req, res) => {
+  const index = categories.findIndex(c => c.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: 'Category not found' });
+  
+  // Check if category has children
+  const hasChildren = categories.some(c => c.parentId === req.params.id);
+  if (hasChildren) {
+    return res.status(400).json({ message: 'Cannot delete category with subcategories' });
+  }
+  
+  categories.splice(index, 1);
+  res.status(204).send();
+});
+
+// Bulk delete categories
+app.post('/api/v1/categories/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let deleted = 0;
+  let failed = 0;
+  
+  ids.forEach(id => {
+    const index = categories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      const hasChildren = categories.some(c => c.parentId === id);
+      if (!hasChildren) {
+        categories.splice(index, 1);
+        deleted++;
+      } else {
+        failed++;
+      }
+    }
+  });
+  
+  res.json({ deleted, failed, total: ids.length });
+});
+
+// Bulk update categories status
+app.post('/api/v1/categories/bulk-update', (req, res) => {
+  const { ids, data } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'No IDs provided' });
+  }
+  
+  let updated = 0;
+  
+  ids.forEach(id => {
+    const index = categories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      categories[index] = { 
+        ...categories[index], 
+        ...data, 
+        updatedAt: new Date() 
+      };
+      updated++;
+    }
+  });
+  
+  res.json({ updated, total: ids.length });
 });
 
 // ========== ANALYTICS API ==========
@@ -1030,11 +1926,12 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 API Server running on http://localhost:${PORT}`);
   console.log(`📡 Health:  http://localhost:${PORT}/api/v1/health`);
+  console.log(`📂 Categories: http://localhost:${PORT}/api/v1/categories`);
   console.log(`📦 Products: http://localhost:${PORT}/products`);
   console.log(`👥 Users:   http://localhost:${PORT}/users`);
   console.log(`🏷️  Tags:    http://localhost:${PORT}/tags`);
   console.log(`🎀 Ribbons: http://localhost:${PORT}/ribbons`);
-  console.log(`🖼️  Media:   http://localhost:${PORT}/media`);
+  console.log(`🖼️  Media:   http://localhost:${PORT}/api/v1/media`);
   console.log(`📊 Analytics: http://localhost:${PORT}/analytics/dashboard`);
   console.log(`💰 Revenue: http://localhost:${PORT}/analytics/revenue`);
   console.log(`🎯 Funnel:  http://localhost:${PORT}/analytics/funnel`);

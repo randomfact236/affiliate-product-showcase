@@ -6,17 +6,14 @@ import { cn } from "@/lib/utils"
 import {
   LayoutDashboard,
   Package,
-  Tags,
   BarChart3,
   Settings,
   LogOut,
   Store,
   Bookmark,
   Image,
-  Ribbon,
   PlusCircle,
   BookOpen,
-  PenLine,
   FileText,
   FolderOpen,
   ChevronDown,
@@ -25,6 +22,7 @@ import {
   Type,
   Palette,
   Sparkles,
+  History,
 } from "lucide-react"
 import { useState } from "react"
 import { ThemeToggleSimple } from "@/components/theme-toggle"
@@ -45,8 +43,8 @@ const adminNavItems: NavItem[] = [
     children: [
       { href: "/admin/blog", label: "All Posts", icon: FileText },
       { href: "/admin/blog/new", label: "Add New", icon: PlusCircle },
-      { href: "/admin/categories", label: "Categories", icon: FolderOpen },
-      { href: "/admin/tags", label: "Tags", icon: Tag },
+      { href: "/admin/blog/categories", label: "Categories", icon: FolderOpen },
+      { href: "/admin/blog/tags", label: "Tags", icon: Tag },
     ],
   },
   {
@@ -55,14 +53,15 @@ const adminNavItems: NavItem[] = [
     icon: Package,
     children: [
       { href: "/admin/products", label: "All Products", icon: Layers },
-      { href: "/admin/products/new", label: "Add New", icon: PlusCircle },
+      { href: "/admin/products/new", label: "Add Product", icon: PlusCircle },
+      { href: "/admin/products/categories", label: "Categories", icon: FolderOpen },
+      { href: "/admin/products/tags", label: "Tags", icon: Bookmark },
       { href: "/admin/ribbons", label: "Ribbons", icon: Sparkles },
-      { href: "/admin/categories", label: "Categories", icon: FolderOpen },
-      { href: "/admin/tags", label: "Tags", icon: Bookmark },
     ],
   },
   { href: "/admin/media", label: "Media Library", icon: Image },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/audit", label: "Audit Trail", icon: History },
   {
     href: "/admin/settings",
     label: "Settings",
@@ -86,15 +85,22 @@ function NavItemComponent({
   depth?: number
 }) {
   const pathname = usePathname()
-  // All menus expanded by default
   const [isExpanded, setIsExpanded] = useState(true)
 
   const Icon = item.icon
   const isActive = pathname === item.href
   const hasChildren = item.children && item.children.length > 0
+  
+  // Check if current path matches this item or any of its children
   const isChildActive = hasChildren
-    ? item.children!.some((child) => pathname.startsWith(child.href.split('?')[0]))
+    ? item.children!.some((child) => {
+        const childPath = child.href
+        return pathname === childPath || pathname.startsWith(childPath + '/')
+      })
     : false
+  
+  // Auto-expand if child is active
+  const shouldExpand = isExpanded || isChildActive
 
   if (hasChildren) {
     return (
@@ -119,7 +125,7 @@ function NavItemComponent({
             )}
           />
         </button>
-        {isExpanded && (
+        {shouldExpand && (
           <div className="ml-4 border-l pl-3 space-y-1">
             {item.children!.map((child) => (
               <NavItemComponent key={child.href} item={child} depth={depth + 1} />

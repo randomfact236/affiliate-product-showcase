@@ -79,7 +79,7 @@ export default function ProductSettingsPage() {
               <Label htmlFor="productsPerPage">Products Per Page</Label>
               <Select
                 value={settings.productsPerPage}
-                onValueChange={(value) => setSettings({ ...settings, productsPerPage: value })}
+                onValueChange={(value: string) => setSettings({ ...settings, productsPerPage: value })}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -97,7 +97,7 @@ export default function ProductSettingsPage() {
               <Label htmlFor="defaultCurrency">Default Currency</Label>
               <Select
                 value={settings.defaultCurrency}
-                onValueChange={(value) => setSettings({ ...settings, defaultCurrency: value })}
+                onValueChange={(value: string) => setSettings({ ...settings, defaultCurrency: value })}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -135,7 +135,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.showPrice}
-                onCheckedChange={(checked) => setSettings({ ...settings, showPrice: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showPrice: checked })}
               />
             </div>
 
@@ -146,7 +146,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.showComparePrice}
-                onCheckedChange={(checked) => setSettings({ ...settings, showComparePrice: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showComparePrice: checked })}
               />
             </div>
 
@@ -157,7 +157,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.showRating}
-                onCheckedChange={(checked) => setSettings({ ...settings, showRating: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showRating: checked })}
               />
             </div>
 
@@ -168,7 +168,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.showBadges}
-                onCheckedChange={(checked) => setSettings({ ...settings, showBadges: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showBadges: checked })}
               />
             </div>
 
@@ -179,7 +179,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.showStockStatus}
-                onCheckedChange={(checked) => setSettings({ ...settings, showStockStatus: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showStockStatus: checked })}
               />
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function ProductSettingsPage() {
             </div>
             <Switch
               checked={settings.enableReviews}
-              onCheckedChange={(checked) => setSettings({ ...settings, enableReviews: checked })}
+              onCheckedChange={(checked: boolean) => setSettings({ ...settings, enableReviews: checked })}
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function ProductSettingsPage() {
               </div>
               <Switch
                 checked={settings.requireReviewApproval}
-                onCheckedChange={(checked) => setSettings({ ...settings, requireReviewApproval: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, requireReviewApproval: checked })}
               />
             </div>
           )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
   Select,
   SelectContent,
@@ -31,11 +32,38 @@ import {
   Tag,
   BarChart3,
   DollarSign,
+  AlertCircle,
 } from "lucide-react"
+import { auth, fetchWithAuth, parseApiError } from "@/lib/auth"
+import { getCategories, type Category } from "@/lib/api/categories"
+
+interface ProductFormData {
+  name: string
+  slug: string
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
+  isFeatured: boolean
+  featuredImage: string
+  logo: string
+  affiliateUrl: string
+  buttonName: string
+  shortDescription: string
+  features: string[]
+  currentPrice: string
+  originalPrice: string
+  category: string
+  ribbon: string
+  rating: string
+  views: string
+  userCount: string
+  reviews: string
+}
 
 export default function AddProductPage() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
   
   // Section refs for navigation
   const infoRef = useRef<HTMLDivElement>(null)
@@ -47,8 +75,9 @@ export default function AddProductPage() {
   const statisticsRef = useRef<HTMLDivElement>(null)
   
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductFormData>({
     name: "",
+    slug: "",
     status: "DRAFT",
     isFeatured: false,
     featuredImage: "",
@@ -56,7 +85,7 @@ export default function AddProductPage() {
     affiliateUrl: "",
     buttonName: "",
     shortDescription: "",
-    features: [] as string[],
+    features: [],
     currentPrice: "",
     originalPrice: "",
     category: "",
@@ -70,6 +99,39 @@ export default function AddProductPage() {
   const [newFeature, setNewFeature] = useState("")
   const [wordCount, setWordCount] = useState(0)
   const [activeSection, setActiveSection] = useState("info")
+
+  // Load categories on mount
+  useEffect(() => {
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    try {
+      const data = await getCategories()
+      setCategories(data)
+    } catch (err) {
+      console.error("Failed to load categories:", err)
+    } finally {
+      setIsLoadingCategories(false)
+    }
+  }
+
+  // Auto-generate slug from name
+  const generateSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+  }
+
+  const handleNameChange = (value: string) => {
+    const newSlug = formData.slug === generateSlug(formData.name) 
+      ? generateSlug(value) 
+      : formData.slug
+    setFormData({ ...formData, name: value, slug: newSlug })
+  }
 
   const calculateDiscount = () => {
     const current = parseFloat(formData.currentPrice)
@@ -99,19 +161,85 @@ export default function AddProductPage() {
     setActiveSection(section)
   }
 
+  const validateForm = (): boolean => {
+    if (!formData.name.trim()) {
+      setError("Product name is required")
+      return false
+    }
+    if (!formData.slug.trim()) {
+      setError("Product slug is required")
+      return false
+    }
+    if (!formData.currentPrice || parseFloat(formData.currentPrice) <= 0) {
+      setError("Valid current price is required")
+      return false
+    }
+    return true
+  }
+
   const handleSubmit = async (status: "DRAFT" | "PUBLISHED") => {
+    setError(null)
+    
+    if (!validateForm()) return
+
+    // Check authentication
+    if (!auth.isAuthenticated()) {
+      setError("You must be logged in to create products. Please login first.")
+      return
+    }
+
     setIsSubmitting(true)
+    
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, status }),
-      })
-      if (response.ok) {
-        router.push("/admin/products")
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"
+      
+      // Transform form data to API format
+      const apiData = {
+        name: formData.name,
+        slug: formData.slug,
+        status: status,
+        shortDescription: formData.shortDescription || undefined,
+        description: formData.shortDescription || undefined, // Using short description as main description for now
+        metaTitle: formData.name,
+        metaDescription: formData.shortDescription || undefined,
+        categoryIds: formData.category ? [formData.category] : [],
+        variants: [
+          {
+            name: "Default",
+            sku: `${formData.slug.toUpperCase()}-001`,
+            price: Math.round(parseFloat(formData.currentPrice) * 100), // Convert to cents
+            comparePrice: formData.originalPrice ? Math.round(parseFloat(formData.originalPrice) * 100) : undefined,
+            inventory: 100,
+            isDefault: true,
+          }
+        ],
+        // Additional custom fields that might be stored in metadata
+        featuredImage: formData.featuredImage || undefined,
+        logo: formData.logo || undefined,
+        affiliateUrl: formData.affiliateUrl || undefined,
+        buttonName: formData.buttonName || undefined,
+        features: formData.features,
+        isFeatured: formData.isFeatured,
+        rating: parseFloat(formData.rating) || 4.5,
+        views: parseInt(formData.views) || 0,
+        userCount: formData.userCount || undefined,
+        reviews: parseInt(formData.reviews) || 0,
       }
+
+      const response = await fetchWithAuth(`${API_URL}/api/v1/products`, {
+        method: "POST",
+        body: JSON.stringify(apiData),
+      })
+
+      if (!response.ok) {
+        const errorMessage = await parseApiError(response)
+        throw new Error(errorMessage)
+      }
+
+      router.push("/admin/products")
     } catch (error) {
       console.error("Failed to create product:", error)
+      setError(error instanceof Error ? error.message : "Failed to create product. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -165,6 +293,16 @@ export default function AddProductPage() {
         </div>
       </div>
 
+      {/* Error Alert */}
+      {error && (
+        <div className="max-w-7xl mx-auto px-6 pt-6">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
+      )}
+
       {/* Main Content - All Sections */}
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         
@@ -191,14 +329,29 @@ export default function AddProductPage() {
                     id="name"
                     placeholder="Enter product title..."
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => handleNameChange(e.target.value)}
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="slug">
+                    Slug <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="slug"
+                    placeholder="product-slug"
+                    value={formData.slug}
+                    onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
                   <Select
                     value={formData.status}
-                    onValueChange={(value: string) => setFormData({ ...formData, status: value })}
+                    onValueChange={(value: "DRAFT" | "PUBLISHED" | "ARCHIVED") => 
+                      setFormData({ ...formData, status: value })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select status" />
@@ -210,18 +363,18 @@ export default function AddProductPage() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="featured"
-                  checked={formData.isFeatured}
-                  onCheckedChange={(checked: boolean) =>
-                    setFormData({ ...formData, isFeatured: checked })
-                  }
-                />
-                <Label htmlFor="featured" className="font-normal cursor-pointer">
-                  Featured Product
-                </Label>
+                <div className="flex items-center space-x-2 pt-8">
+                  <Checkbox
+                    id="featured"
+                    checked={formData.isFeatured}
+                    onCheckedChange={(checked: boolean) =>
+                      setFormData({ ...formData, isFeatured: checked })
+                    }
+                  />
+                  <Label htmlFor="featured" className="font-normal cursor-pointer">
+                    Featured Product
+                  </Label>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -247,11 +400,7 @@ export default function AddProductPage() {
                   <Label>Product Image (Featured)</Label>
                   <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 transition-colors bg-gray-50/50">
                     <Camera className="h-12 w-12 mx-auto text-gray-400 mb-3" />
-                    <p className="text-sm text-gray-500 mb-4">Click to upload or enter URL below</p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Select from Media Library
-                    </Button>
+                    <p className="text-sm text-gray-500 mb-4">Enter image URL below</p>
                   </div>
                   <Input
                     placeholder="https://..."
@@ -265,11 +414,7 @@ export default function AddProductPage() {
                   <Label>Logo</Label>
                   <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 transition-colors bg-gray-50/50">
                     <Shirt className="h-12 w-12 mx-auto text-gray-400 mb-3" />
-                    <p className="text-sm text-gray-500 mb-4">Click to upload or enter URL below</p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Select from Media Library
-                    </Button>
+                    <p className="text-sm text-gray-500 mb-4">Enter logo URL below</p>
                   </div>
                   <Input
                     placeholder="https://..."
@@ -463,14 +608,17 @@ export default function AddProductPage() {
                   <Select
                     value={formData.category}
                     onValueChange={(value: string) => setFormData({ ...formData, category: value })}
+                    disabled={isLoadingCategories}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select categories..." />
+                      <SelectValue placeholder={isLoadingCategories ? "Loading..." : "Select category..."} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="electronics">Electronics</SelectItem>
-                      <SelectItem value="computers">Computers</SelectItem>
-                      <SelectItem value="accessories">Accessories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {"  ".repeat(category.depth)}{category.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

@@ -121,7 +121,7 @@ export default function AppearanceSettingsPage() {
             <Label htmlFor="fontFamily">Font Family</Label>
             <Select
               value={settings.fontFamily}
-              onValueChange={(value) => setSettings({ ...settings, fontFamily: value })}
+              onValueChange={(value: string) => setSettings({ ...settings, fontFamily: value })}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -145,7 +145,7 @@ export default function AppearanceSettingsPage() {
               </div>
               <Switch
                 checked={settings.enableAnimations}
-                onCheckedChange={(checked) => setSettings({ ...settings, enableAnimations: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, enableAnimations: checked })}
               />
             </div>
 
@@ -156,7 +156,7 @@ export default function AppearanceSettingsPage() {
               </div>
               <Switch
                 checked={settings.showScrollToTop}
-                onCheckedChange={(checked) => setSettings({ ...settings, showScrollToTop: checked })}
+                onCheckedChange={(checked: boolean) => setSettings({ ...settings, showScrollToTop: checked })}
               />
             </div>
           </div>
